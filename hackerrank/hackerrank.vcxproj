@@ -130,6 +130,7 @@
     <ClCompile Include="practice\data_structures\arrays\dynamic_array.cpp" />
     <ClCompile Include="practice\data_structures\arrays\left_rotation.cpp" />
     <ClCompile Include="practice\data_structures\arrays\sparce_arrays.cpp" />
+    <ClCompile Include="practice\data_structures\trees\swap_nodes_algo.cpp" />
     <ClCompile Include="practice\mathematics\fundamentals\find_the_point.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

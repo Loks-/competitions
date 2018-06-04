@@ -28,6 +28,9 @@
     <Filter Include="Source Files\practice\data_structures\arrays">
       <UniqueIdentifier>{59dda143-695e-4529-a32c-5be520009a0c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\practice\data_structures\trees">
+      <UniqueIdentifier>{d21cd20b-893b-4463-a8e3-058505a8f5a9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="practice\mathematics\fundamentals\find_the_point.cpp">
@@ -53,6 +56,9 @@
     </ClCompile>
     <ClCompile Include="practice\data_structures\arrays\array_manipulation.cpp">
       <Filter>Source Files\practice\data_structures\arrays</Filter>
+    </ClCompile>
+    <ClCompile Include="practice\data_structures\trees\swap_nodes_algo.cpp">
+      <Filter>Source Files\practice\data_structures\trees</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
