@@ -22,6 +22,12 @@
     <Filter Include="Source Files\practice\mathematics\fundamentals">
       <UniqueIdentifier>{f1795874-a53c-4117-874b-7a2a104c388e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\practice\data_structures">
+      <UniqueIdentifier>{50fe548e-b138-4d03-b69d-7d1ffac5447d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\practice\data_structures\arrays">
+      <UniqueIdentifier>{59dda143-695e-4529-a32c-5be520009a0c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="practice\mathematics\fundamentals\find_the_point.cpp">
@@ -29,6 +35,9 @@
     </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="practice\data_structures\arrays\arrays_ds.cpp">
+      <Filter>Source Files\practice\data_structures\arrays</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
