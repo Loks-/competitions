@@ -30,4 +30,9 @@
       <Filter>Header Files\Base</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="current_solution.inl">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
 </Project>
