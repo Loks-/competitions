@@ -44,6 +44,11 @@ static void AddFile(const string& input_filename, ofstream& output, bool silent 
 				continue;
 			}
 		}
+		if (line.substr(0, 8) == "int main")
+		{
+			output << "int main()" << endl;
+			continue;
+		}
 		output << line << endl;
 	}
 }
