@@ -1,8 +1,8 @@
-#include <iostream>
+// https://www.hackerrank.com/challenges/find-point
 
-using namespace std;
+#include "../../../../common/base.h"
 
-int main()
+int main_find_the_point()
 {
     unsigned n;
     cin >> n;
