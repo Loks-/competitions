@@ -51,5 +51,8 @@
     <ClCompile Include="practice\data_structures\arrays\sparce_arrays.cpp">
       <Filter>Source Files\practice\data_structures\arrays</Filter>
     </ClCompile>
+    <ClCompile Include="practice\data_structures\arrays\array_manipulation.cpp">
+      <Filter>Source Files\practice\data_structures\arrays</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
