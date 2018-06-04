@@ -60,5 +60,8 @@
     <ClCompile Include="practice\data_structures\trees\swap_nodes_algo.cpp">
       <Filter>Source Files\practice\data_structures\trees</Filter>
     </ClCompile>
+    <ClCompile Include="practice\data_structures\trees\tree_coordinates.cpp">
+      <Filter>Source Files\practice\data_structures\trees</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
