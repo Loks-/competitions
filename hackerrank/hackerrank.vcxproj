@@ -124,6 +124,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="practice\data_structures\arrays\2d_arrays_ds.cpp" />
     <ClCompile Include="practice\data_structures\arrays\arrays_ds.cpp" />
     <ClCompile Include="practice\mathematics\fundamentals\find_the_point.cpp" />
   </ItemGroup>
