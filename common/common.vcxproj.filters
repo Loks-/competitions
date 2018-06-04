@@ -16,6 +16,9 @@
     <Filter Include="Header Files\Base">
       <UniqueIdentifier>{a7d510b7-9697-44aa-8b7b-6655d02a108d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Graph">
+      <UniqueIdentifier>{624d3173-0710-4b16-8147-001705267029}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="compile_test.cpp">
@@ -28,6 +31,15 @@
   <ItemGroup>
     <ClInclude Include="base.h">
       <Filter>Header Files\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="base_graph.h">
+      <Filter>Header Files\Graph</Filter>
+    </ClInclude>
+    <ClInclude Include="base_tree.h">
+      <Filter>Header Files\Graph</Filter>
+    </ClInclude>
+    <ClInclude Include="lca.h">
+      <Filter>Header Files\Graph</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
