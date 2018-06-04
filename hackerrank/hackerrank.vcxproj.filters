@@ -42,5 +42,8 @@
     <ClCompile Include="practice\data_structures\arrays\2d_arrays_ds.cpp">
       <Filter>Source Files\practice\data_structures\arrays</Filter>
     </ClCompile>
+    <ClCompile Include="practice\data_structures\arrays\dynamic_array.cpp">
+      <Filter>Source Files\practice\data_structures\arrays</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
