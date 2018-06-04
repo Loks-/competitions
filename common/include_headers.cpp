@@ -29,7 +29,9 @@ static void AddFile(const string& input_filename, ofstream& output, bool silent 
 				assert(npos_include_end > npos_include);
 				string new_header_file = line.substr(npos_include + 1, npos_include_end - npos_include - 1);
 				string current_dir = ".\\";
-				size_t npos = input_filename.find_last_of('\\');
+				size_t npos1 = input_filename.find_last_of('\\');
+				size_t npos2 = input_filename.find_last_of('/');
+				size_t npos = (npos1 == string::npos) ? npos2 : (npos2 == string::npos) ? npos1 : max(npos1, npos2);
 				if (npos != string::npos)
 				{
 					current_dir = input_filename.substr(0, npos + 1);
