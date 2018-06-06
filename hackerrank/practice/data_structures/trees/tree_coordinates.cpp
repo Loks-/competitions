@@ -3,13 +3,6 @@
 #include "../../../../common/base.h"
 #include "../../../../common/lca.h"
 
-namespace {
-	static unsigned GetDistance(const LCA& lca, const vector<unsigned>& vd, unsigned x, unsigned y)
-	{
-		return vd[x] + vd[y] - 2 * vd[lca.GetLCA(x, y)];
-	}
-}
-
 int main_tree_coordinates()
 {
 	unsigned n, m;
@@ -68,7 +61,7 @@ int main_tree_coordinates()
 			{
 				for (unsigned i2 : vl22[s2])
 				{
-					unsigned l = GetDistance(lca, vd, vp1[i1], vp1[i2]) + GetDistance(lca, vd, vp2[i1], vp2[i2]);
+					unsigned l = lca.GetDistance(vp1[i1], vp1[i2]) + lca.GetDistance(vp2[i1], vp2[i2]);
 					max_distance = max(max_distance, l);
 					if (s <= max_distance + adj) break;
 				}
@@ -79,7 +72,7 @@ int main_tree_coordinates()
 			{
 				for (unsigned i2 : vl21[s2])
 				{
-					unsigned l = GetDistance(lca, vd, vp1[i1], vp1[i2]) + GetDistance(lca, vd, vp2[i1], vp2[i2]);
+					unsigned l = lca.GetDistance(vp1[i1], vp1[i2]) + lca.GetDistance(vp2[i1], vp2[i2]);
 					max_distance = max(max_distance, l);
 					if (s <= max_distance + adj) break;
 				}

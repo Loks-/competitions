@@ -9,6 +9,7 @@ public:
 	unsigned n, n2p;
 	vector<unsigned> vlbit, vrbit;
 	vector<unsigned> parent, preorder, subtreesize, I, lead, A;
+	vector<unsigned> deep;
 
 protected:
 	void InitBitMaps()
@@ -45,6 +46,7 @@ public:
 		I.resize(n);
 		lead.resize(n + 1);
 		A.resize(n);
+		deep.resize(n);
 	}
 
 	void Build(const BaseTree& g)
@@ -62,10 +64,12 @@ protected:
 		vector<bool> visited(n, false);
 		unsigned timer = 0;
 		parent[g.root] = -1;
+		deep[g.root] = 0;
 		for (s.push(g.root); !s.empty(); )
 		{
 			unsigned v = s.top();
 			unsigned p = parent[v];
+			unsigned d = deep[v];
 			if (!visited[v])
 			{
 				// First time here, add children
@@ -75,6 +79,7 @@ protected:
 				{
 					if (c == p) continue; // For undirected edges
 					parent[c] = v;
+					deep[c] = d + 1;
 					s.push(c);
 				}
 			}
@@ -106,7 +111,8 @@ protected:
 		}
 	}
 
-	unsigned EnterIntoStrip(unsigned x, unsigned hz) const {
+	unsigned EnterIntoStrip(unsigned x, unsigned hz) const
+	{
 		if (vrbit[I[x]] == hz)
 			return x;
 		unsigned hw = vlbit[A[x] & (hz - 1)];
@@ -114,11 +120,18 @@ protected:
 	}
 
 public:
-	unsigned GetLCA(unsigned x, unsigned y) const {
+	unsigned GetLCA(unsigned x, unsigned y) const
+	{
 		unsigned hb = (I[x] == I[y]) ? vrbit[I[x]] : vlbit[I[x] ^ I[y]]; // Some magic
 		unsigned hz = vrbit[A[x] & A[y] & (~hb + 1)];
 		unsigned ex = EnterIntoStrip(x, hz);
 		unsigned ey = EnterIntoStrip(y, hz);
 		return preorder[ex] < preorder[ey] ? ex : ey;
+	}
+
+	unsigned GetDistance(unsigned x, unsigned y) const
+	{
+		unsigned z = GetLCA(x, y);
+		return deep[x] + deep[y] - 2 * deep[z];
 	}
 };
