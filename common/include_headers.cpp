@@ -5,7 +5,7 @@
 
 static unordered_set<string> used_files;
 
-static void AddFile(const string& input_filename, ofstream& output, bool silent = false)
+static void AddFile(const string& input_filename, ofstream& output, bool ignore_local, bool silent = false)
 {
 	ifstream input(input_filename);
 	string line;
@@ -28,6 +28,16 @@ static void AddFile(const string& input_filename, ofstream& output, bool silent 
 				size_t npos_include_end = line.find_last_of('"');
 				assert(npos_include_end > npos_include);
 				string new_header_file = line.substr(npos_include + 1, npos_include_end - npos_include - 1);
+				if (ignore_local)
+				{
+					size_t hnpos1 = new_header_file.find_last_of('\\');
+					size_t hnpos2 = new_header_file.find_last_of('/');
+					if ((hnpos1 == string::npos) && (hnpos2 == string::npos))
+					{
+						output << line << endl;
+						continue;
+					}
+				}
 				string current_dir = ".\\";
 				size_t npos1 = input_filename.find_last_of('\\');
 				size_t npos2 = input_filename.find_last_of('/');
@@ -42,7 +52,7 @@ static void AddFile(const string& input_filename, ofstream& output, bool silent 
 					cout << "Include file found:" << endl;
 					cout << "\t[" << input_filename << "] [" << new_header_file << "] [" << new_file << "]" << endl;
 				}
-				AddFile(new_file, output);
+				AddFile(new_file, output, false, silent);
 				continue;
 			}
 		}
@@ -67,6 +77,6 @@ int main(int nargs, char **pargs)
 	else
 		output_filename = pargs[2];
 	ofstream output(output_filename);
-	AddFile(input_filename, output);
+	AddFile(input_filename, output, true);
 	return 0;
 }
