@@ -30,6 +30,9 @@
     <ClInclude Include="2018\practice\flagpoles.h">
       <Filter>Source Files\2018\practice</Filter>
     </ClInclude>
+    <ClInclude Include="2018\practice\pancakes.h">
+      <Filter>Source Files\2018\practice</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -42,6 +45,9 @@
       <Filter>Source Files\2018\practice</Filter>
     </ClCompile>
     <ClCompile Include="2018\practice\flagpoles.cpp">
+      <Filter>Source Files\2018\practice</Filter>
+    </ClCompile>
+    <ClCompile Include="2018\practice\pancakes.cpp">
       <Filter>Source Files\2018\practice</Filter>
     </ClCompile>
   </ItemGroup>

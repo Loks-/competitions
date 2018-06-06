@@ -1,6 +1,6 @@
 #include "../../common/base.h"
 
-int main_()
+int main()
 {
 	cout << "Hello from distributed code jam main." << endl;
 	return 0;
