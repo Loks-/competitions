@@ -36,5 +36,8 @@
     <ClCompile Include="2018\r3\field_trip.cpp">
       <Filter>Source Files\2018\r3</Filter>
     </ClCompile>
+    <ClCompile Include="2018\ps\steed_2_cruise_control.cpp">
+      <Filter>Source Files\2018\ps</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
