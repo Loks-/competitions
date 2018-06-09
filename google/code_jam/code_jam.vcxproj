@@ -124,6 +124,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="2018\PS\number_guessing.cpp" />
+    <ClCompile Include="2018\ps\senate_evacuation.cpp" />
+    <ClCompile Include="2018\r3\field_trip.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

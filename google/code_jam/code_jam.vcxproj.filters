@@ -19,6 +19,9 @@
     <Filter Include="Source Files\2018\ps">
       <UniqueIdentifier>{220cf7a1-e7b8-476d-9b37-0f211bdd889f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\2018\r3">
+      <UniqueIdentifier>{9574d81b-2e9d-4a0a-bde8-9aed19a6dc0c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -26,6 +29,12 @@
     </ClCompile>
     <ClCompile Include="2018\PS\number_guessing.cpp">
       <Filter>Source Files\2018\ps</Filter>
+    </ClCompile>
+    <ClCompile Include="2018\ps\senate_evacuation.cpp">
+      <Filter>Source Files\2018\ps</Filter>
+    </ClCompile>
+    <ClCompile Include="2018\r3\field_trip.cpp">
+      <Filter>Source Files\2018\r3</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
