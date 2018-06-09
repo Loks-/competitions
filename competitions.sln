@@ -11,6 +11,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "google", "google", "{A0407C
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "distributed_code_jam", "google\distributed_code_jam\distributed_code_jam.vcxproj", "{555DD1A1-0A3E-4540-8E95-66BB3F6F12E4}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "code_jam", "google\code_jam\code_jam.vcxproj", "{EA4A3188-06BD-431B-8FA6-E2437DA8537C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -43,12 +45,21 @@ Global
 		{555DD1A1-0A3E-4540-8E95-66BB3F6F12E4}.Release|x64.Build.0 = Release|x64
 		{555DD1A1-0A3E-4540-8E95-66BB3F6F12E4}.Release|x86.ActiveCfg = Release|Win32
 		{555DD1A1-0A3E-4540-8E95-66BB3F6F12E4}.Release|x86.Build.0 = Release|Win32
+		{EA4A3188-06BD-431B-8FA6-E2437DA8537C}.Debug|x64.ActiveCfg = Debug|x64
+		{EA4A3188-06BD-431B-8FA6-E2437DA8537C}.Debug|x64.Build.0 = Debug|x64
+		{EA4A3188-06BD-431B-8FA6-E2437DA8537C}.Debug|x86.ActiveCfg = Debug|Win32
+		{EA4A3188-06BD-431B-8FA6-E2437DA8537C}.Debug|x86.Build.0 = Debug|Win32
+		{EA4A3188-06BD-431B-8FA6-E2437DA8537C}.Release|x64.ActiveCfg = Release|x64
+		{EA4A3188-06BD-431B-8FA6-E2437DA8537C}.Release|x64.Build.0 = Release|x64
+		{EA4A3188-06BD-431B-8FA6-E2437DA8537C}.Release|x86.ActiveCfg = Release|Win32
+		{EA4A3188-06BD-431B-8FA6-E2437DA8537C}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{555DD1A1-0A3E-4540-8E95-66BB3F6F12E4} = {A0407CDC-4814-4DE1-AAC9-5F1D1DEC4A45}
+		{EA4A3188-06BD-431B-8FA6-E2437DA8537C} = {A0407CDC-4814-4DE1-AAC9-5F1D1DEC4A45}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {556B5D21-DDAB-4390-9D18-26717679D8C6}
