@@ -123,6 +123,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="2018\ps\bathroom_stalls.cpp" />
     <ClCompile Include="2018\PS\number_guessing.cpp" />
     <ClCompile Include="2018\ps\senate_evacuation.cpp" />
     <ClCompile Include="2018\ps\steed_2_cruise_control.cpp" />
