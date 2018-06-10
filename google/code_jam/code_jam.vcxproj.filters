@@ -22,6 +22,9 @@
     <Filter Include="Source Files\2018\r3">
       <UniqueIdentifier>{9574d81b-2e9d-4a0a-bde8-9aed19a6dc0c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\2018\qr">
+      <UniqueIdentifier>{7a9ed75e-c492-4e97-a659-a0096cd1667f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -41,6 +44,9 @@
     </ClCompile>
     <ClCompile Include="2018\ps\bathroom_stalls.cpp">
       <Filter>Source Files\2018\ps</Filter>
+    </ClCompile>
+    <ClCompile Include="2018\qr\saving_the_universe_again.cpp">
+      <Filter>Source Files\2018\qr</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
