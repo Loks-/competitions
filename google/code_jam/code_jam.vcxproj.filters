@@ -48,5 +48,8 @@
     <ClCompile Include="2018\qr\saving_the_universe_again.cpp">
       <Filter>Source Files\2018\qr</Filter>
     </ClCompile>
+    <ClCompile Include="2018\qr\trouble_sort.cpp">
+      <Filter>Source Files\2018\qr</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
