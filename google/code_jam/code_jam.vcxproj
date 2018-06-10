@@ -132,6 +132,7 @@
     <ClCompile Include="2018\qr\saving_the_universe_again.cpp" />
     <ClCompile Include="2018\qr\trouble_sort.cpp" />
     <ClCompile Include="2018\r1a\big_party.cpp" />
+    <ClCompile Include="2018\r1a\edgy_baking.cpp" />
     <ClCompile Include="2018\r1a\waffle_choppers.cpp" />
     <ClCompile Include="2018\r3\field_trip.cpp" />
     <ClCompile Include="main.cpp" />
