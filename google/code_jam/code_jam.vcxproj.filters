@@ -54,5 +54,8 @@
     <ClCompile Include="2018\qr\go_gopher.cpp">
       <Filter>Source Files\2018\qr</Filter>
     </ClCompile>
+    <ClCompile Include="2018\qr\cubic_ufo.cpp">
+      <Filter>Source Files\2018\qr</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
