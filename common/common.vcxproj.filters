@@ -13,10 +13,7 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Header Files\Base">
-      <UniqueIdentifier>{a7d510b7-9697-44aa-8b7b-6655d02a108d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Graph">
+    <Filter Include="Header Files\graph">
       <UniqueIdentifier>{624d3173-0710-4b16-8147-001705267029}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -29,17 +26,17 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="base.h">
-      <Filter>Header Files\Base</Filter>
-    </ClInclude>
     <ClInclude Include="graph\base_graph.h">
-      <Filter>Header Files\Graph</Filter>
+      <Filter>Header Files\graph</Filter>
     </ClInclude>
     <ClInclude Include="graph\base_tree.h">
-      <Filter>Header Files\Graph</Filter>
+      <Filter>Header Files\graph</Filter>
     </ClInclude>
     <ClInclude Include="graph\lca.h">
-      <Filter>Header Files\Graph</Filter>
+      <Filter>Header Files\graph</Filter>
+    </ClInclude>
+    <ClInclude Include="base.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
