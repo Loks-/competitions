@@ -1,7 +1,7 @@
 // https://www.hackerrank.com/challenges/tree-coordinates
 
 #include "../../../../common/base.h"
-#include "../../../../common/lca.h"
+#include "../../../../common/graph/lca.h"
 
 int main_tree_coordinates()
 {

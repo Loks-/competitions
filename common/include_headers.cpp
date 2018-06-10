@@ -5,6 +5,32 @@
 
 static unordered_set<string> used_files;
 
+static string MergePath(const string& sdir, const string& sfile)
+{
+	assert((sdir.back() == '/') || (sdir.back() == '\\'));
+	size_t nposl1 = sdir.find_last_of('/'), nposl2 = sdir.find_last_of('\\');
+	size_t nposl = (nposl1 == string::npos) ? nposl2 : (nposl2 == string::npos) ? nposl1 : max(nposl1, nposl2);
+	assert(nposl != string::npos);
+	size_t nposr = 0;
+	for (;;)
+	{
+		if ((nposl == 0) || (sdir[nposl - 1] == '.'))
+			break;
+		if (sfile.substr(nposr, 3) != "../")
+			break;
+		size_t nposl1 = sdir.find_last_of('/', nposl - 1), nposl2 = sdir.find_last_of('\\', nposl - 1);
+		size_t nposl_new = (nposl1 == string::npos) ? nposl2 : (nposl2 == string::npos) ? nposl1 : max(nposl1, nposl2);
+		if (nposl_new != string::npos)
+		{
+			nposl = nposl_new;
+			nposr += 3;
+		}
+		else
+			break;
+	}
+	return sdir.substr(0, nposl + 1) + sfile.substr(nposr);
+}
+
 static void AddFile(const string& input_filename, ofstream& output, bool ignore_local, bool silent = false)
 {
 	ifstream input(input_filename);
@@ -46,7 +72,7 @@ static void AddFile(const string& input_filename, ofstream& output, bool ignore_
 				{
 					current_dir = input_filename.substr(0, npos + 1);
 				}
-				string new_file = current_dir + new_header_file;
+				string new_file = MergePath(current_dir, new_header_file); // current_dir + new_header_file;
 				if (!silent)
 				{
 					cout << "Include file found:" << endl;

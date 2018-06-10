@@ -139,9 +139,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="base.h" />
-    <ClInclude Include="base_graph.h" />
-    <ClInclude Include="base_tree.h" />
-    <ClInclude Include="lca.h" />
+    <ClInclude Include="graph\base_graph.h" />
+    <ClInclude Include="graph\base_tree.h" />
+    <ClInclude Include="graph\lca.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="current_solution.inl" />

@@ -32,13 +32,13 @@
     <ClInclude Include="base.h">
       <Filter>Header Files\Base</Filter>
     </ClInclude>
-    <ClInclude Include="base_graph.h">
+    <ClInclude Include="graph\base_graph.h">
       <Filter>Header Files\Graph</Filter>
     </ClInclude>
-    <ClInclude Include="base_tree.h">
+    <ClInclude Include="graph\base_tree.h">
       <Filter>Header Files\Graph</Filter>
     </ClInclude>
-    <ClInclude Include="lca.h">
+    <ClInclude Include="graph\lca.h">
       <Filter>Header Files\Graph</Filter>
     </ClInclude>
   </ItemGroup>

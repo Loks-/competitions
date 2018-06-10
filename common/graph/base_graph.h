@@ -1,6 +1,6 @@
 #pragma once
 
-#include "base.h"
+#include "../base.h"
 
 template <bool directed_edges = false>
 class BaseGraph
