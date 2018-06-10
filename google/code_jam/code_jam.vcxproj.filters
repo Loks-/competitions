@@ -63,5 +63,8 @@
     <ClCompile Include="2018\r1a\waffle_choppers.cpp">
       <Filter>Source Files\2018\r1a</Filter>
     </ClCompile>
+    <ClCompile Include="2018\r1a\big_party.cpp">
+      <Filter>Source Files\2018\r1a</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
