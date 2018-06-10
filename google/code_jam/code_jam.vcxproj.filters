@@ -25,6 +25,9 @@
     <Filter Include="Source Files\2018\qr">
       <UniqueIdentifier>{7a9ed75e-c492-4e97-a659-a0096cd1667f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\2018\r1a">
+      <UniqueIdentifier>{e331a9ff-9042-4c02-9774-25dd40435c9a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -56,6 +59,9 @@
     </ClCompile>
     <ClCompile Include="2018\qr\cubic_ufo.cpp">
       <Filter>Source Files\2018\qr</Filter>
+    </ClCompile>
+    <ClCompile Include="2018\r1a\waffle_choppers.cpp">
+      <Filter>Source Files\2018\r1a</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
