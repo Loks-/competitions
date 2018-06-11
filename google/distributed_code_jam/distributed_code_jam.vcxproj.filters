@@ -19,6 +19,9 @@
     <Filter Include="Source Files\2018\practice">
       <UniqueIdentifier>{d5d35ecd-7f81-4287-ab08-8693860b6dab}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\2018\r1">
+      <UniqueIdentifier>{193c2f74-c98b-4686-83d0-3f33c0ec9e94}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="message.h">
@@ -32,6 +35,9 @@
     </ClInclude>
     <ClInclude Include="2018\practice\pancakes.h">
       <Filter>Source Files\2018\practice</Filter>
+    </ClInclude>
+    <ClInclude Include="2018\r1\stones.h">
+      <Filter>Source Files\2018\r1</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -49,6 +55,9 @@
     </ClCompile>
     <ClCompile Include="2018\practice\pancakes.cpp">
       <Filter>Source Files\2018\practice</Filter>
+    </ClCompile>
+    <ClCompile Include="2018\r1\stones.cpp">
+      <Filter>Source Files\2018\r1</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
