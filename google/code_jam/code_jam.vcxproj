@@ -135,6 +135,7 @@
     <ClCompile Include="2018\r1a\edgy_baking.cpp" />
     <ClCompile Include="2018\r1a\waffle_choppers.cpp" />
     <ClCompile Include="2018\r1b\rounding_error.cpp" />
+    <ClCompile Include="2018\r1b\transmutation.cpp" />
     <ClCompile Include="2018\r3\field_trip.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>

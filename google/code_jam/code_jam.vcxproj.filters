@@ -75,5 +75,8 @@
     <ClCompile Include="2018\r1b\rounding_error.cpp">
       <Filter>Source Files\2018\r1b</Filter>
     </ClCompile>
+    <ClCompile Include="2018\r1b\transmutation.cpp">
+      <Filter>Source Files\2018\r1b</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

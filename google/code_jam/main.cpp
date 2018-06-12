@@ -2,7 +2,7 @@
 
 int main()
 {
-	cout << "Hello from distributed code jam main." << endl;
+	cout << "Hello from code jam main." << endl;
 	unsigned T;
 	cin >> T;
 	for (unsigned it = 1; it <= T; ++it)
