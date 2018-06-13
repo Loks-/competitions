@@ -72,7 +72,7 @@ static void AddFile(const string& input_filename, ofstream& output, bool ignore_
 				{
 					current_dir = input_filename.substr(0, npos + 1);
 				}
-				string new_file = MergePath(current_dir, new_header_file); // current_dir + new_header_file;
+				string new_file = (new_header_file.substr(0, 7) =="common/") ? new_header_file : MergePath(current_dir, new_header_file);
 				if (!silent)
 				{
 					cout << "Include file found:" << endl;
