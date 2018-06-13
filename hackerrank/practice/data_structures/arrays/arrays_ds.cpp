@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/arrays-ds
 
-#include "../../../../common/base.h"
+#include "common/base.h"
 
 int main_arrays_ds()
 {

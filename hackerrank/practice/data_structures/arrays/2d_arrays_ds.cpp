@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/2d-array
 
-#include "../../../../common/base.h"
+#include "common/base.h"
 
 int main_2d_arrays_ds()
 {

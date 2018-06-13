@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/sparse-arrays
 
-#include "../../../../common/base.h"
+#include "common/base.h"
 
 int main_sparce_arrays()
 {

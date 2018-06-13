@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/swap-nodes-algo
 
-#include "../../../../common/base.h"
+#include "common/base.h"
 
 namespace {
 	static vector<int> vl, vr, vd;

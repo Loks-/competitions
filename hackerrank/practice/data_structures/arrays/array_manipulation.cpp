@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/crush
 
-#include "../../../../common/base.h"
+#include "common/base.h"
 
 int main_array_manipulation()
 {
