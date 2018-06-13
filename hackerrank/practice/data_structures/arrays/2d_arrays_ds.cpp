@@ -1,17 +1,15 @@
 // https://www.hackerrank.com/challenges/2d-array
 
 #include "common/base.h"
+#include "common/vector/utils.h"
 
 int main_2d_arrays_ds()
 {
 	int n = 6, best = -100;
-	vector<vector<int>> v(n, vector<int>(6));
+	vector<vector<int>> v(n);
 	for (int i = 0; i < n; ++i)
 	{
-		for (int j = 0; j < n; ++j)
-		{
-			cin >> v[i][j];
-		}
+		v[i] = VectorUtils::ReadVector<int>(n);
 	}
 	for (int i = 1; i < n - 1; ++i)
 	{

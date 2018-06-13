@@ -1,4 +1,5 @@
 #include "common/base.h"
+#include "common/vector/utils.h"
 
 int main_transmutation()
 {
@@ -16,11 +17,7 @@ int main_transmutation()
 			receipts[i][x - 1] += 1;
 			receipts[i][y - 1] += 1;
 		}
-		vector<uint64_t> available(M);
-		for (unsigned i = 0; i < M; ++i)
-		{
-			cin >> available[i];
-		}
+		vector<uint64_t> available = VectorUtils::ReadVector<uint64_t>(M);
 		uint64_t res = 0;
 		vector<bool> visited(M, false);
 		vector<uint64_t> required(M, 0);
