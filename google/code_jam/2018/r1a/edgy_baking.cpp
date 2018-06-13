@@ -1,4 +1,4 @@
-#include "../../../../common/base.h"
+#include "common/base.h"
 
 namespace {
 	using pud = pair<unsigned, double>;

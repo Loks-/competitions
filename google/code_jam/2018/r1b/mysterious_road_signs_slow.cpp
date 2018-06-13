@@ -1,5 +1,5 @@
-#include "../../../../common/base.h"
-#include "../../../../common/hash.h"
+#include "common/base.h"
+#include "common/hash.h"
 
 // O(S^2) solution for Mysterious Road Signs.
 // It passes all tests.

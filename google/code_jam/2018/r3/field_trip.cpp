@@ -1,4 +1,4 @@
-#include "../../../../common/base.h"
+#include "common/base.h"
 
 int main_field_trip()
 {
