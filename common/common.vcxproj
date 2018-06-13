@@ -143,6 +143,7 @@
     <ClInclude Include="graph\base_tree.h" />
     <ClInclude Include="graph\lca.h" />
     <ClInclude Include="hash.h" />
+    <ClInclude Include="vector\utils.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="current_solution.inl" />

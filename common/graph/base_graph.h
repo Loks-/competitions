@@ -14,14 +14,25 @@ public:
 	vector<vector<unsigned>> inverted_edges;
 
 public:
-	BaseGraph(unsigned _nvertices) : nvertices(_nvertices)
+	void Clear()
 	{
+		nvertices = 0;
+		edges.clear();
+		inverted_edges.clear();
+	}
+
+	void Resize(unsigned _nvertices)
+	{
+		Clear();
+		nvertices = _nvertices;
 		edges.resize(nvertices);
 		if (directed_edges)
 		{
 			inverted_edges.resize(nvertices);
 		}
 	}
+
+	BaseGraph(unsigned _nvertices = 0) { Resize(_nvertices); }
 
 	void AddEdge(unsigned from, unsigned to)
 	{
@@ -71,13 +82,6 @@ public:
 			}
 		}
 		return d;
-	}
-
-	void Clear()
-	{
-		nvertices = 0;
-		edges.clear();
-		inverted_edges.clear();
 	}
 };
 

@@ -12,7 +12,13 @@ public:
 	unsigned root;
 
 public:
-	BaseTree(unsigned _nvertices, unsigned _root = 0) : TBase(_nvertices), root(_root) {}
+	BaseTree(unsigned _nvertices = 0, unsigned _root = 0) : TBase(_nvertices), root(_root) {}
+
+	void Resize(unsigned _nvertices, unsigned _root = 0)
+	{
+		TBase::Resize(_nvertices);
+		root = _root;
+	}
 
 	void ReadEdges(bool zero_based_indexes = false)
 	{

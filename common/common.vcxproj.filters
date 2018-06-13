@@ -16,6 +16,9 @@
     <Filter Include="Header Files\graph">
       <UniqueIdentifier>{624d3173-0710-4b16-8147-001705267029}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\vector">
+      <UniqueIdentifier>{fa90b140-ae58-4c23-8735-ddf879eef930}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="compile_test.cpp">
@@ -40,6 +43,9 @@
     </ClInclude>
     <ClInclude Include="hash.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="vector\utils.h">
+      <Filter>Header Files\vector</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
