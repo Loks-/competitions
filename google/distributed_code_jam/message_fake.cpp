@@ -1,6 +1,6 @@
 #include "message.h"
 
-#include "../../common/base.h"
+#include "common/base.h"
 
 int NumberOfNodes() { return 1; }
 int MyNodeId() { return 0; }

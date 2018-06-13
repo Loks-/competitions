@@ -1,7 +1,7 @@
 #include "message.h"
 #include "baby_blocks.h"
 
-#include "../../../../common/base.h"
+#include "common/base.h"
 
 namespace 
 {
