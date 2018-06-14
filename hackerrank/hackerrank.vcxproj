@@ -137,6 +137,7 @@
     <ClCompile Include="practice\data_structures\trees\balanced_forest.cpp" />
     <ClCompile Include="practice\data_structures\trees\swap_nodes_algo.cpp" />
     <ClCompile Include="practice\data_structures\trees\tree_coordinates.cpp" />
+    <ClCompile Include="practice\mathematics\fundamentals\army_game.cpp" />
     <ClCompile Include="practice\mathematics\fundamentals\find_the_point.cpp" />
     <ClCompile Include="practice\mathematics\fundamentals\handshake.cpp" />
     <ClCompile Include="practice\mathematics\fundamentals\maximum_draws.cpp" />
