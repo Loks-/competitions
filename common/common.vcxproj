@@ -143,6 +143,8 @@
     <ClInclude Include="graph\base_tree.h" />
     <ClInclude Include="graph\lca.h" />
     <ClInclude Include="hash.h" />
+    <ClInclude Include="numeric\modular_arithmetic.h" />
+    <ClInclude Include="template.h" />
     <ClInclude Include="vector\utils.h" />
   </ItemGroup>
   <ItemGroup>

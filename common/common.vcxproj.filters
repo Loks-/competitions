@@ -19,6 +19,9 @@
     <Filter Include="Header Files\vector">
       <UniqueIdentifier>{fa90b140-ae58-4c23-8735-ddf879eef930}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\numeric">
+      <UniqueIdentifier>{e879a985-aa78-46f7-b47d-d5c106771aa8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="compile_test.cpp">
@@ -46,6 +49,12 @@
     </ClInclude>
     <ClInclude Include="vector\utils.h">
       <Filter>Header Files\vector</Filter>
+    </ClInclude>
+    <ClInclude Include="numeric\modular_arithmetic.h">
+      <Filter>Header Files\numeric</Filter>
+    </ClInclude>
+    <ClInclude Include="template.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
