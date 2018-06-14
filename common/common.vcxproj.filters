@@ -58,7 +58,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="current_solution.inl">
+    <None Include="..\current_solution.inl">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

@@ -148,7 +148,7 @@
     <ClInclude Include="vector\utils.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="current_solution.inl" />
+    <None Include="..\current_solution.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
