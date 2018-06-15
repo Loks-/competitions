@@ -148,6 +148,7 @@
     <ClInclude Include="numeric\modular_arithmetic_proxy.h" />
     <ClInclude Include="numeric\modular_arithmetic.h" />
     <ClInclude Include="numeric\primes_list.h" />
+    <ClInclude Include="numeric\utils.h" />
     <ClInclude Include="template.h" />
     <ClInclude Include="vector\utils.h" />
   </ItemGroup>
