@@ -59,10 +59,13 @@
     <ClInclude Include="numeric\primes_list.h">
       <Filter>Header Files\numeric</Filter>
     </ClInclude>
-    <ClInclude Include="numeric\modular_arithemtic_proxy.h">
+    <ClInclude Include="numeric\modular.h">
       <Filter>Header Files\numeric</Filter>
     </ClInclude>
-    <ClInclude Include="numeric\modular_airthemtic_static_proxy.h">
+    <ClInclude Include="numeric\modular_arithmetic_proxy.h">
+      <Filter>Header Files\numeric</Filter>
+    </ClInclude>
+    <ClInclude Include="numeric\modular_arithmetic_static_proxy.h">
       <Filter>Header Files\numeric</Filter>
     </ClInclude>
   </ItemGroup>

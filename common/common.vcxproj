@@ -143,8 +143,9 @@
     <ClInclude Include="graph\base_tree.h" />
     <ClInclude Include="graph\lca.h" />
     <ClInclude Include="hash.h" />
-    <ClInclude Include="numeric\modular_airthemtic_static_proxy.h" />
-    <ClInclude Include="numeric\modular_arithemtic_proxy.h" />
+    <ClInclude Include="numeric\modular.h" />
+    <ClInclude Include="numeric\modular_arithmetic_static_proxy.h" />
+    <ClInclude Include="numeric\modular_arithmetic_proxy.h" />
     <ClInclude Include="numeric\modular_arithmetic.h" />
     <ClInclude Include="numeric\primes_list.h" />
     <ClInclude Include="template.h" />
