@@ -8,6 +8,7 @@
 
 #include "numeric/modular_arithmetic.h"
 #include "numeric/modular_arithemtic_proxy.h"
+#include "numeric/modular_airthemtic_static_proxy.h"
 #include "numeric/primes_list.h"
 
 #include "vector/utils.h"

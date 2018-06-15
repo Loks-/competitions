@@ -62,6 +62,9 @@
     <ClInclude Include="numeric\modular_arithemtic_proxy.h">
       <Filter>Header Files\numeric</Filter>
     </ClInclude>
+    <ClInclude Include="numeric\modular_airthemtic_static_proxy.h">
+      <Filter>Header Files\numeric</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\current_solution.inl">
