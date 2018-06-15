@@ -87,5 +87,8 @@
     <ClCompile Include="practice\mathematics\fundamentals\cutting_paper_squares.cpp">
       <Filter>Source Files\practice\mathematics\fundamentals</Filter>
     </ClCompile>
+    <ClCompile Include="practice\mathematics\fundamentals\summing_the_n_series.cpp">
+      <Filter>Source Files\practice\mathematics\fundamentals</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
