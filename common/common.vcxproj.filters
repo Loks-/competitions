@@ -61,5 +61,8 @@
     <None Include="..\current_solution.inl">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="TODO.md">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

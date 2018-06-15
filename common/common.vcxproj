@@ -149,6 +149,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\current_solution.inl" />
+    <None Include="TODO.md" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
