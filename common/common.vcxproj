@@ -144,6 +144,7 @@
     <ClInclude Include="graph\lca.h" />
     <ClInclude Include="hash.h" />
     <ClInclude Include="numeric\modular_arithmetic.h" />
+    <ClInclude Include="numeric\primes_list.h" />
     <ClInclude Include="template.h" />
     <ClInclude Include="vector\utils.h" />
   </ItemGroup>
