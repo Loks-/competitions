@@ -20,11 +20,10 @@ public:
 	static TValue ApplyS(int64_t value, TValue mod) { int64_t smod = int64_t(mod);  return TValue(((value % smod) + smod) % smod); }
 
 protected:
-	template<typename T> static TValue ApplyTI(TValue value, TValue mod, T) { return ApplyS(int64_t(value), mod); }
-	template<> static TValue ApplyTI(TValue value, TValue mod, TFakeType<uint64_t>) { return ApplyU(value, mod); }
-	template<> static TValue ApplyTI(TValue value, TValue mod, TFakeType<int64_t>) { return ApplyS(value, mod); }
+	static TValue ApplyTI(TValue value, TValue mod, TFakeType<uint64_t>) { return ApplyU(value, mod); }
+	static TValue ApplyTI(TValue value, TValue mod, TFakeType<int64_t>) { return ApplyS(value, mod); }
 public:
-	static TValue ApplyT(TValue value, TValue mod) { return ApplyTI(value, mode, TFakeType<TValue>()); }
+	static TValue ApplyT(TValue value, TValue mod) { return ApplyTI(value, mod, TFakeType<TValue>()); }
 
 	static TValue Add(TValue lvalue, TValue rvalue, TValue mod) { return (lvalue + rvalue) % mod; }
 	static TValue AddSafe(TValue lvalue, TValue rvalue, TValue mod) { return ApplyT(lvalue + rvalue, mod); }

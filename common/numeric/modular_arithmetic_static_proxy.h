@@ -15,27 +15,27 @@ public:
 	static bool IsMod32Bits() { return is_32bit; }
 	static TValue GetMod() { return mod; }
 
-	TValue ApplyU(uint64_t value) const { return TBase::ApplyU(value, mod); }
-	TValue ApplyS(int64_t value) const { return TBase::ApplyS(value, mod); }
-	TValue ApplyT(TValue value) const { return TBase::ApplyT(value, mod); }
+	static TValue ApplyU(uint64_t value) { return TBase::ApplyU(value, mod); }
+	static TValue ApplyS(int64_t value) { return TBase::ApplyS(value, mod); }
+	static TValue ApplyT(TValue value) { return TBase::ApplyT(value, mod); }
 
-	TValue Add(TValue lvalue, TValue rvalue) const { return TBase::Add(lvalue, rvalue, mod); }
-	TValue AddSafe(TValue lvalue, TValue rvalue) const { return TBase::AddSafe(lvalue, rvalue, mod); }
-	TValue Sub(TValue lvalue, TValue rvalue) const { return TBase::Sub(lvalue, rvalue, mod); }
-	TValue SubSafe(TValue lvalue, TValue rvalue) const { return TBase::SubSafe(lvalue, rvalue, mod); }
-	TValue Minus(TValue lvalue) const { return TBase::Minus(lvalue, mod); }
-	TValue MinusSafe(TValue lvalue) const { return TBase::MinusSafe(lvalue, mod); }
-	TValue Mult(TValue lvalue, TValue rvalue) const { return TBase::Mult(lvalue, rvalue, mod); }
-	TValue MultSafe(TValue lvalue, TValue rvalue) const { return TBase::MultSafe(lvalue, rvalue, mod); }
-	TValue Inverse(TValue lvalue) const { return TBase::Inverse(lvalue, mod); }
-	TValue InverseSafe(TValue lvalue) const { return TBase::InverseSafe(lvalue, mod); }
-	TValue Div(TValue numerator, TValue denominator) const { return TBase::Div(numerator, denominator, mod); }
-	TValue DivSafe(TValue numerator, TValue denominator) const { return TBase::DivSafe(numerator, denominator, mod); }
+	static TValue Add(TValue lvalue, TValue rvalue) { return TBase::Add(lvalue, rvalue, mod); }
+	static TValue AddSafe(TValue lvalue, TValue rvalue) { return TBase::AddSafe(lvalue, rvalue, mod); }
+	static TValue Sub(TValue lvalue, TValue rvalue) { return TBase::Sub(lvalue, rvalue, mod); }
+	static TValue SubSafe(TValue lvalue, TValue rvalue) { return TBase::SubSafe(lvalue, rvalue, mod); }
+	static TValue Minus(TValue lvalue) { return TBase::Minus(lvalue, mod); }
+	static TValue MinusSafe(TValue lvalue) { return TBase::MinusSafe(lvalue, mod); }
+	static TValue Mult(TValue lvalue, TValue rvalue) { return TBase::Mult(lvalue, rvalue, mod); }
+	static TValue MultSafe(TValue lvalue, TValue rvalue) { return TBase::MultSafe(lvalue, rvalue, mod); }
+	static TValue Inverse(TValue lvalue) { return TBase::Inverse(lvalue, mod); }
+	static TValue InverseSafe(TValue lvalue) { return TBase::InverseSafe(lvalue, mod); }
+	static TValue Div(TValue numerator, TValue denominator) { return TBase::Div(numerator, denominator, mod); }
+	static TValue DivSafe(TValue numerator, TValue denominator) { return TBase::DivSafe(numerator, denominator, mod); }
 
-	TValue PowU(TValue x, uint64_t pow) const { return TBase::PowU(x, pow, mod); }
-	TValue PowUSafe(TValue x, uint64_t pow) const { return TBase::PowUSafe(x, pow, mod); }
-	TValue PowS(TValue x, int64_t pow) const { return TBase::PowS(x, pow, mod); }
-	TValue PowSSafe(TValue x, int64_t pow) const { return TBase::PowSSafe(x, pow, mod); }
+	static TValue PowU(TValue x, uint64_t pow) { return TBase::PowU(x, pow, mod); }
+	static TValue PowUSafe(TValue x, uint64_t pow) { return TBase::PowUSafe(x, pow, mod); }
+	static TValue PowS(TValue x, int64_t pow) { return TBase::PowS(x, pow, mod); }
+	static TValue PowSSafe(TValue x, int64_t pow) { return TBase::PowSSafe(x, pow, mod); }
 };
 
 template <uint64_t mod> using TModularArithmeticStaticProxy_P32 = ModularArithmeticStaticProxy<mod, true, true>;
