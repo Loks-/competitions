@@ -6,6 +6,8 @@
 #include "graph/base_tree.h"
 #include "graph/lca.h"
 
-#include  "numeric/modular_arithmetic.h"
+#include "numeric/modular_arithmetic.h"
+#include "numeric/modular_arithemtic_proxy.h"
+#include "numeric/primes_list.h"
 
 #include "vector/utils.h"

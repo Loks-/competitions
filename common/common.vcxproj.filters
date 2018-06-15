@@ -59,6 +59,9 @@
     <ClInclude Include="numeric\primes_list.h">
       <Filter>Header Files\numeric</Filter>
     </ClInclude>
+    <ClInclude Include="numeric\modular_arithemtic_proxy.h">
+      <Filter>Header Files\numeric</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\current_solution.inl">
