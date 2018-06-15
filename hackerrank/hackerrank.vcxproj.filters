@@ -90,5 +90,8 @@
     <ClCompile Include="practice\mathematics\fundamentals\summing_the_n_series.cpp">
       <Filter>Source Files\practice\mathematics\fundamentals</Filter>
     </ClCompile>
+    <ClCompile Include="practice\mathematics\fundamentals\sherlock_and_moving_tiles.cpp">
+      <Filter>Source Files\practice\mathematics\fundamentals</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

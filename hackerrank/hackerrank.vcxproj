@@ -145,6 +145,7 @@
     <ClCompile Include="practice\mathematics\fundamentals\leonardos_prime_factors.cpp" />
     <ClCompile Include="practice\mathematics\fundamentals\maximum_draws.cpp" />
     <ClCompile Include="practice\mathematics\fundamentals\minimum_height_triangle.cpp" />
+    <ClCompile Include="practice\mathematics\fundamentals\sherlock_and_moving_tiles.cpp" />
     <ClCompile Include="practice\mathematics\fundamentals\summing_the_n_series.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
