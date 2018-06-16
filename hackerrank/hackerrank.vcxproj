@@ -148,6 +148,7 @@
     <ClCompile Include="practice\mathematics\fundamentals\find_the_point.cpp" />
     <ClCompile Include="practice\mathematics\fundamentals\halloween_party.cpp" />
     <ClCompile Include="practice\mathematics\fundamentals\handshake.cpp" />
+    <ClCompile Include="practice\mathematics\fundamentals\is_fibo.cpp" />
     <ClCompile Include="practice\mathematics\fundamentals\leonardos_prime_factors.cpp" />
     <ClCompile Include="practice\mathematics\fundamentals\matrix_tracing.cpp" />
     <ClCompile Include="practice\mathematics\fundamentals\maximum_draws.cpp" />
