@@ -139,6 +139,7 @@
     <ClCompile Include="practice\data_structures\trees\tree_coordinates.cpp" />
     <ClCompile Include="practice\mathematics\fundamentals\army_game.cpp" />
     <ClCompile Include="practice\mathematics\fundamentals\best_divisor.cpp" />
+    <ClCompile Include="practice\mathematics\fundamentals\bus_station.cpp" />
     <ClCompile Include="practice\mathematics\fundamentals\connecting_towns.cpp" />
     <ClCompile Include="practice\mathematics\fundamentals\cutting_paper_squares.cpp" />
     <ClCompile Include="practice\mathematics\fundamentals\die_hard_3.cpp" />
