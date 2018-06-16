@@ -157,6 +157,7 @@
     <ClCompile Include="practice\mathematics\fundamentals\maximum_draws.cpp" />
     <ClCompile Include="practice\mathematics\fundamentals\minimum_height_triangle.cpp" />
     <ClCompile Include="practice\mathematics\fundamentals\most_distant.cpp" />
+    <ClCompile Include="practice\mathematics\fundamentals\possible_path.cpp" />
     <ClCompile Include="practice\mathematics\fundamentals\restaurant.cpp" />
     <ClCompile Include="practice\mathematics\fundamentals\reverse_game.cpp" />
     <ClCompile Include="practice\mathematics\fundamentals\russian_peasant_exponentiation.cpp" />
