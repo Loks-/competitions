@@ -150,5 +150,8 @@
     <ClCompile Include="practice\mathematics\fundamentals\most_distant.cpp">
       <Filter>Source Files\practice\mathematics\fundamentals</Filter>
     </ClCompile>
+    <ClCompile Include="practice\mathematics\fundamentals\jim_and_the_jokes.cpp">
+      <Filter>Source Files\practice\mathematics\fundamentals</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
