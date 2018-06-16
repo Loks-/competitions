@@ -22,6 +22,9 @@
     <Filter Include="Header Files\numeric">
       <UniqueIdentifier>{e879a985-aa78-46f7-b47d-d5c106771aa8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\matrix">
+      <UniqueIdentifier>{aa744fc2-44a6-4d87-9d2c-12e2f44a6a35}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="compile_test.cpp">
@@ -82,6 +85,9 @@
     </ClInclude>
     <ClInclude Include="numeric\complex_modular_proxy.h">
       <Filter>Header Files\numeric</Filter>
+    </ClInclude>
+    <ClInclude Include="matrix\matrix_static_size.h">
+      <Filter>Header Files\matrix</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

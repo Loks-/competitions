@@ -6,6 +6,8 @@
 #include "graph/base_tree.h"
 #include "graph/lca.h"
 
+#include "matrix/matrix_static_size.h"
+
 #include "numeric/binomial_coefficient_modular.h"
 #include "numeric/complex.h"
 #include "numeric/complex_modular_proxy.h"
