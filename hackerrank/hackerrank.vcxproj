@@ -149,6 +149,7 @@
     <ClCompile Include="practice\mathematics\fundamentals\minimum_height_triangle.cpp" />
     <ClCompile Include="practice\mathematics\fundamentals\restaurant.cpp" />
     <ClCompile Include="practice\mathematics\fundamentals\reverse_game.cpp" />
+    <ClCompile Include="practice\mathematics\fundamentals\sherlock_and_divisors.cpp" />
     <ClCompile Include="practice\mathematics\fundamentals\sherlock_and_moving_tiles.cpp" />
     <ClCompile Include="practice\mathematics\fundamentals\strange_grid_again.cpp" />
     <ClCompile Include="practice\mathematics\fundamentals\summing_the_n_series.cpp" />
