@@ -141,6 +141,7 @@
     <ClCompile Include="practice\mathematics\fundamentals\best_divisor.cpp" />
     <ClCompile Include="practice\mathematics\fundamentals\connecting_towns.cpp" />
     <ClCompile Include="practice\mathematics\fundamentals\cutting_paper_squares.cpp" />
+    <ClCompile Include="practice\mathematics\fundamentals\diwali_lights.cpp" />
     <ClCompile Include="practice\mathematics\fundamentals\find_the_point.cpp" />
     <ClCompile Include="practice\mathematics\fundamentals\handshake.cpp" />
     <ClCompile Include="practice\mathematics\fundamentals\leonardos_prime_factors.cpp" />
