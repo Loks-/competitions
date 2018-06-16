@@ -141,5 +141,8 @@
     <ClCompile Include="practice\mathematics\fundamentals\sumar_and_the_floating_rocks.cpp">
       <Filter>Source Files\practice\mathematics\fundamentals</Filter>
     </ClCompile>
+    <ClCompile Include="practice\mathematics\fundamentals\russian_peasant_exponentiation.cpp">
+      <Filter>Source Files\practice\mathematics\fundamentals</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
