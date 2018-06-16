@@ -144,6 +144,7 @@
     <ClCompile Include="practice\mathematics\fundamentals\die_hard_3.cpp" />
     <ClCompile Include="practice\mathematics\fundamentals\diwali_lights.cpp" />
     <ClCompile Include="practice\mathematics\fundamentals\even_odd_query.cpp" />
+    <ClCompile Include="practice\mathematics\fundamentals\filling_jars.cpp" />
     <ClCompile Include="practice\mathematics\fundamentals\find_the_point.cpp" />
     <ClCompile Include="practice\mathematics\fundamentals\halloween_party.cpp" />
     <ClCompile Include="practice\mathematics\fundamentals\handshake.cpp" />
