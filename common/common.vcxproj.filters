@@ -74,6 +74,9 @@
     <ClInclude Include="numeric\factorial_modular.h">
       <Filter>Header Files\numeric</Filter>
     </ClInclude>
+    <ClInclude Include="numeric\binomial_coefficient_modular.h">
+      <Filter>Header Files\numeric</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\current_solution.inl">
