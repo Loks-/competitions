@@ -145,6 +145,7 @@
     <ClInclude Include="hash.h" />
     <ClInclude Include="numeric\binomial_coefficient_modular.h" />
     <ClInclude Include="numeric\complex.h" />
+    <ClInclude Include="numeric\complex_modular_proxy.h" />
     <ClInclude Include="numeric\factorial_modular.h" />
     <ClInclude Include="numeric\modular.h" />
     <ClInclude Include="numeric\modular_arithmetic_static_proxy.h" />

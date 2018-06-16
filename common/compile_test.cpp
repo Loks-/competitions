@@ -8,6 +8,7 @@
 
 #include "numeric/binomial_coefficient_modular.h"
 #include "numeric/complex.h"
+#include "numeric/complex_modular_proxy.h"
 #include "numeric/factorial_modular.h"
 #include "numeric/modular.h"
 #include "numeric/modular_arithmetic.h"
