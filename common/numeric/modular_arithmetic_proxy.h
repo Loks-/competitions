@@ -44,11 +44,5 @@ public:
 	TValue PowSSafe(TValue x, int64_t pow) const { return TBase::PowSSafe(x, pow, mod); }
 };
 
-using TModularArithmeticProxy_P32S = ModularArithmeticProxy<true, true, int64_t>;
 using TModularArithmeticProxy_P32U = ModularArithmeticProxy<true, true, uint64_t>;
-using TModularArithmeticProxy_P64S = ModularArithmeticProxy<true, false, int64_t>;
-using TModularArithmeticProxy_P64U = ModularArithmeticProxy<true, false, uint64_t>;
-using TModularArithmeticProxy_C32S = ModularArithmeticProxy<false, true, int64_t>;
 using TModularArithmeticProxy_C32U = ModularArithmeticProxy<false, true, uint64_t>;
-using TModularArithmeticProxy_C64S = ModularArithmeticProxy<false, false, int64_t>;
-using TModularArithmeticProxy_C64U = ModularArithmeticProxy<false, false, uint64_t>;

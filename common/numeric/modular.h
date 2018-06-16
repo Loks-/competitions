@@ -46,6 +46,4 @@ public:
 };
 
 template <uint64_t mod> using TModular_P32 = Modular<mod, true, true>;
-template <uint64_t mod> using TModular_P64 = Modular<mod, true, false>;
 template <uint64_t mod> using TModular_C32 = Modular<mod, false, true>;
-template <uint64_t mod> using TModular_C64 = Modular<mod, false, false>;

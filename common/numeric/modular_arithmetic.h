@@ -118,11 +118,5 @@ public:
 	static TValue PowSSafe(TValue x, int64_t pow, TValue mod) { return PowS(AppplyT(x, mod), pow, mod); }
 };
 
-using TModularArithmetic_P32S = ModularArithmetic<true, true, int64_t>;
 using TModularArithmetic_P32U = ModularArithmetic<true, true, uint64_t>;
-using TModularArithmetic_P64S = ModularArithmetic<true, false, int64_t>;
-using TModularArithmetic_P64U = ModularArithmetic<true, false, uint64_t>;
-using TModularArithmetic_C32S = ModularArithmetic<false, true, int64_t>;
 using TModularArithmetic_C32U = ModularArithmetic<false, true, uint64_t>;
-using TModularArithmetic_C64S = ModularArithmetic<false, false, int64_t>;
-using TModularArithmetic_C64U = ModularArithmetic<false, false, uint64_t>;

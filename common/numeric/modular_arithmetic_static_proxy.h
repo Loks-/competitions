@@ -39,6 +39,4 @@ public:
 };
 
 template <uint64_t mod> using TModularArithmeticStaticProxy_P32 = ModularArithmeticStaticProxy<mod, true, true>;
-template <uint64_t mod> using TModularArithmeticStaticProxy_P64 = ModularArithmeticStaticProxy<mod, true, false>;
 template <uint64_t mod> using TModularArithmeticStaticProxy_C32 = ModularArithmeticStaticProxy<mod, false, true>;
-template <uint64_t mod> using TModularArithmeticStaticProxy_C64 = ModularArithmeticStaticProxy<mod, false, false>;
