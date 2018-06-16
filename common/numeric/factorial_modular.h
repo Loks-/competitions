@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../base.h"
+#include "modular.h"
 
 template <class TModular, bool keep_inverted = true>
 class FactorialModular
