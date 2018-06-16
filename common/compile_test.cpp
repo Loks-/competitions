@@ -6,6 +6,7 @@
 #include "graph/base_tree.h"
 #include "graph/lca.h"
 
+#include "numeric/factorial_modular.h"
 #include "numeric/modular.h"
 #include "numeric/modular_arithmetic.h"
 #include "numeric/modular_arithmetic_proxy.h"
