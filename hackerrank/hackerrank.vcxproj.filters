@@ -156,5 +156,8 @@
     <ClCompile Include="practice\mathematics\fundamentals\possible_path.cpp">
       <Filter>Source Files\practice\mathematics\fundamentals</Filter>
     </ClCompile>
+    <ClCompile Include="practice\mathematics\fundamentals\mutual_recurrences.cpp">
+      <Filter>Source Files\practice\mathematics\fundamentals</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
