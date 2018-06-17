@@ -145,6 +145,7 @@
     <ClInclude Include="base.h" />
     <ClInclude Include="graph\base_graph.h" />
     <ClInclude Include="graph\base_tree.h" />
+    <ClInclude Include="graph\centroid_decomposition.h" />
     <ClInclude Include="graph\lca.h" />
     <ClInclude Include="hash.h" />
     <ClInclude Include="matrix\matrix_static_size.h" />

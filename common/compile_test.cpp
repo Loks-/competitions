@@ -4,6 +4,7 @@
 
 #include "graph/base_graph.h"
 #include "graph/base_tree.h"
+#include "graph/centroid_decomposition.h"
 #include "graph/lca.h"
 
 #include "matrix/matrix_static_size.h"

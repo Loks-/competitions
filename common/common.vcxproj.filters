@@ -89,6 +89,9 @@
     <ClInclude Include="matrix\matrix_static_size.h">
       <Filter>Header Files\matrix</Filter>
     </ClInclude>
+    <ClInclude Include="graph\centroid_decomposition.h">
+      <Filter>Header Files\graph</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\current_solution.inl">
