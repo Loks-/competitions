@@ -32,3 +32,5 @@
 #include <utility>
 
 using namespace std;
+
+const static unsigned CNone = unsigned(-1);

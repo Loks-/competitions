@@ -29,7 +29,7 @@ protected:
 	{
 		fill(subtree_size.begin(), subtree_size.end(), 0);
 		stack<unsigned> s;
-		parent[tree.root] = -1;
+		parent[tree.root] = CNone;
 		group_root.clear();
 		group_root.push_back(tree.root);
 		for (s.push(tree.root); !s.empty(); )

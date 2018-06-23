@@ -63,7 +63,7 @@ protected:
 		stack<unsigned> s;
 		vector<bool> visited(n, false);
 		unsigned timer = 0;
-		parent[g.root] = -1;
+		parent[g.root] = CNone;
 		deep[g.root] = 0;
 		for (s.push(g.root); !s.empty(); )
 		{
