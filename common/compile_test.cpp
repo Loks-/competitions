@@ -3,7 +3,9 @@
 #include "template.h"
 
 #include "graph/base_graph.h"
+#include "graph/base_subgraph.h"
 #include "graph/base_tree.h"
+#include "graph/base_tree_isomorphic_hash.h"
 #include "graph/centroid_decomposition.h"
 #include "graph/lca.h"
 
