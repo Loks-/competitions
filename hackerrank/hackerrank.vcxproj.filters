@@ -162,5 +162,8 @@
     <ClCompile Include="practice\data_structures\trees\kittys_calculations_on_a_tree.cpp">
       <Filter>Source Files\practice\data_structures\trees</Filter>
     </ClCompile>
+    <ClCompile Include="practice\data_structures\trees\jennys_subtrees.cpp">
+      <Filter>Source Files\practice\data_structures\trees</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
