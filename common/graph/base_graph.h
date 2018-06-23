@@ -2,10 +2,11 @@
 
 #include "../base.h"
 
-template <bool directed_edges = false>
+template <bool _directed_edges = false>
 class BaseGraph
 {
 public:
+	const static bool directed_edges = _directed_edges;
 	using TSelf = BaseGraph<directed_edges>;
 
 public:
