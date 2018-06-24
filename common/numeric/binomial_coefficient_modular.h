@@ -1,6 +1,6 @@
 #pragma once
 
-#include "modular.h"
+#include "../base.h"
 
 // Time and space to initialize to size n is O(n^2).
 // For big n and prime module it's better to use FactorialModular class.
