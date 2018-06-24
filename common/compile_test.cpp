@@ -2,6 +2,13 @@
 #include "hash.h"
 #include "template.h"
 
+#include "binary_search_tree/node.h"
+#include "binary_search_tree/node_action.h"
+#include "binary_search_tree/node_info.h"
+#include "binary_search_tree/node_utils.h"
+#include "binary_search_tree/nodes_manager.h"
+#include "binary_search_tree/treap.h"
+
 #include "graph/base_graph.h"
 #include "graph/base_subgraph.h"
 #include "graph/base_tree.h"

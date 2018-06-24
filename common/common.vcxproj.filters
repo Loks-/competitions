@@ -25,6 +25,9 @@
     <Filter Include="Header Files\matrix">
       <UniqueIdentifier>{aa744fc2-44a6-4d87-9d2c-12e2f44a6a35}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\binary_search_tree">
+      <UniqueIdentifier>{4a4ae71a-b369-4a34-b05b-694752ec94fe}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="compile_test.cpp">
@@ -97,6 +100,24 @@
     </ClInclude>
     <ClInclude Include="graph\base_tree_isomorphic_hash.h">
       <Filter>Header Files\graph</Filter>
+    </ClInclude>
+    <ClInclude Include="binary_search_tree\node.h">
+      <Filter>Header Files\binary_search_tree</Filter>
+    </ClInclude>
+    <ClInclude Include="binary_search_tree\node_info.h">
+      <Filter>Header Files\binary_search_tree</Filter>
+    </ClInclude>
+    <ClInclude Include="binary_search_tree\node_action.h">
+      <Filter>Header Files\binary_search_tree</Filter>
+    </ClInclude>
+    <ClInclude Include="binary_search_tree\nodes_manager.h">
+      <Filter>Header Files\binary_search_tree</Filter>
+    </ClInclude>
+    <ClInclude Include="binary_search_tree\treap.h">
+      <Filter>Header Files\binary_search_tree</Filter>
+    </ClInclude>
+    <ClInclude Include="binary_search_tree\node_utils.h">
+      <Filter>Header Files\binary_search_tree</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
