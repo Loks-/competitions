@@ -2,15 +2,14 @@
 
 #include "../base.h"
 
-class VectorUtils
+namespace {
+template<typename T>
+vector<T> ReadVector(unsigned N)
 {
-public:
-	template<typename T>
-	static vector<T> ReadVector(unsigned N)
-	{
-		vector<T> v(N);
-		for (unsigned i = 0; i < N; ++i)
-			cin >> v[i];
-		return v;
-	}
-};
+	vector<T> v(N);
+	for (unsigned i = 0; i < N; ++i)
+		cin >> v[i];
+	return v;
+}
+
+} // namespace

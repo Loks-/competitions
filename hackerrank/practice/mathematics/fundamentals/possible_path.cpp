@@ -11,7 +11,7 @@ int main_possible_path()
 	{
 		uint64_t a, b, x, y;
 		cin >> a >> b >> x >> y;
-		cout << (NumbericUtils::GCD(a, b) == NumbericUtils::GCD(x, y) ? "YES" : "NO") << endl;
+		cout << (GCD(a, b) == GCD(x, y) ? "YES" : "NO") << endl;
 	}
 	return 0;
 }

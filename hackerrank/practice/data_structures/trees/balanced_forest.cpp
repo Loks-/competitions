@@ -29,7 +29,7 @@ namespace {
 		void Solve()
 		{
 			cin >> n;
-			vc = VectorUtils::ReadVector<int64_t>(n);
+			vc = ReadVector<int64_t>(n);
 			t.Resize(n);
 			t.ReadEdges();
 			vstc.resize(n);

@@ -17,7 +17,7 @@ int main_transmutation()
 			receipts[i][x - 1] += 1;
 			receipts[i][y - 1] += 1;
 		}
-		vector<uint64_t> available = VectorUtils::ReadVector<uint64_t>(M);
+		vector<uint64_t> available = ReadVector<uint64_t>(M);
 		uint64_t res = 0;
 		vector<bool> visited(M, false);
 		vector<uint64_t> required(M, 0);

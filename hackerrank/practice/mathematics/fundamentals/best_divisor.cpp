@@ -7,7 +7,7 @@ int main_best_divisor()
 {
 	auto isbetter = [](unsigned x, unsigned y)
 	{
-		uint64_t dsx = NumbericUtils::DigitsSum(x), dsy = NumbericUtils::DigitsSum(y);
+		uint64_t dsx = DigitsSum(x), dsy = DigitsSum(y);
 		return (dsx > dsy) || ((dsx == dsy) && (x < y));
 	};
 	unsigned n;

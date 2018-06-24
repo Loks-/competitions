@@ -7,7 +7,7 @@ int main_arrays_ds()
 {
 	unsigned n;
 	cin >> n;
-	vector<int> v = VectorUtils::ReadVector<int>(n);
+	vector<int> v = ReadVector<int>(n);
 	reverse(v.begin(), v.end());
 	for (unsigned j : v)
 		cout << j << " ";

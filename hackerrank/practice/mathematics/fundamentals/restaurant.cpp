@@ -11,7 +11,7 @@ int main_restaurant()
 	{
 		uint64_t l, b;
 		cin >> l >> b;
-		uint64_t m = NumbericUtils::GCD(l, b);
+		uint64_t m = GCD(l, b);
 		cout << l * b / m / m << endl;
 	}
 	return 0;

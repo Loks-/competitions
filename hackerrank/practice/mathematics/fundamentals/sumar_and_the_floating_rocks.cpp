@@ -11,7 +11,7 @@ int main_sumar_and_the_floating_rocks()
 	{
 		int x1, y1, x2, y2;
 		cin >> x1 >> y1 >> x2 >> y2;
-		cout << NumbericUtils::GCD(abs(x1 - x2), abs(y1 - y2)) - 1 << endl;
+		cout << GCD(abs(x1 - x2), abs(y1 - y2)) - 1 << endl;
 	}
 	return 0;
 }

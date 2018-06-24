@@ -9,7 +9,7 @@ int main_2d_arrays_ds()
 	vector<vector<int>> v(n);
 	for (int i = 0; i < n; ++i)
 	{
-		v[i] = VectorUtils::ReadVector<int>(n);
+		v[i] = ReadVector<int>(n);
 	}
 	for (int i = 1; i < n - 1; ++i)
 	{
