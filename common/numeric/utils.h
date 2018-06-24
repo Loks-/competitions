@@ -3,6 +3,7 @@
 #include "../base.h"
 
 namespace {
+
 template<class T>
 T GCD(T x, T y)
 {

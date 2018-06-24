@@ -3,6 +3,7 @@
 #include "../base.h"
 
 namespace {
+
 template<typename T>
 vector<T> ReadVector(unsigned N)
 {
