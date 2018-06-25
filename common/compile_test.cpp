@@ -5,6 +5,7 @@
 #include "binary_search_tree/node.h"
 #include "binary_search_tree/node_action.h"
 #include "binary_search_tree/node_info.h"
+#include "binary_search_tree/node_parent_links.h"
 #include "binary_search_tree/node_utils.h"
 #include "binary_search_tree/nodes_manager.h"
 #include "binary_search_tree/traversal.h"

@@ -3,6 +3,7 @@
 #include "node.h"
 #include "node_action.h"
 #include "node_info.h"
+#include "node_parent_links.h"
 #include "nodes_manager.h"
 #include "../template.h"
 
@@ -18,42 +19,17 @@ class Treap : public BSTNodesManager<BSTNode<TTData, TTInfo, TTAction, _use_key,
 public:
 	static const bool use_key = _use_key;
 	static const bool use_parent = _use_parent;
+	static const bool use_height = true;
 
 	using TData = TTData;
 	using TInfo = TTInfo;
 	using TAction = TTAction;
 	using TKey = TTKey;
-	using TNode = BSTNode<TData, TInfo, TAction, use_key, use_parent, true, TKey, unsigned>;
+	using TNode = BSTNode<TData, TInfo, TAction, use_key, use_parent, use_height, TKey, unsigned>;
 	using TNodesManager = BSTNodesManager<TNode>;
 
 public:
 	Treap(unsigned max_nodes) : TNodesManager(max_nodes) {}
-
-protected:
-	static void SetParentLinks(TNode* root, TFakeFalse) {}
-	static void SetParentLinks(TNode* root, TFakeTrue)
-	{
-		root->p = 0;
-		stack<TNode*> s;
-		for (s.push(root); !s.empty(); )
-		{
-			TNode* node = s.top(); s.pop();
-			if (node->l)
-			{
-				node->l->p = node;
-				s.push(node->l);
-			}
-			if (node->r)
-			{
-				node->r->p = node;
-				s.push(node->r);
-			}
-		}
-	}
-
-public:
-	static void UpdateInfo(TNode* p) { p->info.Update(p); }
-	static void ApplyAction(TNode* p) { p->action.Apply(p); }
 
 public:
 	TNode* Build(const vector<TData>& data)
@@ -73,25 +49,25 @@ public:
 			}
 			else if (pj->height >= proot->height)
 			{
-				for (UpdateInfo(plast); !s.empty(); s.pop()) UpdateInfo(s.top());
+				for (plast->UpdateInfo(); !s.empty(); s.pop()) s.top()->UpdateInfo();
 				pj->l = proot;
 				proot = pj;
 				s.push(proot);
 			}
 			else
 			{
-				for (UpdateInfo(plast); pj->height>= s.top()->height; s.pop())
+				for (plast->UpdateInfo(); pj->height>= s.top()->height; s.pop())
 				{
 					plast = s.top();
-					UpdateInfo(plast);
+					plast->UpdateInfo();
 				}
 				pj->l = plast;
 				s.top()->r = pj;
 			}
 			plast = pj;
 		}		
-		for (UpdateInfo(plast); !s.empty(); s.pop()) UpdateInfo(s.top());
-		SetParentLinks(proot, TFakeBool<use_parent>());
+		for (plast->UpdateInfo(); !s.empty(); s.pop()) s.top()->UpdateInfo();
+		ResetParentLinks(proot, TFakeBool<use_parent>());
 		return proot;
 	}
 
@@ -122,25 +98,25 @@ public:
 			}
 			else if (pj->height >= proot->height)
 			{
-				for (UpdateInfo(plast); !s.empty(); s.pop()) UpdateInfo(s.top());
+				for (plast->UpdateInfo(); !s.empty(); s.pop()) s.top()->UpdateInfo();
 				pj->l = proot;
 				proot = pj;
 				s.push(proot);
 			}
 			else
 			{
-				for (UpdateInfo(plast); pj->heigh >= s.top()->height; s.pop())
+				for (plast->UpdateInfo(); pj->heigh >= s.top()->height; s.pop())
 				{
 					plast = s.top();
-					UpdateInfo(plast);
+					plast->UpdateInfo();
 				}
 				pj->l = plast;
 				s.top()->r = pj;
 			}
 			plast = pj;
 		}
-		for (UpdateInfo(plast); !s.empty(); s.pop()) UpdateInfo(s.top());
-		SetParentLinks(proot, TFakeBool<use_parent>());
+		for (plast->UpdateInfo(); !s.empty(); s.pop()) s.top()->UpdateInfo();
+		ResetParentLinks(proot, TFakeBool<use_parent>());
 		return proot;
 	}
 
@@ -149,7 +125,7 @@ protected:
 	{
 		if (l->height > r->height)
 		{
-			ApplyAction(l);
+			l->ApplyAction();
 			if (!l->r)
 			{
 				l->r = r;
@@ -160,12 +136,12 @@ protected:
 				l->r = MergeIT(l->r, r);
 				l->r->p = l;
 			}
-			UpdateInfo(l);
+			l->UpdateInfo();
 			return l;
 		}
 		else
 		{
-			ApplyAction(r);
+			r->ApplyAction();
 			if (!r->l)
 			{
 				r->l = l;
@@ -176,7 +152,7 @@ protected:
 				r->l = MergeIT(l, r->l);
 				r->l->p = r;
 			}
-			UpdateInfo(r);
+			r->UpdateInfo();
 			return r;
 		}
 	}
@@ -185,22 +161,22 @@ protected:
 	{
 		if (l->height > r->height)
 		{
-			ApplyAction(l);
+			l->ApplyAction();
 			if (!l->r)
 				l->r = r;
 			else
 				l->r = MergeIF(l->r, r);
-			UpdateInfo(l);
+			l->UpdateInfo();
 			return l;
 		}
 		else
 		{
-			ApplyAction(r);
+			r->ApplyAction();
 			if (!r->l)
 				r->l = l;
 			else
 				r->l = MergeIF(l, r->l);
-			UpdateInfo(r);
+			r->UpdateInfo();
 			return r;
 		}
 	}
@@ -219,14 +195,14 @@ public:
 protected:
 	static void SplitByKeyIT(TNode* p, const TKey& key, TNode*& output_l, TNode*& output_r)
 	{
-		ApplyAction(p);
+		p->ApplyAction();
 		if (p->key < key)
 		{
 			if (p->r)
 			{
 				output_l = p;
 				SplitByKeyIT(p->r, key, p->r, output_r);
-				UpdateInfo(p);
+				p->UpdateInfo();
 				if (p->r) p->r->p = p;
 			}
 			else
@@ -241,7 +217,7 @@ protected:
 			{
 				output_r = p;
 				SplitByKeyIT(p->l, key, output_l, p->l);
-				UpdateInfo(p);
+				p->UpdateInfo();
 				if (p->l) p->l->p = p;
 			}
 			else
@@ -254,14 +230,14 @@ protected:
 
 	static void SplitByKeyIF(TNode* p, const TKey& key, TNode*& output_l, TNode*& output_r)
 	{
-		ApplyAction(p);
+		p->ApplyAction();
 		if (p->key < key)
 		{
 			if (p->r)
 			{
 				output_l = p;
 				SplitByKeyIF(p->r, key, p->r, output_r);
-				UpdateInfo(p);
+				p->UpdateInfo();
 			}
 			else
 			{
@@ -275,7 +251,7 @@ protected:
 			{
 				output_r = p;
 				SplitByKeyIF(p->l, key, output_l, p->l);
-				UpdateInfo(p);
+				p->UpdateInfo();
 			}
 			else
 			{
@@ -305,7 +281,7 @@ public:
 protected:
 	static void SplitBySizeIT(TNode* p, unsigned lsize, TNode*& output_l, TNode*& output_r)
 	{
-		ApplyAction(p);
+		p->ApplyAction();
 		unsigned hlsize = (p->l ? p->l->info.size : 0);
 		if (lsize < hlsize)
 		{
@@ -331,12 +307,12 @@ protected:
 			SplitBySizeIT(p->r, lsize - hlsize - 1, p->r, output_r);
 			p->r->p = p;
 		}
-		UpdateInfo(p);
+		p->UpdateInfo();
 	}
 
 	static void SplitBySizeIF(TNode* p, unsigned lsize, TNode*& output_l, TNode*& output_r)
 	{
-		ApplyAction(p);
+		p->ApplyAction();
 		unsigned hlsize = (p->l ? p->l->info.size : 0);
 		if (lsize < hlsize)
 		{
@@ -360,7 +336,7 @@ protected:
 			output_l = p;
 			SplitBySizeIF(p->r, lsize - hlsize - 1, p->r, output_r);
 		}
-		UpdateInfo(p);
+		p->UpdateInfo();
 	}
 
 	static void SplitBySizeI(TNode* p, unsigned lsize, TNode*& output_l, TNode*& output_r, TFakeTrue)

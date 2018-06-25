@@ -120,9 +120,13 @@ class TBSTNodeFinal<TData, TInfo, TAction, use_key, false, use_height, TKey, THe
 {
 public:
 	static const bool use_parent = false;
+	using TBase = TBSTNodeBase<TData, TInfo, TAction>;
 	using TSelf = TBSTNodeFinal<TData, TInfo, TAction, use_key, false, use_height, TKey, THeight>;
 
 	TSelf *l = 0, *r = 0;
+
+	void UpdateInfo() { TBase::info.Update(this); }
+	void ApplyAction() { TBase::action.Apply(this); }
 };
 
 template<
@@ -138,9 +142,13 @@ class TBSTNodeFinal<TData, TInfo, TAction, use_key, true, use_height, TKey, THei
 {
 public:
 	static const bool use_parent = true;
+	using TBase = TBSTNodeBase<TData, TInfo, TAction>;
 	using TSelf = TBSTNodeFinal<TData, TInfo, TAction, use_key, false, use_height, TKey, THeight>;
 
 	TSelf *l = 0, *r = 0, *p = 0;
+
+	void UpdateInfo() { TBase::info.Update(this); }
+	void ApplyAction() { TBase::action.Apply(this); }
 };
 
 template <
