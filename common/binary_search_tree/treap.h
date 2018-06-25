@@ -2,8 +2,8 @@
 
 #include "node.h"
 #include "node_action.h"
+#include "node_build.h"
 #include "node_info.h"
-#include "node_parent_links.h"
 #include "nodes_manager.h"
 #include "../template.h"
 
@@ -67,7 +67,7 @@ public:
 			plast = pj;
 		}		
 		for (plast->UpdateInfo(); !s.empty(); s.pop()) s.top()->UpdateInfo();
-		ResetParentLinks(proot, TFakeBool<use_parent>());
+		BSTNodeBuild::ResetParentLinks(proot);
 		return proot;
 	}
 
@@ -116,7 +116,7 @@ public:
 			plast = pj;
 		}
 		for (plast->UpdateInfo(); !s.empty(); s.pop()) s.top()->UpdateInfo();
-		ResetParentLinks(proot, TFakeBool<use_parent>());
+		BSTNodeBuild::ResetParentLinks(proot, TFakeBool<use_parent>());
 		return proot;
 	}
 
