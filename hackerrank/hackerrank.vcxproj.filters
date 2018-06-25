@@ -31,6 +31,9 @@
     <Filter Include="Source Files\practice\data_structures\trees">
       <UniqueIdentifier>{d21cd20b-893b-4463-a8e3-058505a8f5a9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\practice\data_structures\balanced_trees">
+      <UniqueIdentifier>{ab89c364-6b22-49da-a1f5-a84fe702bad6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="practice\mathematics\fundamentals\find_the_point.cpp">
@@ -164,6 +167,9 @@
     </ClCompile>
     <ClCompile Include="practice\data_structures\trees\jennys_subtrees.cpp">
       <Filter>Source Files\practice\data_structures\trees</Filter>
+    </ClCompile>
+    <ClCompile Include="practice\data_structures\balanced_trees\array_and_simple_queries_treap.cpp">
+      <Filter>Source Files\practice\data_structures\balanced_trees</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

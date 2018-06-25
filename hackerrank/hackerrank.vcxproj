@@ -138,6 +138,7 @@
     <ClCompile Include="practice\data_structures\arrays\dynamic_array.cpp" />
     <ClCompile Include="practice\data_structures\arrays\left_rotation.cpp" />
     <ClCompile Include="practice\data_structures\arrays\sparce_arrays.cpp" />
+    <ClCompile Include="practice\data_structures\balanced_trees\array_and_simple_queries_treap.cpp" />
     <ClCompile Include="practice\data_structures\trees\balanced_forest.cpp" />
     <ClCompile Include="practice\data_structures\trees\jennys_subtrees.cpp" />
     <ClCompile Include="practice\data_structures\trees\kittys_calculations_on_a_tree.cpp" />
