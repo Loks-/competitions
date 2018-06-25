@@ -7,7 +7,9 @@
 #include "binary_search_tree/node_info.h"
 #include "binary_search_tree/node_utils.h"
 #include "binary_search_tree/nodes_manager.h"
+#include "binary_search_tree/traversal.h"
 #include "binary_search_tree/treap.h"
+#include "binary_search_tree/treap_utils.h"
 
 #include "graph/base_graph.h"
 #include "graph/base_subgraph.h"

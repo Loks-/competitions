@@ -148,7 +148,9 @@
     <ClInclude Include="binary_search_tree\node_action.h" />
     <ClInclude Include="binary_search_tree\node_info.h" />
     <ClInclude Include="binary_search_tree\node_utils.h" />
+    <ClInclude Include="binary_search_tree\traversal.h" />
     <ClInclude Include="binary_search_tree\treap.h" />
+    <ClInclude Include="binary_search_tree\treap_utils.h" />
     <ClInclude Include="graph\base_graph.h" />
     <ClInclude Include="graph\base_subgraph.h" />
     <ClInclude Include="graph\base_tree.h" />
