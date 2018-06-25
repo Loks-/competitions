@@ -69,6 +69,6 @@ public:
 		released_nodes.push(p);
 	}
 
-	unsigned UsedNodes() const { return first_unused_node - released_nodes.size(); }
-	unsigned AvailableNodes() const { return nodes.size() - UsedNodes(); }
+	unsigned UsedNodes() const { return first_unused_node - unsigned(released_nodes.size()); }
+	unsigned AvailableNodes() const { return unsigned(nodes.size()) - UsedNodes(); }
 };

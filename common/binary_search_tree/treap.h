@@ -26,6 +26,9 @@ public:
 	using TNode = BSTNode<TData, TInfo, TAction, use_key, use_parent, true, TKey, unsigned>;
 	using TNodesManager = BSTNodesManager<TNode>;
 
+public:
+	Treap(unsigned max_nodes) : TNodesManager(max_nodes) {}
+
 protected:
 	static void SetParentLinks(TNode* root, TFakeFalse) {}
 	static void SetParentLinks(TNode* root, TFakeTrue)
@@ -57,12 +60,12 @@ public:
 	{
 		assert(TNodesManager::AvailableNodes() >= data.size());
 		if (data.size() == 0) return 0;
-		TNode * proot = GetNewNode(data[0]);
+		TNode * proot = TNodesManager::GetNewNode(data[0]);
 		TNode * plast = proot;
 		stack<TNode*> s; s.push(proot);
 		for (unsigned j = 1; j < data.size(); ++j)
 		{
-			TNode* pj = GetNewNode(data[j]);
+			TNode* pj = TNodesManager::GetNewNode(data[j]);
 			if (pj->height < plast->height)
 			{
 				plast->r = pj;
@@ -77,7 +80,7 @@ public:
 			}
 			else
 			{
-				for (UpdateInfo(plast); pj->heigh >= s.top()->height; s.pop())
+				for (UpdateInfo(plast); pj->height>= s.top()->height; s.pop())
 				{
 					plast = s.top();
 					UpdateInfo(plast);
@@ -99,19 +102,19 @@ public:
 		assert(TNodesManager::AvailableNodes() >= data.size());
 		if (data.size() == 0) return 0;
 		vector<pair<TKey, TNode*>> vp;
-		vp.reserve(size);
-		for (unsigned i = 0; i < size; ++i)
+		vp.reserve(data.size());
+		for (unsigned j = 0; j < data.size(); ++j)
 		{
-			TNode * pi = GetNewNode(data[i], keys[i]);
-			vp.push_back(make_pair(pi->key, pi));
+			TNode * pj = TNodesManager::GetNewNode(data[j], keys[j]);
+			vp.push_back(make_pair(pj->key, pj));
 		}
 		sort(vp.begin(), vp.end());
 		TNode * proot = vp[0].second;
 		TNode * plast = proot;
 		stack<TNode*> s; s.push(proot);
-		for (unsigned i = 1; i < size; ++i)
+		for (unsigned j = 1; j < data.size(); ++j)
 		{
-			TNode* pj = vp[i].second;
+			TNode* pj = vp[j].second;
 			if (pj->height < plast->height)
 			{
 				plast->r = pj;
@@ -228,7 +231,7 @@ protected:
 			}
 			else
 			{
-				output_l = r;
+				output_l = p;
 				output_r = 0;
 			}
 		}
@@ -244,7 +247,7 @@ protected:
 			else
 			{
 				output_l = 0;
-				output_r = r;
+				output_r = p;
 			}
 		}
 	}
@@ -262,7 +265,7 @@ protected:
 			}
 			else
 			{
-				output_l = r;
+				output_l = p;
 				output_r = 0;
 			}
 		}
@@ -277,7 +280,7 @@ protected:
 			else
 			{
 				output_l = 0;
-				output_r = r;
+				output_r = p;
 			}
 		}
 	}

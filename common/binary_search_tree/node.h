@@ -36,6 +36,7 @@ class TBSTNodeHeight<TData, TInfo, TAction, false, TTHeight> :
 {
 public:
 	static const bool use_height = false;
+	using THeight = TTHeight;
 };
 
 template<
@@ -47,7 +48,7 @@ class TBSTNodeHeight<TData, TInfo, TAction, true, TTHeight> :
 	public TBSTNodeBase<TData, TInfo, TAction>
 {
 public:
-	static const bool use_height = false;
+	static const bool use_height = true;
 	using THeight = TTHeight;
 
 	THeight height;
@@ -75,6 +76,7 @@ class TBSTNodeKey<TData, TInfo, TAction, false, use_height, TTKey, THeight> :
 {
 public:
 	static const bool use_key = false;
+	using TKey = TTKey;
 };
 
 template<
@@ -88,7 +90,7 @@ class TBSTNodeKey<TData, TInfo, TAction, true, use_height, TTKey, THeight> :
 	public TBSTNodeHeight<TData, TInfo, TAction, use_height, THeight>
 {
 public:
-	static const bool use_key = false;
+	static const bool use_key = true;
 	using TKey = TTKey;
 
 	TKey key;

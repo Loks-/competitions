@@ -21,7 +21,6 @@ public:
 	template<class TNode>
 	void Update(const TNode* node)
 	{
-		static_assert(TNode::TInfo == TSelf);
 		size = 1 + (node->l ? node->l->info.size : 0) + (node->r ? node->r->info.size : 0);
 	}
 };
