@@ -264,3 +264,4 @@ current_solution.inl
 include_headers
 a.out
 .vscode/tasks.json
+/hackerrank/input.txt
