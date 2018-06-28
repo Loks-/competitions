@@ -1,9 +1,9 @@
 #pragma once
 
+#include "action.h"
+#include "build.h"
+#include "info.h"
 #include "node.h"
-#include "node_action.h"
-#include "node_build.h"
-#include "node_info.h"
 #include "nodes_manager.h"
 #include "../template.h"
 
@@ -67,7 +67,7 @@ public:
 			plast = pj;
 		}		
 		for (plast->UpdateInfo(); !s.empty(); s.pop()) s.top()->UpdateInfo();
-		BSTNodeBuild::ResetParentLinks(proot);
+		BSTBuild::ResetParentLinks(proot);
 		return proot;
 	}
 
@@ -116,7 +116,7 @@ public:
 			plast = pj;
 		}
 		for (plast->UpdateInfo(); !s.empty(); s.pop()) s.top()->UpdateInfo();
-		BSTNodeBuild::ResetParentLinks(proot, TFakeBool<use_parent>());
+		BSTBuild::ResetParentLinks(proot, TFakeBool<use_parent>());
 		return proot;
 	}
 

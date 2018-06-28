@@ -143,7 +143,7 @@ class TBSTNodeFinal<TData, TInfo, TAction, use_key, true, use_height, TKey, THei
 public:
 	static const bool use_parent = true;
 	using TBase = TBSTNodeBase<TData, TInfo, TAction>;
-	using TSelf = TBSTNodeFinal<TData, TInfo, TAction, use_key, false, use_height, TKey, THeight>;
+	using TSelf = TBSTNodeFinal<TData, TInfo, TAction, use_key, true, use_height, TKey, THeight>;
 
 	TSelf *l = 0, *r = 0, *p = 0;
 

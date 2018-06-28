@@ -10,9 +10,9 @@ TNode* FindByKey(TNode* root, const typename TNode::TKey& key)
 	{
 		node->action.Apply(node);
 		if (node->x < key)
-			node = node->l;
-		else if (key < node->x)
 			node = node->r;
+		else if (key < node->x)
+			node = node->l;
 		else
 			return node;
 	}

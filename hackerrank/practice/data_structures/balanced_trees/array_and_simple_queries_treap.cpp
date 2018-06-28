@@ -3,7 +3,7 @@
 #include "common/base.h"
 #include "common/binary_search_tree/traversal.h"
 #include "common/binary_search_tree/treap.h"
-#include "common/binary_search_tree/treap_utils.h"
+#include "common/binary_search_tree/utils/rotate.h"
 #include "common/vector/utils.h"
 
 using TTreap = Treap<false, false, int>;
