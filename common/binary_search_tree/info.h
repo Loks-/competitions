@@ -33,16 +33,16 @@ public:
 namespace {
 
 template<class TNode>
-static void UpdateInfoNodeToRoot(TNode* node, TFakeFalse) {}
+void UpdateInfoNodeToRoot(TNode* node, TFakeFalse) {}
 
 template<class TNode>
-static void UpdateInfoNodeToRoot(TNode * node, TFakeTrue)
+void UpdateInfoNodeToRoot(TNode * node, TFakeTrue)
 {
 	for (; node; node = node->p) UpdateInfo(node);
 }
 
 template<class TNode>
-static void UpdateInfoNodeToRoot(TNode* node)
+void UpdateInfoNodeToRoot(TNode* node)
 {
 	UpdateInfoNodeToRoot(node, TFakeBool<!TNode::TInfo::is_none>());
 }
