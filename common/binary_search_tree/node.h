@@ -125,6 +125,7 @@ public:
 
 	TSelf *l = 0, *r = 0;
 
+	void ResetLinks() { l = r = 0; }
 	void UpdateInfo() { TBase::info.Update(this); }
 	void ApplyAction() { TBase::action.Apply(this); }
 };
@@ -147,6 +148,7 @@ public:
 
 	TSelf *l = 0, *r = 0, *p = 0;
 
+	void ResetLinks() { l = r = p = 0; }
 	void UpdateInfo() { TBase::info.Update(this); }
 	void ApplyAction() { TBase::action.Apply(this); }
 };

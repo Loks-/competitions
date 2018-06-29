@@ -37,6 +37,7 @@ public:
 		if (!released_nodes.empty())
 		{
 			TNode* p = released_nodes.top();
+			p->ResetLinks();
 			released_nodes.pop();
 			return p;
 		}
@@ -52,6 +53,7 @@ public:
 	{
 		TNode* p = GetNewNode();
 		p->data = data;
+		p->UpdateInfo();
 		return p;
 	}
 
@@ -61,6 +63,7 @@ public:
 		TNode* p = GetNewNode();
 		p->data = data;
 		p->key = key;
+		p->UpdateInfo();
 		return p;
 	}
 
