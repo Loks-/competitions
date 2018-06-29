@@ -5,7 +5,7 @@
 
 static unordered_set<string> used_files;
 
-static string MergePath(const string& sdir, const string& sfile)
+static string JoinPath(const string& sdir, const string& sfile)
 {
 	assert((sdir.back() == '/') || (sdir.back() == '\\'));
 	size_t nposl1 = sdir.find_last_of('/'), nposl2 = sdir.find_last_of('\\');
@@ -72,7 +72,7 @@ static void AddFile(const string& input_filename, ofstream& output, bool ignore_
 				{
 					current_dir = input_filename.substr(0, npos + 1);
 				}
-				string new_file = (new_header_file.substr(0, 7) =="common/") ? new_header_file : MergePath(current_dir, new_header_file);
+				string new_file = (new_header_file.substr(0, 7) =="common/") ? new_header_file : JoinPath(current_dir, new_header_file);
 				if (!silent)
 				{
 					cout << "Include file found:" << endl;
