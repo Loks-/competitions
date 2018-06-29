@@ -1,7 +1,6 @@
 #pragma once
 
 #include "action.h"
-#include "action_utils.h"
 #include "build.h"
 #include "info.h"
 #include "node.h"
@@ -390,7 +389,7 @@ public:
 	{
 		static_assert(use_parent);
 		assert(node);
-		BSTActionUtils::ApplyActionRootToNode(node);
+		ApplyActionRootToNode(node);
 		TNode* l = node->l; node->l = 0;
 		if (l) l->p = 0;
 		TNode* r = node->r; node->r = 0;

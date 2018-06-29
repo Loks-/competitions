@@ -125,9 +125,6 @@
     <ClInclude Include="binary_search_tree\action.h">
       <Filter>Header Files\binary_search_tree</Filter>
     </ClInclude>
-    <ClInclude Include="binary_search_tree\action_utils.h">
-      <Filter>Header Files\binary_search_tree</Filter>
-    </ClInclude>
     <ClInclude Include="binary_search_tree\find_by_order.h">
       <Filter>Header Files\binary_search_tree</Filter>
     </ClInclude>

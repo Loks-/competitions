@@ -1,7 +1,6 @@
 #pragma once
 
 #include "action.h"
-#include "action_utils.h"
 #include "build.h"
 #include "find_by_order.h"
 #include "info.h"
@@ -122,7 +121,7 @@ protected:
 public:
 	static void Splay(TNode* node)
 	{
-		BSTActionUtils::ApplyActionRootToNode(node);
+		ApplyActionRootToNode(node);
 		SplayI(node);
 	}
 
