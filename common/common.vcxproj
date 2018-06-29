@@ -143,7 +143,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="base.h" />
-    <ClInclude Include="binary_search_tree\info_utils.h" />
     <ClInclude Include="binary_search_tree\node.h" />
     <ClInclude Include="binary_search_tree\nodes_manager.h" />
     <ClInclude Include="binary_search_tree\action.h" />

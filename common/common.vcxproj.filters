@@ -140,9 +140,6 @@
     <ClInclude Include="binary_search_tree\find_by_key.h">
       <Filter>Header Files\binary_search_tree</Filter>
     </ClInclude>
-    <ClInclude Include="binary_search_tree\info_utils.h">
-      <Filter>Header Files\binary_search_tree</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\current_solution.inl">

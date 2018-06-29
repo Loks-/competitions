@@ -1,5 +1,7 @@
 #pragma once
 
+#include "../template.h"
+
 class BSTInfoNone
 {
 public:
@@ -27,3 +29,22 @@ public:
 		size = 1 + (node->l ? node->l->info.size : 0) + (node->r ? node->r->info.size : 0);
 	}
 };
+
+namespace {
+
+template<class TNode>
+static void UpdateInfoNodeToRoot(TNode* node, TFakeFalse) {}
+
+template<class TNode>
+static void UpdateInfoNodeToRoot(TNode * node, TFakeTrue)
+{
+	for (; node; node = node->p) UpdateInfo(node);
+}
+
+template<class TNode>
+static void UpdateInfoNodeToRoot(TNode* node)
+{
+	UpdateInfoNodeToRoot(node, TFakeBool<!TNode::TInfo::is_none>());
+}
+
+} // namespace

@@ -4,7 +4,6 @@
 #include "action_utils.h"
 #include "build.h"
 #include "info.h"
-#include "info_utils.h"
 #include "node.h"
 #include "nodes_manager.h"
 #include "../template.h"
@@ -403,7 +402,7 @@ public:
 			p->l = m;
 		else
 			p->r = m;
-		BSTInfoUtils::UpdateInfoNodeToRoot(p);
+		UpdateInfoNodeToRoot(p);
 		return Root(p);
 	}
 
