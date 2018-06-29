@@ -12,7 +12,7 @@ void Rotate(typename TBST::TNode*& root, unsigned first, unsigned middle, unsign
 	TBST::SplitBySize(root, middle, p2, p3);
 	TBST::SplitBySize(p2, first, p1, p2);
 	TBST::SplitBySize(p3, last - middle, p3, p4);
-	root = TBST::Merge(TBST::Merge(p1, p3), TBST::Merge(p2, p4));
+	root = TBST::Join(TBST::Join(p1, p3), TBST::Join(p2, p4));
 }
 
 // Rotate elements in interval [first, last) to right by shift

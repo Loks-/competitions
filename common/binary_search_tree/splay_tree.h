@@ -126,7 +126,7 @@ public:
 		SplayI(node);
 	}
 
-	static TNode* Merge(TNode* l, TNode* r)
+	static TNode* Join(TNode* l, TNode* r)
 	{
 		if (!l) return r;
 		if (!r) return l;

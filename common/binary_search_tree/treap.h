@@ -121,7 +121,7 @@ public:
 	}
 
 protected:
-	static TNode * MergeIT(TNode* l, TNode* r)
+	static TNode * JoinIT(TNode* l, TNode* r)
 	{
 		if (l->height > r->height)
 		{
@@ -133,7 +133,7 @@ protected:
 			}
 			else
 			{
-				l->r = MergeIT(l->r, r);
+				l->r = JoinIT(l->r, r);
 				l->r->p = l;
 			}
 			l->UpdateInfo();
@@ -149,7 +149,7 @@ protected:
 			}
 			else
 			{
-				r->l = MergeIT(l, r->l);
+				r->l = JoinIT(l, r->l);
 				r->l->p = r;
 			}
 			r->UpdateInfo();
@@ -157,7 +157,7 @@ protected:
 		}
 	}
 
-	static TNode* MergeIF(TNode* l, TNode* r)
+	static TNode* JoinIF(TNode* l, TNode* r)
 	{
 		if (l->height > r->height)
 		{
@@ -165,7 +165,7 @@ protected:
 			if (!l->r)
 				l->r = r;
 			else
-				l->r = MergeIF(l->r, r);
+				l->r = JoinIF(l->r, r);
 			l->UpdateInfo();
 			return l;
 		}
@@ -175,21 +175,21 @@ protected:
 			if (!r->l)
 				r->l = l;
 			else
-				r->l = MergeIF(l, r->l);
+				r->l = JoinIF(l, r->l);
 			r->UpdateInfo();
 			return r;
 		}
 	}
 
-	static TNode* MergeI(TNode* l, TNode* r, TFakeTrue) { return MergeIT(l, r); }
-	static TNode* MergeI(TNode* l, TNode* r, TFakeFalse) { return MergeIF(l, r); }
+	static TNode* JoinI(TNode* l, TNode* r, TFakeTrue) { return JoinIT(l, r); }
+	static TNode* JoinI(TNode* l, TNode* r, TFakeFalse) { return JoinIF(l, r); }
 
 public:
-	static TNode* Merge(TNode* l, TNode* r)
+	static TNode* Join(TNode* l, TNode* r)
 	{
 		if (!l) return r;
 		if (!r) return l;
-		return MergeI(l, r, TFakeBool<use_parent>());
+		return JoinI(l, r, TFakeBool<use_parent>());
 	}
 
 protected:
