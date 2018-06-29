@@ -1,8 +1,10 @@
 #pragma once
 
 #include "action.h"
+#include "action_utils.h"
 #include "build.h"
 #include "info.h"
+#include "info_utils.h"
 #include "node.h"
 #include "nodes_manager.h"
 #include "../template.h"
@@ -369,5 +371,46 @@ public:
 		{
 			SplitBySizeI(root, lsize, output_l, output_r, TFakeBool<use_parent>());
 		}
+	}
+
+	static TNode* Insert(TNode* root, TNode* node)
+	{
+		assert(node);
+		if (!root) return node;		
+		TNode *p1, *p2;
+		SplitByKey(root, node->key, p1, p2);
+		return Join(Join(p1, node), p2);
+	}
+
+	TNode* Insert(TNode* root, const TData& data, const TKey& key)
+	{
+		return Insert(root, TNodesManager::GetNewNode(data, key));
+	}
+
+	static TNode* Remove(TNode* node)
+	{
+		static_assert(use_parent);
+		assert(node);
+		BSTActionUtils::ApplyActionRootToNode(node);
+		TNode* l = node->l; node->l = 0;
+		if (l) l->p = 0;
+		TNode* r = node->r; node->r = 0;
+		if (r) r->p = 0;
+		TNode* m = Join(l, r);
+		TNode* p = node->p; node->p = 0;
+		if (!p) return m;
+		if (node == p->l)
+			p->l = m;
+		else
+			p->r = m;
+		BSTInfoUtils::UpdateInfoNodeToRoot(p);
+		return Root(p);
+	}
+
+	TNode* RemoveAndRelease(TNode* node)
+	{
+		TNode* new_root = Remove(node);
+		TNodesManager::ReleaseNode(node);
+		return new_root;
 	}
 };

@@ -163,3 +163,16 @@ template <
 	class TKey = int64_t,
 	class THeight = unsigned>
 using BSTNode = TBSTNodeFinal<TData, TInfo, TAction, use_key, use_parent, use_height, TKey, THeight>;
+
+namespace {
+
+template<class TNode>
+TNode* Root(TNode* node)
+{
+	static_assert(TNode::use_parent);
+	if (!node) return node;
+	for (; node->p; node = node->p);
+	return node;
+}
+
+} // namespace

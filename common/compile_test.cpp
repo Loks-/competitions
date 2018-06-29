@@ -8,6 +8,7 @@
 #include "binary_search_tree/find_by_key.h"
 #include "binary_search_tree/find_by_order.h"
 #include "binary_search_tree/info.h"
+#include "binary_search_tree/info_utils.h"
 #include "binary_search_tree/node.h"
 #include "binary_search_tree/nodes_manager.h"
 #include "binary_search_tree/splay_tree.h"
