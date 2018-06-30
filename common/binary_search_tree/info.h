@@ -38,7 +38,7 @@ void UpdateInfoNodeToRoot(TNode* node, TFakeFalse) {}
 template<class TNode>
 void UpdateInfoNodeToRoot(TNode * node, TFakeTrue)
 {
-	for (; node; node = node->p) UpdateInfo(node);
+	for (; node; node = node->p) node->UpdateInfo();
 }
 
 template<class TNode>
