@@ -394,8 +394,9 @@ public:
 		if (l) l->p = 0;
 		TNode* r = node->r; node->r = 0;
 		if (r) r->p = 0;
-		TNode* m = Join(l, r);
 		TNode* p = node->p; node->p = 0;
+		TNode* m = Join(l, r);
+		if (m) m->p = p;
 		if (!p) return m;
 		if (node == p->l)
 			p->l = m;
