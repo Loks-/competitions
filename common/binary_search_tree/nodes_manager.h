@@ -1,5 +1,6 @@
 #pragma once
 
+#include "build.h"
 #include "../base.h"
 #include "../template.h"
 
@@ -24,10 +25,7 @@ public:
 
 protected:
 	void InitRandomHeightI(TNode* p, TFakeFalse) {}
-	void InitRandomHeightI(TNode* p, TFakeTrue)
-	{
-		p->height = random_engine();
-	}
+	void InitRandomHeightI(TNode* p, TFakeTrue)	{ p->height = random_engine(); }
 
 public:
 	void InitRandomHeight(TNode* p) { InitRandomHeightI(p, TFakeBool<use_height>()); }
@@ -74,4 +72,41 @@ public:
 
 	unsigned UsedNodes() const { return first_unused_node - unsigned(released_nodes.size()); }
 	unsigned AvailableNodes() const { return unsigned(nodes.size()) - UsedNodes(); }
+
+	TNode* Build(const vector<TData>& data)
+	{
+		assert(AvailableNodes() >= data.size());
+		if (data.size() == 0) return 0;
+		vector<TNode*> v(data.size());
+		for (unsigned i = 0; i < data.size(); ++i)
+		{
+			v[i] = GetNewNode(data[i]);
+		}
+		return BuildI(v);
+	}
+
+	TNode* Build(const vector<TData>& data, const vector<TKey>& keys)
+	{
+		static_assert(use_key);
+		assert(data.size() == keys.size());
+		assert(AvailableNodes() >= data.size());
+		if (data.size() == 0) return 0;
+		vector<pair<TKey, TNode*>> vp(data.size());
+		for (unsigned i = 0; i < data.size(); ++i)
+		{
+			vp[i] = make_pair(keys[i], GetNewNode(data[i], keys[i]));
+		}
+		sort(vp.begin(), vp.end());
+		vector<TNode*> v(vp.size());
+		for (unsigned i = 0; i < vp.size(); ++i)
+		{
+			v[i] = vp[i].second;
+		}
+		return BuildI(v);
+	}
+
+	virtual TNode* BuildI(const vector<TNode*>& vnodes)
+	{
+		return BSTBuild::Build(vnodes);
+	}
 };

@@ -30,39 +30,6 @@ public:
 public:
 	SplayTree(unsigned max_nodes) : TNodesManager(max_nodes) {}
 
-public:
-	TNode* Build(const vector<TData>& data)
-	{
-		assert(TNodesManager::AvailableNodes() >= data.size());
-		if (data.size() == 0) return 0;
-		vector<TNode*> v(data.size());
-		for (unsigned i = 0; i < data.size(); ++i)
-		{
-			v[i] = TNodesManager::GetNewNode(data[i]);
-		}
-		return BSTBuild::Build(v);
-	}
-
-	TNode* Build(const vector<TData>& data, const vector<TKey>& keys)
-	{
-		static_assert(use_key);
-		assert(data.size() == keys.size());
-		assert(TNodesManager::AvailableNodes() >= data.size());
-		if (data.size() == 0) return 0;
-		vector<pair<TKey, TNode*>> vp(data.size());
-		for (unsigned i = 0; i < data.size(); ++i)
-		{
-			vp[i] = make_pair(keys[i], TNodesManager::GetNewNode(data[i], keys[i]));
-		}
-		sort(vp.begin(), vp.end());
-		vector<TNode*> v(vp.size());
-		for (unsigned i = 0; i < vp.size(); ++i)
-		{
-			v[i] = vp[i].second;
-		}
-		return BSTBuild::Build(v);
-	}
-
 protected:
 	static void RotateI(TNode* child, TNode* parent)
 	{
