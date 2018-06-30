@@ -4,13 +4,14 @@
 #include "../base.h"
 #include "../template.h"
 
-template<class TTNode>
+template<class TTNode, class TTMe>
 class BSTNodesManager
 {
 public:
 	using TNode = TTNode;
 	using TData = typename TNode::TData;
 	using TKey = typename TNode::TKey;
+	using TMe = TTMe;
 	static const bool use_key = TNode::use_key;
 	static const bool use_height = TNode::use_height;
 
@@ -22,6 +23,8 @@ protected:
 
 public:
 	BSTNodesManager(unsigned max_nodes) : nodes(max_nodes), first_unused_node(0) {}
+	TMe* Me() { return static_cast<TMe*>(this); }
+	const TMe* Me() const { return static_cast<const TMe*>(this); }
 
 protected:
 	void InitRandomHeightI(TNode* p, TFakeFalse) {}
@@ -82,7 +85,7 @@ public:
 		{
 			v[i] = GetNewNode(data[i]);
 		}
-		return BuildI(v);
+		return TMe::BuildTree(v);
 	}
 
 	TNode* Build(const vector<TData>& data, const vector<TKey>& keys)
@@ -102,10 +105,10 @@ public:
 		{
 			v[i] = vp[i].second;
 		}
-		return BuildI(v);
+		return TMe::BuildTree(v);
 	}
 
-	virtual TNode* BuildI(const vector<TNode*>& vnodes)
+	static TNode* BuildTree(const vector<TNode*>& vnodes)
 	{
 		return BSTBuild::Build(vnodes);
 	}

@@ -13,7 +13,8 @@ template <
 	class TTInfo = BSTInfoSize,
 	class TTAction = BSTActionNone,
 	class TTKey = int64_t>
-class SplayTree : public BSTNodesManager<BSTNode<TTData, TTInfo, TTAction, _use_key, true, false, TTKey>>
+class SplayTree : public BSTNodesManager<BSTNode<TTData, TTInfo, TTAction, _use_key, true, false, TTKey>,
+										SplayTree<_use_key, TTData, TTInfo, TTAction, TTKey>>
 {
 public:
 	static const bool use_key = _use_key;
@@ -25,7 +26,8 @@ public:
 	using TAction = TTAction;
 	using TKey = TTKey;
 	using TNode = BSTNode<TData, TInfo, TAction, use_key, use_parent, use_height, TKey>;
-	using TNodesManager = BSTNodesManager<TNode>;
+	using TSelf = SplayTree<use_key, TData, TInfo, TAction, TKey>;
+	using TNodesManager = BSTNodesManager<TNode, TSelf>;
 
 public:
 	SplayTree(unsigned max_nodes) : TNodesManager(max_nodes) {}

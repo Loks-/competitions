@@ -14,7 +14,8 @@ template <
 	class TTInfo = BSTInfoSize,
 	class TTAction = BSTActionNone,
 	class TTKey = int64_t>
-class Treap : public BSTNodesManager<BSTNode<TTData, TTInfo, TTAction, _use_key, _use_parent, true, TTKey, unsigned>>
+class Treap : public BSTNodesManager<BSTNode<TTData, TTInfo, TTAction, _use_key, _use_parent, true, TTKey, unsigned>,
+									Treap<_use_key, _use_parent, TTData, TTInfo, TTAction, TTKey>>
 {
 public:
 	static const bool use_key = _use_key;
@@ -26,13 +27,14 @@ public:
 	using TAction = TTAction;
 	using TKey = TTKey;
 	using TNode = BSTNode<TData, TInfo, TAction, use_key, use_parent, use_height, TKey, unsigned>;
-	using TNodesManager = BSTNodesManager<TNode>;
+	using TSelf = Treap<use_key, use_parent, TData, TInfo, TAction, TKey>;
+	using TNodesManager = BSTNodesManager<TNode, TSelf>;
 
 public:
 	Treap(unsigned max_nodes) : TNodesManager(max_nodes) {}
 
 public:
-	virtual TNode* BuildI(const vector<TNode*>& nodes)
+	static TNode* BuildTree(const vector<TNode*>& nodes)
 	{
 		if (nodes.size() == 0) return 0;
 		TNode * proot = nodes[0];
