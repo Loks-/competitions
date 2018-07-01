@@ -28,9 +28,7 @@ public:
 		nvertices = _nvertices;
 		edges.resize(nvertices);
 		if (directed_edges)
-		{
 			inverted_edges.resize(nvertices);
-		}
 	}
 
 	BaseGraph(unsigned _nvertices = 0) { Resize(_nvertices); }
@@ -39,13 +37,9 @@ public:
 	{
 		edges[from].push_back(to);
 		if (directed_edges)
-		{
 			inverted_edges[to].push_back(from);
-		}
 		else
-		{
 			edges[to].push_back(from);
-		}
 	}
 
 	void ReadEdges(unsigned edges_to_read, bool zero_based_indexes = false)

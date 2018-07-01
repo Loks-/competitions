@@ -66,9 +66,7 @@ public:
 				const TValue& vA = *itA++;
 				auto itC = output.begin() + i * columns2;
 				for (unsigned k = 0; k < columns2; ++k)
-				{
 					*itC++ += *itB++ * vA;
-				}
 			}
 		}
 	}

@@ -46,9 +46,8 @@ public:
 		TComplex ans = TComplex(1, 0);
 		for (; pow; pow >>= 1)
 		{
-			if (pow & 1) {
+			if (pow & 1)
 				ans = Mult(ans, x);
-			}
 			x = Mult(x, x);
 		}
 		return ans;

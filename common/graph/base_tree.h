@@ -20,10 +20,7 @@ public:
 		root = _root;
 	}
 
-	void ReadEdges(bool zero_based_indexes = false)
-	{
-		TBase::ReadEdges(TBase::nvertices - 1, zero_based_indexes);
-	}
+	void ReadEdges(bool zero_based_indexes = false)	{ TBase::ReadEdges(TBase::nvertices - 1, zero_based_indexes); }
 
 	void ReadTreeEdges(bool zero_based_indexes = false)
 	{
@@ -36,8 +33,5 @@ public:
 		}
 	}
 
-	vector<unsigned> GetDeep() const
-	{
-		return TBase::GetDistances(root);
-	}
+	vector<unsigned> GetDeep() const { return TBase::GetDistances(root); }
 };

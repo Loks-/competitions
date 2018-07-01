@@ -19,9 +19,7 @@ public:
 			{
 				vprimes.push_back(i);
 				for (int64_t j = i * i; j <= max_prime; j += 2 * i)
-				{
 					v[j] = 0;
-				}
 			}
 		}
 		vprimes2.reserve(vprimes.size());
@@ -31,14 +29,11 @@ public:
 
 	bool IsPrime(uint64_t n)
 	{
-		if (n <= vprimes.back())
-		{
-			return binary_search(vprimes.begin(), vprimes.end(), n);
-		}
+		if (n <= vprimes.back()) return binary_search(vprimes.begin(), vprimes.end(), n);
 		assert(n <= vprimes2.back());
-		for (size_t i = 0; vprimes2[i] <= n; ++i) {
-			if ((n % vprimes[i]) == 0)
-				return false;
+		for (size_t i = 0; vprimes2[i] <= n; ++i)
+		{
+			if ((n % vprimes[i]) == 0) return false;
 		}
 		return true;
 	}
@@ -48,24 +43,19 @@ public:
 		vector<pair<uint64_t, unsigned>> output;
 		for (size_t i = 0; i < vprimes.size(); ++i)
 		{
-			if (n < vprimes2[i])
-				break;
+			if (n < vprimes2[i]) break;
 			if ((n % vprimes[i]) == 0)
 			{
 				n /= vprimes[i];
 				unsigned cnt = 1;
 				for (; (n % vprimes[i]) == 0; ++cnt)
-				{
 					n /= vprimes[i];
-				}
 				output.push_back(make_pair(vprimes[i], cnt));
 			}
 		}
 		assert(vprimes2.back() > n);
 		if (n != 1)
-		{
 			output.push_back(make_pair(n, 1));
-		}
 		return output;
 	}
 
@@ -74,9 +64,7 @@ public:
 		auto vp = Factorize(n);
 		unsigned k = 1;
 		for (auto p : vp)
-		{
 			k *= (p.second + 1);
-		}
 		return k;
 	}
 
@@ -92,9 +80,7 @@ protected:
 			}
 		}
 		else
-		{
 			output.push_back(current);
-		}
 	}
 
 public:

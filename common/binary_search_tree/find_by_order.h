@@ -12,13 +12,9 @@ TNode* FindByOrder(TNode* root, unsigned order_index)
 		node->ApplyAction();
 		unsigned ls = (node->l ? node->l->info.size : 0);
 		if (order_index < ls)
-		{
 			node = node->l;
-		}
 		else if (order_index == ls)
-		{
 			return node;
-		}
 		else
 		{
 			order_index -= 1 + ls;

@@ -42,9 +42,6 @@ void UpdateInfoNodeToRoot(TNode * node, TFakeTrue)
 }
 
 template<class TNode>
-void UpdateInfoNodeToRoot(TNode* node)
-{
-	UpdateInfoNodeToRoot(node, TFakeBool<!TNode::TInfo::is_none>());
-}
+void UpdateInfoNodeToRoot(TNode* node) { UpdateInfoNodeToRoot(node, TFakeBool<!TNode::TInfo::is_none>()); }
 
 } // namespace

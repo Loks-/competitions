@@ -70,12 +70,13 @@ public:
 	static TValue DivSafe_Prime(TValue lvalue, TValue rvalue, TValue mod) { return Div_Prime(ApplyT(lvalue), ApplyT(rvalue), mod); }
 
 protected:
-	static pair<int64_t, int64_t > GCD_Ext(int64_t a, int64_t b) {
-		if ((a % b) == 0)
-			return make_pair< int64_t, int64_t >(0, 1);
+	static pair<int64_t, int64_t > GCD_Ext(int64_t a, int64_t b)
+	{
+		if ((a % b) == 0) return make_pair< int64_t, int64_t >(0, 1);
 		pair<int64_t, int64_t> t = GCD_Ext(b, a % b);
 		return make_pair(t.second, t.first - t.second * (a / b));
 	}
+
 	static TValue Div_CompositeS(int64_t numerator, int64_t denominator, int64_t mod)
 	{
 		pair < int64_t, int64_t > dm_gcd_ext = GCD_Ext(denominator, mod);
@@ -106,9 +107,8 @@ public:
 		TValue ans = 1;
 		for (; pow; pow >>= 1)
 		{
-			if (pow & 1) {
+			if (pow & 1)
 				ans = Mult(ans, x, mod);
-			}
 			x = Mult(x, x, mod);
 		}
 		return ans;

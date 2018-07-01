@@ -31,7 +31,7 @@ void RotateLeft(typename TBST::TNode*& root, unsigned first, unsigned last, unsi
 {
 	assert(last > first);
 	shift %= (last - first);
-	if (shift == 0) return root;
+	if (shift == 0) return;
 	return Rotate<TBST>(root, first, first + shift, last);
 }
 

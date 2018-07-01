@@ -28,9 +28,6 @@ void ApplyActionRootToNode(TNode * node, TFakeTrue)
 }
 
 template<class TNode>
-void ApplyActionRootToNode(TNode* node)
-{
-	ApplyActionRootToNode(node, TFakeBool<!TNode::TAction::is_none>());
-}
+void ApplyActionRootToNode(TNode* node) { ApplyActionRootToNode(node, TFakeBool<!TNode::TAction::is_none>()); }
 
 } // namespace

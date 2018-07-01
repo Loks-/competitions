@@ -59,9 +59,7 @@ protected:
 		}
 		sort(v.begin(), v.end());
 		for (size_t h : v)
-		{
 			current = hash_combine(current, h);
-		}
 		return current;
 	}
 
@@ -69,15 +67,9 @@ public:
 	static size_t Hash(const BaseTree& tree)
 	{
 		auto p = GetCenter(tree);
-		if (p.second == CNone)
-		{
-			return HashR(tree, p.first, p.second);
-		}
-		else
-		{
-			size_t h1 = HashR(tree, p.first, p.second);
-			size_t h2 = HashR(tree, p.second, p.first);
-			return (h1 < h2) ? hash_combine(h1, h2) : hash_combine(h2, h1);
-		}
+		if (p.second == CNone) return HashR(tree, p.first, p.second);
+		size_t h1 = HashR(tree, p.first, p.second);
+		size_t h2 = HashR(tree, p.second, p.first);
+		return (h1 < h2) ? hash_combine(h1, h2) : hash_combine(h2, h1);
 	}
 };

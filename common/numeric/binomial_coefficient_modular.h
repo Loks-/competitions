@@ -17,9 +17,7 @@ public:
 		{
 			vector<TModular> vnext(nCr_table.size() + 1, TModular(1));
 			for (unsigned i = 1; i + 1 < vnext.size(); ++i)
-			{
 				vnext[i] = nCr_table.back()[i - 1] + nCr_table.back()[i];
-			}
 			nCr_table.push_back(vnext);
 		}
 	}

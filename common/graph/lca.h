@@ -31,11 +31,7 @@ protected:
 
 public:
 	LCA() : n(0), n2p(1) {}
-
-	LCA(const BaseTree& g)
-	{
-		Build(g);
-	}
+	LCA(const BaseTree& g) { Build(g); }
 
 	void Init()
 	{
@@ -113,8 +109,7 @@ protected:
 
 	unsigned EnterIntoStrip(unsigned x, unsigned hz) const
 	{
-		if (vrbit[I[x]] == hz)
-			return x;
+		if (vrbit[I[x]] == hz) return x;
 		unsigned hw = vlbit[A[x] & (hz - 1)];
 		return parent[lead[I[x] & (~hw + 1) | hw]];
 	}
