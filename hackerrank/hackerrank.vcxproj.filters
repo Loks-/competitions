@@ -177,6 +177,9 @@
     <ClCompile Include="practice\data_structures\balanced_trees\median_updates_treap.cpp">
       <Filter>Source Files\practice\data_structures\balanced_trees</Filter>
     </ClCompile>
+    <ClCompile Include="practice\data_structures\balanced_trees\median_updates_splay.cpp">
+      <Filter>Source Files\practice\data_structures\balanced_trees</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="input.txt">
