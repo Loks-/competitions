@@ -6,6 +6,7 @@
 #include "info.h"
 #include "node.h"
 #include "nodes_manager.h"
+#include "rotate.h"
 
 template <
 	bool _use_key,
@@ -33,58 +34,31 @@ public:
 	SplayTree(unsigned max_nodes) : TNodesManager(max_nodes) {}
 
 protected:
-	static void RotateI(TNode* child, TNode* parent)
-	{
-		TNode* gparent = parent->p;
-		if (gparent)
-		{
-			if (gparent->l == parent)
-				gparent->l = child;
-			else
-				gparent->r = child;
-		}
-		parent->p = child;
-		child->p = gparent;
-		if (parent->l == child)
-		{
-			parent->l = child->r;
-			if (parent->l) parent->l->p = parent;
-			child->r = parent;
-		}
-		else
-		{
-			parent->r = child->l;
-			if (parent->r) parent->r->p = parent;
-			child->l = parent;
-		}
-		parent->UpdateInfo();
-		child->UpdateInfo();
-	}
-
 	static void SplayI(TNode* node)
 	{
 		for (;;)
 		{
 			TNode* parent = node->p;
-			if (!parent) return;
+			if (!parent) break;
 			TNode* gparent = parent->p;
 			if (!gparent)
 			{
-				RotateI(node, parent);
-				return;
+				BSTRotate(node, parent);
+				break;
 			}
 			bool zigzig = ((gparent->l == parent) == (parent->l == node));
 			if (zigzig)
 			{
-				RotateI(parent, gparent);
-				RotateI(node, parent);
+				BSTRotate(parent, gparent);
+				BSTRotate(node, parent);
 			}
 			else
 			{
-				RotateI(node, parent);
-				RotateI(node, gparent);
+				BSTRotate(node, parent);
+				BSTRotate(node, gparent);
 			}
 		}
+		node->UpdateInfo();
 	}
 
 public:
