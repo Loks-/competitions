@@ -3,8 +3,10 @@
 #include "action.h"
 #include "build.h"
 #include "info.h"
+#include "insert.h"
 #include "node.h"
 #include "nodes_manager.h"
+#include "rotate.h"
 #include "../template.h"
 
 template <
@@ -156,6 +158,7 @@ protected:
 public:
 	static void SplitByKey(TNode* root, const TKey& key, TNode*& output_l, TNode*& output_r)
 	{
+		static_assert(TNode::use_key, "use_key should be true");
 		if (!root)
 			output_l = output_r = 0;
 		else
@@ -201,7 +204,7 @@ protected:
 public:
 	static void SplitBySize(TNode* root, unsigned lsize, TNode*& output_l, TNode*& output_r)
 	{
-		static_assert(TInfo::has_size);
+		static_assert(TInfo::has_size, "info should contain size");
 		if (!root)
 		{
 			output_l = output_r = 0;
@@ -224,18 +227,37 @@ public:
 		}
 	}
 
-	static TNode* Insert(TNode* root, TNode* node)
+protected:
+	static TNode* InsertI(TNode* root, TNode* node, TFakeFalse)
 	{
-		assert(node);
-		if (!root) return node;		
 		TNode *p1, *p2;
 		SplitByKey(root, node->key, p1, p2);
 		return Join(Join(p1, node), p2);
 	}
 
+	static TNode* InsertI(TNode* root, TNode* node, TFakeTrue)
+	{
+		BSTInsert(root, node);
+		for (; node->p; )
+		{
+			if (node->p->height >= node->height) break;
+			MoveNodeUp(node);
+		}
+		node->UpdateInfo();
+		return (node->p ? root : node);
+	}
+
+public:
+	static TNode* Insert(TNode* root, TNode* node) 
+	{ 
+		assert(node);
+		if (!root) return node;
+		return InsertI(root, node, TFakeBool<use_parent>());
+	}
+
 	static TNode* Remove(TNode* node)
 	{
-		static_assert(use_parent);
+		static_assert(TNode::use_parent, "use_parent should be true");
 		assert(node);
 		ApplyActionRootToNode(node);
 		TNode* l = node->l; node->l = 0;

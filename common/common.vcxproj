@@ -143,6 +143,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="base.h" />
+    <ClInclude Include="binary_search_tree\insert.h" />
     <ClInclude Include="binary_search_tree\node.h" />
     <ClInclude Include="binary_search_tree\nodes_manager.h" />
     <ClInclude Include="binary_search_tree\action.h" />
@@ -150,6 +151,7 @@
     <ClInclude Include="binary_search_tree\info.h" />
     <ClInclude Include="binary_search_tree\build.h" />
     <ClInclude Include="binary_search_tree\find_by_key.h" />
+    <ClInclude Include="binary_search_tree\rotate.h" />
     <ClInclude Include="binary_search_tree\splay_tree.h" />
     <ClInclude Include="binary_search_tree\traversal.h" />
     <ClInclude Include="binary_search_tree\treap.h" />
