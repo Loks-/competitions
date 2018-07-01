@@ -131,7 +131,7 @@ public:
 
 	static TNode* FindByKey_Less(TNode* root, const typename TNode::TKey& key)
 	{
-		static_assert(TNode::use_key);
+		static_assert(TNode::use_key, "use_key should be true");
 		TNode * last_less = 0;
 		for (TNode* node = root; node != 0; )
 		{
@@ -149,6 +149,7 @@ public:
 
 	static void SplitByKey(TNode* root, const TKey& key, TNode*& output_l, TNode*& output_r)
 	{
+		static_assert(TNode::use_key, "use_key should be true");
 		if (!root)
 		{
 			output_l = output_r = 0;
@@ -161,7 +162,7 @@ public:
 
 	static void SplitBySize(TNode* root, unsigned lsize, TNode*& output_l, TNode*& output_r)
 	{
-		static_assert(TInfo::has_size);
+		static_assert(TInfo::has_size, "info should contain size");
 		if (!root)
 		{
 			output_l = output_r = 0;

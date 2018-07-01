@@ -80,13 +80,13 @@ public:
 	// Operations with square matrix
 	TSelf& operator*=(const TSelf& v) 
 	{ 
-		static_assert(is_square);
+		static_assert(is_square, "matrix should be square");
 		TSelf t; Mult(v, t); data.swap(t.data); return *this;
 	}
 
 	TSelf PowU(uint64_t pow) const
 	{
-		static_assert(is_square);
+		static_assert(is_square, "matrix should be square");
 		TSelf ans; ans.SetDiagonal(1);
 		TSelf x = *this;
 		for (; pow; pow >>= 1)

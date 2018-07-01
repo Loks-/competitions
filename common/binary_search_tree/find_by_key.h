@@ -5,7 +5,7 @@ namespace {
 template<class TNode>
 TNode* FindByKey(TNode* root, const typename TNode::TKey& key)
 {
-	static_assert(TNode::use_key);
+	static_assert(TNode::use_key, "use_key should be true");
 	for (TNode * node = root; node != 0; )
 	{
 		node->ApplyAction();

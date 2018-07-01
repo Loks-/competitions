@@ -60,7 +60,7 @@ public:
 
 	TNode* GetNewNode(const TData& data, const TKey& key)
 	{
-		static_assert(use_key);
+		static_assert(use_key, "use_key should be true");
 		TNode* p = GetNewNode();
 		p->data = data;
 		p->key = key;
@@ -84,7 +84,7 @@ public:
 
 	TNode* Build(const vector<TData>& data, const vector<TKey>& keys)
 	{
-		static_assert(use_key);
+		static_assert(use_key, "use_key should be true");
 		assert(data.size() == keys.size());
 		assert(AvailableNodes() >= data.size());
 		if (data.size() == 0) return 0;

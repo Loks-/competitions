@@ -5,6 +5,7 @@ namespace {
 template<class TNode>
 TNode* FindByOrder(TNode* root, unsigned order_index)
 {
+	static_assert(TNode::TInfo::has_size, "info should contain size");
 	if (!root) return 0;
 	if (order_index >= root->info.size) return 0;
 	for (TNode* node = root; node;)
