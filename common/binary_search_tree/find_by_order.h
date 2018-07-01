@@ -3,7 +3,7 @@
 namespace {
 
 template<class TNode>
-TNode* FindByOrder(TNode* root, unsigned order_index)
+TNode* BSTFindByOrder(TNode* root, unsigned order_index)
 {
 	static_assert(TNode::TInfo::has_size, "info should contain size");
 	if (!root) return 0;

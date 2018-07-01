@@ -25,7 +25,7 @@ int main_median_updates_treap()
 		}
 		else if (c == 'r')
 		{
-			TNode * node = FindByKey(root, x);
+			TNode * node = BSTFindByKey(root, x);
 			if (node == 0)
 			{
 				cout << "Wrong!" << endl;
@@ -40,7 +40,7 @@ int main_median_updates_treap()
 		else
 		{
 			unsigned size = root->info.size;
-			int64_t s = (FindByOrder(root, (size - 1) / 2)->key + FindByOrder(root, size / 2)->key) / 2;
+			int64_t s = (BSTFindByOrder(root, (size - 1) / 2)->key + BSTFindByOrder(root, size / 2)->key) / 2;
 			if (s & 1)
 				printf("%.1lf\n", s / 2.0);
 			else
