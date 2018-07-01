@@ -2,7 +2,6 @@
 
 #include "action.h"
 #include "build.h"
-#include "find_by_order.h"
 #include "info.h"
 #include "node.h"
 #include "nodes_manager.h"
@@ -33,9 +32,10 @@ public:
 public:
 	SplayTree(unsigned max_nodes) : TNodesManager(max_nodes) {}
 
-protected:
-	static void SplayI(TNode* node)
+	// Splay assumes that actions are already applied from root to node.
+	static void Splay(TNode* node)
 	{
+		if (!node) return;
 		for (;;)
 		{
 			TNode* parent = node->p;
@@ -61,13 +61,6 @@ protected:
 		node->UpdateInfo();
 	}
 
-public:
-	static void Splay(TNode* node)
-	{
-		ApplyActionRootToNode(node);
-		SplayI(node);
-	}
-
 	static TNode* Join(TNode* l, TNode* r)
 	{
 		if (!l) return r;
@@ -79,7 +72,7 @@ public:
 			p->ApplyAction();
 			if (!p->r) break;
 		}
-		SplayI(p);
+		Splay(p);
 		p->r = r;
 		r->p = p;
 		p->UpdateInfo();
@@ -103,21 +96,46 @@ public:
 		return r;
 	}
 
-	static TNode* FindByKey_Less(TNode* root, const typename TNode::TKey& key)
+	static TNode* FindByKey(TNode*& root, const TKey& key)
 	{
 		static_assert(TNode::use_key, "use_key should be true");
-		TNode * last_less = 0;
+		TNode* node = root, * last_node = 0;
+		for (; node != 0; )
+		{
+			last_node = node;
+			node->ApplyAction();
+			if (node->key < key)
+				node = node->r;
+			else if (key < node->key)
+				node = node->l;
+			else
+				break;
+		}
+		Splay(last_node);
+		root = last_node;
+		return node;
+	}
+
+	static TNode* FindByKey_Less(TNode*& root, const TKey& key)
+	{
+		static_assert(TNode::use_key, "use_key should be true");
+		TNode * last_less = 0, * last_node = root;
 		for (TNode* node = root; node != 0; )
 		{
 			node->ApplyAction();
-			if (node->x < key)
+			if (node->key < key)
 			{
 				last_less = node;
 				node = node->r;
 			}
 			else
+			{
+				last_node = node;
 				node = node->l;
+			}
 		}
+		root = last_less ? last_less : last_node;
+		Splay(root);
 		return last_less;
 	}
 
@@ -132,6 +150,33 @@ public:
 		TNode* p = FindByKey_Less(root, key);
 		output_l = p;
 		output_r = (p ? Split(p) : root);
+	}
+
+	static TNode* FindByOrder(TNode*& root, unsigned order_index)
+	{
+		static_assert(TNode::TInfo::has_size, "info should contain size");
+		if (!root) return 0;
+		if (order_index >= root->info.size) return 0;
+		for (TNode* node = root; node;)
+		{
+			node->ApplyAction();
+			unsigned ls = (node->l ? node->l->info.size : 0);
+			if (order_index < ls)
+				node = node->l;
+			else if (order_index == ls)
+			{
+				Splay(node);
+				root = node;
+				return node;
+			}
+			else
+			{
+				order_index -= 1 + ls;
+				node = node->r;
+			}
+		}
+		assert(false);
+		return 0;
 	}
 
 	static void SplitBySize(TNode* root, unsigned lsize, TNode*& output_l, TNode*& output_r)
@@ -157,5 +202,37 @@ public:
 			output_l = p;
 			output_r = Split(p);
 		}
+	}
+
+	static TNode* Insert(TNode* root, TNode* node)
+	{
+		static_assert(TNode::use_key, "use_key should be true");
+		assert(node);
+		if (!root) return node;
+		SplitByKey(root, node->key, node->l, node->r);
+		if (node->l) node->l->p = node;
+		if (node->r) node->r->p = node;
+		node->UpdateInfo();
+		return node;
+	}
+
+	static TNode* Remove(TNode* node)
+	{
+		assert(node);
+		ApplyActionRootToNode(node);
+		TNode* l = node->l; node->l = 0;
+		if (l) l->p = 0;
+		TNode* r = node->r; node->r = 0;
+		if (r) r->p = 0;
+		TNode* p = node->p; node->p = 0;
+		TNode* m = Join(l, r);
+		if (m) m->p = p;
+		if (!p) return m;
+		if (node == p->l)
+			p->l = m;
+		else
+			p->r = m;
+		Splay(p);
+		return p;
 	}
 };
