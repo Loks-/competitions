@@ -112,4 +112,16 @@ public:
 	{
 		return BSTBuild::Build(vnodes);
 	}
+
+	TNode* InsertNewNode(TNode* root, const TData& data, const TKey& key)
+	{
+		return TMe::Insert(root, GetNewNode(data, key));
+	}
+
+	TNode* RemoveAndRelease(TNode* node)
+	{
+		TNode* new_root = TMe::Remove(node);
+		ReleaseNode(node);
+		return new_root;
+	}
 };

@@ -21,7 +21,7 @@ int main_median_updates_treap()
 		x *= 2;
 		if (c == 'a')
 		{
-			root = treap.Insert(root, TEmpty(), x);
+			root = treap.InsertNewNode(root, TEmpty(), x);
 		}
 		else if (c == 'r')
 		{

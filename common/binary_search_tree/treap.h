@@ -233,11 +233,6 @@ public:
 		return Join(Join(p1, node), p2);
 	}
 
-	TNode* Insert(TNode* root, const TData& data, const TKey& key)
-	{
-		return Insert(root, TNodesManager::GetNewNode(data, key));
-	}
-
 	static TNode* Remove(TNode* node)
 	{
 		static_assert(use_parent);
@@ -257,12 +252,5 @@ public:
 			p->r = m;
 		UpdateInfoNodeToRoot(p);
 		return Root(p);
-	}
-
-	TNode* RemoveAndRelease(TNode* node)
-	{
-		TNode* new_root = Remove(node);
-		TNodesManager::ReleaseNode(node);
-		return new_root;
 	}
 };
