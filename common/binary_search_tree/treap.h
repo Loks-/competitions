@@ -250,6 +250,7 @@ protected:
 public:
 	static TNode* Insert(TNode* root, TNode* node) 
 	{ 
+		static_assert(TNode::use_key, "use_key should be true");
 		assert(node);
 		if (!root) return node;
 		return InsertI(root, node, TFakeBool<use_parent>());
