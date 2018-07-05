@@ -151,8 +151,11 @@
     <ClInclude Include="binary_search_tree\info.h" />
     <ClInclude Include="binary_search_tree\build.h" />
     <ClInclude Include="binary_search_tree\find_by_key.h" />
+    <ClInclude Include="binary_search_tree\red_black_tree.h" />
     <ClInclude Include="binary_search_tree\rotate.h" />
+    <ClInclude Include="binary_search_tree\sibling.h" />
     <ClInclude Include="binary_search_tree\splay_tree.h" />
+    <ClInclude Include="binary_search_tree\swap.h" />
     <ClInclude Include="binary_search_tree\traversal.h" />
     <ClInclude Include="binary_search_tree\treap.h" />
     <ClInclude Include="binary_search_tree\utils\rotate.h" />

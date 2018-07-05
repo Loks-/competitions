@@ -143,6 +143,15 @@
     <ClInclude Include="binary_search_tree\insert.h">
       <Filter>Header Files\binary_search_tree</Filter>
     </ClInclude>
+    <ClInclude Include="binary_search_tree\red_black_tree.h">
+      <Filter>Header Files\binary_search_tree</Filter>
+    </ClInclude>
+    <ClInclude Include="binary_search_tree\swap.h">
+      <Filter>Header Files\binary_search_tree</Filter>
+    </ClInclude>
+    <ClInclude Include="binary_search_tree\sibling.h">
+      <Filter>Header Files\binary_search_tree</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\current_solution.inl">
