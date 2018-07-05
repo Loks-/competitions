@@ -5,14 +5,14 @@
 #include "common/binary_search_tree/find_by_order.h"
 #include "common/binary_search_tree/treap.h"
 
-using TTreap = Treap<true, true, TEmpty>;
-using TNode = TTreap::TNode;
+using TTree = Treap<true, true, TEmpty>;
+using TNode = TTree::TNode;
 
 int main_median_updates_treap()
 {
 	unsigned N;
 	cin >> N;
-	TTreap treap(N);
+	TTree tree(N);
 	TNode * root = 0;
 	for (unsigned i = 0; i < N; ++i)
 	{
@@ -21,7 +21,7 @@ int main_median_updates_treap()
 		x *= 2;
 		if (c == 'a')
 		{
-			root = treap.InsertNewNode(root, TEmpty(), x);
+			root = tree.InsertNewNode(root, TEmpty(), x);
 		}
 		else if (c == 'r')
 		{
@@ -31,7 +31,7 @@ int main_median_updates_treap()
 				cout << "Wrong!" << endl;
 				continue;
 			}
-			root = treap.RemoveAndRelease(node);
+			root = tree.RemoveAndRelease(node);
 		}
 		if (root == 0)
 		{

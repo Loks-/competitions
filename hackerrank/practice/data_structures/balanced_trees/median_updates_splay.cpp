@@ -3,14 +3,14 @@
 #include "common/base.h"
 #include "common/binary_search_tree/splay_tree.h"
 
-using TSplayTree = SplayTree<true, TEmpty>;
-using TNode = TSplayTree::TNode;
+using TTree = SplayTree<true, TEmpty>;
+using TNode = TTree::TNode;
 
 int main_median_updates_splay()
 {
 	unsigned N;
 	cin >> N;
-	TSplayTree splay_tree(N);
+	TTree tree(N);
 	TNode * root = 0;
 	for (unsigned i = 0; i < N; ++i)
 	{
@@ -19,17 +19,17 @@ int main_median_updates_splay()
 		x *= 2;
 		if (c == 'a')
 		{
-			root = splay_tree.InsertNewNode(root, TEmpty(), x);
+			root = tree.InsertNewNode(root, TEmpty(), x);
 		}
 		else if (c == 'r')
 		{
-			TNode * node = TSplayTree::FindByKey(root, x);
+			TNode * node = TTree::FindByKey(root, x);
 			if (node == 0)
 			{
 				cout << "Wrong!" << endl;
 				continue;
 			}
-			root = splay_tree.RemoveAndRelease(node);
+			root = tree.RemoveAndRelease(node);
 		}
 		if (root == 0)
 		{
@@ -38,7 +38,7 @@ int main_median_updates_splay()
 		else
 		{
 			unsigned size = root->info.size;
-			int64_t s = (TSplayTree::FindByOrder(root, (size - 1) / 2)->key + TSplayTree::FindByOrder(root, size / 2)->key) / 2;
+			int64_t s = (TTree::FindByOrder(root, (size - 1) / 2)->key + TTree::FindByOrder(root, size / 2)->key) / 2;
 			if (s & 1)
 				printf("%.1lf\n", s / 2.0);
 			else
