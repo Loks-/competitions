@@ -158,7 +158,7 @@ protected:
 public:
 	static void SplitByKey(TNode* root, const TKey& key, TNode*& output_l, TNode*& output_r)
 	{
-		static_assert(TNode::use_key, "use_key should be true");
+		static_assert(use_key, "use_key should be true");
 		if (!root)
 			output_l = output_r = 0;
 		else
@@ -250,7 +250,7 @@ protected:
 public:
 	static TNode* Insert(TNode* root, TNode* node) 
 	{ 
-		static_assert(TNode::use_key, "use_key should be true");
+		static_assert(use_key, "use_key should be true");
 		assert(node);
 		if (!root) return node;
 		return InsertI(root, node, TFakeBool<use_parent>());
@@ -258,7 +258,7 @@ public:
 
 	static TNode* Remove(TNode* node)
 	{
-		static_assert(TNode::use_parent, "use_parent should be true");
+		static_assert(use_parent, "use_parent should be true");
 		assert(node);
 		ApplyActionRootToNode(node);
 		TNode* l = node->l; node->l = 0;

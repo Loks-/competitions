@@ -98,7 +98,7 @@ public:
 
 	static TNode* FindByKey(TNode*& root, const TKey& key)
 	{
-		static_assert(TNode::use_key, "use_key should be true");
+		static_assert(use_key, "use_key should be true");
 		TNode* node = root, * last_node = 0;
 		for (; node != 0; )
 		{
@@ -118,7 +118,7 @@ public:
 
 	static TNode* FindByKey_Less(TNode*& root, const TKey& key)
 	{
-		static_assert(TNode::use_key, "use_key should be true");
+		static_assert(use_key, "use_key should be true");
 		TNode * last_less = 0, * last_node = root;
 		for (TNode* node = root; node != 0; )
 		{
@@ -141,7 +141,7 @@ public:
 
 	static void SplitByKey(TNode* root, const TKey& key, TNode*& output_l, TNode*& output_r)
 	{
-		static_assert(TNode::use_key, "use_key should be true");
+		static_assert(use_key, "use_key should be true");
 		if (!root)
 		{
 			output_l = output_r = 0;
@@ -154,7 +154,7 @@ public:
 
 	static TNode* FindByOrder(TNode*& root, unsigned order_index)
 	{
-		static_assert(TNode::TInfo::has_size, "info should contain size");
+		static_assert(TInfo::has_size, "info should contain size");
 		if (!root) return 0;
 		if (order_index >= root->info.size) return 0;
 		for (TNode* node = root; node;)
@@ -206,7 +206,7 @@ public:
 
 	static TNode* Insert(TNode* root, TNode* node)
 	{
-		static_assert(TNode::use_key, "use_key should be true");
+		static_assert(use_key, "use_key should be true");
 		assert(node);
 		if (!root) return node;
 		SplitByKey(root, node->key, node->l, node->r);
