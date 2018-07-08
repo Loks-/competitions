@@ -125,13 +125,15 @@ public:
 			if (!parent) return child;
 			TNode* sibling = BSTSibling(child, parent);
 			assert(sibling);
+			sibling->ApplyAction();
 			if (!sibling->info.is_black)
 			{
 				assert(parent->info.is_black);
 				BSTRotate<TNode, true>(sibling, parent);
 				sibling->info.is_black = true;
 				parent->info.is_black = false;
-				sibling = BSTSibling(child, parent);;
+				sibling = BSTSibling(child, parent);
+				sibling->ApplyAction();
 			}
 			assert(sibling && sibling->info.is_black);
 			if (parent->info.is_black && (!sibling->l || sibling->l->info.is_black) && (!sibling->r || sibling->r->info.is_black))
@@ -150,7 +152,7 @@ public:
 			if ((parent->l == child) && (!sibling->r || sibling->r->info.is_black))
 			{
 				assert(sibling->l && !sibling->l->info.is_black);
-				BSTRotate<TNode, false>(sibling->l, sibling);
+				BSTRotate<TNode, false, true>(sibling->l, sibling);
 				sibling->info.is_black = false;
 				sibling = sibling->p;
 				sibling->info.is_black = true;
@@ -158,7 +160,7 @@ public:
 			else if ((parent->r == child) && (!sibling->l || sibling->l->info.is_black))
 			{
 				assert(sibling->r && !sibling->r->info.is_black);
-				BSTRotate<TNode, false>(sibling->r, sibling);
+				BSTRotate<TNode, false, true>(sibling->r, sibling);
 				sibling->info.is_black = false;
 				sibling = sibling->p;
 				sibling->info.is_black = true;
