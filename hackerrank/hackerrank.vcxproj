@@ -141,6 +141,7 @@
     <ClCompile Include="practice\data_structures\balanced_trees\array_and_simple_queries_splay.cpp" />
     <ClCompile Include="practice\data_structures\balanced_trees\array_and_simple_queries_treap.cpp" />
     <ClCompile Include="practice\data_structures\balanced_trees\median_updates_red_black.cpp" />
+    <ClCompile Include="practice\data_structures\balanced_trees\median_updates_scapegoat.cpp" />
     <ClCompile Include="practice\data_structures\balanced_trees\median_updates_splay.cpp" />
     <ClCompile Include="practice\data_structures\balanced_trees\median_updates_treap.cpp" />
     <ClCompile Include="practice\data_structures\trees\balanced_forest.cpp" />
