@@ -17,6 +17,7 @@ protected:
 	static void TraversePreorder(TNode* node, vector<TData>& output)
 	{
 		if (!node) return;
+		node->ApplyAction();
 		output.push_back(node->data);
 		TraversePreorder(node->l, output);
 		TraversePreorder(node->r, output);
@@ -26,6 +27,7 @@ protected:
 	static void TraverseInorder(TNode* node, vector<TData>& output)
 	{
 		if (!node) return;
+		node->ApplyAction();
 		TraverseInorder(node->l, output);
 		output.push_back(node->data);
 		TraverseInorder(node->r, output);
@@ -35,6 +37,7 @@ protected:
 	static void TraversePostorder(TNode* node, vector<TData>& output)
 	{
 		if (!node) return;
+		node->ApplyAction();
 		TraversePostorder(node->l, output);
 		TraversePostorder(node->r, output);
 		output.push_back(node->data);
@@ -48,6 +51,7 @@ protected:
 		for (q.push(node); !q.empty(); q.pop())
 		{
 			node = q.front();
+			node->ApplyAction();
 			output.push_back(node->data);
 			if (node->l) q.push(node->l);
 			if (node->r) q.push(node->r);
