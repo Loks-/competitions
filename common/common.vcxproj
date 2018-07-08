@@ -153,6 +153,7 @@
     <ClInclude Include="binary_search_tree\find_by_key.h" />
     <ClInclude Include="binary_search_tree\red_black_tree.h" />
     <ClInclude Include="binary_search_tree\rotate.h" />
+    <ClInclude Include="binary_search_tree\scapegoat_tree.h" />
     <ClInclude Include="binary_search_tree\sibling.h" />
     <ClInclude Include="binary_search_tree\splay_tree.h" />
     <ClInclude Include="binary_search_tree\swap.h" />

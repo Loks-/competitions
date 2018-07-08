@@ -12,6 +12,7 @@
 #include "binary_search_tree/nodes_manager.h"
 #include "binary_search_tree/red_black_tree.h"
 #include "binary_search_tree/rotate.h"
+#include "binary_search_tree/scapegoat_tree.h"
 #include "binary_search_tree/sibling.h"
 #include "binary_search_tree/splay_tree.h"
 #include "binary_search_tree/swap.h"
