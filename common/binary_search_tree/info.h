@@ -24,8 +24,9 @@ public:
 	unsigned size = 0;
 
 	template<class TNode>
-	void Update(const TNode* node)
+	void Update(TNode* node)
 	{
+		node->ApplyAction();
 		size = 1 + (node->l ? node->l->info.size : 0) + (node->r ? node->r->info.size : 0);
 	}
 };
