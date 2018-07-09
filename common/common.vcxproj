@@ -159,6 +159,7 @@
     <ClInclude Include="binary_search_tree\swap.h" />
     <ClInclude Include="binary_search_tree\traversal.h" />
     <ClInclude Include="binary_search_tree\treap.h" />
+    <ClInclude Include="binary_search_tree\tree.h" />
     <ClInclude Include="binary_search_tree\utils\rotate.h" />
     <ClInclude Include="graph\base_graph.h" />
     <ClInclude Include="graph\base_subgraph.h" />

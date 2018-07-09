@@ -4,8 +4,8 @@
 #include "build.h"
 #include "info.h"
 #include "node.h"
-#include "nodes_manager.h"
 #include "rotate.h"
+#include "tree.h"
 
 template <
 	bool _use_key,
@@ -13,8 +13,8 @@ template <
 	class TTInfo = BSTInfoSize,
 	class TTAction = BSTActionNone,
 	class TTKey = int64_t>
-class SplayTree : public BSTNodesManager<BSTNode<TTData, TTInfo, TTAction, _use_key, true, false, TTKey>,
-										SplayTree<_use_key, TTData, TTInfo, TTAction, TTKey>>
+class SplayTree : public BSTree<BSTNode<TTData, TTInfo, TTAction, _use_key, true, false, TTKey>,
+								SplayTree<_use_key, TTData, TTInfo, TTAction, TTKey>>
 {
 public:
 	static const bool use_key = _use_key;
@@ -27,10 +27,10 @@ public:
 	using TKey = TTKey;
 	using TNode = BSTNode<TData, TInfo, TAction, use_key, use_parent, use_height, TKey>;
 	using TSelf = SplayTree<use_key, TData, TInfo, TAction, TKey>;
-	using TNodesManager = BSTNodesManager<TNode, TSelf>;
+	using TTree = BSTree<TNode, TSelf>;
 
 public:
-	SplayTree(unsigned max_nodes) : TNodesManager(max_nodes) {}
+	SplayTree(unsigned max_nodes) : TTree(max_nodes) {}
 
 	// Splay assumes that actions are already applied from root to node.
 	static void Splay(TNode* node)
@@ -204,7 +204,7 @@ public:
 		}
 	}
 
-	static TNode* Insert(TNode* root, TNode* node)
+	static TNode* InsertByKey(TNode* root, TNode* node)
 	{
 		static_assert(use_key, "use_key should be true");
 		assert(node);
@@ -216,7 +216,7 @@ public:
 		return node;
 	}
 
-	static TNode* Remove(TNode* node)
+	static TNode* RemoveByNode(TNode* node)
 	{
 		assert(node);
 		ApplyActionRootToNode(node);

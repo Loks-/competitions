@@ -16,6 +16,8 @@ public:
 	TData data;
 	TInfo info;
 	TAction action;
+
+	void ClearAction() { action.Clear(); }
 };
 
 template<

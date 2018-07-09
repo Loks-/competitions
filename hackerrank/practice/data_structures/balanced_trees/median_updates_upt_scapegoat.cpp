@@ -3,12 +3,12 @@
 #include "common/base.h"
 #include "common/binary_search_tree/find_by_key.h"
 #include "common/binary_search_tree/find_by_order.h"
-#include "common/binary_search_tree/treap.h"
+#include "common/binary_search_tree/scapegoat_tree.h"
 
-using TTree = Treap<true, true, TEmpty>;
+using TTree = ScapegoatTree<true, TEmpty>;
 using TNode = TTree::TNode;
 
-int main_median_updates_treap()
+int main_median_updates_upt_scapegoat()
 {
 	unsigned N;
 	cin >> N;
@@ -31,7 +31,7 @@ int main_median_updates_treap()
 				cout << "Wrong!" << endl;
 				continue;
 			}
-			root = tree.RemoveAndRelease(node);
+			root = tree.RemoveAndReleaseByKey(root, x);
 		}
 		if (root == 0)
 		{

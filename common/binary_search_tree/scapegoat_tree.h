@@ -5,9 +5,8 @@
 #include "info.h"
 #include "insert.h"
 #include "node.h"
-#include "nodes_manager.h"
 #include "swap.h"
-#include "../template.h"
+#include "tree.h"
 
 // In this implementation delete operation is different from wiki Scapegoat
 // tree. It removes node from tree (similar to other trees), not just mark for
@@ -18,8 +17,8 @@ template <
 	class TTInfo = BSTInfoSize,
 	class TTAction = BSTActionNone,
 	class TTKey = int64_t>
-class ScapegoatTree : public BSTNodesManager<BSTNode<TTData, TTInfo, TTAction, true, _use_parent, false, TTKey>,
-											ScapegoatTree<_use_parent, TTData, TTInfo, TTAction, TTKey>>
+class ScapegoatTree : public BSTree<BSTNode<TTData, TTInfo, TTAction, true, _use_parent, false, TTKey>,
+									ScapegoatTree<_use_parent, TTData, TTInfo, TTAction, TTKey>>
 {
 public:
 	static const bool use_key = true;
@@ -33,10 +32,11 @@ public:
 	using TKey = TTKey;
 	using TNode = BSTNode<TData, TInfo, TAction, use_key, use_parent, use_height, TKey>;
 	using TSelf = ScapegoatTree<use_key, TData, TInfo, TAction, TKey>;
-	using TNodesManager = BSTNodesManager<TNode, TSelf>;
+	using TTree = BSTree<TNode, TSelf>;
+	friend class BSTree<TNode, TSelf>;
 
 public:
-	ScapegoatTree(unsigned max_nodes) : TNodesManager(max_nodes) {}
+	ScapegoatTree(unsigned max_nodes) : TTree(max_nodes) {}
 
 protected:
 	static void TraverseInorder(TNode* node, vector<TNode*>& output)
@@ -79,16 +79,14 @@ protected:
 	}
 
 	// static TNode* InsertI(TNode* root, TNode* node, TFakeFalse) { static_assert(false); return 0; }
-	static TNode* InsertI(TNode* root, TNode* node, TFakeTrue)
+	static TNode* InsertByKeyI(TNode* root, TNode* node, TFakeTrue)
 	{ 
 		BSTInsert<TNode>(root, node);
 		return CheckAndFix(node);
 	}
 
 public:
-	static TNode* Insert(TNode* root, TNode* node) { return InsertI(root, node, TFakeBool<use_parent>()); }
-
-	static TNode* Remove(TNode* node)
+	static TNode* RemoveByNode(TNode* node)
 	{
 		static_assert(use_parent, "use_parent should be true");
 		assert(node);

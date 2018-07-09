@@ -9,6 +9,7 @@ public:
 	static const bool is_none = true;
 
 	bool IsEmpty() const { return true; }
+	void Clear() {};
 	void Set(const TSelf& new_action) {}
 	template<class TNode>
 	void Apply(const TNode* node) {}

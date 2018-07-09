@@ -1,12 +1,14 @@
 // https://www.hackerrank.com/challenges/median
 
 #include "common/base.h"
-#include "common/binary_search_tree/splay_tree.h"
+#include "common/binary_search_tree/find_by_key.h"
+#include "common/binary_search_tree/find_by_order.h"
+#include "common/binary_search_tree/red_black_tree.h"
 
-using TTree = SplayTree<true, TEmpty>;
+using TTree = RedBlackTree<TEmpty>;
 using TNode = TTree::TNode;
 
-int main_median_updates_splay()
+int main_median_updates_upt_red_black()
 {
 	unsigned N;
 	cin >> N;
@@ -23,13 +25,13 @@ int main_median_updates_splay()
 		}
 		else if (c == 'r')
 		{
-			TNode * node = TTree::FindByKey(root, x);
+			TNode * node = BSTFindByKey(root, x);
 			if (node == 0)
 			{
 				cout << "Wrong!" << endl;
 				continue;
 			}
-			root = tree.RemoveAndRelease(node);
+			root = tree.RemoveAndReleaseByKey(root, x);
 		}
 		if (root == 0)
 		{
@@ -38,7 +40,7 @@ int main_median_updates_splay()
 		else
 		{
 			unsigned size = root->info.size;
-			int64_t s = (TTree::FindByOrder(root, (size - 1) / 2)->key + TTree::FindByOrder(root, size / 2)->key) / 2;
+			int64_t s = (BSTFindByOrder(root, (size - 1) / 2)->key + BSTFindByOrder(root, size / 2)->key) / 2;
 			if (s & 1)
 				printf("%.1lf\n", s / 2.0);
 			else

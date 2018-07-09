@@ -4,10 +4,10 @@
 #include "info.h"
 #include "insert.h"
 #include "node.h"
-#include "nodes_manager.h"
 #include "rotate.h"
 #include "sibling.h"
 #include "swap.h"
+#include "tree.h"
 
 template<class TInfo>
 class RBTInfo : public TInfo
@@ -21,8 +21,8 @@ template <
 	class TTInfo = BSTInfoSize,
 	class TTAction = BSTActionNone,
 	class TTKey = int64_t>
-class RedBlackTree : public BSTNodesManager<BSTNode<TTData, RBTInfo<TTInfo>, TTAction, true, true, false, TTKey>,
-											RedBlackTree<TTData, TTInfo, TTAction, TTKey>>
+class RedBlackTree : public BSTree<BSTNode<TTData, RBTInfo<TTInfo>, TTAction, true, true, false, TTKey>,
+								   RedBlackTree<TTData, TTInfo, TTAction, TTKey>>
 {
 public:
 	static const bool use_key = true;
@@ -35,20 +35,21 @@ public:
 	using TKey = TTKey;
 	using TNode = BSTNode<TData, TInfo, TAction, use_key, use_parent, use_height, TKey>;
 	using TSelf = RedBlackTree<TData, TTInfo, TAction, TKey>;
-	using TNodesManager = BSTNodesManager<TNode, TSelf>;
+	using TTree = BSTree<TNode, TSelf>;
+	friend class BSTree<TNode, TSelf>;
 
 public:
-	RedBlackTree(unsigned max_nodes) : TNodesManager(max_nodes) {}
+	RedBlackTree(unsigned max_nodes) : TTree(max_nodes) {}
 
 	static TNode* BuildTree(const vector<TNode*>& nodes)
 	{
 		TNode* root = 0;
 		for (TNode* node : nodes)
-			root = Insert(root, node);
+			root = InsertByKey(root, node);
 		return root;
 	}
 	
-	static TNode* Insert(TNode* root, TNode* node)
+	static TNode* InsertByKey(TNode* root, TNode* node)
 	{
 		BSTInsert<TNode>(root, node);
 		node->info.is_black = false;
@@ -81,7 +82,7 @@ public:
 		return 0;
 	}
 
-	static TNode* Remove(TNode* node)
+	static TNode* RemoveByNode(TNode* node)
 	{
 		assert(node);
 		ApplyActionRootToNode(node);

@@ -155,6 +155,9 @@
     <ClInclude Include="binary_search_tree\scapegoat_tree.h">
       <Filter>Header Files\binary_search_tree</Filter>
     </ClInclude>
+    <ClInclude Include="binary_search_tree\tree.h">
+      <Filter>Header Files\binary_search_tree</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\current_solution.inl">

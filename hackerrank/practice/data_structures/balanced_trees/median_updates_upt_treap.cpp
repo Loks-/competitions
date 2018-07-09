@@ -3,12 +3,12 @@
 #include "common/base.h"
 #include "common/binary_search_tree/find_by_key.h"
 #include "common/binary_search_tree/find_by_order.h"
-#include "common/binary_search_tree/red_black_tree.h"
+#include "common/binary_search_tree/treap.h"
 
-using TTree = RedBlackTree<TEmpty>;
+using TTree = Treap<true, true, TEmpty>;
 using TNode = TTree::TNode;
 
-int main_median_updates_red_black()
+int main_median_updates_upt_treap()
 {
 	unsigned N;
 	cin >> N;
@@ -31,7 +31,7 @@ int main_median_updates_red_black()
 				cout << "Wrong!" << endl;
 				continue;
 			}
-			root = tree.RemoveAndRelease(node);
+			root = tree.RemoveAndReleaseByKey(root, x);
 		}
 		if (root == 0)
 		{

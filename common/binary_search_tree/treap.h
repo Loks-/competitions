@@ -5,9 +5,8 @@
 #include "info.h"
 #include "insert.h"
 #include "node.h"
-#include "nodes_manager.h"
 #include "rotate.h"
-#include "../template.h"
+#include "tree.h"
 
 template <
 	bool _use_key,
@@ -16,8 +15,8 @@ template <
 	class TTInfo = BSTInfoSize,
 	class TTAction = BSTActionNone,
 	class TTKey = int64_t>
-class Treap : public BSTNodesManager<BSTNode<TTData, TTInfo, TTAction, _use_key, _use_parent, true, TTKey, unsigned>,
-									Treap<_use_key, _use_parent, TTData, TTInfo, TTAction, TTKey>>
+class Treap : public BSTree<BSTNode<TTData, TTInfo, TTAction, _use_key, _use_parent, true, TTKey, unsigned>,
+							Treap<_use_key, _use_parent, TTData, TTInfo, TTAction, TTKey>>
 {
 public:
 	static const bool use_key = _use_key;
@@ -30,10 +29,11 @@ public:
 	using TKey = TTKey;
 	using TNode = BSTNode<TData, TInfo, TAction, use_key, use_parent, use_height, TKey, unsigned>;
 	using TSelf = Treap<use_key, use_parent, TData, TInfo, TAction, TKey>;
-	using TNodesManager = BSTNodesManager<TNode, TSelf>;
+	using TTree = BSTree<TNode, TSelf>;
+	friend class BSTree<TNode, TSelf>;
 
 public:
-	Treap(unsigned max_nodes) : TNodesManager(max_nodes) {}
+	Treap(unsigned max_nodes) : TTree(max_nodes) {}
 
 public:
 	static TNode* BuildTree(const vector<TNode*>& nodes)
@@ -228,14 +228,14 @@ public:
 	}
 
 protected:
-	static TNode* InsertI(TNode* root, TNode* node, TFakeFalse)
+	static TNode* InsertByKeyI(TNode* root, TNode* node, TFakeFalse)
 	{
 		TNode *p1, *p2;
 		SplitByKey(root, node->key, p1, p2);
 		return Join(Join(p1, node), p2);
 	}
 
-	static TNode* InsertI(TNode* root, TNode* node, TFakeTrue)
+	static TNode* InsertByKeyI(TNode* root, TNode* node, TFakeTrue)
 	{
 		BSTInsert(root, node);
 		for (; node->p; )
@@ -248,15 +248,7 @@ protected:
 	}
 
 public:
-	static TNode* Insert(TNode* root, TNode* node) 
-	{ 
-		static_assert(use_key, "use_key should be true");
-		assert(node);
-		if (!root) return node;
-		return InsertI(root, node, TFakeBool<use_parent>());
-	}
-
-	static TNode* Remove(TNode* node)
+	static TNode* RemoveByNode(TNode* node)
 	{
 		static_assert(use_parent, "use_parent should be true");
 		assert(node);
