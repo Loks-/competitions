@@ -9,6 +9,6 @@ size_t GetInfoValue(const BSTInfoSize& info) { return info.size; }
 size_t GetInfoValue(const RBTInfo<BSTInfoSize>& info) { return info.size; }
 
 template<class TNode>
-size_t GetInfoValue(const TNode* root) { return root ? GetInfo(root->info) : 0; }
+size_t GetInfoValue(const TNode* root) { return root ? GetInfoValue(root->info) : 0; }
 
 } // namespace
