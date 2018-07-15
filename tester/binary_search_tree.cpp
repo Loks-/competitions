@@ -24,7 +24,7 @@ bool TesterBinarySearchTree::TestHash() const
 	for (const Result& r : results)
 	{
 		if (r.h == 0) continue;
-		string key = r.job + "_" + r.task;
+		string key = r.job + "_" + r.task + "_" + to_string(r.keys_type);
 		if (m[key] == 0)
 			m[key] = r.h;
 		if (m[key] != r.h)
@@ -95,8 +95,14 @@ bool TesterBinarySearchTree::TestAllTrees()
 	return output;
 }
 
-bool TesterBinarySearchTree::Test()
+bool TesterBinarySearchTree::Test(bool run_time_test)
 {
-	TesterBinarySearchTree tbst_hash(100000, hash_test), tbst_time(1000000, time_test);
-	return tbst_hash.TestAllTrees() && tbst_time.TestAllTrees();
+	TesterBinarySearchTree tbst_hash(100000, hash_test);
+	bool result = tbst_hash.TestAllTrees();
+	if (result && run_time_test)
+	{
+		TesterBinarySearchTree tbst_time(10000000, time_test);
+		result = result && tbst_time.TestAllTrees();
+	}
+	return result;
 }
