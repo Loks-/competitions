@@ -16,11 +16,14 @@ public:
 		sorted = 0,
 		reversed = 1,
 		shuffled = 2,
-		type_end = 3
+		shuffled_dups = 3,
+		one_value = 4,
+		sixteen_values = 5,
+		type_end = 6
 	};
 
 protected:
-	vector<TKey> keys_sorted, keys_reversed, keys_shuffled;
+	vector<TKey> keys_sorted, keys_reversed, keys_shuffled, keys_shuffled_dups, keys_one_value, keys_sixteen_values;
 	vector<vector<TKey>*> keys;
 
 	const vector<TKey>& GetKeys(TBSTKeysType type) const

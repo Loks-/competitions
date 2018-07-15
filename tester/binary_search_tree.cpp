@@ -1,5 +1,7 @@
 #pragma once
 
+#include "common/binary_search_tree/red_black_tree.h"
+#include "common/binary_search_tree/scapegoat_tree.h"
 #include "common/binary_search_tree/splay_tree.h"
 #include "common/binary_search_tree/treap.h"
 
@@ -63,12 +65,25 @@ TesterBinarySearchTree::TesterBinarySearchTree(unsigned size)
 	keys_shuffled = keys_sorted;
 	random_shuffle(keys_shuffled.begin(), keys_shuffled.end());
 	keys[shuffled] = &keys_shuffled;
+	keys_shuffled_dups = keys_shuffled;
+	for (TKey& key : keys_shuffled_dups)
+		key &= ~2;
+	keys[shuffled_dups] = &keys_shuffled_dups;
+	keys_one_value.resize(0);
+	keys_one_value.resize(size, size | 1);
+	keys[one_value] = &keys_one_value;
+	keys_sixteen_values = keys_shuffled;
+	for (TKey& key : keys_sixteen_values)
+		key &= 31;
+	keys[sixteen_values] = &keys_sixteen_values;
 }
 
 bool TesterBinarySearchTree::TestAllTrees()
 {
 	cout << "Testing base trees:" << endl;
 	current_job = "base";
+	TestAll<RedBlackTree<TKey, BSTInfoSize, BSTActionNone, TKey>>("rbtree_upt");
+	TestAll<ScapegoatTree<true, TKey, BSTInfoSize, BSTActionNone, TKey>>("scape_upt");
 	TestAll<SplayTree<true, TKey, BSTInfoSize, BSTActionNone, TKey>>("splay_upt");
 	TestAll<Treap<true, false, TKey, BSTInfoSize, BSTActionNone, TKey>>("treap_upf");
 	TestAll<Treap<true, true, TKey, BSTInfoSize, BSTActionNone, TKey>>("treap_upt");
