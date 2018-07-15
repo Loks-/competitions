@@ -3,7 +3,7 @@
 #include "action.h"
 #include "build.h"
 #include "info.h"
-#include "insert.h"
+#include "insert_by_key.h"
 #include "node.h"
 #include "rotate.h"
 #include "tree.h"
@@ -237,7 +237,7 @@ protected:
 
 	static TNode* InsertByKeyI(TNode* root, TNode* node, TFakeTrue)
 	{
-		BSTInsert(root, node);
+		BSTInsertByKey(root, node);
 		for (; node->p; )
 		{
 			if (node->p->height >= node->height) break;

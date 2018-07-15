@@ -143,7 +143,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="base.h" />
-    <ClInclude Include="binary_search_tree\insert.h" />
+    <ClInclude Include="binary_search_tree\insert_by_key_with_path.h" />
+    <ClInclude Include="binary_search_tree\insert_by_key.h" />
     <ClInclude Include="binary_search_tree\node.h" />
     <ClInclude Include="binary_search_tree\nodes_manager.h" />
     <ClInclude Include="binary_search_tree\action.h" />
@@ -180,6 +181,7 @@
     <ClInclude Include="numeric\primes_list.h" />
     <ClInclude Include="numeric\utils.h" />
     <ClInclude Include="template.h" />
+    <ClInclude Include="timer.h" />
     <ClInclude Include="vector\utils.h" />
   </ItemGroup>
   <ItemGroup>

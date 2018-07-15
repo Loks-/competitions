@@ -5,7 +5,7 @@
 namespace {
 
 template<class TNode>
-void BSTInsert(TNode* root, TNode* node)
+void BSTInsertByKey(TNode* root, TNode* node)
 {
 	static_assert(TNode::use_key, "use_key should be true");
 	static_assert(TNode::use_parent, "use_parent should be true");

@@ -2,7 +2,7 @@
 
 #include "action.h"
 #include "info.h"
-#include "insert.h"
+#include "insert_by_key.h"
 #include "node.h"
 #include "rotate.h"
 #include "sibling.h"
@@ -51,7 +51,7 @@ public:
 	
 	static TNode* InsertByKey(TNode* root, TNode* node)
 	{
-		BSTInsert<TNode>(root, node);
+		BSTInsertByKey<TNode>(root, node);
 		node->info.is_black = false;
 		for (;;)
 		{

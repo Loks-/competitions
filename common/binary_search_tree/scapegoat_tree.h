@@ -3,7 +3,7 @@
 #include "action.h"
 #include "build.h"
 #include "info.h"
-#include "insert.h"
+#include "insert_by_key.h"
 #include "node.h"
 #include "swap.h"
 #include "tree.h"
@@ -81,7 +81,7 @@ protected:
 	// static TNode* InsertI(TNode* root, TNode* node, TFakeFalse) { static_assert(false); return 0; }
 	static TNode* InsertByKeyI(TNode* root, TNode* node, TFakeTrue)
 	{ 
-		BSTInsert<TNode>(root, node);
+		BSTInsertByKey<TNode>(root, node);
 		return CheckAndFix(node);
 	}
 
