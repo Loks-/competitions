@@ -55,7 +55,8 @@ protected:
 	string current_job, current_tree;
 	vector<Result> results;
 
-	size_t AddResult(const string& task, unsigned keys_type, size_t h, size_t time);
+	void AddResult(const string& task, unsigned keys_type, size_t h, size_t time);
+	void AddMax();
 	bool TestHash() const;
 	void PrintTime() const;
 
@@ -63,26 +64,40 @@ public:
 	TesterBinarySearchTree(unsigned size, TBSTMode _mode);
 
 	template<class TTree>
-	size_t TestBuild(TBSTKeysType type)
+	void TestBuild(TBSTKeysType type)
 	{
 		Timer t;
 		TTree tree(Size());
 		tree.Build(GetKeys(type), GetKeys(type));
 		t.Stop();
-		return AddResult("Build", type, 0, t.GetMilliseconds());
+		AddResult("Build", type, 0, t.GetMilliseconds());
 	}
 
 	template<class TTree>
 	void TestBuildAll()
 	{
-		size_t max_time = 0;
 		for (unsigned type = 0; type < type_end; ++type)
-			max_time = max(max_time, TestBuild<TTree>(TBSTKeysType(type)));
-		AddResult("Build", type_end, 0, max_time);
+			TestBuild<TTree>(TBSTKeysType(type));
 	}
 
 	template<class TTree>
-	size_t TestInsert(TBSTKeysType type)
+	void TestFindByOrder(TBSTKeysType type, TTree& tree, typename TTree::TNode* root)
+	{
+		const vector<TKey>& vkeys = GetKeys(type);
+		Timer t;
+		size_t h = 0;
+		for (unsigned i = 0; i < Size(); ++i)
+		{
+			typename TTree::TNode* node = tree.FindByOrder(root, i);
+			assert(node);
+			h = hash_combine(h, node->key);
+		}
+		t.Stop();
+		AddResult("FindO", type, h, t.GetMilliseconds());
+	}
+
+	template<class TTree>
+	void TestInsert(TBSTKeysType type)
 	{
 		const vector<TKey>& vkeys = GetKeys(type);
 		Timer t;
@@ -96,75 +111,15 @@ public:
 			h = hash_combine(h, GetInfoValue(root));
 		}
 		t.Stop();
-		return AddResult("Insert", type, h, t.GetMilliseconds());
+		AddResult("Insert", type, h, t.GetMilliseconds());
+		TestFindByOrder<TTree>(type, tree, root);
 	}
 
 	template<class TTree>
 	void TestInsertAll()
 	{
-		size_t max_time = 0;
 		for (unsigned type = 0; type < type_end; ++type)
-			max_time = max(max_time, TestInsert<TTree>(TBSTKeysType(type)));
-		AddResult("Insert", type_end, 0, max_time);
-	}
-
-	template<class TTree>
-	size_t TestInsertAndFindByOrder(TBSTKeysType type)
-	{
-		const vector<TKey>& vkeys = GetKeys(type);
-		Timer t;
-		TTree tree(Size());
-		typename TTree::TNode* root = 0;
-		size_t h = 0;
-		for (TKey key : vkeys)
-		{
-			root = tree.InsertNewNode(root, key, key);
-			h = hash_combine(h, GetInfoValue(root));
-		}
-		for (unsigned i = 0; i < Size(); ++i)
-		{
-			typename TTree::TNode* node = tree.FindByOrder(root, i);
-			assert(node);
-			h = hash_combine(h, node->key);
-		}
-		t.Stop();
-		return AddResult("InsertAndFindByOrder", type, h, t.GetMilliseconds());
-	}
-
-	template<class TTree>
-	void TestInsertAndFindByOrderAll()
-	{
-		size_t max_time = 0;
-		for (unsigned type = 0; type < type_end; ++type)
-			max_time = max(max_time, TestInsertAndFindByOrder<TTree>(TBSTKeysType(type)));
-		AddResult("InsertAndFindByOrder", type_end, 0, max_time);
-	}
-
-	template<class TTree>
-	size_t TestFindByOrder(TBSTKeysType type)
-	{
-		const vector<TKey>& vkeys = GetKeys(type);
-		TTree tree(Size());
-		typename TTree::TNode* root = tree.Build(GetKeys(type), GetKeys(type));
-		Timer t;
-		size_t h = 0;
-		for (unsigned i = 0; i < Size(); ++i)
-		{
-			typename TTree::TNode* node = tree.FindByOrder(root, i);
-			assert(node);
-			h = hash_combine(h, node->key);
-		}
-		t.Stop();
-		return AddResult("FindO", type, h, t.GetMilliseconds());
-	}
-
-	template<class TTree>
-	void TestFindByOrderAll()
-	{
-		size_t max_time = 0;
-		for (unsigned type = 0; type < type_end; ++type)
-			max_time = max(max_time, TestFindByOrder<TTree>(TBSTKeysType(type)));
-		AddResult("FindO", type_end, 0, max_time);
+			TestInsert<TTree>(TBSTKeysType(type));
 	}
 
 	template<class TTree>
@@ -174,8 +129,6 @@ public:
 		current_tree = tree_name;
 		TestBuildAll<TTree>();
 		TestInsertAll<TTree>();
-		if (mode == hash_test) TestInsertAndFindByOrderAll<TTree>();
-		TestFindByOrderAll<TTree>();
 	}
 
 	bool TestAllTrees();
