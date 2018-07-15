@@ -9,8 +9,11 @@
 
 size_t TesterBinarySearchTree::AddResult(const string& task, unsigned keys_type, size_t h, size_t time)
 {
-	printf("%zx", h);
-	cout << "\t" << task << "\t" << keys_type << "\t" << time << endl;
+	if (mode == time_test)
+	{
+		printf("%zx", h);
+		cout << "\t" << task << "\t" << keys_type << "\t" << time << endl;
+	}
 	results.push_back({ current_job, current_tree, task, keys_type, h, time });
 	return time;
 }
@@ -52,7 +55,7 @@ void TesterBinarySearchTree::PrintTime() const
 	}
 }
 
-TesterBinarySearchTree::TesterBinarySearchTree(unsigned size)
+TesterBinarySearchTree::TesterBinarySearchTree(unsigned size, TBSTMode _mode) : mode(_mode)
 {
 	keys.resize(type_end);
 	keys_sorted.resize(size);
@@ -88,12 +91,12 @@ bool TesterBinarySearchTree::TestAllTrees()
 	TestAll<Treap<true, false, TKey, BSTInfoSize, BSTActionNone, TKey>>("treap_upf");
 	TestAll<Treap<true, true, TKey, BSTInfoSize, BSTActionNone, TKey>>("treap_upt");
 	bool output = TestHash();
-	if (output) PrintTime();
+	if ((mode == time_test) && output) PrintTime();
 	return output;
 }
 
 bool TesterBinarySearchTree::Test()
 {
-	TesterBinarySearchTree tbst(10000000);
-	return tbst.TestAllTrees();
+	TesterBinarySearchTree tbst_hash(100000, hash_test), tbst_time(1000000, time_test);
+	return tbst_hash.TestAllTrees() && tbst_time.TestAllTrees();
 }

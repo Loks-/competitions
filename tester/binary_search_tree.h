@@ -22,7 +22,14 @@ public:
 		type_end = 6
 	};
 
+	enum TBSTMode
+	{
+		hash_test,
+		time_test
+	};
+
 protected:
+	TBSTMode mode;
 	vector<TKey> keys_sorted, keys_reversed, keys_shuffled, keys_shuffled_dups, keys_one_value, keys_sixteen_values;
 	vector<vector<TKey>*> keys;
 
@@ -53,7 +60,7 @@ protected:
 	void PrintTime() const;
 
 public:
-	TesterBinarySearchTree(unsigned size);
+	TesterBinarySearchTree(unsigned size, TBSTMode _mode);
 
 	template<class TTree>
 	size_t TestBuild(TBSTKeysType type)
