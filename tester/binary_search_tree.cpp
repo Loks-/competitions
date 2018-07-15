@@ -10,7 +10,7 @@
 void TesterBinarySearchTree::AddResult(const string& task, unsigned keys_type, size_t h, size_t time)
 {
 	if (mode == time_test)
-		cout << "\t" << task << "\t" << keys_type << "\t" << time << endl;
+		cout << "\t\t" << task << "\t" << keys_type << "\t" << time << endl;
 	results.push_back({ current_job, current_tree, task, keys_type, h, time });
 }
 
@@ -109,6 +109,13 @@ bool TesterBinarySearchTree::TestAllTrees()
 	TestAll<SplayTree<true, TKey, BSTInfoSize, BSTActionNone, TKey>>("splay_upt");
 	TestAll<Treap<true, false, TKey, BSTInfoSize, BSTActionNone, TKey>>("treap_upf");
 	TestAll<Treap<true, true, TKey, BSTInfoSize, BSTActionNone, TKey>>("treap_upt");
+	cout << "Testing full trees:" << endl;
+	current_job = "full";
+	TestAll<RedBlackTree<TKey, BSTInfoSum<TKey>, BSTActionAdd<TKey>, TKey>>("rbtree_upt");
+	TestAll<ScapegoatTree<true, TKey, BSTInfoSum<TKey>, BSTActionAdd<TKey>, TKey>>("scape_upt");
+	TestAll<SplayTree<true, TKey, BSTInfoSum<TKey>, BSTActionAdd<TKey>, TKey>>("splay_upt");
+	TestAll<Treap<true, false, TKey, BSTInfoSum<TKey>, BSTActionAdd<TKey>, TKey>>("treap_upf");
+	TestAll<Treap<true, true, TKey, BSTInfoSum<TKey>, BSTActionAdd<TKey>, TKey>>("treap_upt");
 	bool output = TestHash();
 	if ((mode == time_test) && output)
 	{
@@ -124,7 +131,7 @@ bool TesterBinarySearchTree::Test(bool run_time_test)
 	bool result = tbst_hash.TestAllTrees();
 	if (result && run_time_test)
 	{
-		TesterBinarySearchTree tbst_time(10000000, time_test);
+		TesterBinarySearchTree tbst_time(1000000, time_test);
 		result = result && tbst_time.TestAllTrees();
 	}
 	return result;

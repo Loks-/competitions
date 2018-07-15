@@ -157,7 +157,7 @@ public:
 	template<class TTree>
 	void TestAll(const string& tree_name)
 	{
-		cout << "Testing " << tree_name << ":" << endl;
+		cout << "\tTesting " << tree_name << ":" << endl;
 		current_tree = tree_name;
 		TestBuildAll<TTree>();
 		TestInsertAll<TTree>();
