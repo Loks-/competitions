@@ -9,6 +9,8 @@
 	* Scapegoat
 		* Support Insert without link to parent.
 		* Support DeleteByKey and DeleteByOrder without link to parent.
+	* Treap
+		* Remove recursion
 	* FixedTree
 	* [Optional] RedBlack without parent link
 		* Required for persistent trees

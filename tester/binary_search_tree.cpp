@@ -28,6 +28,6 @@ void TesterBinarySearchTree::TestAllTrees()
 
 void TesterBinarySearchTree::Test()
 {
-	TesterBinarySearchTree tbst(100000);
+	TesterBinarySearchTree tbst(10000000);
 	tbst.TestAllTrees();
 }

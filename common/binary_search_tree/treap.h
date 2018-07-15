@@ -15,8 +15,8 @@ template <
 	class TTInfo = BSTInfoSize,
 	class TTAction = BSTActionNone,
 	class TTKey = int64_t>
-class Treap : public BSTree<BSTNode<TTData, TTInfo, TTAction, _use_key, _use_parent, true, TTKey, unsigned>,
-							Treap<_use_key, _use_parent, TTData, TTInfo, TTAction, TTKey>>
+	class Treap : public BSTree<BSTNode<TTData, TTInfo, TTAction, _use_key, _use_parent, true, TTKey, unsigned>,
+	Treap<_use_key, _use_parent, TTData, TTInfo, TTAction, TTKey>>
 {
 public:
 	static const bool use_key = _use_key;
@@ -228,11 +228,33 @@ public:
 	}
 
 protected:
-	static TNode* InsertByKeyI(TNode* root, TNode* node, TFakeFalse)
+	static TNode* InsertByKeyI(TNode* root, TNode* node, TFakeFalse f)
 	{
-		TNode *p1, *p2;
-		SplitByKey(root, node->key, p1, p2);
-		return Join(Join(p1, node), p2);
+		if (!root) return node;
+		root->ApplyAction();
+		if (root->height >= node->height)
+		{
+			if (root->key < node->key)
+			{
+				root->r = InsertByKeyI(root->r, node, f);
+				root->r->SetParentLink(root);
+			}
+			else
+			{
+				root->l = InsertByKeyI(root->l, node, f);
+				root->l->SetParentLink(root);
+			}
+			root->UpdateInfo();
+			return root;
+		}
+		else
+		{
+			SplitByKey(root, node->key, node->l, node->r);
+			if (node->l) node->l->SetParentLink(node);
+			if (node->r) node->r->SetParentLink(node);
+			node->UpdateInfo();
+			return node;
+		}
 	}
 
 	static TNode* InsertByKeyI(TNode* root, TNode* node, TFakeTrue)
