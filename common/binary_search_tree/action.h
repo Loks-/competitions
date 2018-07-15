@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../base.h"
 #include "../template.h"
 
 class BSTActionNone
