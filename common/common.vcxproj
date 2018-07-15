@@ -143,6 +143,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="base.h" />
+    <ClInclude Include="binary_search_tree\info\sum.h" />
     <ClInclude Include="binary_search_tree\insert_by_key_with_path.h" />
     <ClInclude Include="binary_search_tree\insert_by_key.h" />
     <ClInclude Include="binary_search_tree\node.h" />

@@ -21,6 +21,7 @@
 #include "binary_search_tree/traversal.h"
 #include "binary_search_tree/treap.h"
 #include "binary_search_tree/tree.h"
+#include "binary_search_tree/info/sum.h"
 #include "binary_search_tree/utils/rotate.h"
 
 #include "graph/base_graph.h"
