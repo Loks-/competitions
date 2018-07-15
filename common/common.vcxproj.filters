@@ -34,6 +34,9 @@
     <Filter Include="Header Files\binary_search_tree\info">
       <UniqueIdentifier>{e50aa0da-ba18-42a0-b95b-0302b1253478}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\binary_search_tree\action">
+      <UniqueIdentifier>{071ad817-749c-4d3f-a1f7-eac7d445676c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="compile_test.cpp">
@@ -169,6 +172,9 @@
     </ClInclude>
     <ClInclude Include="binary_search_tree\info\sum.h">
       <Filter>Header Files\binary_search_tree\info</Filter>
+    </ClInclude>
+    <ClInclude Include="binary_search_tree\action\add.h">
+      <Filter>Header Files\binary_search_tree\action</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
