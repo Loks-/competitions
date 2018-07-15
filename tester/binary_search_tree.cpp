@@ -120,7 +120,7 @@ bool TesterBinarySearchTree::TestAllTrees()
 
 bool TesterBinarySearchTree::Test(bool run_time_test)
 {
-	TesterBinarySearchTree tbst_hash(100000, hash_test);
+	TesterBinarySearchTree tbst_hash(10000, hash_test);
 	bool result = tbst_hash.TestAllTrees();
 	if (result && run_time_test)
 	{
