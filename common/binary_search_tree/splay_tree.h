@@ -43,19 +43,19 @@ public:
 			TNode* gparent = parent->p;
 			if (!gparent)
 			{
-				BSTRotate(node, parent);
+				BSTRotateUp(node);
 				break;
 			}
 			bool zigzig = ((gparent->l == parent) == (parent->l == node));
 			if (zigzig)
 			{
-				BSTRotate(parent, gparent);
-				BSTRotate(node, parent);
+				BSTRotateUp(parent);
+				BSTRotateUp(node);
 			}
 			else
 			{
-				BSTRotate(node, parent);
-				BSTRotate(node, gparent);
+				BSTRotateUp(node);
+				BSTRotateUp(node);
 			}
 		}
 		node->UpdateInfo();

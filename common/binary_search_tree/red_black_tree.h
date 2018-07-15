@@ -65,10 +65,10 @@ public:
 				bool rotate_required = ((gparent->l == parent) != (parent->l == node));
 				if (rotate_required)
 				{
-					BSTRotate<TNode, false>(node, parent);
+					BSTRotateUp<TNode, false>(node);
 					parent = node;
 				}
-				BSTRotate<TNode, true>(parent, gparent);
+				BSTRotateUp<TNode, true>(parent);
 				gparent->info.is_black = false;
 				parent->info.is_black = true;
 				return parent->p ? root : parent;
@@ -130,7 +130,7 @@ public:
 			if (!sibling->info.is_black)
 			{
 				assert(parent->info.is_black);
-				BSTRotate<TNode, true>(sibling, parent);
+				BSTRotateUp<TNode, true>(sibling);
 				sibling->info.is_black = true;
 				parent->info.is_black = false;
 				sibling = BSTSibling(child, parent);
@@ -153,7 +153,7 @@ public:
 			if ((parent->l == child) && (!sibling->r || sibling->r->info.is_black))
 			{
 				assert(sibling->l && !sibling->l->info.is_black);
-				BSTRotate<TNode, false, true>(sibling->l, sibling);
+				BSTRotateUp<TNode, false, true>(sibling->l);
 				sibling->info.is_black = false;
 				sibling = sibling->p;
 				sibling->info.is_black = true;
@@ -161,7 +161,7 @@ public:
 			else if ((parent->r == child) && (!sibling->l || sibling->l->info.is_black))
 			{
 				assert(sibling->r && !sibling->r->info.is_black);
-				BSTRotate<TNode, false, true>(sibling->r, sibling);
+				BSTRotateUp<TNode, false, true>(sibling->r);
 				sibling->info.is_black = false;
 				sibling = sibling->p;
 				sibling->info.is_black = true;
@@ -172,7 +172,7 @@ public:
 				sibling->r->info.is_black = true;
 			else
 				sibling->l->info.is_black = true;
-			BSTRotate<TNode, true>(sibling, parent);
+			BSTRotateUp<TNode, true>(sibling);
 			return Root(sibling);
 		}
 		assert(false);

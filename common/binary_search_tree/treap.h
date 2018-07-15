@@ -241,7 +241,7 @@ protected:
 		for (; node->p; )
 		{
 			if (node->p->height >= node->height) break;
-			BSTRotate(node, node->p);
+			BSTRotateUp(node);
 		}
 		node->UpdateInfo();
 		return (node->p ? root : node);

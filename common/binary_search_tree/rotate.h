@@ -3,15 +3,14 @@
 namespace {
 
 template<class TNode, bool update_child = false, bool apply_action = false>
-void BSTRotate(TNode* child, TNode* parent)
+void BSTRotate(TNode* child, TNode* parent, TNode* gparent)
 {
-	static_assert(TNode::use_parent, "use_parent should be true");
+	assert(child && parent);
 	if (apply_action)
 	{
 		parent->ApplyAction();
 		child->ApplyAction();
 	}
-	TNode* gparent = parent->p;
 	if (gparent)
 	{
 		if (gparent->l == parent)
@@ -19,18 +18,18 @@ void BSTRotate(TNode* child, TNode* parent)
 		else
 			gparent->r = child;
 	}
-	parent->p = child;
-	child->p = gparent;
+	parent->SetParentLink(child);
+	child->SetParentLink(gparent);
 	if (parent->l == child)
 	{
 		parent->l = child->r;
-		if (parent->l) parent->l->p = parent;
+		if (parent->l) parent->l->SetParentLink(parent);
 		child->r = parent;
 	}
 	else
 	{
 		parent->r = child->l;
-		if (parent->r) parent->r->p = parent;
+		if (parent->r) parent->r->SetParentLink(parent);
 		child->l = parent;
 	}
 	parent->UpdateInfo();
@@ -38,11 +37,11 @@ void BSTRotate(TNode* child, TNode* parent)
 }
 
 template<class TNode, bool update_child = false, bool apply_action = false>
-bool MoveNodeUp(TNode* node)
+bool BSTRotateUp(TNode* node)
 {
 	static_assert(TNode::use_parent, "use_parent should be true");
 	if (!node || !node->p) return false;
-	BSTRotate<TNode, update_child, apply_action>(node, node->p);
+	BSTRotate<TNode, update_child, apply_action>(node, node->p, node->p->p);
 	return true;
 }
 
