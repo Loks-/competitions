@@ -11,7 +11,8 @@ public:
 
 	bool IsEmpty() const { return true; }
 	void Clear() {};
-	void Set(const TSelf& new_action) {}
+	template<class TNode>
+	void Add(const TSelf& new_action, TNode* node) {}
 	template<class TNode>
 	void Apply(const TNode* node) {}
 };

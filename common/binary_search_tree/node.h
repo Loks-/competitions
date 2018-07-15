@@ -130,6 +130,7 @@ public:
 	void ResetLinks() { l = r = 0; }
 	void SetParentLink(TSelf* new_parent) {}
 	void UpdateInfo() { TBase::info.Update(this); }
+	void AddAction(const TAction& new_action) { TBase::action.Add(new_action, this); }
 	void ApplyAction() { TBase::action.Apply(this); }
 };
 
@@ -154,6 +155,7 @@ public:
 	void ResetLinks() { l = r = p = 0; }
 	void SetParentLink(TSelf* new_parent) { p = new_parent; }
 	void UpdateInfo() { TBase::info.Update(this); }
+	void AddAction(const TAction& new_action) { TBase::action.Add(new_action, this); }
 	void ApplyAction() { TBase::action.Apply(this); }
 };
 
