@@ -3,7 +3,6 @@
 #include "action.h"
 #include "build.h"
 #include "info.h"
-#include "insert_by_key.h"
 #include "node.h"
 #include "rotate.h"
 #include "tree.h"
