@@ -146,6 +146,22 @@ public:
 	}
 
 	template<class TTree>
+	typename TTree::TNode* TestDeleteByKey(TTree& tree, typename TTree::TNode* root, TBSTKeysType type)
+	{
+		const vector<TKey>& vkeys = GetKeys(type);
+		Timer t;
+		size_t h = 0;
+		for (const TKey& key : vkeys)
+		{
+			AddAction(root);
+			root = tree.RemoveAndReleaseByKey(root, key);
+			h = hash_combine(h, (type <= shuffled) ? GetInfoValue(root) : root ? root->info.size : 0);
+		}
+		AddResult("DelKey", type, h, t.GetMilliseconds());
+		return root;
+	}
+
+	template<class TTree>
 	void TestAll(const string& tree_name)
 	{
 		cout << "\tTesting " << tree_name << ":" << endl;
@@ -161,7 +177,8 @@ public:
 			root = TestFindByOrder<TTree>(tree, root, ktype);
 			root = TestFindByKey0<TTree>(tree, root, ktype);
 			root = TestFindByKey1<TTree>(tree, root, ktype);
-			tree.ReleaseTree(root);
+			root = TestDeleteByKey<TTree>(tree, root, ktype);
+			assert(!root);
 		}
 	}
 
