@@ -227,21 +227,21 @@ public:
 		}
 	}
 
-protected:
-	static TNode* InsertByKeyI(TNode* root, TNode* node, TFakeFalse f)
+	static TNode* InsertByKey(TNode* root, TNode* node)
 	{
+		static_assert(use_key, "use_key should be true");
 		if (!root) return node;
 		root->ApplyAction();
 		if (root->height >= node->height)
 		{
 			if (root->key < node->key)
 			{
-				root->r = InsertByKeyI(root->r, node, f);
+				root->r = InsertByKey(root->r, node);
 				root->r->SetParentLink(root);
 			}
 			else
 			{
-				root->l = InsertByKeyI(root->l, node, f);
+				root->l = InsertByKey(root->l, node);
 				root->l->SetParentLink(root);
 			}
 			root->UpdateInfo();
@@ -249,7 +249,7 @@ protected:
 		}
 		else
 		{
-			SplitByKey(root, node->key, node->l, node->r);
+			SplitByKeyI(root, node->key, node->l, node->r);
 			if (node->l) node->l->SetParentLink(node);
 			if (node->r) node->r->SetParentLink(node);
 			node->UpdateInfo();
@@ -257,19 +257,6 @@ protected:
 		}
 	}
 
-	static TNode* InsertByKeyI(TNode* root, TNode* node, TFakeTrue)
-	{
-		BSTInsertByKey(root, node);
-		for (; node->p; )
-		{
-			if (node->p->height >= node->height) break;
-			BSTRotateUp(node);
-		}
-		node->UpdateInfo();
-		return (node->p ? root : node);
-	}
-
-public:
 	static TNode* RemoveByNode(TNode* node)
 	{
 		static_assert(use_parent, "use_parent should be true");
