@@ -43,7 +43,6 @@ bool TesterBinarySearchTree::TestHash() const
 	unordered_map<string, size_t> m;
 	for (const Result& r : results)
 	{
-		if (r.h == 0) continue;
 		string key = r.job + "_" + r.task + "_" + to_string(r.keys_type);
 		if (m[key] == 0)
 			m[key] = r.h;
