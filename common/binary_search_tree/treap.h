@@ -256,6 +256,36 @@ public:
 		}
 	}
 
+	static TNode* RemoveByKey(TNode* root, const TKey& key, TNode*& removed_node)
+	{
+		static_assert(use_key, "use_key should be true");
+		if (!root) return root;
+		root->ApplyAction();
+		if (root->key < key)
+		{
+			root->r = RemoveByKey(root->r, key, removed_node);
+			if (root->r) root->r->SetParentLink(root);
+		}
+		else if (root->key > key)
+		{
+			root->l = RemoveByKey(root->l, key, removed_node);
+			if (root->l) root->l->SetParentLink(root);
+		}
+		else
+		{
+			removed_node = root;
+			TNode * l = root->l; root->l = 0;
+			if (l) l->SetParentLink(0);
+			TNode * r = root->r; root->r = 0;
+			if (r) r->SetParentLink(0);
+			root->SetParentLink(0);
+			root->UpdateInfo();
+			return Join(l, r);
+		}
+		root->UpdateInfo();
+		return root;
+	}
+
 	static TNode* RemoveByNode(TNode* node)
 	{
 		static_assert(use_parent, "use_parent should be true");
