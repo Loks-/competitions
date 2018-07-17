@@ -63,12 +63,22 @@ protected:
 public:
 	TesterBinarySearchTree(unsigned size, TBSTMode _mode);
 
+	template<class TNode>
+	size_t TreeHash(TNode* root, size_t h)
+	{
+		if (!root) return h;
+		h = TreeHash(root->l, h);
+		h = hash_combine(h, root->key);
+		return TreeHash(root->r, h);
+	}
+
 	template<class TTree>
 	typename TTree::TNode* TestBuild(TTree& tree, TBSTKeysType type)
 	{
 		Timer t;
 		typename TTree::TNode* root = tree.Build(GetKeys(type), GetKeys(type));
-		AddResult("Build", type, 0, t.GetMilliseconds());
+		t.Stop();
+		AddResult("Build", type, TreeHash(root, 0), t.GetMilliseconds());
 		return root;
 	}
 
