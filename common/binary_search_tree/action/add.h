@@ -17,10 +17,10 @@ public:
 	void Clear() { add_value = 0; };
 
 	template<class TNode>
-	void Add(const TSelf& new_action, TNode* node)
+	void Add(TNode* node, const TData& value)
 	{
-		node->info.sum += node->info.size * new_action.add_value;
-		add_value += new_action.add_value;
+		node->info.sum += node->info.size * value;
+		add_value += value;
 	}
 
 	template<class TNode>
@@ -28,8 +28,8 @@ public:
 	{
 		if (IsEmpty()) return;
 		node->data += add_value;
-		if (node->l) node->l->AddAction(*this);
-		if (node->r) node->r->AddAction(*this);
+		if (node->l) node->l->AddAction(add_value);
+		if (node->r) node->r->AddAction(add_value);
 		add_value = 0;
 	}
 };

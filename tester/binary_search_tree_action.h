@@ -12,9 +12,7 @@ void AddAction(TNode * root, TFakeType<BSTActionNone>) {}
 template<class TNode, class TData>
 void AddAction(TNode * root, TFakeType<BSTActionAdd<TData>>)
 {
-	BSTActionAdd<TData> a;
-	a.add_value = 1;
-	if (root) root->AddAction(a);
+	if (root) root->AddAction(1);
 }
 
 template<class TNode>
