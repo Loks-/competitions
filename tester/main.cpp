@@ -5,6 +5,6 @@
 int main()
 {
 	cout << "Hello from tester." << endl;
-	assert(TesterBinarySearchTree::Test(true));
+	assert(TesterBinarySearchTree::Test(false));
 	return 0;
 }
