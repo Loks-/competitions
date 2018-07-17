@@ -69,7 +69,6 @@ public:
 		Timer t;
 		TTree tree(Size());
 		tree.Build(GetKeys(type), GetKeys(type));
-		t.Stop();
 		AddResult("Build", type, 0, t.GetMilliseconds());
 	}
 
@@ -91,7 +90,6 @@ public:
 			assert(node);
 			h = hash_combine(h, node->key);
 		}
-		t.Stop();
 		AddResult("FindO", type, h, t.GetMilliseconds());
 	}
 
@@ -106,7 +104,6 @@ public:
 			assert(!node);
 			h = hash_combine(h, reinterpret_cast<size_t>(node));
 		}
-		t.Stop();
 		AddResult("FindK0", type, h, t.GetMilliseconds());
 	}
 
@@ -122,7 +119,6 @@ public:
 			assert(node);
 			h = hash_combine(h, (type <= shuffled) ? node->data : node->key);
 		}
-		t.Stop();
 		AddResult("FindK1", type, h, t.GetMilliseconds());
 	}
 
@@ -140,7 +136,6 @@ public:
 			root = tree.InsertNewNode(root, key, key);
 			h = hash_combine(h, GetInfoValue(root));
 		}
-		t.Stop();
 		AddResult("Insert", type, h, t.GetMilliseconds());
 		TestFindByOrder<TTree>(type, tree, root);
 		TestFindByKey0<TTree>(type, tree, root);
