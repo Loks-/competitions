@@ -4,8 +4,6 @@
 * Binary Trees
 	* Remove recursion
 		* Treap
-	* Add DeleteByKey and DeleteByOrder to trees without link to parent.
-		* Default implementation in nodes_manager for trees with parent link.
 	* RedBlack
 		* Speed up RedBlackTree::BuildTree to linear time.
 	* Scapegoat
