@@ -1,5 +1,6 @@
 #pragma once
 
+#include "common/timer.h"
 #include "common/binary_search_tree/red_black_tree.h"
 #include "common/binary_search_tree/scapegoat_tree.h"
 #include "common/binary_search_tree/splay_tree.h"
@@ -131,8 +132,10 @@ bool TesterBinarySearchTree::Test(bool run_time_test)
 	bool result = tbst_hash.TestAllTrees();
 	if (result && run_time_test)
 	{
-		TesterBinarySearchTree tbst_time(1000000, time_test);
+		Timer t;
+		TesterBinarySearchTree tbst_time(10000000, time_test);
 		result = result && tbst_time.TestAllTrees();
+		cout << "Total time = " << t.GetMilliseconds() << endl;
 	}
 	return result;
 }
