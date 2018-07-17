@@ -64,23 +64,33 @@ public:
 	TesterBinarySearchTree(unsigned size, TBSTMode _mode);
 
 	template<class TTree>
-	void TestBuild(TBSTKeysType type)
+	typename TTree::TNode* TestBuild(TTree& tree, TBSTKeysType type)
 	{
 		Timer t;
-		TTree tree(Size());
-		tree.Build(GetKeys(type), GetKeys(type));
+		typename TTree::TNode* root = tree.Build(GetKeys(type), GetKeys(type));
 		AddResult("Build", type, 0, t.GetMilliseconds());
+		return root;
 	}
 
 	template<class TTree>
-	void TestBuildAll()
+	typename TTree::TNode* TestInsert(TTree& tree, TBSTKeysType type)
 	{
-		for (unsigned type = 0; type < type_end; ++type)
-			TestBuild<TTree>(TBSTKeysType(type));
+		const vector<TKey>& vkeys = GetKeys(type);
+		Timer t;
+		typename TTree::TNode* root = 0;
+		size_t h = 0;
+		for (TKey key : vkeys)
+		{
+			AddAction(root);
+			root = tree.InsertNewNode(root, key, key);
+			h = hash_combine(h, GetInfoValue(root));
+		}
+		AddResult("Insert", type, h, t.GetMilliseconds());
+		return root;
 	}
 
 	template<class TTree>
-	void TestFindByOrder(TBSTKeysType type, TTree& tree, typename TTree::TNode*& root)
+	typename TTree::TNode* TestFindByOrder(TTree& tree, typename TTree::TNode* root, TBSTKeysType type)
 	{
 		Timer t;
 		size_t h = 0;
@@ -91,10 +101,11 @@ public:
 			h = hash_combine(h, node->key);
 		}
 		AddResult("FindO", type, h, t.GetMilliseconds());
+		return root;
 	}
 
 	template<class TTree>
-	void TestFindByKey0(TBSTKeysType type, TTree& tree, typename TTree::TNode*& root)
+	typename TTree::TNode* TestFindByKey0(TTree& tree, typename TTree::TNode* root, TBSTKeysType type)
 	{
 		Timer t;
 		size_t h = 0;
@@ -105,10 +116,11 @@ public:
 			h = hash_combine(h, reinterpret_cast<size_t>(node));
 		}
 		AddResult("FindK0", type, h, t.GetMilliseconds());
+		return root;
 	}
 
 	template<class TTree>
-	void TestFindByKey1(TBSTKeysType type, TTree& tree, typename TTree::TNode*& root)
+	typename TTree::TNode* TestFindByKey1(TTree& tree, typename TTree::TNode* root, TBSTKeysType type)
 	{
 		const vector<TKey>& vkeys = GetKeys(type);
 		Timer t;
@@ -120,33 +132,7 @@ public:
 			h = hash_combine(h, (type <= shuffled) ? node->data : node->key);
 		}
 		AddResult("FindK1", type, h, t.GetMilliseconds());
-	}
-
-	template<class TTree>
-	void TestInsert(TBSTKeysType type)
-	{
-		const vector<TKey>& vkeys = GetKeys(type);
-		Timer t;
-		TTree tree(Size());
-		typename TTree::TNode* root = 0;
-		size_t h = 0;
-		for (TKey key : vkeys)
-		{
-			AddAction(root);
-			root = tree.InsertNewNode(root, key, key);
-			h = hash_combine(h, GetInfoValue(root));
-		}
-		AddResult("Insert", type, h, t.GetMilliseconds());
-		TestFindByOrder<TTree>(type, tree, root);
-		TestFindByKey0<TTree>(type, tree, root);
-		TestFindByKey1<TTree>(type, tree, root);
-	}
-
-	template<class TTree>
-	void TestInsertAll()
-	{
-		for (unsigned type = 0; type < type_end; ++type)
-			TestInsert<TTree>(TBSTKeysType(type));
+		return root;
 	}
 
 	template<class TTree>
@@ -154,8 +140,19 @@ public:
 	{
 		cout << "\tTesting " << tree_name << ":" << endl;
 		current_tree = tree_name;
-		TestBuildAll<TTree>();
-		TestInsertAll<TTree>();
+		typename TTree::TNode* root = 0;
+		TTree tree(Size());
+		for (unsigned type = 0; type < type_end; ++type)
+		{
+			TBSTKeysType ktype = TBSTKeysType(type);
+			root = TestBuild<TTree>(tree, ktype);
+			tree.ReleaseTree(root);
+			root = TestInsert<TTree>(tree, ktype);
+			root = TestFindByOrder<TTree>(tree, root, ktype);
+			root = TestFindByKey0<TTree>(tree, root, ktype);
+			root = TestFindByKey1<TTree>(tree, root, ktype);
+			tree.ReleaseTree(root);
+		}
 	}
 
 	bool TestAllTrees();

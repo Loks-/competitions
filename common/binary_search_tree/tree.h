@@ -102,4 +102,14 @@ public:
 		if (removed_node) TNodesManager::ReleaseNode(removed_node);
 		return new_root;
 	}
+
+	void ReleaseTree(TNode* root)
+	{
+		if (root)
+		{
+			ReleaseTree(root->l);
+			ReleaseTree(root->r);
+			TNodesManager::ReleaseNode(root);
+		}
+	}
 };
