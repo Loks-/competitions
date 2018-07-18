@@ -152,7 +152,6 @@
     <ClInclude Include="binary_search_tree\action.h" />
     <ClInclude Include="binary_search_tree\find_by_order.h" />
     <ClInclude Include="binary_search_tree\info.h" />
-    <ClInclude Include="binary_search_tree\build.h" />
     <ClInclude Include="binary_search_tree\find_by_key.h" />
     <ClInclude Include="binary_search_tree\red_black_tree.h" />
     <ClInclude Include="binary_search_tree\rotate.h" />

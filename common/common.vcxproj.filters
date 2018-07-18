@@ -137,9 +137,6 @@
     <ClInclude Include="binary_search_tree\info.h">
       <Filter>Header Files\binary_search_tree</Filter>
     </ClInclude>
-    <ClInclude Include="binary_search_tree\build.h">
-      <Filter>Header Files\binary_search_tree</Filter>
-    </ClInclude>
     <ClInclude Include="binary_search_tree\find_by_key.h">
       <Filter>Header Files\binary_search_tree</Filter>
     </ClInclude>

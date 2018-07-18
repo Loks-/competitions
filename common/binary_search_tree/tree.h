@@ -1,6 +1,5 @@
 #pragma once
 
-#include "build.h"
 #include "find_by_key.h"
 #include "find_by_order.h"
 #include "nodes_manager.h"
@@ -24,7 +23,18 @@ public:
 	TMe* Me() { return static_cast<TMe*>(this); }
 	const TMe* Me() const { return static_cast<const TMe*>(this); }
 
-	static TNode* BuildTree(const vector<TNode*>& vnodes) { return BSTBuild(vnodes); }
+	static TNode* BuildTreeI(const vector<TNode*>& vnodes, unsigned first, unsigned last)
+	{
+		if (first >= last) return 0;
+		unsigned m = (first + last) / 2;
+		TNode* root = vnodes[m];
+		root->SetL(BuildTreeI(vnodes, first, m));
+		root->SetR(BuildTreeI(vnodes, m + 1, last));
+		root->UpdateInfo();
+		return root;
+	}
+
+	static TNode* BuildTree(const vector<TNode*>& vnodes) { return BuildTreeI(vnodes, 0, unsigned(vnodes.size())); }
 
 	TNode* Build(const vector<TData>& data)
 	{

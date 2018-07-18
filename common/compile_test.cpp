@@ -4,7 +4,6 @@
 #include "timer.h"
 
 #include "binary_search_tree/action.h"
-#include "binary_search_tree/build.h"
 #include "binary_search_tree/find_by_key.h"
 #include "binary_search_tree/find_by_order.h"
 #include "binary_search_tree/info.h"

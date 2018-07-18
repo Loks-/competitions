@@ -1,7 +1,6 @@
 #pragma once
 
 #include "action.h"
-#include "build.h"
 #include "info.h"
 #include "node.h"
 #include "swap.h"
@@ -53,7 +52,7 @@ public:
 		assert(node);
 		vector<TNode*> nodes;
 		TraverseInorder(node, nodes);
-		return BSTBuild(nodes);
+		return TTree::BuildTree(nodes);
 	}
 
 	static TNode* UpdateAndFixSubtree(TNode* node)
