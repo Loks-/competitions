@@ -3,7 +3,6 @@
 #include "action.h"
 #include "build.h"
 #include "info.h"
-#include "insert_by_key.h"
 #include "node.h"
 #include "swap.h"
 #include "tree.h"
@@ -31,7 +30,7 @@ public:
 	using TAction = TTAction;
 	using TKey = TTKey;
 	using TNode = BSTNode<TData, TInfo, TAction, use_key, use_parent, use_height, TKey>;
-	using TSelf = ScapegoatTree<use_key, TData, TInfo, TAction, TKey>;
+	using TSelf = ScapegoatTree<use_parent, TData, TInfo, TAction, TKey>;
 	using TTree = BSTree<TNode, TSelf>;
 	friend class BSTree<TNode, TSelf>;
 
@@ -48,44 +47,120 @@ protected:
 		TraverseInorder(node->r, output);
 	}
 
-	static TNode* Fix(TNode* node, TNode* parent)
+public:
+	static TNode* RebuildSubtree(TNode* node)
 	{
+		assert(node);
 		vector<TNode*> nodes;
 		TraverseInorder(node, nodes);
-		TNode* new_subtree = BSTBuild::Build(nodes);
-		assert(new_subtree);
-		new_subtree->SetParentLink(parent);
-		if (parent)
-		{
-			if (parent->l == node)
-				parent->l = new_subtree;
-			else
-				parent->r = new_subtree;
-		}
-		return new_subtree;
+		return BSTBuild::Build(nodes);
 	}
 
-	static TNode* CheckAndFix(TNode* node)
+	static TNode* UpdateAndFixSubtree(TNode* node)
 	{
-		if (!node) return 0;
-		TNode* rebuild_node = 0, * last_node = 0;
-		for (; node; node = node->p)
-		{
-			last_node = node;
-			if (node->l && node->l->info.size > alpha * node->info.size) rebuild_node = node;
-			if (node->r && node->r->info.size > alpha * node->info.size) rebuild_node = node;
-		}
-		return rebuild_node ? Root(Fix(rebuild_node, rebuild_node->p)) : last_node;
+		node->UpdateInfo();
+		return ((node->l && node->l->info.size > alpha * node->info.size)
+			|| (node->r && node->r->info.size > alpha * node->info.size)) ?
+			RebuildSubtree(node) : node;
 	}
 
-	// static TNode* InsertI(TNode* root, TNode* node, TFakeFalse) { static_assert(false); return 0; }
-	static TNode* InsertByKeyI(TNode* root, TNode* node, TFakeTrue)
-	{ 
-		BSTInsertByKey<TNode>(root, node);
-		return CheckAndFix(node);
+	static TNode* InsertByKey(TNode* root, TNode* node)
+	{
+		static_assert(use_key, "use_key should be true");
+		if (!root) return node;
+		root->ApplyAction();
+		if (root->key < node->key)
+		{
+			root->r = InsertByKey(root->r, node);
+			root->r->SetParentLink(root);
+		}
+		else
+		{
+			root->l = InsertByKey(root->l, node);
+			root->l->SetParentLink(root);
+		}
+		return UpdateAndFixSubtree(root);
+	}
+
+protected:
+	static TNode* RemoveRootI(TNode* root)
+	{
+		if (!root->l) return root->r;
+		if (!root->r) return root->l;
+		stack<TNode*> s;
+		TNode* l = root->l, *r = root->r, *new_root;
+		if (l->info.size < r->info.size)
+		{
+			new_root = r;
+			for (new_root->ApplyAction(); new_root->l; new_root->ApplyAction())
+			{
+				s.push(new_root);
+				new_root = new_root->l;
+			}
+			TNode* current = new_root->r;
+			for (; !s.empty(); s.pop())
+			{
+				s.top()->l = current;
+				if (current) current->SetParentLink(s.top());
+				current = s.top();
+				current->UpdateInfo();
+				current = UpdateAndFixSubtree(current);
+			}
+			new_root->l = l;
+			new_root->r = current;
+		}
+		else
+		{
+			new_root = l;
+			for (new_root->ApplyAction(); new_root->r; new_root->ApplyAction())
+			{
+				s.push(new_root);
+				new_root = new_root->r;
+			}
+			TNode* current = new_root->l;
+			for (; !s.empty(); s.pop())
+			{
+				s.top()->r = current;
+				if (current) current->SetParentLink(s.top());
+				current = s.top();
+				current->UpdateInfo();
+				current = UpdateAndFixSubtree(current);
+			}
+			new_root->l = current;
+			new_root->r = r;
+		}
+		if (new_root->l) new_root->l->SetParentLink(new_root);
+		if (new_root->r) new_root->r->SetParentLink(new_root);
+		return UpdateAndFixSubtree(new_root);
 	}
 
 public:
+	static TNode* RemoveByKey(TNode* root, const TKey& key, TNode*& removed_node)
+	{
+		static_assert(use_key, "use_key should be true");
+		if (!root) return root;
+		root->ApplyAction();
+		if (root->key < key)
+		{
+			root->r = RemoveByKey(root->r, key, removed_node);
+			if (root->r) root->r->SetParentLink(root);
+		}
+		else if (root->key > key)
+		{
+			root->l = RemoveByKey(root->l, key, removed_node);
+			if (root->l) root->l->SetParentLink(root);
+		}
+		else
+		{
+			removed_node = root;
+			TNode* new_root = RemoveRootI(root);
+			root->ResetLinks();
+			root->UpdateInfo();
+			return new_root;
+		}
+		return UpdateAndFixSubtree(root);
+	}
+
 	static TNode* RemoveByNode(TNode* node)
 	{
 		static_assert(use_parent, "use_parent should be true");
@@ -116,7 +191,22 @@ public:
 		}
 		if (child) child->p = parent;
 		node->ResetLinks();
-		UpdateInfoNodeToRoot(parent);
-		return parent ? CheckAndFix(parent) : child;
+		for (TNode * node = parent; node; node = parent)
+		{
+			parent = node->p;
+			child = UpdateAndFixSubtree(node);
+			if (child != node)
+			{
+				child->UpdateParentLink(parent);
+				if (parent)
+				{
+					if (parent->l == node)
+						parent->l = child;
+					else
+						parent->r = child;
+				}
+			}
+		}
+		return child;
 	}
 };

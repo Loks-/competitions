@@ -105,6 +105,7 @@ bool TesterBinarySearchTree::TestAllTrees()
 	cout << "Testing base trees:" << endl;
 	current_job = "base";
 	TestAll<RedBlackTree<TKey, BSTInfoSize, BSTActionNone, TKey>>("rbtree_upt");
+	TestAll<ScapegoatTree<false, TKey, BSTInfoSize, BSTActionNone, TKey>>("scape_upf");
 	TestAll<ScapegoatTree<true, TKey, BSTInfoSize, BSTActionNone, TKey>>("scape_upt");
 	TestAll<SplayTree<true, TKey, BSTInfoSize, BSTActionNone, TKey>>("splay_upt");
 	TestAll<Treap<true, false, TKey, BSTInfoSize, BSTActionNone, TKey>>("treap_upf");
@@ -112,6 +113,7 @@ bool TesterBinarySearchTree::TestAllTrees()
 	cout << "Testing full trees:" << endl;
 	current_job = "full";
 	TestAll<RedBlackTree<TKey, BSTInfoSum<TKey>, BSTActionAdd<TKey>, TKey>>("rbtree_upt");
+	TestAll<ScapegoatTree<false, TKey, BSTInfoSum<TKey>, BSTActionAdd<TKey>, TKey>>("scape_upf");
 	TestAll<ScapegoatTree<true, TKey, BSTInfoSum<TKey>, BSTActionAdd<TKey>, TKey>>("scape_upt");
 	TestAll<SplayTree<true, TKey, BSTInfoSum<TKey>, BSTActionAdd<TKey>, TKey>>("splay_upt");
 	TestAll<Treap<true, false, TKey, BSTInfoSum<TKey>, BSTActionAdd<TKey>, TKey>>("treap_upf");
