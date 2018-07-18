@@ -53,7 +53,7 @@ public:
 		assert(node);
 		vector<TNode*> nodes;
 		TraverseInorder(node, nodes);
-		return BSTBuild::Build(nodes);
+		return BSTBuild(nodes);
 	}
 
 	static TNode* UpdateAndFixSubtree(TNode* node)

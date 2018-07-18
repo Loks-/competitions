@@ -24,7 +24,7 @@ public:
 	TMe* Me() { return static_cast<TMe*>(this); }
 	const TMe* Me() const { return static_cast<const TMe*>(this); }
 
-	static TNode* BuildTree(const vector<TNode*>& vnodes) { return BSTBuild::Build(vnodes); }
+	static TNode* BuildTree(const vector<TNode*>& vnodes) { return BSTBuild(vnodes); }
 
 	TNode* Build(const vector<TData>& data)
 	{

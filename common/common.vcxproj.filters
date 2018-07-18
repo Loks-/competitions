@@ -176,6 +176,9 @@
     <ClInclude Include="binary_search_tree\action\add.h">
       <Filter>Header Files\binary_search_tree\action</Filter>
     </ClInclude>
+    <ClInclude Include="binary_search_tree\utils\reset_parent_links.h">
+      <Filter>Header Files\binary_search_tree\utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\current_solution.inl">
