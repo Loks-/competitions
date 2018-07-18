@@ -129,6 +129,8 @@ public:
 
 	void ResetLinks() { l = r = 0; }
 	void SetParentLink(TSelf* new_parent) {}
+	void SetL(TSelf* node) { l = node; }
+	void SetR(TSelf* node) { r = node; }
 	void UpdateInfo() { TBase::info.Update(this); }
 	template <class TActionValue> void AddAction(const TActionValue& value) { TBase::action.Add(this, value); }
 	void ApplyAction() { TBase::action.Apply(this); }
@@ -154,6 +156,8 @@ public:
 
 	void ResetLinks() { l = r = p = 0; }
 	void SetParentLink(TSelf* new_parent) { p = new_parent; }
+	void SetL(TSelf* node) { l = node; if (node) node->p = this; }
+	void SetR(TSelf* node) { r = node; if (node) node->p = this; }
 	void UpdateInfo() { TBase::info.Update(this); }
 	template <class TActionValue> void AddAction(const TActionValue& value) { TBase::action.Add(this, value); }
 	void ApplyAction() { TBase::action.Apply(this); }

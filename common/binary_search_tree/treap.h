@@ -1,7 +1,6 @@
 #pragma once
 
 #include "action.h"
-#include "build.h"
 #include "info.h"
 #include "node.h"
 #include "rotate.h"
@@ -46,13 +45,13 @@ public:
 			TNode* pj = nodes[j];
 			if (pj->height < plast->height)
 			{
-				plast->r = pj;
+				plast->SetR(pj);
 				s.push(plast);
 			}
 			else if (pj->height >= proot->height)
 			{
 				for (plast->UpdateInfo(); !s.empty(); s.pop()) s.top()->UpdateInfo();
-				pj->l = proot;
+				pj->SetL(proot);
 				proot = pj;
 				s.push(proot);
 			}
@@ -63,13 +62,12 @@ public:
 					plast = s.top();
 					plast->UpdateInfo();
 				}
-				pj->l = plast;
-				s.top()->r = pj;
+				pj->SetL(plast);
+				s.top()->SetR(pj);
 			}
 			plast = pj;
 		}
 		for (plast->UpdateInfo(); !s.empty(); s.pop()) s.top()->UpdateInfo();
-		BSTBuild::ResetParentLinks(proot);
 		return proot;
 	}
 
@@ -80,15 +78,9 @@ protected:
 		{
 			l->ApplyAction();
 			if (!l->r)
-			{
-				l->r = r;
-				r->SetParentLink(l);
-			}
+				l->SetR(r);
 			else
-			{
-				l->r = JoinI(l->r, r);
-				l->r->SetParentLink(l);
-			}
+				l->SetR(JoinI(l->r, r));
 			l->UpdateInfo();
 			return l;
 		}
@@ -96,15 +88,9 @@ protected:
 		{
 			r->ApplyAction();
 			if (!r->l)
-			{
-				r->l = l;
-				l->SetParentLink(r);
-			}
+				r->SetL(l);
 			else
-			{
-				r->l = JoinI(l, r->l);
-				r->l->SetParentLink(r);
-			}
+				r->SetL(JoinI(l, r->l));
 			r->UpdateInfo();
 			return r;
 		}
@@ -234,15 +220,9 @@ public:
 		if (root->height >= node->height)
 		{
 			if (root->key < node->key)
-			{
-				root->r = InsertByKey(root->r, node);
-				root->r->SetParentLink(root);
-			}
+				root->SetR(InsertByKey(root->r, node));
 			else
-			{
-				root->l = InsertByKey(root->l, node);
-				root->l->SetParentLink(root);
-			}
+				root->SetL(InsertByKey(root->l, node));
 			root->UpdateInfo();
 			return root;
 		}
@@ -262,23 +242,15 @@ public:
 		if (!root) return root;
 		root->ApplyAction();
 		if (root->key < key)
-		{
-			root->r = RemoveByKey(root->r, key, removed_node);
-			if (root->r) root->r->SetParentLink(root);
-		}
+			root->SetR(RemoveByKey(root->r, key, removed_node));
 		else if (root->key > key)
-		{
-			root->l = RemoveByKey(root->l, key, removed_node);
-			if (root->l) root->l->SetParentLink(root);
-		}
+			root->SetL(RemoveByKey(root->l, key, removed_node));
 		else
 		{
 			removed_node = root;
-			TNode * l = root->l; root->l = 0;
-			if (l) l->SetParentLink(0);
-			TNode * r = root->r; root->r = 0;
-			if (r) r->SetParentLink(0);
-			root->SetParentLink(0);
+			TNode* l = root->l; if (l) l->SetParentLink(0);
+			TNode* r = root->r; if (r) r->SetParentLink(0);
+			root->ResetLinks();
 			root->UpdateInfo();
 			return Join(l, r);
 		}
@@ -291,18 +263,16 @@ public:
 		static_assert(use_parent, "use_parent should be true");
 		assert(node);
 		ApplyActionRootToNode(node);
-		TNode* l = node->l; node->l = 0;
-		if (l) l->p = 0;
-		TNode* r = node->r; node->r = 0;
-		if (r) r->p = 0;
-		TNode* p = node->p; node->p = 0;
+		TNode* l = node->l; if (l) l->SetParentLink(0);
+		TNode* r = node->r; if (r) r->SetParentLink(0);
+		TNode* p = node->p;
+		node->ResetLinks();
 		TNode* m = Join(l, r);
-		if (m) m->p = p;
 		if (!p) return m;
 		if (node == p->l)
-			p->l = m;
+			p->SetL(m);
 		else
-			p->r = m;
+			p->SetR(m);
 		UpdateInfoNodeToRoot(p);
 		return Root(p);
 	}
