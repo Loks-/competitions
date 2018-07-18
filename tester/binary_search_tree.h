@@ -60,7 +60,6 @@ protected:
 	bool TestHash() const;
 	void PrintTime() const;
 
-public:
 	TesterBinarySearchTree(unsigned size, TBSTMode _mode);
 
 	template<class TNode>
@@ -72,6 +71,42 @@ public:
 		return TreeHash(root->r, h);
 	}
 
+	template<class TNode>
+	void VerifyParentLinksI(TNode* root, TFakeFalse) {}
+
+	template<class TNode>
+	void VerifyParentLinksI(TNode* root, TFakeTrue f)
+	{
+		if (root->l)
+		{
+			VerifyParentLinksI(root->l, f);
+			if (root->l->p != root)
+			{
+				cout << "Parent link is incorrect!" << endl;
+				assert(false);
+			}
+		}
+		if (root->r)
+		{
+			VerifyParentLinksI(root->r, f);
+			if (root->r->p != root)
+			{
+				cout << "Parent link is incorrect!" << endl;
+				assert(false);
+			}
+		}
+	}
+
+	template<class TNode>
+	void VerifyParentLinks(TNode* root) { if (mode == hash_test) VerifyParentLinksI(root, TFakeBool<TNode::use_parent>()); }
+
+	template<class TNode>
+	void VerifyParentLinksLazy(TNode* root)
+	{
+		if (root && !(root->info.size & (root->info.size - 1)))
+			VerifyParentLinks(root);
+	}
+
 	template<class TTree>
 	typename TTree::TNode* TestBuild(TTree& tree, TBSTKeysType type)
 	{
@@ -79,6 +114,7 @@ public:
 		typename TTree::TNode* root = tree.Build(GetKeys(type), GetKeys(type));
 		t.Stop();
 		AddResult("Build", type, TreeHash(root, 0), t.GetMilliseconds());
+		VerifyParentLinks(root);
 		return root;
 	}
 
@@ -93,9 +129,11 @@ public:
 		{
 			AddAction(root);
 			root = tree.InsertNewNode(root, key, key);
+			VerifyParentLinksLazy(root);
 			h = hash_combine(h, GetInfoValue(root));
 		}
 		AddResult("Insert", type, h, t.GetMilliseconds());
+		VerifyParentLinks(root);
 		return root;
 	}
 
@@ -155,6 +193,7 @@ public:
 		{
 			AddAction(root);
 			root = tree.RemoveAndReleaseByKey(root, key);
+			VerifyParentLinksLazy(root);
 			h = hash_combine(h, (type <= shuffled) ? GetInfoValue(root) : root ? root->info.size : 0);
 		}
 		AddResult("DelKey", type, h, t.GetMilliseconds());
@@ -184,5 +223,6 @@ public:
 
 	bool TestAllTrees();
 
+public:
 	static bool Test(bool run_time_test = false);
 };
