@@ -72,8 +72,7 @@ public:
 			if (!p->r) break;
 		}
 		Splay(p);
-		p->r = r;
-		r->p = p;
+		p->SetR(r);
 		p->UpdateInfo();
 		return p;
 	}
@@ -219,18 +218,16 @@ public:
 	{
 		assert(node);
 		ApplyActionRootToNode(node);
-		TNode* l = node->l; node->l = 0;
-		if (l) l->p = 0;
-		TNode* r = node->r; node->r = 0;
-		if (r) r->p = 0;
-		TNode* p = node->p; node->p = 0;
+		TNode* l = node->l; if (l) l->SetParentLink(0);
+		TNode* r = node->r; if (r) r->SetParentLink(0);
+		TNode* p = node->p;
+		node->ResetLinks();
 		TNode* m = Join(l, r);
-		if (m) m->p = p;
 		if (!p) return m;
 		if (node == p->l)
-			p->l = m;
+			p->SetL(m);
 		else
-			p->r = m;
+			p->SetR(m);
 		Splay(p);
 		return p;
 	}
