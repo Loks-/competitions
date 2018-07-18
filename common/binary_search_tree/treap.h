@@ -3,7 +3,6 @@
 #include "action.h"
 #include "info.h"
 #include "node.h"
-#include "rotate.h"
 #include "tree.h"
 
 template <
