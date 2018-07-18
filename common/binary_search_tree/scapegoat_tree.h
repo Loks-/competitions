@@ -70,15 +70,9 @@ public:
 		if (!root) return node;
 		root->ApplyAction();
 		if (root->key < node->key)
-		{
-			root->r = InsertByKey(root->r, node);
-			root->r->SetParentLink(root);
-		}
+			root->SetR(InsertByKey(root->r, node));
 		else
-		{
-			root->l = InsertByKey(root->l, node);
-			root->l->SetParentLink(root);
-		}
+			root->SetL(InsertByKey(root->l, node));
 		return UpdateAndFixSubtree(root);
 	}
 
@@ -100,14 +94,13 @@ protected:
 			TNode* current = new_root->r;
 			for (; !s.empty(); s.pop())
 			{
-				s.top()->l = current;
-				if (current) current->SetParentLink(s.top());
+				s.top()->SetL(current);
 				current = s.top();
 				current->UpdateInfo();
 				current = UpdateAndFixSubtree(current);
 			}
-			new_root->l = l;
-			new_root->r = current;
+			new_root->SetL(l);
+			new_root->SetR(current);
 		}
 		else
 		{
@@ -120,17 +113,14 @@ protected:
 			TNode* current = new_root->l;
 			for (; !s.empty(); s.pop())
 			{
-				s.top()->r = current;
-				if (current) current->SetParentLink(s.top());
+				s.top()->SetR(current);
 				current = s.top();
 				current->UpdateInfo();
 				current = UpdateAndFixSubtree(current);
 			}
-			new_root->l = current;
-			new_root->r = r;
+			new_root->SetL(current);
+			new_root->SetR(r);
 		}
-		if (new_root->l) new_root->l->SetParentLink(new_root);
-		if (new_root->r) new_root->r->SetParentLink(new_root);
 		return UpdateAndFixSubtree(new_root);
 	}
 
@@ -141,15 +131,9 @@ public:
 		if (!root) return root;
 		root->ApplyAction();
 		if (root->key < key)
-		{
-			root->r = RemoveByKey(root->r, key, removed_node);
-			if (root->r) root->r->SetParentLink(root);
-		}
+			root->SetR(RemoveByKey(root->r, key, removed_node));
 		else if (root->key > key)
-		{
-			root->l = RemoveByKey(root->l, key, removed_node);
-			if (root->l) root->l->SetParentLink(root);
-		}
+			root->SetL(RemoveByKey(root->l, key, removed_node));
 		else
 		{
 			removed_node = root;
@@ -182,6 +166,7 @@ public:
 		// Drop node from tree
 		TNode* child = node->l ? node->l : node->r;
 		TNode* parent = node->p;
+		if (child) child->p = parent;
 		if (parent)
 		{
 			if (parent->l == node)
@@ -189,7 +174,6 @@ public:
 			else
 				parent->r = child;
 		}
-		if (child) child->p = parent;
 		node->ResetLinks();
 		for (TNode * node = parent; node; node = parent)
 		{
