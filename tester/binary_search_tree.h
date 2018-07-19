@@ -201,6 +201,28 @@ protected:
 	}
 
 	template<class TTree>
+	typename TTree::TNode* TestDeleteByNodeI(TTree& tree, typename TTree::TNode* root, TBSTKeysType type, TFakeFalse) { tree.ReleaseTree(root); return 0; }
+
+	template<class TTree>
+	typename TTree::TNode* TestDeleteByNodeI(TTree& tree, typename TTree::TNode* root, TBSTKeysType type, TFakeTrue)
+	{
+		Timer t;
+		size_t h = 0;
+		for (unsigned i = 0; i < Size(); ++i)
+		{
+			AddAction(root);
+			root = tree.RemoveAndReleaseByNode(tree.GetNodeByRawIndex(i));
+			VerifyParentLinksLazy(root);
+			h = hash_combine(h, GetInfoValue(root));
+		}
+		AddResult("DelNode", type, h, t.GetMilliseconds());
+		return root;
+	}
+
+	template<class TTree>
+	typename TTree::TNode* TestDeleteByNode(TTree& tree, typename TTree::TNode* root, TBSTKeysType type) { return TestDeleteByNodeI(tree, root, type, TFakeBool<TTree::use_parent>()); }
+
+	template<class TTree>
 	void TestAll(const string& tree_name)
 	{
 		cout << "\tTesting " << tree_name << ":" << endl;
@@ -211,13 +233,15 @@ protected:
 		{
 			TBSTKeysType ktype = TBSTKeysType(type);
 			root = TestBuild<TTree>(tree, ktype);
-			tree.ReleaseTree(root);
+			root = TestDeleteByNode(tree, root, ktype);
+			assert(!root);
 			root = TestInsert<TTree>(tree, ktype);
 			root = TestFindByOrder<TTree>(tree, root, ktype);
 			root = TestFindByKey0<TTree>(tree, root, ktype);
 			root = TestFindByKey1<TTree>(tree, root, ktype);
 			root = TestDeleteByKey<TTree>(tree, root, ktype);
 			assert(!root);
+			tree.ResetNodes();
 		}
 	}
 

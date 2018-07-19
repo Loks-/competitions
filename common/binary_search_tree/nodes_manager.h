@@ -70,4 +70,16 @@ public:
 	void ReleaseNode(TNode * p) { released_nodes.push(p); }
 	unsigned UsedNodes() const { return used_nodes - unsigned(released_nodes.size()); }
 	unsigned AvailableNodes() const { return unsigned(nodes.size()) - UsedNodes(); }
+
+	TNode* GetNodeByRawIndex(unsigned index) { return &(nodes[index]); }
+	void ResetNodes()
+	{
+		stack<TNode*>().swap(released_nodes);
+		used_nodes = 0;
+		for (TNode& node : nodes)
+		{
+			node.ResetLinks();
+			node.ClearAction();
+		}
+	}
 };

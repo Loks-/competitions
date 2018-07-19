@@ -180,7 +180,7 @@ public:
 			child = UpdateAndFixSubtree(node);
 			if (child != node)
 			{
-				child->UpdateParentLink(parent);
+				child->SetParentLink(parent);
 				if (parent)
 				{
 					if (parent->l == node)
