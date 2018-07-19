@@ -34,6 +34,9 @@
     <Filter Include="Source Files\practice\data_structures\balanced_trees">
       <UniqueIdentifier>{ab89c364-6b22-49da-a1f5-a84fe702bad6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\practice\data_structures\stacks">
+      <UniqueIdentifier>{cfd8e838-1bfe-480a-be2c-6f78a4b0f299}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="practice\mathematics\fundamentals\find_the_point.cpp">
@@ -191,6 +194,9 @@
     </ClCompile>
     <ClCompile Include="practice\data_structures\balanced_trees\median_updates_upf_scapegoat.cpp">
       <Filter>Source Files\practice\data_structures\balanced_trees</Filter>
+    </ClCompile>
+    <ClCompile Include="practice\data_structures\stacks\maximum_element.cpp">
+      <Filter>Source Files\practice\data_structures\stacks</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
