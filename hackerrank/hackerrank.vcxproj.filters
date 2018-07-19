@@ -204,6 +204,9 @@
     <ClCompile Include="practice\data_structures\stacks\balanced_brackets.cpp">
       <Filter>Source Files\practice\data_structures\stacks</Filter>
     </ClCompile>
+    <ClCompile Include="practice\data_structures\stacks\largest_rectangle.cpp">
+      <Filter>Source Files\practice\data_structures\stacks</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="input.txt">
