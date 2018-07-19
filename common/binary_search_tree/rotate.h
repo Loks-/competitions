@@ -18,19 +18,16 @@ void BSTRotate(TNode* child, TNode* parent, TNode* gparent)
 		else
 			gparent->r = child;
 	}
-	parent->SetParentLink(child);
 	child->SetParentLink(gparent);
 	if (parent->l == child)
 	{
-		parent->l = child->r;
-		if (parent->l) parent->l->SetParentLink(parent);
-		child->r = parent;
+		parent->SetL(child->r);
+		child->SetR(parent);
 	}
 	else
 	{
-		parent->r = child->l;
-		if (parent->r) parent->r->SetParentLink(parent);
-		child->l = parent;
+		parent->SetR(child->l);
+		child->SetL(parent);
 	}
 	parent->UpdateInfo();
 	if (update_child) child->UpdateInfo();
