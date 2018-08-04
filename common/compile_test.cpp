@@ -1,4 +1,5 @@
 #include "base.h"
+#include "disjoint_set.h"
 #include "hash.h"
 #include "template.h"
 #include "timer.h"
