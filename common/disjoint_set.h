@@ -13,7 +13,7 @@ protected:
     uint32_t sets;
 
 public:
-    DisjointSet(size_t n = 0)
+    DisjointSet(uint32_t n = 0)
     {
         Init(n);
     }
@@ -21,11 +21,11 @@ public:
     uint32_t Size() const { return n; }
     uint32_t GetSetsCount() const { return sets; }
 
-    void Init(size_t n_)
+    void Init(uint32_t n_)
     {
         n = n_;
         p.resize(n);
-        for (size_t i = 0; i < n; ++i) {
+        for (uint32_t i = 0; i < n; ++i) {
             p[i] = i;
         }
         rank.resize(n);
@@ -35,17 +35,17 @@ public:
         sets = n;
     }
 
-    void Union(size_t i1, size_t i2)
+    void Union(uint32_t i1, uint32_t i2)
     {
         UnionI(Find(i1), Find(i2));
     }
 
-    size_t Find(size_t x)
+    uint32_t Find(uint32_t x)
     {
-        size_t px = p[x];
+        uint32_t px = p[x];
         if (px == x)
             return px;
-        size_t ppx = p[px];
+        uint32_t ppx = p[px];
         if (ppx == px)
             return px;
         do
@@ -64,13 +64,13 @@ public:
         return ppx;
     }
 
-    size_t GetSize(size_t x)
+    uint32_t GetSize(uint32_t x)
     {
         return vsize[Find(x)];
     }
 
 protected:
-    void UnionI(size_t i1, size_t i2)
+    void UnionI(uint32_t i1, uint32_t i2)
     {
         if (i1 == i2)
             return;
