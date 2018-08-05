@@ -2,7 +2,7 @@
 #include "lemming.h"
 
 #include "common/base.h"
-#include "common/disjoint_set_extended.h"
+#include "common/disjoint_set.h"
 
 int main_lemming()
 {
@@ -22,13 +22,12 @@ int main_lemming()
 	int64_t ilast = (node_id + 1) * rows / nodes;
 	assert(ilast - ifirst >= 1);
 
-    DisjointSetExtended<int64_t> ds;
-    ds.Reserve((ilast - ifirst + 1) * columns);
+    DisjointSet ds((ilast - ifirst + 1) * columns);
+    int index = 0;
     for (int64_t i = ifirst; i < ilast; ++i)
     {
-        for (int64_t j = 0; j < columns; ++j)
+        for (int64_t j = 0; j < columns; ++j, ++index)
         {
-            int64_t index = i * columns + j;
             char c = GetDirection(i, j);
             if (c == '^')
             {
@@ -63,10 +62,9 @@ int main_lemming()
         total_unions = GetInt(node_id - 1);
         for (int64_t j = 0; j < columns; ++j)
         {
-            int index1 = GetInt(node_id - 1);
-            int index2 = ifirst * columns + j;
+            index = GetInt(node_id - 1) + (ilast - ifirst) * columns;
             if ((GetDirection(ifirst - 1, j) == 'v') || (GetDirection(ifirst, j) == '^'))
-                ds.Union(index1, index2);
+                ds.Union(index, j);
         }
     }
     total_unions += int32_t(ds.GetUnions());
@@ -74,8 +72,17 @@ int main_lemming()
     if (node_id != nodes - 1)
     {
         PutInt(node_id + 1, total_unions);
+        unordered_map<int, int> m; int l = 0;
         for (int64_t j = 0; j < columns; ++j)
-            PutInt(node_id + 1, ds.Find((ilast - 1) * columns + j));
+        {
+            index = ds.Find((ilast - ifirst - 1) * columns + j);
+            auto it = m.find(index);
+            if (it == m.end())
+            {
+                m[index] = l++;
+            }
+            PutInt(node_id + 1, m[index]);
+        }
         Send(node_id + 1);
     }
     else

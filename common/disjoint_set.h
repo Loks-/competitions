@@ -10,7 +10,7 @@ protected:
     vector<uint32_t> rank;
     vector<uint32_t> vsize;
     stack<uint32_t> ts;
-    uint32_t sets;
+    uint32_t unions;
 
 public:
     DisjointSet(uint32_t n = 0)
@@ -19,7 +19,8 @@ public:
     }
 
     uint32_t Size() const { return n; }
-    uint32_t GetSetsCount() const { return sets; }
+    uint32_t GetUnions() const { return unions; }
+    uint32_t GetSetsCount() const { return n - unions; }
 
     void Init(uint32_t n_)
     {
@@ -32,7 +33,7 @@ public:
         fill(rank.begin(), rank.end(), 0);
         vsize.resize(n);
         fill(vsize.begin(), vsize.end(), 1);
-        sets = n;
+        unions = 0;
     }
 
     void Union(uint32_t i1, uint32_t i2)
@@ -74,7 +75,7 @@ protected:
     {
         if (i1 == i2)
             return;
-        --sets;
+        ++unions;
         if (rank[i1] > rank[i2])
         {
             p[i2] = i1;
