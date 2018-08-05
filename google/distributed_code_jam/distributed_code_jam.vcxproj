@@ -133,6 +133,7 @@
   <ItemGroup>
     <ClInclude Include="2018\practice\baby_blocks.h" />
     <ClInclude Include="2018\practice\flagpoles.h" />
+    <ClInclude Include="2018\practice\lemming.h" />
     <ClInclude Include="2018\practice\pancakes.h" />
     <ClInclude Include="2018\r1\stones.h" />
     <ClInclude Include="message.h" />
@@ -140,6 +141,7 @@
   <ItemGroup>
     <ClCompile Include="2018\practice\baby_blocks.cpp" />
     <ClCompile Include="2018\practice\flagpoles.cpp" />
+    <ClCompile Include="2018\practice\lemming.cpp" />
     <ClCompile Include="2018\practice\pancakes.cpp" />
     <ClCompile Include="2018\r1\stones.cpp" />
     <ClCompile Include="main.cpp" />

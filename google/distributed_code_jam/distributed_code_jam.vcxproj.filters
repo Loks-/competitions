@@ -39,6 +39,9 @@
     <ClInclude Include="2018\r1\stones.h">
       <Filter>Source Files\2018\r1</Filter>
     </ClInclude>
+    <ClInclude Include="2018\practice\lemming.h">
+      <Filter>Source Files\2018\practice</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -58,6 +61,9 @@
     </ClCompile>
     <ClCompile Include="2018\r1\stones.cpp">
       <Filter>Source Files\2018\r1</Filter>
+    </ClCompile>
+    <ClCompile Include="2018\practice\lemming.cpp">
+      <Filter>Source Files\2018\practice</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

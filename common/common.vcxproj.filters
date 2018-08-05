@@ -176,6 +176,12 @@
     <ClInclude Include="binary_search_tree\utils\reset_parent_links.h">
       <Filter>Header Files\binary_search_tree\utils</Filter>
     </ClInclude>
+    <ClInclude Include="disjoint_set.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="disjoint_set_extended.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\current_solution.inl">

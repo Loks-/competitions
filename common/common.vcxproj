@@ -164,6 +164,8 @@
     <ClInclude Include="binary_search_tree\tree.h" />
     <ClInclude Include="binary_search_tree\utils\reset_parent_links.h" />
     <ClInclude Include="binary_search_tree\utils\rotate.h" />
+    <ClInclude Include="disjoint_set.h" />
+    <ClInclude Include="disjoint_set_extended.h" />
     <ClInclude Include="graph\base_graph.h" />
     <ClInclude Include="graph\base_subgraph.h" />
     <ClInclude Include="graph\base_tree.h" />
