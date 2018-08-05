@@ -18,6 +18,7 @@
 x64/
 x86/
 bld/
+build/
 [Bb]in/
 [Oo]bj/
 [Ll]og/
@@ -259,9 +260,8 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
-/common/current_solution.inl
+
+# Project specific files
 current_solution.inl
-include_headers
-a.out
 .vscode/tasks.json
 /hackerrank/input.txt
