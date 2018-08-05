@@ -8,6 +8,8 @@
         "type_traits": "cpp",
         "tuple": "cpp",
         "iosfwd": "cpp",
-        "vector": "cpp"
+        "vector": "cpp",
+        "*.tcc": "cpp",
+        "deque": "cpp"
     }
 }
