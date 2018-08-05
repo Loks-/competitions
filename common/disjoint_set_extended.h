@@ -17,6 +17,14 @@ protected:
     uint32_t unions = 0;
 
 public:
+    void Reserve(uint32_t size)
+    {
+        m.reserve(size);
+        p.reserve(size);
+        rank.reserve(size);
+        vsize.reserve(size);
+    }
+    
     uint32_t Size() const { return p.size(); }
     uint32_t GetUnions() const { return unions; }
 
