@@ -1,5 +1,3 @@
-#pragma once
-
 #include "common/timer.h"
 #include "common/binary_search_tree/red_black_tree.h"
 #include "common/binary_search_tree/scapegoat_tree.h"
