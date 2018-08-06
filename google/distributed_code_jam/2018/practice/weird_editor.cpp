@@ -10,12 +10,12 @@ int main_weird_editor()
 {
 	int nodes = NumberOfNodes();
 	int node_id = MyNodeId();
-    int length = GetNumberLength();
+    int length = int(GetNumberLength());
 
     vector<vector<int>> v(10);
     for (int i = node_id; i < length; i += nodes)
     {
-        int digit = GetDigit(i);
+        int digit = int(GetDigit(i));
         v[digit].push_back(i);
     }
     vector<int> vc(10);
@@ -23,7 +23,7 @@ int main_weird_editor()
     int start_pos = -1;
     for (int digit = 9; digit > 0; --digit)
     {
-        int l = v[digit].end() - lower_bound(v[digit].begin(), v[digit].end(), start_pos);
+        int l = int(v[digit].end() - lower_bound(v[digit].begin(), v[digit].end(), start_pos));
         int final_pos = ((l > 0) ? v[digit].back() : start_pos);
         if (node_id == 0)
         {
