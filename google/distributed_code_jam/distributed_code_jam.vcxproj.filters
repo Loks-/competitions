@@ -51,6 +51,9 @@
     <ClInclude Include="2018\r1\towels.h">
       <Filter>Source Files\2018\r1</Filter>
     </ClInclude>
+    <ClInclude Include="2018\r1\kenneth.h">
+      <Filter>Source Files\2018\r1</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -81,6 +84,9 @@
       <Filter>Source Files\2018\practice</Filter>
     </ClCompile>
     <ClCompile Include="2018\r1\towels.cpp">
+      <Filter>Source Files\2018\r1</Filter>
+    </ClCompile>
+    <ClCompile Include="2018\r1\kenneth.cpp">
       <Filter>Source Files\2018\r1</Filter>
     </ClCompile>
   </ItemGroup>

@@ -137,6 +137,7 @@
     <ClInclude Include="2018\practice\number_bases.h" />
     <ClInclude Include="2018\practice\pancakes.h" />
     <ClInclude Include="2018\practice\weird_editor.h" />
+    <ClInclude Include="2018\r1\kenneth.h" />
     <ClInclude Include="2018\r1\stones.h" />
     <ClInclude Include="2018\r1\towels.h" />
     <ClInclude Include="message.h" />
@@ -148,6 +149,7 @@
     <ClCompile Include="2018\practice\number_bases.cpp" />
     <ClCompile Include="2018\practice\pancakes.cpp" />
     <ClCompile Include="2018\practice\weird_editor.cpp" />
+    <ClCompile Include="2018\r1\kenneth.cpp" />
     <ClCompile Include="2018\r1\stones.cpp" />
     <ClCompile Include="2018\r1\towels.cpp" />
     <ClCompile Include="main.cpp" />
