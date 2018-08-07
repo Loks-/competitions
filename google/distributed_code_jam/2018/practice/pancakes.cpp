@@ -1,7 +1,11 @@
 #include "message.h"
-#include "pancakes.h"
 
 #include "common/base.h"
+
+namespace
+{
+#include "pancakes.h"
+}
 
 namespace
 {
