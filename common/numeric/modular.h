@@ -43,6 +43,7 @@ public:
 
 	bool operator<(const TSelf& r) const { return value < r.value; }
 	bool operator==(const TSelf& r) const { return value == r.value; }
+	bool operator!=(const TSelf& r) const { return value != r.value; }
 };
 
 template <uint64_t mod> using TModular_P32 = Modular<mod, true, true>;
