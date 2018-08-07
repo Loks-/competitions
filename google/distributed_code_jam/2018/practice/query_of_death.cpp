@@ -9,12 +9,13 @@ int main_query_of_death()
 	int node_id = MyNodeId();
     int64_t length = GetLength();
     
-    assert((nodes % 3) == 1);
-    int blocks = nodes / 3;
+    // assert((nodes % 3) == 1);
+    int blocks = (nodes - 1) / 3;
+    assert(blocks > 0);
     int block_id = node_id / 3;
     int64_t first = block_id * length / blocks, last = (block_id + 1) * length / blocks, ln = last - first;
 
-    if (node_id != nodes - 1)
+    if (block_id < blocks)
     {
         int master = 3 * block_id;
         if (ln > 1)
@@ -36,7 +37,7 @@ int main_query_of_death()
             }
             else // master
             {
-                assert(node_id == master);
+                // assert(node_id == master);
                 vector<char> v(ln);
                 Receive(master + 1);
                 for (int64_t i = 0; i < ln; ++i)
@@ -63,19 +64,19 @@ int main_query_of_death()
             int sum = 0;
             for (int64_t i = first; i < last; ++i)
             {
-                sum += GetChar(i);
+                sum += GetValue(i);
             }
             PutInt(nodes - 1, sum);
             Send(nodes - 1);
         }
     }
-    else // (node_id == node_id - 1)
+    else if (node_id == nodes - 1)
     {
         int sum = 0;
-        for (int inode = 0; inode < node_id; inode += 3)
+        for (int iblock = 0; iblock < blocks; ++iblock)
         {
-            Receive(inode);
-            sum += GetInt(inode);
+            Receive(3 * iblock);
+            sum += GetInt(3 * iblock);
         }
         cout << sum << endl;
     }
