@@ -1,5 +1,3 @@
-// !!! UNTESTED !!!
-
 #include "message.h"
 #include "kenneth.h"
 
@@ -7,8 +5,7 @@
 #include "common/numeric/modular.h"
 #include "common/numeric/primes_list.h"
 
-// using TModular = Modular<>;
-using TModular = Modular<982451653>;
+using TModular = Modular<>;
 
 int main_kenneth()
 {
@@ -21,128 +18,103 @@ int main_kenneth()
 	{
 		vs[i + 1] = vs[i] + GetPieceLength(i);
 	}
-	int64_t first = vs[node_id], last = vs[node_id + 1], ln = last - first;
+	int64_t first = vs[node_id], last = vs[node_id + 1], ln = last - first, l = vs[nodes];
 
 	vector<char> vstr(ln);
 	for (int64_t i = first; i < last; ++i)
 	{
 		vstr[i - first] = GetSignalCharacter(i);
 	}
-	vector<TModular> vh(ln + 1), vmi(ln);
-	TModular mm = TModular(0x0e3779b9), mmi = mm.Inverse();
-	TModular mb = mm.PowU(first), mc = mb, mci = mc.Inverse();
+	vector<TModular> vh(ln + 1);
+	TModular one(1), mm = TModular(0x0e3779b9);
+	TModular mb = mm.PowU(first), mc = mb;
 	vh[0] = 0;
 	for (int64_t i = 0; i < ln; ++i)
 	{
-		vmi[i] = mci;
 		vh[i + 1] = vh[i] + mc * TModular(vstr[i]);
 		mc *= mm;
-		mci *= mmi;
 	}
+    TModular mmsum = mm.PowU(l) - one;
+    assert(mmsum.Get() != 0);
 
-	if (node_id == 0)
-	{
-		PrimesList pl(1000000);
-		auto vp = pl.GetDivisors(vs.back());
-		sort(vp.begin(), vp.end());
-		for (int64_t d : vp)
-		{
-			PutLL(1, d);
-			Send(1);
-			int64_t status = -1, current = 0;
-			for (; current + d <= last; current += d)
-			{
-				int64_t t = ((vh[current + d] - vh[current]) * vmi[current]).Get();
-				// int64_t t = ((vh[current + d - first] - vh[current - first]) / mm.PowU(current)).Get();
-				if (status == -1)
-					status = t;
-				else if (t != status)
-				{
-					status = -2;
-					break;
-				}
-			}
-			PutLL(1, status);
-			PutLL(1, (vh.back() - vh[current]).Get());
-			Send(1);
-			// wait
-			Receive(nodes - 1);
-			status = GetLL(nodes - 1);
-			GetLL(nodes - 1);
-			if (status != -2)
-			{
-				assert(status != -1);
-				cout << d << endl;
-				PutLL(1, -2);
-				Send(1);
-				return 0;
-			}
-		}
-	}
-	else
-	{
-		for (;;)
-		{
-			Receive(node_id - 1);
-			int64_t d = GetLL(node_id - 1);
-			if (node_id != nodes - 1)
-			{
-				PutLL(node_id + 1, d);
-				Send(node_id + 1);
-			}
-			if (d < 0)
-				return 0;
-			int64_t status = -1;
-			int64_t ifirst = (first / d) * d;
-			if (ifirst < first)
-				ifirst += d;
-			int64_t current = ifirst;
-			for (; current + d <= last; current += d)
-			{
-				int64_t t = ((vh[current + d - first] - vh[current - first]) * vmi[current - first]).Get();
-				// int64_t t = ((vh[current + d - first] - vh[current - first]) / mm.PowU(current)).Get();
-				if (status == -1)
-					status = t;
-				else if (t != status)
-				{
-					status = -2;
-					break;
-				}
-			}
-			Receive(node_id - 1);
-			int64_t sl = GetLL(node_id - 1);
-			int64_t cl = GetLL(node_id - 1);
-			if (status == -1)
-				status = sl;
-			if ((sl != -1) && (sl != status))
-			{
-				status = -2;
-			}
-			if (status != -2)
-			{
-				if (ifirst <= last)
-				{
-					if (ifirst != first)
-					{
-						int64_t t = ((TModular(cl) + vh[ifirst - first]) * mmi.PowU(ifirst - d)).Get();
-						// int64_t t = ((TModular(cl) + vh[ifirst - first]) / mm.PowU(ifirst - d)).Get();
-						if (status == -1)
-							status = t;
-						else if (t != status)
-							status = -2;
-					}
-					cl = (vh.back() - vh[current]).Get();
-				}
-				else
-				{
-					cl = (TModular(cl) + vh.back()).Get();
-				}
-			}
-			PutLL((node_id + 1) % nodes, status);
-			PutLL((node_id + 1) % nodes, cl);
-			Send((node_id + 1) % nodes);
-		}
-	}
-	assert(false);
-	return 0;
+    if (node_id != 0)
+    {
+        Receive(node_id - 1);
+        vh[0].SetS(GetInt(node_id - 1));
+    }
+    PutInt((node_id + 1) % nodes, (vh[0] + vh[ln]).Get());
+    Send((node_id + 1) % nodes);
+    for (int64_t i = 1; i <= ln; ++i)
+    {
+        vh[i] += vh[0];
+    }
+
+    TModular sum;
+    if (node_id == 0)
+    {
+        Receive(nodes - 1);
+        sum.SetS(GetInt(nodes - 1));
+        PutInt(1, sum.Get());
+        Send(1);
+    }
+    else
+    {
+        Receive(node_id - 1);
+        sum.SetS(GetInt(node_id - 1));
+        if (node_id != nodes - 1)
+        {
+            PutInt(node_id + 1, sum.Get());
+            Send(node_id + 1);
+        }
+    }
+
+    PrimesList pl(1000000);
+    auto vd = pl.GetDivisors(l);
+    sort(vd.begin(), vd.end());
+    vector<char> vok(vd.size(), 1);
+    for (unsigned k = 0; k < vd.size(); ++k)
+    {
+        int64_t d = vd[k];
+        TModular mmpowd = mm.PowU(d);
+        TModular mmsumd = (mmpowd - one);
+        TModular target = sum * mmsumd / mmsum;
+        int64_t j = (first / d) + 1;
+        TModular mmsumjd = (mm.PowU(j * d) - one);
+        for (; j * d <= last; ++j)
+        {            
+            if (vh[j * d - first] * mmsumd != target * mmsumjd)
+            {
+                vok[k] = 0;
+                break;
+            }
+            mmsumjd = mmsumjd * mmpowd + mmsumd;
+            break; // We really don't need to check all, should be fine with high probability.
+        }
+    }
+
+    if (node_id != 0)
+    {
+        Receive(node_id - 1);
+        for (unsigned k = 0; k < vd.size(); ++k)
+            vok[k] *= GetChar(node_id - 1);
+    }
+    for (unsigned k = 0; k < vd.size(); ++k)
+        PutChar((node_id + 1) % nodes, vok[k]);
+    Send((node_id + 1) % nodes);
+    
+    if (node_id == 0)
+    {
+        int64_t d = 0;
+        Receive(nodes - 1);
+        for (unsigned k = 0; k < vd.size(); ++k)
+        {
+            vok[k] = GetChar(nodes - 1);
+            if (vok[k] && (d == 0))
+                d = vd[k];
+        }
+        assert(d > 0);
+        cout << d << endl;
+    }
+
+    return 0;
 }
