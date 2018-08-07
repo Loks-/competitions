@@ -1,14 +1,14 @@
 #include "message.h"
 
 #include "common/base.h"
-#include "common/numeric/modular_arithmetic_proxy.h"
+#include "common/numeric/modular.h"
 
 namespace
 {
 #include "broken_memory.h"
 }
 
-using TModularProxy = ModularArithmeticProxy<false, true>;
+using TModular = Modular<>;
 
 int main_broken_memory()
 {
@@ -23,34 +23,17 @@ int main_broken_memory()
         values[i] = uint64_t(GetValue(i));
     }
 
-    // Find good mod & c pair
-    TModularProxy proxy(1093501407);
-    uint64_t c = 195731;
+    const TModular c = 195731;
     auto h = [&](int f, int l)
     {
-        uint64_t v = 0;
+        TModular v = 0;
         for (int i = f; i < l; ++i)
         {
-            v = proxy.Mult(v, c);
-            v = proxy.AddSafe(v, values[i]);
+            v *= c;
+            v += TModular(values[i]);
         }
-        return int(v);
+        return int(v.Get());
     };
-    // for (;;)
-    // {
-    //     int x1 = h(0, length);
-    //     PutInt(node_id2, x1);
-    //     Send(node_id2);
-    //     Receive(node_id2);
-    //     int x2 = GetInt(node_id2);
-    //     if (x1 == x2)
-    //     {
-    //         c += 1;
-    //         proxy.SetMod(proxy.GetMod() + 2);
-    //     }
-    //     else
-    //         break;
-    // }
 
     int f1 = 0, f2 = 0, l1 = length, l2 = length, f, l;
     for (; (l1 > f1 + 1) || (l2 > f2 + 1);)
