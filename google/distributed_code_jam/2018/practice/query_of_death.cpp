@@ -36,22 +36,17 @@ int main_query_of_death()
         else // master
         {
             assert(node_id == master);
-            vector<char> v(ln);
-            Receive(master + 1);
-            for (int64_t i = 0; i < ln; ++i)
-            {
-                v[i] = GetChar(master + 1);
-            }
-            Receive(master + 2);
             int sum = 0;
-            for (int64_t i = 0; i < ln; ++i)
+            Receive(master + 1);
+            Receive(master + 2);
+            for (int64_t i = first; i < last; ++i)
             {
-                char c1 = v[i];
+                char c1 = GetChar(master + 1);
                 char c2 = GetChar(master + 2);
                 if (c1 == c2)
                     sum += c1;
                 else
-                    sum += GetValue(i + first);
+                    sum += GetValue(i);
             }
             PutInt(nodes - 1, sum);
             Send(nodes - 1);
