@@ -1,11 +1,7 @@
 #include "message.h"
+#include "flagpoles.h"
 
 #include "common/base.h"
-
-namespace
-{
-#include "flagpoles.h"
-}
 
 namespace
 {

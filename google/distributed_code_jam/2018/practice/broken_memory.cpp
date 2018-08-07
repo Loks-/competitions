@@ -1,12 +1,8 @@
 #include "message.h"
+#include "broken_memory.h"
 
 #include "common/base.h"
 #include "common/numeric/modular.h"
-
-namespace
-{
-#include "broken_memory.h"
-}
 
 using TModular = Modular<>;
 

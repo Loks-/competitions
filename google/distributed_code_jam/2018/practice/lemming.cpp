@@ -1,12 +1,8 @@
 #include "message.h"
+#include "lemming.h"
 
 #include "common/base.h"
 #include "common/disjoint_set.h"
-
-namespace
-{
-#include "lemming.h"
-}
 
 int main_lemming()
 {
