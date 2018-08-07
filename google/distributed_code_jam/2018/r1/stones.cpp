@@ -1,7 +1,11 @@
 #include "message.h"
-#include "stones.h"
 
 #include "common/base.h"
+
+namespace
+{
+#include "stones.h"
+}
 
 namespace {
 	void SolveSmall_Stones() {

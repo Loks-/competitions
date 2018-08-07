@@ -1,7 +1,11 @@
 #include "message.h"
-#include "towels.h"
 
 #include "common/base.h"
+
+namespace
+{
+#include "towels.h"
+}
 
 int main_towels()
 {

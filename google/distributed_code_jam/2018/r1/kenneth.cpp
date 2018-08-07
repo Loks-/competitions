@@ -1,11 +1,15 @@
 // !!! UNTESTED !!!
 
 #include "message.h"
-#include "kenneth.h"
 
 #include "common/base.h"
 #include "common/numeric/modular.h"
 #include "common/numeric/primes_list.h"
+
+namespace
+{
+#include "kenneth.h"
+}
 
 using TModular = Modular<>;
 

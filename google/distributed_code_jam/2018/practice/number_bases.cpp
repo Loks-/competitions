@@ -1,7 +1,11 @@
 #include "message.h"
-#include "number_bases.h"
 
 #include "common/base.h"
+
+namespace
+{
+#include "number_bases.h"
+}
 
 int main_number_bases()
 {

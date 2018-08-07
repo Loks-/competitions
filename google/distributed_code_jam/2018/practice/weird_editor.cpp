@@ -1,8 +1,12 @@
 #include "message.h"
-#include "weird_editor.h"
 
 #include "common/base.h"
 #include "common/numeric/modular.h"
+
+namespace
+{
+#include "weird_editor.h"
+}
 
 using TModular = Modular<>;
 

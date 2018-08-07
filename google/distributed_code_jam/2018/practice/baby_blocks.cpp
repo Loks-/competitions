@@ -1,7 +1,11 @@
 #include "message.h"
-#include "baby_blocks.h"
 
 #include "common/base.h"
+
+namespace
+{
+#include "baby_blocks.h"
+}
 
 namespace 
 {
