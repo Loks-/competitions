@@ -132,6 +132,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="2018\practice\baby_blocks.h" />
+    <ClInclude Include="2018\practice\broken_memory.h" />
     <ClInclude Include="2018\practice\flagpoles.h" />
     <ClInclude Include="2018\practice\lemming.h" />
     <ClInclude Include="2018\practice\number_bases.h" />
@@ -144,6 +145,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="2018\practice\baby_blocks.cpp" />
+    <ClCompile Include="2018\practice\broken_memory.cpp" />
     <ClCompile Include="2018\practice\flagpoles.cpp" />
     <ClCompile Include="2018\practice\lemming.cpp" />
     <ClCompile Include="2018\practice\number_bases.cpp" />
