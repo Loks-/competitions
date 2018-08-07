@@ -7,7 +7,8 @@
 #include "common/numeric/modular.h"
 #include "common/numeric/primes_list.h"
 
-using TModular = Modular<>;
+// using TModular = Modular<>;
+using TModular = Modular<982451653>;
 
 int main_kenneth()
 {
@@ -28,8 +29,8 @@ int main_kenneth()
 		vstr[i - first] = GetSignalCharacter(i);
 	}
 	vector<TModular> vh(ln + 1), vmi(ln);
-	TModular mm = TModular(0x9e3779b9), mmi = mm.Inverse();
-	TModular mb = mm.PowU(vs[node_id]), mc = mb, mci = mc.Inverse();
+	TModular mm = TModular(0x0e3779b9), mmi = mm.Inverse();
+	TModular mb = mm.PowU(first), mc = mb, mci = mc.Inverse();
 	vh[0] = 0;
 	for (int64_t i = 0; i < ln; ++i)
 	{
@@ -48,10 +49,11 @@ int main_kenneth()
 		{
 			PutLL(1, d);
 			Send(1);
-			int64_t status = -1, i = 0;
-			for (; i + d <= last; i += d)
+			int64_t status = -1, current = 0;
+			for (; current + d <= last; current += d)
 			{
-				int64_t t = ((vh[i + d] - vh[i]) * vmi[i]).Get();
+				int64_t t = ((vh[current + d] - vh[current]) * vmi[current]).Get();
+				// int64_t t = ((vh[current + d - first] - vh[current - first]) / mm.PowU(current)).Get();
 				if (status == -1)
 					status = t;
 				else if (t != status)
@@ -61,14 +63,15 @@ int main_kenneth()
 				}
 			}
 			PutLL(1, status);
-			PutLL(1, (vh.back() - vh[i]).Get());
+			PutLL(1, (vh.back() - vh[current]).Get());
 			Send(1);
-			// ...
+			// wait
 			Receive(nodes - 1);
 			status = GetLL(nodes - 1);
-			i = GetLL(nodes - 1);
+			GetLL(nodes - 1);
 			if (status != -2)
 			{
+				assert(status != -1);
 				cout << d << endl;
 				PutLL(1, -2);
 				Send(1);
@@ -97,6 +100,7 @@ int main_kenneth()
 			for (; current + d <= last; current += d)
 			{
 				int64_t t = ((vh[current + d - first] - vh[current - first]) * vmi[current - first]).Get();
+				// int64_t t = ((vh[current + d - first] - vh[current - first]) / mm.PowU(current)).Get();
 				if (status == -1)
 					status = t;
 				else if (t != status)
@@ -116,11 +120,12 @@ int main_kenneth()
 			}
 			if (status != -2)
 			{
-				if (ifirst < last)
+				if (ifirst <= last)
 				{
 					if (ifirst != first)
 					{
 						int64_t t = ((TModular(cl) + vh[ifirst - first]) * mmi.PowU(ifirst - d)).Get();
+						// int64_t t = ((TModular(cl) + vh[ifirst - first]) / mm.PowU(ifirst - d)).Get();
 						if (status == -1)
 							status = t;
 						else if (t != status)
@@ -138,5 +143,6 @@ int main_kenneth()
 			Send((node_id + 1) % nodes);
 		}
 	}
+	assert(false);
 	return 0;
 }
