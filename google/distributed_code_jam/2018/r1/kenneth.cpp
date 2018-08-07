@@ -43,12 +43,13 @@ int main_kenneth()
 	{
 		PrimesList pl(1000000);
 		auto vp = pl.GetDivisors(vs.back());
+		sort(vp.begin(), vp.end());
 		for (int64_t d : vp)
 		{
-			for (int in = 1; in < nodes; ++in)
+			for (int inode = 1; inode < nodes; ++inode)
 			{
-				PutLL(in, d);
-				Send(in);
+				PutLL(inode, d);
+				Send(inode);
 			}
 			int64_t status = -1, i = 0;
 			for (; i + d <= last; i += d)
@@ -69,13 +70,13 @@ int main_kenneth()
 			Receive(nodes - 1);
 			status = GetLL(nodes - 1);
 			i = GetLL(nodes - 1);
-			if (status != -1)
+			if (status != -2)
 			{
 				cout << d << endl;
-				for (int in = 1; in < nodes; ++in)
+				for (int inode = 1; inode < nodes; ++inode)
 				{
-					PutLL(in, -1);
-					Send(in);
+					PutLL(inode, -1);
+					Send(inode);
 				}
 				return 0;
 			}
