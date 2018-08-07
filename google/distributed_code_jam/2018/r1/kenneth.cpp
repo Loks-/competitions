@@ -46,11 +46,8 @@ int main_kenneth()
 		sort(vp.begin(), vp.end());
 		for (int64_t d : vp)
 		{
-			for (int inode = 1; inode < nodes; ++inode)
-			{
-				PutLL(inode, d);
-				Send(inode);
-			}
+			PutLL(1, d);
+			Send(1);
 			int64_t status = -1, i = 0;
 			for (; i + d <= last; i += d)
 			{
@@ -73,11 +70,8 @@ int main_kenneth()
 			if (status != -2)
 			{
 				cout << d << endl;
-				for (int inode = 1; inode < nodes; ++inode)
-				{
-					PutLL(inode, -1);
-					Send(inode);
-				}
+				PutLL(1, -2);
+				Send(1);
 				return 0;
 			}
 		}
@@ -86,8 +80,13 @@ int main_kenneth()
 	{
 		for (;;)
 		{
-			Receive(0);
-			int64_t d = GetLL(0);
+			Receive(node_id - 1);
+			int64_t d = GetLL(node_id - 1);
+			if (node_id != nodes - 1)
+			{
+				PutLL(node_id + 1, d);
+				Send(node_id + 1);
+			}
 			if (d < 0)
 				return 0;
 			int64_t status = -1;
