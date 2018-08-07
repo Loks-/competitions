@@ -88,7 +88,7 @@ int main_kenneth()
                 break;
             }
             mmsumjd = mmsumjd * mmpowd + mmsumd;
-            break; // We really don't need to check all, should be fine with high probability.
+            // break; // We really don't need to check all, should be fine with high probability.
         }
     }
 
