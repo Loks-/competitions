@@ -134,6 +134,8 @@
     <ClInclude Include="binary_search_tree.h" />
     <ClInclude Include="binary_search_tree_action.h" />
     <ClInclude Include="binary_search_tree_info.h" />
+    <ClInclude Include="disjoint_set.h" />
+    <ClInclude Include="testers.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

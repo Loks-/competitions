@@ -1,10 +1,10 @@
 #include "common/base.h"
 
-#include "binary_search_tree.h"
+#include "testers.h"
 
 int main()
 {
 	cout << "Hello from tester." << endl;
-	assert(TesterBinarySearchTree::Test(false));
+	assert(TestBinarySearchTree(false));
 	return 0;
 }

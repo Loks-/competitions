@@ -248,5 +248,5 @@ protected:
 	bool TestAllTrees();
 
 public:
-	static bool Test(bool run_time_test = false);
+	static bool Test(bool run_time_test);
 };

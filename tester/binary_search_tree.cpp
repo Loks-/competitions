@@ -138,3 +138,8 @@ bool TesterBinarySearchTree::Test(bool run_time_test)
 	}
 	return result;
 }
+
+bool TestBinarySearchTree(bool run_time_test)
+{
+	return TesterBinarySearchTree::Test(run_time_test);
+}
