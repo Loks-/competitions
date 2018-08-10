@@ -131,31 +131,36 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="2018\practice\baby_blocks.h" />
-    <ClInclude Include="2018\practice\broken_memory.h" />
-    <ClInclude Include="2018\practice\flagpoles.h" />
-    <ClInclude Include="2018\practice\lemming.h" />
-    <ClInclude Include="2018\practice\number_bases.h" />
-    <ClInclude Include="2018\practice\pancakes.h" />
-    <ClInclude Include="2018\practice\weird_editor.h" />
+    <ClInclude Include="2017\r1\pancakes.h" />
+    <ClInclude Include="2017\r1\query_of_death.h" />
+    <ClInclude Include="2017\r1\weird_editor.h" />
+    <ClInclude Include="2017\r2\broken_memory.h" />
+    <ClInclude Include="2017\r2\flagpoles.h" />
+    <ClInclude Include="2017\r2\number_bases.h" />
+    <ClInclude Include="2017\r3\baby_blocks.h" />
+    <ClInclude Include="2017\r3\lemming.h" />
     <ClInclude Include="2018\r1\kenneth.h" />
     <ClInclude Include="2018\r1\stones.h" />
     <ClInclude Include="2018\r1\towels.h" />
     <ClInclude Include="message.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="2018\practice\baby_blocks.cpp" />
-    <ClCompile Include="2018\practice\broken_memory.cpp" />
-    <ClCompile Include="2018\practice\flagpoles.cpp" />
-    <ClCompile Include="2018\practice\lemming.cpp" />
-    <ClCompile Include="2018\practice\number_bases.cpp" />
-    <ClCompile Include="2018\practice\pancakes.cpp" />
-    <ClCompile Include="2018\practice\weird_editor.cpp" />
+    <ClCompile Include="2017\r1\pancakes.cpp" />
+    <ClCompile Include="2017\r1\query_of_death.cpp" />
+    <ClCompile Include="2017\r1\weird_editor.cpp" />
+    <ClCompile Include="2017\r2\broken_memory.cpp" />
+    <ClCompile Include="2017\r2\flagpoles.cpp" />
+    <ClCompile Include="2017\r2\number_bases.cpp" />
+    <ClCompile Include="2017\r3\baby_blocks.cpp" />
+    <ClCompile Include="2017\r3\lemming.cpp" />
     <ClCompile Include="2018\r1\kenneth.cpp" />
     <ClCompile Include="2018\r1\stones.cpp" />
     <ClCompile Include="2018\r1\towels.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="message_fake.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="problems.md" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
