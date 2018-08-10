@@ -42,7 +42,7 @@ int main_kenneth()
         Receive(node_id - 1);
         vh[0].SetS(GetInt(node_id - 1));
     }
-    PutInt((node_id + 1) % nodes, (vh[0] + vh[ln]).Get());
+    PutInt((node_id + 1) % nodes, int((vh[0] + vh[ln]).Get()));
     Send((node_id + 1) % nodes);
     for (int64_t i = 1; i <= ln; ++i)
     {
@@ -54,7 +54,7 @@ int main_kenneth()
     {
         Receive(nodes - 1);
         sum.SetS(GetInt(nodes - 1));
-        PutInt(1, sum.Get());
+        PutInt(1, int(sum.Get()));
         Send(1);
     }
     else
@@ -63,7 +63,7 @@ int main_kenneth()
         sum.SetS(GetInt(node_id - 1));
         if (node_id != nodes - 1)
         {
-            PutInt(node_id + 1, sum.Get());
+            PutInt(node_id + 1, int(sum.Get()));
             Send(node_id + 1);
         }
     }
