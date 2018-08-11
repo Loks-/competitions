@@ -1,6 +1,8 @@
+// https://www.hackerrank.com/challenges/constructing-a-number
+
 #include "common/base.h"
 
-int main()
+int main_constructing_a_number()
 {
 	unsigned T, n, a, s;
 	cin >> T;
