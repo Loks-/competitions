@@ -45,6 +45,7 @@
 #include "numeric/modular_arithmetic.h"
 #include "numeric/modular_arithmetic_proxy.h"
 #include "numeric/modular_arithmetic_static_proxy.h"
+#include "numeric/primality_test.h"
 #include "numeric/primes_list.h"
 #include "numeric/utils.h"
 
