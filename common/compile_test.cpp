@@ -40,6 +40,7 @@
 #include "numeric/complex.h"
 #include "numeric/complex_modular_proxy.h"
 #include "numeric/factorial_modular.h"
+#include "numeric/fibonacci_modular_matrix.h"
 #include "numeric/modular.h"
 #include "numeric/modular_arithmetic.h"
 #include "numeric/modular_arithmetic_proxy.h"
