@@ -1,7 +1,7 @@
 // https://www.hackerrank.com/challenges/closest-number
 
 #include "common/base.h"
-#include "common/numeric/utils.h"
+#include "common/numeric/utils/pow.h"
 
 int main_closets_number()
 {

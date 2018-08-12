@@ -3,7 +3,7 @@
 #include "common/base.h"
 #include "common/numeric/fibonacci_modular_matrix.h"
 #include "common/numeric/modular.h"
-#include "common/numeric/utils.h"
+#include "common/numeric/utils/gcd.h"
 
 using TFibonacci = FibonacciModularMatrix<Modular<1000000007>>;
 

@@ -1,7 +1,7 @@
 // https://www.hackerrank.com/challenges/harry-potter-and-the-floating-rocks
 
 #include "common/base.h"
-#include "common/numeric/utils.h"
+#include "common/numeric/utils/gcd.h"
 
 int main_sumar_and_the_floating_rocks()
 {

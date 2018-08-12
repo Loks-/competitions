@@ -1,7 +1,7 @@
 // https://www.hackerrank.com/challenges/possible-path
 
 #include "common/base.h"
-#include "common/numeric/utils.h"
+#include "common/numeric/utils/gcd.h"
 
 int main_possible_path()
 {

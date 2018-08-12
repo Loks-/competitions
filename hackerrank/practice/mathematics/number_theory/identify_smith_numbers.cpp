@@ -2,7 +2,7 @@
 
 #include "common/base.h"
 #include "common/numeric/primes_list.h"
-#include "common/numeric/utils.h"
+#include "common/numeric/utils/digits_sum.h"
 
 int main_identify_smith_numbers()
 {

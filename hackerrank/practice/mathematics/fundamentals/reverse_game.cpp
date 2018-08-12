@@ -1,7 +1,6 @@
 // https://www.hackerrank.com/challenges/reverse-game
 
 #include "common/base.h"
-#include "common/numeric/utils.h"
 
 int main_reverse_game()
 {

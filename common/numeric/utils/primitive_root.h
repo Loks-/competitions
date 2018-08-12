@@ -1,7 +1,7 @@
 #pragma once
 
-#include "modular_arithmetic.h"
-#include "primes_list.h"
+#include "../modular_arithmetic.h"
+#include "../primes_list.h"
 
 namespace {
 

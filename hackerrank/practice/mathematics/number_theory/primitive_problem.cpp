@@ -2,7 +2,7 @@
 
 #include "common/base.h"
 #include "common/numeric/primes_list.h"
-#include "common/numeric/primitive_root.h"
+#include "common/numeric/utils/primitive_root.h"
 
 int main_primitive_problem()
 {
