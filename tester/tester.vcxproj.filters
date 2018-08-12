@@ -18,7 +18,10 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="binary_search_tree.cpp">
+    <ClCompile Include="tester_binary_search_tree.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tester_disjoint_set.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -29,13 +32,16 @@
     <ClInclude Include="binary_search_tree_info.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="binary_search_tree.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="disjoint_set.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="testers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tester_binary_search_tree.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tester_disjoint_set.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="disjoint_set_proxy.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
