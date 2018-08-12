@@ -60,8 +60,10 @@ protected:
 	bool TestHash() const;
 	void PrintTime() const;
 
+public:
 	TesterBinarySearchTree(unsigned size, TBSTMode _mode);
 
+protected:
 	template<class TNode>
 	size_t TreeHash(TNode* root, size_t h)
 	{
@@ -245,8 +247,6 @@ protected:
 		}
 	}
 
-	bool TestAllTrees();
-
 public:
-	static bool Test(bool run_time_test);
+	bool TestAllTrees();
 };

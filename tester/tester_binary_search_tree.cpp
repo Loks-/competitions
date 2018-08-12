@@ -125,21 +125,16 @@ bool TesterBinarySearchTree::TestAllTrees()
 	return output;
 }
 
-bool TesterBinarySearchTree::Test(bool run_time_test)
+bool TestBinarySearchTree(bool run_time_test)
 {
-	TesterBinarySearchTree tbst_hash(10000, hash_test);
+	TesterBinarySearchTree tbst_hash(10000, TesterBinarySearchTree::hash_test);
 	bool result = tbst_hash.TestAllTrees();
 	if (result && run_time_test)
 	{
 		Timer t;
-		TesterBinarySearchTree tbst_time(10000000, time_test);
+		TesterBinarySearchTree tbst_time(10000000, TesterBinarySearchTree::time_test);
 		result = result && tbst_time.TestAllTrees();
 		cout << "Total time = " << t.GetMilliseconds() << endl;
 	}
 	return result;
-}
-
-bool TestBinarySearchTree(bool run_time_test)
-{
-	return TesterBinarySearchTree::Test(run_time_test);
 }
