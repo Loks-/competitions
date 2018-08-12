@@ -115,7 +115,7 @@ public:
 	}
 	static TValue PowUSafe(TValue x, uint64_t pow, TValue mod) { return PowU(ApplyT(x, mod), pow, mod); }
 	static TValue PowS(TValue x, int64_t pow, TValue mod) { return (pow < 0) ? PowU(Inverse(x, mod), uint64_t(-pow), mod) : PowU(x, uint64_t(pow), mod); }
-	static TValue PowSSafe(TValue x, int64_t pow, TValue mod) { return PowS(AppplyT(x, mod), pow, mod); }
+	static TValue PowSSafe(TValue x, int64_t pow, TValue mod) { return PowS(ApplyT(x, mod), pow, mod); }
 };
 
 using TModularArithmetic_P32U = ModularArithmetic<true, true, uint64_t>;
