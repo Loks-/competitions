@@ -4,7 +4,7 @@
 #include "common/binary_search_tree/splay_tree.h"
 #include "common/binary_search_tree/treap.h"
 
-#include "binary_search_tree.h"
+#include "tester_binary_search_tree.h"
 
 void TesterBinarySearchTree::AddResult(const string& task, unsigned keys_type, size_t h, size_t time)
 {
