@@ -2,7 +2,7 @@
 
 #include "base.h"
 
-template <typename TTData>
+template <class TTData>
 class DisjointSetExtended
 {
 public:
