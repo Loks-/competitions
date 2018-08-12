@@ -25,5 +25,6 @@ namespace {
 		if (i == 2 && j == 2) return '<';
 		if (i == 2 && j == 3) return '>';
 		assert(0);
+		return 0;
 	}
 }

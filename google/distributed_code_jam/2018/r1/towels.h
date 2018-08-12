@@ -28,5 +28,6 @@ namespace {
 		fprintf(stderr, "stack = %lld\n", stack);
 		fprintf(stderr, "position = %lld\n", position);
 		assert(0);
+		return 0;
 	}
 }

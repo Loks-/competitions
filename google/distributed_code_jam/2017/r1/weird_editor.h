@@ -15,5 +15,6 @@ namespace {
 		case 3: return 1LL;
 		default: assert(0);
 		}
+		return 0;
 	}
 }

@@ -14,6 +14,7 @@ namespace {
 		case 2: return 1LL;
 		default: assert(0);
 		}
+		return 0;
 	}
 
 	long long GetDigitY(long long i) {
@@ -23,6 +24,7 @@ namespace {
 		case 2: return 4LL;
 		default: assert(0);
 		}
+		return 0;
 	}
 
 	long long GetDigitZ(long long i) {
@@ -32,5 +34,6 @@ namespace {
 		case 2: return 5LL;
 		default: assert(0);
 		}
+		return 0;
 	}
 }
