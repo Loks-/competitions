@@ -37,6 +37,9 @@
     <Filter Include="Header Files\binary_search_tree\action">
       <UniqueIdentifier>{071ad817-749c-4d3f-a1f7-eac7d445676c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\numeric\utils">
+      <UniqueIdentifier>{bab5dc02-2ea8-426f-a4b6-c6cb58928b08}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="compile_test.cpp">
@@ -81,9 +84,6 @@
       <Filter>Header Files\numeric</Filter>
     </ClInclude>
     <ClInclude Include="numeric\modular_arithmetic_static_proxy.h">
-      <Filter>Header Files\numeric</Filter>
-    </ClInclude>
-    <ClInclude Include="numeric\utils.h">
       <Filter>Header Files\numeric</Filter>
     </ClInclude>
     <ClInclude Include="numeric\factorial_modular.h">
@@ -181,6 +181,27 @@
     </ClInclude>
     <ClInclude Include="disjoint_set_extended.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="numeric\utils\digits_sum.h">
+      <Filter>Header Files\numeric\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="numeric\utils\gcd.h">
+      <Filter>Header Files\numeric\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="numeric\utils\legendre_symbol.h">
+      <Filter>Header Files\numeric\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="numeric\utils\pow.h">
+      <Filter>Header Files\numeric\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="numeric\utils\primitive_root.h">
+      <Filter>Header Files\numeric\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="numeric\fibonacci_modular_matrix.h">
+      <Filter>Header Files\numeric</Filter>
+    </ClInclude>
+    <ClInclude Include="numeric\primality_test.h">
+      <Filter>Header Files\numeric</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

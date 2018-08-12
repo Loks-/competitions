@@ -188,6 +188,18 @@
     <ClCompile Include="practice\mathematics\fundamentals\strange_grid_again.cpp" />
     <ClCompile Include="practice\mathematics\fundamentals\sumar_and_the_floating_rocks.cpp" />
     <ClCompile Include="practice\mathematics\fundamentals\summing_the_n_series.cpp" />
+    <ClCompile Include="practice\mathematics\number_theory\bear_and_cryptography.cpp" />
+    <ClCompile Include="practice\mathematics\number_theory\closest_number.cpp" />
+    <ClCompile Include="practice\mathematics\number_theory\constructing_a_number.cpp" />
+    <ClCompile Include="practice\mathematics\number_theory\eulers_criterion.cpp" />
+    <ClCompile Include="practice\mathematics\number_theory\fibonacci_finding_easy.cpp" />
+    <ClCompile Include="practice\mathematics\number_theory\fibonacci_gcd.cpp" />
+    <ClCompile Include="practice\mathematics\number_theory\identify_smith_numbers.cpp" />
+    <ClCompile Include="practice\mathematics\number_theory\little_panda_power.cpp" />
+    <ClCompile Include="practice\mathematics\number_theory\primitive_problem.cpp" />
+    <ClCompile Include="practice\mathematics\number_theory\scalar_products.cpp" />
+    <ClCompile Include="practice\mathematics\number_theory\sherlock_and_gcd.cpp" />
+    <ClCompile Include="practice\mathematics\number_theory\twins.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="input.txt" />

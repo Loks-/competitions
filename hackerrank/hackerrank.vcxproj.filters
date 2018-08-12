@@ -37,6 +37,9 @@
     <Filter Include="Source Files\practice\data_structures\stacks">
       <UniqueIdentifier>{cfd8e838-1bfe-480a-be2c-6f78a4b0f299}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\practice\mathematics\number_theory">
+      <UniqueIdentifier>{2f37ba91-b2b0-44e5-a46a-f5a91ede7516}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="practice\mathematics\fundamentals\find_the_point.cpp">
@@ -209,6 +212,42 @@
     </ClCompile>
     <ClCompile Include="practice\data_structures\stacks\and_xor_or.cpp">
       <Filter>Source Files\practice\data_structures\stacks</Filter>
+    </ClCompile>
+    <ClCompile Include="practice\mathematics\number_theory\bear_and_cryptography.cpp">
+      <Filter>Source Files\practice\mathematics\number_theory</Filter>
+    </ClCompile>
+    <ClCompile Include="practice\mathematics\number_theory\closest_number.cpp">
+      <Filter>Source Files\practice\mathematics\number_theory</Filter>
+    </ClCompile>
+    <ClCompile Include="practice\mathematics\number_theory\constructing_a_number.cpp">
+      <Filter>Source Files\practice\mathematics\number_theory</Filter>
+    </ClCompile>
+    <ClCompile Include="practice\mathematics\number_theory\eulers_criterion.cpp">
+      <Filter>Source Files\practice\mathematics\number_theory</Filter>
+    </ClCompile>
+    <ClCompile Include="practice\mathematics\number_theory\fibonacci_finding_easy.cpp">
+      <Filter>Source Files\practice\mathematics\number_theory</Filter>
+    </ClCompile>
+    <ClCompile Include="practice\mathematics\number_theory\fibonacci_gcd.cpp">
+      <Filter>Source Files\practice\mathematics\number_theory</Filter>
+    </ClCompile>
+    <ClCompile Include="practice\mathematics\number_theory\identify_smith_numbers.cpp">
+      <Filter>Source Files\practice\mathematics\number_theory</Filter>
+    </ClCompile>
+    <ClCompile Include="practice\mathematics\number_theory\little_panda_power.cpp">
+      <Filter>Source Files\practice\mathematics\number_theory</Filter>
+    </ClCompile>
+    <ClCompile Include="practice\mathematics\number_theory\primitive_problem.cpp">
+      <Filter>Source Files\practice\mathematics\number_theory</Filter>
+    </ClCompile>
+    <ClCompile Include="practice\mathematics\number_theory\scalar_products.cpp">
+      <Filter>Source Files\practice\mathematics\number_theory</Filter>
+    </ClCompile>
+    <ClCompile Include="practice\mathematics\number_theory\sherlock_and_gcd.cpp">
+      <Filter>Source Files\practice\mathematics\number_theory</Filter>
+    </ClCompile>
+    <ClCompile Include="practice\mathematics\number_theory\twins.cpp">
+      <Filter>Source Files\practice\mathematics\number_theory</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
