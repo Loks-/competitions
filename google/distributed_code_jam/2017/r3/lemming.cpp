@@ -22,7 +22,7 @@ int main_lemming()
 	int64_t ilast = (node_id + 1) * rows / nodes;
 	assert(ilast - ifirst >= 1);
 
-    DisjointSet ds(uint32_t((ilast - ifirst + 1) * columns));
+    DisjointSet ds(unsigned((ilast - ifirst + 1) * columns));
     unsigned index = 0;
     for (int64_t i = ifirst; i < ilast; ++i)
     {

@@ -5,28 +5,28 @@
 class DisjointSet
 {
 protected:
-    uint32_t n;
-    vector<uint32_t> p;
-    vector<uint32_t> rank;
-    vector<uint32_t> vsize;
-    stack<uint32_t> ts;
-    uint32_t unions;
+    unsigned n;
+    vector<unsigned> p;
+    vector<unsigned> rank;
+    vector<unsigned> vsize;
+    stack<unsigned> ts;
+	unsigned unions;
 
 public:
-    DisjointSet(uint32_t n = 0)
+    DisjointSet(unsigned n = 0)
     {
         Init(n);
     }
 
-    uint32_t Size() const { return n; }
-    uint32_t GetUnions() const { return unions; }
-    uint32_t GetSetsCount() const { return n - unions; }
+	unsigned Size() const { return n; }
+	unsigned GetUnions() const { return unions; }
+	unsigned GetSetsCount() const { return n - unions; }
 
-    void Init(uint32_t n_)
+    void Init(unsigned n_)
     {
         n = n_;
         p.resize(n);
-        for (uint32_t i = 0; i < n; ++i) {
+        for (unsigned i = 0; i < n; ++i) {
             p[i] = i;
         }
         rank.resize(n);
@@ -36,17 +36,17 @@ public:
         unions = 0;
     }
 
-    void Union(uint32_t i1, uint32_t i2)
+    void Union(unsigned i1, unsigned i2)
     {
         UnionI(Find(i1), Find(i2));
     }
 
-    uint32_t Find(uint32_t x)
+	unsigned Find(unsigned x)
     {
-        uint32_t px = p[x];
+		unsigned px = p[x];
         if (px == x)
             return px;
-        uint32_t ppx = p[px];
+		unsigned ppx = p[px];
         if (ppx == px)
             return px;
         do
@@ -65,13 +65,13 @@ public:
         return ppx;
     }
 
-    uint32_t GetSize(uint32_t x)
+	unsigned GetSize(unsigned x)
     {
         return vsize[Find(x)];
     }
 
 protected:
-    void UnionI(uint32_t i1, uint32_t i2)
+    void UnionI(unsigned i1, unsigned i2)
     {
         if (i1 == i2)
             return;

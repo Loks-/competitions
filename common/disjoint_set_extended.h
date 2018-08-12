@@ -9,15 +9,15 @@ public:
     using TData = TTData;
 
 protected:
-    unordered_map<TData, uint32_t> m;
-    vector<uint32_t> p;
-    vector<uint32_t> rank;
-    vector<uint32_t> vsize;
-    stack<uint32_t> ts;
-    uint32_t unions = 0;
+    unordered_map<TData, unsigned> m;
+    vector<unsigned> p;
+    vector<unsigned> rank;
+    vector<unsigned> vsize;
+    stack<unsigned> ts;
+	unsigned unions = 0;
 
 public:
-    void Reserve(uint32_t size)
+    void Reserve(unsigned size)
     {
         m.reserve(size);
         p.reserve(size);
@@ -25,15 +25,15 @@ public:
         vsize.reserve(size);
     }
     
-    uint32_t Size() const { return p.size(); }
-    uint32_t GetUnions() const { return unions; }
+	unsigned Size() const { return p.size(); }
+	unsigned GetUnions() const { return unions; }
 
-    uint32_t GetIndex(const TData& v)
+	unsigned GetIndex(const TData& v)
     {
         auto it = m.find(v);
         if (it != m.end())
             return it->second;
-        uint32_t index = Size();
+		unsigned index = Size();
         m[v] = index;
         p.push_back(index);
         rank.push_back(0);
@@ -41,13 +41,13 @@ public:
         return index;
     }
     
-    uint32_t Find(const TData& v)
+	unsigned Find(const TData& v)
     {
-        uint32_t x = GetIndex(v);
-        uint32_t px = p[x];
+		unsigned x = GetIndex(v);
+		unsigned px = p[x];
         if (px == x)
             return px;
-        uint32_t ppx = p[px];
+		unsigned ppx = p[px];
         if (ppx == px)
             return px;
         do
@@ -66,7 +66,7 @@ public:
         return ppx;
     }
 
-    uint32_t GetSize(const TData& v)
+	unsigned GetSize(const TData& v)
     {
         return vsize[Find(v)];
     }
@@ -77,7 +77,7 @@ public:
     }
 
 protected:
-    void UnionI(uint32_t i1, uint32_t i2)
+    void UnionI(unsigned i1, unsigned i2)
     {
         if (i1 == i2)
             return;
