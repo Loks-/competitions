@@ -83,7 +83,7 @@ TesterBinarySearchTree::TesterBinarySearchTree(unsigned size, TBSTMode _mode) : 
 	reverse(keys_reversed.begin(), keys_reversed.end());
 	keys[reversed] = &keys_reversed;
 	keys_shuffled = keys_sorted;
-	random_shuffle(keys_shuffled.begin(), keys_shuffled.end());
+	shuffle(keys_shuffled.begin(), keys_shuffled.end(), minstd_rand());
 	keys[shuffled] = &keys_shuffled;
 	keys_shuffled_dups = keys_shuffled;
 	for (TKey& key : keys_shuffled_dups)
