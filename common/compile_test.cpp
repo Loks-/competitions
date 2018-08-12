@@ -47,6 +47,7 @@
 #include "numeric/modular_arithmetic_static_proxy.h"
 #include "numeric/primality_test.h"
 #include "numeric/primes_list.h"
+#include "numeric/primitive_root.h"
 #include "numeric/utils.h"
 
 #include "vector/utils.h"

@@ -59,6 +59,28 @@ public:
 		return output;
 	}
 
+	// Number of relative prime integers to n.
+	uint64_t EulerPhi(uint64_t n) const
+	{
+		// Factorize function is not callled to make code faster.
+		uint64_t output = n;
+		for (size_t i = 0; i < vprimes.size(); ++i)
+		{
+			if (n < vprimes2[i]) break;
+			if ((n % vprimes[i]) == 0)
+			{
+				uint64_t p = vprimes[i];
+				output -= (output / p);
+				for (n /= p; (n % p) == 0;) 
+					n /= p;
+			}
+		}
+		assert(vprimes2.back() > n);
+		if (n != 1)
+			output -= (output / n);
+		return output;
+	}
+
 	unsigned GetDivisorsCount(uint64_t n) const
 	{
 		auto vp = Factorize(n);
