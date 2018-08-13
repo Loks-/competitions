@@ -36,10 +36,26 @@ unsigned DisjointSetProxy<pc_none>::FindP(unsigned x)
 template<>
 unsigned DisjointSetProxy<pc_compression_recursive>::FindP(unsigned x)
 {
-	if (x == TBase::p[x])
+	unsigned p = TBase::p[x]; 
+	if (x == p)
 		return x;
-	TBase::p[x] = FindP(TBase::p[x]);
-	return TBase::p[x];
+	p = FindP(p);
+	TBase::p[x] = p;
+	return p;
+}
+
+template<>
+unsigned DisjointSetProxy<pc_compression_two_runs>::FindP(unsigned x)
+{
+	unsigned p = x, t;
+	for (; p != TBase::p[p]; ) p = TBase::p[p];
+	for (; x != p; )
+	{
+		t = TBase::p[x];
+		TBase::p[x] = p;
+		x = t;
+	}
+	return p;
 }
 
 template<>

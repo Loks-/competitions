@@ -18,12 +18,15 @@ void TesterDisjointSet::TestAll() const
 {
 	// Test<pc_none>();
 	Test<pc_compression_recursive>();
+	Test<pc_compression_two_runs>();
 	Test<pc_compression_stack>();
 }
 
 bool TestDisjointSet()
 {
-	TesterDisjointSet tds(1000000, 10000000);
-	tds.TestAll();
+	TesterDisjointSet tds1(1000000, 100000000);
+	TesterDisjointSet tds2(10000000, 10000000);
+	tds1.TestAll();
+	tds2.TestAll();
 	return true;
 }
