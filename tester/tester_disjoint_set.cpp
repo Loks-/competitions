@@ -21,6 +21,8 @@ void TesterDisjointSet::TestAll() const
 	Test<pc_compression_recursive>();
 	Test<pc_compression_two_runs>();
 	Test<pc_compression_stack>();
+	Test<pc_halving>();
+	Test<pc_splitting>();
 }
 
 bool TestDisjointSet()

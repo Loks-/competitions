@@ -9,6 +9,8 @@ enum EPathCompression
 	pc_compression_recursive,
 	pc_compression_two_runs,
 	pc_compression_stack,
+	pc_halving,
+	pc_splitting
 };
 
 template<EPathCompression pc>
@@ -89,4 +91,29 @@ unsigned DisjointSetProxy<pc_compression_stack>::FindP(unsigned x)
 		TBase::ts.pop();
 	}
 	return ppx;
+}
+
+template<>
+unsigned DisjointSetProxy<pc_halving>::FindP(unsigned x)
+{
+	for (unsigned p = TBase::p[x]; x != p; p = TBase::p[x])
+	{
+		p = TBase::p[p];
+		TBase::p[x] = p;
+		x = p;
+	}
+	return x;
+}
+
+template<>
+unsigned DisjointSetProxy<pc_splitting>::FindP(unsigned x)
+{
+	for (unsigned p = TBase::p[x]; x != p; )
+	{
+		unsigned pp = TBase::p[p];
+		TBase::p[x] = pp;
+		x = p;
+		p = pp;
+	}
+	return x;
 }
