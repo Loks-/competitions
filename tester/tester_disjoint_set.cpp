@@ -23,6 +23,7 @@ void TesterDisjointSet::TestAll() const
 	Test<pc_compression_stack>();
 	Test<pc_halving>();
 	Test<pc_splitting>();
+	TextExtended();
 }
 
 bool TestDisjointSet()
