@@ -16,14 +16,14 @@ TesterDisjointSet::TesterDisjointSet(unsigned _size, unsigned _unions)
 
 void TesterDisjointSet::TestAll() const
 {
-	Test<pc_none>();
+	// Test<pc_none>();
 	Test<pc_compression_recursive>();
 	Test<pc_compression_stack>();
 }
 
 bool TestDisjointSet()
 {
-	TesterDisjointSet tds(10000, 1000000);
+	TesterDisjointSet tds(1000000, 10000000);
 	tds.TestAll();
 	return true;
 }
