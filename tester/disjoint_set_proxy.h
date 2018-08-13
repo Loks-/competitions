@@ -26,12 +26,14 @@ public:
 	unsigned FindP(unsigned x);
 };
 
+template<>
 unsigned DisjointSetProxy<pc_none>::FindP(unsigned x)
 {
 	for (; x != TBase::p[x]; ) x = TBase::p[x];
 	return x;
 }
 
+template<>
 unsigned DisjointSetProxy<pc_compression_recursive>::FindP(unsigned x)
 {
 	if (x == TBase::p[x])
@@ -40,6 +42,7 @@ unsigned DisjointSetProxy<pc_compression_recursive>::FindP(unsigned x)
 	return TBase::p[x];
 }
 
+template<>
 unsigned DisjointSetProxy<pc_compression_stack>::FindP(unsigned x)
 {
 	unsigned px = TBase::p[x];
