@@ -17,6 +17,7 @@ TesterDisjointSet::TesterDisjointSet(unsigned _size, unsigned _unions)
 void TesterDisjointSet::TestAll() const
 {
 	// Test<pc_none>();
+	Test<pc_default>();
 	Test<pc_compression_recursive>();
 	Test<pc_compression_two_runs>();
 	Test<pc_compression_stack>();
@@ -24,8 +25,8 @@ void TesterDisjointSet::TestAll() const
 
 bool TestDisjointSet()
 {
-	TesterDisjointSet tds1(1000000, 100000000);
-	TesterDisjointSet tds2(10000000, 10000000);
+	TesterDisjointSet tds1(100000, 100000000);
+	TesterDisjointSet tds2(1000000, 10000000);
 	tds1.TestAll();
 	tds2.TestAll();
 	return true;

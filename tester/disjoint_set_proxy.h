@@ -5,6 +5,7 @@
 enum EPathCompression
 {
 	pc_none = 0,
+	pc_default,
 	pc_compression_recursive,
 	pc_compression_two_runs,
 	pc_compression_stack,
@@ -34,13 +35,20 @@ unsigned DisjointSetProxy<pc_none>::FindP(unsigned x)
 }
 
 template<>
+unsigned DisjointSetProxy<pc_default>::FindP(unsigned x)
+{
+	return TBase::Find(x);
+}
+
+template<>
 unsigned DisjointSetProxy<pc_compression_recursive>::FindP(unsigned x)
 {
 	unsigned p = TBase::p[x]; 
-	if (x == p)
-		return x;
-	p = FindP(p);
-	TBase::p[x] = p;
+	if (x != p)
+	{
+		p = FindP(p);
+		TBase::p[x] = p;
+	}
 	return p;
 }
 
