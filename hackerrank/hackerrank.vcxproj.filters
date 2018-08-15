@@ -258,6 +258,9 @@
     <ClCompile Include="practice\mathematics\number_theory\the_chosen_one_treap.cpp">
       <Filter>Source Files\practice\mathematics\number_theory</Filter>
     </ClCompile>
+    <ClCompile Include="practice\mathematics\number_theory\the_chosen_one.cpp">
+      <Filter>Source Files\practice\mathematics\number_theory</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="input.txt">
