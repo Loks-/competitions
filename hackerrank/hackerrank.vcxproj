@@ -200,6 +200,7 @@
     <ClCompile Include="practice\mathematics\number_theory\mehta_and_his_laziness.cpp" />
     <ClCompile Include="practice\mathematics\number_theory\power_of_large_number.cpp" />
     <ClCompile Include="practice\mathematics\number_theory\primitive_problem.cpp" />
+    <ClCompile Include="practice\mathematics\number_theory\salary_blues.cpp" />
     <ClCompile Include="practice\mathematics\number_theory\scalar_products.cpp" />
     <ClCompile Include="practice\mathematics\number_theory\sherlock_and_gcd.cpp" />
     <ClCompile Include="practice\mathematics\number_theory\the_chosen_one.cpp" />
