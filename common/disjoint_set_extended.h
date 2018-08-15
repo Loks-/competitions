@@ -25,7 +25,7 @@ public:
         vsize.reserve(size);
     }
     
-	unsigned Size() const { return p.size(); }
+	unsigned Size() const { return unsigned(p.size()); }
 	unsigned GetUnions() const { return unions; }
 
 	unsigned GetIndex(const TData& v)
@@ -33,7 +33,7 @@ public:
         auto it = m.find(v);
         if (it != m.end())
             return it->second;
-		unsigned index = Size();
+		unsigned index = unsigned(Size());
         m[v] = index;
         p.push_back(index);
         rank.push_back(0);
