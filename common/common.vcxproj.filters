@@ -203,6 +203,9 @@
     <ClInclude Include="numeric\primality_test.h">
       <Filter>Header Files\numeric</Filter>
     </ClInclude>
+    <ClInclude Include="binary_search_tree\info\gcd.h">
+      <Filter>Header Files\binary_search_tree\info</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\current_solution.inl">

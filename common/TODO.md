@@ -13,6 +13,8 @@
 * Persistent Binary Trees
 * BIT
 * SegmentTree
+	* Problems for testing:
+		* https://www.hackerrank.com/challenges/the-chosen-one
 * Disjoint Set
 	* Check speed with different path compressions:
 		* Path compression with stack

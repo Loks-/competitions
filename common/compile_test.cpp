@@ -23,6 +23,7 @@
 #include "binary_search_tree/treap.h"
 #include "binary_search_tree/tree.h"
 #include "binary_search_tree/action/add.h"
+#include "binary_search_tree/info/gcd.h"
 #include "binary_search_tree/info/sum.h"
 #include "binary_search_tree/utils/reset_parent_links.h"
 #include "binary_search_tree/utils/rotate.h"

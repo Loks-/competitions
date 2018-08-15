@@ -201,6 +201,7 @@
     <ClCompile Include="practice\mathematics\number_theory\primitive_problem.cpp" />
     <ClCompile Include="practice\mathematics\number_theory\scalar_products.cpp" />
     <ClCompile Include="practice\mathematics\number_theory\sherlock_and_gcd.cpp" />
+    <ClCompile Include="practice\mathematics\number_theory\the_chosen_one_treap.cpp" />
     <ClCompile Include="practice\mathematics\number_theory\twins.cpp" />
   </ItemGroup>
   <ItemGroup>
