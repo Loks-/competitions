@@ -196,6 +196,7 @@
     <ClCompile Include="practice\mathematics\number_theory\fibonacci_gcd.cpp" />
     <ClCompile Include="practice\mathematics\number_theory\identify_smith_numbers.cpp" />
     <ClCompile Include="practice\mathematics\number_theory\little_panda_power.cpp" />
+    <ClCompile Include="practice\mathematics\number_theory\mehta_and_his_laziness.cpp" />
     <ClCompile Include="practice\mathematics\number_theory\primitive_problem.cpp" />
     <ClCompile Include="practice\mathematics\number_theory\scalar_products.cpp" />
     <ClCompile Include="practice\mathematics\number_theory\sherlock_and_gcd.cpp" />

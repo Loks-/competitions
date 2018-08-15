@@ -249,6 +249,9 @@
     <ClCompile Include="practice\mathematics\number_theory\twins.cpp">
       <Filter>Source Files\practice\mathematics\number_theory</Filter>
     </ClCompile>
+    <ClCompile Include="practice\mathematics\number_theory\mehta_and_his_laziness.cpp">
+      <Filter>Source Files\practice\mathematics\number_theory</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="input.txt">
