@@ -194,6 +194,7 @@
     <ClCompile Include="practice\mathematics\number_theory\eulers_criterion.cpp" />
     <ClCompile Include="practice\mathematics\number_theory\fibonacci_finding_easy.cpp" />
     <ClCompile Include="practice\mathematics\number_theory\fibonacci_gcd.cpp" />
+    <ClCompile Include="practice\mathematics\number_theory\help_mike.cpp" />
     <ClCompile Include="practice\mathematics\number_theory\identify_smith_numbers.cpp" />
     <ClCompile Include="practice\mathematics\number_theory\little_panda_power.cpp" />
     <ClCompile Include="practice\mathematics\number_theory\mehta_and_his_laziness.cpp" />
