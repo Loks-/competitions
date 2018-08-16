@@ -13,10 +13,3 @@
 * Persistent Binary Trees
 * BIT
 * SegmentTree
-* Disjoint Set
-	* Check speed with different path compressions:
-		* Path compression with stack
-		* Path compression with recursion
-		* Path compression with 2 paths
-		* Path halving
-		* Path splitting

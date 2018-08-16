@@ -9,7 +9,6 @@ protected:
     vector<unsigned> p;
     vector<unsigned> rank;
     vector<unsigned> vsize;
-    stack<unsigned> ts;
 	unsigned unions;
 
 public:
@@ -43,26 +42,15 @@ public:
 
 	unsigned Find(unsigned x)
     {
-		unsigned px = p[x];
-        if (px == x)
-            return px;
-		unsigned ppx = p[px];
-        if (ppx == px)
-            return px;
-        do
+        unsigned px = p[x], ppx = p[px];
+        for (; px != ppx; )
         {
-            ts.push(x);
-            x = px;
-            px = ppx;
-            ppx = p[px];
-        } while (px != ppx);
-        while (!ts.empty())
-        {
-            x = ts.top();
             p[x] = ppx;
-            ts.pop();
+            x = ppx;
+            px = p[x];
+            ppx = p[px];
         }
-        return ppx;
+        return px;
     }
 
 	unsigned GetSize(unsigned x)

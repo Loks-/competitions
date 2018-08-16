@@ -16,6 +16,9 @@ enum EPathCompression
 template<EPathCompression pc>
 class DisjointSetProxy : public DisjointSet
 {
+protected:
+    stack<unsigned> ts;
+
 public:
 	using TBase = DisjointSet;
 
@@ -79,16 +82,16 @@ unsigned DisjointSetProxy<pc_compression_stack>::FindP(unsigned x)
 		return px;
 	do
 	{
-		TBase::ts.push(x);
+		ts.push(x);
 		x = px;
 		px = ppx;
 		ppx = TBase::p[px];
 	} while (px != ppx);
-	while (!TBase::ts.empty())
+	while (!ts.empty())
 	{
-		x = TBase::ts.top();
+		x = ts.top();
 		TBase::p[x] = ppx;
-		TBase::ts.pop();
+		ts.pop();
 	}
 	return ppx;
 }
