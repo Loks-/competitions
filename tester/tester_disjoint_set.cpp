@@ -1,10 +1,11 @@
 #include "disjoint_set_proxy.h"
 #include "tester_disjoint_set.h"
 
-TesterDisjointSet::TesterDisjointSet(unsigned _size, unsigned _unions)
+TesterDisjointSet::TesterDisjointSet(unsigned _size, unsigned _unions, unsigned _unions_per_block)
 {
 	size = _size;
 	unions = _unions;
+	unions_per_block = _unions_per_block;
 	vunions.reserve(unions);
 	minstd_rand random_engine;
 	std::uniform_int_distribution<unsigned> distribution(0, size - 1);
@@ -23,14 +24,12 @@ void TesterDisjointSet::TestAll() const
 	Test<pc_compression_stack>();
 	Test<pc_halving>();
 	Test<pc_splitting>();
-	TextExtended();
+	TestExtended();
 }
 
 bool TestDisjointSet()
 {
-	TesterDisjointSet tds1(100000, 100000000);
-	TesterDisjointSet tds2(1000000, 10000000);
-	tds1.TestAll();
-	tds2.TestAll();
+	TesterDisjointSet tds(100000, 100000 * 5000);
+	tds.TestAll();
 	return true;
 }

@@ -24,6 +24,15 @@ public:
         rank.reserve(size);
         vsize.reserve(size);
     }
+
+    void Reset()
+    {
+        m.clear();
+        p.clear();
+        rank.clear();
+        vsize.clear();
+        unions = 0;
+    }
     
 	unsigned Size() const { return unsigned(p.size()); }
 	unsigned GetUnions() const { return unions; }
