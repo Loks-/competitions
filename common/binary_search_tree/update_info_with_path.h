@@ -1,6 +1,8 @@
 #pragma once
 
-#include "info.h"
+#include "../base.h"
+#include "../template.h"
+
 namespace {
 
 template<class TNode>
