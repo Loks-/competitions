@@ -14,6 +14,7 @@
 #include "binary_search_tree/node.h"
 #include "binary_search_tree/nodes_manager.h"
 #include "binary_search_tree/red_black_tree_base.h"
+#include "binary_search_tree/red_black_tree_upf.h"
 #include "binary_search_tree/red_black_tree_upt.h"
 #include "binary_search_tree/rotate.h"
 #include "binary_search_tree/scapegoat_tree.h"

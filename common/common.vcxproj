@@ -156,6 +156,7 @@
     <ClInclude Include="binary_search_tree\find_by_key.h" />
     <ClInclude Include="binary_search_tree\red_black_tree_base.h" />
     <ClInclude Include="binary_search_tree\red_black_tree_upt.h" />
+    <ClInclude Include="binary_search_tree\red_black_tree_upf.h" />
     <ClInclude Include="binary_search_tree\rotate.h" />
     <ClInclude Include="binary_search_tree\scapegoat_tree.h" />
     <ClInclude Include="binary_search_tree\sibling.h" />

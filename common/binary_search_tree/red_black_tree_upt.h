@@ -28,7 +28,7 @@ public:
 	using TAction = TTAction;
 	using TKey = TTKey;
 	using TNode = BSTNode<TData, TInfo, TAction, use_key, use_parent, use_height, TKey>;
-	using TSelf = RedBlackTree<true, TData, TTInfo, TAction, TKey>;
+	using TSelf = RedBlackTree<use_parent, TData, TTInfo, TAction, TKey>;
 	using TTree = BSTree<TNode, TSelf>;
 	friend class BSTree<TNode, TSelf>;
 
