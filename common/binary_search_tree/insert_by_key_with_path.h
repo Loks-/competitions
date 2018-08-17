@@ -37,7 +37,7 @@ vector<TNode*> BSTInsertByKeyWithPath(TNode* root, TNode* node)
 	}
 	path.push_back(node);
 	node->SetParentLink(root);
-	UpdateInfoNodeToRoot(path);
+	UpdateInfoNodeToRootWithPath(path);
 	return path;
 }
 
