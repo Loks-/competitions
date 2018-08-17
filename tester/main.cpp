@@ -5,7 +5,7 @@
 int main()
 {
 	cout << "Hello from tester." << endl;
-	// assert(TestBinarySearchTree(false));
-	assert(TestDisjointSet());
+	assert(TestBinarySearchTree(false));
+	// assert(TestDisjointSet());
 	return 0;
 }

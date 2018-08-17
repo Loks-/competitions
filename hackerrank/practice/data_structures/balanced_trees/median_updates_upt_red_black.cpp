@@ -1,9 +1,9 @@
 // https://www.hackerrank.com/challenges/median
 
 #include "common/base.h"
-#include "common/binary_search_tree/red_black_tree.h"
+#include "common/binary_search_tree/red_black_tree_upt.h"
 
-using TTree = RedBlackTree<TEmpty>;
+using TTree = RedBlackTree<true, TEmpty>;
 using TNode = TTree::TNode;
 
 int main_median_updates_upt_red_black()

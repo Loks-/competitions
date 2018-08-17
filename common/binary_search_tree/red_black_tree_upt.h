@@ -4,25 +4,19 @@
 #include "info.h"
 #include "insert_by_key.h"
 #include "node.h"
+#include "red_black_tree_base.h"
 #include "rotate.h"
 #include "sibling.h"
 #include "swap.h"
 #include "tree.h"
 
-template<class TInfo>
-class RBTInfo : public TInfo
-{
-public:
-	bool is_black = false;
-};
-
 template <
 	class TTData,
-	class TTInfo = BSTInfoSize,
-	class TTAction = BSTActionNone,
-	class TTKey = int64_t>
-class RedBlackTree : public BSTree<BSTNode<TTData, RBTInfo<TTInfo>, TTAction, true, true, false, TTKey>,
-								   RedBlackTree<TTData, TTInfo, TTAction, TTKey>>
+	class TTInfo,
+	class TTAction,
+	class TTKey>
+	class RedBlackTree<true, TTData, TTInfo, TTAction, TTKey> : public BSTree<BSTNode<TTData, RBTInfo<TTInfo>, TTAction, true, true, false, TTKey>,
+	RedBlackTree<true, TTData, TTInfo, TTAction, TTKey>>
 {
 public:
 	static const bool use_key = true;
@@ -34,7 +28,7 @@ public:
 	using TAction = TTAction;
 	using TKey = TTKey;
 	using TNode = BSTNode<TData, TInfo, TAction, use_key, use_parent, use_height, TKey>;
-	using TSelf = RedBlackTree<TData, TTInfo, TAction, TKey>;
+	using TSelf = RedBlackTree<true, TData, TTInfo, TAction, TKey>;
 	using TTree = BSTree<TNode, TSelf>;
 	friend class BSTree<TNode, TSelf>;
 
@@ -48,7 +42,7 @@ public:
 			root = InsertByKey(root, node);
 		return root;
 	}
-	
+
 	static TNode* InsertByKey(TNode* root, TNode* node)
 	{
 		BSTInsertByKey<TNode>(root, node);

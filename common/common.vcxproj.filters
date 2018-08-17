@@ -143,9 +143,6 @@
     <ClInclude Include="binary_search_tree\rotate.h">
       <Filter>Header Files\binary_search_tree</Filter>
     </ClInclude>
-    <ClInclude Include="binary_search_tree\red_black_tree.h">
-      <Filter>Header Files\binary_search_tree</Filter>
-    </ClInclude>
     <ClInclude Include="binary_search_tree\swap.h">
       <Filter>Header Files\binary_search_tree</Filter>
     </ClInclude>
@@ -207,6 +204,12 @@
       <Filter>Header Files\binary_search_tree\info</Filter>
     </ClInclude>
     <ClInclude Include="binary_search_tree\update_info_with_path.h">
+      <Filter>Header Files\binary_search_tree</Filter>
+    </ClInclude>
+    <ClInclude Include="binary_search_tree\red_black_tree_upt.h">
+      <Filter>Header Files\binary_search_tree</Filter>
+    </ClInclude>
+    <ClInclude Include="binary_search_tree\red_black_tree_base.h">
       <Filter>Header Files\binary_search_tree</Filter>
     </ClInclude>
   </ItemGroup>
