@@ -1,6 +1,6 @@
 #pragma once
 
-#include "info.h"
+#include "update_info_with_path.h"
 
 namespace {
 

@@ -22,6 +22,7 @@
 #include "binary_search_tree/traversal.h"
 #include "binary_search_tree/treap.h"
 #include "binary_search_tree/tree.h"
+#include "binary_search_tree/update_info_with_path.h"
 #include "binary_search_tree/action/add.h"
 #include "binary_search_tree/info/gcd.h"
 #include "binary_search_tree/info/sum.h"

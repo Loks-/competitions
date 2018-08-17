@@ -206,6 +206,9 @@
     <ClInclude Include="binary_search_tree\info\gcd.h">
       <Filter>Header Files\binary_search_tree\info</Filter>
     </ClInclude>
+    <ClInclude Include="binary_search_tree\update_info_with_path.h">
+      <Filter>Header Files\binary_search_tree</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\current_solution.inl">

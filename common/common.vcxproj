@@ -163,6 +163,7 @@
     <ClInclude Include="binary_search_tree\traversal.h" />
     <ClInclude Include="binary_search_tree\treap.h" />
     <ClInclude Include="binary_search_tree\tree.h" />
+    <ClInclude Include="binary_search_tree\update_info_with_path.h" />
     <ClInclude Include="binary_search_tree\utils\reset_parent_links.h" />
     <ClInclude Include="binary_search_tree\utils\rotate.h" />
     <ClInclude Include="disjoint_set.h" />
