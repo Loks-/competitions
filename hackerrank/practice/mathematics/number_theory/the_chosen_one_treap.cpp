@@ -5,7 +5,7 @@
 #include "common/binary_search_tree/info/gcd.h"
 #include "common/vector/utils.h"
 
-using TTreap = Treap<false, true, uint64_t, BSTInfoGCD<uint64_t>>;
+using TTreap = Treap<false, true, uint64_t, BSTInfoGCD<uint64_t, BSTInfoNone>>;
 using TNode = TTreap::TNode;
 
 int main_the_chosen_one_treap()

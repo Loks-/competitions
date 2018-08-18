@@ -2,12 +2,13 @@
 
 #include "../info.h"
 
-template<class TSumType>
-class BSTInfoSum : public BSTInfoSize
+template<class TSumType, class TInfo = BSTInfoSize>
+class BSTInfoSum : public TInfo
 {
 public:
-	using TBase = BSTInfoSize;
+	using TBase = TInfo;
 	using TSelf = BSTInfoSum<TSumType>;
+	static const bool is_none = false;
 	static const bool use_data = true;
 
 	TSumType sum;

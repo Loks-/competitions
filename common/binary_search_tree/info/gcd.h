@@ -3,12 +3,12 @@
 #include "../info.h"
 #include "../../numeric/utils/gcd.h"
 
-template<class TGCDType>
-class BSTInfoGCD : public BSTInfoNone
+template<class TGCDType, class TInfo = BSTInfoSize>
+class BSTInfoGCD : public TInfo
 {
 public:
-	using TBase = BSTInfoNone;
-	using TSelf = BSTInfoGCD<TGCDType>;
+	using TBase = TInfo;
+	using TSelf = BSTInfoGCD<TGCDType, TInfo>;
 	static const bool is_none = false;
 	static const bool use_data = true;
 
