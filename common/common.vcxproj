@@ -148,6 +148,7 @@
     <ClInclude Include="binary_search_tree\base\find_by_key.h" />
     <ClInclude Include="binary_search_tree\base\find_by_order.h" />
     <ClInclude Include="binary_search_tree\base\insert_by_key.h" />
+    <ClInclude Include="binary_search_tree\base\reset_parent_links.h" />
     <ClInclude Include="binary_search_tree\info\gcd.h" />
     <ClInclude Include="binary_search_tree\info\height.h" />
     <ClInclude Include="binary_search_tree\info\none.h" />
@@ -167,7 +168,6 @@
     <ClInclude Include="binary_search_tree\traversal.h" />
     <ClInclude Include="binary_search_tree\treap.h" />
     <ClInclude Include="binary_search_tree\tree.h" />
-    <ClInclude Include="binary_search_tree\utils\reset_parent_links.h" />
     <ClInclude Include="binary_search_tree\utils\rotate.h" />
     <ClInclude Include="disjoint_set.h" />
     <ClInclude Include="disjoint_set_extended.h" />

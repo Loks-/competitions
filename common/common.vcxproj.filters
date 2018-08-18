@@ -152,9 +152,6 @@
     <ClInclude Include="binary_search_tree\action\add.h">
       <Filter>Header Files\binary_search_tree\action</Filter>
     </ClInclude>
-    <ClInclude Include="binary_search_tree\utils\reset_parent_links.h">
-      <Filter>Header Files\binary_search_tree\utils</Filter>
-    </ClInclude>
     <ClInclude Include="disjoint_set.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -219,6 +216,9 @@
       <Filter>Header Files\binary_search_tree\base</Filter>
     </ClInclude>
     <ClInclude Include="binary_search_tree\base\insert_by_key.h">
+      <Filter>Header Files\binary_search_tree\base</Filter>
+    </ClInclude>
+    <ClInclude Include="binary_search_tree\base\reset_parent_links.h">
       <Filter>Header Files\binary_search_tree\base</Filter>
     </ClInclude>
   </ItemGroup>
