@@ -1,9 +1,10 @@
 #pragma once
 
-#include "action.h"
 #include "node.h"
 #include "swap.h"
 #include "tree.h"
+#include "action/apply_action.h"
+#include "action/none.h"
 #include "info/size.h"
 
 // In this implementation delete operation is different from wiki Scapegoat

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../action.h"
+#include "none.h"
 
 template <class TData>
 class BSTActionAdd : public BSTActionNone

@@ -125,9 +125,6 @@
     <ClInclude Include="binary_search_tree\utils\rotate.h">
       <Filter>Header Files\binary_search_tree\utils</Filter>
     </ClInclude>
-    <ClInclude Include="binary_search_tree\action.h">
-      <Filter>Header Files\binary_search_tree</Filter>
-    </ClInclude>
     <ClInclude Include="binary_search_tree\find_by_order.h">
       <Filter>Header Files\binary_search_tree</Filter>
     </ClInclude>
@@ -214,6 +211,12 @@
     </ClInclude>
     <ClInclude Include="binary_search_tree\info\size.h">
       <Filter>Header Files\binary_search_tree\info</Filter>
+    </ClInclude>
+    <ClInclude Include="binary_search_tree\action\none.h">
+      <Filter>Header Files\binary_search_tree\action</Filter>
+    </ClInclude>
+    <ClInclude Include="binary_search_tree\action\apply_action.h">
+      <Filter>Header Files\binary_search_tree\action</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
