@@ -7,7 +7,7 @@ class BSTInfoSum : public TInfo
 {
 public:
 	using TBase = TInfo;
-	using TSelf = BSTInfoSum<TSumType>;
+	using TSelf = BSTInfoSum<TSumType, TInfo>;
 	static const bool is_none = false;
 	static const bool use_data = true;
 
