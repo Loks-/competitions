@@ -1,13 +1,13 @@
 #pragma once
 
 #include "node.h"
-#include "swap.h"
 #include "tree.h"
 #include "action/apply_action.h"
 #include "action/none.h"
 #include "base/insert_by_key.h"
 #include "base/rotate.h"
 #include "base/sibling.h"
+#include "base/swap.h"
 #include "info/rbt_color.h"
 #include "info/size.h"
 #include "info/update_info.h"
@@ -206,7 +206,7 @@ protected:
 				temp = temp->r;
 				temp->ApplyAction();
 			}
-			BSTSwapI(node, (node_index > 0) ? node_to_root_path[node_index - 1] : 0, temp, node_to_root_path.back());
+			BSTSwapAuto(node, (node_index > 0) ? node_to_root_path[node_index - 1] : 0, temp, node_to_root_path.back());
 			swap(node->info.is_black, temp->info.is_black);
 			node_to_root_path[node_index] = temp;
 			node_to_root_path.push_back(node);
@@ -323,7 +323,7 @@ public:
 				temp = temp->r;
 				temp->ApplyAction();
 			}
-			BSTSwap<TNode, false>(node, temp);
+			BSTSwapAuto(node, node->p, temp, temp->p);
 			swap(node->info.is_black, temp->info.is_black);
 		}
 

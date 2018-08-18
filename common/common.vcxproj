@@ -151,6 +151,8 @@
     <ClInclude Include="binary_search_tree\base\reset_parent_links.h" />
     <ClInclude Include="binary_search_tree\base\rotate.h" />
     <ClInclude Include="binary_search_tree\base\sibling.h" />
+    <ClInclude Include="binary_search_tree\base\swap.h" />
+    <ClInclude Include="binary_search_tree\base\swap_proxy.h" />
     <ClInclude Include="binary_search_tree\base\traversal.h" />
     <ClInclude Include="binary_search_tree\info\gcd.h" />
     <ClInclude Include="binary_search_tree\info\height.h" />
@@ -165,7 +167,6 @@
     <ClInclude Include="binary_search_tree\red_black_tree.h" />
     <ClInclude Include="binary_search_tree\scapegoat_tree.h" />
     <ClInclude Include="binary_search_tree\splay_tree.h" />
-    <ClInclude Include="binary_search_tree\swap.h" />
     <ClInclude Include="binary_search_tree\treap.h" />
     <ClInclude Include="binary_search_tree\tree.h" />
     <ClInclude Include="binary_search_tree\utils\rotate.h" />

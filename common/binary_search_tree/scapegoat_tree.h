@@ -1,10 +1,10 @@
 #pragma once
 
 #include "node.h"
-#include "swap.h"
 #include "tree.h"
 #include "action/apply_action.h"
 #include "action/none.h"
+#include "base/swap.h"
 #include "info/size.h"
 
 // In this implementation delete operation is different from wiki Scapegoat
@@ -158,7 +158,7 @@ public:
 				temp = temp->r;
 				temp->ApplyAction();
 			}
-			BSTSwap<TNode, false>(node, temp);
+			BSTSwapAuto(node, node->p, temp, temp->p);
 		}
 
 		// Drop node from tree

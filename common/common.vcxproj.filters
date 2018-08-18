@@ -125,9 +125,6 @@
     <ClInclude Include="binary_search_tree\utils\rotate.h">
       <Filter>Header Files\binary_search_tree\utils</Filter>
     </ClInclude>
-    <ClInclude Include="binary_search_tree\swap.h">
-      <Filter>Header Files\binary_search_tree</Filter>
-    </ClInclude>
     <ClInclude Include="binary_search_tree\scapegoat_tree.h">
       <Filter>Header Files\binary_search_tree</Filter>
     </ClInclude>
@@ -219,6 +216,12 @@
       <Filter>Header Files\binary_search_tree\base</Filter>
     </ClInclude>
     <ClInclude Include="binary_search_tree\base\traversal.h">
+      <Filter>Header Files\binary_search_tree\base</Filter>
+    </ClInclude>
+    <ClInclude Include="binary_search_tree\base\swap.h">
+      <Filter>Header Files\binary_search_tree\base</Filter>
+    </ClInclude>
+    <ClInclude Include="binary_search_tree\base\swap_proxy.h">
       <Filter>Header Files\binary_search_tree\base</Filter>
     </ClInclude>
   </ItemGroup>
