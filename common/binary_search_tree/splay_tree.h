@@ -1,10 +1,10 @@
 #pragma once
 
 #include "action.h"
-#include "info.h"
 #include "node.h"
 #include "rotate.h"
 #include "tree.h"
+#include "info/size.h"
 
 template <
 	bool _use_key,

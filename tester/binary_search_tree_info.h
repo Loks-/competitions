@@ -1,7 +1,7 @@
 #pragma once
 
-#include "common/binary_search_tree/info.h"
 #include "common/binary_search_tree/info/rbt_color.h"
+#include "common/binary_search_tree/info/size.h"
 #include "common/binary_search_tree/info/sum.h"
 
 namespace {

@@ -1,10 +1,10 @@
 #pragma once
 
 #include "action.h"
-#include "info.h"
 #include "node.h"
 #include "swap.h"
 #include "tree.h"
+#include "info/size.h"
 
 // In this implementation delete operation is different from wiki Scapegoat
 // tree. It removes node from tree (similar to other trees), not just mark for

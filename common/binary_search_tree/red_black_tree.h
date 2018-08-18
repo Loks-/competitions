@@ -1,7 +1,6 @@
 #pragma once
 
 #include "action.h"
-#include "info.h"
 #include "insert_by_key.h"
 #include "node.h"
 #include "rotate.h"
@@ -9,6 +8,8 @@
 #include "swap.h"
 #include "tree.h"
 #include "info/rbt_color.h"
+#include "info/size.h"
+#include "info/update_info.h"
 #include "info/update_info_with_path.h"
 
 template <

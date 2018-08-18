@@ -131,9 +131,6 @@
     <ClInclude Include="binary_search_tree\find_by_order.h">
       <Filter>Header Files\binary_search_tree</Filter>
     </ClInclude>
-    <ClInclude Include="binary_search_tree\info.h">
-      <Filter>Header Files\binary_search_tree</Filter>
-    </ClInclude>
     <ClInclude Include="binary_search_tree\find_by_key.h">
       <Filter>Header Files\binary_search_tree</Filter>
     </ClInclude>
@@ -207,6 +204,15 @@
       <Filter>Header Files\binary_search_tree\info</Filter>
     </ClInclude>
     <ClInclude Include="binary_search_tree\info\rbt_color.h">
+      <Filter>Header Files\binary_search_tree\info</Filter>
+    </ClInclude>
+    <ClInclude Include="binary_search_tree\info\update_info.h">
+      <Filter>Header Files\binary_search_tree\info</Filter>
+    </ClInclude>
+    <ClInclude Include="binary_search_tree\info\none.h">
+      <Filter>Header Files\binary_search_tree\info</Filter>
+    </ClInclude>
+    <ClInclude Include="binary_search_tree\info\size.h">
       <Filter>Header Files\binary_search_tree\info</Filter>
     </ClInclude>
   </ItemGroup>

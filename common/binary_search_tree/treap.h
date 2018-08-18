@@ -1,9 +1,10 @@
 #pragma once
 
 #include "action.h"
-#include "info.h"
 #include "node.h"
 #include "tree.h"
+#include "info/size.h"
+#include "info/update_info.h"
 
 template <
 	bool _use_key,
