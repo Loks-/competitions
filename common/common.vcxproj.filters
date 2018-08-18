@@ -131,9 +131,6 @@
     <ClInclude Include="binary_search_tree\swap.h">
       <Filter>Header Files\binary_search_tree</Filter>
     </ClInclude>
-    <ClInclude Include="binary_search_tree\sibling.h">
-      <Filter>Header Files\binary_search_tree</Filter>
-    </ClInclude>
     <ClInclude Include="binary_search_tree\scapegoat_tree.h">
       <Filter>Header Files\binary_search_tree</Filter>
     </ClInclude>
@@ -219,6 +216,9 @@
       <Filter>Header Files\binary_search_tree\base</Filter>
     </ClInclude>
     <ClInclude Include="binary_search_tree\base\rotate.h">
+      <Filter>Header Files\binary_search_tree\base</Filter>
+    </ClInclude>
+    <ClInclude Include="binary_search_tree\base\sibling.h">
       <Filter>Header Files\binary_search_tree\base</Filter>
     </ClInclude>
   </ItemGroup>
