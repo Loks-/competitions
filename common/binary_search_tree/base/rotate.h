@@ -1,5 +1,7 @@
 #pragma once
 
+#include "../../base.h"
+
 namespace {
 
 template<class TNode, bool update_child, bool apply_action>
