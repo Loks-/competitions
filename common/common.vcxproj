@@ -145,7 +145,9 @@
     <ClInclude Include="binary_search_tree\action\add.h" />
     <ClInclude Include="binary_search_tree\info\gcd.h" />
     <ClInclude Include="binary_search_tree\info\height.h" />
+    <ClInclude Include="binary_search_tree\info\rbt_color.h" />
     <ClInclude Include="binary_search_tree\info\sum.h" />
+    <ClInclude Include="binary_search_tree\info\update_info_with_path.h" />
     <ClInclude Include="binary_search_tree\insert_by_key.h" />
     <ClInclude Include="binary_search_tree\node.h" />
     <ClInclude Include="binary_search_tree\nodes_manager.h" />
@@ -162,7 +164,6 @@
     <ClInclude Include="binary_search_tree\traversal.h" />
     <ClInclude Include="binary_search_tree\treap.h" />
     <ClInclude Include="binary_search_tree\tree.h" />
-    <ClInclude Include="binary_search_tree\update_info_with_path.h" />
     <ClInclude Include="binary_search_tree\utils\reset_parent_links.h" />
     <ClInclude Include="binary_search_tree\utils\rotate.h" />
     <ClInclude Include="disjoint_set.h" />

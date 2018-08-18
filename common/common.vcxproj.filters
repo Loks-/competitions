@@ -197,13 +197,16 @@
     <ClInclude Include="binary_search_tree\info\gcd.h">
       <Filter>Header Files\binary_search_tree\info</Filter>
     </ClInclude>
-    <ClInclude Include="binary_search_tree\update_info_with_path.h">
-      <Filter>Header Files\binary_search_tree</Filter>
-    </ClInclude>
     <ClInclude Include="binary_search_tree\red_black_tree.h">
       <Filter>Header Files\binary_search_tree</Filter>
     </ClInclude>
     <ClInclude Include="binary_search_tree\info\height.h">
+      <Filter>Header Files\binary_search_tree\info</Filter>
+    </ClInclude>
+    <ClInclude Include="binary_search_tree\info\update_info_with_path.h">
+      <Filter>Header Files\binary_search_tree\info</Filter>
+    </ClInclude>
+    <ClInclude Include="binary_search_tree\info\rbt_color.h">
       <Filter>Header Files\binary_search_tree\info</Filter>
     </ClInclude>
   </ItemGroup>

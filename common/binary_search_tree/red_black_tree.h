@@ -8,14 +8,8 @@
 #include "sibling.h"
 #include "swap.h"
 #include "tree.h"
-#include "update_info_with_path.h"
-
-template<class TInfo>
-class RBTInfo : public TInfo
-{
-public:
-	bool is_black = false;
-};
+#include "info/rbt_color.h"
+#include "info/update_info_with_path.h"
 
 template <
 	bool _use_parent,
@@ -23,7 +17,7 @@ template <
 	class TTInfo = BSTInfoSize,
 	class TTAction = BSTActionNone,
 	class TTKey = int64_t>
-class RedBlackTree: public BSTree<BSTNode<TTData, RBTInfo<TTInfo>, TTAction, true, _use_parent, false, TTKey>,
+class RedBlackTree: public BSTree<BSTNode<TTData, BSTInfoRBTColor<TTInfo>, TTAction, true, _use_parent, false, TTKey>,
 	                              RedBlackTree<_use_parent, TTData, TTInfo, TTAction, TTKey>>
 {
 public:
@@ -32,7 +26,7 @@ public:
 	static const bool use_height = false;
 
 	using TData = TTData;
-	using TInfo = RBTInfo<TTInfo>;
+	using TInfo = BSTInfoRBTColor<TTInfo>;
 	using TAction = TTAction;
 	using TKey = TTKey;
 	using TNode = BSTNode<TData, TInfo, TAction, use_key, use_parent, use_height, TKey>;
