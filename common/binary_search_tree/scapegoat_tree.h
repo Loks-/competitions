@@ -79,7 +79,7 @@ protected:
 	{
 		if (!root->l) return root->r;
 		if (!root->r) return root->l;
-		stack<TNode*> s;
+		static thread_local stack<TNode*> s;
 		TNode* l = root->l, *r = root->r, *new_root;
 		if (l->info.size < r->info.size)
 		{
