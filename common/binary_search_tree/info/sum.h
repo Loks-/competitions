@@ -1,7 +1,5 @@
 #pragma once
 
-#include "../info.h"
-
 template<class TSumType, class TInfo>
 class BSTInfoSum : public TInfo
 {

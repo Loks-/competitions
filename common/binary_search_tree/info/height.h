@@ -1,7 +1,5 @@
 #pragma once
 
-#include "../info.h"
-
 template<class TInfo>
 class BSTInfoHeight : public TInfo
 {
