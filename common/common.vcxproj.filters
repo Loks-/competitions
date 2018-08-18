@@ -203,6 +203,9 @@
     <ClInclude Include="binary_search_tree\red_black_tree.h">
       <Filter>Header Files\binary_search_tree</Filter>
     </ClInclude>
+    <ClInclude Include="binary_search_tree\info\height.h">
+      <Filter>Header Files\binary_search_tree\info</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\current_solution.inl">

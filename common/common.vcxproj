@@ -144,6 +144,7 @@
     <ClInclude Include="base.h" />
     <ClInclude Include="binary_search_tree\action\add.h" />
     <ClInclude Include="binary_search_tree\info\gcd.h" />
+    <ClInclude Include="binary_search_tree\info\height.h" />
     <ClInclude Include="binary_search_tree\info\sum.h" />
     <ClInclude Include="binary_search_tree\insert_by_key.h" />
     <ClInclude Include="binary_search_tree\node.h" />
