@@ -71,6 +71,19 @@ void BSTSwapIChildParent(TNode* child, TNode* parent, TNode* gparent)
 		child->SetParentLink(0);
 }
 
+template<class TNode>
+void BSTSwapI(TNode* node1, TNode* parent1, TNode* node2, TNode* parent2)
+{
+	assert(node1 && node2);
+	if (node1 == node2) return;
+	if (parent1 == node2)
+		BSTSwapIChildParent(node1, node2, parent2);
+	else if (parent2p == node1)
+		BSTSwapIChildParent(node2, node1, parent1);
+	else
+		BSTSwapINotRelated(node1, parent1, node2, parent2);
+}
+
 template<class TNode, bool update_info = true, bool apply_action = false>
 void BSTSwap(TNode* node1, TNode* node2)
 {
@@ -107,19 +120,6 @@ void BSTSwap(TNode* node1, TNode* node2)
 			UpdateInfoNodeToRoot(node2);
 		}
 	}
-}
-
-template<class TNode>
-void BSTSwap(TNode* node1, TNode* parent1, TNode* node2, TNode* parent2)
-{
-	assert(node1 && node2);
-	if (node1 == node2) return;
-	if (parent1 == node2)
-		BSTSwapIChildParent(node1, node2, parent2);
-	else if (parent2p == node1)
-		BSTSwapIChildParent(node2, node1, parent1);
-	else
-		BSTSwapINotRelated(node1, parent1, node2, parent2);
 }
 
 } // namespace
