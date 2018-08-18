@@ -3,12 +3,12 @@
 #include "action.h"
 #include "info.h"
 #include "insert_by_key.h"
-#include "insert_by_key_with_path.h"
 #include "node.h"
 #include "rotate.h"
 #include "sibling.h"
 #include "swap.h"
 #include "tree.h"
+#include "update_info_with_path.h"
 
 template<class TInfo>
 class RBTInfo : public TInfo
@@ -55,9 +55,38 @@ protected:
 	static TNode* InsertByKeyI(TNode* root, TNode* node, TFakeFalse)
 	{
 		static thread_local vector<TNode*> node_to_root_path;
-		BSTInsertByKeyWithPath(root, node, node_to_root_path);
-		node->info.is_black = false;
+		if (!root) { node->info.is_black = true; return node; }
+		node_to_root_path.clear();
+		for (TNode* current = root;;)
+		{
+			current->ApplyAction();
+			node_to_root_path.push_back(current);
+			if (current->key < node->key)
+			{
+				if (current->r)
+					current = current->r;
+				else
+				{
+					current->SetR(node);
+					break;
+				}
+			}
+			else
+			{
+				if (current->l)
+					current = current->l;
+				else
+				{
+					current->SetL(node);
+					break;
+				}
+			}
+		}
+		node_to_root_path.push_back(node);
+		reverse(node_to_root_path.begin(), node_to_root_path.end());
+		UpdateInfoNodeToRootWithPath(node_to_root_path);
 		node_to_root_path.push_back(0);
+		node->info.is_black = false;
 		for (unsigned node_index = 1;;)
 		{
 			TNode* parent = node_to_root_path[node_index++];
@@ -124,8 +153,10 @@ protected:
 public:
 	static TNode* InsertByKey(TNode* root, TNode* node) { assert(node);	return InsertByKeyI(root, node, TFakeBool<use_parent>()); }
 
+public:
 	static TNode* RemoveByNode(TNode* node)
 	{
+		static_assert(use_parent, "use_parent should be true");
 		assert(node);
 		ApplyActionRootToNode(node);
 

@@ -158,9 +158,6 @@
     <ClInclude Include="binary_search_tree\insert_by_key.h">
       <Filter>Header Files\binary_search_tree</Filter>
     </ClInclude>
-    <ClInclude Include="binary_search_tree\insert_by_key_with_path.h">
-      <Filter>Header Files\binary_search_tree</Filter>
-    </ClInclude>
     <ClInclude Include="binary_search_tree\info\sum.h">
       <Filter>Header Files\binary_search_tree\info</Filter>
     </ClInclude>
