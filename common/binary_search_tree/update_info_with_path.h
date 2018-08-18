@@ -6,16 +6,16 @@
 namespace {
 
 template<class TNode>
-void UpdateInfoNodeToRootWithPath(const vector<TNode*>& path_root_to_node, TFakeFalse) {}
+void UpdateInfoNodeToRootWithPath(const vector<TNode*>& node_to_root_path, TFakeFalse) {}
 
 template<class TNode>
-void UpdateInfoNodeToRootWithPath(const vector<TNode*>& path_root_to_node, TFakeTrue)
+void UpdateInfoNodeToRootWithPath(const vector<TNode*>& node_to_root_path, TFakeTrue)
 {
-	for (auto it = path_root_to_node.rbegin(); it != path_root_to_node.rend(); ++it)
+	for (auto it = node_to_root_path.begin(); it != node_to_root_path.end(); ++it)
 		(*it)->UpdateInfo();
 }
 
 template<class TNode>
-void UpdateInfoNodeToRootWithPath(const vector<TNode*>& path_root_to_node) { UpdateInfoNodeToRootWithPath(path_root_to_node, TFakeBool<!TNode::TInfo::is_none>()); }
+void UpdateInfoNodeToRootWithPath(const vector<TNode*>& node_to_root_path) { UpdateInfoNodeToRootWithPath(node_to_root_path, TFakeBool<!TNode::TInfo::is_none>()); }
 
 } // namespace

@@ -5,22 +5,23 @@
 namespace {
 
 template<class TNode>
-vector<TNode*> BSTInsertByKeyWithPath(TNode* root, TNode* node)
+void BSTInsertByKeyWithPath(TNode* root, TNode* node, vector<TNode*>& output_node_to_root_path)
 {
 	static_assert(TNode::use_key, "use_key should be true");
+	output_node_to_root_path.clear();
 	assert(node);
-	vector<TNode*> path;
+	if (!root) { output_node_to_root_path.push_back(node); return; }
 	for (;;)
 	{
 		root->ApplyAction();
-		path.push_back(root);
+		output_node_to_root_path.push_back(root);
 		if (root->key < node->key)
 		{
 			if (root->r)
 				root = root->r;
 			else
 			{
-				root->r = node;
+				root->SetR(node);
 				break;
 			}
 		}
@@ -30,15 +31,14 @@ vector<TNode*> BSTInsertByKeyWithPath(TNode* root, TNode* node)
 				root = root->l;
 			else
 			{
-				root->l = node;
+				root->SetL(node);
 				break;
 			}
 		}
 	}
-	path.push_back(node);
-	node->SetParentLink(root);
-	UpdateInfoNodeToRootWithPath(path);
-	return path;
+	output_node_to_root_path.push_back(node);
+	reverse(output_node_to_root_path.begin(), output_node_to_root_path.end());
+	UpdateInfoNodeToRootWithPath(output_node_to_root_path);
 }
 
 } // namespace
