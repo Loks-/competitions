@@ -1,6 +1,5 @@
 #include "common/timer.h"
-#include "common/binary_search_tree/red_black_tree_upf.h"
-#include "common/binary_search_tree/red_black_tree_upt.h"
+#include "common/binary_search_tree/red_black_tree.h"
 #include "common/binary_search_tree/scapegoat_tree.h"
 #include "common/binary_search_tree/splay_tree.h"
 #include "common/binary_search_tree/treap.h"

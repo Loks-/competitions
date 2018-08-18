@@ -203,13 +203,7 @@
     <ClInclude Include="binary_search_tree\update_info_with_path.h">
       <Filter>Header Files\binary_search_tree</Filter>
     </ClInclude>
-    <ClInclude Include="binary_search_tree\red_black_tree_upt.h">
-      <Filter>Header Files\binary_search_tree</Filter>
-    </ClInclude>
-    <ClInclude Include="binary_search_tree\red_black_tree_base.h">
-      <Filter>Header Files\binary_search_tree</Filter>
-    </ClInclude>
-    <ClInclude Include="binary_search_tree\red_black_tree_upf.h">
+    <ClInclude Include="binary_search_tree\red_black_tree.h">
       <Filter>Header Files\binary_search_tree</Filter>
     </ClInclude>
   </ItemGroup>

@@ -3,24 +3,32 @@
 #include "action.h"
 #include "info.h"
 #include "insert_by_key.h"
+#include "insert_by_key_with_path.h"
 #include "node.h"
-#include "red_black_tree_base.h"
 #include "rotate.h"
 #include "sibling.h"
 #include "swap.h"
 #include "tree.h"
 
+template<class TInfo>
+class RBTInfo : public TInfo
+{
+public:
+	bool is_black = false;
+};
+
 template <
+	bool _use_parent,
 	class TTData,
-	class TTInfo,
-	class TTAction,
-	class TTKey>
-	class RedBlackTree<true, TTData, TTInfo, TTAction, TTKey> : public BSTree<BSTNode<TTData, RBTInfo<TTInfo>, TTAction, true, true, false, TTKey>,
-	                                                                          RedBlackTree<true, TTData, TTInfo, TTAction, TTKey>>
+	class TTInfo = BSTInfoSize,
+	class TTAction = BSTActionNone,
+	class TTKey = int64_t>
+class RedBlackTree: public BSTree<BSTNode<TTData, RBTInfo<TTInfo>, TTAction, true, _use_parent, false, TTKey>,
+	                              RedBlackTree<_use_parent, TTData, TTInfo, TTAction, TTKey>>
 {
 public:
 	static const bool use_key = true;
-	static const bool use_parent = true;
+	static const bool use_parent = _use_parent;
 	static const bool use_height = false;
 
 	using TData = TTData;
@@ -43,7 +51,44 @@ public:
 		return root;
 	}
 
-	static TNode* InsertByKey(TNode* root, TNode* node)
+protected:
+	static TNode* InsertByKeyI(TNode* root, TNode* node, TFakeFalse)
+	{
+		static thread_local vector<TNode*> node_to_root_path;
+		BSTInsertByKeyWithPath(root, node, node_to_root_path);
+		node->info.is_black = false;
+		node_to_root_path.push_back(0);
+		for (unsigned node_index = 1;;)
+		{
+			TNode* parent = node_to_root_path[node_index++];
+			if (!parent) { node->info.is_black = true; return node; }
+			if (parent->info.is_black) { return root; }
+			TNode* gparent = node_to_root_path[node_index++];
+			TNode* uncle = BSTSibling(parent, gparent);
+			if (!uncle || uncle->info.is_black)
+			{
+				bool rotate_required = ((gparent->l == parent) != (parent->l == node));
+				if (rotate_required)
+				{
+					BSTRotate<TNode, false>(node, parent, gparent);
+					parent = node;
+				}
+				TNode* ggparent = node_to_root_path[node_index++];
+				BSTRotate<TNode, true>(parent, gparent, ggparent);
+				gparent->info.is_black = false;
+				parent->info.is_black = true;
+				return ggparent ? root : parent;
+			}
+			gparent->info.is_black = false;
+			parent->info.is_black = true;
+			uncle->info.is_black = true;
+			node = gparent;
+		}
+		assert(false);
+		return 0;
+	}
+
+	static TNode* InsertByKeyI(TNode* root, TNode* node, TFakeTrue)
 	{
 		BSTInsertByKey<TNode>(root, node);
 		node->info.is_black = false;
@@ -75,6 +120,9 @@ public:
 		assert(false);
 		return 0;
 	}
+
+public:
+	static TNode* InsertByKey(TNode* root, TNode* node) { assert(node);	return InsertByKeyI(root, node, TFakeBool<use_parent>()); }
 
 	static TNode* RemoveByNode(TNode* node)
 	{
