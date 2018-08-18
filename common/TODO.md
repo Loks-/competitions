@@ -4,10 +4,7 @@
 * Binary Trees
 	* RedBlack
 		* Speed up RedBlackTree::BuildTree to linear time.
-		* Implement RedBlackTree<false>::InsertByKey with stack instead of recursion.
 	* FixedTree
-	* [Optional] RedBlack without parent link
-		* Required for persistent trees
 	* [Optional] AVL
 	* [Optional] AVL without parent link
 	* [Optional] Tango
