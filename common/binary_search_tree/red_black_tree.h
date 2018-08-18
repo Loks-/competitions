@@ -43,11 +43,33 @@ public:
 public:
 	RedBlackTree(unsigned max_nodes) : TTree(max_nodes) {}
 
+protected:
+	static void BuildTreeIFixColorsR(TNode* root, unsigned height)
+	{
+		assert(root || !height);
+		if (!root) return;
+		if (height)
+		{
+			root->info.is_black = true;
+			BuildTreeIFixColorsR(root->l, height - 1);
+			BuildTreeIFixColorsR(root->r, height - 1);
+		}
+		else
+		{
+			root->info.is_black = false;
+			assert(!root->l && !root->r);
+		}
+	}
+
+public:
 	static TNode* BuildTree(const vector<TNode*>& nodes)
 	{
-		TNode* root = 0;
-		for (TNode* node : nodes)
-			root = InsertByKey(root, node);
+		if (nodes.size() == 0) return 0;
+		unsigned h = 0;
+		for (; unsigned(nodes.size()) >= (1u << h); ) ++h;
+		TNode* root = TTree::BuildTree(nodes);
+		BuildTreeIFixColorsR(root, h - 1);
+		root->info.is_black = true;
 		return root;
 	}
 
