@@ -2,7 +2,7 @@
 
 namespace {
 
-template<class TNode, bool update_child = false, bool apply_action = false>
+template<class TNode, bool update_child, bool apply_action>
 void BSTRotate(TNode* child, TNode* parent, TNode* gparent)
 {
 	assert(child && parent);
@@ -33,7 +33,7 @@ void BSTRotate(TNode* child, TNode* parent, TNode* gparent)
 	if (update_child) child->UpdateInfo();
 }
 
-template<class TNode, bool update_child = false, bool apply_action = false>
+template<class TNode, bool update_child, bool apply_action>
 bool BSTRotateUp(TNode* node)
 {
 	static_assert(TNode::use_parent, "use_parent should be true");

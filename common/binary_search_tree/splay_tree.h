@@ -1,10 +1,10 @@
 #pragma once
 
 #include "node.h"
-#include "rotate.h"
 #include "tree.h"
 #include "action/apply_action.h"
 #include "action/none.h"
+#include "base/rotate.h"
 #include "info/size.h"
 
 template <
@@ -43,19 +43,19 @@ public:
 			TNode* gparent = parent->p;
 			if (!gparent)
 			{
-				BSTRotateUp(node);
+				BSTRotateUp<TNode, true, false>(node);
 				break;
 			}
 			bool zigzig = ((gparent->l == parent) == (parent->l == node));
 			if (zigzig)
 			{
-				BSTRotateUp(parent);
-				BSTRotateUp(node);
+				BSTRotateUp<TNode, false, false>(parent);
+				BSTRotateUp<TNode, true, false>(node);
 			}
 			else
 			{
-				BSTRotateUp(node);
-				BSTRotateUp(node);
+				BSTRotateUp<TNode, false, false>(node);
+				BSTRotateUp<TNode, true, false>(node);
 			}
 		}
 		node->UpdateInfo();

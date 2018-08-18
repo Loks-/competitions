@@ -1,13 +1,13 @@
 #pragma once
 
 #include "node.h"
-#include "rotate.h"
 #include "sibling.h"
 #include "swap.h"
 #include "tree.h"
 #include "action/apply_action.h"
 #include "action/none.h"
 #include "base/insert_by_key.h"
+#include "base/rotate.h"
 #include "info/rbt_color.h"
 #include "info/size.h"
 #include "info/update_info.h"
@@ -117,11 +117,11 @@ protected:
 				bool rotate_required = ((gparent->l == parent) != (parent->l == node));
 				if (rotate_required)
 				{
-					BSTRotate<TNode, false>(node, parent, gparent);
+					BSTRotate<TNode, false, false>(node, parent, gparent);
 					parent = node;
 				}
 				TNode* ggparent = node_to_root_path[node_index++];
-				BSTRotate<TNode, true>(parent, gparent, ggparent);
+				BSTRotate<TNode, true, false>(parent, gparent, ggparent);
 				gparent->info.is_black = false;
 				parent->info.is_black = true;
 				return ggparent ? root : parent;
@@ -151,10 +151,10 @@ protected:
 				bool rotate_required = ((gparent->l == parent) != (parent->l == node));
 				if (rotate_required)
 				{
-					BSTRotateUp<TNode, false>(node);
+					BSTRotateUp<TNode, false, false>(node);
 					parent = node;
 				}
-				BSTRotateUp<TNode, true>(parent);
+				BSTRotateUp<TNode, true, false>(parent);
 				gparent->info.is_black = false;
 				parent->info.is_black = true;
 				return parent->p ? root : parent;
@@ -248,7 +248,7 @@ protected:
 			if (!sibling->info.is_black)
 			{
 				assert(parent->info.is_black);
-				BSTRotate<TNode, true>(sibling, parent, gparent);
+				BSTRotate<TNode, true, false>(sibling, parent, gparent);
 				node_to_root_path[--current_index] = sibling;
 				if (!gparent)
 					root = sibling;
@@ -294,7 +294,7 @@ protected:
 				sibling->r->info.is_black = true;
 			else
 				sibling->l->info.is_black = true;
-			BSTRotate<TNode, true>(sibling, parent, gparent);
+			BSTRotate<TNode, true, false>(sibling, parent, gparent);
 			return gparent ? root : sibling;
 		}
 		assert(false);
@@ -357,7 +357,7 @@ public:
 			if (!sibling->info.is_black)
 			{
 				assert(parent->info.is_black);
-				BSTRotateUp<TNode, true>(sibling);
+				BSTRotateUp<TNode, true, false>(sibling);
 				sibling->info.is_black = true;
 				parent->info.is_black = false;
 				sibling = BSTSibling(child, parent);
@@ -399,7 +399,7 @@ public:
 				sibling->r->info.is_black = true;
 			else
 				sibling->l->info.is_black = true;
-			BSTRotateUp<TNode, true>(sibling);
+			BSTRotateUp<TNode, true, false>(sibling);
 			return Root(sibling);
 		}
 		assert(false);
