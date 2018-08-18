@@ -2,7 +2,7 @@
 
 #include "../info.h"
 
-template<class TSumType, class TInfo = BSTInfoSize>
+template<class TSumType, class TInfo>
 class BSTInfoSum : public TInfo
 {
 public:

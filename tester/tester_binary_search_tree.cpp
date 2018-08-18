@@ -111,13 +111,13 @@ bool TesterBinarySearchTree::TestAllTrees()
 	TestAll<Treap<true, true, TKey, BSTInfoSize, BSTActionNone, TKey>>("treap_upt");
 	cout << "Testing full trees:" << endl;
 	current_job = "full";
-	TestAll<RedBlackTree<false, TKey, BSTInfoSum<TKey>, BSTActionAdd<TKey>, TKey>>("rbtree_upf");
-	TestAll<RedBlackTree<true, TKey, BSTInfoSum<TKey>, BSTActionAdd<TKey>, TKey>>("rbtree_upt");
-	TestAll<ScapegoatTree<false, TKey, BSTInfoSum<TKey>, BSTActionAdd<TKey>, TKey>>("scape_upf");
-	TestAll<ScapegoatTree<true, TKey, BSTInfoSum<TKey>, BSTActionAdd<TKey>, TKey>>("scape_upt");
-	TestAll<SplayTree<true, TKey, BSTInfoSum<TKey>, BSTActionAdd<TKey>, TKey>>("splay_upt");
-	TestAll<Treap<true, false, TKey, BSTInfoSum<TKey>, BSTActionAdd<TKey>, TKey>>("treap_upf");
-	TestAll<Treap<true, true, TKey, BSTInfoSum<TKey>, BSTActionAdd<TKey>, TKey>>("treap_upt");
+	TestAll<RedBlackTree<false, TKey, BSTInfoSum<TKey, BSTInfoSize>, BSTActionAdd<TKey>, TKey>>("rbtree_upf");
+	TestAll<RedBlackTree<true, TKey, BSTInfoSum<TKey, BSTInfoSize>, BSTActionAdd<TKey>, TKey>>("rbtree_upt");
+	TestAll<ScapegoatTree<false, TKey, BSTInfoSum<TKey, BSTInfoSize>, BSTActionAdd<TKey>, TKey>>("scape_upf");
+	TestAll<ScapegoatTree<true, TKey, BSTInfoSum<TKey, BSTInfoSize>, BSTActionAdd<TKey>, TKey>>("scape_upt");
+	TestAll<SplayTree<true, TKey, BSTInfoSum<TKey, BSTInfoSize>, BSTActionAdd<TKey>, TKey>>("splay_upt");
+	TestAll<Treap<true, false, TKey, BSTInfoSum<TKey, BSTInfoSize>, BSTActionAdd<TKey>, TKey>>("treap_upf");
+	TestAll<Treap<true, true, TKey, BSTInfoSum<TKey, BSTInfoSize>, BSTActionAdd<TKey>, TKey>>("treap_upt");
 	bool output = TestHash();
 	if ((mode == time_test) && output)
 	{

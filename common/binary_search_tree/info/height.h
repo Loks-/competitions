@@ -2,7 +2,7 @@
 
 #include "../info.h"
 
-template<class TInfo = BSTInfoSize>
+template<class TInfo>
 class BSTInfoHeight : public TInfo
 {
 public:

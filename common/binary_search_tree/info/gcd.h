@@ -3,7 +3,7 @@
 #include "../info.h"
 #include "../../numeric/utils/gcd.h"
 
-template<class TGCDType, class TInfo = BSTInfoSize>
+template<class TGCDType, class TInfo>
 class BSTInfoGCD : public TInfo
 {
 public:
