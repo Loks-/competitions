@@ -65,7 +65,6 @@ public:
 
 	static TNode* InsertByKey(TNode* root, TNode* node)
 	{
-		static_assert(use_key, "use_key should be true");
 		if (!root) return node;
 		root->ApplyAction();
 		if (root->key < node->key)
@@ -126,7 +125,6 @@ protected:
 public:
 	static TNode* RemoveByKey(TNode* root, const TKey& key, TNode*& removed_node)
 	{
-		static_assert(use_key, "use_key should be true");
 		if (!root) return root;
 		root->ApplyAction();
 		if (root->key < key)
