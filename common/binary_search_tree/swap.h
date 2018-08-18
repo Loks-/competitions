@@ -34,27 +34,33 @@ void BSTSwapINotRelated(TNode* node1, TNode* node2)
 }
 
 template<class TNode>
-void BSTSwapIChildParent(TNode* child, TNode* parent)
+void BSTSwapIChildParent(TNode* child, TNode* parent, TNode* gparent)
 {
-	if (child->l) child->l->p = parent;
-	if (child->r) child->r->p = parent;
-	TNode* sibling = BSTSibling(child, parent);
-	if (sibling) sibling->p = child;
-	if (parent->p)
+	if (child == parent->l)
 	{
-		if (parent->p->l == parent)
-			parent->p->l = child;
-		else
-			parent->p->r = child;
+		TNode* sibling = parent->r;
+		parent->SetL(child->l);
+		parent->SetR(child->r);
+		child->SetL(parent);
+		child->SetR(sibling);
 	}
-	swap(child->l, parent->l);
-	swap(child->r, parent->r);
-	child->p = parent->p;
-	parent->p = child;
-	if (child->l == child)
-		child->l = parent;
 	else
-		child->r = parent;
+	{
+		TNode* sibling = parent->l;
+		parent->SetL(child->l);
+		parent->SetR(child->r);
+		child->SetL(sibling);
+		child->SetR(parent);
+	}
+	if (gparent)
+	{
+		if (gparent->l == parent)
+			gparent->SetL(child);
+		else
+			gparent->SetR(child);
+	}
+	else
+		child->SetParentLink(0);
 }
 
 template<class TNode, bool update_info = true, bool apply_action = false>
@@ -67,7 +73,7 @@ void BSTSwap(TNode* node1, TNode* node2)
 	{
 		if (apply_action)
 			ApplyActionRootToNode(node1);
-		BSTSwapIChildParent(node1, node2);
+		BSTSwapIChildParent(node1, node2, node2->p);
 		if (update_info)
 			UpdateInfoNodeToRoot(node2);
 	}
@@ -75,7 +81,7 @@ void BSTSwap(TNode* node1, TNode* node2)
 	{
 		if (apply_action)
 			ApplyActionRootToNode(node2);
-		BSTSwapIChildParent(node2, node1);
+		BSTSwapIChildParent(node2, node1, node1->p);
 		if (update_info)
 			UpdateInfoNodeToRoot(node1);
 	}
