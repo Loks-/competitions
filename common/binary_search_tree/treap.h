@@ -13,7 +13,7 @@ template <
 	class TTAction = BSTActionNone,
 	class TTKey = int64_t>
 	class Treap : public BSTree<BSTNode<TTData, TTInfo, TTAction, _use_key, _use_parent, true, TTKey, unsigned>,
-	Treap<_use_key, _use_parent, TTData, TTInfo, TTAction, TTKey>>
+	                            Treap<_use_key, _use_parent, TTData, TTInfo, TTAction, TTKey>>
 {
 public:
 	static const bool use_key = _use_key;

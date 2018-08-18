@@ -15,7 +15,7 @@ template <
 	class TTAction,
 	class TTKey>
 	class RedBlackTree<false, TTData, TTInfo, TTAction, TTKey> : public BSTree<BSTNode<TTData, RBTInfo<TTInfo>, TTAction, true, false, false, TTKey>,
-	RedBlackTree<false, TTData, TTInfo, TTAction, TTKey>>
+	                                                                           RedBlackTree<false, TTData, TTInfo, TTAction, TTKey>>
 {
 public:
 	static const bool use_key = true;
