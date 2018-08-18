@@ -84,7 +84,7 @@ protected:
 		}
 		node_to_root_path.push_back(node);
 		reverse(node_to_root_path.begin(), node_to_root_path.end());
-		UpdateInfoNodeToRootWithPath(node_to_root_path);
+		UpdateInfoNodeToRootWithPath(node_to_root_path, 1);
 		node_to_root_path.push_back(0);
 		node->info.is_black = false;
 		for (unsigned node_index = 1;;)
@@ -152,6 +152,142 @@ protected:
 
 public:
 	static TNode* InsertByKey(TNode* root, TNode* node) { assert(node);	return InsertByKeyI(root, node, TFakeBool<use_parent>()); }
+
+protected:
+	static TNode* RemoveByKeyI(TNode* root, const TKey& key, TNode*& removed_node, TFakeFalse)
+	{
+		static thread_local vector<TNode*> node_to_root_path;
+		// Find node
+		if (!root) return root;
+		node_to_root_path.clear();
+		TNode* node = root;
+		for (; node;)
+		{
+			node->ApplyAction();
+			node_to_root_path.push_back(node);
+			if (node->key < key)
+				node = node->r;
+			else if (node->key > key)
+				node = node->l;
+			else
+			{
+				removed_node = node;
+				break;
+			}
+		}
+		if (!node) return root;
+
+		// Optional swap
+		if (node->l && node->r)
+		{
+			unsigned node_index = unsigned(node_to_root_path.size() - 1);
+			TNode* temp = node->l;
+			for (temp->ApplyAction(); temp->r; )
+			{
+				node_to_root_path.push_back(temp);
+				temp = temp->r;
+				temp->ApplyAction();
+			}
+			BSTSwapI(node, (node_index > 0) ? node_to_root_path[node_index - 1] : 0, temp, node_to_root_path.back());
+			swap(node->info.is_black, temp->info.is_black);
+			node_to_root_path[node_index] = temp;
+			node_to_root_path.push_back(node);
+			root = node_to_root_path[0];
+		}
+
+		// Drop node from tree
+		reverse(node_to_root_path.begin(), node_to_root_path.end());
+		TNode* child = node->l ? node->l : node->r;
+		TNode* parent = node_to_root_path.size() > 1 ? node_to_root_path[1] : 0;
+		if (parent)
+		{
+			if (parent->l == node)
+				parent->SetL(child);
+			else
+				parent->SetR(child);
+		}
+		else if (child) 
+			child->SetParentLink(0);
+		node->ResetLinks();
+		UpdateInfoNodeToRootWithPath(node_to_root_path, 1);
+
+		// Fix colors
+		node_to_root_path.push_back(0);
+		unsigned current_index = 2;
+		if (!node->info.is_black) return (parent ? root : child);
+		for (;;)
+		{
+			if (child && !child->info.is_black)
+			{
+				child->info.is_black = true;
+				return (parent ? root : child);
+			}
+			if (!parent) return child;
+			TNode* sibling = BSTSibling(child, parent);
+			assert(sibling);
+			sibling->ApplyAction();
+			TNode* gparent = node_to_root_path[current_index];
+			if (!sibling->info.is_black)
+			{
+				assert(parent->info.is_black);
+				BSTRotate<TNode, true>(sibling, parent, gparent);
+				node_to_root_path[--current_index] = sibling;
+				if (!gparent)
+					root = sibling;
+				gparent = sibling;
+				sibling->info.is_black = true;
+				parent->info.is_black = false;
+				sibling = BSTSibling(child, parent);
+				sibling->ApplyAction();
+			}
+			assert(sibling && sibling->info.is_black);
+			if (parent->info.is_black && (!sibling->l || sibling->l->info.is_black) && (!sibling->r || sibling->r->info.is_black))
+			{
+				sibling->info.is_black = false;
+				child = parent;
+				parent = node_to_root_path[current_index++];
+				continue;
+			}
+			if (!parent->info.is_black && (!sibling->l || sibling->l->info.is_black) && (!sibling->r || sibling->r->info.is_black))
+			{
+				sibling->info.is_black = false;
+				parent->info.is_black = true;
+				return root;
+			}
+			if ((parent->l == child) && (!sibling->r || sibling->r->info.is_black))
+			{
+				assert(sibling->l && !sibling->l->info.is_black);
+				BSTRotate<TNode, false, true>(sibling->l, sibling, parent);
+				sibling->info.is_black = false;
+				sibling = parent->r;
+				sibling->info.is_black = true;
+			}
+			else if ((parent->r == child) && (!sibling->l || sibling->l->info.is_black))
+			{
+				assert(sibling->r && !sibling->r->info.is_black);
+				BSTRotate<TNode, false, true>(sibling->r, sibling, parent);
+				sibling->info.is_black = false;
+				sibling = parent->l;
+				sibling->info.is_black = true;
+			}
+			sibling->info.is_black = parent->info.is_black;
+			parent->info.is_black = true;
+			if (parent->l == child)
+				sibling->r->info.is_black = true;
+			else
+				sibling->l->info.is_black = true;
+			BSTRotate<TNode, true>(sibling, parent, gparent);
+			return gparent ? root : sibling;
+		}
+		assert(false);
+		return 0;
+	}
+
+	static TNode* RemoveByKeyI(TNode* root, const TKey& key, TNode*& removed_node, TFakeTrue)
+	{
+		removed_node = TTree::FindByKey(root, key);
+		return (removed_node ? RemoveByNode(removed_node) : root);
+	}
 
 public:
 	static TNode* RemoveByNode(TNode* node)

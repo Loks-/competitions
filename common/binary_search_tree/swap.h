@@ -78,7 +78,7 @@ void BSTSwapI(TNode* node1, TNode* parent1, TNode* node2, TNode* parent2)
 	if (node1 == node2) return;
 	if (parent1 == node2)
 		BSTSwapIChildParent(node1, node2, parent2);
-	else if (parent2p == node1)
+	else if (parent2 == node1)
 		BSTSwapIChildParent(node2, node1, parent1);
 	else
 		BSTSwapINotRelated(node1, parent1, node2, parent2);

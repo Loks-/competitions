@@ -241,8 +241,7 @@ protected:
 			root = TestFindByOrder<TTree>(tree, root, ktype);
 			root = TestFindByKey0<TTree>(tree, root, ktype);
 			root = TestFindByKey1<TTree>(tree, root, ktype);
-			// root = TestDeleteByKey<TTree>(tree, root, ktype);
-			tree.ReleaseTree(root); root = 0;
+			root = TestDeleteByKey<TTree>(tree, root, ktype);
 			assert(!root);
 			tree.ResetNodes();
 		}
