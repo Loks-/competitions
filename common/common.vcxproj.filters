@@ -40,6 +40,9 @@
     <Filter Include="Header Files\numeric\utils">
       <UniqueIdentifier>{bab5dc02-2ea8-426f-a4b6-c6cb58928b08}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\binary_search_tree\base">
+      <UniqueIdentifier>{2af93424-d379-490a-9ac3-f3f4e727bc41}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="include_headers.cpp">
@@ -128,9 +131,6 @@
     <ClInclude Include="binary_search_tree\find_by_order.h">
       <Filter>Header Files\binary_search_tree</Filter>
     </ClInclude>
-    <ClInclude Include="binary_search_tree\find_by_key.h">
-      <Filter>Header Files\binary_search_tree</Filter>
-    </ClInclude>
     <ClInclude Include="binary_search_tree\rotate.h">
       <Filter>Header Files\binary_search_tree</Filter>
     </ClInclude>
@@ -217,6 +217,9 @@
     </ClInclude>
     <ClInclude Include="binary_search_tree\action\apply_action.h">
       <Filter>Header Files\binary_search_tree\action</Filter>
+    </ClInclude>
+    <ClInclude Include="binary_search_tree\base\find_by_key.h">
+      <Filter>Header Files\binary_search_tree\base</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
