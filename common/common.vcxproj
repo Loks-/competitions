@@ -138,7 +138,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="compile_test.cpp" />
     <ClCompile Include="include_headers.cpp" />
   </ItemGroup>
   <ItemGroup>
