@@ -1,8 +1,8 @@
 // https://www.hackerrank.com/challenges/array-and-simple-queries
 
 #include "common/base.h"
-#include "common/binary_search_tree/traversal.h"
 #include "common/binary_search_tree/treap.h"
+#include "common/binary_search_tree/base/traversal.h"
 #include "common/binary_search_tree/utils/rotate.h"
 #include "common/vector/utils.h"
 
