@@ -9,7 +9,7 @@
 // TODO:
 //   Support Unix directories
 
-static std::unordered_set<std::string> used_files;
+static std::unordered_set<std::string> used_files, used_stl_files;
 
 static std::string JoinPath(const std::string& sdir, const std::string& sfile)
 {
@@ -86,6 +86,14 @@ static void AddFile(const std::string& input_filename, std::ofstream& output, bo
 				}
 				AddFile(new_file, output, false, silent);
 				continue;
+			}
+			else if (line[npos_include] == '<')
+			{
+				while (line.back() == ' ') line.pop_back();
+				assert(line.back() == '>');
+				if (used_stl_files.find(line) != used_stl_files.end())
+					continue;
+				used_stl_files.insert(line);
 			}
 		}
 		if (line.substr(0, 8) == "int main")
