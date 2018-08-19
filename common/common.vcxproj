@@ -155,6 +155,7 @@
     <ClInclude Include="binary_search_tree\base\swap.h" />
     <ClInclude Include="binary_search_tree\base\swap_proxy.h" />
     <ClInclude Include="binary_search_tree\base\traversal.h" />
+    <ClInclude Include="binary_search_tree\fixed_tree.h" />
     <ClInclude Include="binary_search_tree\info\gcd.h" />
     <ClInclude Include="binary_search_tree\info\height.h" />
     <ClInclude Include="binary_search_tree\info\none.h" />
