@@ -134,6 +134,7 @@ public:
 	void UpdateInfo() { TBase::info.Update(this); }
 	template <class TActionValue> void AddAction(const TActionValue& value) { TBase::action.Add(this, value); }
 	void ApplyAction() { TBase::action.Apply(this); }
+	void ResetLinksAndUpdateInfo() { ResetLinks(); UpdateInfo(); }
 };
 
 template<
@@ -161,6 +162,7 @@ public:
 	void UpdateInfo() { TBase::info.Update(this); }
 	template <class TActionValue> void AddAction(const TActionValue& value) { TBase::action.Add(this, value); }
 	void ApplyAction() { TBase::action.Apply(this); }
+	void ResetLinksAndUpdateInfo() { ResetLinks(); UpdateInfo(); }
 };
 
 template <

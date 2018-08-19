@@ -136,8 +136,7 @@ public:
 		{
 			removed_node = root;
 			TNode* new_root = RemoveRootI(root);
-			root->ResetLinks();
-			root->UpdateInfo();
+			root->ResetLinksAndUpdateInfo();
 			return new_root;
 		}
 		return UpdateAndFixSubtree(root);
@@ -172,7 +171,7 @@ public:
 			else
 				parent->r = child;
 		}
-		node->ResetLinks();
+		node->ResetLinksAndUpdateInfo();
 		for (TNode * node = parent; node; node = parent)
 		{
 			parent = node->p;

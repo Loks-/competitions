@@ -226,7 +226,7 @@ protected:
 		}
 		else if (child) 
 			child->SetParentLink(0);
-		node->ResetLinks();
+		node->ResetLinksAndUpdateInfo();
 		UpdateInfoNodeToRootWithPath(node_to_root_path, 1);
 
 		// Fix colors
@@ -338,7 +338,7 @@ public:
 				parent->r = child;
 		}
 		if (child) child->p = parent;
-		node->ResetLinks();
+		node->ResetLinksAndUpdateInfo();
 		UpdateInfoNodeToRoot(parent);
 
 		// Fix colors

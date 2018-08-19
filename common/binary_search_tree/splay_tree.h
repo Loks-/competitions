@@ -222,7 +222,7 @@ public:
 		TNode* l = node->l; if (l) l->SetParentLink(0);
 		TNode* r = node->r; if (r) r->SetParentLink(0);
 		TNode* p = node->p;
-		node->ResetLinks();
+		node->ResetLinksAndUpdateInfo();
 		TNode* m = Join(l, r);
 		if (!p) return m;
 		if (node == p->l)
