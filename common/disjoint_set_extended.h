@@ -1,6 +1,7 @@
 #pragma once
 
-#include "base.h"
+#include <vector>
+#include <unordered_map>
 
 template <class TTData>
 class DisjointSetExtended
@@ -9,10 +10,10 @@ public:
     using TData = TTData;
 
 protected:
-    unordered_map<TData, unsigned> m;
-    vector<unsigned> p;
-    vector<unsigned> rank;
-    vector<unsigned> vsize;
+    std::unordered_map<TData, unsigned> m;
+	std::vector<unsigned> p;
+	std::vector<unsigned> rank;
+	std::vector<unsigned> vsize;
 	unsigned unions = 0;
 
 public:

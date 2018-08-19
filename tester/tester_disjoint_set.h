@@ -3,13 +3,18 @@
 #include "common/disjoint_set_extended.h"
 #include "common/hash.h"
 #include "common/timer.h"
+
 #include "disjoint_set_proxy.h"
+
+#include <iostream>
+#include <vector>
+#include <utility>
 
 class TesterDisjointSet
 {
 protected:
 	unsigned size, unions, unions_per_block;
-	vector<pair<unsigned, unsigned>> vunions;
+	std::vector<std::pair<unsigned, unsigned>> vunions;
 
 public:
 	TesterDisjointSet(unsigned _size, unsigned _unions, unsigned _unions_per_block);
@@ -26,9 +31,9 @@ public:
 			if ((i > 0) && ((i % unions_per_block) == 0))
 				dsp.Init(size);
 			dsp.Union(vunions[i].first, vunions[i].second);
-			h = hash_combine(h, dsp.GetUnions());
+			h = std::hash_combine(h, dsp.GetUnions());
 		}
-		cout << "Test results: " << int(pc) << "\t" << h << "\t" << t.GetMilliseconds() << endl;
+		std::cout << "Test results: " << int(pc) << "\t" << h << "\t" << t.GetMilliseconds() << std::endl;
 		return h;
 	}
 
@@ -43,9 +48,9 @@ public:
 			if ((i > 0) && ((i % unions_per_block) == 0))
 				dsp.Reset();
 			dsp.Union(vunions[i].first, vunions[i].second);
-			h = hash_combine(h, dsp.GetUnions());
+			h = std::hash_combine(h, dsp.GetUnions());
 		}
-		cout << "Test results: " << "E" << "\t" << h << "\t" << t.GetMilliseconds() << endl;
+		std::cout << "Test results: " << "E" << "\t" << h << "\t" << t.GetMilliseconds() << std::endl;
 		return h;
 	}
 

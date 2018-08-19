@@ -1,14 +1,15 @@
 #pragma once
 
-#include "base.h"
+#include <algorithm>
+#include <vector>
 
 class DisjointSet
 {
 protected:
     unsigned n;
-    vector<unsigned> p;
-    vector<unsigned> rank;
-    vector<unsigned> vsize;
+    std::vector<unsigned> p;
+	std::vector<unsigned> rank;
+	std::vector<unsigned> vsize;
 	unsigned unions;
 
 public:
@@ -29,9 +30,9 @@ public:
             p[i] = i;
         }
         rank.resize(n);
-        fill(rank.begin(), rank.end(), 0);
+        std::fill(rank.begin(), rank.end(), 0);
         vsize.resize(n);
-        fill(vsize.begin(), vsize.end(), 1);
+		std::fill(vsize.begin(), vsize.end(), 1);
         unions = 0;
     }
 

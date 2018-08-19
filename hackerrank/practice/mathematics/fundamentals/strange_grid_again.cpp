@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/strange-grid
 
-#include "common/base.h"
+#include "common/stl_base.h"
 
 int main_strange_grid_again()
 {

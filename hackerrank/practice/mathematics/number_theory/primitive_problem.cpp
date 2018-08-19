@@ -1,8 +1,8 @@
 // https://www.hackerrank.com/challenges/primitive-problem
 
-#include "common/base.h"
 #include "common/numeric/primes_list.h"
 #include "common/numeric/utils/primitive_root.h"
+#include "common/stl_base.h"
 
 int main_primitive_problem()
 {

@@ -1,4 +1,6 @@
-#include "common/base.h"
+#include "common/stl_base.h"
+
+#include <queue>
 
 int main_senate_evacuation()
 {

@@ -1,16 +1,16 @@
 #pragma once
 
-#include "base.h"
+#include <chrono>
 
 class Timer
 {
 protected:
 	bool running;
-	chrono::time_point<chrono::system_clock> start_time, end_time;
+	std::chrono::time_point<std::chrono::system_clock> start_time, end_time;
 
 public:
-	void Start() { start_time = chrono::system_clock::now(); running = true; }
-	void Stop() { end_time = chrono::system_clock::now(); running = false; }
+	void Start() { start_time = std::chrono::system_clock::now(); running = true; }
+	void Stop() { end_time = std::chrono::system_clock::now(); running = false; }
 	
 	Timer(bool start = true) : running(false)
 	{
@@ -19,7 +19,7 @@ public:
 
 	size_t GetMilliseconds() const
 	{
-		chrono::time_point<chrono::system_clock> time = running ? chrono::system_clock::now() : end_time;
-		return chrono::duration_cast<chrono::milliseconds>(time - start_time).count();
+		std::chrono::time_point<std::chrono::system_clock> time = running ? std::chrono::system_clock::now() : end_time;
+		return std::chrono::duration_cast<std::chrono::milliseconds>(time - start_time).count();
 	}
 };

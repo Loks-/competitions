@@ -1,5 +1,8 @@
-#include "common/base.h"
 #include "common/hash.h"
+#include "common/stl_base.h"
+
+#include <array>
+#include <unordered_set>
 
 // O(S log S) solution
 

@@ -1,7 +1,7 @@
 // https://www.hackerrank.com/challenges/littlepandapower
 
-#include "common/base.h"
 #include "common/numeric/modular_arithmetic.h"
+#include "common/stl_base.h"
 
 int main_little_panda_power()
 {

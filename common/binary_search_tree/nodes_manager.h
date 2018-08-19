@@ -2,6 +2,9 @@
 
 #include "../base.h"
 #include "../template.h"
+#include <random>
+#include <stack>
+#include <vector>
 
 template<class TTNode>
 class BSTNodesManager
@@ -15,10 +18,10 @@ public:
 	static const bool use_height = TNode::use_height;
 
 protected:
-	vector<TNode> nodes;
+	std::vector<TNode> nodes;
 	unsigned used_nodes;
-	stack<TNode*> released_nodes;
-	minstd_rand random_engine;
+	std::stack<TNode*> released_nodes;
+	std::minstd_rand random_engine;
 
 public:
 	BSTNodesManager(unsigned max_nodes) : nodes(max_nodes), used_nodes(0) {}
@@ -74,7 +77,7 @@ public:
 	TNode* GetNodeByRawIndex(unsigned index) { return &(nodes[index]); }
 	void ResetNodes()
 	{
-		stack<TNode*>().swap(released_nodes);
+		std::stack<TNode*>().swap(released_nodes);
 		used_nodes = 0;
 		for (TNode& node : nodes)
 		{

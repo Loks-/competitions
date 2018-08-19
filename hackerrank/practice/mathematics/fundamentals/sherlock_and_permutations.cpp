@@ -1,8 +1,8 @@
 // https://www.hackerrank.com/challenges/sherlock-and-permutations
 
-#include "common/base.h"
 #include "common/numeric/modular.h"
 #include "common/numeric/factorial_modular.h"
+#include "common/stl_base.h"
 
 using TModular = Modular<>;
 using TFactorial = FactorialModular<TModular, true>;

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../../base.h"
 #include "../../template.h"
+#include <stack>
 
 namespace {
 
@@ -12,7 +12,7 @@ template<class TNode>
 static void ResetParentLinksI(TNode* root, TFakeTrue)
 {
 	root->p = 0;
-	stack<TNode*> s;
+	std::stack<TNode*> s;
 	for (s.push(root); !s.empty(); )
 	{
 		TNode* node = s.top(); s.pop();

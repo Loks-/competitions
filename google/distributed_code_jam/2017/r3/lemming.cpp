@@ -1,8 +1,10 @@
 #include "message.h"
 #include "lemming.h"
 
-#include "common/base.h"
 #include "common/disjoint_set.h"
+#include "common/stl_base.h"
+
+#include <unordered_map>
 
 int main_lemming()
 {

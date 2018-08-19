@@ -1,9 +1,11 @@
 // https://www.hackerrank.com/challenges/kittys-calculations-on-a-tree
 
-#include "common/base.h"
 #include "common/graph/centroid_decomposition.h"
 #include "common/graph/lca.h"
 #include "common/numeric/modular.h"
+#include "common/stl_base.h"
+
+#include <unordered_map>
 
 using TModular = Modular<>;
 

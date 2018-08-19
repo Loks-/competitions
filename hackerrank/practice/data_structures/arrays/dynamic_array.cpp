@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/dynamic-array
 
-#include "common/base.h"
+#include "common/stl_base.h"
 
 int main_dynamic_array()
 {

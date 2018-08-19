@@ -2,6 +2,7 @@
 
 #include "../base.h"
 #include "../template.h"
+#include <utility>
 
 // Most functions are O(1).
 // Division and Inverse are O(log (mod)).
@@ -70,16 +71,16 @@ public:
 	static TValue DivSafe_Prime(TValue lvalue, TValue rvalue, TValue mod) { return Div_Prime(ApplyT(lvalue), ApplyT(rvalue), mod); }
 
 protected:
-	static pair<int64_t, int64_t > GCD_Ext(int64_t a, int64_t b)
+	static std::pair<int64_t, int64_t > GCD_Ext(int64_t a, int64_t b)
 	{
-		if ((a % b) == 0) return make_pair< int64_t, int64_t >(0, 1);
-		pair<int64_t, int64_t> t = GCD_Ext(b, a % b);
-		return make_pair(t.second, t.first - t.second * (a / b));
+		if ((a % b) == 0) return std::make_pair< int64_t, int64_t >(0, 1);
+		std::pair<int64_t, int64_t> t = GCD_Ext(b, a % b);
+		return std::make_pair(t.second, t.first - t.second * (a / b));
 	}
 
 	static TValue Div_CompositeS(int64_t numerator, int64_t denominator, int64_t mod)
 	{
-		pair < int64_t, int64_t > dm_gcd_ext = GCD_Ext(denominator, mod);
+		std::pair<int64_t, int64_t> dm_gcd_ext = GCD_Ext(denominator, mod);
 		int64_t dm_gcd = dm_gcd_ext.first * denominator + dm_gcd_ext.second * mod;
 		assert((numerator % dm_gcd) == 0);
 		TValue tmod = TValue(mod);

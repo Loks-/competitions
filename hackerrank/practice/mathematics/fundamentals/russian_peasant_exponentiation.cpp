@@ -1,7 +1,7 @@
 // https://www.hackerrank.com/challenges/russian-peasant-exponentiation
 
-#include "common/base.h"
 #include "common/numeric/complex_modular_proxy.h"
+#include "common/stl_base.h"
 
 using TComplexProxy = ComplexModularProxy<false>;
 using TComplex = TComplexProxy::TComplex;

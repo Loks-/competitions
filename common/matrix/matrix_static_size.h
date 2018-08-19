@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../base.h"
+#include <array>
 
 template<class TTValue, unsigned _rows, unsigned _columns>
 class MatrixStaticSize
@@ -11,7 +11,7 @@ public:
 	const static bool is_square = (rows == columns);
 
 	using TValue = TTValue;
-	using TData = array<TValue, rows * columns>;
+	using TData = std::array<TValue, rows * columns>;
 	using TSelf = MatrixStaticSize<TTValue, rows, columns>;
 
 	using iterator = typename TData::iterator;

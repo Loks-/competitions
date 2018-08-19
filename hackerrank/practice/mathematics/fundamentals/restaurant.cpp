@@ -1,7 +1,7 @@
 // https://www.hackerrank.com/challenges/restaurant
 
-#include "common/base.h"
 #include "common/numeric/utils/gcd.h"
+#include "common/stl_base.h"
 
 int main_restaurant()
 {

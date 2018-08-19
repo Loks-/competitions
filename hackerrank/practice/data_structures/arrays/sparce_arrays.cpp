@@ -1,6 +1,9 @@
 // https://www.hackerrank.com/challenges/sparse-arrays
 
-#include "common/base.h"
+#include "common/stl_base.h"
+
+#include <string>
+#include <unordered_map>
 
 int main_sparce_arrays()
 {

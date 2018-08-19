@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../../base.h"
 #include "../../template.h"
+#include <stack>
 
 namespace {
 
@@ -12,7 +12,7 @@ template<class TNode>
 void ApplyActionRootToNode(TNode * node, TFakeTrue)
 {
 	static_assert(TNode::use_parent, "use_parent should be true");
-	stack<TNode*> s;
+	std::stack<TNode*> s;
 	for (; node; node = node->p) s.push(node);
 	for (; !s.empty(); s.pop()) s.top()->ApplyAction();
 }

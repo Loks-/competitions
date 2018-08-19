@@ -1,4 +1,6 @@
-#include "common/base.h"
+#include "common/stl_base.h"
+
+#include <string>
 
 int main_trouble_sort()
 {

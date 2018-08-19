@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/is-fibo
 
-#include "common/base.h"
+#include "common/stl_base.h"
 
 int main_is_fibo()
 {

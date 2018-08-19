@@ -1,9 +1,9 @@
 #include "message.h"
 #include "kenneth.h"
 
-#include "common/base.h"
 #include "common/numeric/modular.h"
 #include "common/numeric/primes_list.h"
+#include "common/stl_base.h"
 
 using TModular = Modular<>;
 

@@ -1,7 +1,7 @@
 // https://www.hackerrank.com/challenges/leonardo-and-prime
 
-#include "common/base.h"
 #include "common/numeric/primes_list.h"
+#include "common/stl_base.h"
 
 int main_leonardos_prime_factors()
 {

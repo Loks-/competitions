@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../base.h"
+#include <algorithm>
 
 template<class TInfo>
 class BSTInfoHeight : public TInfo
@@ -17,6 +17,6 @@ public:
 	void Update(TNode* node)
 	{
 		TBase::Update(node);
-		height = 1 + max((node->l ? node->l->info.height : 0), (node->r ? node->r->info.height : 0));
+		height = 1 + std::max((node->l ? node->l->info.height : 0), (node->r ? node->r->info.height : 0));
 	}
 };

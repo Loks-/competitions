@@ -1,20 +1,25 @@
 #pragma once
 
+#include "../base.h"
 #include "base_tree.h"
 #include "../hash.h"
+#include <functional>
+#include <stack>
+#include <vector>
+#include <utility>
 
 class BaseTreeIsomorphicHash
 {
 protected:
-	static pair<unsigned, unsigned> GetCenter(const BaseTree& tree)
+	static std::pair<unsigned, unsigned> GetCenter(const BaseTree& tree)
 	{
 		struct Node
 		{
 			unsigned node, parent;
 		};
 		unsigned n = tree.nvertices;
-		vector<unsigned> subtree_size(n,  0);
-		stack<Node> s;
+		std::vector<unsigned> subtree_size(n,  0);
+		std::stack<Node> s;
 		for (s.push({ tree.root, CNone }); !s.empty(); )
 		{
 			unsigned v = s.top().node;
@@ -39,27 +44,27 @@ protected:
 					subtree_size[v] += subtree_size[c];
 				}
 				if (2 * subtree_size[v] == n)
-					return make_pair(v, p);				
+					return std::make_pair(v, p);				
 				if (2 * subtree_size[v] > n)
-					return make_pair(v, CNone);
+					return std::make_pair(v, CNone);
 			}
 		}
 		assert(false);
-		return make_pair(tree.root, CNone);
+		return std::make_pair(tree.root, CNone);
 	}
 
 	static size_t HashR(const BaseTree& tree, unsigned node, unsigned parent)
 	{
-		size_t current = hash<unsigned>{}(1);
-		vector<size_t> v;
+		size_t current = std::hash<unsigned>{}(1);
+		std::vector<size_t> v;
 		for (unsigned c : tree.edges[node])
 		{
 			if (c == parent) continue;
 			v.push_back(HashR(tree, c, node));
 		}
-		sort(v.begin(), v.end());
+		std::sort(v.begin(), v.end());
 		for (size_t h : v)
-			current = hash_combine(current, h);
+			current = std::hash_combine(current, h);
 		return current;
 	}
 
@@ -70,6 +75,6 @@ public:
 		if (p.second == CNone) return HashR(tree, p.first, p.second);
 		size_t h1 = HashR(tree, p.first, p.second);
 		size_t h2 = HashR(tree, p.second, p.first);
-		return (h1 < h2) ? hash_combine(h1, h2) : hash_combine(h2, h1);
+		return (h1 < h2) ? std::hash_combine(h1, h2) : std::hash_combine(h2, h1);
 	}
 };

@@ -1,5 +1,9 @@
-#include "common/base.h"
 #include "common/hash.h"
+#include "common/stl_base.h"
+
+#include <array>
+#include <map>
+#include <unordered_set>
 
 // O(S^2) solution for Mysterious Road Signs.
 // It passes all tests.

@@ -1,8 +1,8 @@
 // https://www.hackerrank.com/challenges/k-candy-store
 
-#include "common/base.h"
 #include "common/numeric/modular.h"
 #include "common/numeric/binomial_coefficient_modular.h"
+#include "common/stl_base.h"
 
 using TModular = TModular_C32<1000000000>;
 using TBinomialCoefficient = BinomialCoefficientModular<TModular>;

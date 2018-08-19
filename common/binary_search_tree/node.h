@@ -1,7 +1,5 @@
 #pragma once
 
-#include "../base.h"
-
 template <
 	class TTData,
 	class TTInfo,

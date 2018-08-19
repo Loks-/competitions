@@ -1,9 +1,9 @@
 // https://www.hackerrank.com/challenges/the-chosen-one
 
-#include "common/base.h"
 #include "common/binary_search_tree/treap.h"
 #include "common/binary_search_tree/info/gcd.h"
 #include "common/vector/utils.h"
+#include "common/stl_base.h"
 
 using TTreap = Treap<false, true, uint64_t, BSTInfoGCD<uint64_t, BSTInfoNone>>;
 using TNode = TTreap::TNode;

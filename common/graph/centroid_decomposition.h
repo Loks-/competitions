@@ -1,21 +1,25 @@
 #pragma once
 
+#include "../base.h"
 #include "base_tree.h"
+#include <algorithm>
+#include <stack>
+#include <vector>
 
 class ICentroidDecompositionCallBack
 {
 public:
-	void Decompose(unsigned vertex, const vector<unsigned>& group) {}
+	void Decompose(unsigned vertex, const std::vector<unsigned>& group) {}
 	bool IsComposeRequired() const { return false; }
-	void Compose(unsigned vertex, const vector<unsigned>& group) {}
+	void Compose(unsigned vertex, const std::vector<unsigned>& group) {}
 };
 
 class CentroidDecomposition
 {
 protected:
 	const BaseTree& tree;
-	vector<unsigned> group, parent, subtree_size;
-	vector<unsigned> group_root;
+	std::vector<unsigned> group, parent, subtree_size;
+	std::vector<unsigned> group_root;
 
 	CentroidDecomposition(const BaseTree& _tree) : tree(_tree)
 	{
@@ -27,8 +31,8 @@ protected:
 
 	void InitParentAndSubtreeSizes()
 	{
-		fill(subtree_size.begin(), subtree_size.end(), 0);
-		stack<unsigned> s;
+		std::fill(subtree_size.begin(), subtree_size.end(), 0);
+		std::stack<unsigned> s;
 		parent[tree.root] = CNone;
 		group_root.clear();
 		group_root.push_back(tree.root);
@@ -105,7 +109,7 @@ protected:
 	void Decompose(unsigned current_group)
 	{
 		unsigned root = group_root[current_group];
-		stack<unsigned> s;
+		std::stack<unsigned> s;
 		for (unsigned v : tree.edges[root])
 		{
 			if (group[v] != current_group) continue;

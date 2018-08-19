@@ -1,4 +1,6 @@
-#include "common/base.h"
+#include "common/stl_base.h"
+
+#include <map>
 
 int main_bathroom_stalls()
 {

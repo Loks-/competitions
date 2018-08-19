@@ -1,13 +1,15 @@
 #include "disjoint_set_proxy.h"
 #include "tester_disjoint_set.h"
 
+#include <random>
+
 TesterDisjointSet::TesterDisjointSet(unsigned _size, unsigned _unions, unsigned _unions_per_block)
 {
 	size = _size;
 	unions = _unions;
 	unions_per_block = _unions_per_block;
 	vunions.reserve(unions);
-	minstd_rand random_engine;
+	std::minstd_rand random_engine;
 	std::uniform_int_distribution<unsigned> distribution(0, size - 1);
 	for (unsigned i = 0; i < unions; ++i)
 	{

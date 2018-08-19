@@ -59,9 +59,6 @@
     <ClInclude Include="graph\lca.h">
       <Filter>Header Files\graph</Filter>
     </ClInclude>
-    <ClInclude Include="base.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="hash.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -229,6 +226,15 @@
     </ClInclude>
     <ClInclude Include="binary_search_tree\fixed_tree.h">
       <Filter>Header Files\binary_search_tree</Filter>
+    </ClInclude>
+    <ClInclude Include="stl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="base.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="stl_base.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

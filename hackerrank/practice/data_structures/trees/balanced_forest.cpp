@@ -1,9 +1,11 @@
 // https://www.hackerrank.com/challenges/balanced-forest
 
-#include "common/base.h"
 #include "common/graph/base_tree.h"
 #include "common/graph/lca.h"
 #include "common/vector/utils.h"
+#include "common/stl_base.h"
+
+#include <unordered_map>
 
 namespace {
 	struct BalancedForest

@@ -1,7 +1,7 @@
 // https://www.hackerrank.com/challenges/eulers-criterion
 
-#include "common/base.h"
 #include "common/numeric/utils/legendre_symbol.h"
+#include "common/stl_base.h"
 
 int main_eulers_criterion()
 {

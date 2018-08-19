@@ -1,7 +1,7 @@
 // https://www.hackerrank.com/challenges/median
 
-#include "common/base.h"
 #include "common/binary_search_tree/scapegoat_tree.h"
+#include "common/stl_base.h"
 
 using TTree = ScapegoatTree<false, TEmpty>;
 using TNode = TTree::TNode;

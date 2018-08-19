@@ -2,6 +2,8 @@
 
 #include "modular_arithmetic.h"
 #include "primes_list.h"
+#include <stdexcept>
+#include <vector>
 
 class MillerRabinPrimalityTest
 {
@@ -32,16 +34,16 @@ public:
 		return f;
 	}
 
-	static const vector<uint64_t>& SelectWitnesses(uint64_t n) {
+	static const std::vector<uint64_t>& SelectWitnesses(uint64_t n) {
 		// Note: http://en.wikipedia.org/wiki/Miller%E2%80%93Rabin_primality_test
 		// lists minimal sets of witnesses that are sufficient for deterministic
 		// testing of primes for certain ranges of inputs. We've selected only
 		// a few of those ranges; it may be worthwhile to add more ranges here.
-		static const vector<uint64_t> w2k = { 2 };
-		static const vector<uint64_t> w25M = { 2, 3, 5 };
-		static const vector<uint64_t> w3T = { 2, 3, 5, 7, 11, 13 };
-		static const vector<uint64_t> w341T = { 2, 3, 5, 7, 11, 13, 17 };
-		static const vector<uint64_t> wmax = { 2, 3, 5, 7, 11, 13, 17, 19, 23 };
+		static const std::vector<uint64_t> w2k = { 2 };
+		static const std::vector<uint64_t> w25M = { 2, 3, 5 };
+		static const std::vector<uint64_t> w3T = { 2, 3, 5, 7, 11, 13 };
+		static const std::vector<uint64_t> w341T = { 2, 3, 5, 7, 11, 13, 17 };
+		static const std::vector<uint64_t> wmax = { 2, 3, 5, 7, 11, 13, 17, 19, 23 };
 
 		if (n < 2047ull) { return w2k; }
 		else if (n < 25326001ull) { return w25M; }
@@ -77,8 +79,8 @@ public:
 
 private:
 	uint64_t N, M;
-	vector<uint8_t> primes;
-	vector<uint8_t> table;
+	std::vector<uint8_t> primes;
+	std::vector<uint8_t> table;
 
 public:
 	MillerRabinPrimalityTest(unsigned maxprime = 13)

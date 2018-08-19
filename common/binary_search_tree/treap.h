@@ -1,11 +1,14 @@
 #pragma once
 
+#include "../base.h"
 #include "node.h"
 #include "tree.h"
 #include "action/apply_action.h"
 #include "action/none.h"
 #include "info/size.h"
 #include "info/update_info.h"
+#include <stack>
+#include <vector>
 
 template <
 	bool _use_key,
@@ -35,12 +38,12 @@ public:
 	Treap(unsigned max_nodes) : TTree(max_nodes) {}
 
 public:
-	static TNode* BuildTree(const vector<TNode*>& nodes)
+	static TNode* BuildTree(const std::vector<TNode*>& nodes)
 	{
 		if (nodes.size() == 0) return 0;
 		TNode * proot = nodes[0];
 		TNode * plast = proot;
-		stack<TNode*> s; s.push(proot);
+		std::stack<TNode*> s; s.push(proot);
 		for (unsigned j = 1; j < nodes.size(); ++j)
 		{
 			TNode* pj = nodes[j];

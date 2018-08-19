@@ -2,6 +2,7 @@
 
 #include "../../base.h"
 #include "sibling.h"
+#include <utility>
 
 namespace {
 
@@ -16,7 +17,7 @@ void BSTSwapNotRelated(TNode* node1, TNode* parent1, TNode* node2, TNode* parent
 	node2->SetR(child1r);
 	if (parent1 && parent1 == parent2)
 	{
-		swap(parent1->l, parent1->r);
+		std::swap(parent1->l, parent1->r);
 		return;
 	}
 	if (parent1)

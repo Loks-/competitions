@@ -1,16 +1,22 @@
 #include "base.h"
 
+#include <algorithm>
+#include <fstream>
+#include <iostream>
+#include <string>
+#include <unordered_set>
+
 // TODO:
 //   Support Unix directories
 
-static unordered_set<string> used_files;
+static std::unordered_set<std::string> used_files;
 
-static string JoinPath(const string& sdir, const string& sfile)
+static std::string JoinPath(const std::string& sdir, const std::string& sfile)
 {
 	assert((sdir.back() == '/') || (sdir.back() == '\\'));
 	size_t nposl1 = sdir.find_last_of('/'), nposl2 = sdir.find_last_of('\\');
-	size_t nposl = (nposl1 == string::npos) ? nposl2 : (nposl2 == string::npos) ? nposl1 : max(nposl1, nposl2);
-	assert(nposl != string::npos);
+	size_t nposl = (nposl1 == std::string::npos) ? nposl2 : (nposl2 == std::string::npos) ? nposl1 : std::max(nposl1, nposl2);
+	assert(nposl != std::string::npos);
 	size_t nposr = 0;
 	for (;;)
 	{
@@ -19,8 +25,8 @@ static string JoinPath(const string& sdir, const string& sfile)
 		if (sfile.substr(nposr, 3) != "../")
 			break;
 		size_t nposl1 = sdir.find_last_of('/', nposl - 1), nposl2 = sdir.find_last_of('\\', nposl - 1);
-		size_t nposl_new = (nposl1 == string::npos) ? nposl2 : (nposl2 == string::npos) ? nposl1 : max(nposl1, nposl2);
-		if (nposl_new != string::npos)
+		size_t nposl_new = (nposl1 == std::string::npos) ? nposl2 : (nposl2 == std::string::npos) ? nposl1 : std::max(nposl1, nposl2);
+		if (nposl_new != std::string::npos)
 		{
 			nposl = nposl_new;
 			nposr += 3;
@@ -31,11 +37,11 @@ static string JoinPath(const string& sdir, const string& sfile)
 	return sdir.substr(0, nposl + 1) + sfile.substr(nposr);
 }
 
-static void AddFile(const string& input_filename, ofstream& output, bool ignore_local, bool silent = false)
+static void AddFile(const std::string& input_filename, std::ofstream& output, bool ignore_local, bool silent = false)
 {
-	ifstream input(input_filename);
-	string line;
-	while (getline(input, line))
+	std::ifstream input(input_filename);
+	std::string line;
+	while (std::getline(input, line))
 	{
 		if (line == "#pragma once")
 		{
@@ -53,30 +59,30 @@ static void AddFile(const string& input_filename, ofstream& output, bool ignore_
 			{
 				size_t npos_include_end = line.find_last_of('"');
 				assert(npos_include_end > npos_include);
-				string new_header_file = line.substr(npos_include + 1, npos_include_end - npos_include - 1);
+				std::string new_header_file = line.substr(npos_include + 1, npos_include_end - npos_include - 1);
 				if (ignore_local)
 				{
 					size_t hnpos1 = new_header_file.find_last_of('\\');
 					size_t hnpos2 = new_header_file.find_last_of('/');
-					if ((hnpos1 == string::npos) && (hnpos2 == string::npos))
+					if ((hnpos1 == std::string::npos) && (hnpos2 == std::string::npos))
 					{
-						output << line << endl;
+						output << line << std::endl;
 						continue;
 					}
 				}
-				string current_dir = ".\\";
+				std::string current_dir = ".\\";
 				size_t npos1 = input_filename.find_last_of('\\');
 				size_t npos2 = input_filename.find_last_of('/');
-				size_t npos = (npos1 == string::npos) ? npos2 : (npos2 == string::npos) ? npos1 : max(npos1, npos2);
-				if (npos != string::npos)
+				size_t npos = (npos1 == std::string::npos) ? npos2 : (npos2 == std::string::npos) ? npos1 : std::max(npos1, npos2);
+				if (npos != std::string::npos)
 				{
 					current_dir = input_filename.substr(0, npos + 1);
 				}
-				string new_file = (new_header_file.substr(0, 7) =="common/") ? new_header_file : JoinPath(current_dir, new_header_file);
+				std::string new_file = (new_header_file.substr(0, 7) =="common/") ? new_header_file : JoinPath(current_dir, new_header_file);
 				if (!silent)
 				{
-					cout << "Include file found:" << endl;
-					cout << "\t[" << input_filename << "] [" << new_header_file << "] [" << new_file << "]" << endl;
+					std::cout << "Include file found:" << std::endl;
+					std::cout << "\t[" << input_filename << "] [" << new_header_file << "] [" << new_file << "]" << std::endl;
 				}
 				AddFile(new_file, output, false, silent);
 				continue;
@@ -84,25 +90,25 @@ static void AddFile(const string& input_filename, ofstream& output, bool ignore_
 		}
 		if (line.substr(0, 8) == "int main")
 		{
-			output << "int main()" << endl;
+			output << "int main()" << std::endl;
 			continue;
 		}
-		output << line << endl;
+		output << line << std::endl;
 	}
 }
 
 int main(int nargs, char **pargs)
 {
-	string input_filename, output_filename;
+	std::string input_filename, output_filename;
 	if (nargs <= 1)
-		cin >> input_filename;
+		std::cin >> input_filename;
 	else
 		input_filename = pargs[1];
 	if (nargs <= 2)
 		output_filename = "current_solution.inl";
 	else
 		output_filename = pargs[2];
-	ofstream output(output_filename);
+	std::ofstream output(output_filename);
 	AddFile(input_filename, output, true);
 	return 0;
 }

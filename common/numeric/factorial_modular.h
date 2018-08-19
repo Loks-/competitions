@@ -1,12 +1,12 @@
 #pragma once
 
-#include "../base.h"
+#include <vector>
 
 template <class TModular, bool keep_inverted = true>
 class FactorialModular
 {
 protected:
-	vector<TModular> vf, vfi;
+	std::vector<TModular> vf, vfi;
 
 public:
 	FactorialModular() { vf.push_back(TModular(1)); if (keep_inverted) vfi.push_back(TModular(1)); }

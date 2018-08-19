@@ -1,6 +1,8 @@
 #pragma once
 
 #include "base_graph.h"
+#include <iostream>
+#include <vector>
 
 class BaseTree : public BaseUndirectedGraph
 {
@@ -28,10 +30,10 @@ public:
 		for (unsigned i = 1; i < TBase::nvertices; ++i)
 		{
 			unsigned from;
-			cin >> from;
+			std::cin >> from;
 			TBase::AddEdge(from - shift, i);
 		}
 	}
 
-	vector<unsigned> GetDeep() const { return TBase::GetDistances(root); }
+	std::vector<unsigned> GetDeep() const { return TBase::GetDistances(root); }
 };

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../base.h"
 #include "../matrix/matrix_static_size.h"
 
 template<class TModular>

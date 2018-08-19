@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../base.h"
 #include "node.h"
 #include "tree.h"
 #include "action/none.h"

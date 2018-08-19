@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/find-point
 
-#include "common/base.h"
+#include "common/stl_base.h"
 
 int main_find_the_point()
 {

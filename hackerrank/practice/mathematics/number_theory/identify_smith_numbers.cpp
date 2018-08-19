@@ -1,8 +1,8 @@
 // https://www.hackerrank.com/challenges/identify-smith-numbers
 
-#include "common/base.h"
 #include "common/numeric/primes_list.h"
 #include "common/numeric/utils/digits_sum.h"
+#include "common/stl_base.h"
 
 int main_identify_smith_numbers()
 {

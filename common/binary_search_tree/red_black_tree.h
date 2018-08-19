@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../base.h"
 #include "node.h"
 #include "tree.h"
 #include "action/apply_action.h"
@@ -12,6 +13,9 @@
 #include "info/size.h"
 #include "info/update_info.h"
 #include "info/update_info_with_path.h"
+#include <algorithm>
+#include <vector>
+#include <utility>
 
 template <
 	bool _use_parent,
@@ -58,7 +62,7 @@ protected:
 	}
 
 public:
-	static TNode* BuildTree(const vector<TNode*>& nodes)
+	static TNode* BuildTree(const std::vector<TNode*>& nodes)
 	{
 		if (nodes.size() == 0) return 0;
 		unsigned h = 0;
@@ -72,7 +76,7 @@ public:
 protected:
 	static TNode* InsertByKeyI(TNode* root, TNode* node, TFakeFalse)
 	{
-		static thread_local vector<TNode*> node_to_root_path;
+		static thread_local std::vector<TNode*> node_to_root_path;
 		if (!root) { node->info.is_black = true; return node; }
 		node_to_root_path.clear();
 		for (TNode* current = root;;)
@@ -101,7 +105,7 @@ protected:
 			}
 		}
 		node_to_root_path.push_back(node);
-		reverse(node_to_root_path.begin(), node_to_root_path.end());
+		std::reverse(node_to_root_path.begin(), node_to_root_path.end());
 		UpdateInfoNodeToRootWithPath(node_to_root_path, 1);
 		node_to_root_path.push_back(0);
 		node->info.is_black = false;
@@ -174,7 +178,7 @@ public:
 protected:
 	static TNode* RemoveByKeyI(TNode* root, const TKey& key, TNode*& removed_node, TFakeFalse)
 	{
-		static thread_local vector<TNode*> node_to_root_path;
+		static thread_local std::vector<TNode*> node_to_root_path;
 		// Find node
 		if (!root) return root;
 		node_to_root_path.clear();
@@ -207,14 +211,14 @@ protected:
 				temp->ApplyAction();
 			}
 			BSTSwapAuto(node, (node_index > 0) ? node_to_root_path[node_index - 1] : 0, temp, node_to_root_path.back());
-			swap(node->info.is_black, temp->info.is_black);
+			std::swap(node->info.is_black, temp->info.is_black);
 			node_to_root_path[node_index] = temp;
 			node_to_root_path.push_back(node);
 			root = node_to_root_path[0];
 		}
 
 		// Drop node from tree
-		reverse(node_to_root_path.begin(), node_to_root_path.end());
+		std::reverse(node_to_root_path.begin(), node_to_root_path.end());
 		TNode* child = node->l ? node->l : node->r;
 		TNode* parent = node_to_root_path.size() > 1 ? node_to_root_path[1] : 0;
 		if (parent)
@@ -324,7 +328,7 @@ public:
 				temp->ApplyAction();
 			}
 			BSTSwapAuto(node, node->p, temp, temp->p);
-			swap(node->info.is_black, temp->info.is_black);
+			std::swap(node->info.is_black, temp->info.is_black);
 		}
 
 		// Drop node from tree

@@ -1,6 +1,10 @@
 // https://www.hackerrank.com/challenges/balanced-brackets
 
-#include "common/base.h"
+#include "common/stl_base.h"
+
+#include <stack>
+#include <string>
+#include <unordered_map>
 
 namespace {
 	unordered_map<char, char> m;

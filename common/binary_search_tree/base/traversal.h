@@ -1,6 +1,8 @@
 #pragma once
 
 #include "../../base.h"
+#include <queue>
+#include <vector>
 
 enum EBSTTraversalOrder
 {
@@ -14,7 +16,7 @@ class BSTTraversal
 {
 protected:
 	template<class TNode, class TData>
-	static void TraversePreorder(TNode* node, vector<TData>& output)
+	static void TraversePreorder(TNode* node, std::vector<TData>& output)
 	{
 		if (!node) return;
 		node->ApplyAction();
@@ -24,7 +26,7 @@ protected:
 	}
 
 	template<class TNode, class TData>
-	static void TraverseInorder(TNode* node, vector<TData>& output)
+	static void TraverseInorder(TNode* node, std::vector<TData>& output)
 	{
 		if (!node) return;
 		node->ApplyAction();
@@ -34,7 +36,7 @@ protected:
 	}
 
 	template<class TNode, class TData>
-	static void TraversePostorder(TNode* node, vector<TData>& output)
+	static void TraversePostorder(TNode* node, std::vector<TData>& output)
 	{
 		if (!node) return;
 		node->ApplyAction();
@@ -44,10 +46,10 @@ protected:
 	}
 
 	template<class TNode, class TData>
-	static void TraverseLevelorder(TNode* node, vector<TData>& output)
+	static void TraverseLevelorder(TNode* node, std::vector<TData>& output)
 	{
 		if (!node) return;
-		queue<TNode*> q;
+		std::queue<TNode*> q;
 		for (q.push(node); !q.empty(); q.pop())
 		{
 			node = q.front();
@@ -60,9 +62,9 @@ protected:
 
 public:
 	template<class TNode, class TData>
-	static vector<TData> Traverse(TNode* root, EBSTTraversalOrder order)
+	static std::vector<TData> Traverse(TNode* root, EBSTTraversalOrder order)
 	{
-		vector<TData> output;
+		std::vector<TData> output;
 		if (order == EBST_Preorder)
 			TraversePreorder(root, output);
 		else if (order == EBST_Inorder)

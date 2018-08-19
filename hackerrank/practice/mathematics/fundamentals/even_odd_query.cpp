@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/even-odd-query
 
-#include "common/base.h"
+#include "common/stl_base.h"
 
 int main_even_odd_query()
 {

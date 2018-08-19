@@ -1,8 +1,8 @@
 // https://www.hackerrank.com/challenges/bear-and-cryptography
 
-#include "common/base.h"
 #include "common/numeric/primality_test.h"
 #include "common/numeric/primes_list.h"
+#include "common/stl_base.h"
 
 namespace {
     static PrimesList pl(10000000);

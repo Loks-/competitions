@@ -1,17 +1,20 @@
 #pragma once
 
 #include "../base.h"
+#include <algorithm>
+#include <vector>
+#include <utility>
 
 class PrimesList
 {
 public:
-	vector<uint64_t> vprimes;
-	vector<uint64_t> vprimes2; // squared primes
+	std::vector<uint64_t> vprimes;
+	std::vector<uint64_t> vprimes2; // squared primes
 
 public:
 	PrimesList(unsigned max_prime)
 	{
-		vector<uint8_t> v(max_prime + 1, 1);
+		std::vector<uint8_t> v(max_prime + 1, 1);
 		vprimes.push_back(2);
 		for (uint64_t i = 3; i <= max_prime; i += 2)
 		{
@@ -29,7 +32,7 @@ public:
 
 	bool IsPrime(uint64_t n)
 	{
-		if (n <= vprimes.back()) return binary_search(vprimes.begin(), vprimes.end(), n);
+		if (n <= vprimes.back()) return std::binary_search(vprimes.begin(), vprimes.end(), n);
 		assert(n <= vprimes2.back());
 		for (size_t i = 0; vprimes2[i] <= n; ++i)
 		{
@@ -38,9 +41,9 @@ public:
 		return true;
 	}
 
-	vector<pair<uint64_t, unsigned>> Factorize(uint64_t n) const
+	std::vector<std::pair<uint64_t, unsigned>> Factorize(uint64_t n) const
 	{
-		vector<pair<uint64_t, unsigned>> output;
+		std::vector<std::pair<uint64_t, unsigned>> output;
 		for (size_t i = 0; i < vprimes.size(); ++i)
 		{
 			if (n < vprimes2[i]) break;
@@ -50,12 +53,12 @@ public:
 				unsigned cnt = 1;
 				for (; (n % vprimes[i]) == 0; ++cnt)
 					n /= vprimes[i];
-				output.push_back(make_pair(vprimes[i], cnt));
+				output.push_back(std::make_pair(vprimes[i], cnt));
 			}
 		}
 		assert(vprimes2.back() > n);
 		if (n != 1)
-			output.push_back(make_pair(n, 1));
+			output.push_back(std::make_pair(n, 1));
 		return output;
 	}
 
@@ -91,7 +94,7 @@ public:
 	}
 
 protected:
-	void GetDivisorsI(const vector<pair<uint64_t, unsigned>>& vfactorization, unsigned fpi, uint64_t current, vector<uint64_t>& output) const
+	void GetDivisorsI(const std::vector<std::pair<uint64_t, unsigned>>& vfactorization, unsigned fpi, uint64_t current, std::vector<uint64_t>& output) const
 	{
 		if (fpi < vfactorization.size())
 		{
@@ -106,9 +109,9 @@ protected:
 	}
 
 public:
-	vector<uint64_t> GetDivisors(uint64_t n) const
+	std::vector<uint64_t> GetDivisors(uint64_t n) const
 	{
-		vector<uint64_t> v;
+		std::vector<uint64_t> v;
 		GetDivisorsI(Factorize(n), 0, 1, v);
 		return v;
 	}

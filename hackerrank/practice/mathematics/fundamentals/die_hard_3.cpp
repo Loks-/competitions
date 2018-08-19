@@ -1,6 +1,8 @@
 // https://www.hackerrank.com/challenges/die-hard-3
 
-#include "common/base.h"
+#include "common/stl_base.h"
+
+#include <queue>
 
 int main_die_hard_3() 
 {

@@ -1,7 +1,9 @@
 #include "message.h"
 #include "number_bases.h"
 
-#include "common/base.h"
+#include "common/stl_base.h"
+
+#include <string>
 
 int main_number_bases()
 {

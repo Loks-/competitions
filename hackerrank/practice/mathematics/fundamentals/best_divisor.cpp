@@ -1,7 +1,7 @@
 // https://www.hackerrank.com/challenges/best-divisor
 
-#include "common/base.h"
 #include "common/numeric/utils/digits_sum.h"
+#include "common/stl_base.h"
 
 int main_best_divisor()
 {

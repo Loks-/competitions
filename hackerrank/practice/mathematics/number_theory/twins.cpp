@@ -1,7 +1,7 @@
 // https://www.hackerrank.com/challenges/twins
 
-#include "common/base.h"
 #include "common/numeric/primality_test.h"
+#include "common/stl_base.h"
 
 int main_twins()
 {

@@ -1,10 +1,10 @@
 // https://www.hackerrank.com/challenges/array-and-simple-queries
 
-#include "common/base.h"
 #include "common/binary_search_tree/splay_tree.h"
 #include "common/binary_search_tree/base/traversal.h"
 #include "common/binary_search_tree/utils/rotate.h"
 #include "common/vector/utils.h"
+#include "common/stl_base.h"
 
 using TSplayTree = SplayTree<false, int>;
 using TNode = TSplayTree::TNode;

@@ -1,7 +1,7 @@
 // https://www.hackerrank.com/challenges/median
 
-#include "common/base.h"
 #include "common/binary_search_tree/treap.h"
+#include "common/stl_base.h"
 
 using TTree = Treap<true, false, TEmpty>;
 using TNode = TTree::TNode;

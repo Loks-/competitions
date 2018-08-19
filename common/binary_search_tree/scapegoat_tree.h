@@ -1,11 +1,14 @@
 #pragma once
 
+#include "../base.h"
 #include "node.h"
 #include "tree.h"
 #include "action/apply_action.h"
 #include "action/none.h"
 #include "base/swap.h"
 #include "info/size.h"
+#include <stack>
+#include <vector>
 
 // In this implementation delete operation is different from wiki Scapegoat
 // tree. It removes node from tree (similar to other trees), not just mark for
@@ -38,7 +41,7 @@ public:
 	ScapegoatTree(unsigned max_nodes) : TTree(max_nodes) {}
 
 protected:
-	static void TraverseInorder(TNode* node, vector<TNode*>& output)
+	static void TraverseInorder(TNode* node, std::vector<TNode*>& output)
 	{
 		if (!node) return;
 		node->ApplyAction();
@@ -51,7 +54,7 @@ public:
 	static TNode* RebuildSubtree(TNode* node)
 	{
 		assert(node);
-		vector<TNode*> nodes;
+		std::vector<TNode*> nodes;
 		TraverseInorder(node, nodes);
 		return TTree::BuildTree(nodes);
 	}
@@ -80,7 +83,7 @@ protected:
 	{
 		if (!root->l) return root->r;
 		if (!root->r) return root->l;
-		static thread_local stack<TNode*> s;
+		static thread_local std::stack<TNode*> s;
 		TNode* l = root->l, *r = root->r, *new_root;
 		if (l->info.size < r->info.size)
 		{

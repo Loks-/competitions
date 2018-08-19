@@ -1,7 +1,9 @@
 // https://www.hackerrank.com/challenges/equal-stacks
 
-#include "common/base.h"
 #include "common/vector/utils.h"
+#include "common/stl_base.h"
+
+#include <unordered_map>
 
 int main_equal_stacks()
 {

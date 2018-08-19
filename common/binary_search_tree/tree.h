@@ -1,9 +1,13 @@
 #pragma once
 
+#include "../base.h"
 #include "nodes_manager.h"
 #include "base/find_by_key.h"
 #include "base/find_by_order.h"
 #include "../template.h"
+#include <algorithm>
+#include <vector>
+#include <utility>
 
 template<class TTNode, class TTMe>
 class BSTree : public BSTNodesManager<TTNode>
@@ -23,7 +27,7 @@ public:
 	TMe* Me() { return static_cast<TMe*>(this); }
 	const TMe* Me() const { return static_cast<const TMe*>(this); }
 
-	static TNode* BuildTreeI(const vector<TNode*>& vnodes, unsigned first, unsigned last)
+	static TNode* BuildTreeI(const std::vector<TNode*>& vnodes, unsigned first, unsigned last)
 	{
 		if (first >= last) return 0;
 		unsigned m = (first + last) / 2;
@@ -34,29 +38,29 @@ public:
 		return root;
 	}
 
-	static TNode* BuildTree(const vector<TNode*>& vnodes) { return BuildTreeI(vnodes, 0, unsigned(vnodes.size())); }
+	static TNode* BuildTree(const std::vector<TNode*>& vnodes) { return BuildTreeI(vnodes, 0, unsigned(vnodes.size())); }
 
-	TNode* Build(const vector<TData>& data)
+	TNode* Build(const std::vector<TData>& data)
 	{
 		assert(TNodesManager::AvailableNodes() >= data.size());
 		if (data.size() == 0) return 0;
-		vector<TNode*> v(data.size());
+		std::vector<TNode*> v(data.size());
 		for (unsigned i = 0; i < data.size(); ++i)
 			v[i] = TNodesManager::GetNewNode(data[i]);
 		return TMe::BuildTree(v);
 	}
 
-	TNode* Build(const vector<TData>& data, const vector<TKey>& keys)
+	TNode* Build(const std::vector<TData>& data, const std::vector<TKey>& keys)
 	{
 		static_assert(use_key, "use_key should be true");
 		assert(data.size() == keys.size());
 		assert(TNodesManager::AvailableNodes() >= data.size());
 		if (data.size() == 0) return 0;
-		vector<pair<TKey, TNode*>> vp(data.size());
+		std::vector<std::pair<TKey, TNode*>> vp(data.size());
 		for (unsigned i = 0; i < data.size(); ++i)
-			vp[i] = make_pair(keys[i], TNodesManager::GetNewNode(data[i], keys[i]));
-		sort(vp.begin(), vp.end());
-		vector<TNode*> v(vp.size());
+			vp[i] = std::make_pair(keys[i], TNodesManager::GetNewNode(data[i], keys[i]));
+		std::sort(vp.begin(), vp.end());
+		std::vector<TNode*> v(vp.size());
 		for (unsigned i = 0; i < vp.size(); ++i)
 			v[i] = vp[i].second;
 		return TMe::BuildTree(v);

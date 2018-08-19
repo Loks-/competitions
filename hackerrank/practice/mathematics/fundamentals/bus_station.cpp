@@ -1,7 +1,9 @@
 // https://www.hackerrank.com/challenges/bus-station
 
-#include "common/base.h"
 #include "common/numeric/primes_list.h"
+#include "common/stl_base.h"
+
+#include <unordered_set>
 
 int main_bus_station()
 {

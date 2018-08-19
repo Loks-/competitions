@@ -1,15 +1,18 @@
 #pragma once
 
 #include "base_tree.h"
+#include <algorithm>
+#include <stack>
+#include <vector>
 
 // Schieber-Vishkin decomposition
 class LCA
 {
 public:
 	unsigned n, n2p;
-	vector<unsigned> vlbit, vrbit;
-	vector<unsigned> parent, preorder, subtreesize, I, lead, A;
-	vector<unsigned> deep;
+	std::vector<unsigned> vlbit, vrbit;
+	std::vector<unsigned> parent, preorder, subtreesize, I, lead, A;
+	std::vector<unsigned> deep;
 
 protected:
 	void InitBitMaps()
@@ -56,8 +59,8 @@ public:
 protected:
 	void DFS1(const BaseTree& g)
 	{
-		stack<unsigned> s;
-		vector<bool> visited(n, false);
+		std::stack<unsigned> s;
+		std::vector<bool> visited(n, false);
 		unsigned timer = 0;
 		parent[g.root] = CNone;
 		deep[g.root] = 0;
@@ -93,7 +96,7 @@ protected:
 
 	void DFS2(const BaseTree& g)
 	{
-		stack<unsigned> s;
+		std::stack<unsigned> s;
 		for (s.push(g.root); !s.empty(); )
 		{
 			unsigned v = s.top(); s.pop();

@@ -1,6 +1,10 @@
 #pragma once
 
-#include "../base.h"
+#include <iostream>
+#include <queue>
+#include <vector>
+
+const static unsigned CNone = unsigned(-1);
 
 template <bool _directed_edges = false>
 class BaseGraph
@@ -11,8 +15,8 @@ public:
 
 public:
 	unsigned nvertices;
-	vector<vector<unsigned>> edges;
-	vector<vector<unsigned>> inverted_edges;
+	std::vector<std::vector<unsigned>> edges;
+	std::vector<std::vector<unsigned>> inverted_edges;
 
 public:
 	void Clear()
@@ -48,19 +52,19 @@ public:
 		for (; edges_to_read; --edges_to_read)
 		{
 			unsigned from, to;
-			cin >> from >> to;
+			std::cin >> from >> to;
 			AddEdge(from - shift, to - shift);
 		}
 	}
 
 	// Return distance to each vertex from required vertex.
 	// If some vertex is unreachable it returns -1 for it.
-	vector<unsigned> GetDistances(unsigned source) const
+	std::vector<unsigned> GetDistances(unsigned source) const
 	{
 		const unsigned none = -1;
-		vector<unsigned> d(nvertices, none);
+		std::vector<unsigned> d(nvertices, none);
 		d[source] = 0;
-		queue<unsigned> q;
+		std::queue<unsigned> q;
 		q.push(source);
 		while (!q.empty())
 		{

@@ -7,19 +7,26 @@
 
 #include "tester_binary_search_tree.h"
 
-void TesterBinarySearchTree::AddResult(const string& task, unsigned keys_type, size_t h, size_t time)
+#include <algorithm>
+#include <iostream>
+#include <random>
+#include <string>
+#include <vector>
+#include <unordered_map>
+
+void TesterBinarySearchTree::AddResult(const std::string& task, unsigned keys_type, size_t h, size_t time)
 {
 	if (mode == time_test)
-		cout << "\t\t" << task << "\t" << keys_type << "\t" << time << endl;
+		std::cout << "\t\t" << task << "\t" << keys_type << "\t" << time << std::endl;
 	results.push_back({ current_job, current_tree, task, keys_type, h, time });
 }
 
 void TesterBinarySearchTree::AddMax()
 {
-	unordered_map<string, Result> m;
+	std::unordered_map<std::string, Result> m;
 	for (const Result& r : results)
 	{
-		string skey = r.job + "_" + r.tree + "_" + r.task;
+		std::string skey = r.job + "_" + r.tree + "_" + r.task;
 		if (m.find(skey) == m.end())
 		{
 			m[skey] = r;
@@ -28,7 +35,7 @@ void TesterBinarySearchTree::AddMax()
 		}
 		else
 		{
-			m[skey].time = max(m[skey].time, r.time);
+			m[skey].time = std::max(m[skey].time, r.time);
 		}
 	}
 	for (const auto& p : m)
@@ -39,16 +46,16 @@ void TesterBinarySearchTree::AddMax()
 
 bool TesterBinarySearchTree::TestHash() const
 {
-	unordered_map<string, size_t> m;
+	std::unordered_map<std::string, size_t> m;
 	for (const Result& r : results)
 	{
-		string key = r.job + "_" + r.task + "_" + to_string(r.keys_type);
+		std::string key = r.job + "_" + r.task + "_" + std::to_string(r.keys_type);
 		if (m[key] == 0)
 			m[key] = r.h;
 		if (m[key] != r.h)
 		{
-			cout << "ERROR: " << "unexpected hash found for:" << endl;
-			cout << "\t" << r.job << "\t" << r.task << "\t" << r.tree << "\t" << r.keys_type << "\t" << r.h << endl;
+			std::cout << "ERROR: " << "unexpected hash found for:" << std::endl;
+			std::cout << "\t" << r.job << "\t" << r.task << "\t" << r.tree << "\t" << r.keys_type << "\t" << r.h << std::endl;
 			return false;
 		}
 	}
@@ -57,8 +64,8 @@ bool TesterBinarySearchTree::TestHash() const
 
 void TesterBinarySearchTree::PrintTime() const
 {
-	vector<Result> vt = results;
-	sort(vt.begin(), vt.end(), [](const Result& a, const Result & b) -> bool
+	std::vector<Result> vt = results;
+	std::sort(vt.begin(), vt.end(), [](const Result& a, const Result & b) -> bool
 		{
 		if (a.job != b.job) return a.job < b.job;
 		if (a.task != b.task) return a.task < b.task;
@@ -66,10 +73,10 @@ void TesterBinarySearchTree::PrintTime() const
 		return a.tree < b.tree;
 	}
 	);
-	cout << "Timers:" << endl;
+	std::cout << "Timers:" << std::endl;
 	for (const Result& r : vt)
 	{
-		cout << r.job << "\t" << r.task << "\t" << r.keys_type << "\t" << r.tree << "\t" << r.time << endl;
+		std::cout << r.job << "\t" << r.task << "\t" << r.keys_type << "\t" << r.tree << "\t" << r.time << std::endl;
 	}
 }
 
@@ -84,7 +91,7 @@ TesterBinarySearchTree::TesterBinarySearchTree(unsigned size, TBSTMode _mode) : 
 	reverse(keys_reversed.begin(), keys_reversed.end());
 	keys[reversed] = &keys_reversed;
 	keys_shuffled = keys_sorted;
-	shuffle(keys_shuffled.begin(), keys_shuffled.end(), minstd_rand());
+	std::shuffle(keys_shuffled.begin(), keys_shuffled.end(), std::minstd_rand());
 	keys[shuffled] = &keys_shuffled;
 	keys_shuffled_dups = keys_shuffled;
 	for (TKey& key : keys_shuffled_dups)
@@ -101,7 +108,7 @@ TesterBinarySearchTree::TesterBinarySearchTree(unsigned size, TBSTMode _mode) : 
 
 bool TesterBinarySearchTree::TestAllTrees()
 {
-	cout << "Testing base trees:" << endl;
+	std::cout << "Testing base trees:" << std::endl;
 	current_job = "base";
 	TestAll<AVLTree<false, TKey, BSTInfoSize, BSTActionNone, TKey>>("avl_upf");
 	TestAll<AVLTree<true, TKey, BSTInfoSize, BSTActionNone, TKey>>("avl_upt");
@@ -112,7 +119,7 @@ bool TesterBinarySearchTree::TestAllTrees()
 	TestAll<SplayTree<true, TKey, BSTInfoSize, BSTActionNone, TKey>>("splay_upt");
 	TestAll<Treap<true, false, TKey, BSTInfoSize, BSTActionNone, TKey>>("treap_upf");
 	TestAll<Treap<true, true, TKey, BSTInfoSize, BSTActionNone, TKey>>("treap_upt");
-	cout << "Testing full trees:" << endl;
+	std::cout << "Testing full trees:" << std::endl;
 	current_job = "full";
 	TestAll<AVLTree<false, TKey, BSTInfoSum<TKey, BSTInfoSize>, BSTActionAdd<TKey>, TKey>>("avl_upf");
 	TestAll<AVLTree<true, TKey, BSTInfoSum<TKey, BSTInfoSize>, BSTActionAdd<TKey>, TKey>>("avl_upt");
@@ -141,7 +148,7 @@ bool TestBinarySearchTree(bool run_time_test)
 		Timer t;
 		TesterBinarySearchTree tbst_time(10000000, TesterBinarySearchTree::time_test);
 		result = result && tbst_time.TestAllTrees();
-		cout << "Total time = " << t.GetMilliseconds() << endl;
+		std::cout << "Total time = " << t.GetMilliseconds() << std::endl;
 	}
 	return result;
 }

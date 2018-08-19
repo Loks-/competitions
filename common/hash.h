@@ -1,6 +1,7 @@
 #pragma once
 
 #include "base.h"
+#include <utility>
 
 namespace std {
 
@@ -10,9 +11,9 @@ inline size_t hash_combine(size_t hvalue1, size_t hvalue2)
 }
 
 template<class T1, class T2>
-struct hash<pair<T1, T2>>
+struct hash<std::pair<T1, T2>>
 {
-	size_t operator()(const pair<T1, T2>& value) const
+	size_t operator()(const std::pair<T1, T2>& value) const
 	{
 		return hash_combine(hash<T1>{}(value.first), hash<T2>{}(value.second));
 	}

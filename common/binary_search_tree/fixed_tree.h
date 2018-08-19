@@ -1,9 +1,13 @@
 #pragma once
 
+#include "../base.h"
 #include "node.h"
 #include "nodes_manager.h"
 #include "action/none.h"
 #include "info/size.h"
+#include <algorithm>
+#include <vector>
+#include <utility>
 
 template <
 	bool _use_parent,
@@ -29,7 +33,7 @@ public:
 public:
 	FixedTree(unsigned max_nodes) : TNodesManager(max_nodes) {}
 
-	static TNode* BuildTreeI(const vector<TNode*>& vnodes, unsigned first, unsigned last)
+	static TNode* BuildTreeI(const std::vector<TNode*>& vnodes, unsigned first, unsigned last)
 	{
 		if (first >= last) return 0;
 		unsigned m = (first + last) / 2;
@@ -42,16 +46,16 @@ public:
 
 	static TNode* BuildTree(const vector<TNode*>& vnodes) { return BuildTreeI(vnodes, 0, unsigned(vnodes.size())); }
 
-	TNode* Build(const vector<TData>& data, const vector<TKey>& keys)
+	TNode* Build(const std::vector<TData>& data, const vector<TKey>& keys)
 	{
 		assert(data.size() == keys.size());
 		assert(TNodesManager::AvailableNodes() >= data.size());
 		if (data.size() == 0) return 0;
-		vector<pair<TKey, TNode*>> vp(data.size());
+		std::vector<std::pair<TKey, TNode*>> vp(data.size());
 		for (unsigned i = 0; i < data.size(); ++i)
 			vp[i] = make_pair(keys[i], TNodesManager::GetNewNode(data[i], keys[i]));
-		sort(vp.begin(), vp.end());
-		vector<TNode*> v(vp.size());
+		std::sort(vp.begin(), vp.end());
+		std::vector<TNode*> v(vp.size());
 		for (unsigned i = 0; i < vp.size(); ++i)
 			v[i] = vp[i].second;
 		return TMe::BuildTree(v);

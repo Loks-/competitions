@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/help-mike
 
-#include "common/base.h"
+#include "common/stl_base.h"
 
 int main_help_mike()
 {

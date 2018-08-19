@@ -1,7 +1,7 @@
 // https://www.hackerrank.com/challenges/arrays-ds
 
-#include "common/base.h"
 #include "common/vector/utils.h"
+#include "common/stl_base.h"
 
 int main_arrays_ds()
 {

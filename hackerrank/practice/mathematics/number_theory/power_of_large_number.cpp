@@ -1,7 +1,9 @@
 // https://www.hackerrank.com/challenges/power-of-large-numbers
 
-#include "common/base.h"
 #include "common/numeric/modular_arithmetic.h"
+#include "common/stl_base.h"
+
+#include <string>
 
 int main_power_of_large_numbers()
 {

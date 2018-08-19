@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/maximum-draws
 
-#include "common/base.h"
+#include "common/stl_base.h"
 
 int main_maximum_draws()
 {

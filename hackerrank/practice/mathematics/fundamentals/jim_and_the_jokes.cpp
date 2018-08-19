@@ -1,6 +1,8 @@
 // https://www.hackerrank.com/challenges/jim-and-the-jokes
 
-#include "common/base.h"
+#include "common/stl_base.h"
+
+#include <unordered_map>
 
 int main_jim_and_the_jokes()
 {

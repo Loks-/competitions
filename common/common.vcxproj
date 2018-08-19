@@ -142,6 +142,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="base.h" />
+    <ClInclude Include="stl.h" />
     <ClInclude Include="binary_search_tree\action\add.h" />
     <ClInclude Include="binary_search_tree\action\apply_action.h" />
     <ClInclude Include="binary_search_tree\action\none.h" />
@@ -198,6 +199,7 @@
     <ClInclude Include="numeric\utils\legendre_symbol.h" />
     <ClInclude Include="numeric\utils\pow.h" />
     <ClInclude Include="numeric\utils\primitive_root.h" />
+    <ClInclude Include="stl_base.h" />
     <ClInclude Include="template.h" />
     <ClInclude Include="timer.h" />
     <ClInclude Include="vector\utils.h" />

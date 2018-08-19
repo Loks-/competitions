@@ -1,6 +1,8 @@
 // https://www.hackerrank.com/challenges/scalar-products
 
-#include "common/base.h"
+#include "common/stl_base.h"
+
+#include <unordered_set>
 
 int main_scalar_products()
 {

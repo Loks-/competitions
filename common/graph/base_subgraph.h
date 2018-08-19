@@ -1,14 +1,16 @@
 #pragma once
 
+#include "../base.h"
 #include "base_graph.h"
 #include "base_tree.h"
+#include <vector>
 
 class BaseSubgraph
 {
 protected:
 	template<class TBaseGraph>
-	static void UpdateRoot(const TBaseGraph& graph, unsigned new_nvertices, const vector<unsigned>& old_to_new, TBaseGraph& output) {}
-	static void UpdateRoot(const BaseTree& graph, unsigned new_nvertices, const vector<unsigned>& old_to_new, BaseTree& output)
+	static void UpdateRoot(const TBaseGraph& graph, unsigned new_nvertices, const std::vector<unsigned>& old_to_new, TBaseGraph& output) {}
+	static void UpdateRoot(const BaseTree& graph, unsigned new_nvertices, const std::vector<unsigned>& old_to_new, BaseTree& output)
 	{
 		unsigned root_new = old_to_new[graph.root];
 		output.root = (root_new >= new_nvertices) ? 0 : root_new;
@@ -16,7 +18,7 @@ protected:
 
 public:
 	template<class TBaseGraph>
-	static void CreateSubgraph(const TBaseGraph& graph, unsigned new_nvertices, const vector<unsigned>& old_to_new, TBaseGraph& output)
+	static void CreateSubgraph(const TBaseGraph& graph, unsigned new_nvertices, const std::vector<unsigned>& old_to_new, TBaseGraph& output)
 	{
 		assert(graph.nvertices == old_to_new.size());
 		output.Resize(new_nvertices);
@@ -44,11 +46,11 @@ public:
 	}
 
 	template<class TBaseGraph>
-	static void CreateSubgraph(const TBaseGraph& graph, const vector<bool>& keep, TBaseGraph& output)
+	static void CreateSubgraph(const TBaseGraph& graph, const std::vector<bool>& keep, TBaseGraph& output)
 	{
 		assert(graph.nvertices == keep.size());
 		unsigned new_nvertices = 0;
-		vector<unsigned> old_to_new(graph.nvertices, CNone);
+		std::vector<unsigned> old_to_new(graph.nvertices, CNone);
 		for (unsigned i = 0; i < graph.nvertices; ++i)
 		{
 			if (keep[i])

@@ -2,6 +2,7 @@
 
 #include "../modular_arithmetic.h"
 #include "../primes_list.h"
+#include <vector>
 
 namespace {
 
@@ -10,7 +11,7 @@ uint64_t FindSmallestPrimitive(uint64_t p, const PrimesList& pl)
 {
     if (p <= 3)
         return p - 1;
-    vector<pair<uint64_t, unsigned>> vp = pl.Factorize(p - 1);
+    std::vector<pair<uint64_t, unsigned>> vp = pl.Factorize(p - 1);
     for (uint64_t u = 2; u < p; ++u)
     {
         bool good = true;

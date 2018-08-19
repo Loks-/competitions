@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/most-distant
 
-#include "common/base.h"
+#include "common/stl_base.h"
 
 int main_most_distant()
 {

@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/constructing-a-number
 
-#include "common/base.h"
+#include "common/stl_base.h"
 
 int main_constructing_a_number()
 {

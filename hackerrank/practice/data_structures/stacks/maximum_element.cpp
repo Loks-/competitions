@@ -1,6 +1,8 @@
 // https://www.hackerrank.com/challenges/maximum-element
 
-#include "common/base.h"
+#include "common/stl_base.h"
+
+#include <stack>
 
 int main_maximum_element()
 {

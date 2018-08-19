@@ -2,11 +2,13 @@
 
 #include "common/base.h"
 
+#include <queue>
+
 int NumberOfNodes() { return 1; }
 int MyNodeId() { return 0; }
 
 namespace {
-	static queue<long long> qp, qs, qr;
+	static std::queue<long long> qp, qs, qr;
 }
 
 void PutChar(int target, char value)
