@@ -44,20 +44,20 @@ public:
 		return root;
 	}
 
-	static TNode* BuildTree(const vector<TNode*>& vnodes) { return BuildTreeI(vnodes, 0, unsigned(vnodes.size())); }
+	static TNode* BuildTree(const std::vector<TNode*>& vnodes) { return BuildTreeI(vnodes, 0, unsigned(vnodes.size())); }
 
-	TNode* Build(const std::vector<TData>& data, const vector<TKey>& keys)
+	TNode* Build(const std::vector<TData>& data, const std::vector<TKey>& keys)
 	{
 		assert(data.size() == keys.size());
 		assert(TNodesManager::AvailableNodes() >= data.size());
 		if (data.size() == 0) return 0;
 		std::vector<std::pair<TKey, TNode*>> vp(data.size());
 		for (unsigned i = 0; i < data.size(); ++i)
-			vp[i] = make_pair(keys[i], TNodesManager::GetNewNode(data[i], keys[i]));
+			vp[i] = std::make_pair(keys[i], TNodesManager::GetNewNode(data[i], keys[i]));
 		std::sort(vp.begin(), vp.end());
 		std::vector<TNode*> v(vp.size());
 		for (unsigned i = 0; i < vp.size(); ++i)
 			v[i] = vp[i].second;
-		return TMe::BuildTree(v);
+		return BuildTree(v);
 	}
 };

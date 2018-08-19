@@ -147,6 +147,7 @@
     <ClCompile Include="practice\data_structures\balanced_trees\median_updates_upt_scapegoat.cpp" />
     <ClCompile Include="practice\data_structures\balanced_trees\median_updates_upt_splay.cpp" />
     <ClCompile Include="practice\data_structures\balanced_trees\median_updates_upt_treap.cpp" />
+    <ClCompile Include="practice\data_structures\balanced_trees\median_updates_fixed.cpp" />
     <ClCompile Include="practice\data_structures\stacks\and_xor_or.cpp" />
     <ClCompile Include="practice\data_structures\stacks\balanced_brackets.cpp" />
     <ClCompile Include="practice\data_structures\stacks\equal_stacks.cpp" />

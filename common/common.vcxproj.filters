@@ -236,6 +236,9 @@
     <ClInclude Include="stl_base.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="binary_search_tree\utils\upper_bound.h">
+      <Filter>Header Files\binary_search_tree\utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\current_solution.inl">

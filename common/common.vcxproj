@@ -142,6 +142,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="base.h" />
+    <ClInclude Include="binary_search_tree\utils\upper_bound.h" />
     <ClInclude Include="stl.h" />
     <ClInclude Include="binary_search_tree\action\add.h" />
     <ClInclude Include="binary_search_tree\action\apply_action.h" />
