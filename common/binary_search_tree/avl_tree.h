@@ -36,6 +36,31 @@ public:
 	static int Height(TNode* node) { return node ? int(node->info.height) : 0; }
 	static int Balance(TNode* node) { return node ? Height(node->l) - Height(node->r) : 0; }
 
+protected:
+	template<bool apply_action_on_child>
+	static TNode* FixBalance(TNode* root)
+	{
+		if (Balance(root) == 2)
+		{
+			if (Balance(root->l) == -1)
+				BSTRotate<TNode, false, apply_action_on_child>(root->l->r, root->l, root);
+			TNode* child = root->l;
+			BSTRotate<TNode, true, apply_action_on_child>(child, root, 0);
+			return child;
+		}
+		else if (Balance(root) == -2)
+		{
+			if (Balance(root->r) == 1)
+				BSTRotate<TNode, false, apply_action_on_child>(root->r->l, root->r, root);
+			TNode* child = root->r;
+			BSTRotate<TNode, true, apply_action_on_child>(child, root, 0);
+			return child;
+		}
+		root->UpdateInfo();
+		return root;
+	}
+
+public:
 	static TNode* InsertByKey(TNode* root, TNode* node)
 	{
 		if (!root) return node;
@@ -44,23 +69,66 @@ public:
 			root->SetR(InsertByKey(root->r, node));
 		else
 			root->SetL(InsertByKey(root->l, node));
-		if (Balance(root) == 2)
+		return FixBalance<false>(root);
+	}
+
+protected:
+	static TNode* SwapAndRemove(TNode* root, TNode * node)
+	{
+		root->ApplyAction();
+		if (root->r)
 		{
-			if (Balance(root->l) == -1)
-				BSTRotate<TNode, false, false>(root->l->r, root->l, root);
+			root->SetR(SwapAndRemove(root->r, node));
+			return FixBalance<true>(root);
+		}
+		else
+		{
 			TNode* child = root->l;
-			BSTRotate<TNode, true, false>(child, root, 0);
+			root->SetL(node->l);
+			root->SetR(node->r);
+			node->l = root; // Save information about swapped node
 			return child;
 		}
-		else if (Balance(root) == -2)
+	}
+
+public:
+	static TNode* RemoveByKey(TNode* root, const TKey& key, TNode*& removed_node)
+	{
+		if (!root) return root;
+		root->ApplyAction();
+		if (root->key < key)
+			root->SetR(RemoveByKey(root->r, key, removed_node));
+		else if (root->key > key)
+			root->SetL(RemoveByKey(root->l, key, removed_node));
+		else
 		{
-			if (Balance(root->r) == 1)
-				BSTRotate<TNode, false, false>(root->r->l, root->r, root);
-			TNode* child = root->r;
-			BSTRotate<TNode, true, false>(child, root, 0);
-			return child;
+			removed_node = root;
+			if (root->l && root->r)
+			{
+				TNode * child = root->l;
+				child->ApplyAction();
+				if (child->r)
+				{
+					TNode* temp = SwapAndRemove(child, root);
+					child = root->l;
+					root->ResetLinksAndUpdateInfo();
+					child->SetL(temp);
+					return FixBalance<true>(child);
+				}
+				else
+				{
+					child->SetR(root->r);
+					root->ResetLinksAndUpdateInfo();
+					return FixBalance<true>(child);
+				}
+			}
+			else
+			{
+				TNode* child = root->l ? root->l : root->r;
+				root->ResetLinksAndUpdateInfo();
+				return child;
+			}
 		}
-		root->UpdateInfo();
-		return root;
+		return FixBalance<true>(root);
 	}
 };
