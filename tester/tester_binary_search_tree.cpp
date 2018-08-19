@@ -1,4 +1,5 @@
 #include "common/timer.h"
+#include "common/binary_search_tree/avl_tree.h"
 #include "common/binary_search_tree/red_black_tree.h"
 #include "common/binary_search_tree/scapegoat_tree.h"
 #include "common/binary_search_tree/splay_tree.h"
@@ -102,6 +103,8 @@ bool TesterBinarySearchTree::TestAllTrees()
 {
 	cout << "Testing base trees:" << endl;
 	current_job = "base";
+	TestAll<AVLTree<false, TKey, BSTInfoSize, BSTActionNone, TKey>>("avl_upf");
+	TestAll<AVLTree<true, TKey, BSTInfoSize, BSTActionNone, TKey>>("avl_upt");
 	TestAll<RedBlackTree<false, TKey, BSTInfoSize, BSTActionNone, TKey>>("rbtree_upf");
 	TestAll<RedBlackTree<true, TKey, BSTInfoSize, BSTActionNone, TKey>>("rbtree_upt");
 	TestAll<ScapegoatTree<false, TKey, BSTInfoSize, BSTActionNone, TKey>>("scape_upf");
@@ -111,6 +114,8 @@ bool TesterBinarySearchTree::TestAllTrees()
 	TestAll<Treap<true, true, TKey, BSTInfoSize, BSTActionNone, TKey>>("treap_upt");
 	cout << "Testing full trees:" << endl;
 	current_job = "full";
+	TestAll<AVLTree<false, TKey, BSTInfoSum<TKey, BSTInfoSize>, BSTActionAdd<TKey>, TKey>>("avl_upf");
+	TestAll<AVLTree<true, TKey, BSTInfoSum<TKey, BSTInfoSize>, BSTActionAdd<TKey>, TKey>>("avl_upt");
 	TestAll<RedBlackTree<false, TKey, BSTInfoSum<TKey, BSTInfoSize>, BSTActionAdd<TKey>, TKey>>("rbtree_upf");
 	TestAll<RedBlackTree<true, TKey, BSTInfoSum<TKey, BSTInfoSize>, BSTActionAdd<TKey>, TKey>>("rbtree_upt");
 	TestAll<ScapegoatTree<false, TKey, BSTInfoSum<TKey, BSTInfoSize>, BSTActionAdd<TKey>, TKey>>("scape_upf");

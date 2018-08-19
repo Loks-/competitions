@@ -236,12 +236,14 @@ protected:
 			TBSTKeysType ktype = TBSTKeysType(type);
 			root = TestBuild<TTree>(tree, ktype);
 			root = TestDeleteByNode(tree, root, ktype);
+			// tree.ReleaseTree(root); root = 0;
 			assert(!root);
 			root = TestInsert<TTree>(tree, ktype);
 			root = TestFindByOrder<TTree>(tree, root, ktype);
 			root = TestFindByKey0<TTree>(tree, root, ktype);
 			root = TestFindByKey1<TTree>(tree, root, ktype);
 			root = TestDeleteByKey<TTree>(tree, root, ktype);
+			// tree.ReleaseTree(root); root = 0;
 			assert(!root);
 			tree.ResetNodes();
 		}

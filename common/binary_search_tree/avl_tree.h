@@ -131,4 +131,48 @@ public:
 		}
 		return FixBalance<true>(root);
 	}
+
+	static TNode* RemoveByNode(TNode* node)
+	{
+		static_assert(use_parent, "use_parent should be true");
+		assert(node);
+		ApplyActionRootToNode(node);
+
+		TNode* parent = node->p, *child;
+		if (node->l && node->r)
+		{
+			child = node->l;
+			child->ApplyAction();
+			if (child->r)
+			{
+				TNode* temp = SwapAndRemove(child, node);
+				child = node->l;
+				child->SetL(temp);
+				child = FixBalance<true>(child);
+			}
+			else
+			{
+				child->SetR(node->r);
+				node->ResetLinksAndUpdateInfo();
+				child = FixBalance<true>(child);
+			}
+		}
+		else
+			child = node->l ? node->l : node->r;
+		node->ResetLinksAndUpdateInfo();
+
+		for (; parent; )
+		{
+			if (parent->l == node)
+				parent->SetL(child);
+			else
+				parent->SetR(child);
+			node = parent;
+			parent = node->p;
+			child = FixBalance<true>(node);
+		}
+		if (child)
+			child->SetParentLink(0);
+		return child;
+	}
 };
