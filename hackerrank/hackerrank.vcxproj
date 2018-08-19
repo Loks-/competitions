@@ -151,6 +151,7 @@
     <ClCompile Include="practice\data_structures\stacks\and_xor_or.cpp" />
     <ClCompile Include="practice\data_structures\stacks\balanced_brackets.cpp" />
     <ClCompile Include="practice\data_structures\stacks\equal_stacks.cpp" />
+    <ClCompile Include="practice\data_structures\stacks\game_of_two_stacks.cpp" />
     <ClCompile Include="practice\data_structures\stacks\largest_rectangle.cpp" />
     <ClCompile Include="practice\data_structures\stacks\maximum_element.cpp" />
     <ClCompile Include="practice\data_structures\trees\balanced_forest.cpp" />
