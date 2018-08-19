@@ -145,6 +145,7 @@
     <ClInclude Include="binary_search_tree\action\add.h" />
     <ClInclude Include="binary_search_tree\action\apply_action.h" />
     <ClInclude Include="binary_search_tree\action\none.h" />
+    <ClInclude Include="binary_search_tree\avl_tree.h" />
     <ClInclude Include="binary_search_tree\base\find_by_key.h" />
     <ClInclude Include="binary_search_tree\base\find_by_order.h" />
     <ClInclude Include="binary_search_tree\base\insert_by_key.h" />

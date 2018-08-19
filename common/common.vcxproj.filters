@@ -224,6 +224,9 @@
     <ClInclude Include="binary_search_tree\base\swap_proxy.h">
       <Filter>Header Files\binary_search_tree\base</Filter>
     </ClInclude>
+    <ClInclude Include="binary_search_tree\avl_tree.h">
+      <Filter>Header Files\binary_search_tree</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\current_solution.inl">
