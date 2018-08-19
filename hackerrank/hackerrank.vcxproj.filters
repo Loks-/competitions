@@ -282,6 +282,9 @@
     <ClCompile Include="practice\data_structures\stacks\waiter.cpp">
       <Filter>Source Files\practice\data_structures\stacks</Filter>
     </ClCompile>
+    <ClCompile Include="practice\data_structures\stacks\poisonous_plants.cpp">
+      <Filter>Source Files\practice\data_structures\stacks</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="input.txt">

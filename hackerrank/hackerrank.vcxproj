@@ -154,6 +154,7 @@
     <ClCompile Include="practice\data_structures\stacks\game_of_two_stacks.cpp" />
     <ClCompile Include="practice\data_structures\stacks\largest_rectangle.cpp" />
     <ClCompile Include="practice\data_structures\stacks\maximum_element.cpp" />
+    <ClCompile Include="practice\data_structures\stacks\poisonous_plants.cpp" />
     <ClCompile Include="practice\data_structures\stacks\simple_text_editor.cpp" />
     <ClCompile Include="practice\data_structures\stacks\waiter.cpp" />
     <ClCompile Include="practice\data_structures\trees\balanced_forest.cpp" />
