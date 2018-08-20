@@ -291,6 +291,9 @@
     <ClCompile Include="practice\data_structures\queues\down_to_zero_ii.cpp">
       <Filter>Source Files\practice\data_structures\queues</Filter>
     </ClCompile>
+    <ClCompile Include="practice\data_structures\queues\queue_using_two_stacks.cpp">
+      <Filter>Source Files\practice\data_structures\queues</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="input.txt">
