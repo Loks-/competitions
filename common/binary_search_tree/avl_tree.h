@@ -4,6 +4,7 @@
 #include "node.h"
 #include "tree.h"
 #include "action/none.h"
+#include "action/apply_action.h"
 #include "base/rotate.h"
 #include "info/height.h"
 #include "info/size.h"

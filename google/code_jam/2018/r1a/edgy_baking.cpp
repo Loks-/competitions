@@ -1,5 +1,7 @@
 #include "common/stl_base.h"
 
+#include <cmath>
+
 namespace {
 	using pud = pair<unsigned, double>;
 

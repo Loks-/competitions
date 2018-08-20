@@ -3,6 +3,7 @@
 #include "../base.h"
 #include "base_tree.h"
 #include "../hash.h"
+#include <algorithm>
 #include <functional>
 #include <stack>
 #include <vector>

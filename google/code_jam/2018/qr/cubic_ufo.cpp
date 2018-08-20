@@ -1,5 +1,7 @@
 #include "common/stl_base.h"
 
+#include <cmath>
+
 namespace {
 	static double pi4 = atan(1.0);
 	static double pi2 = 2.0 * pi4;

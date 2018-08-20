@@ -1,5 +1,6 @@
 #pragma once
 
+#include <algorithm>
 #include <array>
 
 template<class TTValue, unsigned _rows, unsigned _columns>
@@ -34,7 +35,7 @@ public:
 
 	void SetDiagonal(const TValue& v)
 	{
-		const unsigned size = min(rows, columns);
+		const unsigned size = std::min(rows, columns);
 		for (unsigned i = 0; i < size; ++i) data[i * (columns + 1)] = v;
 	}
 

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "base.h"
+#include <functional>
 #include <utility>
 
 namespace std {

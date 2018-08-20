@@ -2,6 +2,8 @@
 
 #include "common/stl_base.h"
 
+#include <cmath>
+
 int main_sherlock_and_moving_tiles()
 {
 	int64_t l, s1, s2, ds, Q, q;

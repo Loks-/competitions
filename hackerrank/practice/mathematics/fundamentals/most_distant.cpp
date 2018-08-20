@@ -2,6 +2,8 @@
 
 #include "common/stl_base.h"
 
+#include <cmath>
+
 int main_most_distant()
 {
 	unsigned N;
