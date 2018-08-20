@@ -150,6 +150,7 @@
     <ClCompile Include="practice\data_structures\balanced_trees\median_updates_fixed.cpp" />
     <ClCompile Include="practice\data_structures\queues\down_to_zero_ii.cpp" />
     <ClCompile Include="practice\data_structures\queues\queue_using_two_stacks.cpp" />
+    <ClCompile Include="practice\data_structures\queues\truck_tour.cpp" />
     <ClCompile Include="practice\data_structures\stacks\and_xor_or.cpp" />
     <ClCompile Include="practice\data_structures\stacks\balanced_brackets.cpp" />
     <ClCompile Include="practice\data_structures\stacks\equal_stacks.cpp" />
