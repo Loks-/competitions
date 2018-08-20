@@ -147,7 +147,7 @@
     <ClCompile Include="practice\data_structures\balanced_trees\median_updates_upt_scapegoat.cpp" />
     <ClCompile Include="practice\data_structures\balanced_trees\median_updates_upt_splay.cpp" />
     <ClCompile Include="practice\data_structures\balanced_trees\median_updates_upt_treap.cpp" />
-    <ClCompile Include="practice\data_structures\balanced_trees\median_updates_fixed.cpp" />
+    <ClCompile Include="practice\data_structures\balanced_trees\median_updates_fixed_tree.cpp" />
     <ClCompile Include="practice\data_structures\heap\qheap1.cpp" />
     <ClCompile Include="practice\data_structures\queues\castle_on_the_grid.cpp" />
     <ClCompile Include="practice\data_structures\queues\down_to_zero_ii.cpp" />

@@ -276,9 +276,6 @@
     <ClCompile Include="practice\data_structures\balanced_trees\median_updates_upf_red_black.cpp">
       <Filter>Source Files\practice\data_structures\balanced_trees</Filter>
     </ClCompile>
-    <ClCompile Include="practice\data_structures\balanced_trees\median_updates_fixed.cpp">
-      <Filter>Source Files\practice\data_structures\balanced_trees</Filter>
-    </ClCompile>
     <ClCompile Include="practice\data_structures\stacks\game_of_two_stacks.cpp">
       <Filter>Source Files\practice\data_structures\stacks</Filter>
     </ClCompile>
@@ -308,6 +305,9 @@
     </ClCompile>
     <ClCompile Include="practice\data_structures\heap\qheap1.cpp">
       <Filter>Source Files\practice\data_structures\heap</Filter>
+    </ClCompile>
+    <ClCompile Include="practice\data_structures\balanced_trees\median_updates_fixed_tree.cpp">
+      <Filter>Source Files\practice\data_structures\balanced_trees</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
