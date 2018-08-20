@@ -1,6 +1,7 @@
 // https://www.hackerrank.com/challenges/median
 
 #include "common/binary_search_tree/treap.h"
+#include "common/binary_search_tree/utils/median.h"
 #include "common/stl_base.h"
 
 using TTree = Treap<true, true, TEmpty>;
@@ -38,7 +39,7 @@ int main_median_updates_upt_treap()
 		else
 		{
 			unsigned size = root->info.size;
-			int64_t s = (TTree::FindByOrder(root, (size - 1) / 2)->key + TTree::FindByOrder(root, size / 2)->key) / 2;
+			int64_t s = BSTMedian<TNode, int64_t>(root);
 			if (s & 1)
 				printf("%.1lf\n", s / 2.0);
 			else
