@@ -300,6 +300,9 @@
     <ClCompile Include="practice\data_structures\queues\queries_with_fixed_length.cpp">
       <Filter>Source Files\practice\data_structures\queues</Filter>
     </ClCompile>
+    <ClCompile Include="practice\data_structures\queues\castle_on_the_grid.cpp">
+      <Filter>Source Files\practice\data_structures\queues</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="input.txt">
