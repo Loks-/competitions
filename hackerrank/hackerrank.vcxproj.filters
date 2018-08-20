@@ -40,6 +40,9 @@
     <Filter Include="Source Files\practice\mathematics\number_theory">
       <UniqueIdentifier>{2f37ba91-b2b0-44e5-a46a-f5a91ede7516}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\practice\data_structures\queues">
+      <UniqueIdentifier>{1ca26c2d-f711-4449-a920-67de64af6cc4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="practice\mathematics\fundamentals\find_the_point.cpp">
@@ -284,6 +287,9 @@
     </ClCompile>
     <ClCompile Include="practice\data_structures\stacks\poisonous_plants.cpp">
       <Filter>Source Files\practice\data_structures\stacks</Filter>
+    </ClCompile>
+    <ClCompile Include="practice\data_structures\queues\down_to_zero_ii.cpp">
+      <Filter>Source Files\practice\data_structures\queues</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
