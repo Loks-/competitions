@@ -43,6 +43,9 @@
     <Filter Include="Source Files\practice\data_structures\queues">
       <UniqueIdentifier>{1ca26c2d-f711-4449-a920-67de64af6cc4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\practice\data_structures\heap">
+      <UniqueIdentifier>{ec089422-9f07-4413-9694-c2e0196fec2f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="practice\mathematics\fundamentals\find_the_point.cpp">
@@ -302,6 +305,9 @@
     </ClCompile>
     <ClCompile Include="practice\data_structures\queues\castle_on_the_grid.cpp">
       <Filter>Source Files\practice\data_structures\queues</Filter>
+    </ClCompile>
+    <ClCompile Include="practice\data_structures\heap\qheap1.cpp">
+      <Filter>Source Files\practice\data_structures\heap</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
