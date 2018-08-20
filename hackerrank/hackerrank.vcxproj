@@ -149,6 +149,7 @@
     <ClCompile Include="practice\data_structures\balanced_trees\median_updates_upt_treap.cpp" />
     <ClCompile Include="practice\data_structures\balanced_trees\median_updates_fixed.cpp" />
     <ClCompile Include="practice\data_structures\queues\down_to_zero_ii.cpp" />
+    <ClCompile Include="practice\data_structures\queues\queries_with_fixed_length.cpp" />
     <ClCompile Include="practice\data_structures\queues\queue_using_two_stacks.cpp" />
     <ClCompile Include="practice\data_structures\queues\truck_tour.cpp" />
     <ClCompile Include="practice\data_structures\stacks\and_xor_or.cpp" />
