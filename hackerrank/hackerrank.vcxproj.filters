@@ -46,6 +46,9 @@
     <Filter Include="Source Files\practice\data_structures\heap">
       <UniqueIdentifier>{ec089422-9f07-4413-9694-c2e0196fec2f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\practice\data_structures\disjoint_set">
+      <UniqueIdentifier>{ff66ceb9-7419-49ec-a2ee-9c2589888e16}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="practice\mathematics\fundamentals\find_the_point.cpp">
@@ -311,6 +314,15 @@
     </ClCompile>
     <ClCompile Include="practice\data_structures\heap\find_the_running_median.cpp">
       <Filter>Source Files\practice\data_structures\heap</Filter>
+    </ClCompile>
+    <ClCompile Include="practice\data_structures\heap\jesse_and_cookies.cpp">
+      <Filter>Source Files\practice\data_structures\heap</Filter>
+    </ClCompile>
+    <ClCompile Include="practice\data_structures\heap\minimum_average_waiting_time.cpp">
+      <Filter>Source Files\practice\data_structures\heap</Filter>
+    </ClCompile>
+    <ClCompile Include="practice\data_structures\disjoint_set\merging_communities.cpp">
+      <Filter>Source Files\practice\data_structures\disjoint_set</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
