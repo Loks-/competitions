@@ -5,12 +5,12 @@
 
 int main_merging_communities()
 {
-	int N, Q;
+	unsigned N, Q;
 	cin >> N >> Q;
 	DisjointSet ds(N);
 	for (; Q; --Q)
 	{
-		char c; int i, j;
+		char c; unsigned i, j;
 		cin >> c;
 		if (c == 'Q')
 		{
