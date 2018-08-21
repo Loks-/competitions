@@ -330,6 +330,9 @@
     <ClCompile Include="practice\data_structures\disjoint_set\kundu_and_tree.cpp">
       <Filter>Source Files\practice\data_structures\disjoint_set</Filter>
     </ClCompile>
+    <ClCompile Include="practice\data_structures\disjoint_set\super_maximum_cost_queries.cpp">
+      <Filter>Source Files\practice\data_structures\disjoint_set</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="input.txt">

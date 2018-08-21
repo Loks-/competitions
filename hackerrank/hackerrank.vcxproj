@@ -151,6 +151,7 @@
     <ClCompile Include="practice\data_structures\disjoint_set\components_in_a_graph.cpp" />
     <ClCompile Include="practice\data_structures\disjoint_set\kundu_and_tree.cpp" />
     <ClCompile Include="practice\data_structures\disjoint_set\merging_communities.cpp" />
+    <ClCompile Include="practice\data_structures\disjoint_set\super_maximum_cost_queries.cpp" />
     <ClCompile Include="practice\data_structures\heap\find_the_running_median.cpp" />
     <ClCompile Include="practice\data_structures\heap\jesse_and_cookies.cpp" />
     <ClCompile Include="practice\data_structures\heap\minimum_average_waiting_time.cpp" />
