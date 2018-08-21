@@ -59,6 +59,17 @@ public:
         return vsize[Find(x)];
     }
 
+	std::vector<unsigned> GetRepresentatives() const
+	{
+		std::vector<unsigned> output;
+		for (unsigned i = 0; i < n; ++i)
+		{
+			if (p[i] == i)
+				output.push_back(i);
+		}
+		return output;
+	}
+
 protected:
     void UnionI(unsigned i1, unsigned i2)
     {

@@ -327,6 +327,9 @@
     <ClCompile Include="practice\data_structures\disjoint_set\components_in_a_graph.cpp">
       <Filter>Source Files\practice\data_structures\disjoint_set</Filter>
     </ClCompile>
+    <ClCompile Include="practice\data_structures\disjoint_set\kundu_and_tree.cpp">
+      <Filter>Source Files\practice\data_structures\disjoint_set</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="input.txt">
