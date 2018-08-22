@@ -348,6 +348,9 @@
     <ClCompile Include="practice\data_structures\advanced\kindergarten_adventures_bit.cpp">
       <Filter>Source Files\practice\data_structures\advanced</Filter>
     </ClCompile>
+    <ClCompile Include="practice\data_structures\advanced\kindergarten_adventures_linear.cpp">
+      <Filter>Source Files\practice\data_structures\advanced</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="input.txt">

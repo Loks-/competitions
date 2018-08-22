@@ -133,6 +133,7 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="practice\data_structures\advanced\kindergarten_adventures_bit.cpp" />
+    <ClCompile Include="practice\data_structures\advanced\kindergarten_adventures_linear.cpp" />
     <ClCompile Include="practice\data_structures\arrays\2d_arrays_ds.cpp" />
     <ClCompile Include="practice\data_structures\arrays\arrays_ds.cpp" />
     <ClCompile Include="practice\data_structures\arrays\array_manipulation.cpp" />
