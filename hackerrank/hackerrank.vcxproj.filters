@@ -49,6 +49,9 @@
     <Filter Include="Source Files\practice\data_structures\disjoint_set">
       <UniqueIdentifier>{ff66ceb9-7419-49ec-a2ee-9c2589888e16}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\practice\data_structures\trie">
+      <UniqueIdentifier>{371eb847-000b-4848-918e-840a84b52f8a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="practice\mathematics\fundamentals\find_the_point.cpp">
@@ -332,6 +335,12 @@
     </ClCompile>
     <ClCompile Include="practice\data_structures\disjoint_set\super_maximum_cost_queries.cpp">
       <Filter>Source Files\practice\data_structures\disjoint_set</Filter>
+    </ClCompile>
+    <ClCompile Include="practice\data_structures\trie\contacts.cpp">
+      <Filter>Source Files\practice\data_structures\trie</Filter>
+    </ClCompile>
+    <ClCompile Include="practice\data_structures\trie\no_prefix_set.cpp">
+      <Filter>Source Files\practice\data_structures\trie</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
