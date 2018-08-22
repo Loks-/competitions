@@ -43,6 +43,9 @@
     <Filter Include="Header Files\binary_search_tree\base">
       <UniqueIdentifier>{2af93424-d379-490a-9ac3-f3f4e727bc41}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\binary_indexed_tree">
+      <UniqueIdentifier>{cba278a0-e241-4960-9ea0-b1dc68a2abd4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="include_headers.cpp">
@@ -241,6 +244,9 @@
     </ClInclude>
     <ClInclude Include="binary_search_tree\utils\median.h">
       <Filter>Header Files\binary_search_tree\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="binary_indexed_tree\bit.h">
+      <Filter>Header Files\binary_indexed_tree</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

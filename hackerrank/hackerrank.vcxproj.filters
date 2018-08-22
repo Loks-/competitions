@@ -52,6 +52,9 @@
     <Filter Include="Source Files\practice\data_structures\trie">
       <UniqueIdentifier>{371eb847-000b-4848-918e-840a84b52f8a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\practice\data_structures\advanced">
+      <UniqueIdentifier>{371d2005-9ed4-439b-a829-816b6d421b0a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="practice\mathematics\fundamentals\find_the_point.cpp">
@@ -341,6 +344,9 @@
     </ClCompile>
     <ClCompile Include="practice\data_structures\trie\no_prefix_set.cpp">
       <Filter>Source Files\practice\data_structures\trie</Filter>
+    </ClCompile>
+    <ClCompile Include="practice\data_structures\advanced\kindergarten_adventures_bit.cpp">
+      <Filter>Source Files\practice\data_structures\advanced</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
