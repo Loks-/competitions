@@ -143,6 +143,7 @@
   <ItemGroup>
     <ClInclude Include="base.h" />
     <ClInclude Include="binary_indexed_tree\bit.h" />
+    <ClInclude Include="binary_indexed_tree\bit_3d.h" />
     <ClInclude Include="binary_search_tree\utils\median.h" />
     <ClInclude Include="binary_search_tree\utils\upper_bound.h" />
     <ClInclude Include="stl.h" />

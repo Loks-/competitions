@@ -19,7 +19,7 @@ public:
 	{
 		size = new_size;
 		values.resize(size);
-		fill(values.begin(), values.end(), TValue(0));
+		std::fill(values.begin(), values.end(), TValue(0));
 	}
 
 	void Add(unsigned index, TValue value = TValue(1))

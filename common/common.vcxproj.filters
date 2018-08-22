@@ -248,6 +248,9 @@
     <ClInclude Include="binary_indexed_tree\bit.h">
       <Filter>Header Files\binary_indexed_tree</Filter>
     </ClInclude>
+    <ClInclude Include="binary_indexed_tree\bit_3d.h">
+      <Filter>Header Files\binary_indexed_tree</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\current_solution.inl">
