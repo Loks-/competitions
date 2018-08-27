@@ -17,9 +17,9 @@ int main_ant_stack()
         best_weights[0] = 0;
         for (uint64_t w : weights)
         {
-            unsigned j0 = upper_bound(best_weights.begin(), best_weights.end(), w) - best_weights.begin();
-            unsigned j1 = upper_bound(best_weights.begin(), best_weights.end(), 6 * w) - best_weights.begin();
-            for (unsigned j = j1; j >= j0; --j)
+            size_t j0 = upper_bound(best_weights.begin(), best_weights.end(), w) - best_weights.begin();
+            size_t j1 = upper_bound(best_weights.begin(), best_weights.end(), 6 * w) - best_weights.begin();
+            for (size_t j = j1; j >= j0; --j)
             {
                 best_weights[j] = min(best_weights[j], best_weights[j-1] + w);
             }
