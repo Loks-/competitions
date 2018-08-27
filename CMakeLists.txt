@@ -18,3 +18,4 @@ file( GLOB_RECURSE TESTER_SOURCES RELATIVE "${PROJECT_SOURCE_DIR}" "${PROJECT_SO
 add_executable( tester ${TESTER_SOURCES} )
 
 add_executable( include_headers ${PROJECT_SOURCE_DIR}/utils/include_headers.cpp )
+add_executable( current_solution ${PROJECT_SOURCE_DIR}/utils/current_solution.cpp )

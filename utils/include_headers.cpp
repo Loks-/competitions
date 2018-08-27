@@ -113,7 +113,7 @@ int main(int nargs, char **pargs)
 	else
 		input_filename = pargs[1];
 	if (nargs <= 2)
-		output_filename = "current_solution.inl";
+		output_filename = "utils/current_solution.cpp";
 	else
 		output_filename = pargs[2];
 	std::ofstream output(output_filename);
