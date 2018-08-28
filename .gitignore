@@ -5,6 +5,9 @@ release/
 # VS Code
 .vscode/tasks.json
 
+# VS
+.vs/
+
 # Project specific files
 /hackerrank/input.txt
 /utils/current_solution.cpp
