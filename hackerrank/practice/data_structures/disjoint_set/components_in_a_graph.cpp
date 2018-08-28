@@ -3,7 +3,7 @@
 #include "common/disjoint_set.h"
 #include "common/stl_base.h"
 
-int main_components_in_a_graphs()
+int main_components_in_a_graph()
 {
 	unsigned N, i, j;
 	cin >> N;

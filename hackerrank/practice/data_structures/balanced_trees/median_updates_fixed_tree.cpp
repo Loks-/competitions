@@ -13,7 +13,7 @@
 using TTree = FixedTree<true, unsigned, BSTInfoSum<unsigned, BSTInfoSize>>;
 using TNode = TTree::TNode;
 
-int main_median_updates_fixed()
+int main_median_updates_fixed_tree()
 {
 	unsigned N;
 	cin >> N;

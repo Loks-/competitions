@@ -1,6 +1,6 @@
 #include "common/stl_full.h"
 
-int main()
+int main_base()
 {
 	cout << "Hello from hackerrank main." << endl;
 	unsigned T;

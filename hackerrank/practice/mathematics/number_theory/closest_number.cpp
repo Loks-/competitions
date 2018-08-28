@@ -3,7 +3,7 @@
 #include "common/numeric/utils/pow.h"
 #include "common/stl_base.h"
 
-int main_closets_number()
+int main_closest_number()
 {
 	unsigned T;
 	cin >> T;
