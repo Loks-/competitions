@@ -12,6 +12,7 @@ file( GLOB_RECURSE GOOGLE_CODE_JAM_SOURCES RELATIVE "${PROJECT_SOURCE_DIR}" "${P
 add_executable( google_code_jam ${GOOGLE_CODE_JAM_SOURCES} )
 
 file( GLOB_RECURSE HACKERRANK_SOURCES RELATIVE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/hackerrank/*.cpp" )
+list( SORT HACKERRANK_SOURCES )
 set( HACKERRANK_PROXY_H "${PROJECT_SOURCE_DIR}/hackerrank/proxy_gen.h" )
 set( HACKERRANK_PROXY_CXX "${PROJECT_SOURCE_DIR}/hackerrank/proxy_gen.cxx" )
 file ( WRITE ${HACKERRANK_PROXY_H} "#pragma once\n" )
