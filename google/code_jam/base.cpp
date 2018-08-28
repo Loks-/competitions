@@ -1,6 +1,6 @@
 #include "common/stl_full.h"
 
-int main()
+int main_base()
 {
 	cout << "Hello from code jam main." << endl;
 	unsigned T;
