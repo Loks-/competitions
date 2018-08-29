@@ -7,7 +7,7 @@ int main_cubic_ufo();
 int main_go_gopher();
 int main_saving_the_universe_again();
 int main_trouble_sort();
-int main_big_party();
+int main_bit_party();
 int main_edgy_baking();
 int main_waffle_choppers();
 int main_mysterious_road_signs();
