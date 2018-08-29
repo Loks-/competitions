@@ -1,6 +1,7 @@
 #include "common/stl_base.h"
 
 #include <cmath>
+#include <iomanip>
 
 namespace {
 	static double pi4 = atan(1.0);
@@ -21,17 +22,21 @@ namespace {
 		cout << "Case #" << test_index << ":" << endl;
 		double v1 = 0.5 * sin(a);
 		double y1 = 0.5 * cos(a);
-		printf("%.16lf %.16lf %.16lf\n", v1 / sq2, y1, v1 / sq2);
+		cout << v1 / sq2 << " " << y1 << " " << v1 / sq2 << endl;
+		//printf("%.16lf %.16lf %.16lf\n", v1 / sq2, y1, v1 / sq2);
 		double u = sq2 / 4.0;
 		double y2 = u * sin(a);
 		double v2 = -u * cos(a);
-		printf("%.16lf %.16lf %.16lf\n", (v2 + u) / sq2, y2, (v2 - u) / sq2);
-		printf("%.16lf %.16lf %.16lf\n", (v2 - u) / sq2, y2, (v2 + u) / sq2);
+		cout << (v2 + u) / sq2 << " " << y2 << " " << (v2 - u) / sq2 << endl;
+		cout << (v2 - u) / sq2 << " " << y2 << " " << (v2 + u) / sq2 << endl;
+		//printf("%.16lf %.16lf %.16lf\n", (v2 + u) / sq2, y2, (v2 - u) / sq2);
+		//printf("%.16lf %.16lf %.16lf\n", (v2 - u) / sq2, y2, (v2 + u) / sq2);
 	}
 }
 
 int main_cubic_ufo()
 {
+	cout << setprecision(16) << fixed;
 	unsigned T;
 	cin >> T;
 	for (unsigned it = 0; it < T; ++it)

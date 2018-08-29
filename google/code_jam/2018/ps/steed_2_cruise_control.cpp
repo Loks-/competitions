@@ -4,9 +4,9 @@
 
 int main_steed_2_cruise_control()
 {
+	cout << setprecision(6) << fixed;
 	unsigned T;
 	cin >> T;
-	cout << setprecision(6) << fixed;
 	for (unsigned it = 1; it <= T; ++it)
 	{
 		unsigned D, N;
