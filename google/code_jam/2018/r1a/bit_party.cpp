@@ -1,6 +1,6 @@
 #include "common/stl_base.h"
 
-int main_big_party()
+int main_bit_party()
 {
 	unsigned T;
 	cin >> T;
