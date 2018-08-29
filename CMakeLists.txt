@@ -63,3 +63,6 @@ add_executable( tester ${TESTER_SOURCES} )
 
 add_executable( include_headers ${PROJECT_SOURCE_DIR}/utils/include_headers.cpp )
 add_executable( current_solution ${PROJECT_SOURCE_DIR}/utils/current_solution.cpp )
+
+enable_testing()
+add_test( NAME temptest COMMAND $<TARGET_FILE:google_code_jam> steed_2_cruise_control ${PROJECT_SOURCE_DIR}/tests/google/code_jam/2018/ps/steed_2_cruise_control.in ${PROJECT_SOURCE_DIR}/tests/google/code_jam/2018/ps/steed_2_cruise_control.out )
