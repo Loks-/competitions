@@ -19,14 +19,9 @@ int main_bathroom_stalls()
 			l = it->first;
 			k = it->second;
 			if (k >= K)
-			{
 				break;
-			}
-			else
-			{
-				K -= k;
-				m.erase(l);
-			}
+			K -= k;
+			m.erase(l);
 			m[l / 2] += k;
 			m[(l - 1) / 2] += k;
 		}

@@ -26,9 +26,7 @@ namespace {
 				current = pnew;
 			}
 			else
-			{
 				current.second = max(current.second, pnew.second);
-			}
 		}
 
 		bool Add(const pud& p)
@@ -36,22 +34,16 @@ namespace {
 			vector<pud> vt;
 			vt.reserve(v.size());
 			for (const pud& pv : v)
-			{
 				vt.push_back(make_pair(pv.first + p.first, pv.second + p.second));
-			}
 			vt2.resize(0);
 			pud cur = v[0];
 			unsigned i = 1, j = 0;
 			for (; (v[i].first <= P) || (vt[j].first <= P);)
 			{
 				if (v[i].first <= vt[j].first)
-				{
-					AddI(v[i], cur); ++i;
-				}
+					AddI(v[i++], cur);
 				else
-				{
-					AddI(vt[j], cur); ++j;
-				}
+					AddI(vt[j++], cur);
 			}
 			vt2.push_back(cur);
 			if (cur.second >= P)

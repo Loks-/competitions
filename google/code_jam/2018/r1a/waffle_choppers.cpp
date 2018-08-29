@@ -79,9 +79,7 @@ int main_waffle_choppers()
 						for (unsigned i1 = vRs[i]; i1 < vRs[i + 1]; ++i1)
 						{
 							for (unsigned j1 = vCs[j]; j1 < vCs[j + 1]; ++j1)
-							{
 								sf += v[i1][j1];
-							}
 						}
 						if (sf != tb)
 						{
