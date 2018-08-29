@@ -1,6 +1,7 @@
 #include "common/stl_base.h"
 
 #include <cmath>
+#include <iomanip>
 
 namespace {
 	using pud = pair<unsigned, double>;
@@ -64,6 +65,7 @@ namespace {
 
 int main_edgy_baking()
 {
+	cout << setprecision(6) << fixed;
 	unsigned T;
 	cin >> T;
 	for (unsigned it = 1; it <= T; ++it)
@@ -89,13 +91,11 @@ int main_edgy_baking()
 				break;
 		}
 		if (iset.found)
-			cout << "Case #" << it << ": " << P << endl;
+			cout << "Case #" << it << ": " << double(P) << endl;
 		else
 		{
-			cout << "Case #" << it << ": ";
 			iset.v.pop_back();
-			printf("%.12lf", P0 + iset.v.back().second);
-			cout << endl;
+			cout << "Case #" << it << ": " << P0 + iset.v.back().second << endl;
 		}
 	}
 	return 0;
