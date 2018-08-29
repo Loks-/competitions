@@ -23,8 +23,8 @@ file ( WRITE ${GOOGLE_CODE_JAM_PROXY_CXX}
 	"{\n"
     "\tif (false) return -1;\n" )
 foreach( problemsourcefile ${GOOGLE_CODE_JAM_SOURCES} )
-    string( REPLACE ".cpp" "" problemname ${problemsourcefile} )
-    get_filename_component( problembasename ${problemname} NAME )
+    string( REPLACE ".cpp" "" problemfullname ${problemsourcefile} )
+    get_filename_component( problembasename ${problemfullname} NAME )
     if ( NOT ${problembasename} MATCHES "main")
         file ( APPEND ${GOOGLE_CODE_JAM_PROXY_H}
 			"int main_${problembasename}();\n" )
@@ -53,8 +53,8 @@ file ( WRITE ${HACKERRANK_PROXY_CXX}
 	"{\n"
     "\tif (false) return -1;\n" )
 foreach( problemsourcefile ${HACKERRANK_SOURCES} )
-    string( REPLACE ".cpp" "" problemname ${problemsourcefile} )
-    get_filename_component( problembasename ${problemname} NAME )
+    string( REPLACE ".cpp" "" problemfullname ${problemsourcefile} )
+    get_filename_component( problembasename ${problemfullname} NAME )
     if ( NOT ${problembasename} MATCHES "main")
         file ( APPEND ${HACKERRANK_PROXY_H}
 			"int main_${problembasename}();\n" )
@@ -75,4 +75,12 @@ add_executable( include_headers "${PROJECT_SOURCE_DIR}/utils/include_headers.cpp
 add_executable( current_solution "${PROJECT_SOURCE_DIR}/utils/current_solution.cpp" )
 
 enable_testing()
-add_test( NAME temptest COMMAND $<TARGET_FILE:google_code_jam> steed_2_cruise_control ${PROJECT_SOURCE_DIR}/tests/google/code_jam/2018/ps/steed_2_cruise_control.in ${PROJECT_SOURCE_DIR}/tests/google/code_jam/2018/ps/steed_2_cruise_control.out )
+
+file( GLOB_RECURSE GOOGLE_CODE_JAM_TESTS RELATIVE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/tests/google/code_jam/*.in" )
+list( SORT GOOGLE_CODE_JAM_TESTS )
+foreach( testfile_in ${GOOGLE_CODE_JAM_TESTS} )
+    string( REPLACE ".in" "" problemfullname ${testfile_in} )
+    string( REPLACE ".in" ".out" testfile_out ${testfile_in} )
+    get_filename_component( problembasename ${problemfullname} NAME )
+	add_test( NAME ${problembasename} COMMAND $<TARGET_FILE:google_code_jam> ${problembasename} ${testfile_in} ${testfile_out} WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} )
+endforeach( problemsourcefile ${GOOGLE_CODE_JAM_SOURCES} )
