@@ -1,6 +1,7 @@
 # CMake and build files
 debug/
 release/
+Testing/
 
 # VS Code
 .vscode/tasks.json
