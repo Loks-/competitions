@@ -23,7 +23,6 @@ int main_senate_evacuation()
 		{
 			auto p = pq.top(); pq.pop();
 			printf("%c ", p.second + 'A');
-			// cout << (p.second + 'A') << " ";
 			p.first -= 1;
 			if (p.first > 0)
 				pq.push(p);
@@ -34,7 +33,6 @@ int main_senate_evacuation()
 			{
 				auto p = pq.top(); pq.pop();
 				printf("%c", p.second + 'A');
-				// cout << (p.second + 'A');
 				p.first -= 1;
 				if (p.first > 0)
 					pq.push(p);

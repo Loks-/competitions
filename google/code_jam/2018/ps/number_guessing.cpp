@@ -22,8 +22,6 @@ int main_number_guessing()
 				A = q;
 			else if (s == "TOO_BIG")
 				B = q - 1;
-			else
-				assert(false);
 		}
 	}
 	return 0;
