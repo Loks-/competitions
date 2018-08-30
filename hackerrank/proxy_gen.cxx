@@ -14,7 +14,7 @@ int proxy(const std::string& s)
 	else if (s == "arrays_ds") return main_arrays_ds();
 	else if (s == "dynamic_array") return main_dynamic_array();
 	else if (s == "left_rotation") return main_left_rotation();
-	else if (s == "sparce_arrays") return main_sparce_arrays();
+	else if (s == "sparse_arrays") return main_sparse_arrays();
 	else if (s == "array_and_simple_queries_splay") return main_array_and_simple_queries_splay();
 	else if (s == "array_and_simple_queries_treap") return main_array_and_simple_queries_treap();
 	else if (s == "median_updates_fixed_tree") return main_median_updates_fixed_tree();

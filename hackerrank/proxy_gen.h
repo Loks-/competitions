@@ -8,7 +8,7 @@ int main_array_manipulation();
 int main_arrays_ds();
 int main_dynamic_array();
 int main_left_rotation();
-int main_sparce_arrays();
+int main_sparse_arrays();
 int main_array_and_simple_queries_splay();
 int main_array_and_simple_queries_treap();
 int main_median_updates_fixed_tree();

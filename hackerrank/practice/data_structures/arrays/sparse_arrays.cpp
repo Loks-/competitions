@@ -5,7 +5,7 @@
 #include <string>
 #include <unordered_map>
 
-int main_sparce_arrays()
+int main_sparse_arrays()
 {
 	unsigned n, q;
 	string s;
