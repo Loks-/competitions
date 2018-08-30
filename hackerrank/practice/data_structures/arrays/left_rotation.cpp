@@ -1,5 +1,6 @@
 // https://www.hackerrank.com/challenges/array-left-rotation/
 
+#include "common/vector/utils.h"
 #include "common/stl_base.h"
 
 int main_left_rotation()
@@ -9,8 +10,6 @@ int main_left_rotation()
 	vector<unsigned> v(n);
 	for (unsigned i = 0; i < n; ++i)
 		cin >> v[(i + n - d) % n];
-	for (unsigned i : v)
-		cout << i << " ";
-	cout << endl;
+	WriteVector(v);
 	return 0;
 }

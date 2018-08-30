@@ -9,8 +9,6 @@ int main_arrays_ds()
 	cin >> n;
 	vector<int> v = ReadVector<int>(n);
 	reverse(v.begin(), v.end());
-	for (unsigned j : v)
-		cout << j << " ";
-	cout << endl;
+	WriteVector(v);
 	return 0;
 }
