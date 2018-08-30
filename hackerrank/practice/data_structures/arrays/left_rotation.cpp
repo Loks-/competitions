@@ -8,9 +8,7 @@ int main_left_rotation()
 	cin >> n >> d;
 	vector<unsigned> v(n);
 	for (unsigned i = 0; i < n; ++i)
-	{
 		cin >> v[(i + n - d) % n];
-	}
 	for (unsigned i : v)
 		cout << i << " ";
 	cout << endl;
