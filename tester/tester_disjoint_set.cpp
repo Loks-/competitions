@@ -12,9 +12,7 @@ TesterDisjointSet::TesterDisjointSet(unsigned _size, unsigned _unions, unsigned 
 	std::minstd_rand random_engine;
 	std::uniform_int_distribution<unsigned> distribution(0, size - 1);
 	for (unsigned i = 0; i < unions; ++i)
-	{
 		vunions.push_back({ distribution(random_engine), distribution(random_engine) });
-	}
 }
 
 void TesterDisjointSet::TestAll() const

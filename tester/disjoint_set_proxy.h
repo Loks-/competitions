@@ -24,27 +24,20 @@ public:
 	using TBase = DisjointSet;
 
 	DisjointSetProxy(unsigned size) : TBase(size) {}
-
-	void Union(unsigned i1, unsigned i2)
-	{
-		TBase::UnionI(FindP(i1), FindP(i2));
-	}
-
+	void Union(unsigned i1, unsigned i2) { TBase::UnionI(FindP(i1), FindP(i2)); }
 	unsigned FindP(unsigned x);
 };
 
 template<>
 unsigned DisjointSetProxy<pc_none>::FindP(unsigned x)
 {
-	for (; x != TBase::p[x]; ) x = TBase::p[x];
+	for (; x != TBase::p[x]; )
+		x = TBase::p[x];
 	return x;
 }
 
 template<>
-unsigned DisjointSetProxy<pc_default>::FindP(unsigned x)
-{
-	return TBase::Find(x);
-}
+unsigned DisjointSetProxy<pc_default>::FindP(unsigned x) { return TBase::Find(x); }
 
 template<>
 unsigned DisjointSetProxy<pc_compression_recursive>::FindP(unsigned x)
@@ -62,7 +55,8 @@ template<>
 unsigned DisjointSetProxy<pc_compression_two_runs>::FindP(unsigned x)
 {
 	unsigned p = x, t;
-	for (; p != TBase::p[p]; ) p = TBase::p[p];
+	for (; p != TBase::p[p]; )
+		p = TBase::p[p];
 	for (; x != p; )
 	{
 		t = TBase::p[x];
