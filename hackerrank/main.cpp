@@ -1,19 +1,19 @@
-#include "common/base.h"
+#include "common/test_proxy.h"
 
 #include <iostream>
 #include <string>
 
-int proxy(const std::string& s);
-
 int main(int nargs, char **pargs)
 {
-    std::string s;
-    if (nargs <= 1)
-    {
-        std::cout << "Input hackerrank solution to run:" << std::endl;
-        std::cin >> s;
-    }
-    else
-        s = pargs[1];
-    return proxy(s);
+	std::string solution_name;
+	if (nargs >= 2)
+	{
+		solution_name = pargs[1];
+	}
+	else
+	{
+		std::cout << "Input hackerrank solution to run:" << std::endl;
+		std::cin >> solution_name;
+	}
+	return test_proxy(solution_name, (nargs > 2) ? pargs[2] : "", (nargs > 3) ? pargs[3] : "");
 }
