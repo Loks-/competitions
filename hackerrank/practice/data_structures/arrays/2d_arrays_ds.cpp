@@ -8,9 +8,7 @@ int main_2d_arrays_ds()
 	int n = 6, best = -100;
 	vector<vector<int>> v(n);
 	for (int i = 0; i < n; ++i)
-	{
 		v[i] = ReadVector<int>(n);
-	}
 	for (int i = 1; i < n - 1; ++i)
 	{
 		for (int j = 1; j < n - 1; ++j)
