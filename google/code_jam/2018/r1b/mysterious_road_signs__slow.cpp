@@ -30,7 +30,7 @@ namespace {
 	};
 }
 
-int main_mysterious_road_signs_slow()
+int main_mysterious_road_signs__slow()
 {
 	unsigned T;
 	cin >> T;
@@ -84,7 +84,6 @@ int main_mysterious_road_signs_slow()
 			for (int64_t candidate : candidates)
 			{
 				auto it1 = point2intervals[1].find(candidate);
-				assert(it1 != point2intervals[1].end());
 				const auto& interval_list1 = it1->second;
 				unsigned first_index = 0, last_index = 0, i0 = 0, i1 = 0;
 				for (; (i0 < interval_list0.size()) && (i1 < interval_list1.size());)

@@ -17,7 +17,7 @@ int proxy(const std::string& s)
 	else if (s == "edgy_baking") return main_edgy_baking();
 	else if (s == "waffle_choppers") return main_waffle_choppers();
 	else if (s == "mysterious_road_signs") return main_mysterious_road_signs();
-	else if (s == "mysterious_road_signs_slow") return main_mysterious_road_signs_slow();
+	else if (s == "mysterious_road_signs__slow") return main_mysterious_road_signs__slow();
 	else if (s == "rounding_error") return main_rounding_error();
 	else if (s == "transmutation") return main_transmutation();
 	else if (s == "a_whole_new_word") return main_a_whole_new_word();

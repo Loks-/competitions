@@ -11,7 +11,7 @@ int main_bit_party();
 int main_edgy_baking();
 int main_waffle_choppers();
 int main_mysterious_road_signs();
-int main_mysterious_road_signs_slow();
+int main_mysterious_road_signs__slow();
 int main_rounding_error();
 int main_transmutation();
 int main_a_whole_new_word();
