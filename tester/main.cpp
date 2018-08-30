@@ -1,13 +1,38 @@
 #include "common/base.h"
 
+#include "assert.h"
 #include "testers.h"
 
 #include <iostream>
 
-int main()
+int main(int nargs, char **pargs)
 {
-	std::cout << "Hello from tester." << std::endl;
-	assert(TestBinarySearchTree(false));
-	// assert(TestDisjointSet());
+	std::string tester_mode;
+	if (nargs >= 2)
+	{
+		tester_mode = pargs[1];
+	}
+	else
+	{
+		std::cout << "Input tester mode to run:" << std::endl;
+		std::cin >> tester_mode;
+	}
+
+	try
+	{
+		if (tester_mode == "binary_search_tree")
+			Assert(TestBinarySearchTree(false));
+		else if (tester_mode == "time_binary_search_tree")
+			Assert(TestBinarySearchTree(true));
+		else if (tester_mode == "time_disjoint_set")
+			Assert(TestDisjointSet());
+		else
+			Assert(false, "Unknown tester mode");
+	}
+	catch (AssertException)
+	{
+		return -1;
+	}
+
 	return 0;
 }
