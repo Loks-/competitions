@@ -12,17 +12,13 @@ int main_dynamic_array()
 		unsigned t, x, y;
 		cin >> t >> x >> y;
 		if (t == 1)
-		{
 			v[(x ^ l) % n].push_back(y);
-		}
 		else if (t == 2)
 		{
 			auto& vr = v[(x ^ l) % n];
 			l = vr[y % (vr.size())];
 			cout << l << endl;
 		}
-		else
-			assert(false);
 	}
 	return 0;
 }
