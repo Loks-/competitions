@@ -28,7 +28,6 @@ int main_rounding_error()
 			else
 				++sp;
 		}
-		assert(s <= N);
 		sp += (100 / N) * (N - s);
 		s = N - s;
 		if (r1 > 0)

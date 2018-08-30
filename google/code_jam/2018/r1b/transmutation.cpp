@@ -33,9 +33,7 @@ int main_transmutation()
 			}
 			res += possible;
 			for (unsigned i = 0; i < M; ++i)
-			{
 				available[i] -= possible * required[i];
-			}
 			for (unsigned i = 0; !stop && (i < M); ++i)
 			{
 				if (available[i] >= required[i])
