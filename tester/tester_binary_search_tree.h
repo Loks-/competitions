@@ -4,6 +4,7 @@
 #include "common/hash.h"
 #include "common/timer.h"
 
+#include "assert.h"
 #include "binary_search_tree_action.h"
 #include "binary_search_tree_info.h"
 
@@ -40,7 +41,7 @@ protected:
 
 	const std::vector<TKey>& GetKeys(TBSTKeysType type) const
 	{
-		assert(type < type_end);
+		Assert(type < type_end);
 		return *keys[type];
 	}
 
@@ -87,20 +88,12 @@ protected:
 		if (root->l)
 		{
 			VerifyParentLinksI(root->l, f);
-			if (root->l->p != root)
-			{
-				std::cout << "Parent link is incorrect!" << std::endl;
-				assert(false);
-			}
+			Assert(root->l->p == root, "Parent link is incorrect!");
 		}
 		if (root->r)
 		{
 			VerifyParentLinksI(root->r, f);
-			if (root->r->p != root)
-			{
-				std::cout << "Parent link is incorrect!" << std::endl;
-				assert(false);
-			}
+			Assert(root->r->p == root, "Parent link is incorrect!");
 		}
 	}
 
@@ -108,11 +101,7 @@ protected:
 	void VerifyParentLinks(TNode* root) { if (mode == hash_test) VerifyParentLinksI(root, TFakeBool<TNode::use_parent>()); }
 
 	template<class TNode>
-	void VerifyParentLinksLazy(TNode* root)
-	{
-		if (root && !(root->info.size & (root->info.size - 1)))
-			VerifyParentLinks(root);
-	}
+	void VerifyParentLinksLazy(TNode* root) { if (root && !(root->info.size & (root->info.size - 1))) VerifyParentLinks(root); }
 
 	template<class TTree>
 	typename TTree::TNode* TestBuild(TTree& tree, TBSTKeysType type)
@@ -152,7 +141,7 @@ protected:
 		for (unsigned i = 0; i < Size(); ++i)
 		{
 			typename TTree::TNode* node = tree.FindByOrder(root, i);
-			assert(node);
+			Assert(node);
 			h = std::hash_combine(h, node->key);
 		}
 		AddResult("FindO", type, h, t.GetMilliseconds());
@@ -167,7 +156,7 @@ protected:
 		for (unsigned i = 0; i <= Size(); ++i)
 		{
 			typename TTree::TNode* node = tree.FindByKey(root, 2 * i);
-			assert(!node);
+			Assert(!node);
 			h = std::hash_combine(h, reinterpret_cast<size_t>(node));
 		}
 		AddResult("FindK0", type, h, t.GetMilliseconds());
@@ -183,7 +172,7 @@ protected:
 		for (const TKey& key : vkeys)
 		{
 			typename TTree::TNode* node = tree.FindByKey(root, key);
-			assert(node);
+			Assert(node);
 			h = std::hash_combine(h, (type <= shuffled) ? node->data : node->key);
 		}
 		AddResult("FindK1", type, h, t.GetMilliseconds());
@@ -242,14 +231,14 @@ protected:
 			root = TestBuild<TTree>(tree, ktype);
 			root = TestDeleteByNode(tree, root, ktype);
 			// tree.ReleaseTree(root); root = 0;
-			assert(!root);
+			Assert(!root);
 			root = TestInsert<TTree>(tree, ktype);
 			root = TestFindByOrder<TTree>(tree, root, ktype);
 			root = TestFindByKey0<TTree>(tree, root, ktype);
 			root = TestFindByKey1<TTree>(tree, root, ktype);
 			root = TestDeleteByKey<TTree>(tree, root, ktype);
 			// tree.ReleaseTree(root); root = 0;
-			assert(!root);
+			Assert(!root);
 			tree.ResetNodes();
 		}
 	}

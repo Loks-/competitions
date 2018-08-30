@@ -4,22 +4,11 @@
 #include "common/binary_search_tree/action/add.h"
 #include "common/binary_search_tree/action/none.h"
 
-namespace {
-
 template<class TNode>
-void AddAction(TNode * root, TFakeType<BSTActionNone>) {}
+inline void AddAction(TNode * root, TFakeType<BSTActionNone>) {}
 
 template<class TNode, class TData>
-void AddAction(TNode * root, TFakeType<BSTActionAdd<TData>>)
-{
-	if (root) root->AddAction(1);
-}
+inline void AddAction(TNode * root, TFakeType<BSTActionAdd<TData>>) { if (root) root->AddAction(1); }
 
 template<class TNode>
-void AddAction(TNode * root)
-{
-	if (!root) return;
-	AddAction(root, TFakeType<typename TNode::TAction>());
-}
-
-} // namespace
+inline void AddAction(TNode * root) { AddAction(root, TFakeType<typename TNode::TAction>()); }

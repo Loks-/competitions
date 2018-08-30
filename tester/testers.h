@@ -1,4 +1,4 @@
 #pragma once
 
-bool TestBinarySearchTree(bool run_time_test = false);
+bool TestBinarySearchTree(bool time_test);
 bool TestDisjointSet();

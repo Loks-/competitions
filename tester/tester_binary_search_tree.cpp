@@ -39,9 +39,7 @@ void TesterBinarySearchTree::AddMax()
 		}
 	}
 	for (const auto& p : m)
-	{
 		results.push_back(p.second);
-	}
 }
 
 bool TesterBinarySearchTree::TestHash() const
@@ -75,9 +73,7 @@ void TesterBinarySearchTree::PrintTime() const
 	);
 	std::cout << "Timers:" << std::endl;
 	for (const Result& r : vt)
-	{
 		std::cout << r.job << "\t" << r.task << "\t" << r.keys_type << "\t" << r.tree << "\t" << r.time << std::endl;
-	}
 }
 
 TesterBinarySearchTree::TesterBinarySearchTree(unsigned size, TBSTMode _mode) : mode(_mode)
@@ -139,16 +135,12 @@ bool TesterBinarySearchTree::TestAllTrees()
 	return output;
 }
 
-bool TestBinarySearchTree(bool run_time_test)
+bool TestBinarySearchTree(bool time_test)
 {
-	TesterBinarySearchTree tbst_hash(10000, TesterBinarySearchTree::hash_test);
-	bool result = tbst_hash.TestAllTrees();
-	if (result && run_time_test)
-	{
-		Timer t;
-		TesterBinarySearchTree tbst_time(10000000, TesterBinarySearchTree::time_test);
-		result = result && tbst_time.TestAllTrees();
+	Timer t;
+	TesterBinarySearchTree tbst(time_test ? 10000000 : 10000, time_test ? TesterBinarySearchTree::time_test : TesterBinarySearchTree::hash_test);
+	bool result = tbst.TestAllTrees();
+	if (result && time_test)
 		std::cout << "Total time = " << t.GetMilliseconds() << std::endl;
-	}
 	return result;
 }
