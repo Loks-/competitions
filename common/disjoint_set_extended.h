@@ -36,6 +36,8 @@ public:
     
 	unsigned Size() const { return unsigned(p.size()); }
 	unsigned GetUnions() const { return unions; }
+	unsigned GetSize(const TData& v) { return vsize[Find(v)]; }
+    void Union(const TData& v1, const TData& v2) { UnionI(Find(v1), Find(v2)); }
 
 	unsigned GetIndex(const TData& v)
     {
@@ -62,16 +64,6 @@ public:
             ppx = p[px];
         }
         return px;
-    }
-
-	unsigned GetSize(const TData& v)
-    {
-        return vsize[Find(v)];
-    }
-
-    void Union(const TData& v1, const TData& v2)
-    {
-        UnionI(Find(v1), Find(v2));
     }
 
 protected:

@@ -13,14 +13,12 @@ protected:
 	unsigned unions;
 
 public:
-    DisjointSet(unsigned n = 0)
-    {
-        Init(n);
-    }
-
+    DisjointSet(unsigned n = 0) { Init(n); }
 	unsigned Size() const { return n; }
 	unsigned GetUnions() const { return unions; }
 	unsigned GetSetsCount() const { return n - unions; }
+    void Union(unsigned i1, unsigned i2) { UnionI(Find(i1), Find(i2)); }
+	unsigned GetSize(unsigned x) { return vsize[Find(x)]; }
 
     void Init(unsigned n_)
     {
@@ -36,11 +34,6 @@ public:
         unions = 0;
     }
 
-    void Union(unsigned i1, unsigned i2)
-    {
-        UnionI(Find(i1), Find(i2));
-    }
-
 	unsigned Find(unsigned x)
     {
         unsigned px = p[x], ppx = p[px];
@@ -52,11 +45,6 @@ public:
             ppx = p[px];
         }
         return px;
-    }
-
-	unsigned GetSize(unsigned x)
-    {
-        return vsize[Find(x)];
     }
 
 	std::vector<unsigned> GetRepresentatives() const

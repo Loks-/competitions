@@ -11,11 +11,7 @@ protected:
 public:
 	void Start() { start_time = std::chrono::system_clock::now(); running = true; }
 	void Stop() { end_time = std::chrono::system_clock::now(); running = false; }
-	
-	Timer(bool start = true) : running(false)
-	{
-		if (start) Start();
-	}
+	Timer(bool start = true) : running(false) { if (start) Start();	}
 
 	size_t GetMilliseconds() const
 	{
