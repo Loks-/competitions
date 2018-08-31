@@ -1,10 +1,8 @@
 #pragma once
 
-namespace {
-
 // Swap intervals [first, middle) and [middle, last)
 template<class TBST>
-void Rotate(typename TBST::TNode*& root, unsigned first, unsigned middle, unsigned last)
+inline void Rotate(typename TBST::TNode*& root, unsigned first, unsigned middle, unsigned last)
 {
 	static_assert(!TBST::use_key, "use_key should be false");
 	if ((middle <= first) || (middle >= last)) return;
@@ -17,7 +15,7 @@ void Rotate(typename TBST::TNode*& root, unsigned first, unsigned middle, unsign
 
 // Rotate elements in interval [first, last) to right by shift
 template<class TBST>
-void RotateRight(typename TBST::TNode*& root, unsigned first, unsigned last, unsigned shift)
+inline void RotateRight(typename TBST::TNode*& root, unsigned first, unsigned last, unsigned shift)
 {
 	assert(last > first);
 	shift %= (last - first);
@@ -27,12 +25,10 @@ void RotateRight(typename TBST::TNode*& root, unsigned first, unsigned last, uns
 
 // Rotate elements in interval [first, last) to right by shift
 template<class TBST>
-void RotateLeft(typename TBST::TNode*& root, unsigned first, unsigned last, unsigned shift)
+inline void RotateLeft(typename TBST::TNode*& root, unsigned first, unsigned last, unsigned shift)
 {
 	assert(last > first);
 	shift %= (last - first);
 	if (shift == 0) return;
 	return Rotate<TBST>(root, first, first + shift, last);
 }
-
-} // namespace

@@ -1,9 +1,7 @@
 #pragma once
 
-namespace {
-
 template<class T>
-T GCD(T x, T y)
+inline T GCD(T x, T y)
 {
 	for (; y; )
 	{
@@ -13,5 +11,3 @@ T GCD(T x, T y)
 	}
 	return x;
 }
-
-}  // namespace

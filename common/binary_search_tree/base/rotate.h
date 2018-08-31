@@ -2,10 +2,8 @@
 
 #include "../../base.h"
 
-namespace {
-
 template<class TNode, bool update_child, bool apply_action>
-void BSTRotate(TNode* child, TNode* parent, TNode* gparent)
+inline void BSTRotate(TNode* child, TNode* parent, TNode* gparent)
 {
 	assert(child && parent);
 	if (apply_action)
@@ -36,12 +34,10 @@ void BSTRotate(TNode* child, TNode* parent, TNode* gparent)
 }
 
 template<class TNode, bool update_child, bool apply_action>
-bool BSTRotateUp(TNode* node)
+inline bool BSTRotateUp(TNode* node)
 {
 	static_assert(TNode::use_parent, "use_parent should be true");
 	if (!node || !node->p) return false;
 	BSTRotate<TNode, update_child, apply_action>(node, node->p, node->p->p);
 	return true;
 }
-
-} // namespace

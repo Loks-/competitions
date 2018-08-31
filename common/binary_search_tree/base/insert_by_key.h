@@ -2,10 +2,8 @@
 
 #include "../info/update_info.h"
 
-namespace {
-
 template<class TNode>
-void BSTInsertByKey(TNode* root, TNode* node)
+inline void BSTInsertByKey(TNode* root, TNode* node)
 {
 	static_assert(TNode::use_key, "use_key should be true");
 	static_assert(TNode::use_parent, "use_parent should be true");
@@ -37,5 +35,3 @@ void BSTInsertByKey(TNode* root, TNode* node)
 	node->p = root;
 	UpdateInfoNodeToRoot(root);
 }
-
-} // namespace

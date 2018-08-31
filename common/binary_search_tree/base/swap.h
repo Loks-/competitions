@@ -4,10 +4,8 @@
 #include "sibling.h"
 #include <utility>
 
-namespace {
-
 template<class TNode>
-void BSTSwapNotRelated(TNode* node1, TNode* parent1, TNode* node2, TNode* parent2)
+inline void BSTSwapNotRelated(TNode* node1, TNode* parent1, TNode* node2, TNode* parent2)
 {
 	assert(node1 != node2);
 	TNode* child1l = node1->l, *child1r = node1->r;
@@ -41,7 +39,7 @@ void BSTSwapNotRelated(TNode* node1, TNode* parent1, TNode* node2, TNode* parent
 }
 
 template<class TNode>
-void BSTSwapChildParent(TNode* child, TNode* parent, TNode* gparent)
+inline void BSTSwapChildParent(TNode* child, TNode* parent, TNode* gparent)
 {
 	if (child == parent->l)
 	{
@@ -71,7 +69,7 @@ void BSTSwapChildParent(TNode* child, TNode* parent, TNode* gparent)
 }
 
 template<class TNode>
-void BSTSwapAuto(TNode* node1, TNode* parent1, TNode* node2, TNode* parent2)
+inline void BSTSwapAuto(TNode* node1, TNode* parent1, TNode* node2, TNode* parent2)
 {
 	assert(node1 && node2);
 	if (node1 == node2) return;
@@ -82,5 +80,3 @@ void BSTSwapAuto(TNode* node1, TNode* parent1, TNode* node2, TNode* parent2)
 	else
 		BSTSwapNotRelated(node1, parent1, node2, parent2);
 }
-
-} // namespace

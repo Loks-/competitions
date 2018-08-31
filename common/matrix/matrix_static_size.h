@@ -92,9 +92,8 @@ public:
 		TSelf x = *this;
 		for (; pow; pow >>= 1)
 		{
-			if (pow & 1) {
+			if (pow & 1)
 				ans *= x;
-			}
 			x *= x;
 		}
 		return ans;

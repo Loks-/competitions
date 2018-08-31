@@ -174,15 +174,11 @@ template <
 	class THeight = unsigned>
 using BSTNode = TBSTNodeFinal<TData, TInfo, TAction, use_key, use_parent, use_height, TKey, THeight>;
 
-namespace {
-
 template<class TNode>
-TNode* Root(TNode* node)
+inline TNode* Root(TNode* node)
 {
 	static_assert(TNode::use_parent, "use_parent should be true");
 	if (!node) return node;
 	for (; node->p; node = node->p);
 	return node;
 }
-
-} // namespace

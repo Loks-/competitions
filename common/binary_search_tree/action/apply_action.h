@@ -3,13 +3,11 @@
 #include "../../template.h"
 #include <stack>
 
-namespace {
+template<class TNode>
+inline void ApplyActionRootToNode(TNode* node, TFakeFalse) {}
 
 template<class TNode>
-void ApplyActionRootToNode(TNode* node, TFakeFalse) {}
-
-template<class TNode>
-void ApplyActionRootToNode(TNode * node, TFakeTrue)
+inline void ApplyActionRootToNode(TNode * node, TFakeTrue)
 {
 	static_assert(TNode::use_parent, "use_parent should be true");
 	std::stack<TNode*> s;
@@ -18,6 +16,4 @@ void ApplyActionRootToNode(TNode * node, TFakeTrue)
 }
 
 template<class TNode>
-void ApplyActionRootToNode(TNode* node) { ApplyActionRootToNode(node, TFakeBool<!TNode::TAction::is_none>()); }
-
-} // namespace
+inline void ApplyActionRootToNode(TNode* node) { ApplyActionRootToNode(node, TFakeBool<!TNode::TAction::is_none>()); }

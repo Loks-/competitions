@@ -2,10 +2,8 @@
 
 #include "../../base.h"
 
-namespace {
-
 template<class T>
-T PowU(T x, uint64_t pow)
+inline T PowU(T x, uint64_t pow)
 {
 	T ans = T(1);
 	for (; pow; pow >>= 1)
@@ -16,5 +14,3 @@ T PowU(T x, uint64_t pow)
 	}
 	return ans;	
 }
-
-}  // namespace

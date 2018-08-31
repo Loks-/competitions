@@ -5,10 +5,8 @@
 #include <vector>
 #include <utility>
 
-namespace {
-
 template <class TModular = TModularArithmetic_P32U>
-uint64_t FindSmallestPrimitive(uint64_t p, const PrimesList& pl)
+inline uint64_t FindSmallestPrimitive(uint64_t p, const PrimesList& pl)
 {
     if (p <= 3)
         return p - 1;
@@ -31,5 +29,3 @@ uint64_t FindSmallestPrimitive(uint64_t p, const PrimesList& pl)
     assert(false);
     return 0;
 }
-
-} // namespace

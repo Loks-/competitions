@@ -3,10 +3,8 @@
 #include "../../base.h"
 #include "../base/find_by_order.h"
 
-namespace {
-
 template<class TNode, class TValue>
-TValue BSTMedian(TNode* root)
+inline TValue BSTMedian(TNode* root)
 {
 	static_assert(TNode::TInfo::has_size, "info should contain size");
 	assert(root);
@@ -16,5 +14,3 @@ TValue BSTMedian(TNode* root)
 	else
 		return TValue(BSTFindByOrder(root, size / 2 - 1)->key + BSTFindByOrder(root, size / 2)->key) / TValue(2);
 }
-
-} // namespace

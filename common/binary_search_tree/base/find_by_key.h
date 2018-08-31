@@ -1,9 +1,7 @@
 #pragma once
 
-namespace {
-
 template<class TNode>
-TNode* BSTFindByKey(TNode* root, const typename TNode::TKey& key)
+inline TNode* BSTFindByKey(TNode* root, const typename TNode::TKey& key)
 {
 	static_assert(TNode::use_key, "use_key should be true");
 	for (TNode * node = root; node != 0; )
@@ -18,5 +16,3 @@ TNode* BSTFindByKey(TNode* root, const typename TNode::TKey& key)
 	}
 	return 0;
 }
-
-} // namespace

@@ -2,10 +2,8 @@
 
 #include "../../base.h"
 
-namespace {
-
 template<class TNode, class TValue>
-TNode* BSTPrefixSumUpperBound(TNode* root, TValue value)
+inline TNode* BSTPrefixSumUpperBound(TNode* root, TValue value)
 {
 	static_assert(TNode::TInfo::has_size, "info should contain size");
 	if (!root) return 0;
@@ -27,5 +25,3 @@ TNode* BSTPrefixSumUpperBound(TNode* root, TValue value)
 	assert(false);
 	return 0;
 }
-
-} // namespace

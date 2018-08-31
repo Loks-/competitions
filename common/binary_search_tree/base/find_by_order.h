@@ -2,10 +2,8 @@
 
 #include "../../base.h"
 
-namespace {
-
 template<class TNode>
-TNode* BSTFindByOrder(TNode* root, unsigned order_index)
+inline TNode* BSTFindByOrder(TNode* root, unsigned order_index)
 {
 	static_assert(TNode::TInfo::has_size, "info should contain size");
 	if (!root) return 0;
@@ -27,5 +25,3 @@ TNode* BSTFindByOrder(TNode* root, unsigned order_index)
 	assert(false);
 	return 0;
 }
-
-} // namespace

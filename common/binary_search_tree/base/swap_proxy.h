@@ -5,10 +5,8 @@
 #include "../action/apply_action.h"
 #include "../info/update_info.h"
 
-namespace {
-
 template<class TNode, bool update_info, bool apply_action>
-void BSTSwapProxy(TNode* node1, TNode* node2)
+inline void BSTSwapProxy(TNode* node1, TNode* node2)
 {
 	static_assert(TNode::use_parent, "use_parent should be true");
 	assert(node1 && node2);
@@ -44,5 +42,3 @@ void BSTSwapProxy(TNode* node1, TNode* node2)
 		}
 	}
 }
-
-} // namespace
