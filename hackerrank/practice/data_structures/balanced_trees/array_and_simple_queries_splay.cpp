@@ -3,7 +3,8 @@
 #include "common/binary_search_tree/splay_tree.h"
 #include "common/binary_search_tree/base/traversal.h"
 #include "common/binary_search_tree/utils/rotate.h"
-#include "common/vector/utils.h"
+#include "common/vector/read.h"
+#include "common/vector/write.h"
 #include "common/stl_base.h"
 
 using TSplayTree = SplayTree<false, int>;

@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/array-left-rotation/
 
-#include "common/vector/utils.h"
+#include "common/vector/write.h"
 #include "common/stl_base.h"
 
 int main_left_rotation()

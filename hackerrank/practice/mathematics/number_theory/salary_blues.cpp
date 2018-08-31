@@ -1,7 +1,7 @@
 // https://www.hackerrank.com/challenges/salary-blues
 
 #include "common/numeric/utils/gcd.h"
-#include "common/vector/utils.h"
+#include "common/vector/read.h"
 #include "common/stl_base.h"
 
 int main_salary_blues()

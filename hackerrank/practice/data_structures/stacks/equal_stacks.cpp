@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/equal-stacks
 
-#include "common/vector/utils.h"
+#include "common/vector/read.h"
 #include "common/stl_base.h"
 
 #include <unordered_map>
