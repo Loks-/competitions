@@ -21,9 +21,7 @@ int main_largest_rectangle()
 	tree.BuildTree(vnodes);
 	uint64_t output = 0;
 	for (TNode* p : vnodes)
-	{
 		output = max(output, unsigned(~p->height) * uint64_t(p->info.size));
-	}
 	cout << output << endl;
 	return 0;
 }
