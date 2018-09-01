@@ -13,9 +13,7 @@ int main_and_xor_or()
 	{
 		cin >> a;
 		for (; !s.empty() && (s.top() >= a); s.pop())
-		{
 			best = max(best, s.top() ^ a);
-		}
 		if (!s.empty())
 			best = max(best, s.top() ^ a);
 		s.push(a);
