@@ -41,9 +41,7 @@ namespace
 			results.resize(q);
 			CentroidDecomposition::Run(tree, *this);
 			for (TModular r : results)
-			{
 				cout << r.Get() << endl;
-			}
 		}
 
 		void Decompose(unsigned vertex, const vector<unsigned>& group)
@@ -65,9 +63,7 @@ namespace
 					m[g].first += w;
 					m[g].second += wd;
 					if (u != vertex)
-					{
 						sets[g][q].push_back(u);
-					}
 				}
 				TModular t = s * sd;
 				for (auto& p : m)
