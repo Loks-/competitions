@@ -9,6 +9,7 @@
 #include "binary_search_tree_info.h"
 
 #include <iostream>
+#include <stack>
 #include <string>
 #include <vector>
 
@@ -85,15 +86,20 @@ protected:
 	template<class TNode>
 	void VerifyParentLinksI(TNode* root, TFakeTrue f)
 	{
-		if (root->l)
+		std::stack<TNode*> s;
+		for (s.push(root); !s.empty(); )
 		{
-			VerifyParentLinksI(root->l, f);
-			Assert(root->l->p == root, "Parent link is incorrect!");
-		}
-		if (root->r)
-		{
-			VerifyParentLinksI(root->r, f);
-			Assert(root->r->p == root, "Parent link is incorrect!");
+			root = s.top(); s.pop();
+			if (root->l)
+			{
+				s.push(root->l);
+				Assert(root->l->p == root, "Parent link is incorrect!");
+			}
+			if (root->r)
+			{
+				s.push(root->r);
+				Assert(root->r->p == root, "Parent link is incorrect!");
+			}
 		}
 	}
 
