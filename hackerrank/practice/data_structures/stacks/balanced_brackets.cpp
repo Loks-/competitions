@@ -6,10 +6,14 @@
 #include <string>
 #include <unordered_map>
 
-namespace {
+int main_balanced_brackets()
+{
 	unordered_map<char, char> m;
-
-	bool Correct(const string& s)
+	m[')'] = '(';
+	m[']'] = '[';
+	m['}'] = '{';
+	
+	auto Correct = [&](const string& s)
 	{
 		stack<char> st;
 		for (char c : s)
@@ -27,14 +31,8 @@ namespace {
 			}
 		}
 		return st.empty();
-	}
-}
+	};
 
-int main_balanced_brackets()
-{
-	m[')'] = '(';
-	m[']'] = '[';
-	m['}'] = '{';
 	int T;
 	cin >> T;
 	for (; T; --T)
