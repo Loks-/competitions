@@ -41,7 +41,6 @@ int main_swap_nodes_algo() {
 		vr[i] = r;
 		if (l != -1) vh[l] = false;
 		if (r != -1) vh[r] = false;
-
 	}
 	int h = 0;
 	for (int i = 1; i < N; ++i)
@@ -62,9 +61,7 @@ int main_swap_nodes_algo() {
 		for (int i = 1; i <= N; ++i)
 		{
 			if ((vd[i] % d) == 0)
-			{
 				swap(vl[i], vr[i]);
-			}
 		}
 		Print(h);
 		cout << endl;
