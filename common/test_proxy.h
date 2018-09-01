@@ -23,9 +23,17 @@ inline int test_proxy(const std::string& solution, const std::string& input_file
 	if (!solution_results && !test_file_name.empty())
 	{
 		std::cout.rdbuf(cout_backup);
+		std::string sraw = solution_output.str(), sfixed;
+		sfixed.reserve(sraw.size());
+		for (unsigned i = 0; i < sraw.size(); ++i)
+		{
+			if ((sraw[i] == ' ') && (sraw[i + 1] == '\n'))
+				continue;
+			sfixed.push_back(sraw[i]);
+		}
 		test_file.open(test_file_name);
 		expected_output << test_file.rdbuf();
-		if (solution_output.str() != expected_output.str())
+		if (sfixed != expected_output.str())
 		{
 			std::cout << "Output for " << solution << " doesn't match expectation." << std::endl;
 			return -2;
