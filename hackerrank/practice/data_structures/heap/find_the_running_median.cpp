@@ -4,11 +4,14 @@
 #include "common/binary_search_tree/utils/median.h"
 #include "common/stl_base.h"
 
+#include <iomanip>
+
 using TTree = AVLTree<false, TEmpty>;
 using TNode = TTree::TNode;
 
 int main_find_the_running_median()
 {
+	cout << setprecision(1) << fixed;
 	unsigned N;
 	cin >> N;
 	TTree tree(N);
@@ -18,7 +21,7 @@ int main_find_the_running_median()
 		int64_t x;
 		cin >> x;
 		root = tree.InsertNewNode(root, TEmpty(), x);
-		printf("%.1lf\n", BSTMedian<TNode, double>(root));
+		cout << BSTMedian<TNode, double>(root) << endl;
 	}
 	return 0;
 }
