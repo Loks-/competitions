@@ -1,17 +1,14 @@
 // https://www.hackerrank.com/challenges/even-odd-query
 
+#include "common/vector/read.h"
 #include "common/stl_base.h"
 
 int main_even_odd_query()
 {
 	int N, Q, x, y;
 	cin >> N;
-	vector<int> vx{ 1 };
-	for (int i = 0; i < N; ++i)
-	{
-		cin >> x;
-		vx.push_back(x);
-	}
+	vector<int> vx = ReadVector<int>(N);
+	vx.insert(vx.begin(), 1);
 	cin >> Q;
 	for (; Q; --Q)
 	{
