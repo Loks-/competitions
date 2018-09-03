@@ -23,6 +23,6 @@ int main_components_in_a_graph()
 			maxs = max(maxs, s);
 		}
 	}
-	cout << mins << " " << maxs;
+	cout << mins << " " << maxs << endl;
 	return 0;
 }
