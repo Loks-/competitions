@@ -13,9 +13,7 @@ int main_leonardos_prime_factors()
 		uint64_t n, k = 0;
 		cin >> n;
 		for (; primes.vprimes[k] <= n; ++k)
-		{
 			n /= primes.vprimes[k];
-		}
 		cout << k << endl;
 	}
 	return 0;
