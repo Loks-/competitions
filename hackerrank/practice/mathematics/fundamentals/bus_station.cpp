@@ -25,13 +25,10 @@ int main_bus_station()
 	{
 		if (d < m) continue;
 		bool good = true;
-		for (uint64_t t = d; t < s; t += d)
+		for (uint64_t t = d; good && (t < s); t += d)
 		{
 			if (us.find(t) == us.end())
-			{
 				good = false;
-				break;
-			}
 		}
 		if (good)
 			cout << d << " ";
