@@ -3,9 +3,11 @@
 #include "common/stl_base.h"
 
 #include <cmath>
+#include <iomanip>
 
 int main_sherlock_and_moving_tiles()
 {
+	cout << setprecision(6) << fixed;
 	int64_t l, s1, s2, ds, Q, q;
 	cin >> l >> s1 >> s2 >> Q;
 	ds = abs(s1 - s2);
@@ -15,7 +17,7 @@ int main_sherlock_and_moving_tiles()
 		cin >> q;
 		double x = sqrt(double(q));
 		double t = (l - x) / ds * ds2;
-		printf("%.6lf\n", t);
+		cout << t << endl;
 	}
 	return 0;
 }
