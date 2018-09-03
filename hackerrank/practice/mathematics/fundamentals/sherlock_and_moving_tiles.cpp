@@ -7,7 +7,7 @@
 
 int main_sherlock_and_moving_tiles()
 {
-	cout << setprecision(6) << fixed;
+	cout << setprecision(4) << fixed;
 	int64_t l, s1, s2, ds, Q, q;
 	cin >> l >> s1 >> s2 >> Q;
 	ds = abs(s1 - s2);
