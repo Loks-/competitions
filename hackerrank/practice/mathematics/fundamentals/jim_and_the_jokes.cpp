@@ -20,9 +20,7 @@ int main_jim_and_the_jokes()
 	}
 	uint64_t r = 0;
 	for (auto p : um)
-	{
 		r += (p.second * (p.second - 1)) / 2;
-	}
 	cout << r << endl;
 	return 0;
 }
