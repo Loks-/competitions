@@ -9,6 +9,7 @@ int proxy(const std::string& s)
 	else if (s == "cube_summation") return main_cube_summation();
 	else if (s == "kindergarten_adventures_bit") return main_kindergarten_adventures_bit();
 	else if (s == "kindergarten_adventures_linear") return main_kindergarten_adventures_linear();
+	else if (s == "mr_x_and_his_shots") return main_mr_x_and_his_shots();
 	else if (s == "2d_arrays_ds") return main_2d_arrays_ds();
 	else if (s == "array_manipulation") return main_array_manipulation();
 	else if (s == "arrays_ds") return main_arrays_ds();

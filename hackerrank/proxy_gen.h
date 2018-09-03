@@ -3,6 +3,7 @@ int main_base();
 int main_cube_summation();
 int main_kindergarten_adventures_bit();
 int main_kindergarten_adventures_linear();
+int main_mr_x_and_his_shots();
 int main_2d_arrays_ds();
 int main_array_manipulation();
 int main_arrays_ds();
