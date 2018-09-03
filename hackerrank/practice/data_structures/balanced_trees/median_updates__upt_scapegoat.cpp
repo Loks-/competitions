@@ -1,13 +1,13 @@
 // https://www.hackerrank.com/challenges/median
 
-#include "common/binary_search_tree/red_black_tree.h"
+#include "common/binary_search_tree/scapegoat_tree.h"
 #include "common/binary_search_tree/utils/median.h"
 #include "common/stl_base.h"
 
-using TTree = RedBlackTree<false, TEmpty>;
+using TTree = ScapegoatTree<true, TEmpty>;
 using TNode = TTree::TNode;
 
-int main_median_updates_upf_red_black()
+int main_median_updates__upt_scapegoat()
 {
 	unsigned N;
 	cin >> N;

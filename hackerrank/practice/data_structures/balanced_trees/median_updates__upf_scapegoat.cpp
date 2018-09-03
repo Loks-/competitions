@@ -1,13 +1,13 @@
 // https://www.hackerrank.com/challenges/median
 
-#include "common/binary_search_tree/treap.h"
+#include "common/binary_search_tree/scapegoat_tree.h"
 #include "common/binary_search_tree/utils/median.h"
 #include "common/stl_base.h"
 
-using TTree = Treap<true, true, TEmpty>;
+using TTree = ScapegoatTree<false, TEmpty>;
 using TNode = TTree::TNode;
 
-int main_median_updates_upt_treap()
+int main_median_updates__upf_scapegoat()
 {
 	unsigned N;
 	cin >> N;

@@ -7,7 +7,7 @@
 using TTree = RedBlackTree<true, TEmpty>;
 using TNode = TTree::TNode;
 
-int main_median_updates_upt_red_black()
+int main_median_updates__upt_red_black()
 {
 	unsigned N;
 	cin >> N;

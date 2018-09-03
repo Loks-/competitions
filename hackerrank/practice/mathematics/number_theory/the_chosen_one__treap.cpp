@@ -8,7 +8,7 @@
 using TTreap = Treap<false, true, uint64_t, BSTInfoGCD<uint64_t, BSTInfoNone>>;
 using TNode = TTreap::TNode;
 
-int main_the_chosen_one_treap()
+int main_the_chosen_one__treap()
 {
 	unsigned n;
 	cin >> n;
