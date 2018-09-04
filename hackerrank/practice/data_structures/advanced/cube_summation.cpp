@@ -34,8 +34,6 @@ int main_cube_summation()
 				cin >> i1 >> i2 >> i3 >> j1 >> j2 >> j3;
 				cout << bit.Sum(i1, i2, i3, j1 + 1, j2 + 1, j3 + 1) << endl;
 			}
-			else
-				assert(false);
 		}
 	}
 	return 0;
