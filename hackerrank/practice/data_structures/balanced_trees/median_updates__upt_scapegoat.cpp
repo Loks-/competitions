@@ -4,11 +4,14 @@
 #include "common/binary_search_tree/utils/median.h"
 #include "common/stl_base.h"
 
+#include <iomanip>
+
 using TTree = ScapegoatTree<true, TEmpty>;
 using TNode = TTree::TNode;
 
 int main_median_updates__upt_scapegoat()
 {
+	cout << setprecision(1) << fixed;
 	unsigned N;
 	cin >> N;
 	TTree tree(N);
@@ -41,9 +44,9 @@ int main_median_updates__upt_scapegoat()
 			unsigned size = root->info.size;
 			int64_t s = BSTMedian<TNode, int64_t>(root);
 			if (s & 1)
-				printf("%.1lf\n", s / 2.0);
+				cout << s / 2.0 << endl;
 			else
-				printf("%d\n", int(s / 2));
+				cout << s / 2 << endl;
 		}
 	}
 	return 0;

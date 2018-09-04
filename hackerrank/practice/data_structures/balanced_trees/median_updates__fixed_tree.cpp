@@ -8,6 +8,7 @@
 #include "common/binary_search_tree/utils/upper_bound.h"
 #include "common/stl_base.h"
 
+#include <iomanip>
 #include <unordered_set>
 
 using TTree = FixedTree<true, unsigned, BSTInfoSum<unsigned, BSTInfoSize>>;
@@ -15,6 +16,7 @@ using TNode = TTree::TNode;
 
 int main_median_updates__fixed_tree()
 {
+	cout << setprecision(1) << fixed;
 	unsigned N;
 	cin >> N;
 	vector<pair<char, int64_t>> input;
@@ -57,9 +59,9 @@ int main_median_updates__fixed_tree()
 		unsigned size = root->info.sum;
 		int64_t s = (BSTPrefixSumUpperBound(root, (size - 1) / 2)->key + BSTPrefixSumUpperBound(root, size / 2)->key) / 2;
 		if (s & 1)
-			printf("%.1lf\n", s / 2.0);
+			cout << s / 2.0 << endl;
 		else
-			printf("%d\n", int(s / 2));
+			cout << s / 2 << endl;
 	}
 	return 0;
 }

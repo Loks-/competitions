@@ -3,11 +3,14 @@
 #include "common/binary_search_tree/splay_tree.h"
 #include "common/stl_base.h"
 
+#include <iomanip>
+
 using TTree = SplayTree<true, TEmpty>;
 using TNode = TTree::TNode;
 
 int main_median_updates__upt_splay()
 {
+	cout << setprecision(1) << fixed;
 	unsigned N;
 	cin >> N;
 	TTree tree(N);
@@ -40,9 +43,9 @@ int main_median_updates__upt_splay()
 			unsigned size = root->info.size;
 			int64_t s = (TTree::FindByOrder(root, (size - 1) / 2)->key + TTree::FindByOrder(root, size / 2)->key) / 2;
 			if (s & 1)
-				printf("%.1lf\n", s / 2.0);
+				cout << s / 2.0 << endl;
 			else
-				printf("%d\n", int(s / 2));
+				cout << s / 2 << endl;
 		}
 	}
 	return 0;
