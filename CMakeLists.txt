@@ -13,15 +13,12 @@ list( SORT GOOGLE_CODE_JAM_SOURCES )
 set( GOOGLE_CODE_JAM_PROXY_H "${PROJECT_SOURCE_DIR}/google/code_jam/proxy_gen.h" )
 set( GOOGLE_CODE_JAM_PROXY_CXX "${PROJECT_SOURCE_DIR}/google/code_jam/proxy_gen.cxx" )
 file ( WRITE ${GOOGLE_CODE_JAM_PROXY_H}
-	"#pragma once\n" )
+	"#pragma once\n\n" )
 file ( WRITE ${GOOGLE_CODE_JAM_PROXY_CXX}
+	"#include \"common/proxy_run_base.h\"\n"
     "#include \"proxy_gen.h\"\n"
-    "#include <iostream>\n"
-    "#include <string>\n"
 	"\n"
-    "int proxy(const std::string& s)\n"
-	"{\n"
-    "\tif (false) return -1;\n" )
+	"TSolutionsMap solutions_map {\n")
 foreach( problemsourcefile ${GOOGLE_CODE_JAM_SOURCES} )
     string( REPLACE ".cpp" "" problemfullname ${problemsourcefile} )
     get_filename_component( problembasename ${problemfullname} NAME )
@@ -29,13 +26,10 @@ foreach( problemsourcefile ${GOOGLE_CODE_JAM_SOURCES} )
         file ( APPEND ${GOOGLE_CODE_JAM_PROXY_H}
 			"int main_${problembasename}();\n" )
         file ( APPEND ${GOOGLE_CODE_JAM_PROXY_CXX}
-			"\telse if (s == \"${problembasename}\") return main_${problembasename}();\n" )
+			"\t{ \"${problembasename}\", main_${problembasename} },\n")
     endif ( NOT ${problembasename} MATCHES "main")
 endforeach( problemsourcefile ${GOOGLE_CODE_JAM_SOURCES} )
-file ( APPEND ${GOOGLE_CODE_JAM_PROXY_CXX}
-    "\tstd::cout << \"Unknown solution name: \" << s << std::endl;\n"
-    "\treturn -1;\n"
-	"}\n" )
+file ( APPEND ${GOOGLE_CODE_JAM_PROXY_CXX} "};\n" )
 add_executable( google_code_jam ${GOOGLE_CODE_JAM_SOURCES} ${GOOGLE_CODE_JAM_PROXY_CXX} )
 
 file( GLOB_RECURSE HACKERRANK_SOURCES RELATIVE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/hackerrank/*.cpp" )
@@ -43,15 +37,12 @@ list( SORT HACKERRANK_SOURCES )
 set( HACKERRANK_PROXY_H "${PROJECT_SOURCE_DIR}/hackerrank/proxy_gen.h" )
 set( HACKERRANK_PROXY_CXX "${PROJECT_SOURCE_DIR}/hackerrank/proxy_gen.cxx" )
 file ( WRITE ${HACKERRANK_PROXY_H}
-	"#pragma once\n" )
+	"#pragma once\n\n" )
 file ( WRITE ${HACKERRANK_PROXY_CXX}
+	"#include \"common/proxy_run_base.h\"\n"
     "#include \"proxy_gen.h\"\n"
-    "#include <iostream>\n"
-    "#include <string>\n"
 	"\n"
-    "int proxy(const std::string& s)\n"
-	"{\n"
-    "\tif (false) return -1;\n" )
+	"TSolutionsMap solutions_map {\n")
 foreach( problemsourcefile ${HACKERRANK_SOURCES} )
     string( REPLACE ".cpp" "" problemfullname ${problemsourcefile} )
     get_filename_component( problembasename ${problemfullname} NAME )
@@ -59,13 +50,10 @@ foreach( problemsourcefile ${HACKERRANK_SOURCES} )
         file ( APPEND ${HACKERRANK_PROXY_H}
 			"int main_${problembasename}();\n" )
         file ( APPEND ${HACKERRANK_PROXY_CXX}
-			"\telse if (s == \"${problembasename}\") return main_${problembasename}();\n" )
+			"\t{ \"${problembasename}\", main_${problembasename} },\n")
     endif ( NOT ${problembasename} MATCHES "main")
 endforeach( problemsourcefile ${HACKERRANK_SOURCES} )
-file ( APPEND ${HACKERRANK_PROXY_CXX}
-    "\tstd::cout << \"Unknown solution name: \" << s << std::endl;\n"
-    "\treturn -1;\n"
-	"}\n" )
+file ( APPEND ${HACKERRANK_PROXY_CXX} "};\n" )
 add_executable( hackerrank ${HACKERRANK_SOURCES} ${HACKERRANK_PROXY_CXX} )
 
 file( GLOB_RECURSE TESTER_SOURCES RELATIVE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/tester/*.cpp" )

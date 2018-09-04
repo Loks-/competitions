@@ -1,110 +1,105 @@
+#include "common/proxy_run_base.h"
 #include "proxy_gen.h"
-#include <iostream>
-#include <string>
 
-int proxy(const std::string& s)
-{
-	if (false) return -1;
-	else if (s == "base") return main_base();
-	else if (s == "cube_summation") return main_cube_summation();
-	else if (s == "kindergarten_adventures") return main_kindergarten_adventures();
-	else if (s == "kindergarten_adventures__bit") return main_kindergarten_adventures__bit();
-	else if (s == "mr_x_and_his_shots") return main_mr_x_and_his_shots();
-	else if (s == "2d_arrays_ds") return main_2d_arrays_ds();
-	else if (s == "array_manipulation") return main_array_manipulation();
-	else if (s == "arrays_ds") return main_arrays_ds();
-	else if (s == "dynamic_array") return main_dynamic_array();
-	else if (s == "left_rotation") return main_left_rotation();
-	else if (s == "sparse_arrays") return main_sparse_arrays();
-	else if (s == "array_and_simple_queries__splay") return main_array_and_simple_queries__splay();
-	else if (s == "array_and_simple_queries__treap") return main_array_and_simple_queries__treap();
-	else if (s == "median_updates__fixed_tree") return main_median_updates__fixed_tree();
-	else if (s == "median_updates__upf_red_black") return main_median_updates__upf_red_black();
-	else if (s == "median_updates__upf_scapegoat") return main_median_updates__upf_scapegoat();
-	else if (s == "median_updates__upf_treap") return main_median_updates__upf_treap();
-	else if (s == "median_updates__upt_red_black") return main_median_updates__upt_red_black();
-	else if (s == "median_updates__upt_scapegoat") return main_median_updates__upt_scapegoat();
-	else if (s == "median_updates__upt_splay") return main_median_updates__upt_splay();
-	else if (s == "median_updates__upt_treap") return main_median_updates__upt_treap();
-	else if (s == "components_in_a_graph") return main_components_in_a_graph();
-	else if (s == "kundu_and_tree") return main_kundu_and_tree();
-	else if (s == "merging_communities") return main_merging_communities();
-	else if (s == "super_maximum_cost_queries") return main_super_maximum_cost_queries();
-	else if (s == "find_the_running_median") return main_find_the_running_median();
-	else if (s == "jesse_and_cookies") return main_jesse_and_cookies();
-	else if (s == "minimum_average_waiting_time") return main_minimum_average_waiting_time();
-	else if (s == "qheap1") return main_qheap1();
-	else if (s == "castle_on_the_grid") return main_castle_on_the_grid();
-	else if (s == "down_to_zero_ii") return main_down_to_zero_ii();
-	else if (s == "queries_with_fixed_length") return main_queries_with_fixed_length();
-	else if (s == "queue_using_two_stacks") return main_queue_using_two_stacks();
-	else if (s == "truck_tour") return main_truck_tour();
-	else if (s == "and_xor_or") return main_and_xor_or();
-	else if (s == "balanced_brackets") return main_balanced_brackets();
-	else if (s == "equal_stacks") return main_equal_stacks();
-	else if (s == "game_of_two_stacks") return main_game_of_two_stacks();
-	else if (s == "largest_rectangle") return main_largest_rectangle();
-	else if (s == "maximum_element") return main_maximum_element();
-	else if (s == "poisonous_plants") return main_poisonous_plants();
-	else if (s == "simple_text_editor") return main_simple_text_editor();
-	else if (s == "waiter") return main_waiter();
-	else if (s == "balanced_forest") return main_balanced_forest();
-	else if (s == "jennys_subtrees") return main_jennys_subtrees();
-	else if (s == "kittys_calculations_on_a_tree") return main_kittys_calculations_on_a_tree();
-	else if (s == "swap_nodes_algo") return main_swap_nodes_algo();
-	else if (s == "tree_coordinates") return main_tree_coordinates();
-	else if (s == "contacts") return main_contacts();
-	else if (s == "no_prefix_set") return main_no_prefix_set();
-	else if (s == "army_game") return main_army_game();
-	else if (s == "best_divisor") return main_best_divisor();
-	else if (s == "bus_station") return main_bus_station();
-	else if (s == "connecting_towns") return main_connecting_towns();
-	else if (s == "cutting_paper_squares") return main_cutting_paper_squares();
-	else if (s == "die_hard_3") return main_die_hard_3();
-	else if (s == "diwali_lights") return main_diwali_lights();
-	else if (s == "even_odd_query") return main_even_odd_query();
-	else if (s == "filling_jars") return main_filling_jars();
-	else if (s == "find_the_point") return main_find_the_point();
-	else if (s == "halloween_party") return main_halloween_party();
-	else if (s == "handshake") return main_handshake();
-	else if (s == "is_fibo") return main_is_fibo();
-	else if (s == "jim_and_the_jokes") return main_jim_and_the_jokes();
-	else if (s == "k_candy_store") return main_k_candy_store();
-	else if (s == "leonardos_prime_factors") return main_leonardos_prime_factors();
-	else if (s == "matrix_tracing") return main_matrix_tracing();
-	else if (s == "maximum_draws") return main_maximum_draws();
-	else if (s == "minimum_height_triangle") return main_minimum_height_triangle();
-	else if (s == "most_distant") return main_most_distant();
-	else if (s == "mutual_recurrences") return main_mutual_recurrences();
-	else if (s == "possible_path") return main_possible_path();
-	else if (s == "restaurant") return main_restaurant();
-	else if (s == "reverse_game") return main_reverse_game();
-	else if (s == "russian_peasant_exponentiation") return main_russian_peasant_exponentiation();
-	else if (s == "sherlock_and_divisors") return main_sherlock_and_divisors();
-	else if (s == "sherlock_and_moving_tiles") return main_sherlock_and_moving_tiles();
-	else if (s == "sherlock_and_permutations") return main_sherlock_and_permutations();
-	else if (s == "special_multiple") return main_special_multiple();
-	else if (s == "strange_grid_again") return main_strange_grid_again();
-	else if (s == "sumar_and_the_floating_rocks") return main_sumar_and_the_floating_rocks();
-	else if (s == "summing_the_n_series") return main_summing_the_n_series();
-	else if (s == "bear_and_cryptography") return main_bear_and_cryptography();
-	else if (s == "closest_number") return main_closest_number();
-	else if (s == "constructing_a_number") return main_constructing_a_number();
-	else if (s == "eulers_criterion") return main_eulers_criterion();
-	else if (s == "fibonacci_finding_easy") return main_fibonacci_finding_easy();
-	else if (s == "fibonacci_gcd") return main_fibonacci_gcd();
-	else if (s == "help_mike") return main_help_mike();
-	else if (s == "identify_smith_numbers") return main_identify_smith_numbers();
-	else if (s == "little_panda_power") return main_little_panda_power();
-	else if (s == "mehta_and_his_laziness") return main_mehta_and_his_laziness();
-	else if (s == "power_of_large_numbers") return main_power_of_large_numbers();
-	else if (s == "primitive_problem") return main_primitive_problem();
-	else if (s == "salary_blues") return main_salary_blues();
-	else if (s == "scalar_products") return main_scalar_products();
-	else if (s == "sherlock_and_gcd") return main_sherlock_and_gcd();
-	else if (s == "the_chosen_one") return main_the_chosen_one();
-	else if (s == "the_chosen_one__treap") return main_the_chosen_one__treap();
-	else if (s == "twins") return main_twins();
-	std::cout << "Unknown solution name: " << s << std::endl;
-	return -1;
-}
+TSolutionsMap solutions_map {
+	{ "base", main_base },
+	{ "cube_summation", main_cube_summation },
+	{ "kindergarten_adventures", main_kindergarten_adventures },
+	{ "kindergarten_adventures__bit", main_kindergarten_adventures__bit },
+	{ "mr_x_and_his_shots", main_mr_x_and_his_shots },
+	{ "2d_arrays_ds", main_2d_arrays_ds },
+	{ "array_manipulation", main_array_manipulation },
+	{ "arrays_ds", main_arrays_ds },
+	{ "dynamic_array", main_dynamic_array },
+	{ "left_rotation", main_left_rotation },
+	{ "sparse_arrays", main_sparse_arrays },
+	{ "array_and_simple_queries__splay", main_array_and_simple_queries__splay },
+	{ "array_and_simple_queries__treap", main_array_and_simple_queries__treap },
+	{ "median_updates__fixed_tree", main_median_updates__fixed_tree },
+	{ "median_updates__upf_red_black", main_median_updates__upf_red_black },
+	{ "median_updates__upf_scapegoat", main_median_updates__upf_scapegoat },
+	{ "median_updates__upf_treap", main_median_updates__upf_treap },
+	{ "median_updates__upt_red_black", main_median_updates__upt_red_black },
+	{ "median_updates__upt_scapegoat", main_median_updates__upt_scapegoat },
+	{ "median_updates__upt_splay", main_median_updates__upt_splay },
+	{ "median_updates__upt_treap", main_median_updates__upt_treap },
+	{ "components_in_a_graph", main_components_in_a_graph },
+	{ "kundu_and_tree", main_kundu_and_tree },
+	{ "merging_communities", main_merging_communities },
+	{ "super_maximum_cost_queries", main_super_maximum_cost_queries },
+	{ "find_the_running_median", main_find_the_running_median },
+	{ "jesse_and_cookies", main_jesse_and_cookies },
+	{ "minimum_average_waiting_time", main_minimum_average_waiting_time },
+	{ "qheap1", main_qheap1 },
+	{ "castle_on_the_grid", main_castle_on_the_grid },
+	{ "down_to_zero_ii", main_down_to_zero_ii },
+	{ "queries_with_fixed_length", main_queries_with_fixed_length },
+	{ "queue_using_two_stacks", main_queue_using_two_stacks },
+	{ "truck_tour", main_truck_tour },
+	{ "and_xor_or", main_and_xor_or },
+	{ "balanced_brackets", main_balanced_brackets },
+	{ "equal_stacks", main_equal_stacks },
+	{ "game_of_two_stacks", main_game_of_two_stacks },
+	{ "largest_rectangle", main_largest_rectangle },
+	{ "maximum_element", main_maximum_element },
+	{ "poisonous_plants", main_poisonous_plants },
+	{ "simple_text_editor", main_simple_text_editor },
+	{ "waiter", main_waiter },
+	{ "balanced_forest", main_balanced_forest },
+	{ "jennys_subtrees", main_jennys_subtrees },
+	{ "kittys_calculations_on_a_tree", main_kittys_calculations_on_a_tree },
+	{ "swap_nodes_algo", main_swap_nodes_algo },
+	{ "tree_coordinates", main_tree_coordinates },
+	{ "contacts", main_contacts },
+	{ "no_prefix_set", main_no_prefix_set },
+	{ "army_game", main_army_game },
+	{ "best_divisor", main_best_divisor },
+	{ "bus_station", main_bus_station },
+	{ "connecting_towns", main_connecting_towns },
+	{ "cutting_paper_squares", main_cutting_paper_squares },
+	{ "die_hard_3", main_die_hard_3 },
+	{ "diwali_lights", main_diwali_lights },
+	{ "even_odd_query", main_even_odd_query },
+	{ "filling_jars", main_filling_jars },
+	{ "find_the_point", main_find_the_point },
+	{ "halloween_party", main_halloween_party },
+	{ "handshake", main_handshake },
+	{ "is_fibo", main_is_fibo },
+	{ "jim_and_the_jokes", main_jim_and_the_jokes },
+	{ "k_candy_store", main_k_candy_store },
+	{ "leonardos_prime_factors", main_leonardos_prime_factors },
+	{ "matrix_tracing", main_matrix_tracing },
+	{ "maximum_draws", main_maximum_draws },
+	{ "minimum_height_triangle", main_minimum_height_triangle },
+	{ "most_distant", main_most_distant },
+	{ "mutual_recurrences", main_mutual_recurrences },
+	{ "possible_path", main_possible_path },
+	{ "restaurant", main_restaurant },
+	{ "reverse_game", main_reverse_game },
+	{ "russian_peasant_exponentiation", main_russian_peasant_exponentiation },
+	{ "sherlock_and_divisors", main_sherlock_and_divisors },
+	{ "sherlock_and_moving_tiles", main_sherlock_and_moving_tiles },
+	{ "sherlock_and_permutations", main_sherlock_and_permutations },
+	{ "special_multiple", main_special_multiple },
+	{ "strange_grid_again", main_strange_grid_again },
+	{ "sumar_and_the_floating_rocks", main_sumar_and_the_floating_rocks },
+	{ "summing_the_n_series", main_summing_the_n_series },
+	{ "bear_and_cryptography", main_bear_and_cryptography },
+	{ "closest_number", main_closest_number },
+	{ "constructing_a_number", main_constructing_a_number },
+	{ "eulers_criterion", main_eulers_criterion },
+	{ "fibonacci_finding_easy", main_fibonacci_finding_easy },
+	{ "fibonacci_gcd", main_fibonacci_gcd },
+	{ "help_mike", main_help_mike },
+	{ "identify_smith_numbers", main_identify_smith_numbers },
+	{ "little_panda_power", main_little_panda_power },
+	{ "mehta_and_his_laziness", main_mehta_and_his_laziness },
+	{ "power_of_large_numbers", main_power_of_large_numbers },
+	{ "primitive_problem", main_primitive_problem },
+	{ "salary_blues", main_salary_blues },
+	{ "scalar_products", main_scalar_products },
+	{ "sherlock_and_gcd", main_sherlock_and_gcd },
+	{ "the_chosen_one", main_the_chosen_one },
+	{ "the_chosen_one__treap", main_the_chosen_one__treap },
+	{ "twins", main_twins },
+};

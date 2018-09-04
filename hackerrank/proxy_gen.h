@@ -1,4 +1,5 @@
 #pragma once
+
 int main_base();
 int main_cube_summation();
 int main_kindergarten_adventures();

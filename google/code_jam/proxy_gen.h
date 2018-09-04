@@ -1,4 +1,5 @@
 #pragma once
+
 int main_bathroom_stalls();
 int main_number_guessing();
 int main_senate_evacuation();
