@@ -7,7 +7,7 @@ int main_merging_communities()
 {
 	unsigned N, Q;
 	cin >> N >> Q;
-	DisjointSet ds(N);
+	DisjointSet ds(N + 1);
 	for (; Q; --Q)
 	{
 		char c; unsigned i, j;
