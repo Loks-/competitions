@@ -53,7 +53,28 @@ inline int proxy_test_one(const std::string& solution, const std::string& input_
 	return 0;
 }
 
+inline int proxy_test_all(const std::string& problem, const std::string& input_file_name, const std::string& test_file_name)
+{
+	std::string problem_prefix = problem + "__";
+	unsigned correct_solutions = 0;
+	for (auto it = solutions_map.lower_bound(problem); it != solutions_map.end(); ++it)
+	{
+		if ((it->first != problem) && (it->first.substr(0, problem_prefix.size()) != problem_prefix))
+			break;
+		int solutions_results = proxy_test_one(it->first, input_file_name, test_file_name);
+		if (solutions_results)
+			return solutions_results;
+		++correct_solutions;
+	}
+	if (!correct_solutions)
+	{
+		std::cout << "No solution were found" << std::endl;
+		return -4;
+	}
+	return 0;
+}
+
 int proxy_auto(const std::string& solution, const std::string& input_file_name, const std::string& test_file_name)
 {
-	return test_file_name.empty() ? proxy_run(solution, input_file_name) : proxy_test_one(solution, input_file_name, test_file_name);
+	return test_file_name.empty() ? proxy_run(solution, input_file_name) : proxy_test_all(solution, input_file_name, test_file_name);
 }
