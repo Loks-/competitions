@@ -21,7 +21,6 @@ int main_mr_x_and_his_shots()
 		cin >> a >> b;
 		s += (upper_bound(va.begin(), va.end(), b) - va.begin());
 		s -= (lower_bound(vb.begin(), vb.end(), a) - vb.begin());
-		cout << s << endl;
 	}
 	cout << s << endl;
 	return 0;
