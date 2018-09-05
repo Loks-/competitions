@@ -2,6 +2,7 @@
 
 int main_base();
 int main_cube_summation();
+int main_direct_connections__treap();
 int main_kindergarten_adventures();
 int main_kindergarten_adventures__bit();
 int main_mr_x_and_his_shots();

@@ -4,6 +4,7 @@
 TSolutionsMap solutions_map {
 	{ "base", main_base },
 	{ "cube_summation", main_cube_summation },
+	{ "direct_connections__treap", main_direct_connections__treap },
 	{ "kindergarten_adventures", main_kindergarten_adventures },
 	{ "kindergarten_adventures__bit", main_kindergarten_adventures__bit },
 	{ "mr_x_and_his_shots", main_mr_x_and_his_shots },
