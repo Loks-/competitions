@@ -13,30 +13,30 @@ protected:
 public:
 	BITSparse(uint64_t _size) : size(_size) {}
 
-	void Reset(unsigned new_size)
+	void Reset(uint64_t new_size)
 	{
 		size = new_size;
 		values.clear();
 	}
 
-	void Add(unsigned index, TValue value = TValue(1))
+	void Add(uint64_t index, TValue value = TValue(1))
 	{
 		for (; index < size; index |= (index + 1))
 			values[index] += value;
 	}
 
 	// Get sum of all elements before end.
-	TValue Sum(unsigned end) const
+	TValue Sum(uint64_t end) const
 	{
 		TValue sum = 0;
-		for (unsigned index, index1 = end; index1; index1 &= index)
+		for (uint64_t index, index1 = end; index1; index1 &= index)
 		{
 			index = index1 - 1;
 			sum += values[index];
 		}
 		return sum;
 	}
-	TValue Sum(unsigned begin, unsigned end) const { return Sum(end) - Sum(begin); }
+	TValue Sum(uint64_t begin, uint64_t end) const { return Sum(end) - Sum(begin); }
 
-	TValue Get(unsigned index) const { return Sum(index, index + 1); }
+	TValue Get(uint64_t index) const { return Sum(index, index + 1); }
 };
