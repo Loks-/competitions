@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/contacts
 
-#include "common/hash.h"
+#include "common/stl/hash.h"
 #include "common/stl/base.h"
 
 #include <string>
