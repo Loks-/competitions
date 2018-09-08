@@ -28,11 +28,13 @@ public:
 	// Get sum of all elements before end.
 	TValue Sum(uint64_t end) const
 	{
-		TValue sum = 0;
+		TValue sum = TValue();
 		for (uint64_t index, index1 = end; index1; index1 &= index)
 		{
 			index = index1 - 1;
-			sum += values[index];
+			auto it = values.find(index);
+			if (it != values.end())
+				sum += it->second;
 		}
 		return sum;
 	}

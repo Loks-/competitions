@@ -43,7 +43,7 @@ public:
 	// Get sum of all elements before end.
 	TValue Sum(unsigned end1, unsigned end2, unsigned end3) const
 	{
-		TValue sum = 0;
+		TValue sum = TValue();
 		for (unsigned j1, i1 = end1; i1; i1 &= j1)
 		{
 			j1 = i1 - 1;
