@@ -1,8 +1,8 @@
 #pragma once
 
 #include "common/disjoint_set_extended.h"
+#include "common/hash.h"
 #include "common/timer.h"
-#include "common/stl/hash.h"
 
 #include "disjoint_set_proxy.h"
 

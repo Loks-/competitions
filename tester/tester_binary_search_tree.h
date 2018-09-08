@@ -1,8 +1,8 @@
 #pragma once
 
 #include "common/base.h"
+#include "common/hash.h"
 #include "common/timer.h"
-#include "common/stl/hash.h"
 
 #include "assert.h"
 #include "binary_search_tree_action.h"

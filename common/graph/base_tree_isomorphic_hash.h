@@ -2,7 +2,7 @@
 
 #include "../base.h"
 #include "base_tree.h"
-#include "../stl/hash.h"
+#include "../hash.h"
 #include <algorithm>
 #include <functional>
 #include <stack>
