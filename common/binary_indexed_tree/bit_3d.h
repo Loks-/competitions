@@ -4,7 +4,6 @@
 #include <algorithm>
 #include <vector>
 
-// Binary Indexed Tree (same as Fenwick tree)
 template<class TValue = int64_t>
 class BIT_3D
 {
