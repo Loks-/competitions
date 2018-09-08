@@ -76,7 +76,7 @@ protected:
 	{
 		if (!root) return h;
 		h = TreeHash(root->l, h);
-		h = std::hash_combine(h, root->key);
+		h = hash_combine(h, root->key);
 		return TreeHash(root->r, h);
 	}
 
@@ -132,7 +132,7 @@ protected:
 			AddAction(root);
 			root = tree.InsertNewNode(root, key, key);
 			VerifyParentLinksLazy(root);
-			h = std::hash_combine(h, GetInfoValue(root));
+			h = hash_combine(h, GetInfoValue(root));
 		}
 		AddResult("Insert", type, h, t.GetMilliseconds());
 		VerifyParentLinks(root);
@@ -148,7 +148,7 @@ protected:
 		{
 			typename TTree::TNode* node = tree.FindByOrder(root, i);
 			Assert(node);
-			h = std::hash_combine(h, node->key);
+			h = hash_combine(h, node->key);
 		}
 		AddResult("FindO", type, h, t.GetMilliseconds());
 		return root;
@@ -163,7 +163,7 @@ protected:
 		{
 			typename TTree::TNode* node = tree.FindByKey(root, 2 * i);
 			Assert(!node);
-			h = std::hash_combine(h, reinterpret_cast<size_t>(node));
+			h = hash_combine(h, reinterpret_cast<size_t>(node));
 		}
 		AddResult("FindK0", type, h, t.GetMilliseconds());
 		return root;
@@ -179,7 +179,7 @@ protected:
 		{
 			typename TTree::TNode* node = tree.FindByKey(root, key);
 			Assert(node);
-			h = std::hash_combine(h, (type <= shuffled) ? node->data : node->key);
+			h = hash_combine(h, (type <= shuffled) ? node->data : node->key);
 		}
 		AddResult("FindK1", type, h, t.GetMilliseconds());
 		return root;
@@ -196,7 +196,7 @@ protected:
 			AddAction(root);
 			root = tree.RemoveAndReleaseByKey(root, key);
 			VerifyParentLinksLazy(root);
-			h = std::hash_combine(h, (type <= shuffled) ? GetInfoValue(root) : root ? root->info.size : 0);
+			h = hash_combine(h, (type <= shuffled) ? GetInfoValue(root) : root ? root->info.size : 0);
 		}
 		AddResult("DelKey", type, h, t.GetMilliseconds());
 		return root;
@@ -215,7 +215,7 @@ protected:
 			AddAction(root);
 			root = tree.RemoveAndReleaseByNode(tree.GetNodeByRawIndex(i));
 			VerifyParentLinksLazy(root);
-			h = std::hash_combine(h, GetInfoValue(root));
+			h = hash_combine(h, GetInfoValue(root));
 		}
 		AddResult("DelNode", type, h, t.GetMilliseconds());
 		return root;

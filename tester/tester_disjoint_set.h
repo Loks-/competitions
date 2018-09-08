@@ -31,7 +31,7 @@ public:
 			if ((i > 0) && ((i % unions_per_block) == 0))
 				dsp.Init(size);
 			dsp.Union(vunions[i].first, vunions[i].second);
-			h = std::hash_combine(h, dsp.GetUnions());
+			h = hash_combine(h, dsp.GetUnions());
 		}
 		std::cout << "Test results: " << int(pc) << "\t" << h << "\t" << t.GetMilliseconds() << std::endl;
 		return h;
@@ -48,7 +48,7 @@ public:
 			if ((i > 0) && ((i % unions_per_block) == 0))
 				dsp.Reset();
 			dsp.Union(vunions[i].first, vunions[i].second);
-			h = std::hash_combine(h, dsp.GetUnions());
+			h = hash_combine(h, dsp.GetUnions());
 		}
 		std::cout << "Test results: " << "E" << "\t" << h << "\t" << t.GetMilliseconds() << std::endl;
 		return h;

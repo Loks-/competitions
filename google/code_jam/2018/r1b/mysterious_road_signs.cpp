@@ -1,4 +1,4 @@
-#include "common/hash.h"
+#include "common/stl/pair.h"
 #include "common/stl/base.h"
 
 #include <array>

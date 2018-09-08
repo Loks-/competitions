@@ -65,7 +65,7 @@ protected:
 		}
 		std::sort(v.begin(), v.end());
 		for (size_t h : v)
-			current = std::hash_combine(current, h);
+			current = hash_combine(current, h);
 		return current;
 	}
 
@@ -76,6 +76,6 @@ public:
 		if (p.second == CNone) return HashR(tree, p.first, p.second);
 		size_t h1 = HashR(tree, p.first, p.second);
 		size_t h2 = HashR(tree, p.second, p.first);
-		return (h1 < h2) ? std::hash_combine(h1, h2) : std::hash_combine(h2, h1);
+		return (h1 < h2) ? hash_combine(h1, h2) : hash_combine(h2, h1);
 	}
 };
