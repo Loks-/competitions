@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/p1-paper-cutting
 
-#include "common/stl_base.h"
+#include "common/stl/base.h"
 
 int main_cutting_paper_squares()
 {

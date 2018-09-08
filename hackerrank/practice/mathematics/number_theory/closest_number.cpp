@@ -1,7 +1,7 @@
 // https://www.hackerrank.com/challenges/closest-number
 
 #include "common/numeric/utils/pow.h"
-#include "common/stl_base.h"
+#include "common/stl/base.h"
 
 int main_closest_number()
 {

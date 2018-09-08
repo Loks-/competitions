@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/simple-text-editor
 
-#include "common/stl_base.h"
+#include "common/stl/base.h"
 
 #include <stack>
 #include <string>

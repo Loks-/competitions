@@ -5,7 +5,7 @@
 #include "common/binary_search_tree/treap.h"
 #include "common/numeric/modular.h"
 #include "common/vector/read.h"
-#include "common/stl_base.h"
+#include "common/stl/base.h"
 
 using TModular = Modular<>;
 using TTree = Treap<true, false, TEmpty, BSTInfoSumKeys<uint64_t, BSTInfoSize>, BSTActionNone, uint64_t>;

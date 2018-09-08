@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/special-multiple
 
-#include "common/stl_base.h"
+#include "common/stl/base.h"
 
 int main_special_multiple()
 {

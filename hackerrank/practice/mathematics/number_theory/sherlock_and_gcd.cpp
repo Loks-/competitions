@@ -1,7 +1,7 @@
 // https://www.hackerrank.com/challenges/sherlock-and-gcd
 
 #include "common/numeric/utils/gcd.h"
-#include "common/stl_base.h"
+#include "common/stl/base.h"
 
 int main_sherlock_and_gcd()
 {

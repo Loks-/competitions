@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/game-with-cells
 
-#include "common/stl_base.h"
+#include "common/stl/base.h"
 
 int main_army_game()
 {

@@ -1,7 +1,7 @@
 // https://www.hackerrank.com/challenges/components-in-graph
 
 #include "common/disjoint_set.h"
-#include "common/stl_base.h"
+#include "common/stl/base.h"
 
 int main_components_in_a_graph()
 {

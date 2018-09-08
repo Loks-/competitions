@@ -2,7 +2,7 @@
 
 #include "common/numeric/primality_test.h"
 #include "common/numeric/primes_list.h"
-#include "common/stl_base.h"
+#include "common/stl/base.h"
 
 namespace {
     static PrimesList pl(10000000);

@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/handshake
 
-#include "common/stl_base.h"
+#include "common/stl/base.h"
 
 int main_handshake()
 {

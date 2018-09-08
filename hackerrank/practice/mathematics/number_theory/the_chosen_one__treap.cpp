@@ -3,7 +3,7 @@
 #include "common/binary_search_tree/treap.h"
 #include "common/binary_search_tree/info/gcd.h"
 #include "common/vector/read.h"
-#include "common/stl_base.h"
+#include "common/stl/base.h"
 
 using TTreap = Treap<false, true, uint64_t, BSTInfoGCD<uint64_t, BSTInfoNone>>;
 using TNode = TTreap::TNode;

@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/sherlock-and-moving-tiles
 
-#include "common/stl_base.h"
+#include "common/stl/base.h"
 
 #include <cmath>
 #include <iomanip>

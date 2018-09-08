@@ -1,7 +1,7 @@
 // https://www.hackerrank.com/challenges/no-prefix-set
 
 #include "common/hash.h"
-#include "common/stl_base.h"
+#include "common/stl/base.h"
 
 #include <unordered_set>
 #include <string>

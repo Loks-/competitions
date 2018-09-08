@@ -1,7 +1,7 @@
 #include "message.h"
 #include "number_bases.h"
 
-#include "common/stl_base.h"
+#include "common/stl/base.h"
 
 #include <string>
 

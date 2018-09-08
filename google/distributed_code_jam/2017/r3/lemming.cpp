@@ -2,7 +2,7 @@
 #include "lemming.h"
 
 #include "common/disjoint_set.h"
-#include "common/stl_base.h"
+#include "common/stl/base.h"
 
 #include <unordered_map>
 

@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/and-xor-or
 
-#include "common/stl_base.h"
+#include "common/stl/base.h"
 
 #include <stack>
 

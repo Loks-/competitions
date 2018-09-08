@@ -1,7 +1,7 @@
 // https://www.hackerrank.com/challenges/queries-with-fixed-length
 
 #include "common/vector/read.h"
-#include "common/stl_base.h"
+#include "common/stl/base.h"
 
 #include <deque>
 

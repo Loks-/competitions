@@ -6,7 +6,7 @@
 #include "common/binary_search_tree/info/sum.h"
 #include "common/binary_search_tree/info/update_info.h"
 #include "common/binary_search_tree/utils/upper_bound.h"
-#include "common/stl_base.h"
+#include "common/stl/base.h"
 
 #include <iomanip>
 #include <unordered_set>

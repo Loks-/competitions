@@ -1,7 +1,7 @@
 #include "message.h"
 #include "pancakes.h"
 
-#include "common/stl_base.h"
+#include "common/stl/base.h"
 
 namespace
 {

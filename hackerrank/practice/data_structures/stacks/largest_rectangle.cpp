@@ -1,7 +1,7 @@
 // https://www.hackerrank.com/challenges/largest-rectangle
 
 #include "common/binary_search_tree/treap.h"
-#include "common/stl_base.h"
+#include "common/stl/base.h"
 
 using TTreap = Treap<false, false, TEmpty>;
 using TNode = TTreap::TNode;

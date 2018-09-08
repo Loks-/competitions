@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/queue-using-two-stacks
 
-#include "common/stl_base.h"
+#include "common/stl/base.h"
 
 #include <queue>
 

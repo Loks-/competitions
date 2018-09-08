@@ -1,7 +1,7 @@
 // https://www.hackerrank.com/challenges/merging-communities
 
 #include "common/disjoint_set.h"
-#include "common/stl_base.h"
+#include "common/stl/base.h"
 
 int main_merging_communities()
 {

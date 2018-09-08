@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/minimum-average-waiting-time
 
-#include "common/stl_base.h"
+#include "common/stl/base.h"
 
 #include <functional>
 #include <queue>

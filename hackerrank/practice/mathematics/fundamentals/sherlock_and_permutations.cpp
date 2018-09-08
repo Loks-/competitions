@@ -2,7 +2,7 @@
 
 #include "common/numeric/modular.h"
 #include "common/numeric/factorial_modular.h"
-#include "common/stl_base.h"
+#include "common/stl/base.h"
 
 using TModular = Modular<>;
 using TFactorial = FactorialModular<TModular, true>;

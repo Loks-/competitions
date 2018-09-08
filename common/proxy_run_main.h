@@ -1,7 +1,6 @@
 #pragma once
 
 #include "proxy_run_base.h"
-
 #include <iostream>
 #include <fstream>
 #include <sstream>

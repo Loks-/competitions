@@ -2,7 +2,7 @@
 
 #include "common/numeric/utils/gcd.h"
 #include "common/vector/read.h"
-#include "common/stl_base.h"
+#include "common/stl/base.h"
 
 int main_salary_blues()
 {

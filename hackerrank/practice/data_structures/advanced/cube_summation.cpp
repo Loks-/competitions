@@ -1,7 +1,7 @@
 // https://www.hackerrank.com/challenges/cube-summation
 
 #include "common/binary_indexed_tree/bit_3d.h"
-#include "common/stl_base.h"
+#include "common/stl/base.h"
 
 #include <string>
 

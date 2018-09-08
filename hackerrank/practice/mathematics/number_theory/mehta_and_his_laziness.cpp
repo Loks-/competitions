@@ -2,7 +2,7 @@
 
 #include "common/numeric/primes_list.h"
 #include "common/numeric/utils/gcd.h"
-#include "common/stl_base.h"
+#include "common/stl/base.h"
 
 int main_mehta_and_his_laziness()
 {

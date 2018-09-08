@@ -1,4 +1,4 @@
-#include "common/stl_full.h"
+#include "common/stl/full.h"
 
 int main()
 {

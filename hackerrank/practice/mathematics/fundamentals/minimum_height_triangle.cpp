@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/lowest-triangle
 
-#include "common/stl_base.h"
+#include "common/stl/base.h"
 
 int main_minimum_height_triangle()
 {

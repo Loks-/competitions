@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/scalar-products
 
-#include "common/stl_base.h"
+#include "common/stl/base.h"
 
 #include <unordered_set>
 

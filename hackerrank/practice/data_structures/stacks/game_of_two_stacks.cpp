@@ -1,7 +1,7 @@
 // https://www.hackerrank.com/challenges/game-of-two-stacks
 
 #include "common/vector/read.h"
-#include "common/stl_base.h"
+#include "common/stl/base.h"
 
 int main_game_of_two_stacks()
 {

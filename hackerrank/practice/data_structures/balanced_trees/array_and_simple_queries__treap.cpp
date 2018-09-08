@@ -5,7 +5,7 @@
 #include "common/binary_search_tree/utils/rotate.h"
 #include "common/vector/read.h"
 #include "common/vector/write.h"
-#include "common/stl_base.h"
+#include "common/stl/base.h"
 
 using TTreap = Treap<false, false, int>;
 using TNode = TTreap::TNode;

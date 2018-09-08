@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/x-and-his-shots
 
-#include "common/stl_base.h"
+#include "common/stl/base.h"
 
 int main_mr_x_and_his_shots()
 {

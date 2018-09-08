@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/filling-jars
 
-#include "common/stl_base.h"
+#include "common/stl/base.h"
 
 int main_filling_jars()
 {

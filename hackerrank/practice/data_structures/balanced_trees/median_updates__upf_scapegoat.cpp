@@ -2,7 +2,7 @@
 
 #include "common/binary_search_tree/scapegoat_tree.h"
 #include "common/binary_search_tree/utils/median.h"
-#include "common/stl_base.h"
+#include "common/stl/base.h"
 
 #include <iomanip>
 

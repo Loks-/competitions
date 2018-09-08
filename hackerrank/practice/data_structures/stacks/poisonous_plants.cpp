@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/poisonous-plants
 
-#include "common/stl_base.h"
+#include "common/stl/base.h"
 
 #include <stack>
 
