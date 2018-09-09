@@ -6,16 +6,16 @@
 namespace std {
 
 template<class T1, class T2>
-pair<T1, T2>& operator+=(pair<T1, T2>& l, const pair<T1, T2>& r) { l.first += r.first; l.second += r.second; return l; }
+inline pair<T1, T2>& operator+=(pair<T1, T2>& l, const pair<T1, T2>& r) { l.first += r.first; l.second += r.second; return l; }
 
 template<class T1, class T2>
-pair<T1, T2>& operator-=(pair<T1, T2>& l, const pair<T1, T2>& r) { l.first -= r.first; l.second -= r.second; return l; }
+inline pair<T1, T2>& operator-=(pair<T1, T2>& l, const pair<T1, T2>& r) { l.first -= r.first; l.second -= r.second; return l; }
 
 template<class T1, class T2>
-pair<T1, T2> operator+(const pair<T1, T2>& l, const pair<T1, T2>& r) { return make_pair(l.first + r.first, l.second + r.second); }
+inline pair<T1, T2> operator+(const pair<T1, T2>& l, const pair<T1, T2>& r) { return make_pair(l.first + r.first, l.second + r.second); }
 
 template<class T1, class T2>
-pair<T1, T2> operator-(const pair<T1, T2>& l, const pair<T1, T2>& r) { return make_pair(l.first - r.first, l.second - r.second); }
+inline pair<T1, T2> operator-(const pair<T1, T2>& l, const pair<T1, T2>& r) { return make_pair(l.first - r.first, l.second - r.second); }
 
 template<class T1, class T2>
 struct hash<pair<T1, T2>>

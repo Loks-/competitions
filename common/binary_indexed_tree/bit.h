@@ -13,13 +13,13 @@ protected:
 	std::vector<TValue> values;
 
 public:
-	BIT(unsigned _size) : size(_size) { values.resize(size, 0);	}
+	BIT(unsigned _size) : size(_size) { values.resize(size, TValue());	}
 
 	void Reset(unsigned new_size)
 	{
 		size = new_size;
 		values.resize(size);
-		std::fill(values.begin(), values.end(), TValue(0));
+		std::fill(values.begin(), values.end(), TValue());
 	}
 
 	void Add(unsigned index, TValue value = TValue(1))
