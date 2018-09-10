@@ -229,7 +229,7 @@ protected:
 				parent->SetR(child);
 		}
 		else if (child) 
-			child->SetParentLink(0);
+			child->SetP(0);
 		node->ResetLinksAndUpdateInfo();
 		UpdateInfoNodeToRootWithPath(node_to_root_path, 1);
 

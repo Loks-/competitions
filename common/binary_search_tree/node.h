@@ -42,7 +42,7 @@ public:
 
 	void SetL(TSelf* node) { l = node; }
 	void SetR(TSelf* node) { r = node; }
-	void SetParentLink(TSelf* node) {}
+	void SetP(TSelf* node) {}
 	void ResetLinks() { l = r = 0; }
 };
 
@@ -55,7 +55,7 @@ public:
 
 	void SetL(TSelf* node) { l = node; if (node) node->p = static_cast<TSelf*>(this); }
 	void SetR(TSelf* node) { r = node; if (node) node->p = static_cast<TSelf*>(this); }
-	void SetParentLink(TSelf* node) { p = node; }
+	void SetP(TSelf* node) { p = node; }
 	void ResetLinks() { l = r = p = 0; }
 };
 

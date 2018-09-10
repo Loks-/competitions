@@ -26,7 +26,7 @@ inline void BSTSwapNotRelated(TNode* node1, TNode* parent1, TNode* node2, TNode*
 			parent1->SetR(node2);
 	}
 	else
-		node2->SetParentLink(0);
+		node2->SetP(0);
 	if (parent2)
 	{
 		if (node2 == parent2->l)
@@ -35,7 +35,7 @@ inline void BSTSwapNotRelated(TNode* node1, TNode* parent1, TNode* node2, TNode*
 			parent2->SetR(node1);
 	}
 	else
-		node1->SetParentLink(0);
+		node1->SetP(0);
 }
 
 template<class TNode>
@@ -65,7 +65,7 @@ inline void BSTSwapChildParent(TNode* child, TNode* parent, TNode* gparent)
 			gparent->SetR(child);
 	}
 	else
-		child->SetParentLink(0);
+		child->SetP(0);
 }
 
 template<class TNode>

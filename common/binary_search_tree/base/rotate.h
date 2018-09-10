@@ -18,7 +18,7 @@ inline void BSTRotate(TNode* child, TNode* parent, TNode* gparent)
 		else
 			gparent->r = child;
 	}
-	child->SetParentLink(gparent);
+	child->SetP(gparent);
 	if (parent->l == child)
 	{
 		parent->SetL(child->r);

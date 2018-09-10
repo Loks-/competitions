@@ -181,7 +181,7 @@ public:
 			child = UpdateAndFixSubtree(node);
 			if (child != node)
 			{
-				child->SetParentLink(parent);
+				child->SetP(parent);
 				if (parent)
 				{
 					if (parent->l == node)

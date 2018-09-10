@@ -119,7 +119,7 @@ protected:
 				output_l = p;
 				SplitByKeyI(p->r, key, p->r, output_r);
 				p->UpdateInfo();
-				if (p->r) p->r->SetParentLink(p);
+				if (p->r) p->r->SetP(p);
 			}
 			else
 			{
@@ -134,7 +134,7 @@ protected:
 				output_r = p;
 				SplitByKeyI(p->l, key, output_l, p->l);
 				p->UpdateInfo();
-				if (p->l) p->l->SetParentLink(p);
+				if (p->l) p->l->SetP(p);
 			}
 			else
 			{
@@ -153,8 +153,8 @@ public:
 		else
 		{
 			SplitByKeyI(root, key, output_l, output_r);
-			if (output_l) output_l->SetParentLink(0);
-			if (output_r) output_r->SetParentLink(0);
+			if (output_l) output_l->SetP(0);
+			if (output_r) output_r->SetP(0);
 		}
 	}
 
@@ -167,7 +167,7 @@ protected:
 		{
 			output_r = p;
 			SplitBySizeI(p->l, lsize, output_l, p->l);
-			if (p->l) p->l->SetParentLink(p);
+			if (p->l) p->l->SetP(p);
 		}
 		else if (lsize == hlsize)
 		{
@@ -185,7 +185,7 @@ protected:
 		{
 			output_l = p;
 			SplitBySizeI(p->r, lsize - hlsize - 1, p->r, output_r);
-			if (p->r) p->r->SetParentLink(p);
+			if (p->r) p->r->SetP(p);
 		}
 		p->UpdateInfo();
 	}
@@ -211,8 +211,8 @@ public:
 		else
 		{
 			SplitBySizeI(root, lsize, output_l, output_r);
-			if (output_l) output_l->SetParentLink(0);
-			if (output_r) output_r->SetParentLink(0);
+			if (output_l) output_l->SetP(0);
+			if (output_r) output_r->SetP(0);
 		}
 	}
 
@@ -233,8 +233,8 @@ public:
 		else
 		{
 			SplitByKeyI(root, node->key, node->l, node->r);
-			if (node->l) node->l->SetParentLink(node);
-			if (node->r) node->r->SetParentLink(node);
+			if (node->l) node->l->SetP(node);
+			if (node->r) node->r->SetP(node);
 			node->UpdateInfo();
 			return node;
 		}
@@ -252,8 +252,8 @@ public:
 		else
 		{
 			removed_node = root;
-			TNode* l = root->l; if (l) l->SetParentLink(0);
-			TNode* r = root->r; if (r) r->SetParentLink(0);
+			TNode* l = root->l; if (l) l->SetP(0);
+			TNode* r = root->r; if (r) r->SetP(0);
 			root->ResetLinksAndUpdateInfo();
 			return Join(l, r);
 		}
@@ -266,8 +266,8 @@ public:
 		static_assert(use_parent, "use_parent should be true");
 		assert(node);
 		ApplyActionRootToNode(node);
-		TNode* l = node->l; if (l) l->SetParentLink(0);
-		TNode* r = node->r; if (r) r->SetParentLink(0);
+		TNode* l = node->l; if (l) l->SetP(0);
+		TNode* r = node->r; if (r) r->SetP(0);
 		TNode* p = node->p;
 		node->ResetLinksAndUpdateInfo();
 		TNode* m = Join(l, r);

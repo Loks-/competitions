@@ -220,8 +220,8 @@ public:
 	{
 		assert(node);
 		ApplyActionRootToNode(node);
-		TNode* l = node->l; if (l) l->SetParentLink(0);
-		TNode* r = node->r; if (r) r->SetParentLink(0);
+		TNode* l = node->l; if (l) l->SetP(0);
+		TNode* r = node->r; if (r) r->SetP(0);
 		TNode* p = node->p;
 		node->ResetLinksAndUpdateInfo();
 		TNode* m = Join(l, r);

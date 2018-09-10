@@ -174,7 +174,7 @@ public:
 			child = FixBalance<true>(node);
 		}
 		if (child)
-			child->SetParentLink(0);
+			child->SetP(0);
 		return child;
 	}
 };
