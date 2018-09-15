@@ -2,30 +2,11 @@
 
 #include "../base.h"
 
-template<bool use_key, class TKey, class TSelf>
-class TSTNodeProxyKey {};
-
-template<class TKey, class TSelf>
-class TSTNodeProxyKey<false, TKey, TSelf>
-{
-public:
-	void CopyKey(const TSelf* p) {}
-};
-
-template<class TKey, class TSelf>
-class TSTNodeProxyKey<true, TKey, TSelf>
-{
-public:
-	TKey key;
-	void CopyKey(const TSelf* p) { assert(p); key = p->key; }
-};
-
-template<bool use_key, bool use_parent, class TKey, class TSelf>
+template<bool use_parent, class TSelf>
 class TSTNodeProxyParent {};
 
-template<bool use_key, class TKey, class TSelf>
-class TSTNodeProxyParent<use_key, false, TKey, TSelf> :
-	public TSTNodeProxyKey<use_key, TKey>
+template<class TSelf>
+class TSTNodeProxyParent<false, TSelf>
 {
 public:
 	TSelf *l = 0, *r = 0;
@@ -36,9 +17,8 @@ public:
 	void ResetLinks() { l = r = 0; }
 };
 
-template<bool use_key, class TKey, class TSelf>
-class TSTNodeProxyParent<use_key, true, TKey, TSelf> :
-	public TSTNodeProxyKey<use_key, TKey>
+template<class TSelf>
+class TSTNodeProxyParent<true, TSelf>
 {
 public:
 	TSelf *l = 0, *r = 0, *p = 0;
@@ -53,23 +33,18 @@ template<
 	class TTData,
 	class TTInfo,
 	class TTAction,
-	bool _use_key = false,
-	bool _use_parent = true,
-	class TTKey = int64_t>
+	bool _use_parent = true>
 class STNode :
-	public TSTNodeProxyParent<_use_key, _use_parent, TTKey,
-		STNode<TTData, TTInfo, TTAction, _use_key, _use_parent, TTKey>>
+	public TSTNodeProxyParent<_use_parent, STNode<TTData, TTInfo, TTAction, _use_parent>>
 {
 public:
-	static const bool use_key = _use_key;
 	static const bool use_parent = _use_parent;
 
 	using TData = TTData;
 	using TInfo = TTInfo;
 	using TAction = TTAction;
-	using TKey = TTKey;
-	using TSelf = BSTNode<TData, TInfo, TAction, use_key, use_parent, TKey>;
-	using TProxyParent = TBSTNodeProxyParent<use_key, use_parent, TKey, TSelf>;
+	using TSelf = BSTNode<TData, TInfo, TAction, use_parent>;
+	using TProxyParent = TBSTNodeProxyParent<use_parent, TSelf>;
 
 	TData * data = 0;
 	TInfo info;
