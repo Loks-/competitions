@@ -9,8 +9,8 @@ public:
 
 	static const bool is_none = true;
 	static const bool use_data = false;
+    static const bool has_segment = false;
 	static const bool has_size = false;
-    static const bool has_key = false;
 
 	template<class TData>
 	void UpdateData(const TData* data) {}
