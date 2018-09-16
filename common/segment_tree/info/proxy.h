@@ -17,13 +17,13 @@ public:
         if (node->IsLeaf())
             TBase::UpdateData(node->data);
         else
-            TBase::UpdateLR(*(static_cast<TBase*>(&node->l->info)), *(static_cast<TBase*>(&node->r->info)));
+            TBase::UpdateLR(node->l->info, node->r->info);
     }
 
     static TSelf MergeLR(const TSelf& l, const TSelf& r)
     {
         TSelf t;
-        t.UpdateLR(*(static_cast<const TBase*>(&l)), *(static_cast<const TBase*>(&r)));
+        t.UpdateLR(l, r);
         return t;
     }
 };

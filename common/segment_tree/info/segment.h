@@ -2,7 +2,6 @@
 
 #include "none.h"
 #include "proxy.h"
-#include <algorithm>
 
 template<class TTCoordinate = unsigned>
 class TSTInfoSegment : public TSTInfoNone
@@ -22,8 +21,8 @@ public:
     void UpdateLR(const TSelf& l, const TSelf& r)
     {
         TBase::UpdateLR(l, r);
-        left = std::min(l.left, r.left);
-        right = std::max(l.right, r.right);
+        left = l.left;
+        right = r.right;
     }
 };
 
