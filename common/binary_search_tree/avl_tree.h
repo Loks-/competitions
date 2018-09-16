@@ -1,13 +1,13 @@
 #pragma once
 
-#include "../base.h"
-#include "node.h"
-#include "tree.h"
 #include "action/none.h"
 #include "action/apply_action.h"
 #include "base/rotate.h"
 #include "info/height.h"
 #include "info/size.h"
+#include "node.h"
+#include "tree.h"
+#include "../base.h"
 
 template <
 	bool _use_parent,

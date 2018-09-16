@@ -1,9 +1,9 @@
 #pragma once
 
-#include "../base.h"
-#include "node.h"
 #include "action/none.h"
 #include "info/segment.h"
+#include "node.h"
+#include "../base.h"
 
 #include <vector>
 

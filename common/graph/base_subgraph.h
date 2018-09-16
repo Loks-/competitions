@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../base.h"
 #include "base_graph.h"
 #include "base_tree.h"
+#include "../base.h"
 #include <vector>
 
 class BaseSubgraph

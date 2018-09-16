@@ -1,8 +1,5 @@
 #pragma once
 
-#include "../base.h"
-#include "node.h"
-#include "tree.h"
 #include "action/apply_action.h"
 #include "action/none.h"
 #include "base/insert_by_key.h"
@@ -13,6 +10,9 @@
 #include "info/size.h"
 #include "info/update_info.h"
 #include "info/update_info_with_path.h"
+#include "node.h"
+#include "tree.h"
+#include "../base.h"
 #include <algorithm>
 #include <vector>
 #include <utility>

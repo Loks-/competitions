@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../../base.h"
 #include "sibling.h"
+#include "../../base.h"
 #include <utility>
 
 template<class TNode>

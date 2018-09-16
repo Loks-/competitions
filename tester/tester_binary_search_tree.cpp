@@ -1,9 +1,9 @@
-#include "common/timer.h"
 #include "common/binary_search_tree/avl_tree.h"
 #include "common/binary_search_tree/red_black_tree.h"
 #include "common/binary_search_tree/scapegoat_tree.h"
 #include "common/binary_search_tree/splay_tree.h"
 #include "common/binary_search_tree/treap.h"
+#include "common/timer.h"
 
 #include "tester_binary_search_tree.h"
 

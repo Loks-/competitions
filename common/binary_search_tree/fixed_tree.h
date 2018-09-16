@@ -1,10 +1,10 @@
 #pragma once
 
-#include "../base.h"
-#include "node.h"
-#include "nodes_manager.h"
 #include "action/none.h"
 #include "info/size.h"
+#include "node.h"
+#include "nodes_manager.h"
+#include "../base.h"
 #include <algorithm>
 #include <vector>
 #include <utility>

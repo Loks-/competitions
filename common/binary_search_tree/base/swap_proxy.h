@@ -1,9 +1,9 @@
 #pragma once
 
-#include "../../base.h"
 #include "swap.h"
 #include "../action/apply_action.h"
 #include "../info/update_info.h"
+#include "../../base.h"
 
 template<class TNode, bool update_info, bool apply_action>
 inline void BSTSwapProxy(TNode* node1, TNode* node2)

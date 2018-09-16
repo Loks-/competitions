@@ -1,12 +1,12 @@
 #pragma once
 
-#include "../base.h"
-#include "node.h"
-#include "tree.h"
 #include "action/apply_action.h"
 #include "action/none.h"
 #include "info/size.h"
 #include "info/update_info.h"
+#include "node.h"
+#include "tree.h"
+#include "../base.h"
 #include <stack>
 #include <vector>
 
