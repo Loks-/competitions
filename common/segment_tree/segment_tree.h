@@ -2,13 +2,15 @@
 
 #include "../base.h"
 #include "node.h"
+#include "action/none.h"
+#include "info/none.h"
 
 #include <vector>
 
 template<
 	class TTData,
-	class TTInfo,
-	class TTAction,
+	class TTInfo = STInfoNone,
+	class TTAction = STActionNone,
 	bool _use_parent = true>
 class SegmentTree
 {
@@ -33,9 +35,9 @@ public:
 		nodes.resize(0); nodes.resize(max_nodes); 
 		used_data = used_nodes = 0;
 	}
-	void ResetNodes() { ResetNodes(unsigned(data.size(), unsigned(nodes.size())); }
+	void ResetNodes() { ResetNodes(unsigned(data.size()), unsigned(nodes.size())); }
 	SegmentTree(unsigned data_size, unsigned max_nodes) { ResetNodes(data_size, max_nodes); }
-	SegmentTree(unsigned data_size) { ResetNodes(data_size, 2 * data_size - 1); }
+	SegmentTree(unsigned data_size) { ResetNodes(data_size, 2 * data_size); }
 
 	unsigned DataUsed() const {return used_data; }
 	unsigned UsedNodes() const { return used_nodes; }
@@ -50,7 +52,7 @@ public:
 		node->data = &(data[used_data]);
 		data[used_data++] = value;
 		node->UpdateInfo();
-		return info;
+		return node;
 	}
 	
 	TNode* GetNewNode(TNode* l, TNode* r)
@@ -76,5 +78,5 @@ protected:
 	}
 
 public:
-	TNode* BuildTree(const std::vector<TData*>& vdata) { return BuildTreeI(vnodes, 0, unsigned(vdata.size())); }
+	TNode* BuildTree(const std::vector<TData*>& vdata) { return BuildTreeI(vdata, 0, unsigned(vdata.size())); }
 };

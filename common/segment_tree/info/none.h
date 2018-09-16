@@ -5,7 +5,7 @@
 class TSTInfoNone
 {
 public:
-	using TSelf = STInfoNone;
+	using TSelf = TSTInfoNone;
 
 	static const bool is_none = true;
 	static const bool use_data = false;

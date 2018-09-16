@@ -43,8 +43,8 @@ public:
 	using TData = TTData;
 	using TInfo = TTInfo;
 	using TAction = TTAction;
-	using TSelf = BSTNode<TData, TInfo, TAction, use_parent>;
-	using TProxyParent = TBSTNodeProxyParent<use_parent, TSelf>;
+	using TSelf = STNode<TData, TInfo, TAction, use_parent>;
+	using TProxyParent = TSTNodeProxyParent<use_parent, TSelf>;
 
 	TData * data = 0;
 	TInfo info;

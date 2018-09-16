@@ -31,5 +31,5 @@ inline typename TSegmentTree::TNode* CSTBuildTree(TSegmentTree& st, const std::v
     using TInfo = typename TSegmentTree::TInfo;
     static_assert(TInfo::has_segment, "has_segment should be true");
     assert(vdata.size() == vx.size());
-    return CSTBuildTreeI(st, vnodes, vx, 0, unsigned(vdata.size()));
+    return CSTBuildTreeI(st, vdata, vx, 0, unsigned(vdata.size()));
 }
