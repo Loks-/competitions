@@ -1,30 +1,28 @@
 #pragma once
 
 #include "../../base.h"
+#include <algorithm>
 
 template<class TNode>
-inline typename TNode::TInfo STGetSegmentI(const TNode* root, unsigned begin, unsigned end)
+inline typename TNode::TInfo STGetSegmentI(const TNode* root, const typename TNode::TInfo::TCoordinate& l, const typename TNode::TInfo::TCoordinate& r)
 {
     using TInfo = typename TNode::TInfo;
-    if ((begin == 0) && (end == root->info.GetSize()) return root->info;
+    if ((l <= root->info.left) && (r >= root->info.right)) return root->info;
     assert(!root->IsLeaf());
-    unsigned m = root->l->info.GetSize();
-    if (end <= m)
-        return STGetSegmentI(root->l, begin, end);
-    else if (begin >= m)
-        return STGetSegmentI(root->r, begin - m, end - m);
+    if (r < root->r->info.left)
+        return STGetSegmentI(root->l, l, r);
+    else if (l > root->l->info.right)
+        return STGetSegmentI(root->r, l, r);
     else
-        return TInfo::MergeLR(STGetSegmentI(root->l, begin, m), STGetSegmentI(root->r, m, end));
+        return TInfo::MergeLR(STGetSegmentI(root->l, l, r), STGetSegmentI(root->r, l, r));
 }
 
 template<class TNode>
-inline typename TNode::TInfo STGetSegment(const TNode* root, unsigned begin, unsigned end)
+inline typename TNode::TInfo STGetSegment(const TNode* root, const typename TNode::TInfo::TCoordinate& l, const typename TNode::TInfo::TCoordinate& r)
 {
     using TInfo = typename TNode::TInfo;
-    static_assert(TInfo::has_size, "has_size should be true");
-    if (begin >= end) return TInfo();
-    assert(root);
-    end = std::min(end, root->info.GetSize());
-    if (begin >= end) return TInfo();
-    return STGetSegmentI(root, begin, end);
+    static_assert(TInfo::has_coordinate, "has_coordinate should be true");
+    if (!root || (r < l)) return TInfo();
+    if ((r < root->info.left) || (l > root->info.right)) return TInfo();
+    return STGetSegmentI(root, l, r);
 }

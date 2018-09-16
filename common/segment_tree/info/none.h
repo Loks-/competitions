@@ -5,12 +5,14 @@
 class TSTInfoNone
 {
 public:
+	using TCoordinate = unsigned;
 	using TSelf = TSTInfoNone;
 
 	static const bool is_none = true;
 	static const bool use_data = false;
-    static const bool has_segment = false;
-	static const bool has_size = false;
+    static const bool has_coordinate = false;
+
+	void SetCoordinate(const TCoordinate& x) {}
 
 	template<class TData>
 	void UpdateData(const TData* data) {}

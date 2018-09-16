@@ -3,13 +3,13 @@
 #include "../base.h"
 #include "node.h"
 #include "action/none.h"
-#include "info/none.h"
+#include "info/segment.h"
 
 #include <vector>
 
 template<
 	class TTData,
-	class TTInfo = STInfoNone,
+	class TTInfo = STInfoSegment,
 	class TTAction = STActionNone,
 	bool _use_parent = true>
 class SegmentTree
@@ -22,6 +22,7 @@ public:
 	using TAction = TTAction;
 	using TSelf = SegmentTree<TData, TInfo, TAction, use_parent>;
 	using TNode = STNode<TData, TInfo, TAction, use_parent>;
+	using TCoordinate = typename TInfo::TCoordinate;
 
 protected:
 	std::vector<TData> data;
@@ -45,38 +46,36 @@ public:
 	
 	TNode* GetNewNode() { assert(used_nodes < nodes.size()); return &(nodes[used_nodes++]); }
 	
-	TNode* GetNewNode(const TData& value)
-	{
-		assert(used_data < data.size());
-		TNode* node = GetNewNode();
-		node->data = &(data[used_data]);
-		data[used_data++] = value;
-		node->UpdateInfo();
-		return node;
-	}
-	
-	TNode* GetNewNode(TNode* l, TNode* r)
-	{
-		TNode* node = GetNewNode();
-		node->SetL(l);
-		node->SetR(r);
-		node->UpdateInfo();
-		return node;
-	}
-
 protected:
-	TNode* BuildTreeI(const std::vector<TData>& vdata, unsigned first, unsigned last)
+	TNode* BuildTreeI(const std::vector<TData>& vdata, const std::vector<TCoordinate>& vx, unsigned first, unsigned last)
 	{
-		if (first >= last) return 0;
-		if (first + 1 == last) return GetNewNode(vdata[first]);
 		TNode* root = GetNewNode();
-		unsigned m = (first + last) / 2;
-		root->SetL(BuildTreeI(vdata, first, m));
-		root->SetR(BuildTreeI(vdata, m + 1, last));
+		if (first == last)
+		{
+			root->data = &(data[used_data]);
+			data[used_data++] = vdata[first];
+			root->info.SetCoordinate(vx[first]);
+		}
+		else
+		{
+			unsigned m = (first + last) / 2;
+			root->SetL(BuildTreeI(vdata, vx, first, m));
+			root->SetR(BuildTreeI(vdata, vx, m + 1, last));
+		}
 		root->UpdateInfo();
 		return root;
 	}
 
 public:
-	TNode* BuildTree(const std::vector<TData*>& vdata) { return BuildTreeI(vdata, 0, unsigned(vdata.size())); }
+	TNode* BuildTree(const std::vector<TData>& vdata)
+	{
+		// ...
+		return BuildTreeI(vdata, 0, unsigned(vdata.size()));
+	}
+
+	TNode* BuildTree(const std::vector<TData>& vdata, const std::vector<TCoordinate>& vx)
+	{
+		assert(vdata.size() == vx.size());
+		return BuildTreeI(vdata, vx, 0, unsigned(vdata.size()));
+	}
 };

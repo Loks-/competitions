@@ -1,32 +1,31 @@
 #pragma once
 
-#include "../../base.h"
+#include "none.h"
 #include "proxy.h"
 #include <algorithm>
 
-template<class TInfo, class TTCoordinate = int64_t>
-class TSTInfoSegment : public TInfo
+template<class TTCoordinate = unsigned>
+class TSTInfoSegment : public TSTInfoNone
 {
 public:
     using TCoordinate = TTCoordinate;
-    using TBase = TInfo;
-    using TSelf = TSTInfoSegment<TBase, TCoordinate>;
+    using TBase = TSTInfoNone;
+    using TSelf = TSTInfoSegment<TCoordinate>;
 
 	static const bool is_none = false;
-	static const bool has_segment = true;
+	static const bool has_coordinate = true;
 
-	TCoordinate xleft, xright;
+	TCoordinate left, right;
 
-    void SetCoordinates(const TCoordinate& x) { xleft = xright = x; }
-    void SetCoordinates(const TCoordinate& xl, const TCoordinate& xr) { xleft = xl; xright = xr; }
+    void SetCoordinate(const TCoordinate& x) { left = right = x; }
 
     void UpdateLR(const TSelf& l, const TSelf& r)
     {
         TBase::UpdateLR(l, r);
-        xleft = std::min(l.xleft, r.xleft);
-        xright = std::max(l.xright, r.xright);
+        left = std::min(l.left, r.left);
+        right = std::max(l.right, r.right);
     }
 };
 
-template<class TInfo, class TCoordinate = int64_t>
-using STInfoSegment = STInfoProxy<TSTInfoSegment<TInfo, TCoordinate>>;
+template<class TCoordinate = unsigned>
+using STInfoSegment = STInfoProxy<TSTInfoSegment<TCoordinate>>;
