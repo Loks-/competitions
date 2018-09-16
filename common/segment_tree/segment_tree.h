@@ -9,7 +9,7 @@
 
 template<
 	class TTData,
-	class TTInfo = STInfoSegment,
+	class TTInfo = STInfoSegment<>,
 	class TTAction = STActionNone,
 	bool _use_parent = true>
 class SegmentTree
@@ -76,6 +76,7 @@ public:
 	TNode* BuildTree(const std::vector<TData>& vdata, const std::vector<TCoordinate>& vx)
 	{
 		assert(vdata.size() == vx.size());
-		return BuildTreeI(vdata, vx, 0, unsigned(vdata.size()));
+		if (vdata.size() == 0) return 0;
+		return BuildTreeI(vdata, vx, 0, unsigned(vdata.size()) - 1);
 	}
 };
