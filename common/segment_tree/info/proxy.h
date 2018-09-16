@@ -23,7 +23,7 @@ public:
     static TSelf MergeLR(const TSelf& l, const TSelf& r)
     {
         TSelf t;
-        t.UpdateLR(*(static_cast<TBase*>(&l)), *(static_cast<TBase*>(&r)));
+        t.UpdateLR(*(static_cast<const TBase*>(&l)), *(static_cast<const TBase*>(&r)));
         return t;
     }
 };

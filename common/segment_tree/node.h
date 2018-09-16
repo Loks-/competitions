@@ -34,8 +34,7 @@ template<
 	class TTInfo,
 	class TTAction,
 	bool _use_parent = true>
-class STNode :
-	public TSTNodeProxyParent<_use_parent, STNode<TTData, TTInfo, TTAction, _use_parent>>
+class STNode : public TSTNodeProxyParent<_use_parent, STNode<TTData, TTInfo, TTAction, _use_parent>>
 {
 public:
 	static const bool use_parent = _use_parent;
@@ -46,7 +45,7 @@ public:
 	using TSelf = STNode<TData, TInfo, TAction, use_parent>;
 	using TProxyParent = TSTNodeProxyParent<use_parent, TSelf>;
 
-	TData * data = 0;
+	TData* data = 0;
 	TInfo info;
 	TAction action;
 

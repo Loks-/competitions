@@ -11,6 +11,7 @@ TSolutionsMap solutions_map {
 	{ "kindergarten_adventures__bit", main_kindergarten_adventures__bit },
 	{ "mr_x_and_his_shots", main_mr_x_and_his_shots },
 	{ "subsequence_weighting__bit_sparse", main_subsequence_weighting__bit_sparse },
+	{ "subsequence_weighting__segment_tree", main_subsequence_weighting__segment_tree },
 	{ "subsequence_weighting__treap", main_subsequence_weighting__treap },
 	{ "2d_arrays_ds", main_2d_arrays_ds },
 	{ "array_manipulation", main_array_manipulation },
