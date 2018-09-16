@@ -4,6 +4,7 @@
 #include "info/segment.h"
 #include "node.h"
 #include "../base.h"
+#include "../vector/enumerate.h"
 
 #include <vector>
 
@@ -69,8 +70,9 @@ protected:
 public:
 	TNode* BuildTree(const std::vector<TData>& vdata)
 	{
-		// ...
-		return BuildTreeI(vdata, 0, unsigned(vdata.size()));
+		if (vdata.size() == 0) return 0;
+		std::vector<TCoordinate> vx = Enumerate<TCoordinate>(0, TCoordinate(vdata.size()));
+		return BuildTreeI(vdata, vx, 0, unsigned(vdata.size()) - 1);
 	}
 
 	TNode* BuildTree(const std::vector<TData>& vdata, const std::vector<TCoordinate>& vx)
