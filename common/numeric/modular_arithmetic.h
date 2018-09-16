@@ -7,7 +7,7 @@
 // Most functions are O(1).
 // Division and Inverse are O(log (mod)).
 // Pow is O(log (pow)).
-template <bool is_prime = true, bool is_32bit = true, typename _TValue = uint64_t>
+template <bool is_prime = true, bool is_32bit = true, class _TValue = uint64_t>
 class ModularArithmetic
 {
 public:
