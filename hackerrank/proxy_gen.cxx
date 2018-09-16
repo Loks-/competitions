@@ -7,6 +7,7 @@ TSolutionsMap solutions_map {
 	{ "direct_connections__bit_sparse", main_direct_connections__bit_sparse },
 	{ "direct_connections__coordinate_compression", main_direct_connections__coordinate_compression },
 	{ "direct_connections__treap", main_direct_connections__treap },
+	{ "jim_and_the_skyscrapers", main_jim_and_the_skyscrapers },
 	{ "kindergarten_adventures", main_kindergarten_adventures },
 	{ "kindergarten_adventures__bit", main_kindergarten_adventures__bit },
 	{ "mr_x_and_his_shots", main_mr_x_and_his_shots },

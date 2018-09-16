@@ -5,6 +5,7 @@ int main_cube_summation();
 int main_direct_connections__bit_sparse();
 int main_direct_connections__coordinate_compression();
 int main_direct_connections__treap();
+int main_jim_and_the_skyscrapers();
 int main_kindergarten_adventures();
 int main_kindergarten_adventures__bit();
 int main_mr_x_and_his_shots();
