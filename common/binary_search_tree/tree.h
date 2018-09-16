@@ -66,7 +66,7 @@ public:
 		return TMe::BuildTree(v);
 	}
 
-	static TNode* FindByKey(TNode* root, const typename TNode::TKey& key) { return BSTFindByKey(root, key); }
+	static TNode* FindByKey(TNode* root, const TKey& key) { return BSTFindByKey(root, key); }
 	static TNode* FindByOrder(TNode* root, unsigned order_index) { return BSTFindByOrder(root, order_index); }
 
 	static TNode* InsertByKey(TNode* root, TNode* node)
