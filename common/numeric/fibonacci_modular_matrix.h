@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../base.h"
-#include "../matrix/matrix_static_size.h"
+#include "../linear_algebra/matrix_static_size.h"
 
 template<class TModular>
 class FibonacciModularMatrix
