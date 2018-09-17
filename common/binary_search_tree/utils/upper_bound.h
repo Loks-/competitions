@@ -5,7 +5,6 @@
 template<class TNode, class TValue>
 inline TNode* BSTPrefixSumUpperBound(TNode* root, TValue value)
 {
-	static_assert(TNode::TInfo::has_size, "info should contain size");
 	if (!root) return 0;
 	if (value >= root->info.sum) return 0;
 	for (TNode* node = root; node;)
