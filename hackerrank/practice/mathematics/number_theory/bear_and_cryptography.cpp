@@ -12,13 +12,9 @@ namespace {
     uint64_t GetMaxPrimeLessOrEqualN(uint64_t N, uint64_t minN)
     {
         if (N <= 1)
-        {
             return 0;
-        }
         else if (N <= pl.vprimes.back())
-        {
             return *(upper_bound(pl.vprimes.begin(), pl.vprimes.end(), N) - 1);
-        }
         else
         {
             if ((N & 1) == 0)
@@ -39,23 +35,14 @@ namespace {
         if (power_index == powers.size())
         {
             if (N < 1)
-            {
-                return false;
-            }
-            else
-            {
-                best_so_far = max(best_so_far, M);
-                return true;
-            }
+				return false;
+            best_so_far = max(best_so_far, M);
+            return true;
         }
         else if (N < pl.vprimes[min_prime_index])
-        {
             return false;
-        }
         else if ((powers[power_index] >= 3) && (N < pl.vprimes2[min_prime_index]))
-        {
             return false;
-        }
         else if ((power_index == (powers.size() - 1)) && powers[power_index] <= 3)
         {
             if (powers[power_index] == 2)
@@ -94,21 +81,14 @@ namespace {
         return true;
     }
 
-    void Solve(uint64_t N, const vector<unsigned>& powers)
-    {
-        Solve(N, 1, powers, 0, 0);
-    }
+    void Solve(uint64_t N, const vector<unsigned>& powers) { Solve(N, 1, powers, 0, 0); }
 
     vector<vector<unsigned>> DivideK(unsigned K, unsigned minv = 2)
     {
         if (K == 1)
-        {
             return vector<vector<unsigned>>(1);
-        }
         else if (K < minv)
-        {
             return vector<vector<unsigned>>();
-        }
         vector<vector<unsigned>> res;
         for (unsigned a = minv; a <= K; ++a)
         {
@@ -144,9 +124,7 @@ int main_bear_and_cryptography()
 {
 	vector<vector<vector<unsigned>>> candidates(1);
 	for (unsigned i = 1; i <= 40; ++i)
-	{
 		candidates.push_back(GetAllPowersCandidates(i));
-	}
 	unsigned T;
 	cin >> T;
 	for (unsigned it = 0; it < T; ++it)
@@ -161,9 +139,7 @@ int main_bear_and_cryptography()
 		}
 		best_so_far = 0;
 		for (unsigned i = 0; i < candidates[K].size(); ++i)
-		{
 			Solve(N, candidates[K][i]);
-		}
 		if (best_so_far == 0)
 			best_so_far -= 1;
 		cout << int64_t(best_so_far) << endl;
