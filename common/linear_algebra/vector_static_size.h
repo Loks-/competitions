@@ -20,6 +20,8 @@ public:
 
 	void Fill(const TValue& v) { data.fill(v); }
 	void Clear() { Fill(TValue(0)); }
+	unsigned Size() const { return size; }
+
 	VectorStaticSize() { Clear(); }
 	VectorStaticSize(const TValue& v) { Fill(v); }
 	TSelf& operator=(const TValue& v) { Fill(v); return *this; }
