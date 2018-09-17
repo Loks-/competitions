@@ -1,5 +1,7 @@
 #pragma once
 
+#include "../../base.h"
+
 // Swap intervals [first, middle) and [middle, last)
 template<class TBST>
 inline void Rotate(typename TBST::TNode*& root, unsigned first, unsigned middle, unsigned last)
