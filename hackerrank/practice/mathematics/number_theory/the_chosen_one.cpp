@@ -24,13 +24,11 @@ int main_the_chosen_one()
 	for (unsigned i = 0; i < n; ++i)
 	{
 		uint64_t gcd = GCD(vl[i], vr[i]);
-		assert(gcd > 0);
 		if ((v[i] % gcd) != 0)
 		{
 			cout << gcd << endl;
 			return 0;
 		}
 	}
-	assert(false);
 	return 0;
 }

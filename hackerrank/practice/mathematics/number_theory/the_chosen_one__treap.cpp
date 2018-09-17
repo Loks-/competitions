@@ -27,7 +27,6 @@ int main_the_chosen_one__treap()
 		node->data = 0;
 		UpdateInfoNodeToRoot(node);
 		uint64_t gcd = root->info.gcd;
-		assert(gcd > 0);
 		if ((value % gcd) != 0)
 		{
 			cout << gcd << endl;
@@ -36,6 +35,5 @@ int main_the_chosen_one__treap()
 		node->data = value;
 		UpdateInfoNodeToRoot(node);
 	}
-	assert(false);
 	return 0;
 }
