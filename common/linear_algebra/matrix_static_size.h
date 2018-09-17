@@ -9,48 +9,51 @@ class MatrixStaticSize
 public:
 	const static unsigned rows = _rows;
 	const static unsigned columns = _columns;
+	const static unsigned size = rows * columns;
 	const static bool is_square = (rows == columns);
 
 	using TValue = TTValue;
 	using TData = std::array<TValue, rows * columns>;
 	using TSelf = MatrixStaticSize<TTValue, rows, columns>;
 
-	using iterator = typename TData::iterator;
-	using const_iterator = typename TData::const_iterator;
+	using iterator = TValue*;
+	using const_iterator = const TValue*;
 
 public:
 	TData data;
 
-	void Clear() { data.fill(0); }
+	void Clear() { data.fill(TValue(0)); }
 	MatrixStaticSize() { Clear(); }
 	MatrixStaticSize(const TValue& v) { data.fill(v); }
 	TSelf& operator=(const TValue& v) { data.fill(v); return *this; }
 
 	TValue& operator()(unsigned i, unsigned j) { return data[i * columns + j]; }
 	const TValue& operator()(unsigned i, unsigned j) const { return data[i * columns + j]; }
-	iterator begin() { return data.begin(); }
-	const_iterator begin() const { return data.begin(); }
-	iterator end() { return data.end(); }
-	const_iterator end() const { return data.end(); }
+	iterator begin() { return &data.front(); }
+	const_iterator begin() const { return &data.front(); }
+	iterator end() { return begin() + size; }
+	const_iterator end() const { return begin() + size; }
+	void swap(TSelf& r) { data.swap(r.data); }
 
 	void SetDiagonal(const TValue& v)
 	{
-		const unsigned size = std::min(rows, columns);
-		for (unsigned i = 0; i < size; ++i) data[i * (columns + 1)] = v;
+		const unsigned diagonal_length = std::min(rows, columns);
+		unsigned shift = columns + 1;
+		for (TValue* p = begin(), *pend = p + diagonal_length * shift; p < pend; p += shift) *p = v;
 	}
 
-	TSelf& operator+=(const TValue& v) { for (TValue& rv : data) rv += v; return *this; }
-	TSelf& operator-=(const TValue& v) { for (TValue& rv : data) rv -= v; return *this; }
-	TSelf& operator*=(const TValue& v) { for (TValue& rv : data) rv *= v; return *this; }
-	TSelf& operator/=(const TValue& v) { for (TValue& rv : data) rv /= v; return *this; }
+	TSelf& operator+=(const TValue& v) { for (TValue *p = begin(), *pend = end(); p < pend; ) *p++ += v; return *this; }
+	TSelf& operator-=(const TValue& v) { for (TValue *p = begin(), *pend = end(); p < pend; ) *p++ -= v; return *this; }
+	TSelf& operator*=(const TValue& v) { for (TValue *p = begin(), *pend = end(); p < pend; ) *p++ *= v; return *this; }
+	TSelf& operator/=(const TValue& v) { for (TValue *p = begin(), *pend = end(); p < pend; ) *p++ /= v; return *this; }
 	TSelf operator+(const TValue& v) const { TSelf t(*this); t += v; return t; }
 	TSelf operator-(const TValue& v) const { TSelf t(*this); t -= v; return t; }
 	TSelf operator*(const TValue& v) const { TSelf t(*this); t *= v; return t; }
 	TSelf operator/(const TValue& v) const { TSelf t(*this); t /= v; return t; }
-	TSelf operator-() const { TSelf t(*this); for (TValue& rv : t.data) rv = -rv; return t; }
+	TSelf operator-() const { TSelf t(*this); for (TValue *p = begin(), *pend = end(); p < pend; ++p) *p = -*p;  return t; }
 
-	TSelf& operator+=(const TSelf& v) { auto p2 = v.begin(); for (TValue& rv : data) rv += *p2++; return *this; }
-	TSelf& operator-=(const TSelf& v) { auto p2 = v.begin(); for (TValue& rv : data) rv -= *p2++; return *this; }
+	TSelf& operator+=(const TSelf& v) { const TValue* pv = v.begin(); for (TValue *p = begin(), *pend = end(); p < pend; ) *p++ += *pv++; return *this; }
+	TSelf& operator-=(const TSelf& v) { const TValue* pv = v.begin(); for (TValue *p = begin(), *pend = end(); p < pend; ) *p++ -= *pv++; return *this; }
 	TSelf operator+(const TSelf& v) const { TSelf t(*this); t += v; return t; }
 	TSelf operator-(const TSelf& v) const { TSelf t(*this); t -= v; return t; }
 
@@ -58,16 +61,16 @@ public:
 	void Mult(const MatrixStaticSize<TValue, columns, columns2>& v, MatrixStaticSize<TValue, rows, columns2>& output) const
 	{
 		output.Clear();
-		auto itA = begin();
+		const TValue* pA = begin();
 		for (unsigned i = 0; i < rows; ++i)
 		{
-			auto itB = v.begin();
+			const TValue* pB = v.begin();
 			for (unsigned j = 0; j < columns; ++j)
 			{
-				const TValue& vA = *itA++;
+				const TValue& vA = *pA++;
 				auto itC = output.begin() + i * columns2;
-				for (unsigned k = 0; k < columns2; ++k)
-					*itC++ += *itB++ * vA;
+				for (TValue* pC = output.begin() + i * columns2, *pCend = pC + columns2; pC < pCend; )
+					*pC++ += *pB++ * vA;
 			}
 		}
 	}
