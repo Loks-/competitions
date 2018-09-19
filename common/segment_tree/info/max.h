@@ -14,7 +14,7 @@ public:
 	static const bool is_none = false;
 	static const bool use_data = true;
 
-	TMaxValue segment_max;
+	TValue segment_max;
 
 	template<class TData>
 	void UpdateData(const TData* data) { TBase::UpdateData(data); segment_max = *data; }
