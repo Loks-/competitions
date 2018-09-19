@@ -3,13 +3,13 @@
 #include "proxy.h"
 #include <algorithm>
 
-template<class TInfo, class TMaxValue>
+template<class TMaxValue, class TInfo>
 class TSTInfoMax : public TInfo
 {
 public:
     using TValue = TMaxValue;
     using TBase = TInfo;
-	using TSelf = TSTInfoMax<TBase, TValue>;
+	using TSelf = TSTInfoMax<TValue, TBase>;
 
 	static const bool is_none = false;
 	static const bool use_data = true;
@@ -26,5 +26,5 @@ public:
     }
 };
 
-template<class TInfo, class TMaxValue>
-using STInfoMax = STInfoProxy<TSTInfoMax<TInfo, TMaxValue>>;
+template<class TMaxValue, class TInfo>
+using STInfoMax = STInfoProxy<TSTInfoMax<TMaxValue, TInfo>>;

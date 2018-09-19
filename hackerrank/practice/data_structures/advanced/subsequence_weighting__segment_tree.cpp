@@ -10,7 +10,7 @@
 
 #include <set>
 
-using TTree = SegmentTree<uint64_t, STInfoMax<STInfoSegment<uint64_t>, uint64_t>>;
+using TTree = SegmentTree<uint64_t, STInfoMax<uint64_t, STInfoSegment<uint64_t>>>;
 using TNode = TTree::TNode;
 using TInfo = TNode::TInfo;
 
