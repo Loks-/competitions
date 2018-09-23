@@ -3,8 +3,6 @@
 #include "common/numeric/modular_arithmetic.h"
 #include "common/stl/base.h"
 
-#include <string>
-
 int main_number_of_zero_xor_subsets()
 {
 	const uint64_t M1 = 1000000007, M2 = M1 - 1;
