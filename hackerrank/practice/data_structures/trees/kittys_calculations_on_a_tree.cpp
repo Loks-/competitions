@@ -1,7 +1,7 @@
 // https://www.hackerrank.com/challenges/kittys-calculations-on-a-tree
 
-#include "common/graph/centroid_decomposition.h"
-#include "common/graph/lca.h"
+#include "common/graph/tree/centroid_decomposition.h"
+#include "common/graph/tree/lca.h"
 #include "common/numeric/modular.h"
 #include "common/stl/base.h"
 

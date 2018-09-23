@@ -1,8 +1,8 @@
 // https://www.hackerrank.com/challenges/jenny-subtrees
 
-#include "common/graph/base_tree.h"
+#include "common/graph/tree/base_tree.h"
 #include "common/graph/base_subgraph.h"
-#include "common/graph/base_tree_isomorphic_hash.h"
+#include "common/graph/tree/base_tree_isomorphic_hash.h"
 #include "common/stl/base.h"
 
 #include <unordered_set>

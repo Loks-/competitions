@@ -1,7 +1,7 @@
 // https://www.hackerrank.com/challenges/balanced-forest
 
-#include "common/graph/base_tree.h"
-#include "common/graph/lca.h"
+#include "common/graph/tree/base_tree.h"
+#include "common/graph/tree/lca.h"
 #include "common/vector/read.h"
 #include "common/stl/base.h"
 
