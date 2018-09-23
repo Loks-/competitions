@@ -2,6 +2,7 @@
 
 #include "none.h"
 
+// Support only VectorStaticSize from LinearAlgebra.
 class BSTActionVectorRotate : public BSTActionNone
 {
 protected:
