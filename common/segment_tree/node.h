@@ -49,11 +49,9 @@ public:
 	TAction action;
 
 	bool IsLeaf() const { return (TBase::l == 0); }
-	TData* GetPData() { assert(IsLeaf()); return reinterpret_cast<TData*>(TBase::r); }
-	const TData* GetPData() const { assert(IsLeaf()); return reinterpret_cast<const TData*>(TBase::r); }
+	TData& GetData() { assert(IsLeaf()); return *reinterpret_cast<TData*>(TBase::r); }
+	const TData& GetData() const { assert(IsLeaf()); return *reinterpret_cast<const TData*>(TBase::r); }
 	void SetPData(TData* p) { assert(IsLeaf()); TBase::r = reinterpret_cast<TSelf*>(p); }
-	TData& GetData() { return *GetPData(); }
-	const TData& GetData() const { return *GetPData(); }
 
     void ClearAction() { action.Clear(); }
 	void UpdateInfo() { info.Update(this); }
