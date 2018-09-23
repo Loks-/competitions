@@ -96,6 +96,7 @@ TSolutionsMap solutions_map {
 	{ "bear_and_cryptography", main_bear_and_cryptography },
 	{ "closest_number", main_closest_number },
 	{ "constructing_a_number", main_constructing_a_number },
+	{ "easy_gcd", main_easy_gcd },
 	{ "eulers_criterion", main_eulers_criterion },
 	{ "fibonacci_finding_easy", main_fibonacci_finding_easy },
 	{ "fibonacci_gcd", main_fibonacci_gcd },
