@@ -15,7 +15,7 @@ public:
 	void SetCoordinate(const TCoordinate& x) {}
 
 	template<class TData>
-	void UpdateData(const TData* data) {}
+	void UpdateData(const TData& data) {}
 
     void UpdateLR(const TSelf& l, const TSelf& r) {}
 };

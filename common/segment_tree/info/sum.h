@@ -16,7 +16,7 @@ public:
 	TValue segment_sum;
 
 	template<class TData>
-	void UpdateData(const TData* data) { TBase::UpdateData(data); segment_sum = *data; }
+	void UpdateData(const TData& data) { TBase::UpdateData(data); segment_sum = data; }
 
     void UpdateLR(const TSelf& l, const TSelf& r)
     {

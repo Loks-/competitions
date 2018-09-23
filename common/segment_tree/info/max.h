@@ -17,7 +17,7 @@ public:
 	TValue segment_max;
 
 	template<class TData>
-	void UpdateData(const TData* data) { TBase::UpdateData(data); segment_max = *data; }
+	void UpdateData(const TData& data) { TBase::UpdateData(data); segment_max = data; }
 
     void UpdateLR(const TSelf& l, const TSelf& r)
     {
