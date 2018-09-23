@@ -1,7 +1,6 @@
 #pragma once
 
 #include "../../base.h"
-#include <algorithm>
 
 template<class TNode>
 inline typename TNode::TInfo STGetSegmentI(const TNode* root, const typename TNode::TInfo::TCoordinate& l, const typename TNode::TInfo::TCoordinate& r)
