@@ -11,6 +11,7 @@ TSolutionsMap solutions_map {
 	{ "kindergarten_adventures", main_kindergarten_adventures },
 	{ "kindergarten_adventures__bit", main_kindergarten_adventures__bit },
 	{ "mr_x_and_his_shots", main_mr_x_and_his_shots },
+	{ "palindromic_subsets__segment_tree", main_palindromic_subsets__segment_tree },
 	{ "palindromic_subsets__treap", main_palindromic_subsets__treap },
 	{ "subsequence_weighting__bit_sparse", main_subsequence_weighting__bit_sparse },
 	{ "subsequence_weighting__segment_tree", main_subsequence_weighting__segment_tree },

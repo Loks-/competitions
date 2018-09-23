@@ -9,6 +9,7 @@ int main_jim_and_the_skyscrapers();
 int main_kindergarten_adventures();
 int main_kindergarten_adventures__bit();
 int main_mr_x_and_his_shots();
+int main_palindromic_subsets__segment_tree();
 int main_palindromic_subsets__treap();
 int main_subsequence_weighting__bit_sparse();
 int main_subsequence_weighting__segment_tree();
