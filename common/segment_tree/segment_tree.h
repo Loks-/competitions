@@ -53,7 +53,7 @@ protected:
 		TNode* root = GetNewNode();
 		if (first == last)
 		{
-			root->data = &(data[used_data]);
+			root->SetPData(&(data[used_data]));
 			data[used_data++] = vdata[first];
 			root->info.SetCoordinate(vx[first]);
 		}

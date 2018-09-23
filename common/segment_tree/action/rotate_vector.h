@@ -39,7 +39,7 @@ public:
 	{
 		if (IsEmpty()) return;
         if (node->IsLeaf())
-		    Rotate(*(node->data), r);
+		    Rotate(node->GetData(), r);
         else
         {
 		    node->l->AddAction(r);

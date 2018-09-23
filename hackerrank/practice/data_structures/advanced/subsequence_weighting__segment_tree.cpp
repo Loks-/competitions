@@ -32,7 +32,7 @@ int main_subsequence_weighting__segment_tree()
             TInfo info = STGetSegment<TNode>(root, 0, va[i] - 1);
             TNode* node = STFindLeaf(root, va[i]);
             assert(node && node->IsLeaf());
-            *node->data = std::max(*node->data, info.segment_max + vw[i]);
+            node->GetData() = std::max(node->GetData(), info.segment_max + vw[i]);
 			UpdateInfoNodeToRoot<TNode>(node);
 		}
 		cout << root->info.segment_max << endl;

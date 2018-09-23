@@ -15,7 +15,7 @@ public:
         assert(node);
         node->ApplyAction();
         if (node->IsLeaf())
-            TBase::UpdateData(node->data);
+            TBase::UpdateData(node->GetPData());
         else
             TBase::UpdateLR(node->l->info, node->r->info);
     }
