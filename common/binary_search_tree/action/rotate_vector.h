@@ -22,9 +22,8 @@ public:
 	using TSelf = BSTActionRotateVector;
 	static const bool is_none = false;
 
-	unsigned r;
+	unsigned r = 0;
 
-	BSTActionRotateVector() : r(0) {}
 	bool IsEmpty() const { return r == 0; }
 	void Clear() { r = 0; };
 
