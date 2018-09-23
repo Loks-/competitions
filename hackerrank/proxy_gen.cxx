@@ -104,6 +104,7 @@ TSolutionsMap solutions_map {
 	{ "fibonacci_gcd", main_fibonacci_gcd },
 	{ "help_mike", main_help_mike },
 	{ "identify_smith_numbers", main_identify_smith_numbers },
+	{ "john_and_gcd_list", main_john_and_gcd_list },
 	{ "little_panda_power", main_little_panda_power },
 	{ "mehta_and_his_laziness", main_mehta_and_his_laziness },
 	{ "power_of_large_numbers", main_power_of_large_numbers },

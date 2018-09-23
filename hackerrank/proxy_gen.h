@@ -102,6 +102,7 @@ int main_fibonacci_finding_easy();
 int main_fibonacci_gcd();
 int main_help_mike();
 int main_identify_smith_numbers();
+int main_john_and_gcd_list();
 int main_little_panda_power();
 int main_mehta_and_his_laziness();
 int main_power_of_large_numbers();
