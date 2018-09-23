@@ -92,6 +92,7 @@ int main_strange_grid_again();
 int main_sumar_and_the_floating_rocks();
 int main_summing_the_n_series();
 int main_bear_and_cryptography();
+int main_breaking_sticks();
 int main_closest_number();
 int main_constructing_a_number();
 int main_easy_gcd();

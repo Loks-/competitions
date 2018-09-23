@@ -94,6 +94,7 @@ TSolutionsMap solutions_map {
 	{ "sumar_and_the_floating_rocks", main_sumar_and_the_floating_rocks },
 	{ "summing_the_n_series", main_summing_the_n_series },
 	{ "bear_and_cryptography", main_bear_and_cryptography },
+	{ "breaking_sticks", main_breaking_sticks },
 	{ "closest_number", main_closest_number },
 	{ "constructing_a_number", main_constructing_a_number },
 	{ "easy_gcd", main_easy_gcd },
