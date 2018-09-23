@@ -3,7 +3,7 @@
 #include "none.h"
 
 // Support only VectorStaticSize from LinearAlgebra.
-class BSTActionVectorRotate : public BSTActionNone
+class BSTActionRotateVector : public BSTActionNone
 {
 protected:
 	template<class TVector>
@@ -19,12 +19,12 @@ protected:
 
 public:
 	using TBase = BSTActionNone;
-	using TSelf = BSTActionVectorRotate;
+	using TSelf = BSTActionRotateVector;
 	static const bool is_none = false;
 
 	unsigned r;
 
-	BSTActionVectorRotate() : r(0) {}
+	BSTActionRotateVector() : r(0) {}
 	bool IsEmpty() const { return r == 0; }
 	void Clear() { r = 0; };
 

@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/palindromic-subsets
 
-#include "common/binary_search_tree/action/vector_rotate.h"
+#include "common/binary_search_tree/action/rotate_vector.h"
 #include "common/binary_search_tree/info/sum.h"
 #include "common/binary_search_tree/treap.h"
 #include "common/binary_search_tree/utils/add_action_to_segment.h"
@@ -12,7 +12,7 @@
 #include <string>
 
 using TVector = VectorStaticSize<unsigned, 26>;
-using TTree = Treap<false, false, TVector, BSTInfoSum<TVector, BSTInfoSize>, BSTActionVectorRotate>;
+using TTree = Treap<false, false, TVector, BSTInfoSum<TVector, BSTInfoSize>, BSTActionRotateVector>;
 using TNode = TTree::TNode;
 using TModular = Modular<>;
 
