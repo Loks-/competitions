@@ -107,6 +107,7 @@ TSolutionsMap solutions_map {
 	{ "john_and_gcd_list", main_john_and_gcd_list },
 	{ "little_panda_power", main_little_panda_power },
 	{ "mehta_and_his_laziness", main_mehta_and_his_laziness },
+	{ "number_of_zero_xor_subsets", main_number_of_zero_xor_subsets },
 	{ "power_of_large_numbers", main_power_of_large_numbers },
 	{ "primitive_problem", main_primitive_problem },
 	{ "salary_blues", main_salary_blues },
