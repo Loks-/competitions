@@ -10,6 +10,7 @@ inline void STAddActionToSegmentI(TNode* root, const typename TNode::TInfo::TCoo
     else
     {
         assert(!root->IsLeaf());
+        root->ApplyAction();
         if (l <= root->l->info.right)
             STAddActionToSegmentI(root->l, l, r, action_value);
         if (r >= root->r->info.left)
