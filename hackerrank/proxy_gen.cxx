@@ -98,6 +98,7 @@ TSolutionsMap solutions_map {
 	{ "closest_number", main_closest_number },
 	{ "constructing_a_number", main_constructing_a_number },
 	{ "easy_gcd", main_easy_gcd },
+	{ "equations", main_equations },
 	{ "eulers_criterion", main_eulers_criterion },
 	{ "fibonacci_finding_easy", main_fibonacci_finding_easy },
 	{ "fibonacci_gcd", main_fibonacci_gcd },
