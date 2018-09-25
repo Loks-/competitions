@@ -106,6 +106,7 @@ TSolutionsMap solutions_map {
 	{ "identify_smith_numbers", main_identify_smith_numbers },
 	{ "john_and_gcd_list", main_john_and_gcd_list },
 	{ "little_panda_power", main_little_panda_power },
+	{ "lucy_and_flowers", main_lucy_and_flowers },
 	{ "mehta_and_his_laziness", main_mehta_and_his_laziness },
 	{ "number_of_zero_xor_subsets", main_number_of_zero_xor_subsets },
 	{ "power_of_large_numbers", main_power_of_large_numbers },
