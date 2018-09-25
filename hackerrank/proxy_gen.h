@@ -111,6 +111,7 @@ int main_primitive_problem();
 int main_salary_blues();
 int main_scalar_products();
 int main_sherlock_and_gcd();
+int main_superpowers_of_2();
 int main_the_chosen_one();
 int main_the_chosen_one__treap();
 int main_twins();

@@ -113,6 +113,7 @@ TSolutionsMap solutions_map {
 	{ "salary_blues", main_salary_blues },
 	{ "scalar_products", main_scalar_products },
 	{ "sherlock_and_gcd", main_sherlock_and_gcd },
+	{ "superpowers_of_2", main_superpowers_of_2 },
 	{ "the_chosen_one", main_the_chosen_one },
 	{ "the_chosen_one__treap", main_the_chosen_one__treap },
 	{ "twins", main_twins },
