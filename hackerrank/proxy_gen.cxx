@@ -93,6 +93,7 @@ TSolutionsMap solutions_map {
 	{ "strange_grid_again", main_strange_grid_again },
 	{ "sumar_and_the_floating_rocks", main_sumar_and_the_floating_rocks },
 	{ "summing_the_n_series", main_summing_the_n_series },
+	{ "akhil_and_gf", main_akhil_and_gf },
 	{ "bear_and_cryptography", main_bear_and_cryptography },
 	{ "binomial_coefficients", main_binomial_coefficients },
 	{ "breaking_sticks", main_breaking_sticks },
