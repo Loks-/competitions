@@ -112,6 +112,7 @@ TSolutionsMap solutions_map {
 	{ "little_ashishs_huge_donation", main_little_ashishs_huge_donation },
 	{ "little_panda_power", main_little_panda_power },
 	{ "lucy_and_flowers", main_lucy_and_flowers },
+	{ "manasa_and_factorials", main_manasa_and_factorials },
 	{ "mehta_and_his_laziness", main_mehta_and_his_laziness },
 	{ "number_of_zero_xor_subsets", main_number_of_zero_xor_subsets },
 	{ "power_of_large_numbers", main_power_of_large_numbers },

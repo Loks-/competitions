@@ -110,6 +110,7 @@ int main_john_and_gcd_list();
 int main_little_ashishs_huge_donation();
 int main_little_panda_power();
 int main_lucy_and_flowers();
+int main_manasa_and_factorials();
 int main_mehta_and_his_laziness();
 int main_number_of_zero_xor_subsets();
 int main_power_of_large_numbers();
