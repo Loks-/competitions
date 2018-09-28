@@ -97,6 +97,7 @@ int main_binomial_coefficients();
 int main_breaking_sticks();
 int main_closest_number();
 int main_constructing_a_number();
+int main_dancing_in_pairs();
 int main_easy_gcd();
 int main_equations();
 int main_eulers_criterion();

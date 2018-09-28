@@ -99,6 +99,7 @@ TSolutionsMap solutions_map {
 	{ "breaking_sticks", main_breaking_sticks },
 	{ "closest_number", main_closest_number },
 	{ "constructing_a_number", main_constructing_a_number },
+	{ "dancing_in_pairs", main_dancing_in_pairs },
 	{ "easy_gcd", main_easy_gcd },
 	{ "equations", main_equations },
 	{ "eulers_criterion", main_eulers_criterion },
