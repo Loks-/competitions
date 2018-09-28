@@ -12,8 +12,7 @@ int main_little_ashishs_huge_donation()
 	{
         uint64_t N;
         cin >> N;
-        uint64_t i = UpperBoundF(0, 200000000, N, f);
-        cout << i - 1 << endl;
+        cout << UpperBoundF(0, 200000000, N, f) - 1 << endl;
 	}
 	return 0;
 }
