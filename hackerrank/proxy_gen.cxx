@@ -109,6 +109,7 @@ TSolutionsMap solutions_map {
 	{ "help_mike", main_help_mike },
 	{ "identify_smith_numbers", main_identify_smith_numbers },
 	{ "john_and_gcd_list", main_john_and_gcd_list },
+	{ "little_ashishs_huge_donation", main_little_ashishs_huge_donation },
 	{ "little_panda_power", main_little_panda_power },
 	{ "lucy_and_flowers", main_lucy_and_flowers },
 	{ "mehta_and_his_laziness", main_mehta_and_his_laziness },

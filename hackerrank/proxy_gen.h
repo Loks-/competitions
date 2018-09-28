@@ -107,6 +107,7 @@ int main_fibonacci_gcd();
 int main_help_mike();
 int main_identify_smith_numbers();
 int main_john_and_gcd_list();
+int main_little_ashishs_huge_donation();
 int main_little_panda_power();
 int main_lucy_and_flowers();
 int main_mehta_and_his_laziness();
