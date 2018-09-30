@@ -96,6 +96,7 @@ int main_akhil_and_gf();
 int main_bear_and_cryptography();
 int main_binomial_coefficients();
 int main_breaking_sticks();
+int main_cheese_and_random_toppings();
 int main_closest_number();
 int main_constructing_a_number();
 int main_dancing_in_pairs();

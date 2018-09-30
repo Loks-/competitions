@@ -98,6 +98,7 @@ TSolutionsMap solutions_map {
 	{ "bear_and_cryptography", main_bear_and_cryptography },
 	{ "binomial_coefficients", main_binomial_coefficients },
 	{ "breaking_sticks", main_breaking_sticks },
+	{ "cheese_and_random_toppings", main_cheese_and_random_toppings },
 	{ "closest_number", main_closest_number },
 	{ "constructing_a_number", main_constructing_a_number },
 	{ "dancing_in_pairs", main_dancing_in_pairs },
