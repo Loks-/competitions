@@ -117,6 +117,7 @@ int main_number_of_zero_xor_subsets();
 int main_power_of_large_numbers();
 int main_primitive_problem();
 int main_salary_blues();
+int main_satisfactory_pairs();
 int main_scalar_products();
 int main_sherlock_and_gcd();
 int main_superpowers_of_2();

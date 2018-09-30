@@ -119,6 +119,7 @@ TSolutionsMap solutions_map {
 	{ "power_of_large_numbers", main_power_of_large_numbers },
 	{ "primitive_problem", main_primitive_problem },
 	{ "salary_blues", main_salary_blues },
+	{ "satisfactory_pairs", main_satisfactory_pairs },
 	{ "scalar_products", main_scalar_products },
 	{ "sherlock_and_gcd", main_sherlock_and_gcd },
 	{ "superpowers_of_2", main_superpowers_of_2 },
