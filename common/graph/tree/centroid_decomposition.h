@@ -20,6 +20,7 @@ protected:
 	const BaseTree& tree;
 	std::vector<unsigned> group, parent, subtree_size;
 	std::vector<unsigned> group_root;
+	std::stack<unsigned> vertices_to_check;
 
 	CentroidDecomposition(const BaseTree& _tree) : tree(_tree)
 	{
@@ -32,13 +33,12 @@ protected:
 	void InitParentAndSubtreeSizes()
 	{
 		std::fill(subtree_size.begin(), subtree_size.end(), 0);
-		std::stack<unsigned> s;
 		parent[tree.root] = CNone;
 		group_root.clear();
 		group_root.push_back(tree.root);
-		for (s.push(tree.root); !s.empty(); )
+		for (vertices_to_check.push(tree.root); !vertices_to_check.empty(); )
 		{
-			unsigned v = s.top();
+			unsigned v = vertices_to_check.top();
 			unsigned p = parent[v];
 			if (subtree_size[v] == 0)
 			{
@@ -48,13 +48,13 @@ protected:
 				{
 					if (c == p) continue;
 					parent[c] = v;
-					s.push(c);
+					vertices_to_check.push(c);
 				}
 			}
 			else
 			{
 				// Second time here, finalize
-				s.pop();
+				vertices_to_check.pop();
 				for (unsigned c : tree.edges[v])
 				{
 					if (c == p) continue;
@@ -109,21 +109,20 @@ protected:
 	void Decompose(unsigned current_group)
 	{
 		unsigned root = group_root[current_group];
-		std::stack<unsigned> s;
 		for (unsigned v : tree.edges[root])
 		{
 			if (group[v] != current_group) continue;
 			unsigned new_group = unsigned(group_root.size());
 			group_root.push_back(v);
-			for (s.push(v); !s.empty();)
+			for (vertices_to_check.push(v); !vertices_to_check.empty();)
 			{
-				v = s.top(); s.pop();
+				v = vertices_to_check.top(); vertices_to_check.pop();
 				group[v] = new_group;
 				for (unsigned c : tree.edges[v])
 				{
 					if (c == root) continue;
 					if (group[c] == current_group)
-						s.push(c);
+						vertices_to_check.push(c);
 				}
 			}
 		}

@@ -33,7 +33,7 @@ namespace
 		{
 			path_min[vertex] = path_max[vertex] = vertex;
 			unsigned min_group = group[vertex];
-			stack<pair<unsigned, unsigned>> s;
+			static stack<pair<unsigned, unsigned>> s;
 			for (s.push(make_pair(vertex, vertex)); !s.empty(); )
 			{
 				unsigned current = s.top().first, from = s.top().second;
@@ -54,7 +54,7 @@ namespace
 			UpdatePaths(vertex, group);
 
 			unsigned min_group = group[vertex];
-			vector<pair<unsigned, unsigned>> candidates_l, candidates_r;
+			static vector<pair<unsigned, unsigned>> candidates_l, candidates_r;
 			candidates_l.push_back(make_pair(vertex, vertex));
 			candidates_r.push_back(make_pair(vertex, vertex));
 			{
@@ -86,7 +86,9 @@ namespace
 				}
 			}
 
-			vector<unsigned> cr_min(candidates_r.size()), cr_max(candidates_r.size());
+			static vector<unsigned> cr_min, cr_max;
+			cr_min.resize(candidates_r.size());
+			cr_max.resize(candidates_r.size());
 			for (size_t i = 0; i < candidates_r.size(); ++i)
 			{
 				cr_min[i] = n-candidates_r[i].first;
@@ -99,6 +101,7 @@ namespace
 				if (maxk > mink)
 					total_segments += maxk - mink;
 			}
+			candidates_l.clear(); candidates_r.clear();
 		}
 	};
 }
