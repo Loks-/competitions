@@ -102,6 +102,7 @@ TSolutionsMap solutions_map {
 	{ "closest_number", main_closest_number },
 	{ "constructing_a_number", main_constructing_a_number },
 	{ "dancing_in_pairs", main_dancing_in_pairs },
+	{ "divisor_exploration", main_divisor_exploration },
 	{ "divisor_exploration_ii", main_divisor_exploration_ii },
 	{ "easy_gcd", main_easy_gcd },
 	{ "equations", main_equations },
