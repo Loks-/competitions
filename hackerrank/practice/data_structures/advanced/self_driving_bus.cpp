@@ -11,6 +11,7 @@ namespace
 	class SolutionSelfDrivingBus : public ICentroidDecompositionCallBack
 	{
 	protected:
+		unsigned n;
 		BaseTree tree;
 		uint64_t total_segments;
 		vector<unsigned> path_min, path_max;
@@ -18,7 +19,6 @@ namespace
 	public:
 		void Solve()
 		{
-			unsigned n;
 			cin >> n;
 			tree.Resize(n);
 			tree.ReadEdges();
@@ -75,7 +75,7 @@ namespace
 				// Go Right
 				unsigned req_min = vertex;
 				unsigned req_max = vertex;
-				for (int j = vertex + 1; j < group.size(); ++j)
+				for (int j = vertex + 1; j < n; ++j)
 				{
 					if (group[j] < min_group)
 						break;
@@ -86,14 +86,18 @@ namespace
 				}
 			}
 
-
+			vector<unsigned> cr_min(candidates_r.size()), cr_max(candidates_r.size());
+			for (size_t i = 0; i < candidates_r.size(); ++i)
+			{
+				cr_min[i] = n-candidates_r[i].first;
+				cr_max[i] = candidates_r[i].second;
+			}
 			for (size_t i = 0; i < candidates_l.size(); ++i)
 			{
-				for (size_t j = 0; j < candidates_r.size(); ++j)
-				{
-					if ((candidates_l[i].first <= candidates_r[j].first) && (candidates_l[i].second <= candidates_r[j].second))
-						++total_segments;
-				}
+				size_t mink = lower_bound(cr_max.begin(), cr_max.end(), candidates_l[i].second) - cr_max.begin();
+				size_t maxk = upper_bound(cr_min.begin(), cr_min.end(), n-candidates_l[i].first) - cr_min.begin();
+				if (maxk > mink)
+					total_segments += maxk - mink;
 			}
 		}
 	};
