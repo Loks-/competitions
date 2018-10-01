@@ -12,6 +12,7 @@ int main_mr_x_and_his_shots();
 int main_palindromic_subsets__segment_tree();
 int main_palindromic_subsets__treap();
 int main_polynomial_division();
+int main_self_driving_bus();
 int main_subsequence_weighting__bit_sparse();
 int main_subsequence_weighting__segment_tree();
 int main_subsequence_weighting__treap();
