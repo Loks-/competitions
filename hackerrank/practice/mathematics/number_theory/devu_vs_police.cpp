@@ -20,7 +20,7 @@ int main_devu_vs_police()
         n1 = TModular::PowU(n1, k1, n);
         n3 = pl.EulerPhi(n);
         n2 = (small_power ? PowU(n2, k2) : 24 * n3 + TModular::PowU(n2, k2, n3));
-        cout << TModular::PowU(n1, n2, n) << endl;
+        cout << TModular::PowU(n1, n2, n) % n << endl;
 	}
 	return 0;
 }
