@@ -101,6 +101,7 @@ int main_cheese_and_random_toppings();
 int main_closest_number();
 int main_constructing_a_number();
 int main_dancing_in_pairs();
+int main_devu_vs_police();
 int main_divisor_exploration();
 int main_divisor_exploration_3();
 int main_divisor_exploration_ii();
