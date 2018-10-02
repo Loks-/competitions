@@ -48,12 +48,12 @@ namespace
 			}
 		}
 
-		void Decompose(unsigned vertex, const CentroidDecomposition& cd)
+		void PreDecompose(unsigned vertex, const CentroidDecomposition& cd)
 		{
 			UpdatePaths(vertex, cd.GetCurrentTree());
 
 			const vector<unsigned>& group_map = cd.GetGroupMap();
-			unsigned min_group = group_map[vertex];
+			unsigned current_group = group_map[vertex];
 			static vector<pair<unsigned, unsigned>> candidates_l, candidates_r;
 			candidates_l.push_back(make_pair(vertex, vertex));
 			candidates_r.push_back(make_pair(vertex, vertex));
@@ -63,7 +63,7 @@ namespace
 				unsigned req_max = vertex;
 				for (unsigned j = vertex; j--; )
 				{
-					if (group_map[j] < min_group)
+					if (group_map[j] != current_group)
 						break;
 					req_min = min(req_min, path_min[j]);
 					req_max = max(req_max, path_max[j]);
@@ -77,7 +77,7 @@ namespace
 				unsigned req_max = vertex;
 				for (int j = vertex + 1; j < n; ++j)
 				{
-					if (group_map[j] < min_group)
+					if (group_map[j] != current_group)
 						break;
 					req_min = min(req_min, path_min[j]);
 					req_max = max(req_max, path_max[j]);
