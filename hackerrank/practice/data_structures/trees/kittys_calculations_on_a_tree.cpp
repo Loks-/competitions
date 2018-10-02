@@ -44,9 +44,10 @@ namespace
 				cout << r.Get() << endl;
 		}
 
-		void Decompose(unsigned vertex, const vector<unsigned>& group)
+		void Decompose(unsigned vertex, const CentroidDecomposition& cd)
 		{
-			unsigned current_group = group[vertex];
+			const vector<unsigned>& group_map = cd.GetGroupMap();
+			unsigned current_group = group_map[vertex];
 			for (const auto& it : sets[current_group])
 			{
 				const auto& v = it.second;
@@ -59,7 +60,7 @@ namespace
 					TModular d(lca.GetDistance(u, vertex));
 					TModular w(u + 1), wd = w * d;
 					s += w; sd += wd;
-					unsigned g = group[u];
+					unsigned g = group_map[u];
 					m[g].first += w;
 					m[g].second += wd;
 					if (u != vertex)

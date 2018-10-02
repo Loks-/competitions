@@ -6,28 +6,26 @@
 #include <stack>
 #include <vector>
 
-class ICentroidDecompositionCallBack
-{
-public:
-	void Decompose(unsigned vertex, const std::vector<unsigned>& group) {}
-	bool IsComposeRequired() const { return false; }
-	void Compose(unsigned vertex, const std::vector<unsigned>& group) {}
-};
-
 class CentroidDecomposition
 {
 protected:
-	const BaseTree& tree;
-	std::vector<unsigned> group, parent, subtree_size;
-	std::vector<unsigned> group_root;
+	// Edges from smaller groups to parent are removed.
+	BaseTree tree;
+	std::vector<unsigned> group, parent, subtree_size, group_root;
 	std::stack<unsigned> vertices_to_check;
 
+public:
+	const BaseTree& GetCurrentTree() const { return tree; }
+	const std::vector<unsigned>& GetGroupMap() const { return group; }
+
+protected:
 	CentroidDecomposition(const BaseTree& _tree) : tree(_tree)
 	{
 		unsigned n = tree.nvertices;
 		group.resize(n, 0);
-		subtree_size.resize(n, 0);
 		parent.resize(n);
+		subtree_size.resize(n, 0);
+		group_root.reserve(n);
 	}
 
 	void InitParentAndSubtreeSizes()
@@ -78,7 +76,6 @@ protected:
 			for (unsigned c : tree.edges[v])
 			{
 				if (c == p) continue;
-				if (group[c] != current_group) continue;
 				if (subtree_size[c] > group_size / 2)
 				{
 					v = c;
@@ -113,18 +110,29 @@ protected:
 		if (subtree_size[root] == 1) return;
 		for (unsigned v : tree.edges[root])
 		{
-			if (group[v] != current_group) continue;
 			unsigned new_group = unsigned(group_root.size());
 			group_root.push_back(v);
-			for (vertices_to_check.push(v); !vertices_to_check.empty();)
+			group[v] = new_group;
+			std::vector<unsigned>& vedges = tree.edges[v];
+			for (unsigned i = 0; i < vedges.size(); )
 			{
-				v = vertices_to_check.top(); vertices_to_check.pop();
-				group[v] = new_group;
-				for (unsigned c : tree.edges[v])
+				if (vedges[i] == root)
 				{
-					if (c == root) continue;
-					if (group[c] == current_group)
-						vertices_to_check.push(c);
+					std::swap(vedges[i], vedges.back());
+					vedges.pop_back();
+				}
+				else
+					vertices_to_check.push(vedges[i++]);
+			}
+			for (; !vertices_to_check.empty();)
+			{
+				unsigned u = vertices_to_check.top(); vertices_to_check.pop();
+				unsigned p = parent[u];
+				group[u] = new_group;
+				for (unsigned c : tree.edges[u])
+				{
+					if (c == p) continue;
+					vertices_to_check.push(c);
 				}
 			}
 		}
@@ -140,7 +148,7 @@ public:
 		{
 			cd.FindCentroid(i);
 			cd.Decompose(i);
-			callback.Decompose(cd.group_root[i], cd.group);
+			callback.Decompose(cd.group_root[i], cd);
 		}
 		if (callback.IsComposeRequired())
 		{
@@ -148,4 +156,12 @@ public:
 			assert(false);
 		}
 	}
+};
+
+class ICentroidDecompositionCallBack
+{
+public:
+	void Decompose(unsigned vertex, const CentroidDecomposition& cd) {}
+	bool IsComposeRequired() const { return false; }
+	void Compose(unsigned vertex, const CentroidDecomposition& cd) {}
 };
