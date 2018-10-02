@@ -121,6 +121,7 @@ TSolutionsMap solutions_map {
 	{ "largest_non_coprime_submatrix", main_largest_non_coprime_submatrix },
 	{ "little_ashishs_huge_donation", main_little_ashishs_huge_donation },
 	{ "little_panda_power", main_little_panda_power },
+	{ "long_permutation", main_long_permutation },
 	{ "lucy_and_flowers", main_lucy_and_flowers },
 	{ "manasa_and_factorials", main_manasa_and_factorials },
 	{ "manasa_loves_maths", main_manasa_loves_maths },

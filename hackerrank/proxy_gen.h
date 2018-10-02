@@ -119,6 +119,7 @@ int main_john_and_gcd_list();
 int main_largest_non_coprime_submatrix();
 int main_little_ashishs_huge_donation();
 int main_little_panda_power();
+int main_long_permutation();
 int main_lucy_and_flowers();
 int main_manasa_and_factorials();
 int main_manasa_loves_maths();
