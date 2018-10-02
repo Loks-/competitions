@@ -44,7 +44,7 @@ namespace
 				cout << r.Get() << endl;
 		}
 
-		void Decompose(unsigned vertex, const CentroidDecomposition& cd)
+		void PostDecompose(unsigned vertex, const CentroidDecomposition& cd)
 		{
 			const vector<unsigned>& group_map = cd.GetGroupMap();
 			unsigned current_group = group_map[vertex];

@@ -147,8 +147,9 @@ public:
 		for (unsigned i = 0; i < cd.group_root.size(); ++i)
 		{
 			cd.FindCentroid(i);
+			callback.PreDecompose(cd.group_root[i], cd);
 			cd.Decompose(i);
-			callback.Decompose(cd.group_root[i], cd);
+			callback.PostDecompose(cd.group_root[i], cd);
 		}
 		if (callback.IsComposeRequired())
 		{
@@ -161,7 +162,8 @@ public:
 class ICentroidDecompositionCallBack
 {
 public:
-	void Decompose(unsigned vertex, const CentroidDecomposition& cd) {}
+	void PreDecompose(unsigned vertex, const CentroidDecomposition& cd) {}
+	void PostDecompose(unsigned vertex, const CentroidDecomposition& cd) {}
 	bool IsComposeRequired() const { return false; }
 	void Compose(unsigned vertex, const CentroidDecomposition& cd) {}
 };
