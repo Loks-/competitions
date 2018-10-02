@@ -5,15 +5,19 @@
 
 int main_a_weird_function()
 {
-    PrimesList pl(2000000);
+    PrimesList pl(2000);
     vector<uint64_t> vi, vs(1, 0);
-    for (uint64_t j = 2, i = 1; i <= 1000000000000ull; ++j)
+    unsigned phi1 = 1, phi2 = 1;
+    for (uint64_t j = 2;; ++j)
     {
+        uint64_t i = (j * (j - 1)) / 2;
+        if (i > 1000000000000ull)
+            break;
         vi.push_back(i);
-        i = (j * (j + 1)) / 2;
+        phi1 = phi2;
+        phi2 = pl.EulerPhi(j & 1 ? j : j / 2);
+        vs.push_back(vs.back() + phi1 * phi2);
     }
-    for (uint64_t i : vi)
-        vs.push_back(vs.back() + pl.EulerPhi(i));
 	unsigned T;
 	cin >> T;
 	for (unsigned it = 0; it < T; ++it)
