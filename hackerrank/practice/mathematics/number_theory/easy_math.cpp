@@ -1,6 +1,5 @@
 // https://www.hackerrank.com/challenges/easy-math
 
-#include "common/numeric/utils/pow.h"
 #include "common/stl/base.h"
 
 int main_easy_math()
@@ -11,16 +10,19 @@ int main_easy_math()
 	{
         unsigned x;
         cin >> x;
-        unsigned xt = x, p2 = 0, p5 = 0;
-        for (; (xt % 2) == 0; xt /= 2) ++p2;
-        for (; (xt % 5) == 0; xt /= 5) ++p5;
-        unsigned b = max(p5, max(p2, 2u) - 2u), a = 1;
-        for (uint64_t t = (4 * PowU<uint64_t>(10, b)) % x, ts = t; ts; ++a)
+        vector<unsigned> v(x, x);
+        v[0] = 0;
+        for (unsigned i = 1, t = 0; ; ++i)
         {
-            t = (t * 10) % x;
-            ts = (ts + t) % x;
-        }
-        cout << 2 * a + b << endl;
+            t = (10 * t + 4) % x;
+            if (v[t] < x)
+            {
+                cout << 2 * i - v[t] << endl;
+                break;
+            }
+            else
+                v[t] = i;
+        } 
 	}
 	return 0;
 }
