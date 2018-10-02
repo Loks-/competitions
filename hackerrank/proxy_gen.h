@@ -104,6 +104,7 @@ int main_dancing_in_pairs();
 int main_divisor_exploration();
 int main_divisor_exploration_ii();
 int main_easy_gcd();
+int main_easy_math();
 int main_equations();
 int main_eulers_criterion();
 int main_fibonacci_finding_easy();

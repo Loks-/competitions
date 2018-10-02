@@ -106,6 +106,7 @@ TSolutionsMap solutions_map {
 	{ "divisor_exploration", main_divisor_exploration },
 	{ "divisor_exploration_ii", main_divisor_exploration_ii },
 	{ "easy_gcd", main_easy_gcd },
+	{ "easy_math", main_easy_math },
 	{ "equations", main_equations },
 	{ "eulers_criterion", main_eulers_criterion },
 	{ "fibonacci_finding_easy", main_fibonacci_finding_easy },
