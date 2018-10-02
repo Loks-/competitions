@@ -68,6 +68,7 @@ protected:
 	{
 		unsigned root = group_root[current_group];
 		unsigned group_size = subtree_size[root];
+		if (group_size <= 2) return;
 		unsigned best_size = group_size, best_node = root;
 		unsigned v = root;
 		for (bool next = true; next; )
@@ -109,6 +110,7 @@ protected:
 	void Decompose(unsigned current_group)
 	{
 		unsigned root = group_root[current_group];
+		if (subtree_size[root] == 1) return;
 		for (unsigned v : tree.edges[root])
 		{
 			if (group[v] != current_group) continue;
