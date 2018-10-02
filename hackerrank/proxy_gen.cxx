@@ -103,6 +103,7 @@ TSolutionsMap solutions_map {
 	{ "cheese_and_random_toppings", main_cheese_and_random_toppings },
 	{ "closest_number", main_closest_number },
 	{ "constructing_a_number", main_constructing_a_number },
+	{ "coprime_conundrum", main_coprime_conundrum },
 	{ "dancing_in_pairs", main_dancing_in_pairs },
 	{ "devu_vs_police", main_devu_vs_police },
 	{ "divisor_exploration", main_divisor_exploration },
