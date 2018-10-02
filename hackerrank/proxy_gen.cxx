@@ -127,6 +127,7 @@ TSolutionsMap solutions_map {
 	{ "satisfactory_pairs", main_satisfactory_pairs },
 	{ "scalar_products", main_scalar_products },
 	{ "sherlock_and_gcd", main_sherlock_and_gcd },
+	{ "strange_numbers", main_strange_numbers },
 	{ "superpowers_of_2", main_superpowers_of_2 },
 	{ "the_chosen_one", main_the_chosen_one },
 	{ "the_chosen_one__treap", main_the_chosen_one__treap },
