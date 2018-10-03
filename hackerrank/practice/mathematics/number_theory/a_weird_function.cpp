@@ -7,7 +7,7 @@ int main_a_weird_function()
 {
     PrimesList pl(2000);
     vector<uint64_t> vi, vs(1, 0);
-    unsigned phi1 = 1, phi2 = 1;
+    uint64_t phi1 = 1, phi2 = 1;
     for (uint64_t j = 2;; ++j)
     {
         uint64_t i = (j * (j - 1)) / 2;
