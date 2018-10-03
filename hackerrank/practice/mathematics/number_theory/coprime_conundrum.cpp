@@ -1,7 +1,7 @@
 // https://www.hackerrank.com/challenges/arthur-and-coprimes
 
 #include "common/numeric/primes_list.h"
-#include "common/numeric/utils/gcd.h"
+#include "common/numeric/utils/coprime.h"
 #include "common/stl/base.h"
 
 int main_coprime_conundrum()
@@ -14,12 +14,7 @@ int main_coprime_conundrum()
     {
         unsigned maxq = n / p;
         if (maxq <= p) break;
-        total += pl.EulerPhi(p) * (maxq / p - 1);
-        for (unsigned q = 1, qlast = maxq % p; q <= qlast; ++q)
-        {
-            if (GCD(p, q) == 1)
-                ++total;
-        }
+        total += CoprimeNumers(p, maxq - p, pl);
     }
     cout << total << endl;
 	return 0;
