@@ -9,13 +9,18 @@ int main_megaprime_numbers()
     const vector<uint64_t> valid_digits {2, 3, 5, 7};
     auto to_uint = [valid_digits](unsigned u)
     {
-        uint64_t t = 0, t10 = 1;
-        for (; u; u /= 4)
+        unsigned l = 1, p4 = 4;
+        for (; u >= p4; ++l)
         {
-            if (u < 5)
-                --u;
+            u -= p4;
+            p4 *= 4;
+        }
+        uint64_t t = 0, t10 = 1;
+        for (; l; --l)
+        {
             t += t10 * valid_digits[u % 4];
             t10 *= 10;
+            u /= 4;
         }
         return t;
     };
