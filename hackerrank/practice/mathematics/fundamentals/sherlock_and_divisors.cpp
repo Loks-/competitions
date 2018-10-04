@@ -6,12 +6,12 @@
 int main_sherlock_and_divisors()
 {
 	unsigned T, N;
-	PrimesList primes(100000);
+	PrimesList primes_list(100000);
 	cin >> T;
 	for (unsigned it = 0; it < T; ++it)
 	{
 		cin >> N;
-		cout << ((N & 1) ? 0 : primes.GetDivisorsCount(N / 2)) << endl;
+		cout << ((N & 1) ? 0 : primes_list.GetDivisorsCount(N / 2)) << endl;
 	}
 	return 0;
 }

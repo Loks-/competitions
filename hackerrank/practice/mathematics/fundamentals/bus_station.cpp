@@ -18,8 +18,8 @@ int main_bus_station()
 		m = max(m, x);
 		us.insert(s);
 	}
-	PrimesList primes(100000);
-	vector<uint64_t> vd = primes.GetDivisors(s);
+	PrimesList primes_list(100000);
+	vector<uint64_t> vd = primes_list.GetDivisors(s);
 	sort(vd.begin(), vd.end());
 	for (uint64_t d : vd)
 	{

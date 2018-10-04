@@ -13,8 +13,8 @@ int main_easy_gcd()
         cin >> t;
         g = GCD(t, g);
     }
-    PrimesList pl(100000);
-    auto v = pl.Factorize(g);
+    PrimesList primes_list(100000);
+    auto v = primes_list.Factorize(g);
     for (auto p : v)
         b = max(b, k - (k % unsigned(p.first)));
     cout << b << endl;

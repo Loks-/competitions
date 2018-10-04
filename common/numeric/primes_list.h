@@ -7,80 +7,67 @@
 
 class PrimesList
 {
-public:
-	std::vector<uint64_t> vprimes;
-	std::vector<uint64_t> vprimes2; // squared primes
+protected:
+	uint64_t table_size, squared_table_size;
+	std::vector<uint64_t> primes, squared_primes;
 
 public:
-	PrimesList(unsigned max_prime)
+	using TFactorization = std::vector<std::pair<uint64_t, unsigned>>;
+
+	PrimesList(unsigned size)
 	{
-		std::vector<uint8_t> v(max_prime + 1, 1);
-		vprimes.push_back(2);
-		for (uint64_t i = 3; i <= max_prime; i += 2)
+		table_size = size;
+		squared_table_size = table_size * table_size;
+		std::vector<uint8_t> v(table_size + 1, 1);
+		primes.push_back(2);
+		for (uint64_t i = 3; i <= table_size; i += 2)
 		{
 			if (v[i])
 			{
-				vprimes.push_back(i);
-				for (int64_t j = i * i; j <= max_prime; j += 2 * i)
+				primes.push_back(i);
+				for (int64_t j = i * i; j <= table_size; j += 2 * i)
 					v[j] = 0;
 			}
 		}
-		vprimes2.reserve(vprimes.size());
-		for (size_t i = 0; i < vprimes.size(); ++i)
-			vprimes2.push_back(vprimes[i] * vprimes[i]);
+		squared_primes.reserve(primes.size());
+		for (size_t i = 0; i < primes.size(); ++i)
+			squared_primes.push_back(primes[i] * primes[i]);
 	}
+
+	const std::vector<uint64_t>& GetPrimes() const { return primes; }
+	const std::vector<uint64_t>& GetSquaredPrimes() const { return squared_primes; }
+	uint64_t GetTableSize() const { return table_size; }
+	uint64_t GetSquaredTableSize() const { return squared_table_size; }
 
 	bool IsPrime(uint64_t n)
 	{
-		if (n <= vprimes.back()) return std::binary_search(vprimes.begin(), vprimes.end(), n);
-		assert(n <= vprimes2.back());
-		for (size_t i = 0; vprimes2[i] <= n; ++i)
+		if (n <= table_size) return std::binary_search(primes.begin(), primes.end(), n);
+		assert(n <= squared_table_size);
+		for (size_t i = 0; squared_primes[i] <= n; ++i)
 		{
-			if ((n % vprimes[i]) == 0) return false;
+			if ((n % primes[i]) == 0) return false;
 		}
 		return true;
 	}
 
-	std::vector<std::pair<uint64_t, unsigned>> Factorize(uint64_t n) const
+	TFactorization Factorize(uint64_t n) const
 	{
-		std::vector<std::pair<uint64_t, unsigned>> output;
-		for (size_t i = 0; i < vprimes.size(); ++i)
+		TFactorization output;
+		for (size_t i = 0; i < primes.size(); ++i)
 		{
-			if (n < vprimes2[i]) break;
-			if ((n % vprimes[i]) == 0)
+			if (n < squared_primes[i]) break;
+			if ((n % primes[i]) == 0)
 			{
-				n /= vprimes[i];
+				uint64_t p = primes[i];
+				n /= p;
 				unsigned cnt = 1;
-				for (; (n % vprimes[i]) == 0; ++cnt)
-					n /= vprimes[i];
-				output.push_back(std::make_pair(vprimes[i], cnt));
+				for (; (n % p) == 0; ++cnt) n /= p;
+				output.push_back(std::make_pair(p, cnt));
 			}
 		}
-		assert(vprimes2.back() > n);
+		assert(squared_table_size > n);
 		if (n != 1)
 			output.push_back(std::make_pair(n, 1));
-		return output;
-	}
-
-	// Number of relative prime integers to n.
-	uint64_t EulerPhi(uint64_t n) const
-	{
-		// Factorize function is not callled to make code faster.
-		uint64_t output = n;
-		for (size_t i = 0; i < vprimes.size(); ++i)
-		{
-			if (n < vprimes2[i]) break;
-			if ((n % vprimes[i]) == 0)
-			{
-				uint64_t p = vprimes[i];
-				output -= (output / p);
-				for (n /= p; (n % p) == 0;) 
-					n /= p;
-			}
-		}
-		assert(vprimes2.back() > n);
-		if (n != 1)
-			output -= (output / n);
 		return output;
 	}
 
@@ -94,14 +81,14 @@ public:
 	}
 
 protected:
-	void GetDivisorsI(const std::vector<std::pair<uint64_t, unsigned>>& vfactorization, unsigned fpi, uint64_t current, std::vector<uint64_t>& output) const
+	void GetDivisorsI(const TFactorization& factorization, unsigned fpi, uint64_t current, std::vector<uint64_t>& output) const
 	{
-		if (fpi < vfactorization.size())
+		if (fpi < factorization.size())
 		{
-			for (unsigned i = 0; i <= vfactorization[fpi].second; ++i)
+			for (unsigned i = 0; i <= factorization[fpi].second; ++i)
 			{
-				GetDivisorsI(vfactorization, fpi + 1, current, output);
-				current *= vfactorization[fpi].first;
+				GetDivisorsI(factorization, fpi + 1, current, output);
+				current *= factorization[fpi].first;
 			}
 		}
 		else

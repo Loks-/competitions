@@ -6,13 +6,13 @@
 
 int main_mehta_and_his_laziness()
 {
-    PrimesList pl(10000);
+    PrimesList primes_list(10000);
 	unsigned T, N;
 	cin >> T;
 	for (unsigned it = 0; it < T; ++it)
 	{
         cin >> N;
-        auto f = pl.Factorize(N);
+        auto f = primes_list.Factorize(N);
         if ((f.size() == 0) || (f[0].first != 2) || (f[0].second < 2) || (N == 4))
             cout << 0 << endl;
         else

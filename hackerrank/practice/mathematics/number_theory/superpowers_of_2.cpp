@@ -2,6 +2,7 @@
 
 #include "common/numeric/modular_arithmetic.h"
 #include "common/numeric/primes_list.h"
+#include "common/numeric/utils/eulers_totient.h"
 #include "common/numeric/utils/merge_remainders.h"
 #include "common/stl/base.h"
 
@@ -19,8 +20,8 @@ int main_superpowers_of_2()
     else
     {
         for (; (b & 1) == 0; b /= 2) c *= 2;        
-        PrimesList pl(10000);
-        d = pl.EulerPhi(b);
+        PrimesList primes_list(10000);
+        d = EulersTotient(b, primes_list);
         uint64_t aa = TModular::PowUSafe(2, a, d);
         r = MergeRemainders<TModular>(c, 0, b, TModular::PowUSafe(2, aa, b));
     }

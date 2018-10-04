@@ -86,21 +86,19 @@ public:
 	MillerRabinPrimalityTest(unsigned maxprime = 13)
 	{
 		N = maxprime, M = 1;
-		PrimesList p(maxprime);
+		PrimesList primes_list(maxprime);
+		const std::vector<uint64_t> &pl_primes = primes_list.GetPrimes();
 		primes.resize(maxprime + 1, 0);
-		for (size_t i = 0; i < p.vprimes.size(); ++i)
+		for (uint64_t p : pl_primes)
 		{
-			M *= p.vprimes[i];
-			primes[p.vprimes[i]] = 1;
+			M *= p;
+			primes[p] = 1;
 		}
 		table.resize(M, 1);
-		for (size_t i = 0; i < p.vprimes.size(); ++i)
+		for (uint64_t p : pl_primes)
 		{
-			uint64_t ip = p.vprimes[i];
-			for (uint64_t j = 0; j < M; j += ip)
-			{
+			for (uint64_t j = 0; j < M; j += p)
 				table[j] = 0;
-			}
 		}
 	}
 

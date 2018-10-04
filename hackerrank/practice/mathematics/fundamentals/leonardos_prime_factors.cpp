@@ -5,15 +5,15 @@
 
 int main_leonardos_prime_factors()
 {
-	PrimesList primes(100);
+	PrimesList primes_list(100);
 	unsigned T;
 	cin >> T;
 	for (unsigned it = 0; it < T; ++it)
 	{
 		uint64_t n, k = 0;
 		cin >> n;
-		for (; primes.vprimes[k] <= n; ++k)
-			n /= primes.vprimes[k];
+		for (; primes_list.GetPrimes()[k] <= n; ++k)
+			n /= primes_list.GetPrimes()[k];
 		cout << k << endl;
 	}
 	return 0;

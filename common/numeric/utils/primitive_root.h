@@ -2,15 +2,14 @@
 
 #include "../modular_arithmetic.h"
 #include "../primes_list.h"
-#include <vector>
-#include <utility>
+#include "../../base.h"
 
 template <class TModular = TModularArithmetic_P32U>
-inline uint64_t FindSmallestPrimitive(uint64_t p, const PrimesList& pl)
+inline uint64_t FindSmallestPrimitive(uint64_t p, const PrimesList& primes_list)
 {
     if (p <= 3)
         return p - 1;
-    std::vector<std::pair<uint64_t, unsigned>> vp = pl.Factorize(p - 1);
+    PrimesList::TFactorization vp = primes_list.Factorize(p - 1);
     for (uint64_t u = 2; u < p; ++u)
     {
         bool good = true;

@@ -8,11 +8,11 @@ using TModular = Modular<1000007>;
 
 int main_equations()
 {
-    PrimesList pl(1100000);
+    PrimesList primes_list(1100000);
 	uint64_t n;
 	cin >> n;
     TModular r = 1;
-    for (uint64_t p : pl.vprimes)
+    for (uint64_t p : primes_list.GetPrimes())
     {
         if (p > n) break;
         unsigned c = 0;

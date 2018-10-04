@@ -12,6 +12,7 @@
         "*.tcc": "cpp",
         "deque": "cpp",
         "string_view": "cpp",
-        "list": "cpp"
+        "list": "cpp",
+        "ostream": "cpp"
     }
 }

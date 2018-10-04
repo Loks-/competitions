@@ -5,7 +5,7 @@
 #include "common/stl/base.h"
 
 namespace {
-    static PrimesList pl(10000000);
+    static PrimesList primes_list(10000000);
     static MillerRabinPrimalityTest pt;
     static uint64_t best_so_far;
 
@@ -13,8 +13,8 @@ namespace {
     {
         if (N <= 1)
             return 0;
-        else if (N <= pl.vprimes.back())
-            return *(upper_bound(pl.vprimes.begin(), pl.vprimes.end(), N) - 1);
+        else if (N <= primes_list.GetPrimes().back())
+            return *(upper_bound(primes_list.GetPrimes().begin(), primes_list.GetPrimes().end(), N) - 1);
         else
         {
             if ((N & 1) == 0)
@@ -39,9 +39,9 @@ namespace {
             best_so_far = max(best_so_far, M);
             return true;
         }
-        else if (N < pl.vprimes[min_prime_index])
+        else if (N < primes_list.GetPrimes()[min_prime_index])
             return false;
-        else if ((powers[power_index] >= 3) && (N < pl.vprimes2[min_prime_index]))
+        else if ((powers[power_index] >= 3) && (N < primes_list.GetSquaredPrimes()[min_prime_index]))
             return false;
         else if ((power_index == (powers.size() - 1)) && powers[power_index] <= 3)
         {
@@ -53,7 +53,7 @@ namespace {
             }
             else if (powers[power_index] == 3)
             {
-                uint64_t p2 = *(upper_bound(pl.vprimes2.begin(), pl.vprimes2.end(), N) - 1);
+                uint64_t p2 = *(upper_bound(primes_list.GetSquaredPrimes().begin(), primes_list.GetSquaredPrimes().end(), N) - 1);
                 best_so_far = max(best_so_far, M * p2);
                 return true;
             }
@@ -62,7 +62,7 @@ namespace {
         for (;; ++min_prime_index)
         {
             unsigned power = powers[power_index] - 1;
-            uint64_t prime = pl.vprimes[min_prime_index];
+            uint64_t prime = primes_list.GetPrimes()[min_prime_index];
             uint64_t tx = 1, tn = N;
             for (unsigned i = 0; i < power; ++i)
             {

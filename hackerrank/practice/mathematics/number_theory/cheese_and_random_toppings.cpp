@@ -8,13 +8,13 @@
 int main_cheese_and_random_toppings()
 {
 	unsigned T, N, R, M;
-    PrimesList pl(50);
+    PrimesList primes_list(50);
 	cin >> T;
 	for (unsigned it = 0; it < T; ++it)
 	{
         cin >> N >> R >> M;
         uint64_t r = 0, m = 1;
-        auto vf = pl.Factorize(M);
+        auto vf = primes_list.Factorize(M);
         for (auto pf : vf)
         {
             uint64_t rf = BinomialCoefficient(N, R, unsigned(pf.first));

@@ -6,7 +6,7 @@
 
 int main_coprime_conundrum()
 {
-    PrimesList pl(100000);
+    PrimesList primes_list(100000);
     unsigned n;
     cin >> n;
     uint64_t total = 0;
@@ -14,7 +14,7 @@ int main_coprime_conundrum()
     {
         unsigned maxq = n / p;
         if (maxq <= p) break;
-        total += CoprimeNumers(p, maxq - p, pl);
+        total += CoprimeNumers(p, maxq - p, primes_list);
     }
     cout << total << endl;
 	return 0;
