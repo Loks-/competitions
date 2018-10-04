@@ -3,6 +3,7 @@
 
 #include "common/numeric/modular.h"
 #include "common/numeric/primes_list.h"
+#include "common/numeric/utils/divisors.h"
 #include "common/stl/base.h"
 
 using TModular = Modular<>;
@@ -69,7 +70,7 @@ int main_kenneth()
     }
 
     PrimesList primes_list(1000000);
-    auto vd = primes_list.GetDivisors(l);
+    auto vd = GetDivisors(primes_list.Factorize(l));
     sort(vd.begin(), vd.end());
     vector<char> vok(vd.size(), 1);
     for (unsigned k = 0; k < vd.size(); ++k)

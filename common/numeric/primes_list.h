@@ -69,36 +69,4 @@ public:
 			output.push_back(std::make_pair(n, 1));
 		return output;
 	}
-
-	unsigned GetDivisorsCount(uint64_t n) const
-	{
-		auto vp = Factorize(n);
-		unsigned k = 1;
-		for (auto p : vp)
-			k *= (p.second + 1);
-		return k;
-	}
-
-protected:
-	void GetDivisorsI(const TFactorization& factorization, unsigned fpi, uint64_t current, std::vector<uint64_t>& output) const
-	{
-		if (fpi < factorization.size())
-		{
-			for (unsigned i = 0; i <= factorization[fpi].second; ++i)
-			{
-				GetDivisorsI(factorization, fpi + 1, current, output);
-				current *= factorization[fpi].first;
-			}
-		}
-		else
-			output.push_back(current);
-	}
-
-public:
-	std::vector<uint64_t> GetDivisors(uint64_t n) const
-	{
-		std::vector<uint64_t> v;
-		GetDivisorsI(Factorize(n), 0, 1, v);
-		return v;
-	}
 };

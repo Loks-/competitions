@@ -1,6 +1,7 @@
 // https://www.hackerrank.com/challenges/bus-station
 
 #include "common/numeric/primes_list.h"
+#include "common/numeric/utils/divisors.h"
 #include "common/stl/base.h"
 
 #include <unordered_set>
@@ -19,7 +20,7 @@ int main_bus_station()
 		us.insert(s);
 	}
 	PrimesList primes_list(100000);
-	vector<uint64_t> vd = primes_list.GetDivisors(s);
+	vector<uint64_t> vd = GetDivisors(primes_list.Factorize(s));
 	sort(vd.begin(), vd.end());
 	for (uint64_t d : vd)
 	{
