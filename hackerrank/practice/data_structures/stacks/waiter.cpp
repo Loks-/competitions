@@ -7,7 +7,6 @@
 
 int main_waiter()
 {
-	PrimesList primes_list(10000);
 	unsigned N, Q, x;
 	cin >> N >> Q;
 	stack<unsigned> sa, sb, st;
@@ -16,9 +15,11 @@ int main_waiter()
 		cin >> x;
 		sa.push(x);
 	}
+	PrimesList primes_list(10000);
+	const vector<uint64_t>& primes = primes_list.GetPrimes();
 	for (unsigned iq = 0; iq < Q; ++iq)
 	{
-		unsigned p = unsigned(primes_list.GetPrimes()[iq]);
+		unsigned p = unsigned(primes[iq]);
 		for (; !sa.empty(); sa.pop())
 		{
 			if (sa.top() % p)

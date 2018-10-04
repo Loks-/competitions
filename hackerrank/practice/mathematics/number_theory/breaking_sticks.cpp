@@ -12,7 +12,7 @@ int main_breaking_sticks()
     for (unsigned i = 0; i < n; ++i)
     {
         cin >> a;
-        auto vf = primes_list.Factorize(a);
+        TFactorization vf = primes_list.Factorize(a);
         reverse(vf.begin(), vf.end());
         uint64_t t = 1;
         for (auto p : vf)

@@ -14,7 +14,7 @@ int main_cheese_and_random_toppings()
 	{
         cin >> N >> R >> M;
         uint64_t r = 0, m = 1;
-        auto vf = primes_list.Factorize(M);
+        TFactorization vf = primes_list.Factorize(M);
         for (auto pf : vf)
         {
             uint64_t rf = BinomialCoefficient(N, R, unsigned(pf.first));
