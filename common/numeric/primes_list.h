@@ -28,6 +28,7 @@ public:
 			if (!table[i])
 			{
 				primes.push_back(i);
+				table[i] = i;
 				for (uint64_t j = i * i; j <= table_size; j += 2 * i)
                 {
                     if (table[j] == 0)
@@ -57,8 +58,22 @@ public:
 		return true;
 	}
 
+	TFactorization FactorizeTable(uint64_t n) const
+	{
+		assert(n <= table_size);
+		TFactorization output;
+		for (; n > 1; )
+		{
+			unsigned p = table[n], cnt = 1;
+			for (n /= p; table[n] == p; ++cnt) n /= p;
+			output.push_back(std::make_pair(uint64_t(p), cnt));
+		}
+		return output;
+	}
+
 	TFactorization Factorize(uint64_t n) const
 	{
+		if (n <= table_size) return FactorizeTable(n);
 		TFactorization output;
 		for (size_t i = 0; i < primes.size(); ++i)
 		{
