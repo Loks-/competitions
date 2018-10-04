@@ -115,6 +115,7 @@ TSolutionsMap solutions_map {
 	{ "eulers_criterion", main_eulers_criterion },
 	{ "fibonacci_finding_easy", main_fibonacci_finding_easy },
 	{ "fibonacci_gcd", main_fibonacci_gcd },
+	{ "gcd_product", main_gcd_product },
 	{ "help_mike", main_help_mike },
 	{ "identify_smith_numbers", main_identify_smith_numbers },
 	{ "john_and_gcd_list", main_john_and_gcd_list },

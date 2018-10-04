@@ -113,6 +113,7 @@ int main_equations();
 int main_eulers_criterion();
 int main_fibonacci_finding_easy();
 int main_fibonacci_gcd();
+int main_gcd_product();
 int main_help_mike();
 int main_identify_smith_numbers();
 int main_john_and_gcd_list();
