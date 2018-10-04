@@ -5,7 +5,7 @@
 
 int main_breaking_sticks()
 {
-    PrimesList primes_list(1100000);
+    PrimesList primes_list(1000000);
 	unsigned n;
 	cin >> n;
     uint64_t sum = n, a;

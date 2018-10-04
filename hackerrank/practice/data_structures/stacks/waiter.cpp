@@ -7,7 +7,7 @@
 
 int main_waiter()
 {
-	PrimesList primes_list(100000);
+	PrimesList primes_list(10000);
 	unsigned N, Q, x;
 	cin >> N >> Q;
 	stack<unsigned> sa, sb, st;

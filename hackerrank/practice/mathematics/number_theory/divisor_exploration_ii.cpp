@@ -8,7 +8,7 @@ using TModular = Modular<>;
 
 int main_divisor_exploration_ii()
 {
-    PrimesList primes_list(10000000);
+    PrimesList primes_list(2000000);
 	unsigned T, m, a;
 	cin >> T;
 	for (unsigned it = 0; it < T; ++it)

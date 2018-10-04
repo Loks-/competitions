@@ -5,7 +5,7 @@
 #include "common/stl/base.h"
 
 namespace {
-    static PrimesList primes_list(10000000);
+    static PrimesList primes_list(1000000);
     static MillerRabinPrimalityTest pt;
     static uint64_t best_so_far;
 
@@ -13,7 +13,7 @@ namespace {
     {
         if (N <= 1)
             return 0;
-        else if (N <= primes_list.GetPrimes().back())
+        else if (N <= primes_list.GetTableSize())
             return *(upper_bound(primes_list.GetPrimes().begin(), primes_list.GetPrimes().end(), N) - 1);
         else
         {

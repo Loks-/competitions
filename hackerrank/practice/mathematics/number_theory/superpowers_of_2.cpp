@@ -8,7 +8,6 @@
 
 using TModular = TModularArithmetic_C32U;
 
-// Incorrect if GCD(b, 2) != 1.
 int main_superpowers_of_2()
 {
     uint64_t a, b, c = 1, d, r, one = 1;
@@ -20,7 +19,7 @@ int main_superpowers_of_2()
     else
     {
         for (; (b & 1) == 0; b /= 2) c *= 2;        
-        PrimesList primes_list(10000);
+        PrimesList primes_list(1000);
         d = EulersTotient(b, primes_list);
         uint64_t aa = TModular::PowUSafe(2, a, d);
         r = MergeRemainders<TModular>(c, 0, b, TModular::PowUSafe(2, aa, b));
