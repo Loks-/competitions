@@ -1,7 +1,7 @@
 // https://www.hackerrank.com/challenges/bus-station
 
-#include "common/numeric/utils/divisors.h"
-#include "common/numeric/utils/factorize.h"
+#include "common/numeric/factorization/divisors.h"
+#include "common/numeric/factorization/factorize.h"
 #include "common/stl/base.h"
 
 #include <unordered_set>

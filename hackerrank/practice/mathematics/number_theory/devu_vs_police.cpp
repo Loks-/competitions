@@ -1,8 +1,8 @@
 // https://www.hackerrank.com/challenges/devu-police
 
+#include "common/numeric/factorization/eulers_totient.h"
 #include "common/numeric/modular_arithmetic.h"
 #include "common/numeric/primes_list.h"
-#include "common/numeric/utils/eulers_totient.h"
 #include "common/numeric/utils/pow.h"
 #include "common/stl/base.h"
 

@@ -1,7 +1,7 @@
 // https://www.hackerrank.com/challenges/identify-smith-numbers
 
+#include "common/numeric/factorization/factorize.h"
 #include "common/numeric/utils/digits_sum.h"
-#include "common/numeric/utils/factorize.h"
 #include "common/stl/base.h"
 
 int main_identify_smith_numbers()

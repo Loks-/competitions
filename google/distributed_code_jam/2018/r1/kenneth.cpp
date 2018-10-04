@@ -1,9 +1,9 @@
 #include "message.h"
 #include "kenneth.h"
 
+#include "common/numeric/factorization/divisors.h"
+#include "common/numeric/factorization/factorize.h"
 #include "common/numeric/modular.h"
-#include "common/numeric/utils/divisors.h"
-#include "common/numeric/utils/factorize.h"
 #include "common/stl/base.h"
 
 using TModular = Modular<>;

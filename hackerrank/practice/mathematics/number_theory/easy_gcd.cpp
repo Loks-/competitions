@@ -1,7 +1,7 @@
 // https://www.hackerrank.com/challenges/easy-gcd-1
 
+#include "common/numeric/factorization/factorize.h"
 #include "common/numeric/utils/gcd.h"
-#include "common/numeric/utils/factorize.h"
 #include "common/stl/base.h"
 
 int main_easy_gcd()

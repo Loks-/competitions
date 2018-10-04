@@ -1,7 +1,7 @@
 // https://www.hackerrank.com/challenges/sherlock-and-divisors
 
+#include "common/numeric/factorization/divisors.h"
 #include "common/numeric/primes_list.h"
-#include "common/numeric/utils/divisors.h"
 #include "common/stl/base.h"
 
 int main_sherlock_and_divisors()

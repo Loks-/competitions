@@ -1,6 +1,6 @@
 #pragma once
 
-#include "factorization.h"
+#include "factorization/base.h"
 #include "../base.h"
 #include <algorithm>
 #include <vector>

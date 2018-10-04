@@ -1,8 +1,8 @@
 // https://www.hackerrank.com/challenges/superpowers
 
+#include "common/numeric/factorization/eulers_totient.h"
 #include "common/numeric/modular_arithmetic.h"
 #include "common/numeric/primes_list.h"
-#include "common/numeric/utils/eulers_totient.h"
 #include "common/numeric/utils/merge_remainders.h"
 #include "common/stl/base.h"
 
