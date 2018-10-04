@@ -25,7 +25,7 @@ public:
 			if (v[i])
 			{
 				primes.push_back(i);
-				for (int64_t j = i * i; j <= table_size; j += 2 * i)
+				for (uint64_t j = i * i; j <= table_size; j += 2 * i)
 					v[j] = 0;
 			}
 		}
