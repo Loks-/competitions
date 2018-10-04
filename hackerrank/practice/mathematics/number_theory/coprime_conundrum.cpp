@@ -14,7 +14,7 @@ int main_coprime_conundrum()
     {
         unsigned maxq = n / p;
         if (maxq <= p) break;
-        total += CoprimeNumers(p, maxq - p, primes_list);
+        total += CoprimeNumers(primes_list.Factorize(p), maxq - p);
     }
     cout << total << endl;
 	return 0;
