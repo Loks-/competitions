@@ -1,7 +1,7 @@
 // https://www.hackerrank.com/challenges/easy-gcd-1
 
 #include "common/numeric/utils/gcd.h"
-#include "common/numeric/primes_list.h"
+#include "common/numeric/utils/factorize.h"
 #include "common/stl/base.h"
 
 int main_easy_gcd()
@@ -13,9 +13,8 @@ int main_easy_gcd()
         cin >> t;
         g = GCD(t, g);
     }
-    PrimesList primes_list(100000);
-    auto v = primes_list.Factorize(g);
-    for (auto p : v)
+    TFactorization f = Factorize(g);
+    for (auto p : f)
         b = max(b, k - (k % unsigned(p.first)));
     cout << b << endl;
 	return 0;
