@@ -1,9 +1,9 @@
 #pragma once
 
-#include "../primes_list.h"
+#include "../factorization.h"
 
 // Return number of coprime to k numbers in the interval [1..n].
-inline uint64_t CoprimeNumers(const PrimesList::TFactorization& k_factorization, uint64_t n)
+inline uint64_t CoprimeNumers(const TFactorization& k_factorization, uint64_t n)
 {
     if (k_factorization.size() == 0) return n;
     unsigned fs = unsigned(k_factorization.size()), p2 = 1u << fs;
@@ -25,7 +25,8 @@ inline uint64_t CoprimeNumers(const PrimesList::TFactorization& k_factorization,
     return total;
 }
 
-inline uint64_t CoprimeNumers(uint64_t k, uint64_t n, const PrimesList& primes_list)
+template<class TPrimesList>
+inline uint64_t CoprimeNumers(uint64_t k, uint64_t n, const TPrimesList& primes_list)
 {
     return CoprimeNumers(primes_list.Factorize(k), n);
 }

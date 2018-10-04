@@ -9,7 +9,7 @@ inline uint64_t FindSmallestPrimitive(uint64_t p, const PrimesList& primes_list)
 {
     if (p <= 3)
         return p - 1;
-    PrimesList::TFactorization vp = primes_list.Factorize(p - 1);
+    TFactorization vp = primes_list.Factorize(p - 1);
     for (uint64_t u = 2; u < p; ++u)
     {
         bool good = true;

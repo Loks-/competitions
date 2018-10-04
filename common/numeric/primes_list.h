@@ -1,5 +1,6 @@
 #pragma once
 
+#include "factorization.h"
 #include "../base.h"
 #include <algorithm>
 #include <vector>
@@ -12,8 +13,6 @@ protected:
 	std::vector<uint64_t> primes, squared_primes;
 
 public:
-	using TFactorization = std::vector<std::pair<uint64_t, unsigned>>;
-
 	PrimesList(unsigned size)
 	{
 		table_size = size;
@@ -41,8 +40,8 @@ public:
 
 	bool IsPrime(uint64_t n)
 	{
-		if (n <= table_size) return std::binary_search(primes.begin(), primes.end(), n);
 		assert(n <= squared_table_size);
+		if (n <= table_size) return std::binary_search(primes.begin(), primes.end(), n);
 		for (size_t i = 0; squared_primes[i] <= n; ++i)
 		{
 			if ((n % primes[i]) == 0) return false;
