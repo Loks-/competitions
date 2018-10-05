@@ -36,8 +36,6 @@ int main_contacts()
             }
             cout << min(m1[hvalue1], m2[hvalue2]) << endl;
         }
-        else
-            assert(false);
     }
 	return 0;
 }
