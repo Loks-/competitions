@@ -117,7 +117,6 @@ TSolutionsMap solutions_map {
 	{ "fibonacci_gcd", main_fibonacci_gcd },
 	{ "gcd_product", main_gcd_product },
 	{ "gcd_product__counting", main_gcd_product__counting },
-	{ "gcd_product__mobius", main_gcd_product__mobius },
 	{ "help_mike", main_help_mike },
 	{ "identify_smith_numbers", main_identify_smith_numbers },
 	{ "john_and_gcd_list", main_john_and_gcd_list },
