@@ -1,11 +1,11 @@
 // https://www.hackerrank.com/challenges/a-weird-function
 
-#include "common/numeric/primes_list_extended.h"
+#include "common/numeric/primes_list_extended/eulers_totient.h"
 #include "common/stl/base.h"
 
 int main_a_weird_function()
 {
-    PrimesListExtended primes_list(1500000);
+    TPLEEulersTotient primes_list(1500000);
     primes_list.EulersTotientPrecalc();
     vector<uint64_t> vi, vs(1, 0);
     uint64_t phi1 = 1, phi2 = 1;
