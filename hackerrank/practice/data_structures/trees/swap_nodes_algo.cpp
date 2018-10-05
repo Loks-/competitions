@@ -2,38 +2,15 @@
 
 #include "common/stl/base.h"
 
-namespace {
-	static vector<int> vl, vr, vd;
+#include <functional>
 
-	static void InitD(int c, int cd)
-	{
-		if (c != -1)
-		{
-			vd[c] = cd;
-			InitD(vl[c], cd + 1);
-			InitD(vr[c], cd + 1);
-		}
-	}
-
-	static void Print(int c)
-	{
-		if (c != -1)
-		{
-			Print(vl[c]);
-			cout << c << " ";
-			Print(vr[c]);
-		}
-	}
-}
-
-int main_swap_nodes_algo() {
-	int N;
+int main_swap_nodes_algo()
+{
+	unsigned N;
 	cin >> N;
-	vl.resize(N + 1, -1);
-	vr.resize(N + 1, -1);
-	vd.resize(N + 1, -1);
+	vector<int> vl(N + 1, -1), vr(N + 1, -1), vd(N + 1, -1);
 	vector<bool> vh(N + 1, true);
-	for (int i = 1; i <= N; ++i)
+	for (unsigned i = 1; i <= N; ++i)
 	{
 		int l, r;
 		cin >> l >> r;
@@ -42,8 +19,8 @@ int main_swap_nodes_algo() {
 		if (l != -1) vh[l] = false;
 		if (r != -1) vh[r] = false;
 	}
-	int h = 0;
-	for (int i = 1; i < N; ++i)
+	unsigned h = 0;
+	for (unsigned i = 1; i < N; ++i)
 	{
 		if (vh[i])
 		{
@@ -51,19 +28,40 @@ int main_swap_nodes_algo() {
 			break;
 		}
 	}
-	InitD(h, 1);
-	int T;
+
+    std::function<void(int, int, vector<int>&)> InitD = [vl, vr, &InitD](int c, int cd, vector<int>& vd) -> void
+	{
+		if (c != -1)
+		{
+			vd[c] = cd;
+			InitD(vl[c], cd + 1, vd);
+			InitD(vr[c], cd + 1, vd);
+		}
+	};
+
+    std::function<void(int, const vector<int>&, const vector<int>&)> Print = [&Print](int c, const vector<int>& vl, const vector<int>& vr) -> void
+	{
+		if (c != -1)
+		{
+			Print(vl[c], vl, vr);
+			cout << c << " ";
+			Print(vr[c], vl, vr);
+		}
+	};
+
+	InitD(h, 1, vd);
+	unsigned T;
 	cin >> T;
-	for (; T; --T)
+	for (unsigned iT = 0; iT < T; ++iT)
 	{
 		int d;
 		cin >> d;
-		for (int i = 1; i <= N; ++i)
+		for (unsigned i = 1; i <= N; ++i)
 		{
 			if ((vd[i] % d) == 0)
 				swap(vl[i], vr[i]);
 		}
-		Print(h);
+		Print(h, vl, vr);
 		cout << endl;
 	}
 	return 0;
