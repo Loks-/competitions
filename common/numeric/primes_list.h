@@ -75,12 +75,11 @@ public:
 	{
 		if (n <= table_size) return FactorizeTable(n);
 		TFactorization output;
-		for (size_t i = 0; i < primes.size(); ++i)
+		for (uint64_t p : primes)
 		{
-			if (n < squared_primes[i]) break;
-			if ((n % primes[i]) == 0)
+			if (n < p * p) break;
+			if ((n % p) == 0)
 			{
-				uint64_t p = primes[i];
 				n /= p;
 				unsigned cnt = 1;
 				for (; (n % p) == 0; ++cnt) n /= p;
