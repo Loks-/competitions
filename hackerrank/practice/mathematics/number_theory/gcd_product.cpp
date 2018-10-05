@@ -16,11 +16,8 @@ int main_gcd_product()
     PrimesList primes_list(m);
     for (uint64_t p : primes_list.GetPrimes())
     {
-        TModular mp(p);
         for (uint64_t pp = p; pp <= m; pp *= p)
-        {
-            r *= mp.PowU((m / pp) * (n / pp));
-        }
+            r *= TModular(p).PowU((m / pp) * (n / pp));
     }
     cout << r.Get() << endl;
 	return 0;
