@@ -29,27 +29,27 @@ int main_swap_nodes_algo()
 		}
 	}
 
-    std::function<void(int, int, vector<int>&)> InitD = [vl, vr, &InitD](int c, int cd, vector<int>& vd) -> void
+    std::function<void(int, int)> InitD = [&](int c, int cd) -> void
 	{
 		if (c != -1)
 		{
 			vd[c] = cd;
-			InitD(vl[c], cd + 1, vd);
-			InitD(vr[c], cd + 1, vd);
+			InitD(vl[c], cd + 1);
+			InitD(vr[c], cd + 1);
 		}
 	};
 
-    std::function<void(int, const vector<int>&, const vector<int>&)> Print = [&Print](int c, const vector<int>& vl, const vector<int>& vr) -> void
+    std::function<void(int)> Print = [&](int c) -> void
 	{
 		if (c != -1)
 		{
-			Print(vl[c], vl, vr);
+			Print(vl[c]);
 			cout << c << " ";
-			Print(vr[c], vl, vr);
+			Print(vr[c]);
 		}
 	};
 
-	InitD(h, 1, vd);
+	InitD(h, 1);
 	unsigned T;
 	cin >> T;
 	for (unsigned iT = 0; iT < T; ++iT)
@@ -61,7 +61,7 @@ int main_swap_nodes_algo()
 			if ((vd[i] % d) == 0)
 				swap(vl[i], vr[i]);
 		}
-		Print(h, vl, vr);
+		Print(h);
 		cout << endl;
 	}
 	return 0;
