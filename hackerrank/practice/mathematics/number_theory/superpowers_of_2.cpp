@@ -1,8 +1,8 @@
 // https://www.hackerrank.com/challenges/superpowers
 
 #include "common/numeric/factorization/eulers_totient.h"
+#include "common/numeric/factorization/factorize.h"
 #include "common/numeric/modular_arithmetic.h"
-#include "common/numeric/primes_list.h"
 #include "common/numeric/utils/merge_remainders.h"
 #include "common/stl/base.h"
 
@@ -19,8 +19,7 @@ int main_superpowers_of_2()
     else
     {
         for (; (b & 1) == 0; b /= 2) c *= 2;        
-        PrimesList primes_list(1000);
-        d = EulersTotient(b, primes_list);
+        d = EulersTotient(b, Factorize(b));
         uint64_t aa = TModular::PowUSafe(2, a, d);
         r = MergeRemainders<TModular>(c, 0, b, TModular::PowUSafe(2, aa, b));
     }

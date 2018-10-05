@@ -11,6 +11,6 @@ int main_primitive_problem()
 	uint64_t p;
 	cin >> p;
     uint64_t u = FindSmallestPrimitive(p, primes_list);
-    cout << u << " " << EulersTotient(p - 1, primes_list) << endl;
+    cout << u << " " << EulersTotient(p - 1, primes_list.Factorize(p - 1)) << endl;
 	return 0;
 }
