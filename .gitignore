@@ -12,3 +12,4 @@ Testing/
 # Project specific files
 /hackerrank/input.txt
 /utils/current_solution.cpp
+temp.in
