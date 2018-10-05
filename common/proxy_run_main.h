@@ -26,6 +26,17 @@ inline int proxy_run(const std::string& solution, const std::string& input_file_
 	return solution_results;
 }
 
+inline int proxy_run(const std::string& solution, const std::string& input_file_name, const std::string& output_file_name)
+{
+	if (output_file_name.empty())
+		return proxy_run(solution, input_file_name);
+	std::ofstream output_file(output_file_name);
+	auto cout_backup = std::cout.rdbuf(output_file.rdbuf());
+	int solution_results = proxy_run(solution, input_file_name);
+	std::cout.rdbuf(cout_backup);
+	return solution_results;
+}
+
 inline int proxy_test_one(const std::string& solution, const std::string& input_file_name, const std::string& test_file_name)
 {
 	std::stringstream solution_output, expected_output;

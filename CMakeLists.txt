@@ -56,6 +56,30 @@ endforeach( problemsourcefile ${HACKERRANK_SOURCES} )
 file ( APPEND ${HACKERRANK_PROXY_CXX} "};\n" )
 add_executable( hackerrank ${HACKERRANK_SOURCES} ${HACKERRANK_PROXY_CXX} )
 
+file( GLOB_RECURSE IPCS_SOURCES RELATIVE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/ipcs/*.cpp" )
+list( SORT IPCS_SOURCES )
+set( IPCS_PROXY_H "${PROJECT_SOURCE_DIR}/ipcs/proxy_gen.h" )
+set( IPCS_PROXY_CXX "${PROJECT_SOURCE_DIR}/ipcs/proxy_gen.cxx" )
+file ( WRITE ${IPCS_PROXY_H}
+	"#pragma once\n\n" )
+file ( WRITE ${IPCS_PROXY_CXX}
+	"#include \"common/proxy_run_base.h\"\n"
+    "#include \"proxy_gen.h\"\n"
+	"\n"
+	"TSolutionsMap solutions_map {\n")
+foreach( problemsourcefile ${IPCS_SOURCES} )
+    string( REPLACE ".cpp" "" problemfullname ${problemsourcefile} )
+    get_filename_component( problembasename ${problemfullname} NAME )
+    if ( NOT ${problembasename} MATCHES "main")
+        file ( APPEND ${IPCS_PROXY_H}
+			"int main_${problembasename}();\n" )
+        file ( APPEND ${IPCS_PROXY_CXX}
+			"\t{ \"${problembasename}\", main_${problembasename} },\n")
+    endif ( NOT ${problembasename} MATCHES "main")
+endforeach( problemsourcefile ${IPCS_SOURCES} )
+file ( APPEND ${IPCS_PROXY_CXX} "};\n" )
+add_executable( ipcs ${IPCS_SOURCES} ${IPCS_PROXY_CXX} )
+
 file( GLOB_RECURSE TESTER_SOURCES RELATIVE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/tester/*.cpp" )
 add_executable( tester ${TESTER_SOURCES} )
 
