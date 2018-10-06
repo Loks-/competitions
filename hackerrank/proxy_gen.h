@@ -93,6 +93,7 @@ int main_special_multiple();
 int main_strange_grid_again();
 int main_sumar_and_the_floating_rocks();
 int main_summing_the_n_series();
+int main_a_very_special_multiple();
 int main_a_weird_function();
 int main_akhil_and_gf();
 int main_bear_and_cryptography();
