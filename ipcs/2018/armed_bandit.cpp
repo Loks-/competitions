@@ -1,7 +1,7 @@
 #include "common/vector/read.h"
 #include "common/stl/full.h"
 
-int main_a()
+int main_armed_bandit()
 {
     unsigned T, N;
     cin >> T;

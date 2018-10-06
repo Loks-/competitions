@@ -16,20 +16,15 @@ namespace {
             direction_used.resize(dsize);
             fill(direction_used.begin(), direction_used.end(), false);
             vused.resize(xsize);
-            for (int x = 0; x < xsize; ++x)
-            {
-                vused[x].resize(0);
-                vused[x].resize(ysize, 0);
-            }
-            // fill(vused.begin(), vused.end(), vector<unsigned>(ysize, 0));
+            fill(vused.begin(), vused.end(), vector<unsigned>(ysize, 0));
         }
 
-        bool Inside(int x, int y)
+        bool Inside(int x, int y) const
         {
             return (x >= 0) && (x < xsize) && (y >= 0) && (y < ysize);
         }
 
-        bool ValidToSet(int x, int y, unsigned d)
+        bool ValidToSet(int x, int y, unsigned d) const
         {
             if (vused[x][y] != 0)
                 return false;
@@ -48,7 +43,7 @@ namespace {
             return true;
         }
 
-        void PrintSolution()
+        void PrintSolution() const
         {
             cout << xsize << " " << ysize << endl;
             for (int x = 0; x < xsize; ++x)
@@ -121,7 +116,7 @@ namespace {
     };
 }
 
-int main_j()
+int main_jumping_over_walls()
 {
     SolutionJumpingOverWalls s;
     s.Solve();
