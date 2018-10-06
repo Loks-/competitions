@@ -119,6 +119,7 @@ TSolutionsMap solutions_map {
 	{ "gcd_product__counting", main_gcd_product__counting },
 	{ "help_mike", main_help_mike },
 	{ "hyperrectangle_gcd", main_hyperrectangle_gcd },
+	{ "hyperrectangle_gcd__totient", main_hyperrectangle_gcd__totient },
 	{ "identify_smith_numbers", main_identify_smith_numbers },
 	{ "john_and_gcd_list", main_john_and_gcd_list },
 	{ "largest_non_coprime_submatrix", main_largest_non_coprime_submatrix },

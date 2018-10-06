@@ -117,6 +117,7 @@ int main_gcd_product();
 int main_gcd_product__counting();
 int main_help_mike();
 int main_hyperrectangle_gcd();
+int main_hyperrectangle_gcd__totient();
 int main_identify_smith_numbers();
 int main_john_and_gcd_list();
 int main_largest_non_coprime_submatrix();
