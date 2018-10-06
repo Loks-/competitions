@@ -1,5 +1,20 @@
 #pragma once
 
+int main_a();
+int main_b();
+int main_c();
+int main_d();
+int main_e();
+int main_f();
+int main_g();
+int main_h();
+int main_i();
+int main_j();
+int main_k();
+int main_l();
+int main_m();
+int main_n();
+int main_o();
 int main_partitioning_a_square();
 int main_qizz_quzz_q1();
 int main_qizz_quzz_q2();
