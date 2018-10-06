@@ -1,13 +1,24 @@
+#include "common/vector/read.h"
 #include "common/stl/full.h"
 
 int main_a()
 {
-    unsigned T;
+    unsigned T, N;
     cin >> T;
     for (unsigned iT = 0; iT < T; ++iT)
     {
-        // ...
-        cout << endl;
+        cin >> N;
+        vector<unsigned> v = ReadVector<unsigned>(N);
+        for (unsigned i = 0; i + 1 < v.size(); ++i)
+        {
+            if (v[i] >= 100)
+                cout << "100 ";
+            else if (v[i] >= 10)
+                cout << "10 ";
+            else
+                cout << "1 ";
+        }
+        cout << "1" << endl;
     }
     return 0;
 }
