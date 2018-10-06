@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <array>
 #include <bitset>
+#include <cctype>
 #include <chrono>
 #include <climits>
 #include <cmath>
