@@ -11,7 +11,6 @@ int main_hyperrectangle_gcd__totient()
 {
     TPLEEulersTotient primes_list(100000);
     primes_list.EulersTotientPrecalc();
-    vector<TModular> v(100001);
     unsigned T, K;
     cin >> T;
     for (unsigned iT = 0; iT < T; ++iT)
@@ -19,15 +18,14 @@ int main_hyperrectangle_gcd__totient()
         cin >> K;
         vector<unsigned> vnk = ReadVector<unsigned>(K);
         unsigned n0 = *min_element(vnk.begin(), vnk.end());
+        TModular s = 0;
         for (unsigned i = 1; i <= n0; ++i)
         {
-            v[i] = 1;
+            TModular t = primes_list.EulersTotient(i);
             for (unsigned nk : vnk)
-                v[i] *= TModular(nk / i);
+                t *= TModular(nk / i);
+            s += t;
         }
-        TModular s = 0;
-        for (unsigned i = n0; i; --i)
-            s += v[i] * TModular(primes_list.EulersTotient(i));
         cout << s.Get() << endl;
     }
 	return 0;
