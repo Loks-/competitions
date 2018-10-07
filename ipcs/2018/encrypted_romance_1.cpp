@@ -1,6 +1,6 @@
 #include "common/stl/full.h"
 
-int main_e()
+int main_encrypted_romance_1()
 {
     mt19937 re;
     struct SMap
@@ -46,9 +46,10 @@ int main_e()
             unsigned t = 0;
             for (unsigned j = 0; j < maxp; ++j)
             {
+                unsigned jj = uid(re);
                 for (unsigned i = 0; i < n; ++i)
                 {
-                    if (vm[i].Test(uid(re)))
+                    if (vm[i].Test(jj))
                     {
                         t += 1;
                         break;
