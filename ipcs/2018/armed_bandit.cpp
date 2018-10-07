@@ -1,5 +1,5 @@
 #include "common/vector/read.h"
-#include "common/stl/full.h"
+#include "common/stl/base.h"
 
 int main_armed_bandit()
 {

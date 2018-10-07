@@ -1,4 +1,6 @@
-#include "common/stl/full.h"
+#include "common/stl/base.h"
+
+#include <random>
 
 int main_encrypted_romance_1()
 {
