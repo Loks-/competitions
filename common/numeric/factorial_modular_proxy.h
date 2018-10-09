@@ -1,8 +1,10 @@
 #pragma once
 
+#include "utils/gcd.h"
+#include "../base.h"
 #include <vector>
 
-template <class TModularProxy, bool keep_inverted = true>
+template <class TModularProxy, bool keep_inverted = true, bool coprime_only = false>
 class FactorialModularProxy
 {
 public:
@@ -20,7 +22,7 @@ public:
 	{
 		for (; vf.size() <= n; )
 		{
-			vf.push_back(proxy.Mult(proxy.ApplyU(vf.size()), vf.back()));
+			vf.push_back((coprime_only && (GCD<uint64_t>(proxy.GetMod(), vf.size()) > 1)) ? vf.back() : proxy.Mult(proxy.ApplyU(vf.size()), vf.back()));
 			if (keep_inverted)
 				vfi.push_back(proxy.Inverse(vf.back()));
 		}

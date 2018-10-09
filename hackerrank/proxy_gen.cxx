@@ -132,6 +132,7 @@ TSolutionsMap solutions_map {
 	{ "manasa_loves_maths", main_manasa_loves_maths },
 	{ "megaprime_numbers", main_megaprime_numbers },
 	{ "mehta_and_his_laziness", main_mehta_and_his_laziness },
+	{ "ncr", main_ncr },
 	{ "number_of_zero_xor_subsets", main_number_of_zero_xor_subsets },
 	{ "power_of_large_numbers", main_power_of_large_numbers },
 	{ "prime_sum", main_prime_sum },
