@@ -1,11 +1,11 @@
 #pragma once
 
-#include "merge_remainders.h"
-#include "pow.h"
-#include "../factorial_modular_proxy.h"
-#include "../factorization/factorize.h"
-#include "../modular_arithmetic_proxy.h"
-#include "../../base.h"
+#include "factorial_modular_proxy.h"
+#include "factorization/factorize.h"
+#include "modular_arithmetic_proxy.h"
+#include "utils/merge_remainders.h"
+#include "utils/pow.h"
+#include "../base.h"
 #include <tuple>
 #include <vector>
 
