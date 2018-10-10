@@ -5,7 +5,7 @@
 
 // Based on Lucas's theorem.
 
-inline uint64_t BinomialCoefficientPrimeModular(uint64_t n, uint64_t k, FactorialModularProxy<TModularArithmeticProxy_P32U>& f)
+inline uint64_t BinomialCoefficientModularPrime(uint64_t n, uint64_t k, FactorialModularProxy<TModularArithmeticProxy_P32U>& f)
 {
     if (k > n) return 0;
     const TModularArithmeticProxy_P32U& proxy = f.GetProxy();
@@ -20,8 +20,8 @@ inline uint64_t BinomialCoefficientPrimeModular(uint64_t n, uint64_t k, Factoria
     return r;
 }
 
-inline uint64_t BinomialCoefficientPrimeModular(uint64_t n, uint64_t k, unsigned prime)
+inline uint64_t BinomialCoefficientModularPrime(uint64_t n, uint64_t k, unsigned prime)
 {
     FactorialModularProxy<TModularArithmeticProxy_P32U> f(prime);
-    return BinomialCoefficientPrimeModular(n, k, f);
+    return BinomialCoefficientModularPrime(n, k, f);
 }
