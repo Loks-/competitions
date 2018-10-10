@@ -5,7 +5,7 @@
 // Time and space to initialize to size n is O(n^2).
 // For big n and prime module it's better to use FactorialModular class.
 template <class TModular>
-class BinomialCoefficientModular
+class BinomialCoefficientTable
 {
 protected:
 	std::vector<std::vector<TModular>> nCr_table;
