@@ -76,6 +76,7 @@ int main_handshake();
 int main_is_fibo();
 int main_jim_and_the_jokes();
 int main_k_candy_store();
+int main_k_candy_store__bcm();
 int main_leonardos_prime_factors();
 int main_matrix_tracing();
 int main_maximum_draws();

@@ -78,6 +78,7 @@ TSolutionsMap solutions_map {
 	{ "is_fibo", main_is_fibo },
 	{ "jim_and_the_jokes", main_jim_and_the_jokes },
 	{ "k_candy_store", main_k_candy_store },
+	{ "k_candy_store__bcm", main_k_candy_store__bcm },
 	{ "leonardos_prime_factors", main_leonardos_prime_factors },
 	{ "matrix_tracing", main_matrix_tracing },
 	{ "maximum_draws", main_maximum_draws },
