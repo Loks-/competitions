@@ -12,7 +12,7 @@
 // Calculation Binomial coefficients by any modular.
 // Based on Andrew Granville paper.
 
-class BinomialCoefficientExtended
+class BinomialCoefficientModular
 {
 public:
     using TPrimeFactorialProxy = FactorialModularProxy<TModularArithmeticProxy_P32U, true, false>;
@@ -57,7 +57,7 @@ protected:
     std::vector<std::tuple<uint64_t, unsigned, TPrimePowerFactorialProxy>> factorial_proxies_composite;
 
 public:
-    BinomialCoefficientExtended(uint64_t n)
+    BinomialCoefficientModular(uint64_t n)
     {
         TFactorization nf(Factorize(n));
         for (auto fp : nf)
