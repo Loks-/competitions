@@ -102,6 +102,7 @@ TSolutionsMap solutions_map {
 	{ "binomial_coefficients", main_binomial_coefficients },
 	{ "breaking_sticks", main_breaking_sticks },
 	{ "cheese_and_random_toppings", main_cheese_and_random_toppings },
+	{ "cheese_and_random_toppings__bcm", main_cheese_and_random_toppings__bcm },
 	{ "closest_number", main_closest_number },
 	{ "constructing_a_number", main_constructing_a_number },
 	{ "coprime_conundrum", main_coprime_conundrum },

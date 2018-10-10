@@ -100,6 +100,7 @@ int main_bear_and_cryptography();
 int main_binomial_coefficients();
 int main_breaking_sticks();
 int main_cheese_and_random_toppings();
+int main_cheese_and_random_toppings__bcm();
 int main_closest_number();
 int main_constructing_a_number();
 int main_coprime_conundrum();
