@@ -71,7 +71,7 @@ public:
 		return output;
 	}
 
-	TFactorization Factorize(uint64_t n) const
+	TFactorization Factorize(uint64_t n, bool skip_assert = false) const
 	{
 		if (n <= table_size) return FactorizeTable(n);
 		TFactorization output;
@@ -86,7 +86,8 @@ public:
 				output.push_back(std::make_pair(p, cnt));
 			}
 		}
-		assert(squared_table_size > n);
+		if (!skip_assert)
+			assert(squared_table_size > n);
 		if (n != 1)
 			output.push_back(std::make_pair(n, 1));
 		return output;

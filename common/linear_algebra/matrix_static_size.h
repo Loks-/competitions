@@ -69,7 +69,7 @@ public:
 	TSelf PowU(uint64_t pow) const
 	{
 		static_assert(is_square, "matrix should be square");
-		TSelf ans; ans.SetDiagonal(1);
+		TSelf ans; ans.SetDiagonal(TValue(1));
 		TSelf x = *this;
 		for (; pow; pow >>= 1)
 		{
