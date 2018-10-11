@@ -9,7 +9,16 @@ Testing/
 # VS
 .vs/
 
+# Project auto generated files
+google/code_jam/proxy_gen.h
+google/code_jam/proxy_gen.cxx
+hackerrank/proxy_gen.h
+hackerrank/proxy_gen.cxx
+ipcs/proxy_gen.h
+ipcs/proxy_gen.cxx
+
 # Project specific files
-/hackerrank/input.txt
-/utils/current_solution.cpp
+utils/current_solution.cpp
+
+# Temp files
 temp.in
