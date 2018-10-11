@@ -4,12 +4,15 @@
 #include "common/numeric/primes_list.h"
 #include "common/stl/base.h"
 
-namespace {
-    static PrimesList primes_list(1000000);
-    static MillerRabinPrimalityTest pt;
-    static uint64_t best_so_far;
+#include <functional>
 
-    uint64_t GetMaxPrimeLessOrEqualN(uint64_t N, uint64_t minN)
+int main_bear_and_cryptography()
+{
+    PrimesList primes_list(1000000);
+    MillerRabinPrimalityTest pt;
+    uint64_t best_so_far;
+
+    auto GetMaxPrimeLessOrEqualN = [&](uint64_t N, uint64_t minN) -> uint64_t
     {
         if (N <= 1)
             return 0;
@@ -26,11 +29,11 @@ namespace {
             }
             return 1; // Not Zero!
         }
-    }
+    };
 
     // True - solutions are possible, just impossibe to beat best one
     // False - primes too big already
-    bool Solve(uint64_t N, uint64_t M, const vector<unsigned>& powers, unsigned power_index, unsigned min_prime_index)
+    std::function<bool(uint64_t, uint64_t, const vector<unsigned>&, unsigned, unsigned)> SolveR = [&](uint64_t N, uint64_t M, const vector<unsigned>& powers, unsigned power_index, unsigned min_prime_index) -> bool
     {
         if (power_index == powers.size())
         {
@@ -69,7 +72,7 @@ namespace {
                 tx *= prime;
                 tn /= prime;
             }
-            bool b = Solve(tn, M*tx, powers, power_index + 1, min_prime_index + 1);
+            bool b = SolveR(tn, M*tx, powers, power_index + 1, min_prime_index + 1);
             if (first && !b)
                 return false;
             first = false;
@@ -79,11 +82,11 @@ namespace {
                 break;
         }
         return true;
-    }
+    };
 
-    void Solve(uint64_t N, const vector<unsigned>& powers) { Solve(N, 1, powers, 0, 0); }
+    auto Solve = [&](uint64_t N, const vector<unsigned>& powers) { SolveR(N, 1, powers, 0, 0); };
 
-    vector<vector<unsigned>> DivideK(unsigned K, unsigned minv = 2)
+    std::function<vector<vector<unsigned>>(unsigned, unsigned)> DivideK = [&](unsigned K, unsigned minv) -> vector<vector<unsigned>>
     {
         if (K == 1)
             return vector<vector<unsigned>>(1);
@@ -103,11 +106,11 @@ namespace {
             }
         }
         return res;
-    }
+    };
 
-    vector<vector<unsigned>> GetAllPowersCandidates(unsigned K)
+    auto GetAllPowersCandidates = [&](unsigned K)
     {
-        vector<vector<unsigned>> vv = DivideK(K);
+        vector<vector<unsigned>> vv = DivideK(K, 2);
         vector<vector<unsigned>>  answer;
         for (size_t i = 0; i < vv.size(); ++i)
         {
@@ -117,11 +120,8 @@ namespace {
                 answer.push_back(vv[i]);
         }
         return answer;
-    }
-}
+    };
 
-int main_bear_and_cryptography()
-{
 	vector<vector<vector<unsigned>>> candidates(1);
 	for (unsigned i = 1; i <= 40; ++i)
 		candidates.push_back(GetAllPowersCandidates(i));
