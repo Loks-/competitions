@@ -3,7 +3,9 @@
 #include <vector>
 
 // Time and space to initialize to size n is O(n^2).
-// For big n and prime module it's better to use FactorialModular class.
+// If n is big it's better to use other classes:
+//   utils/binomial_coefficient_modular_prime.h for prime modular.
+//   binomial_coeffient_modular.h for general case.
 template <class TModular>
 class BinomialCoefficientTable
 {
