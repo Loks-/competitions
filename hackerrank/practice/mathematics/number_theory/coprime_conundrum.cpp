@@ -1,7 +1,7 @@
 // https://www.hackerrank.com/challenges/arthur-and-coprimes
 
-#include "common/numeric/factorization/coprime.h"
-#include "common/numeric/primes_list.h"
+#include "common/factorization/utils/coprime.h"
+#include "common/factorization/primes_list.h"
 #include "common/stl/base.h"
 
 int main_coprime_conundrum()

@@ -1,7 +1,7 @@
 // https://www.hackerrank.com/challenges/matrix-tracing
 
-#include "common/numeric/modular.h"
-#include "common/numeric/factorial_modular.h"
+#include "common/modular/modular.h"
+#include "common/modular/factorial_modular.h"
 #include "common/stl/base.h"
 
 using TModular = Modular<>;

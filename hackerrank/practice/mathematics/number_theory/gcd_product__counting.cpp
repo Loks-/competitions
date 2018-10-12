@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/gcd-product
 
-#include "common/numeric/modular.h"
+#include "common/modular/modular.h"
 #include "common/stl/base.h"
 
 using TModular = Modular<>;

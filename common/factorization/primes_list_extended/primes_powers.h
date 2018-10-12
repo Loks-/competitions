@@ -2,7 +2,7 @@
 
 #include "../primality_test.h"
 #include "../primes_list.h"
-#include "../utils/usqrt.h"
+#include "../../numeric/utils/usqrt.h"
 #include <vector>
 
 class PLEPrimesPowers : public PrimesList

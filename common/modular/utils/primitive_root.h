@@ -1,8 +1,8 @@
 #pragma once
 
 #include "../modular_arithmetic.h"
-#include "../primes_list.h"
 #include "../../base.h"
+#include "../../factorization/primes_list.h"
 
 template <class TModular = TModularArithmetic_P32U>
 inline uint64_t FindSmallestPrimitive(uint64_t p, const PrimesList& primes_list)

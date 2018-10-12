@@ -1,7 +1,7 @@
 #pragma once
 
-#include "utils/gcd.h"
 #include "../base.h"
+#include "../numeric/utils/gcd.h"
 #include <vector>
 
 template <class TModularProxy, bool keep_inverted = true, bool coprime_only = false>

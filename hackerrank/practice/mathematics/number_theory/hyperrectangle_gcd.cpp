@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/hyperrectangle-gcd
 
-#include "common/numeric/modular.h"
+#include "common/modular/modular.h"
 #include "common/vector/read.h"
 #include "common/stl/base.h"
 

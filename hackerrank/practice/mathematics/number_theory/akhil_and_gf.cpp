@@ -1,7 +1,7 @@
 // https://www.hackerrank.com/challenges/akhil-and-gf
 
-#include "common/numeric/modular_arithmetic.h"
-#include "common/numeric/utils/merge_remainders.h"
+#include "common/modular/modular_arithmetic.h"
+#include "common/modular/utils/merge_remainders.h"
 #include "common/stl/base.h"
 
 using TModular = TModularArithmetic_C32U;

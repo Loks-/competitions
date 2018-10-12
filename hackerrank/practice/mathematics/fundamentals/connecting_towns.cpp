@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/connecting-towns
 
-#include "common/numeric/modular.h"
+#include "common/modular/modular.h"
 #include "common/stl/base.h"
 
 using TModular = TModular_C32<1234567>;

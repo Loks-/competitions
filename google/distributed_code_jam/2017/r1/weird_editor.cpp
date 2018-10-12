@@ -1,7 +1,7 @@
 #include "message.h"
 #include "weird_editor.h"
 
-#include "common/numeric/modular.h"
+#include "common/modular/modular.h"
 #include "common/stl/base.h"
 
 using TModular = Modular<>;

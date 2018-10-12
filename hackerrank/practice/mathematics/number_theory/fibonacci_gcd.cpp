@@ -1,7 +1,7 @@
 // https://www.hackerrank.com/challenges/fibonacci-gcd
 
-#include "common/numeric/fibonacci_modular_matrix.h"
-#include "common/numeric/modular.h"
+#include "common/modular/fibonacci_modular_matrix.h"
+#include "common/modular/modular.h"
 #include "common/numeric/utils/gcd.h"
 #include "common/stl/base.h"
 

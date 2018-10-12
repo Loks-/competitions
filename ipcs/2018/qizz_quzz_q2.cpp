@@ -1,5 +1,5 @@
-#include "common/numeric/factorization/divisors.h"
-#include "common/numeric/primes_list.h"
+#include "common/factorization/utils/divisors.h"
+#include "common/factorization/primes_list.h"
 #include "common/vector/read.h"
 #include "common/stl/base.h"
 

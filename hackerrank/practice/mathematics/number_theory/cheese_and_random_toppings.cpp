@@ -1,8 +1,8 @@
 // https://www.hackerrank.com/challenges/cheese-and-random-toppings
 
-#include "common/numeric/primes_list.h"
-#include "common/numeric/utils/binomial_coefficient_modular_prime.h"
-#include "common/numeric/utils/merge_remainders.h"
+#include "common/factorization/primes_list.h"
+#include "common/modular/utils/binomial_coefficient_modular_prime.h"
+#include "common/modular/utils/merge_remainders.h"
 #include "common/stl/base.h"
 
 int main_cheese_and_random_toppings()

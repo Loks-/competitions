@@ -1,7 +1,7 @@
 // https://www.hackerrank.com/challenges/bear-and-cryptography
 
-#include "common/numeric/primality_test.h"
-#include "common/numeric/primes_list.h"
+#include "common/factorization/primality_test.h"
+#include "common/factorization/primes_list.h"
 #include "common/stl/base.h"
 
 #include <functional>

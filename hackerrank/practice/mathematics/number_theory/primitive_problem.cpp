@@ -1,8 +1,8 @@
 // https://www.hackerrank.com/challenges/primitive-problem
 
-#include "common/numeric/factorization/eulers_totient.h"
-#include "common/numeric/primes_list.h"
-#include "common/numeric/utils/primitive_root.h"
+#include "common/factorization/utils/eulers_totient.h"
+#include "common/factorization/primes_list.h"
+#include "common/modular/utils/primitive_root.h"
 #include "common/stl/base.h"
 
 int main_primitive_problem()

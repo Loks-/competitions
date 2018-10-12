@@ -2,7 +2,7 @@
 
 #include "common/graph/tree/centroid_decomposition.h"
 #include "common/graph/tree/lca.h"
-#include "common/numeric/modular.h"
+#include "common/modular/modular.h"
 #include "common/stl/base.h"
 
 #include <unordered_map>

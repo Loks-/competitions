@@ -1,8 +1,8 @@
 #pragma once
 
-#include "modular_arithmetic.h"
 #include "primes_list.h"
-#include <stdexcept>
+#include "../base.h"
+#include "../modular/modular_arithmetic.h"
 #include <vector>
 
 class MillerRabinPrimalityTest
@@ -50,7 +50,7 @@ public:
 		else if (n < 3474749660383ull) { return w3T; }
 		else if (n < 341550071728321ull) { return w341T; }
 		else if (n < 3825123056546413051ull) { return wmax; }
-		else { throw std::out_of_range("Input is too large."); }
+		else { assert(false); return wmax; }
 	}
 
 	static Primality CheckMillerRabinWitness(const Factorization& f, uint64_t witness) {

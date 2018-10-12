@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/breaking-sticks
 
-#include "common/numeric/primes_list.h"
+#include "common/factorization/primes_list.h"
 #include "common/stl/base.h"
 
 int main_breaking_sticks()

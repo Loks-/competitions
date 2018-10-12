@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/k-candy-store
 
-#include "common/numeric/binomial_coefficient_modular.h"
+#include "common/modular/binomial_coefficient_modular.h"
 #include "common/stl/base.h"
 
 int main_k_candy_store__bcm()

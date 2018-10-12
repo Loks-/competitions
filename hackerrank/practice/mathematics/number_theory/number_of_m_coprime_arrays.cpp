@@ -1,8 +1,8 @@
 // https://www.hackerrank.com/challenges/number-of-m-coprime-arrays
 
 #include "common/linear_algebra/matrix_static_size.h"
-#include "common/numeric/modular.h"
-#include "common/numeric/primes_list_extended/primes_powers.h"
+#include "common/modular/modular.h"
+#include "common/factorization/primes_list_extended/primes_powers.h"
 #include "common/stl/base.h"
 
 #include <numeric>

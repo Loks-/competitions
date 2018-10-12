@@ -3,7 +3,7 @@
 #include "common/binary_search_tree/info/size.h"
 #include "common/binary_search_tree/info/sum_keys.h"
 #include "common/binary_search_tree/treap.h"
-#include "common/numeric/modular.h"
+#include "common/modular/modular.h"
 #include "common/vector/read.h"
 #include "common/stl/base.h"
 

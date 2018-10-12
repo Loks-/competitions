@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/waiter
 
-#include "common/numeric/primes_list.h"
+#include "common/factorization/primes_list.h"
 #include "common/stl/base.h"
 
 #include <stack>

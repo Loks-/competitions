@@ -1,7 +1,7 @@
 // https://www.hackerrank.com/challenges/unfriendly-numbers
 
-#include "common/numeric/factorization/factorize.h"
-#include "common/numeric/factorization/divisors.h"
+#include "common/factorization/utils/factorize.h"
+#include "common/factorization/utils/divisors.h"
 #include "common/numeric/utils/gcd.h"
 #include "common/stl/base.h"
 

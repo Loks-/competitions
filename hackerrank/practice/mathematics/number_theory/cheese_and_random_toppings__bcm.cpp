@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/cheese-and-random-toppings
 
-#include "common/numeric/binomial_coefficient_modular.h"
+#include "common/modular/binomial_coefficient_modular.h"
 #include "common/stl/base.h"
 
 int main_cheese_and_random_toppings__bcm()

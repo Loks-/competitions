@@ -1,7 +1,7 @@
 // https://www.hackerrank.com/challenges/lucy-and-flowers
 
-#include "common/numeric/factorial_modular.h"
-#include "common/numeric/modular.h"
+#include "common/modular/factorial_modular.h"
+#include "common/modular/modular.h"
 #include "common/stl/base.h"
 
 using TModular = TModular_P32<1000000009>;

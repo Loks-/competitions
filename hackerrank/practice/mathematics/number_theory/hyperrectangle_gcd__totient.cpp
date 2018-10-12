@@ -1,7 +1,7 @@
 // https://www.hackerrank.com/challenges/hyperrectangle-gcd
 
-#include "common/numeric/modular.h"
-#include "common/numeric/primes_list_extended/eulers_totient.h"
+#include "common/modular/modular.h"
+#include "common/factorization/primes_list_extended/eulers_totient.h"
 #include "common/vector/read.h"
 #include "common/stl/base.h"
 

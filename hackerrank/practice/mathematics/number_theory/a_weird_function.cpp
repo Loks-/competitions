@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/a-weird-function
 
-#include "common/numeric/primes_list_extended/eulers_totient.h"
+#include "common/factorization/primes_list_extended/eulers_totient.h"
 #include "common/stl/base.h"
 
 int main_a_weird_function()

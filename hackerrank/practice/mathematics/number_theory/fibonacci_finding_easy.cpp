@@ -1,7 +1,7 @@
 // https://www.hackerrank.com/challenges/fibonacci-finding-easy
 
-#include "common/numeric/fibonacci_modular_matrix.h"
-#include "common/numeric/modular.h"
+#include "common/modular/fibonacci_modular_matrix.h"
+#include "common/modular/modular.h"
 #include "common/stl/base.h"
 
 using TFibonacci = FibonacciModularMatrix<Modular<1000000007>>;

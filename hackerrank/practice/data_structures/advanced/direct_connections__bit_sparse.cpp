@@ -1,7 +1,7 @@
 // https://www.hackerrank.com/challenges/direct-connections
 
 #include "common/binary_indexed_tree/bit_sparse.h"
-#include "common/numeric/modular.h"
+#include "common/modular/modular.h"
 #include "common/stl/pair.h"
 #include "common/vector/read.h"
 #include "common/stl/base.h"

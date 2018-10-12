@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/diwali-lights
 
-#include "common/numeric/modular.h"
+#include "common/modular/modular.h"
 #include "common/stl/base.h"
 
 using TModular = TModular_C32<100000>;

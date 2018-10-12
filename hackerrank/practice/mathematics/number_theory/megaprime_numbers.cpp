@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/megaprime-numbers
 
-#include "common/numeric/primality_test.h"
+#include "common/factorization/primality_test.h"
 #include "common/stl/base.h"
 
 int main_megaprime_numbers()

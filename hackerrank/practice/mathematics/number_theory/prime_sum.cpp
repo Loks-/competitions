@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/prime-sum
 
-#include "common/numeric/primality_test.h"
+#include "common/factorization/primality_test.h"
 #include "common/stl/base.h"
 
 int main_prime_sum()

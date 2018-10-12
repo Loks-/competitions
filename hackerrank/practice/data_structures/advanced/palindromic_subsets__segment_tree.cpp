@@ -7,7 +7,7 @@
 #include "common/segment_tree/info/sum.h"
 #include "common/segment_tree/segment_tree.h"
 #include "common/linear_algebra/vector_static_size.h"
-#include "common/numeric/modular.h"
+#include "common/modular/modular.h"
 #include "common/stl/base.h"
 
 #include <string>

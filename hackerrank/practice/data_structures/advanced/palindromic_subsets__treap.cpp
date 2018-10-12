@@ -6,7 +6,7 @@
 #include "common/binary_search_tree/utils/add_action_to_segment.h"
 #include "common/binary_search_tree/utils/get_segment_info.h"
 #include "common/linear_algebra/vector_static_size.h"
-#include "common/numeric/modular.h"
+#include "common/modular/modular.h"
 #include "common/stl/base.h"
 
 #include <string>

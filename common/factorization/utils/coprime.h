@@ -1,6 +1,6 @@
 #pragma once
 
-#include "base.h"
+#include "../base.h"
 #include "../primes_list.h"
 
 // Return number of coprime to k numbers in the interval [1..n].

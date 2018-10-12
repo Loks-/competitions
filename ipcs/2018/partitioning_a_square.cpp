@@ -1,4 +1,4 @@
-#include "common/numeric/factorization/factorize.h"
+#include "common/factorization/utils/factorize.h"
 #include "common/numeric/utils/pow.h"
 #include "common/stl/base.h"
 

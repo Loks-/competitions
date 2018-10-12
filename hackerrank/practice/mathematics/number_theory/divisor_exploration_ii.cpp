@@ -1,7 +1,7 @@
 // https://www.hackerrank.com/challenges/divisor-exploration-2
 
-#include "common/numeric/modular.h"
-#include "common/numeric/primes_list.h"
+#include "common/modular/modular.h"
+#include "common/factorization/primes_list.h"
 #include "common/stl/base.h"
 
 using TModular = Modular<>;

@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/mehta-and-his-laziness
 
-#include "common/numeric/primes_list.h"
+#include "common/factorization/primes_list.h"
 #include "common/numeric/utils/gcd.h"
 #include "common/stl/base.h"
 

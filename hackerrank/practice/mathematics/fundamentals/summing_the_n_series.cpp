@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/summing-the-n-series
 
-#include "common/numeric/modular.h"
+#include "common/modular/modular.h"
 #include "common/stl/base.h"
 
 using TModular = Modular<>;
