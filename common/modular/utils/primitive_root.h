@@ -2,20 +2,19 @@
 
 #include "../modular_arithmetic.h"
 #include "../../base.h"
-#include "../../factorization/primes_list.h"
+#include "../../factorization/base.h"
 
 template <class TModular = TModularArithmetic_P32U>
-inline uint64_t FindSmallestPrimitive(uint64_t p, const PrimesList& primes_list)
+inline uint64_t FindSmallestPrimitive(uint64_t p, const TFactorization& p1_factorization)
 {
     if (p <= 3)
         return p - 1;
-    TFactorization vp = primes_list.Factorize(p - 1);
     for (uint64_t u = 2; u < p; ++u)
     {
         bool good = true;
-        for (unsigned i = 0; i < vp.size(); ++i)
+        for (unsigned i = 0; i < p1_factorization.size(); ++i)
         {
-            uint64_t t = TModular::PowU(u, (p - 1) / vp[i].first, p);
+            uint64_t t = TModular::PowU(u, (p - 1) / p1_factorization[i].first, p);
             if (t == 1)
             {
                 good = false;
