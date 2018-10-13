@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../modular_arithmetic_proxy.h"
 #include "../factorial_modular_proxy.h"
+#include "../modular_arithmetic_proxy.h"
 
 // Based on Lucas's theorem.
 
