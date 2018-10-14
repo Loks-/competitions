@@ -19,11 +19,12 @@ inline uint64_t FactorialModularPrime(uint64_t n, FactorialModularProxy<TModular
 {
     if (n == 0) return 1;
     const TModularArithmeticProxy_P32U& mp = f.GetProxy();
+    uint64_t p = mp.GetMod();
     return mp.Mult(FactorialModularPrimeCoprimeOnly(n, f), FactorialModularPrime(n / p, f));
 }
 
 inline uint64_t FactorialModularPrime(uint64_t n, unsigned prime)
 {
-    FactorialModularProxy<TModularArithmeticProxy_P32U> f(prime);
+    FactorialModularProxy<TModularArithmeticProxy_P32U, false> f(prime);
     return FactorialModularPrime(n, f);
 }
