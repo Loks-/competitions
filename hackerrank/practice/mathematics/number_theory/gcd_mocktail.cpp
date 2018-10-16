@@ -16,27 +16,26 @@ int main_gcd_mocktail()
         // unsigned sN = USqrt<unsigned>(N);
         vector<unsigned> vk;
         vector<TModular> vc;
-        // O(N + 2 * sqrt(N) log D)
+        // O(T * (N + 2 * sqrt(N) log D) ) 
         for (unsigned k = 1; k <= N + 1; ++k)
         {
             if ((k > 1) && (N / k == N / (k-1)))
                 continue;
             vk.push_back(k);
             vc.push_back(TModular(N / k).PowU(D));
-            // cout << "\t" << vk.back() << "\t" << vc.back().Get() << endl;
         }
-        // O(N * log N * log N)
+        // O(T * N)
         for (unsigned i = vk.size(); i--; )
         {
-            unsigned k = vk[i];
-            for (unsigned l = 2 * k; l <= N; l += k)
+            unsigned k = vk[i], m = 1, mnext;
+            for (unsigned j = i + 1; j + 1 < vk.size(); ++j)
             {
-                auto itk = upper_bound(vk.begin(), vk.end(), l);
-                vc[i] -= vc[itk - vk.begin() - 1];
+                mnext = (vk[j + 1] - 1) / k;
+                vc[i] -= TModular(mnext - m) * vc[j];
+                m = mnext;
             }
-            // cout << "\t" << k << "\t" << vc[i].Get() << endl;
         }
-        // O(Q * N * log L)
+        // O(T * Q * N * log L)
         for (unsigned iQ = 0; iQ < Q; ++iQ)
         {
             cin >> L;
