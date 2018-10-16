@@ -38,7 +38,6 @@ int main_gcd_mocktail()
     for (unsigned iT = 0; iT < T; ++iT)
     {
         cin >> N >> D >> Q;
-        // unsigned sN = USqrt<unsigned>(N);
         vector<unsigned> vk;
         vector<TModular> vc;
         // O(T * (N + 2 * sqrt(N) log D) ) ~ 10^8
