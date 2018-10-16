@@ -22,3 +22,4 @@ utils/current_solution.cpp
 
 # Temp files
 temp.in
+temp.out
