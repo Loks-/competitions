@@ -44,6 +44,8 @@ int main_gcd_mocktail()
                 m = mnext;
             }
         }
+        for (unsigned i = 1; i < vc.size(); ++i)
+            vc[i - 1] -= vc[i];
         // O(T * Q * 2 * sqrt(N) * L) ~ 3*10^8
         for (unsigned iQ = 0; iQ < Q; ++iQ)
         {
@@ -51,7 +53,7 @@ int main_gcd_mocktail()
             const TPolynom& p = vpoly[L];
             TModular r = 0;
             for (unsigned i = 0; i + 1 < vk.size(); ++i)
-                r += vc[i] * (p(vk[i+1] - 1) - p(vk[i] - 1));
+                r += vc[i] * p(vk[i+1] - 1);
             cout << r.Get() << endl;
         }
     }
