@@ -15,9 +15,10 @@ public:
 	using iterator = TValue*;
 	using const_iterator = const TValue*;
 
-public:
+protected:
 	TData data;
 
+public:
 	void Fill(const TValue& v) { data.fill(v); }
 	void Clear() { Fill(TValue(0)); }
 	unsigned Size() const { return size; }
