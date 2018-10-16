@@ -17,6 +17,22 @@ int main_gcd_mocktail()
     for (unsigned l = 0; l < vpoly.size(); ++l)
         vpoly[l] = GetSumOfPowers<TModular>(l);
 
+    // Precalc sums
+    // O(maxl * precalc_n) ~ 10^6
+    unsigned precalc_n = 10000;
+    vector<vector<TModular>> vcache(maxl+1, vector<TModular>(precalc_n + 1, 1));
+    vcache[0][0] = 0;
+    for (unsigned l = 1; l <= maxl; ++l)
+    {
+        for (unsigned i = 0; i <= precalc_n; ++i)
+            vcache[l][i] = vcache[l-1][i] * TModular(i);
+    }
+    for (unsigned l = 0; l <= maxl; ++l)
+    {
+        for (unsigned i = 1; i <= precalc_n; ++i)
+            vcache[l][i] += vcache[l][i-1];
+    }
+
     unsigned T, N, D, L, Q;
     cin >> T;
     for (unsigned iT = 0; iT < T; ++iT)
@@ -47,14 +63,18 @@ int main_gcd_mocktail()
         }
         for (unsigned i = 1; i < vc.size(); ++i)
             vc[i - 1] -= vc[i];
-        // O(T * Q * 2 * sqrt(N) * L) ~ 3*10^8
+        // O(T * Q * sqrt(N) * L) ~ 10^8
         for (unsigned iQ = 0; iQ < Q; ++iQ)
         {
             cin >> L;
             const TPolynom& p = vpoly[L];
+            const vector<TModular>& vlcache = vcache[L];
             TModular r = 0;
             for (unsigned i = 0; i + 1 < vk.size(); ++i)
-                r += vc[i] * p(vk[i+1] - 1);
+            {
+                unsigned k = vk[i + 1] - 1;
+                r += vc[i] * (k <= precalc_n ? vlcache[k] : p(k));
+            }
             cout << r.Get() << endl;
         }
     }
