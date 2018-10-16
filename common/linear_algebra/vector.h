@@ -43,7 +43,7 @@ public:
 	TSelf operator-(const TValue& v) const { TSelf t(*this); t -= v; return t; }
 	TSelf operator*(const TValue& v) const { TSelf t(*this); t *= v; return t; }
 	TSelf operator/(const TValue& v) const { TSelf t(*this); t /= v; return t; }
-	TSelf operator-() const { TSelf t(*this); for (TValue *p = begin(), *pend = end(); p < pend; ++p) *p = -*p;  return t; }
+	TSelf operator-() const { TSelf t(*this); for (TValue *p = t.begin(), *pend = t.end(); p < pend; ++p) *p = -*p;  return t; }
 
 	TSelf& operator+=(const TSelf& v) { assert(Size() == v.Size()); const TValue* pv = v.begin(); for (TValue *p = begin(), *pend = end(); p < pend; ) *p++ += *pv++; return *this; }
 	TSelf& operator-=(const TSelf& v) { assert(Size() == v.Size()); const TValue* pv = v.begin(); for (TValue *p = begin(), *pend = end(); p < pend; ) *p++ -= *pv++; return *this; }
