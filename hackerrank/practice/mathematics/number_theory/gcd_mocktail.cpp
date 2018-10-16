@@ -40,6 +40,7 @@ int main_gcd_mocktail()
             for (unsigned j = i + 1; j + 1 < vk.size(); ++j)
             {
                 mnext = (vk[j + 1] - 1) / k;
+                if (mnext == m) continue;
                 vc[i] -= TModular(mnext - m) * vc[j];
                 m = mnext;
             }
