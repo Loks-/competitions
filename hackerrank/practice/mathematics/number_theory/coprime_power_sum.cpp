@@ -7,14 +7,13 @@
 #include "common/stl/base.h"
 
 #include <functional>
-#include <unordered_map>
 
 using TModular = Modular<>;
 using TPolynom = BaseNewtonPolynomial<TModular>;
 
 int main_coprime_power_sum()
 {
-    unsigned T, N, K, maxn = 50, pk_cache_size = 1000;
+    unsigned T, N, K, maxn = 50, pk_cache_size = 10000;
     cin >> T;
     for (unsigned iT = 0; iT < T; ++iT)
     {
@@ -30,16 +29,10 @@ int main_coprime_power_sum()
         vector<TModular> cache_pk(pk_cache_size);
         for (unsigned i = 1; i < pk_cache_size; ++i)
             cache_pk[i] = cache_pk[i-1] + TModular(i).PowU(K);
-        unordered_map<uint64_t, TModular> cache_sr;
 
         std::function<TModular(uint64_t, unsigned)> SolveR = [&](uint64_t rM, unsigned i) -> TModular
         {
-            uint64_t key = rM * (maxn + 1) + i;
-            auto it = cache_sr.find(key);
-            if (it != cache_sr.end()) return it->second;
-            TModular r = (vs[i] > rM) ? (rM < pk_cache_size ? cache_pk[rM] : p.Apply(TModular(rM))) : SolveR(rM, i + 1) - SolveR(rM / vs[i], i + 1) * vspk[i];
-            cache_sr[key] = r;
-            return r;
+            return (vs[i] > rM) ? (rM < pk_cache_size ? cache_pk[rM] : p.Apply(TModular(rM))) : SolveR(rM, i + 1) - SolveR(rM / vs[i], i + 1) * vspk[i];
         };
 
         cout << ((vs[0] == 1) ? uint64_t(0) : SolveR(M, 0).Get()) << endl;
