@@ -22,6 +22,7 @@ public:
 	void Fill(const TValue& v) { std::fill(data.begin(), data.end(), v); }
 	void Clear() { Fill(TValue(0)); }
 	unsigned Size() const { return unsigned(data.size()); }
+	const TData& GetData() const { return data; }
 
 	Vector(unsigned size) : data(size) {}
 	Vector(unsigned size, const TValue& v) : data(size, v) {}
