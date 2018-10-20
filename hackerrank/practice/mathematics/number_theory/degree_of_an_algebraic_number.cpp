@@ -11,7 +11,7 @@
 #include <set>
 
 using TModular = Modular<2>;
-using TMatrx = Matrix<TModular>;
+using TMatrix = Matrix<TModular>;
 
 int main_degree_of_an_algebraic_number()
 {
@@ -39,7 +39,7 @@ int main_degree_of_an_algebraic_number()
             vap.push_back(vp);
         }
         vector<unsigned> pv(ps.begin(), ps.end());
-        TMatrx m(N, ps.size());
+        TMatrix m(N, ps.size());
         for (unsigned i = 0; i < N; ++i)
         {
             for (unsigned p : vap[i])
