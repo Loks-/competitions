@@ -4,8 +4,13 @@
 #include "common/linear_algebra/matrix.h"
 #include "common/modular/modular.h"
 #include "common/modular/modular_arithmetic_static_proxy.h"
+#include "common/timer.h"
 
 #include "matrix_mult.h"
+
+#include <iostream>
+#include <string>
+#include <unordered_set>
 
 template<unsigned matrix_size>
 class TesterMatrixMult
@@ -32,6 +37,51 @@ public:
 	}
 
 protected:
+    std::unordered_set<size_t> results;
 	Matrix<uint64_t> muA, muB, muC;
-	Matrix<TModular> mmA, mmB, mmB;
+	Matrix<TModular> mmA, mmB, mmC;
+
+public:
+    TesterMatrixMult() :
+        muA(matrix_size), muB(matrix_size), muC(matrix_size),
+        mmA(matrix_size), mmB(matrix_size), mmC(matrix_size) {}
+
+    void Init()
+    {
+        results.clear();
+        for (unsigned i = 0; i < matrix_size; ++i)
+        {
+            for (unsigned j = 0; j < matrix_size; ++j)
+            {
+                muA(i, j) = i * matrix_size + j;
+                mmA(i, j) = TModular(muA(i, j));
+                muB(i, j) = (i + 2) * matrix_size + j;
+                mmB(i, j) = TModular(muB(i, j));
+            }
+        }
+    }
+
+    template<class TMatrix>
+    void TestMultBase(const std::string& text, const TMatrix& A, const TMatrix& B, TMatrix& C)
+    {
+        Timer t;
+        A.Mult(B, C);
+        t.Stop();
+        size_t h = MatrixHash(C);
+        std::cout << text << " base\t" << h << "\t" << t.GetMilliseconds() << std::endl;
+        results.insert(h);
+    }
+
+    void TestMultBaseAll()
+    {
+        TestMultBase("uint64t   ", muA, muB, muC);
+        TestMultBase("modular   ", mmA, mmB, mmC);
+    }
+
+    bool TestMultAll()
+    {
+        Init();
+        TestMultBaseAll();
+        return (results.size() == 1);
+    }
 };

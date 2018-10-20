@@ -26,6 +26,8 @@ int main(int nargs, char **pargs)
 			Assert(TestBinarySearchTree(true));
 		else if (tester_mode == "time_disjoint_set")
 			Assert(TestDisjointSet());
+		else if (tester_mode == "time_matrix_mult")
+			Assert(TestMatrixMult());
 		else
 			Assert(false, "Unknown tester mode");
 	}

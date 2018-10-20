@@ -4,10 +4,10 @@
 #include "common/linear_algebra/matrix.h"
 
 template<class TValue>
-inline void MatrixMultPointers(const Matrix<TValue>& A, const Matrix<TValue>& B, Matrix<TValue>& output) const
+inline void MatrixMultPointers(const Matrix<TValue>& A, const Matrix<TValue>& B, Matrix<TValue>& output)
 {
-	assert((B.Rows() == A.Columns() && (output.Rows() == A.Rows()) && (output.Columns() == B.Columns()));
-	unsigned columns = A.Columns(), columns2 = output.Columns();
+	assert((B.Rows() == A.Columns()) && (output.Rows() == A.Rows()) && (output.Columns() == B.Columns()));
+	unsigned rows = A.Rows(), columns = A.Columns(), columns2 = output.Columns();
 	output.Clear();
 	const TValue* pA = A.begin();
 	for (unsigned i = 0; i < rows; ++i)
