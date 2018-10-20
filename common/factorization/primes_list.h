@@ -13,7 +13,7 @@ protected:
 	std::vector<unsigned> table;
 
 public:
-	PrimesList(unsigned size)
+	PrimesList(uint64_t size)
 	{
 		table_size = size;
 		squared_table_size = table_size * table_size;
@@ -27,11 +27,11 @@ public:
 			if (!table[i])
 			{
 				primes.push_back(i);
-				table[i] = i;
+				table[i] = unsigned(i);
 				for (uint64_t j = i * i; j <= table_size; j += 2 * i)
                 {
                     if (table[j] == 0)
-                        table[j] = i;
+                        table[j] = unsigned(i);
                 }
 			}
 		}

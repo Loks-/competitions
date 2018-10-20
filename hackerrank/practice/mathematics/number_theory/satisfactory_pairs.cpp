@@ -9,7 +9,7 @@ int main_satisfactory_pairs()
 {
     unsigned n;
     cin >> n;
-    vector<vector<uint64_t>> vvd(n);
+    vector<vector<unsigned>> vvd(n);
     for (unsigned i = n - 1; i; --i)
         for (unsigned ix = i; ix < n; ix += i)
             vvd[ix].push_back(i);

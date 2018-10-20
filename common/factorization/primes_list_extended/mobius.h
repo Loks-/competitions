@@ -10,7 +10,7 @@ protected:
     std::vector<int> mobius;
 
 public:
-    PLEMobius(unsigned size) : TPrimesList(size) {}
+    PLEMobius(uint64_t size) : TPrimesList(size) {}
 
     void MobiusPrecalc()
     {

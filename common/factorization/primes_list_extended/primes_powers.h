@@ -11,7 +11,7 @@ protected:
     MillerRabinPrimalityTest primality_test;
 
 public:
-    PLEPrimesPowers(unsigned size = 3000000) : PrimesList(size) {}
+    PLEPrimesPowers(uint64_t size = 3000000) : PrimesList(size) {}
 
     std::vector<unsigned> GetPrimesPowers(uint64_t n) const
     {

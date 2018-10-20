@@ -31,7 +31,7 @@ public:
         uint64_t l = n - k;
         for (; n; )
         {
-            r = mp.Mult(r, mp.Mult(fp.Get(n % p), mp.Mult(fp.GetI(k % p), fp.GetI(l % p))));
+            r = mp.Mult(r, mp.Mult(fp.Get(unsigned(n % p)), mp.Mult(fp.GetI(unsigned(k % p)), fp.GetI(unsigned(l % p)))));
             n /= p; k /= p; l /= p;
         }
         return r;
@@ -46,7 +46,7 @@ public:
         uint64_t l = n - k;
         for (; n; )
         {
-            r = mp.Mult(r, mp.Mult(fp.Get(n % pq), mp.Mult(fp.GetI(k % pq), fp.GetI(l % pq))));
+            r = mp.Mult(r, mp.Mult(fp.Get(unsigned(n % pq)), mp.Mult(fp.GetI(unsigned(k % pq)), fp.GetI(unsigned(l % pq)))));
             n /= p; k /= p; l /= p;
         }
         return r;

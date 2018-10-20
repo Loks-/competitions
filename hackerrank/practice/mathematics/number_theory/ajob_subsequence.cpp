@@ -5,11 +5,11 @@
 
 int main_ajob_subsequence()
 {
-	unsigned T;
+	unsigned T, P;
 	cin >> T;
 	for (unsigned it = 0; it < T; ++it)
 	{
-        uint64_t N, K, P;
+        uint64_t N, K;
         cin >> N >> K >> P;
         cout << BinomialCoefficientModularPrime(N + 1, K + 1, P) << endl;
 	}

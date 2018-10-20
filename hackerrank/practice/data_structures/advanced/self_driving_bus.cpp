@@ -75,7 +75,7 @@ namespace
 				// Go Right
 				unsigned req_min = vertex;
 				unsigned req_max = vertex;
-				for (int j = vertex + 1; j < n; ++j)
+				for (unsigned j = vertex + 1; j < n; ++j)
 				{
 					if (group_map[j] != current_group)
 						break;

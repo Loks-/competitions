@@ -14,7 +14,7 @@ int main_devu_vs_police()
 	cin >> T;
 	for (unsigned it = 0; it < T; ++it)
 	{
-        uint64_t n1, k1, n2, k2, n, r, n3;
+        uint64_t n1, k1, n2, k2, n, n3;
         cin >> n1 >> k1 >> n2 >> k2 >> n;
         bool small_power = ((n2 == 0) || (n2 == 1) || (k2 == 0) || ((n2 == 2) && (k2 <= 5)) || ((n2 == 3) && (k2 <= 2)) || ((n2 <= 24) && (k2 == 1)));
         n1 = TModular::PowU(n1, k1, n);

@@ -15,7 +15,7 @@ inline uint64_t BinomialCoefficientModularPrime(uint64_t n, uint64_t k, Factoria
     {
         uint64_t np = n % p, kp = k % p;
         if (kp > np) return 0;
-        r = proxy.Mult(r, f.BinomialCoefficient(np, kp));
+        r = proxy.Mult(r, f.BinomialCoefficient(unsigned(np), unsigned(kp)));
     }
     return r;
 }

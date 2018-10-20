@@ -27,7 +27,7 @@ int main_coprime_power_sum()
             vspk.push_back(TModular(s).PowU(K));
 
         uint64_t tail_cache_size = 1;
-        unsigned l = vs.size();
+        unsigned l = unsigned(vs.size());
         for (; l && (tail_cache_size <= max_cache_size); )
             tail_cache_size *= vs[--l];
         if (tail_cache_size > max_cache_size)

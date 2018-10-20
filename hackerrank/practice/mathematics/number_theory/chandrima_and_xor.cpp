@@ -16,7 +16,7 @@ int main_chandrima_and_xor()
         vfi.push_back(vfi[i] + vfi[i + 1]);
         v2p.push_back((2 * v2p[i + 1]) % M);
     }
-    for (unsigned i = vfi.size(); i--; )
+    for (size_t i = vfi.size(); i--; )
     {
         unsigned c = 0;
         for (unsigned j = 0; j < n; ++j)

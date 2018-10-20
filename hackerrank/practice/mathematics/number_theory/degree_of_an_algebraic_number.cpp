@@ -39,12 +39,12 @@ int main_degree_of_an_algebraic_number()
             vap.push_back(vp);
         }
         vector<unsigned> pv(ps.begin(), ps.end());
-        TMatrix m(N, ps.size());
+        TMatrix m(N, unsigned(ps.size()));
         for (unsigned i = 0; i < N; ++i)
         {
             for (unsigned p : vap[i])
             {
-                unsigned j = lower_bound(pv.begin(), pv.end(), p) - pv.begin();
+                unsigned j = unsigned(lower_bound(pv.begin(), pv.end(), p) - pv.begin());
                 m(i, j) = 1;
             }
         }

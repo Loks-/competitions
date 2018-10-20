@@ -32,7 +32,7 @@ int main_megaprime_numbers()
             value = x;
             for (; x; x /= 10)
                 v.push_back(x % 10);
-            for (unsigned i = v.size(); i--; )
+            for (unsigned i = unsigned(v.size()); i--; )
             {
                 if ((v[i] != 2) && (v[i] != 3) && (v[i] != 5) && (v[i] != 7))
                 {

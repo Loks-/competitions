@@ -12,7 +12,7 @@ int main_partitioning_a_square()
         TFactorization f = Factorize(N);
         unsigned l = 1;
         for (auto p : f)
-            l *= PowU<unsigned>(p.first, (p.second + 1) / 2);
+            l *= PowU(unsigned(p.first), (p.second + 1) / 2);
         cout << l << endl;
         unsigned k = (l * l) / N;
         for (unsigned i = 0; i < l; ++i)

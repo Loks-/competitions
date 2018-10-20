@@ -49,10 +49,10 @@ int main_gcd_mocktail()
             vc.push_back(TModular(N / k).PowU(D));
         }
         // O(T * N) ~ 10^8
-        for (unsigned i = vk.size(); i--; )
+        for (size_t i = vk.size(); i--; )
         {
             unsigned k = vk[i], m = 1, mnext;
-            for (unsigned j = i + 1; j + 1 < vk.size(); ++j)
+            for (size_t j = i + 1; j + 1 < vk.size(); ++j)
             {
                 mnext = (vk[j + 1] - 1) / k;
                 if (mnext == m) continue;
@@ -60,7 +60,7 @@ int main_gcd_mocktail()
                 m = mnext;
             }
         }
-        for (unsigned i = 1; i < vc.size(); ++i)
+        for (size_t i = 1; i < vc.size(); ++i)
             vc[i - 1] -= vc[i];
         // O(T * Q * sqrt(N) * L) ~ 10^8
         for (unsigned iQ = 0; iQ < Q; ++iQ)

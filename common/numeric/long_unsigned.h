@@ -109,13 +109,13 @@ public:
         uint64_t u64 = u, t64 = data.back();
         if (t64 >= u64)
         {
-            lu.data.push_back(t64 / u64);
+            lu.data.push_back(unsigned(t64 / u64));
             t64 %= u64;
         }
         for (auto p = end() - 2, pb = begin(); p >= pb;)
         {
             t64 = ((t64 << 32) + *p--);
-            lu.data.push_back(t64 / u64);
+            lu.data.push_back(unsigned(t64 / u64));
             t64 %= u64;
         }
         std::reverse(lu.begin(), lu.end());

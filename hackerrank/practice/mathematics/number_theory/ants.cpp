@@ -5,7 +5,7 @@
 
 int main_ants()
 {
-    uint64_t N, L = 1000, p = 0;
+    unsigned N, L = 1000, p = 0;
     cin >> N;
     vector<unsigned> vp = ReadVector<unsigned>(N);
     sort(vp.begin(), vp.end());
@@ -18,6 +18,6 @@ int main_ants()
             ++p; ++i;
         }
     }
-    cout << 4 * ((N + 1) / 2) * (N / 2) * 100000ull + 2 * p << endl;
+    cout << 4 * ((N + 1ull) / 2) * (N / 2) * 100000ull + 2 * p << endl;
 	return 0;
 }

@@ -10,7 +10,7 @@ protected:
     std::vector<unsigned> eulers_totient;
 
 public:
-    PLEEulersTotient(unsigned size) : TPrimesList(size) {}
+    PLEEulersTotient(uint64_t size) : TPrimesList(size) {}
 
     void EulersTotientPrecalc()
     {

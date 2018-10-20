@@ -30,7 +30,7 @@ namespace {
         {
             if (vused[x][y] != 0)
                 return false;
-            for (unsigned di = 0; di < dsize; ++di)
+            for (int di = 0; di < dsize; ++di)
             {
                 if (di == d) continue;
                 for (int m = 1; ; ++m)
