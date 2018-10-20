@@ -72,16 +72,34 @@ public:
         results.insert(h);
     }
 
+    template<class TMatrix>
+    void TestMultPointers(const std::string& text, const TMatrix& A, const TMatrix& B, TMatrix& C)
+    {
+        Timer t;
+        MatrixMultPointers(A, B, C);
+        t.Stop();
+        size_t h = MatrixHash(C);
+        std::cout << text << " pntr\t" << h << "\t" << t.GetMilliseconds() << std::endl;
+        results.insert(h);
+    }
+
     void TestMultBaseAll()
     {
         TestMultBase("uint64t   ", muA, muB, muC);
         TestMultBase("modular   ", mmA, mmB, mmC);
     }
 
+    void TestMultPointersAll()
+    {
+        TestMultPointers("uint64t   ", muA, muB, muC);
+        TestMultPointers("modular   ", mmA, mmB, mmC);
+    }
+
     bool TestMultAll()
     {
         Init();
         TestMultBaseAll();
+        TestMultPointersAll();
         return (results.size() == 1);
     }
 };
