@@ -2,6 +2,6 @@
 
 bool TestMatrixMult()
 {
-    TesterMatrixMult<1000> tester;
+    TesterMatrixMult<1000, 100, 1000> tester;
     return tester.TestMultAll();
 }

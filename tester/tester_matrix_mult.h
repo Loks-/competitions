@@ -13,7 +13,7 @@
 #include <string>
 #include <unordered_set>
 
-template<unsigned matrix_size>
+template<unsigned large_matrix_size, unsigned small_matrix_size, unsigned small_matrix_runs>
 class TesterMatrixMult
 {
 public:
@@ -37,6 +37,7 @@ public:
 		return h;
 	}
 
+	template<unsigned matrix_size>
 	static size_t MatrixHash(const MatrixStaticSize<uint64_t, matrix_size, matrix_size>& m)
 	{
 		size_t h = 0;
@@ -45,6 +46,7 @@ public:
 		return h;
 	}
 
+	template<unsigned matrix_size>
 	static size_t MatrixHash(const MatrixStaticSize<TModular, matrix_size, matrix_size>& m)
 	{
 		size_t h = 0;
@@ -55,33 +57,44 @@ public:
 
 protected:
     std::unordered_set<size_t> results;
-	Matrix<uint64_t> muA, muB, muC;
-	Matrix<TModular> mmA, mmB, mmC;
-    // MatrixStaticSize<uint64_t, matrix_size, matrix_size> msuA, msuB, msuC;
-    // MatrixStaticSize<TModular, matrix_size, matrix_size> msmA, msmB, msmC;
+	Matrix<uint64_t> mluA, mluB, mluC, msuA, msuB, msuC;
+	Matrix<TModular> mlmA, mlmB, mlmC, msmA, msmB, msmC;
+    MatrixStaticSize<uint64_t, small_matrix_size, small_matrix_size> mssuA, mssuB, mssuC;
+    MatrixStaticSize<TModular, small_matrix_size, small_matrix_size> mssmA, mssmB, mssmC;
 
 public:
     TesterMatrixMult() :
-        muA(matrix_size), muB(matrix_size), muC(matrix_size),
-        mmA(matrix_size), mmB(matrix_size), mmC(matrix_size) {}
+        mluA(large_matrix_size), mluB(large_matrix_size), mluC(large_matrix_size),
+		msuA(small_matrix_size), msuB(small_matrix_size), msuC(small_matrix_size),
+		mlmA(large_matrix_size), mlmB(large_matrix_size), mlmC(large_matrix_size),
+		msmA(small_matrix_size), msmB(small_matrix_size), msmC(small_matrix_size)
+	{}
 
     void Init()
     {
         results.clear();
-        for (unsigned i = 0; i < matrix_size; ++i)
+        for (unsigned i = 0; i < large_matrix_size; ++i)
         {
-            for (unsigned j = 0; j < matrix_size; ++j)
+            for (unsigned j = 0; j < large_matrix_size; ++j)
             {
-                /*msuA(i, j) = */muA(i, j) = i * matrix_size + j;
-                /*msmA(i, j) = */mmA(i, j) = TModular(muA(i, j));
-                /*msuB(i, j) = */muB(i, j) = (i + 2) * matrix_size + j;
-                /*msmB(i, j) = */mmB(i, j) = TModular(muB(i, j));
+                mluA(i, j) = i * large_matrix_size + j;
+                mlmA(i, j) = TModular(mluA(i, j));
+                mluB(i, j) = (i + 2) * large_matrix_size + j;
+                mlmB(i, j) = TModular(mluB(i, j));
             }
         }
-    }
+		for (unsigned i = 0; i < small_matrix_size; ++i)
+		{
+			for (unsigned j = 0; j < small_matrix_size; ++j)
+			{
+				mssuA(i, j) = msuA(i, j) = i * small_matrix_size + j;
+				mssmA(i, j) = msmA(i, j) = TModular(msuA(i, j));
+			}
+		}
+	}
 
     template<class TMatrix>
-    void TestMultBase(const std::string& text, const TMatrix& A, const TMatrix& B, TMatrix& C)
+    void TestLargeMultBase(const std::string& text, const TMatrix& A, const TMatrix& B, TMatrix& C)
     {
         Timer t;
         A.Mult(B, C);
@@ -92,7 +105,7 @@ public:
     }
 
     template<class TMatrix>
-    void TestMultPointers(const std::string& text, const TMatrix& A, const TMatrix& B, TMatrix& C)
+    void TestLargeMultPointers(const std::string& text, const TMatrix& A, const TMatrix& B, TMatrix& C)
     {
         Timer t;
         MatrixMultPointers(A, B, C);
@@ -103,7 +116,7 @@ public:
     }
 
     template<class TMatrix>
-    void TestMultLoops(const std::string& text, const TMatrix& A, const TMatrix& B, TMatrix& C)
+    void TestLargeMultLoops(const std::string& text, const TMatrix& A, const TMatrix& B, TMatrix& C)
     {
         Timer t;
         MatrixMultLoops(A, B, C);
@@ -113,32 +126,86 @@ public:
         results.insert(h);
     }
 
-    void TestMultBaseAll()
+	template<class TMatrix>
+	void TestSmallMultBase(const std::string& text, const TMatrix& A, TMatrix& B, TMatrix& C)
+	{
+		Timer t;
+		B = A;
+		for (unsigned i = 0; i < small_matrix_runs; ++i)
+		{
+			A.Mult(B, C);
+			B.swap(C);
+		}
+		t.Stop();
+		size_t h = MatrixHash(B);
+		std::cout << text << " base\t" << h << "\t" << t.GetMilliseconds() << std::endl;
+		results.insert(h);
+	}
+
+	template<class TMatrix>
+	void TestSmallMultPointers(const std::string& text, const TMatrix& A, TMatrix& B, TMatrix& C)
+	{
+		Timer t;
+		B = A;
+		for (unsigned i = 0; i < small_matrix_runs; ++i)
+		{
+			MatrixMultPointers(A, B, C);
+			B.swap(C);
+		}
+		t.Stop();
+		size_t h = MatrixHash(B);
+		std::cout << text << " pntr\t" << h << "\t" << t.GetMilliseconds() << std::endl;
+		results.insert(h);
+	}
+
+	template<class TMatrix>
+	void TestSmallMultLoops(const std::string& text, const TMatrix& A, TMatrix& B, TMatrix& C)
+	{
+		Timer t;
+		B = A;
+		for (unsigned i = 0; i < small_matrix_runs; ++i)
+		{
+			MatrixMultLoops(A, B, C);
+			B.swap(C);
+		}
+		t.Stop();
+		size_t h = MatrixHash(B);
+		std::cout << text << " loop\t" << h << "\t" << t.GetMilliseconds() << std::endl;
+		results.insert(h);
+	}
+
+	void TestLargeMultAll()
     {
-        TestMultBase("uint64t   ", muA, muB, muC);
-        TestMultBase("modular   ", mmA, mmB, mmC);
-        // TestMultBase("uint64t ss", msuA, msuB, msuC);
-        // TestMultBase("modular ss", msmA, msmB, msmC);
+		TestLargeMultBase("uint64t l ", mluA, mluB, mluC);
+		TestLargeMultPointers("uint64t l ", mluA, mluB, mluC);
+		TestLargeMultLoops("uint64t l ", mluA, mluB, mluC);
+		TestLargeMultBase("modular l ", mlmA, mlmB, mlmC);
+		TestLargeMultPointers("modular l ", mlmA, mlmB, mlmC);
+		TestLargeMultLoops("modular l ", mlmA, mlmB, mlmC);
     }
 
-    void TestMultPointersAll()
-    {
-        TestMultPointers("uint64t   ", muA, muB, muC);
-        TestMultPointers("modular   ", mmA, mmB, mmC);
-    }
+	void TestSmallMultAll()
+	{
+		TestSmallMultBase("uint64t s ", msuA, msuB, msuC);
+		TestSmallMultPointers("uint64t s ", msuA, msuB, msuC);
+		TestSmallMultLoops("uint64t s ", msuA, msuB, msuC);
+		TestSmallMultBase("modular s ", msmA, msmB, msmC);
+		TestSmallMultPointers("modular s ", msmA, msmB, msmC);
+		TestSmallMultLoops("modular s ", msmA, msmB, msmC);
 
-    void TestMultLoopsAll()
-    {
-        TestMultLoops("uint64t   ", muA, muB, muC);
-        TestMultLoops("modular   ", mmA, mmB, mmC);
-    }
+		TestSmallMultBase("uint64t ss", mssuA, mssuB, mssuC);
+		TestSmallMultPointers("uint64t ss", mssuA, mssuB, mssuC);
+		TestSmallMultLoops("uint64t ss", mssuA, mssuB, mssuC);
+		TestSmallMultBase("modular ss", mssmA, mssmB, mssmC);
+		TestSmallMultPointers("modular ss", mssmA, mssmB, mssmC);
+		TestSmallMultLoops("modular ss", mssmA, mssmB, mssmC);
+	}
 
-    bool TestMultAll()
-    {
-        Init();
-        TestMultBaseAll();
-        TestMultPointersAll();
-        TestMultLoopsAll();
-        return (results.size() == 1);
-    }
+	bool TestMultAll()
+	{
+		Init();
+		TestLargeMultAll();
+		TestSmallMultAll();
+		return (results.size() == 2);
+	}
 };

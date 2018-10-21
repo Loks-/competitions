@@ -16,6 +16,9 @@ public:
 	using TBase = VectorStaticSize<TValue, rows * columns>;
 
 public:
+	unsigned Rows() const { return rows; }
+	unsigned Columns() const { return columns; }
+
 	MatrixStaticSize() {}
 	MatrixStaticSize(const TValue& v) { TBase::Fill(v); }
 	TSelf& operator=(const TValue& v) { TBase::Fill(v); return *this; }

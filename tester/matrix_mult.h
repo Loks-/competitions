@@ -3,9 +3,10 @@
 #include "common/base.h"
 #include "common/linear_algebra/matrix.h"
 
-template<class TValue>
-inline void MatrixMultPointers(const Matrix<TValue>& A, const Matrix<TValue>& B, Matrix<TValue>& output)
+template<class TMatrix>
+inline void MatrixMultPointers(const TMatrix& A, const TMatrix& B, TMatrix& output)
 {
+	using TValue = typename TMatrix::TValue;
 	assert((B.Rows() == A.Columns()) && (output.Rows() == A.Rows()) && (output.Columns() == B.Columns()));
 	unsigned rows = A.Rows(), columns = A.Columns(), columns2 = output.Columns();
 	output.Clear();
@@ -22,8 +23,8 @@ inline void MatrixMultPointers(const Matrix<TValue>& A, const Matrix<TValue>& B,
 	}
 }
 
-template<class TValue>
-inline void MatrixMultLoops(const Matrix<TValue>& A, const Matrix<TValue>& B, Matrix<TValue>& output)
+template<class TMatrix>
+inline void MatrixMultLoops(const TMatrix& A, const TMatrix& B, TMatrix& output)
 {
 	assert((B.Rows() == A.Columns()) && (output.Rows() == A.Rows()) && (output.Columns() == B.Columns()));
 	output.Clear();
