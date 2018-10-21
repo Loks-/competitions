@@ -83,6 +83,17 @@ public:
         results.insert(h);
     }
 
+    template<class TMatrix>
+    void TestMultLoops(const std::string& text, const TMatrix& A, const TMatrix& B, TMatrix& C)
+    {
+        Timer t;
+        MatrixMultLoops(A, B, C);
+        t.Stop();
+        size_t h = MatrixHash(C);
+        std::cout << text << " loop\t" << h << "\t" << t.GetMilliseconds() << std::endl;
+        results.insert(h);
+    }
+
     void TestMultBaseAll()
     {
         TestMultBase("uint64t   ", muA, muB, muC);
@@ -95,11 +106,18 @@ public:
         TestMultPointers("modular   ", mmA, mmB, mmC);
     }
 
+    void TestMultLoopsAll()
+    {
+        TestMultLoops("uint64t   ", muA, muB, muC);
+        TestMultLoops("modular   ", mmA, mmB, mmC);
+    }
+
     bool TestMultAll()
     {
         Init();
         TestMultBaseAll();
         TestMultPointersAll();
+        TestMultLoopsAll();
         return (results.size() == 1);
     }
 };
