@@ -108,4 +108,4 @@ foreach( testfile_in ${HACKERRANK_TESTS} )
 	add_test( NAME ${testshortname} COMMAND hackerrank ${solution} ${testfile_in} ${testfile_out} WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} )
 endforeach( testfile_in ${HACKERRANK_TESTS} )
 
-add_test( NAME binary_search_tree COMMAND tester binary_search_tree )
+add_test( NAME tester_binary_search_tree COMMAND tester binary_search_tree )
