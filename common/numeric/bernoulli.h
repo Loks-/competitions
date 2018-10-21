@@ -52,4 +52,5 @@ public:
     void Adjust(unsigned n) { for (; bernoulli.size() <= n; ) CalcNext(); }
     TValue Get(unsigned n) { Adjust(n); return bernoulli[n]; }
     TValue operator()(unsigned n) { return Get(n); }
+    TValue GetInverted(unsigned n) { assert(n); Adjust(n - 1); return inverted[n]; }
 };

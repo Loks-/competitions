@@ -2,6 +2,7 @@
 
 #include "common/polynomial/base_newton_polynomial.h"
 #include "common/modular/modular.h"
+#include "common/modular/sum_of_powers_modular.h"
 
 #include <iostream>
 #include <vector>
@@ -30,6 +31,22 @@ public:
 
     TesterInterpolation() { Init(); }
 
+    static bool TestSumOfPowers(unsigned power, const std::vector<TModular>& vp)
+    {
+        SumOfPowersModular<TModular> s;
+        for (unsigned i = 0; i < n; ++i)
+        {
+            if (s.Sum(i, power) != vp[i])
+            {
+                std::cout << "TestSumOfPowers failed:" <<
+                    "\n\tpower = " << power << "\tindex = " << i << 
+                    "\n\tvalue = " << s.Sum(i, power).Get() << "\texpected = " << vp[i].Get() << std::endl;
+                return false;
+            }
+        }
+        return true;
+    }
+
     static bool TestBaseNewtonPolynomial(unsigned power, const std::vector<TModular>& vp)
     {
         std::vector<TModular> vtemp(vp.begin(), vp.begin() + power + 2);
@@ -39,7 +56,8 @@ public:
         {
             if (p(TModular(i)) != vp[i])
             {
-                std::cout << "TestBaseNewtonPolynomial failed:\n\tpower = " << power << "\tindex = " << i << std::endl;
+                std::cout << "TestBaseNewtonPolynomial failed:\n" <<
+                    "\tpower = " << power << "\tindex = " << i << std::endl;
                 return false;
             }
         }
@@ -49,6 +67,7 @@ public:
     static bool TestAll(unsigned power, const std::vector<TModular>& vp)
     {
         bool b = true;
+        b = TestSumOfPowers(power, vp) && b;
         b = TestBaseNewtonPolynomial(power, vp) && b;
         return b;
     }
