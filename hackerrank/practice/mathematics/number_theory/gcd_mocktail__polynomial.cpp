@@ -1,16 +1,25 @@
 // https://www.hackerrank.com/challenges/gcd-mocktail
 
 #include "common/modular/modular.h"
-#include "common/modular/sum_of_powers_modular.h"
+#include "common/polynomial/base_newton_polynomial.h"
+#include "common/polynomial/utils/sum_of_powers.h"
 #include "common/stl/base.h"
 
 using TModular = Modular<30000001>;
+using TPolynom = BaseNewtonPolynomial<TModular>;
 
-int main_gcd_mocktail()
+int main_gcd_mocktail__polynomial()
 {
+    // Precalc polynoms.
+    // O(maxl^3) ~ 10^6
+    unsigned maxl = 100;
+    vector<TPolynom> vpoly(maxl+1);
+    for (unsigned l = 0; l < vpoly.size(); ++l)
+        vpoly[l] = GetSumOfPowers<TModular>(l);
+
     // Precalc sums
     // O(maxl * precalc_n) ~ 10^6
-    unsigned maxl = 100, precalc_n = 10000;
+    unsigned precalc_n = 10000;
     vector<vector<TModular>> vcache(maxl+1, vector<TModular>(precalc_n + 1, 1));
     vcache[0][0] = 0;
     for (unsigned l = 1; l <= maxl; ++l)
@@ -24,7 +33,6 @@ int main_gcd_mocktail()
             vcache[l][i] += vcache[l][i-1];
     }
 
-    SumOfPowersModular<TModular> sum_of_powers;
     unsigned T, N, D, L, Q;
     cin >> T;
     for (unsigned iT = 0; iT < T; ++iT)
@@ -58,12 +66,13 @@ int main_gcd_mocktail()
         for (unsigned iQ = 0; iQ < Q; ++iQ)
         {
             cin >> L;
+            const TPolynom& p = vpoly[L];
             const vector<TModular>& vlcache = vcache[L];
             TModular r = 0;
             for (unsigned i = 0; i + 1 < vk.size(); ++i)
             {
                 unsigned k = vk[i + 1] - 1;
-                r += vc[i] * (k <= precalc_n ? vlcache[k] : sum_of_powers.Sum(k, L));
+                r += vc[i] * (k <= precalc_n ? vlcache[k] : p(k));
             }
             cout << r.Get() << endl;
         }
