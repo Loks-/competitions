@@ -22,6 +22,7 @@ public:
 	void Fill(const TValue& v) { data.fill(v); }
 	void Clear() { Fill(TValue(0)); }
 	unsigned Size() const { return size; }
+	const TData& GetData() const { return data; }
 
 	VectorStaticSize() { Clear(); }
 	VectorStaticSize(const TValue& v) { Fill(v); }

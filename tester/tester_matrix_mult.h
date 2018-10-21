@@ -2,6 +2,7 @@
 
 #include "common/hash.h"
 #include "common/linear_algebra/matrix.h"
+#include "common/linear_algebra/matrix_static_size.h"
 #include "common/modular/modular.h"
 #include "common/modular/modular_arithmetic_static_proxy.h"
 #include "common/timer.h"
@@ -20,14 +21,6 @@ public:
 	using TModularProxy = ModularArithmeticStaticProxy<>;
 
 public:
-	static size_t MatrixHash(const Matrix<TModular>& m)
-	{
-		size_t h = 0;
-		for (TModular t : m.GetData())
-			h = hash_combine(h, t.Get());
-		return h;
-	}
-
 	static size_t MatrixHash(const Matrix<uint64_t>& m)
 	{
 		size_t h = 0;
@@ -36,10 +29,36 @@ public:
 		return h;
 	}
 
+	static size_t MatrixHash(const Matrix<TModular>& m)
+	{
+		size_t h = 0;
+		for (TModular t : m.GetData())
+			h = hash_combine(h, t.Get());
+		return h;
+	}
+
+	static size_t MatrixHash(const MatrixStaticSize<uint64_t, matrix_size, matrix_size>& m)
+	{
+		size_t h = 0;
+		for (uint64_t t : m.GetData())
+			h = hash_combine(h, TModularProxy::ApplyU(t));
+		return h;
+	}
+
+	static size_t MatrixHash(const MatrixStaticSize<TModular, matrix_size, matrix_size>& m)
+	{
+		size_t h = 0;
+		for (TModular t : m.GetData())
+			h = hash_combine(h, t.Get());
+		return h;
+	}
+
 protected:
     std::unordered_set<size_t> results;
 	Matrix<uint64_t> muA, muB, muC;
 	Matrix<TModular> mmA, mmB, mmC;
+    // MatrixStaticSize<uint64_t, matrix_size, matrix_size> msuA, msuB, msuC;
+    // MatrixStaticSize<TModular, matrix_size, matrix_size> msmA, msmB, msmC;
 
 public:
     TesterMatrixMult() :
@@ -53,10 +72,10 @@ public:
         {
             for (unsigned j = 0; j < matrix_size; ++j)
             {
-                muA(i, j) = i * matrix_size + j;
-                mmA(i, j) = TModular(muA(i, j));
-                muB(i, j) = (i + 2) * matrix_size + j;
-                mmB(i, j) = TModular(muB(i, j));
+                /*msuA(i, j) = */muA(i, j) = i * matrix_size + j;
+                /*msmA(i, j) = */mmA(i, j) = TModular(muA(i, j));
+                /*msuB(i, j) = */muB(i, j) = (i + 2) * matrix_size + j;
+                /*msmB(i, j) = */mmB(i, j) = TModular(muB(i, j));
             }
         }
     }
@@ -98,6 +117,8 @@ public:
     {
         TestMultBase("uint64t   ", muA, muB, muC);
         TestMultBase("modular   ", mmA, mmB, mmC);
+        // TestMultBase("uint64t ss", msuA, msuB, msuC);
+        // TestMultBase("modular ss", msmA, msmB, msmC);
     }
 
     void TestMultPointersAll()
