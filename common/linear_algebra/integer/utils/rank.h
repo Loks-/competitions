@@ -1,10 +1,10 @@
 #pragma once
 
-#include "../matrix.h"
+#include "../../matrix.h"
 #include <algorithm>
 
 template<class TValue>
-unsigned MatrixRank(const Matrix<TValue>& matrix)
+unsigned IMatrixRank(const Matrix<TValue>& matrix)
 {
     unsigned r = 0;
     Matrix<TValue> m(matrix);

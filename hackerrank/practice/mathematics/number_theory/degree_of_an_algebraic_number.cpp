@@ -2,7 +2,7 @@
 
 #include "common/factorization/primes_list.h"
 #include "common/linear_algebra/matrix.h"
-#include "common/linear_algebra/utils/rank.h"
+#include "common/linear_algebra/integer/utils/rank.h"
 #include "common/modular/modular.h"
 #include "common/numeric/utils/pow.h"
 #include "common/vector/read.h"
@@ -48,7 +48,7 @@ int main_degree_of_an_algebraic_number()
                 m(i, j) = 1;
             }
         }
-        cout << PowU<uint64_t>(2, MatrixRank(m)) << endl;
+        cout << PowU<uint64_t>(2, IMatrixRank(m)) << endl;
 	}
 	return 0;
 }
