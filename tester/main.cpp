@@ -35,6 +35,7 @@ int main(int nargs, char **pargs)
 	}
 	catch (AssertException)
 	{
+		std::cout << "Test failed." << std::endl;
 		return -1;
 	}
 

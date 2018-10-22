@@ -55,6 +55,13 @@ public:
 		return h;
 	}
 
+	static void ApplyMod(Matrix<uint64_t>& m) { for (uint64_t& t : m) t = TModularProxy::ApplyU(t); }
+	static void ApplyMod(Matrix<TModular>& m) {}
+	template<unsigned matrix_size>
+	static void ApplyMod(MatrixStaticSize<uint64_t, matrix_size, matrix_size>& m) { for (uint64_t& t : m) t = TModularProxy::ApplyU(t); }
+	template<unsigned matrix_size>
+	static void ApplyMod(MatrixStaticSize<TModular, matrix_size, matrix_size>& m) {}
+
 protected:
     std::unordered_set<size_t> results;
 	Matrix<uint64_t> mluA, mluB, mluC, msuA, msuB, msuC;
@@ -135,6 +142,7 @@ public:
 		{
 			A.Mult(B, C);
 			B.swap(C);
+			ApplyMod(B);
 		}
 		t.Stop();
 		size_t h = MatrixHash(B);
@@ -151,6 +159,7 @@ public:
 		{
 			MatrixMultPointers(A, B, C);
 			B.swap(C);
+			ApplyMod(B);
 		}
 		t.Stop();
 		size_t h = MatrixHash(B);
@@ -167,6 +176,7 @@ public:
 		{
 			MatrixMultLoops(A, B, C);
 			B.swap(C);
+			ApplyMod(B);
 		}
 		t.Stop();
 		size_t h = MatrixHash(B);
