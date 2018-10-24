@@ -48,7 +48,7 @@ int main_degree_of_an_algebraic_number()
                 m(i, j) = 1;
             }
         }
-        cout << PowU<uint64_t>(2, IMatrixRank(m)) << endl;
+        cout << PowU<uint64_t>(2, FMatrixRank(m)) << endl;
 	}
 	return 0;
 }

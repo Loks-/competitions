@@ -11,6 +11,9 @@ public:
 	using TSelf = Matrix<TValue>;
 	using TBase = Vector<TValue>;
 
+	using iterator = typename TBase::iterator;
+	using const_iterator = typename TBase::const_iterator;
+
 protected:
 	unsigned rows;
 	unsigned columns;
@@ -26,13 +29,15 @@ public:
 
 	TValue& operator()(unsigned i, unsigned j) { return TBase::data[i * columns + j]; }
 	const TValue& operator()(unsigned i, unsigned j) const { return TBase::data[i * columns + j]; }
+	iterator GetP(unsigned i, unsigned j) { return TBase::GetP(i * columns + j);}
+	const_iterator GetP(unsigned i, unsigned j) const { return TBase::GetP(i * columns + j);}
 	void swap(TSelf& r) { TBase::swap(r); std::swap(rows, r.rows); std::swap(columns, r.columns); }
 
 	void SetDiagonal(const TValue& v)
 	{
 		unsigned diagonal_length = std::min(rows, columns);
 		unsigned shift = columns + 1;
-		for (TValue* p = TBase::begin(), *pend = p + diagonal_length * shift; p < pend; p += shift) *p = v;
+		for (iterator p = TBase::begin(), pend = p + diagonal_length * shift; p < pend; p += shift) *p = v;
 	}
 
 	TSelf& operator+=(const TSelf& v) { TBase::operator+=(v); return *this; }
@@ -45,14 +50,13 @@ public:
         assert((v.rows == columns) && (output.rows == rows) && (output.columns == v.columns));
         unsigned columns2 = output.columns;
 		output.Clear();
-		const TValue* pA = TBase::begin();
+		const_iterator pA = TBase::begin();
 		for (unsigned i = 0; i < rows; ++i)
 		{
-			const TValue* pB = v.begin();
-			for (unsigned j = 0; j < columns; ++j)
+			for (const_iterator pB = v.begin(), pBend = v.end(); pB < pBend;)
 			{
 				const TValue& vA = *pA++;
-				for (TValue* pC = output.begin() + i * columns2, *pCend = pC + columns2; pC < pCend; )
+				for (iterator pC = output.GetP(i, 0), pCend = pC + columns2; pC < pCend; )
 					*pC++ += *pB++ * vA;
 			}
 		}
@@ -62,11 +66,10 @@ public:
     {
         assert((x.Size() == columns) && (output.Size() == rows));
         output.Clear();
-		const TValue *pA = TBase::begin(), *pBbegin = x.begin(), *pBend = x.end();
-        TValue* pO = output.begin();
-		for (unsigned i = 0; i < rows; ++i, ++pO)
+		const_iterator pA = TBase::begin(), pBbegin = x.begin(), pBend = x.end();        
+		for (iterator pO = output.begin(), pOend = output.end(); pO < pOend; ++pO)
 		{
-            for (const TValue* pB = pBbegin; pB < pBend; )
+            for (const_iterator pB = pBbegin; pB < pBend; )
                 *pO += *pA++ * *pB++;
 		}
     }

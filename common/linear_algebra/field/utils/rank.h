@@ -1,10 +1,11 @@
 #pragma once
 
 #include "../../matrix.h"
-#include <algorithm>
+#include "../../rows/sub_m.h"
+#include "../../rows/swap.h"
 
 template<class TValue>
-unsigned IMatrixRank(const Matrix<TValue>& matrix)
+inline unsigned FMatrixRank(const Matrix<TValue>& matrix)
 {
     unsigned r = 0;
     Matrix<TValue> m(matrix);
@@ -14,11 +15,7 @@ unsigned IMatrixRank(const Matrix<TValue>& matrix)
         {
             if (m(i, j) != 0)
             {
-                if (i != r)
-                {
-                    TValue *pr = &(m(r, j)), *pr_end = pr + (m.Columns() - j), *pi = &(m(i, j));
-                    for (; pr < pr_end; ++pi, ++pr) std::swap(*pi, *pr);
-                }
+                MatrixRowsSwap(m, r, i, j);
                 break;
             }
         }
@@ -27,8 +24,7 @@ unsigned IMatrixRank(const Matrix<TValue>& matrix)
         {
             if (m(i, j) == 0) continue;
             TValue rm = m(r, j) / m(i, j);
-            TValue *pr = &(m(r, j)), *pr_end = pr + (m.Columns() - j), *pi = &(m(i, j));
-            for (; pr < pr_end; ) *pi++ -= rm * *pr++;
+            MatrixRowsSubM(m, i, r, rm, j);
         }
         ++r;
     }

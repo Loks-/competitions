@@ -15,6 +15,9 @@ public:
 	using TSelf = MatrixStaticSize<TValue, rows, columns>;
 	using TBase = VectorStaticSize<TValue, rows * columns>;
 
+	using iterator = typename TBase::iterator;
+	using const_iterator = typename TBase::const_iterator;
+
 public:
 	unsigned Rows() const { return rows; }
 	unsigned Columns() const { return columns; }
@@ -25,13 +28,15 @@ public:
 
 	TValue& operator()(unsigned i, unsigned j) { return TBase::data[i * columns + j]; }
 	const TValue& operator()(unsigned i, unsigned j) const { return TBase::data[i * columns + j]; }
+	iterator GetP(unsigned i, unsigned j) { return TBase::GetP(i * columns + j);}
+	const_iterator GetP(unsigned i, unsigned j) const { return TBase::GetP(i * columns + j);}
 	void swap(TSelf& r) { TBase::swap(r); }
 
 	void SetDiagonal(const TValue& v)
 	{
 		const unsigned diagonal_length = std::min(rows, columns);
 		unsigned shift = columns + 1;
-		for (TValue* p = TBase::begin(), *pend = p + diagonal_length * shift; p < pend; p += shift) *p = v;
+		for (iterator p = TBase::begin(), pend = p + diagonal_length * shift; p < pend; p += shift) *p = v;
 	}
 
 	TSelf& operator+=(const TSelf& v) { TBase::operator+=(v); return *this; }
@@ -43,14 +48,13 @@ public:
 	void Mult(const MatrixStaticSize<TValue, columns, columns2>& v, MatrixStaticSize<TValue, rows, columns2>& output) const
 	{
 		output.Clear();
-		const TValue* pA = TBase::begin();
+		const_iterator pA = TBase::begin();
 		for (unsigned i = 0; i < rows; ++i)
 		{
-			const TValue* pB = v.begin();
-			for (unsigned j = 0; j < columns; ++j)
+			for (const_iterator pB = v.begin(), pBend = v.end(); pB < pBend;)
 			{
 				const TValue& vA = *pA++;
-				for (TValue* pC = output.begin() + i * columns2, *pCend = pC + columns2; pC < pCend; )
+				for (iterator pC = pC = output.GetP(i, 0), pCend = pC + columns2; pC < pCend; )
 					*pC++ += *pB++ * vA;
 			}
 		}

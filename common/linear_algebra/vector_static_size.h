@@ -34,20 +34,22 @@ public:
 	const_iterator begin() const { return &data.front(); }
 	iterator end() { return begin() + size; }
 	const_iterator end() const { return begin() + size; }
+	iterator GetP(unsigned i) { return begin() + i;}
+	const_iterator GetP(unsigned i) const { return begin() + i;}
 	void swap(TSelf& r) { data.swap(r.data); }
 
-	TSelf& operator+=(const TValue& v) { for (TValue *p = begin(), *pend = end(); p < pend; ) *p++ += v; return *this; }
-	TSelf& operator-=(const TValue& v) { for (TValue *p = begin(), *pend = end(); p < pend; ) *p++ -= v; return *this; }
-	TSelf& operator*=(const TValue& v) { for (TValue *p = begin(), *pend = end(); p < pend; ) *p++ *= v; return *this; }
-	TSelf& operator/=(const TValue& v) { for (TValue *p = begin(), *pend = end(); p < pend; ) *p++ /= v; return *this; }
+	TSelf& operator+=(const TValue& v) { for (iterator p = begin(), pend = end(); p < pend; ) *p++ += v; return *this; }
+	TSelf& operator-=(const TValue& v) { for (iterator p = begin(), pend = end(); p < pend; ) *p++ -= v; return *this; }
+	TSelf& operator*=(const TValue& v) { for (iterator p = begin(), pend = end(); p < pend; ) *p++ *= v; return *this; }
+	TSelf& operator/=(const TValue& v) { for (iterator p = begin(), pend = end(); p < pend; ) *p++ /= v; return *this; }
 	TSelf operator+(const TValue& v) const { TSelf t(*this); t += v; return t; }
 	TSelf operator-(const TValue& v) const { TSelf t(*this); t -= v; return t; }
 	TSelf operator*(const TValue& v) const { TSelf t(*this); t *= v; return t; }
 	TSelf operator/(const TValue& v) const { TSelf t(*this); t /= v; return t; }
-	TSelf operator-() const { TSelf t(*this); for (TValue *p = begin(), *pend = end(); p < pend; ++p) *p = -*p;  return t; }
+	TSelf operator-() const { TSelf t(*this); for (iterator p = begin(), pend = end(); p < pend; ++p) *p = -*p;  return t; }
 
-	TSelf& operator+=(const TSelf& v) { const TValue* pv = v.begin(); for (TValue *p = begin(), *pend = end(); p < pend; ) *p++ += *pv++; return *this; }
-	TSelf& operator-=(const TSelf& v) { const TValue* pv = v.begin(); for (TValue *p = begin(), *pend = end(); p < pend; ) *p++ -= *pv++; return *this; }
+	TSelf& operator+=(const TSelf& v) { const_iterator pv = v.begin(); for (iterator p = begin(), pend = end(); p < pend; ) *p++ += *pv++; return *this; }
+	TSelf& operator-=(const TSelf& v) { const_iterator pv = v.begin(); for (iterator p = begin(), pend = end(); p < pend; ) *p++ -= *pv++; return *this; }
 	TSelf operator+(const TSelf& v) const { TSelf t(*this); t += v; return t; }
 	TSelf operator-(const TSelf& v) const { TSelf t(*this); t -= v; return t; }
 };
