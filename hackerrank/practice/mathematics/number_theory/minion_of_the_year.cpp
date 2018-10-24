@@ -38,13 +38,20 @@ int main_minion_of_the_year()
                 cout << "wala" << endl;
                 continue;
             }
+
+            // cout << "\t" << A << "\t" << B << "\t" << C << "\t" << D << "\t" << P1 << endl;
             
             // Find log
             unsigned c = ri[C], d = ri[D];
+            // cout << "\t\t" << c << "\t" << d << endl;
             unsigned gc = GCD<unsigned>(c, P1), gd = GCD<unsigned>(d, P1), gcd = LCM<unsigned>(gc, gd);
-            c /= gc; A *= (gcd / gc);
-            d /= gd; B *= (gcd / gd);
+            c *= (gcd / gc); c %= P1; A *= (gcd / gc);
+            d *= (gcd / gd); d %= P1; B *= (gcd / gd);
             unsigned m = P1 / gcd;
+            c /= gcd; d /= gcd;
+
+            // cout << "\t\t" << gc << "\t" << gd << "\t" << gcd << endl;
+            // cout << "\t" << A << "\t" << B << "\t" << c << "\t" << d << "\t" << m << endl;
 
             // Calc answer
             if (m == 1)
@@ -53,21 +60,22 @@ int main_minion_of_the_year()
                 continue;
             }
             // Simple bet
-            unsigned c1 = TModularArithmetic_C32U::Div(1, d, m);
-            unsigned d1 = TModularArithmetic_C32U::Div(1, c, m);
-            uint64_t best = min(A * c1 + B, A + B * d1);
-            if (d < c)
+            unsigned c1 = TModularArithmetic_C32U::Div(c, d, m);
+            unsigned d1 = TModularArithmetic_C32U::Div(d, c, m);
+            // cout << "\t\t" << c1 << "\t" << d1 << endl;
+            uint64_t best = min(A + B * c1, A * d1 + B);
+            if (d1 < c1)
             {
-                swap(c, d);
+                swap(c1, d1);
                 swap(A, B);
             }
-            // for (unsigned i = 0; i < c; ++i)
-            // {
-            //     unsigned x = (i * m) / c + 1;
-            //     unsigned y = (c * x) % m;
-            //     uint64_t s = A * x + B * y;
-            //     best = min(best, s);
-            // }
+            for (unsigned i = 0; i < c1; ++i)
+            {
+                unsigned x = (i * m) / c1 + 1;
+                unsigned y = (c1 * x) % m;
+                uint64_t s = A * x + B * y;
+                best = min(best, s);
+            }
             cout << best << endl;
         }
 	}
