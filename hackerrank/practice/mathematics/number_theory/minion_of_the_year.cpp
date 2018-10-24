@@ -2,10 +2,12 @@
 
 #include "common/factorization/primes_list.h"
 #include "common/modular/modular_arithmetic.h"
-#include "common/modular/utils/primitive_root.h"
+#include "common/modular/discrete_log_full_map.h"
 #include "common/numeric/utils/gcd.h"
 #include "common/numeric/utils/lcm.h"
 #include "common/stl/base.h"
+
+using TDiscreteLog = DiscreteLogFullMap;
 
 int main_minion_of_the_year()
 {
@@ -16,18 +18,7 @@ int main_minion_of_the_year()
 	{
         cin >> P >> N;
         uint64_t P1 = P - 1;
-        
-        // Find Primitive
-        uint64_t r = FindSmallestPrimitive(P, primes_list.Factorize(P1)), rp = 1;
-        
-        // Prebuild log map
-        vector<unsigned> ri(P, 0);
-        for (unsigned i = 0; i + 1 < P; ++i)
-        {
-            ri[rp] = i;
-            rp = (rp * r) % P;
-        }
-        
+        TDiscreteLog dl(P, primes_list.Factorize(P1));
         for (unsigned iN = 0; iN < N; ++iN)
         {
             uint64_t A, B, C, D;
@@ -38,31 +29,19 @@ int main_minion_of_the_year()
                 cout << "wala" << endl;
                 continue;
             }
-
-            // cout << "\t" << A << "\t" << B << "\t" << C << "\t" << D << "\t" << P1 << endl;
-            
-            // Find log
-            uint64_t c = ri[C], d = ri[D];
-            // cout << "\t\t" << c << "\t" << d << endl;
+            uint64_t c = dl.Log(C), d = dl.Log(D);
             uint64_t gc = GCD(c, P1), gd = GCD(d, P1), gcd = LCM(gc, gd);
             c *= (gcd / gc); c %= P1; A *= (gcd / gc);
             d *= (gcd / gd); d %= P1; B *= (gcd / gd);
             uint64_t m = P1 / gcd;
             c /= gcd; d /= gcd;
-
-            // cout << "\t\t" << gc << "\t" << gd << "\t" << gcd << endl;
-            // cout << "\t" << A << "\t" << B << "\t" << c << "\t" << d << "\t" << m << endl;
-
-            // Calc answer
             if (m == 1)
             {
                 cout << A + B << endl;
                 continue;
             }
-            // Simple bet
             uint64_t c1 = TModularArithmetic_C32U::Div(c, d, m);
             uint64_t d1 = TModularArithmetic_C32U::Div(d, c, m);
-            // cout << "\t\t" << c1 << "\t" << d1 << endl;
             uint64_t best = min(A + B * c1, A * d1 + B);
             for (uint64_t i = 2; i * (A + B) < best; ++i)
             {
