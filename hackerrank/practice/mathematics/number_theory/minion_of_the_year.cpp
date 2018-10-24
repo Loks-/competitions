@@ -24,9 +24,12 @@ int main_minion_of_the_year()
             uint64_t A, B, C, D;
             cin >> A >> B >> C >> D;
             C %= P; D %= P;
-            if ((C * D == 0) && (C + D > 0))
+            if (C * D == 0)
             {
-                cout << "wala" << endl;
+                if (C + D > 0)
+                    cout << "wala" << endl;
+                else
+                    cout << A + B << endl;
                 continue;
             }
             uint64_t c = dl.Log(C), d = dl.Log(D);
