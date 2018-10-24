@@ -64,17 +64,9 @@ int main_minion_of_the_year()
             uint64_t d1 = TModularArithmetic_C32U::Div(d, c, m);
             // cout << "\t\t" << c1 << "\t" << d1 << endl;
             uint64_t best = min(A + B * c1, A * d1 + B);
-            if (d1 < c1)
+            for (uint64_t i = 2; i * (A + B) < best; ++i)
             {
-                swap(c1, d1);
-                swap(A, B);
-            }
-            for (uint64_t i = 0; i < c1; ++i)
-            {
-                uint64_t x = (i * m) / c1 + 1;
-                uint64_t y = (c1 * x) % m;
-                uint64_t s = A * x + B * y;
-                best = min(best, s);
+                best = min(best, min(A * i + B * ((c1 * i) % m), A * ((d1 * i) % m) + B * i));
             }
             cout << best << endl;
         }
