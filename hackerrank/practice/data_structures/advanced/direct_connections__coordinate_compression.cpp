@@ -2,7 +2,7 @@
 
 #include "common/coordinate_compression.h"
 #include "common/binary_indexed_tree/bit.h"
-#include "common/modular/modular.h"
+#include "common/modular/modular_io.h"
 #include "common/stl/pair.h"
 #include "common/vector/read.h"
 #include "common/stl/base.h"
@@ -37,7 +37,7 @@ int main_direct_connections__coordinate_compression()
 			sum += make_pair(1u, px.second);
 			bit.Add(ccx, { 1u, px.second });
 		}
-		cout << total.Get() << endl;
+		cout << total << endl;
 	}
 	return 0;
 }

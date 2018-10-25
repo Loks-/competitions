@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/sherlock-and-permutations
 
-#include "common/modular/modular.h"
+#include "common/modular/modular_io.h"
 #include "common/modular/factorial_modular.h"
 #include "common/stl/base.h"
 
@@ -15,7 +15,7 @@ int main_sherlock_and_permutations()
 	for (unsigned it = 0; it < T; ++it)
 	{
 		cin >> N >> M;
-		cout << f.BinomialCoefficient(N + M - 1, N).Get() << endl;
+		cout << f.BinomialCoefficient(N + M - 1, N) << endl;
 	}
 	return 0;
 }

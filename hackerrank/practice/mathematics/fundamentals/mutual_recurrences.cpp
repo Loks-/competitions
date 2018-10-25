@@ -1,7 +1,7 @@
 // https://www.hackerrank.com/challenges/mutual-recurrences
 
 #include "common/linear_algebra/matrix_static_size.h"
-#include "common/modular/modular.h"
+#include "common/modular/modular_io.h"
 #include "common/stl/base.h"
 
 using TModular = TModular_C32<1000000000>;
@@ -48,7 +48,7 @@ int main_mutual_recurrences()
 			x += tf(12, i) * vf[i];
 			y += tf(21, i) * vf[i];
 		}
-		cout << x.Get() << " " << y.Get() << endl;
+		cout << x << " " << y << endl;
 	}
 	return 0;
 }

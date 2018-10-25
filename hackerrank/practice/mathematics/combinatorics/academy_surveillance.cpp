@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/surveillance
 
-#include "common/modular/modular.h"
+#include "common/modular/modular_io.h"
 #include "common/stl/base.h"
 
 using TModular = Modular<>;
@@ -39,7 +39,7 @@ int main_academy_surveillance()
 				r += p2[ni] * p3[mi] + p3[ni] * p2[mi] - p2[ni] * p2[mi];
 			}
 		}
-		cout << r.Get() << endl;
+		cout << r << endl;
 	}
 	return 0;
 }

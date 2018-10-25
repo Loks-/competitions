@@ -1,7 +1,7 @@
 // https://www.hackerrank.com/challenges/fibonacci-gcd
 
 #include "common/modular/fibonacci_modular_matrix.h"
-#include "common/modular/modular.h"
+#include "common/modular/modular_io.h"
 #include "common/numeric/utils/gcd.h"
 #include "common/stl/base.h"
 
@@ -18,6 +18,6 @@ int main_fibonacci_gcd()
 		cin >> b;
 		a = GCD(b, a);
 	}
-	cout << TFibonacci::GetU(a).Get() <<endl;
+	cout << TFibonacci::GetU(a) <<endl;
 	return 0;
 }

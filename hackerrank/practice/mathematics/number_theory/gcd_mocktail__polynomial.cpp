@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/gcd-mocktail
 
-#include "common/modular/modular.h"
+#include "common/modular/modular_io.h"
 #include "common/polynomial/base_newton_polynomial.h"
 #include "common/polynomial/utils/sum_of_powers.h"
 #include "common/stl/base.h"
@@ -74,7 +74,7 @@ int main_gcd_mocktail__polynomial()
                 unsigned k = vk[i + 1] - 1;
                 r += vc[i] * (k <= precalc_n ? vlcache[k] : p(k));
             }
-            cout << r.Get() << endl;
+            cout << r << endl;
         }
     }
 	return 0;

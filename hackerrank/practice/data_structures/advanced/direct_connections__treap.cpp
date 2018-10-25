@@ -3,7 +3,7 @@
 #include "common/binary_search_tree/info/size.h"
 #include "common/binary_search_tree/info/sum_keys.h"
 #include "common/binary_search_tree/treap.h"
-#include "common/modular/modular.h"
+#include "common/modular/modular_io.h"
 #include "common/vector/read.h"
 #include "common/stl/base.h"
 
@@ -40,7 +40,7 @@ int main_direct_connections__treap()
 			root = tree.Join(tree.Join(l, m), r);
 		}
 		tree.ReleaseTree(root);
-		cout << total.Get() << endl;
+		cout << total << endl;
 	}
 	return 0;
 }

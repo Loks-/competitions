@@ -1,7 +1,7 @@
 // https://www.hackerrank.com/challenges/fibonacci-finding-easy
 
 #include "common/modular/fibonacci_modular_matrix.h"
-#include "common/modular/modular.h"
+#include "common/modular/modular_io.h"
 #include "common/stl/base.h"
 
 using TFibonacci = FibonacciModularMatrix<Modular<1000000007>>;
@@ -14,7 +14,7 @@ int main_fibonacci_finding_easy()
 	{
 		uint64_t A, B, N;
 		cin >> A >> B >> N;
-		cout << TFibonacci::GetU(N, A, B).Get() << endl;
+		cout << TFibonacci::GetU(N, A, B) << endl;
 	}
 	return 0;
 }

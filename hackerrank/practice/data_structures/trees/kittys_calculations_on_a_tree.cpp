@@ -2,7 +2,7 @@
 
 #include "common/graph/tree/centroid_decomposition.h"
 #include "common/graph/tree/lca.h"
-#include "common/modular/modular.h"
+#include "common/modular/modular_io.h"
 #include "common/stl/base.h"
 
 #include <unordered_map>
@@ -41,7 +41,7 @@ namespace
 			results.resize(q);
 			CentroidDecomposition::Run(tree, *this);
 			for (TModular r : results)
-				cout << r.Get() << endl;
+				cout << r << endl;
 		}
 
 		void PostDecompose(unsigned vertex, const CentroidDecomposition& cd)

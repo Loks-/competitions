@@ -1,7 +1,7 @@
 // https://www.hackerrank.com/challenges/direct-connections
 
 #include "common/binary_indexed_tree/bit_sparse.h"
-#include "common/modular/modular.h"
+#include "common/modular/modular_io.h"
 #include "common/stl/pair.h"
 #include "common/vector/read.h"
 #include "common/stl/base.h"
@@ -33,7 +33,7 @@ int main_direct_connections__bit_sparse()
 			sum += make_pair(1u, px.second);
 			bit.Add(px.second, { 1u, px.second });
 		}
-		cout << total.Get() << endl;
+		cout << total << endl;
 	}
 	return 0;
 }

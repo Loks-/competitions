@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/matrix-tracing
 
-#include "common/modular/modular.h"
+#include "common/modular/modular_io.h"
 #include "common/modular/factorial_modular.h"
 #include "common/stl/base.h"
 
@@ -15,7 +15,7 @@ int main_matrix_tracing()
 	for (unsigned it = 0; it < T; ++it)
 	{
 		cin >> N >> M;
-		cout << f.BinomialCoefficient(N + M - 2, N - 1).Get() << endl;
+		cout << f.BinomialCoefficient(N + M - 2, N - 1) << endl;
 	}
 	return 0;
 }

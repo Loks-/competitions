@@ -1,7 +1,7 @@
 // https://www.hackerrank.com/challenges/number-of-m-coprime-arrays
 
 #include "common/linear_algebra/matrix_static_size.h"
-#include "common/modular/modular.h"
+#include "common/modular/modular_io.h"
 #include "common/factorization/primes_list_extended/primes_powers.h"
 #include "common/stl/base.h"
 
@@ -29,7 +29,7 @@ int main_number_of_m_coprime_arrays()
             m(1, 0) = q;
             r *= m.PowU(N + 1)(0, 0);
         }
-        cout << r.Get() << endl;
+        cout << r << endl;
 	}
 	return 0;
 }

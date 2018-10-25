@@ -1,8 +1,8 @@
 // https://www.hackerrank.com/challenges/divisor-exploration-3
 
-#include "common/modular/factorial_modular.h"
-#include "common/modular/modular.h"
 #include "common/factorization/primes_list.h"
+#include "common/modular/factorial_modular.h"
+#include "common/modular/modular_io.h"
 #include "common/stl/base.h"
 
 using TModular = Modular<>;
@@ -31,7 +31,7 @@ int main_divisor_exploration_3()
             }
             r *= s;
         }
-        cout << r.Get() << endl;
+        cout << r << endl;
 	}
 	return 0;
 }

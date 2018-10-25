@@ -1,7 +1,7 @@
 // https://www.hackerrank.com/challenges/to-infinity-and-beyond
 
 #include "common/modular/factorial_modular.h"
-#include "common/modular/modular.h"
+#include "common/modular/modular_io.h"
 #include "common/stl/base.h"
 
 using TModular = Modular<>;
@@ -31,7 +31,7 @@ int main_to_infinity_and_beyond()
 			v -= a*b*f.GetI(l)*f.GetI(l);
 			s += v*c*f.GetI(l);
 		}
-		cout << s.Get() << endl;
+		cout << s << endl;
 	}
 	return 0;
 }

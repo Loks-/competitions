@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/diwali-lights
 
-#include "common/modular/modular.h"
+#include "common/modular/modular_io.h"
 #include "common/stl/base.h"
 
 using TModular = TModular_C32<100000>;
@@ -13,7 +13,7 @@ int main_diwali_lights()
 	for (unsigned it = 0; it < T; ++it)
 	{
 		cin >> N;
-		cout << two.PowU(N).Get() - 1 << endl;
+		cout << two.PowU(N) - 1 << endl;
 	}
 	return 0;
 }

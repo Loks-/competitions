@@ -6,7 +6,7 @@
 #include "common/binary_search_tree/utils/add_action_to_segment.h"
 #include "common/binary_search_tree/utils/get_segment_info.h"
 #include "common/linear_algebra/vector_static_size.h"
-#include "common/modular/modular.h"
+#include "common/modular/modular_io.h"
 #include "common/stl/base.h"
 
 #include <string>
@@ -51,7 +51,7 @@ int main_palindromic_subsets__treap()
 	 			}
 	 		}
 	 		TModular two = 2;
-	 		cout << (TModular(nnonzero + 1) * two.PowU(nsum - nnonzero) - 1).Get() << endl;
+	 		cout << (TModular(nnonzero + 1) * two.PowU(nsum - nnonzero) - 1) << endl;
 	 	}
 	 }
 	return 0;

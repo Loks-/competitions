@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/gcd-product
 
-#include "common/modular/modular.h"
+#include "common/modular/modular_io.h"
 #include "common/stl/base.h"
 
 using TModular = Modular<>;
@@ -30,6 +30,6 @@ int main_gcd_product__counting()
     TModular r = 1;
     for (uint64_t i = 2; i <= m; ++i)
         r *= TModular(i).PowU(vc[i]);
-    cout << r.Get() << endl;
+    cout << r << endl;
 	return 0;
 }

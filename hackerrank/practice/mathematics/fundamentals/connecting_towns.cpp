@@ -1,24 +1,24 @@
 // https://www.hackerrank.com/challenges/connecting-towns
 
-#include "common/modular/modular.h"
+#include "common/modular/modular_io.h"
 #include "common/stl/base.h"
 
 using TModular = TModular_C32<1234567>;
 
 int main_connecting_towns()
 {
-	unsigned T, n, ni;
+	unsigned T, n;
 	cin >> T;
 	for (unsigned it = 0; it < T; ++it)
 	{
 		cin >> n;
-		TModular x = 1;
+		TModular x = 1, ni;
 		for (unsigned i = 1; i < n; ++i)
 		{
 			cin >> ni;
-			x *= TModular(ni);
+			x *= ni;
 		}
-		cout << x.Get() << endl;
+		cout << x << endl;
 	}
 	return 0;
 }

@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/hyperrectangle-gcd
 
-#include "common/modular/modular.h"
+#include "common/modular/modular_io.h"
 #include "common/vector/read.h"
 #include "common/stl/base.h"
 
@@ -29,7 +29,7 @@ int main_hyperrectangle_gcd()
                 v[i] -= v[j];
             s += v[i] * TModular(i);
         }
-        cout << s.Get() << endl;
+        cout << s << endl;
     }
 	return 0;
 }

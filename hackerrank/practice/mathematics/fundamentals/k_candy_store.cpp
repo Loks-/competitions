@@ -1,7 +1,7 @@
 // https://www.hackerrank.com/challenges/k-candy-store
 
 #include "common/modular/binomial_coefficient_table.h"
-#include "common/modular/modular.h"
+#include "common/modular/modular_io.h"
 #include "common/stl/base.h"
 
 using TModular = TModular_C32<1000000000>;
@@ -15,7 +15,7 @@ int main_k_candy_store()
 	for (unsigned it = 0; it < T; ++it)
 	{
 		cin >> N >> K;
-		cout << bc(N + K - 1, K).Get() << endl;
+		cout << bc(N + K - 1, K) << endl;
 	}
 	return 0;
 }

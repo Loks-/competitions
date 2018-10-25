@@ -1,7 +1,7 @@
 // https://www.hackerrank.com/challenges/divisor-exploration-2
 
-#include "common/modular/modular.h"
 #include "common/factorization/primes_list.h"
+#include "common/modular/modular_io.h"
 #include "common/stl/base.h"
 
 using TModular = Modular<>;
@@ -21,7 +21,7 @@ int main_divisor_exploration_ii()
             TModular p = primes[i];
             r *= ((p.PowU(a + i + 2) - one) / (p - one) * p - TModular(a + i + 2)) / (p - one);
         }
-        cout << r.Get() << endl;
+        cout << r << endl;
 	}
 	return 0;
 }

@@ -1,7 +1,7 @@
 #include "message.h"
 #include "weird_editor.h"
 
-#include "common/modular/modular.h"
+#include "common/modular/modular_io.h"
 #include "common/stl/base.h"
 
 using TModular = Modular<>;
@@ -59,7 +59,7 @@ int main_weird_editor()
             length -= vc[digit];
             f += ten.PowU(length) * (ten.PowU(vc[digit]) - one) / nine * TModular(digit);
         }
-        cout << f.Get() << endl;
+        cout << f << endl;
     }
 
     return 0;

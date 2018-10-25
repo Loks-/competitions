@@ -1,7 +1,7 @@
 // https://www.hackerrank.com/challenges/equations
 
-#include "common/modular/modular.h"
 #include "common/factorization/primes_list.h"
+#include "common/modular/modular_io.h"
 #include "common/stl/base.h"
 
 using TModular = Modular<1000007>;
@@ -20,6 +20,6 @@ int main_equations()
             c += t;
         r *= TModular(2 * c + 1);
     }
-    cout << r.Get() << endl;
+    cout << r << endl;
 	return 0;
 }

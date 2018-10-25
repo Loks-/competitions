@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/ichigo-and-cubes
 
-#include "common/modular/modular.h"
+#include "common/modular/modular_io.h"
 #include "common/stl/base.h"
 
 using TModular = Modular<>;
@@ -11,10 +11,9 @@ int main_ichigo_and_cubes()
     cin >> T;
     for (unsigned iT = 0; iT < T; ++iT)
     {
-        uint64_t p, q, r;
+        TModular p, q, r;
         cin >> p >> q >> r;
-        TModular mp(p), mq(q), mr(r);
-        cout << ((mp * mq + mq * mr + mr * mp - 1) / 2).Get() << endl;
+        cout << (p * q + q * r + r * p - 1) / 2 << endl;
     }
 	return 0;
 }

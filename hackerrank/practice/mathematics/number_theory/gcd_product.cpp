@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/gcd-product
 
-#include "common/modular/modular.h"
+#include "common/modular/modular_io.h"
 #include "common/factorization/primes_list.h"
 #include "common/stl/base.h"
 
@@ -19,6 +19,6 @@ int main_gcd_product()
         for (uint64_t pp = p; pp <= m; pp *= p)
             r *= TModular(p).PowU((m / pp) * (n / pp));
     }
-    cout << r.Get() << endl;
+    cout << r << endl;
 	return 0;
 }
