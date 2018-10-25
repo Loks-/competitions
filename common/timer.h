@@ -18,4 +18,10 @@ public:
 		std::chrono::time_point<std::chrono::system_clock> time = running ? std::chrono::system_clock::now() : end_time;
 		return std::chrono::duration_cast<std::chrono::milliseconds>(time - start_time).count();
 	}
+
+	size_t GetMicroseconds() const
+	{
+		std::chrono::time_point<std::chrono::system_clock> time = running ? std::chrono::system_clock::now() : end_time;
+		return std::chrono::duration_cast<std::chrono::microseconds>(time - start_time).count();
+	}
 };
