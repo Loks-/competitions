@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/degree-of-an-algebraic-number
 
-#include "common/factorization/primes_list.h"
+#include "common/factorization/factorization.h"
 #include "common/linear_algebra/matrix.h"
 #include "common/linear_algebra/field/utils/rank.h"
 #include "common/modular/modular.h"
@@ -15,7 +15,7 @@ using TMatrix = Matrix<TModular>;
 
 int main_degree_of_an_algebraic_number()
 {
-    PrimesList primes_list(10000000);
+    Factorization ff;
 	unsigned T, N;
 	cin >> T;
 	for (unsigned iT = 0; iT < T; ++iT)
@@ -26,7 +26,7 @@ int main_degree_of_an_algebraic_number()
         vector<vector<unsigned>> vap;
         for (unsigned a : va)
         {
-            TFactorization f = primes_list.FactorizeTable(a);
+            TFactorization f = ff.Factorize(a);
             vector<unsigned> vp;
             for (auto p : f)
             {

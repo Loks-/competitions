@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/unfriendly-numbers
 
-#include "common/factorization/utils/factorize.h"
+#include "common/factorization/factorization.h"
 #include "common/factorization/utils/divisors.h"
 #include "common/numeric/utils/gcd.h"
 #include "common/stl/base.h"
@@ -22,8 +22,7 @@ int main_unfriendly_numbers()
     sort(un.begin(), un.end());
     reverse(un.begin(), un.end());
 
-    TFactorization ff = Factorize(f);
-    vector<uint64_t> fd = GetDivisors(ff);
+    vector<uint64_t> fd = GetDivisors(FastFactorize(f));
     unsigned ud = 0;
     for (uint64_t d : fd)
     {
