@@ -1,18 +1,18 @@
 // https://www.hackerrank.com/challenges/breaking-sticks
 
-#include "common/factorization/primes_list.h"
+#include "common/factorization/factorization.h"
 #include "common/stl/base.h"
 
 int main_breaking_sticks()
 {
-    PrimesList primes_list(1000000);
+    Factorization ff;
 	unsigned n;
 	cin >> n;
     uint64_t sum = n, a;
     for (unsigned i = 0; i < n; ++i)
     {
         cin >> a;
-        TFactorization vf = primes_list.Factorize(a);
+        TFactorization vf = ff.Factorize(a);
         reverse(vf.begin(), vf.end());
         uint64_t t = 1;
         for (auto p : vf)
