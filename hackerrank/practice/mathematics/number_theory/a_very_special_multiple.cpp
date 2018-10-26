@@ -1,9 +1,9 @@
 // https://www.hackerrank.com/challenges/a-very-special-multiple
 
+#include "common/factorization/factorization.h"
 #include "common/factorization/utils/eulers_totient.h"
 #include "common/factorization/utils/divisors.h"
 #include "common/modular/modular_arithmetic.h"
-#include "common/factorization/primes_list.h"
 #include "common/numeric/utils/pow.h"
 #include "common/stl/base.h"
 
@@ -11,7 +11,7 @@ using TModular = ModularArithmetic<false, false, uint64_t>;
 
 int main_a_very_special_multiple()
 {
-    PrimesList primes_list(100000);
+    Factorization ff;
 	unsigned T;
 	cin >> T;
 	for (unsigned it = 0; it < T; ++it)
@@ -23,8 +23,8 @@ int main_a_very_special_multiple()
         for (; (x % 5) == 0; x /= 5) ++p5;
         uint64_t b = max<uint64_t>(p5, max<uint64_t>(p2, 2) - 2), a;
         x *= 9;
-        uint64_t phi = EulersTotient(x, primes_list.Factorize(x));
-        vector<uint64_t> vd = GetDivisors(primes_list.Factorize(phi));
+        uint64_t phi = EulersTotient(x, ff.Factorize(x));
+        vector<uint64_t> vd = GetDivisors(ff.Factorize(phi));
         sort(vd.begin(), vd.end());
         for (uint64_t d : vd)
         {
