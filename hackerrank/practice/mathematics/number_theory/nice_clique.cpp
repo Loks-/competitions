@@ -1,25 +1,31 @@
 // https://www.hackerrank.com/challenges/niceclique
 
-#include "common/factorization/primes_list.h"
-#include "common/factorization/utils/divisors_sum.h"
-#include "common/numeric/utils/usqrt.h"
+#include "common/factorization/primes_list_extended/primes_powers.h"
 #include "common/stl/base.h"
 #include "common/vector/read.h"
 
 int main_nice_clique()
 {
+	PLEPrimesPowers primes_list(100000);
 	unsigned n;
 	cin >> n;
 	vector<uint64_t> v = ReadVector<uint64_t>(n);
-	uint64_t m = *max_element(v.begin(), v.end());
-	uint64_t msqrt = USqrt(m) + 1;
-	PrimesList primes_list(msqrt);
 	vector<unsigned> m1(2), m2(2);
 	for (uint64_t x : v)
 	{
-		auto f = primes_list.Factorize(x);
+		auto f = primes_list.GetPrimesPowers(x);
 		m1[f.size() & 1] += 1;
-		m2[GetDivisorsSum(f) & 1] += 1;
+		uint64_t i = (x & 1) ^ 1;
+		bool square = true;
+		for (; i < f.size(); ++i)
+		{
+			if (f[i] & 1)
+			{
+				square = false;
+				break;
+			}
+		}
+		m2[square ? 1 : 0] += 1;
 	}
 	cout << max(max(m1[0], m1[1]), max(m2[0], m2[1])) << endl;
 	return 0;
