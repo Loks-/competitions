@@ -11,9 +11,24 @@
 class Factorization
 {
 protected:
+    const uint64_t u32threshold = (1u << 31);
 	MillerRabinPrimalityTest primality_test;
 
-	uint64_t FindFactor(uint64_t n, uint64_t start)
+	uint64_t FindFactor32(uint64_t n, uint64_t start)
+	{
+		ModularArithmeticProxy<false, true> proxy(n);
+		auto next = [&](uint64_t k) { return proxy.Add(proxy.Mult(k, k), 1); };
+		uint64_t x = start, y = start, d = 1;
+		for (; d == 1;)
+		{
+			x = next(x);
+			y = next(next(y));
+			d = GCD(proxy.Sub(x, y), n);
+		}
+		return d;
+	}
+
+	uint64_t FindFactor64(uint64_t n, uint64_t start)
 	{
 		ModularArithmeticProxy<false, false> proxy(n);
 		auto next = [&](uint64_t k) { return proxy.Add(proxy.Mult(k, k), 1); };
@@ -31,7 +46,7 @@ protected:
 	{
 		uint64_t d = n;
 		for (uint64_t start = 2; d == n; ++start)
-			d = FindFactor(n, start);
+			d = (n < u32threshold) ? FindFactor32(n, start) : FindFactor64(n, start);
 		return d;
 	}
 
@@ -85,3 +100,5 @@ public:
 		return f;
 	}
 };
+
+inline TFactorization FastFactorize(uint64_t n) { Factorization f; return f.Factorize(n); } 
