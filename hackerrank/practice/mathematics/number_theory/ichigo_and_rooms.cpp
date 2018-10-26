@@ -1,6 +1,5 @@
 // https://www.hackerrank.com/challenges/ichigo-and-rooms
 
-#include "common/factorization/utils/factorize.h"
 #include "common/modular/utils/multiplicative_order.h"
 #include "common/numeric/utils/gcd.h"
 #include "common/stl/base.h"
