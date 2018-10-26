@@ -4,7 +4,6 @@
 #include "utils/primitive_root.h"
 #include "../base.h"
 #include "../factorization/base.h"
-#include "../factorization/utils/factorize.h"
 #include "../numeric/utils/usqrt.h"
 #include <algorithm>
 #include <unordered_map>
@@ -42,7 +41,6 @@ public:
     DiscreteLogSqrtMap(uint64_t p, uint64_t pprimitive, uint64_t size) : proxy(p), primitive(pprimitive) { m = std::min(size, p-1); Build(); }
     DiscreteLogSqrtMap(uint64_t p, const TFactorization& p1_factorization) : DiscreteLogSqrtMap(p, FindSmallestPrimitive(p, p1_factorization)) {}
     DiscreteLogSqrtMap(uint64_t p, const TFactorization& p1_factorization, uint64_t size) : DiscreteLogSqrtMap(p, FindSmallestPrimitive(p, p1_factorization), size) {}
-    DiscreteLogSqrtMap(uint64_t p) : DiscreteLogSqrtMap(p, Factorize(p - 1)) {}
 
     uint64_t Log(uint64_t x) const
     {
