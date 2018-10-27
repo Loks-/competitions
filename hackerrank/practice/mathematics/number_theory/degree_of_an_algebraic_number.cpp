@@ -3,14 +3,14 @@
 #include "common/factorization/factorization.h"
 #include "common/linear_algebra/matrix.h"
 #include "common/linear_algebra/field/rank.h"
-#include "common/modular/modular.h"
+#include "common/modular/modular_bool.h"
 #include "common/numeric/utils/pow.h"
 #include "common/vector/read.h"
 #include "common/stl/base.h"
 
 #include <set>
 
-using TModular = Modular<2>;
+using TModular = ModularBool;
 using TMatrix = Matrix<TModular>;
 
 int main_degree_of_an_algebraic_number()

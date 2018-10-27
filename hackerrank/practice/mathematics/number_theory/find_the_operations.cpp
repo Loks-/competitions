@@ -3,11 +3,11 @@
 #include "common/linear_algebra/field/solve.h"
 #include "common/linear_algebra/matrix.h"
 #include "common/linear_algebra/vector.h"
-#include "common/modular/modular_io.h"
+#include "common/modular/modular_bool_io.h"
 #include "common/vector/read.h"
 #include "common/stl/base.h"
 
-using TModular = Modular<2>;
+using TModular = ModularBool;
 using TVector = Vector<TModular>;
 using TMatrix = Matrix<TModular>;
 
