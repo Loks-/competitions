@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/flip
 
-#include "common/linear_algebra/field/lup_decomposition.h"
+#include "common/linear_algebra/field/solve.h"
 #include "common/linear_algebra/matrix.h"
 #include "common/linear_algebra/vector.h"
 #include "common/modular/modular_io.h"
@@ -28,9 +28,7 @@ int main_find_the_operations()
                 M(i, j) = 1;
         }
     }
-    FLUPDecomposition<TMatrix> lupd;
-    lupd.Build(M);
-    if (lupd.Solve(v, x))
+    if (FMatrixSolve(M, v, x))
     {
         cout << "Possible" << endl;
         unsigned s = 0;
