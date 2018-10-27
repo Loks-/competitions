@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../../matrix.h"
-#include "../../rows/sub_m.h"
-#include "../../rows/swap.h"
+#include "../matrix.h"
+#include "../rows/sub_m.h"
+#include "../rows/swap.h"
 
 template<class TValue>
 inline unsigned FMatrixRank(const Matrix<TValue>& matrix)

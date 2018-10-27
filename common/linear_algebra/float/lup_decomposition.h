@@ -3,6 +3,7 @@
 #include "../matrix.h"
 #include "../rows/sub_m.h"
 #include "../rows/swap.h"
+#include "../vector.h"
 #include "../../base.h"
 #include <algorithm>
 #include <cmath>

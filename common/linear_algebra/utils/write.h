@@ -1,7 +1,7 @@
 #pragma once
 
-#include <iostream>
 #include "../matrix.h"
+#include <iostream>
 
 template<class TMatrix>
 inline void WriteMatrix(const TMatrix& m)

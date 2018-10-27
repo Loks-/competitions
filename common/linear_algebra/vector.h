@@ -26,6 +26,7 @@ public:
 
 	Vector(unsigned size) : data(size) {}
 	Vector(unsigned size, const TValue& v) : data(size, v) {}
+    Vector(const TData& v) : data(v) {}
 	TSelf& operator=(const TValue& v) { Fill(v); return *this; }
 
     TValue& operator()(unsigned i) { return data[i]; }
