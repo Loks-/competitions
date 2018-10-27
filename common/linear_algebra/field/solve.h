@@ -22,7 +22,7 @@ inline bool FMatrixSolve(const TMatrix& A, const TVector& b, TVector& output_x)
         {
             if (m(i, j) != 0)
             {
-                if (r != j)
+                if (i != r)
                 {
                     MatrixRowsSwap(m, r, i, j);
                     std::swap(v(r), v(i));
