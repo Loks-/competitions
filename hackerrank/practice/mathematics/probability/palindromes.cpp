@@ -107,7 +107,7 @@ int main_palindromes()
 					}
 				}
 			}
-            DLUPDecomposition lupd;
+            DLUPDecomposition<TDMatrix> lupd;
 			lupd.Build(m);
             TDVector b(n), x(n);
 			b(0) = 1.0;

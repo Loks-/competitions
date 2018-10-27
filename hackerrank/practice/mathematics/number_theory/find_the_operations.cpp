@@ -28,7 +28,7 @@ int main_find_the_operations()
                 M(i, j) = 1;
         }
     }
-    FLUPDecomposition<TModular> lupd;
+    FLUPDecomposition<TMatrix> lupd;
     lupd.Build(M);
     if (lupd.Solve(v, x))
     {

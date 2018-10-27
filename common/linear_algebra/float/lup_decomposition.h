@@ -1,28 +1,31 @@
 #pragma once
 
-#include "../matrix.h"
 #include "../rows/sub_m.h"
 #include "../rows/swap.h"
-#include "../vector.h"
 #include "../../base.h"
 #include <algorithm>
 #include <cmath>
 #include <vector>
 
+template<class TTMatrix>
 class DLUPDecomposition
 {
+public:
+    using TMatrix = TTMatrix;
+    using TValue = typename TMatrix::TValue;
+
 protected:
 	double eps_build, eps_solve;
 
 protected:
-	TDMatrix lu;
+	TMatrix lu;
 	std::vector<unsigned> p;
 	double det_sign;
 
 public:
 	DLUPDecomposition(double _eps_build = 1e-10, double _eps_solve = 1e-5) : eps_build(_eps_build), eps_solve(_eps_solve), lu(0), det_sign(1.0) {}
 
-	bool Build(const TDMatrix& m)
+	bool Build(const TMatrix& m)
 	{
         assert(m.Rows() == m.Columns());
 		unsigned n = m.Rows();
@@ -88,7 +91,8 @@ public:
 	}
 
 	// Solve Ax = b
-	bool Solve(const TDVector& b, TDVector& output_x)
+	template<class TVector>
+	bool Solve(const TVector& b, TVector& output_x)
 	{
 		unsigned n = lu.Rows();
 		assert(b.Size() == n);

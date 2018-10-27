@@ -1,7 +1,5 @@
 #pragma once
 
-#include "../matrix.h"
-
 template<class TMatrix>
 inline void MatrixRowsSubM(TMatrix& matrix, unsigned row_i, unsigned row_j, typename TMatrix::TValue m, unsigned row_first_element = 0)
 {

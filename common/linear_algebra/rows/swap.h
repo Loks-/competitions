@@ -1,6 +1,5 @@
 #pragma once
 
-#include "../matrix.h"
 #include <algorithm>
 
 template<class TMatrix>

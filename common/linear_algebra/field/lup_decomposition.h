@@ -1,19 +1,16 @@
 #pragma once
 
-#include "../matrix.h"
 #include "../rows/sub_m.h"
 #include "../rows/swap.h"
-#include "../vector.h"
 #include "../../base.h"
 #include <vector>
 
-template <class TTValue>
+template <class TTMatrix>
 class FLUPDecomposition
 {
 public:
-    using TValue = TTValue;
-    using TVector = Vector<TValue>;
-    using TMatrix = Matrix<TValue>;
+    using TMatrix = TTMatrix;
+    using TValue = typename TMatrix::TValue;
 
 protected:
 	TMatrix lu;
@@ -76,6 +73,7 @@ public:
 	}
 
 	// Solve Ax = b
+    template<class TVector>
 	bool Solve(const TVector& b, TVector& output_x)
 	{
 		unsigned n = lu.Rows();

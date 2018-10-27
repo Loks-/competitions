@@ -1,14 +1,14 @@
 #pragma once
 
-#include "../matrix.h"
 #include "../rows/sub_m.h"
 #include "../rows/swap.h"
 
-template<class TValue>
-inline unsigned FMatrixRank(const Matrix<TValue>& matrix)
+template<class TMatrix>
+inline unsigned FMatrixRank(const TMatrix& matrix)
 {
+    using TValue = typename TMatrix::TValue;
+    TMatrix m(matrix);
     unsigned r = 0;
-    Matrix<TValue> m(matrix);
     for (unsigned j = 0; (r < m.Rows()) && (j < m.Columns()); ++j)
     {
         for (unsigned i = r; i < m.Rows(); ++i)
