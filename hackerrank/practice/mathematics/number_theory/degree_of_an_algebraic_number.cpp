@@ -2,7 +2,7 @@
 
 #include "common/factorization/factorization.h"
 #include "common/linear_algebra/matrix.h"
-#include "common/linear_algebra/field/utils/rank.h"
+#include "common/linear_algebra/field/rank.h"
 #include "common/modular/modular.h"
 #include "common/numeric/utils/pow.h"
 #include "common/vector/read.h"
