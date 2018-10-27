@@ -118,7 +118,7 @@ public:
             lu.data.push_back(unsigned(t64 / u64));
             t64 %= u64;
         }
-        std::reverse(lu.begin(), lu.end());
+		if (lu.Size() > 1) std::reverse(lu.begin(), lu.end());
         return lu;
     }
 
