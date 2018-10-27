@@ -1,8 +1,8 @@
 // https://www.hackerrank.com/challenges/minion-of-the-year
 
-#include "common/factorization/primes_list.h"
-#include "common/modular/modular_arithmetic.h"
+#include "common/factorization/factorization.h"
 #include "common/modular/discrete_log_sqrt_map.h"
+#include "common/modular/modular_arithmetic.h"
 #include "common/numeric/utils/gcd.h"
 #include "common/numeric/utils/lcm.h"
 #include "common/stl/base.h"
@@ -11,14 +11,14 @@ using TDiscreteLog = DiscreteLogSqrtMap<>;
 
 int main_minion_of_the_year()
 {
-    PrimesList primes_list(10000);
+    Factorization ff;
 	unsigned T, N, P;
 	cin >> T;
 	for (unsigned iT = 0; iT < T; ++iT)
 	{
         cin >> P >> N;
         uint64_t P1 = P - 1;
-        TDiscreteLog dl(P, primes_list.Factorize(P1), 500000);
+        TDiscreteLog dl(P, ff.Factorize(P1), 500000);
         for (unsigned iN = 0; iN < N; ++iN)
         {
             uint64_t A, B, C, D;

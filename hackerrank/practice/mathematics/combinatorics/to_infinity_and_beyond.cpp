@@ -16,14 +16,14 @@ int main_to_infinity_and_beyond()
 	for (unsigned it = 0; it < T; ++it)
 	{
 		cin >> x >> y >> z;
-		uint64_t mk = min(x, y);
+		unsigned mk = unsigned(min(x, y));
 		TModular s(0), v = f.GetI(mk);
-		for (uint64_t l = 1; l <= mk; ++l)
+		for (unsigned l = 1; l <= mk; ++l)
 			v *= TModular(x + y + 1 - l);
 		TModular a(1), b(1), c(1);
 		v -= a * b;
 		s += v;
-		for (uint64_t l = 1; l < mk; ++l)
+		for (unsigned l = 1; l < mk; ++l)
 		{
 			a *= TModular(x + 1 - l);
 			b *= TModular(y + 1 - l);

@@ -1,5 +1,5 @@
+#include "common/factorization/factorization.h"
 #include "common/factorization/utils/divisors.h"
-#include "common/factorization/primes_list.h"
 #include "common/vector/read.h"
 #include "common/stl/base.h"
 
@@ -8,7 +8,7 @@
 
 int main_qizz_quzz_q1()
 {
-    PrimesList primes_list(1000);
+    Factorization ff;
     auto get_type = [](const std::string& s)
     {
         unsigned type = 0;
@@ -37,7 +37,7 @@ int main_qizz_quzz_q1()
             unsigned type = get_type(s);
             if ((type != 1) && (type != 2))
                 break;
-            vector<uint64_t> vd = GetDivisors(primes_list.Factorize(i));
+            vector<uint64_t> vd = GetDivisors(ff.Factorize(i));
             sort(vd.begin(), vd.end());
             for (uint64_t d : vd)
             {
