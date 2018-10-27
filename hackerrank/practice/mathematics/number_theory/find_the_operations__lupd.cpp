@@ -33,7 +33,7 @@ int main_find_the_operations__lupd()
     if (lupd.Solve(v, x))
     {
         cout << "Possible" << endl;
-        unsigned s = 0;
+        uint64_t s = 0;
         for (TModular t : x)
             s += t.Get();
         cout << s << endl;

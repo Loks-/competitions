@@ -31,7 +31,7 @@ int main_find_the_operations()
     if (FMatrixSolve(M, v, x))
     {
         cout << "Possible" << endl;
-        unsigned s = 0;
+        uint64_t s = 0;
         for (TModular t : x)
             s += t.Get();
         cout << s << endl;

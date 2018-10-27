@@ -90,7 +90,7 @@ public:
 				for (unsigned j = ii - 1; j < i; ++j)
 					sum -= lu(i, j) * output_x(j);
 			}
-			else if (sum != 0.0)
+			else if (sum != 0)
 				ii = i + 1;
 			output_x(i) = sum;
 		}
