@@ -15,10 +15,6 @@
 #include <string>
 #include <unordered_set>
 
-#include "common/linear_algebra/utils/write.h"
-#include "common/modular/modular_bool_io.h"
-#include "common/modular/modular_io.h"
-
 template<unsigned large_matrix_size, unsigned small_matrix_size, unsigned small_matrix_runs>
 class TesterMatrixMult
 {
@@ -155,9 +151,6 @@ public:
         size_t h = MatrixHash(C);
         std::cout << text << " base\t" << h << "\t" << t.GetMilliseconds() << std::endl;
         results.insert(h);
-        // WriteMatrix(A);
-        // WriteMatrix(B);
-        // WriteMatrix(C);
     }
 
     template<class TMatrix>
@@ -282,9 +275,9 @@ public:
 	bool TestMultAll()
 	{
 		Init();
-		// TestLargeMultAll();
-		// TestSmallMultAll();
+		TestLargeMultAll();
+		TestSmallMultAll();
         TestBoolMultAll();
-		return (results.size() == 1);
+		return (results.size() == 3);
 	}
 };
