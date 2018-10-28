@@ -24,7 +24,7 @@ public:
 
 	ModularBool() : value(false) {}
 	ModularBool(const TSelf& s) : value(s.value) {}
-	ModularBool(bool _value) : value(_value) {}
+    ModularBool(uint64_t _value) { SetU(_value); }
 
 	TSelf operator+(TSelf rvalue) const { return TSelf(value ^ rvalue.value); }
 	TSelf& operator+=(TSelf rvalue) { value ^= rvalue.value; return *this; }
