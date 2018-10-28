@@ -12,12 +12,17 @@ public:
     using TDataValue = uint64_t;
 	using TData = std::vector<TDataValue>;
 	using TSelf = VectorBool;
-    const unsigned bits_per_value = 64;
+
+    const static unsigned bits_per_data = 64;
+    static unsigned SizeToDSize(unsigned size) { return (size + bits_per_data - 1) / bits_per_data; }
 
 protected:
     unsigned size;
 	TData data;
 
+    VectorBool() : size(0) {}
+    void Resize(unsigned new_size) { size = new_size; data.resize(SizeToDSize(size)); }
+    
 public:
 	using diterator = TDataValue*;
 	using const_diterator = const TDataValue*;
@@ -36,13 +41,13 @@ public:
     unsigned DSize() const { return unsigned(data.size()); }
 	const TData& GetData() const { return data; }
 
-	VectorBool(unsigned _size) : size(_size), data((size + bits_per_value - 1) / bits_per_value) {}
-	VectorBool(unsigned _size, const TValue& v) : VectorBool(_size) { Fill(v); }
+    VectorBool(unsigned _size) { Resize(_size); }
+	VectorBool(unsigned _size, const TValue& v) { Resize(_size); if (v.Get()) Fill(v); }
 	TSelf& operator=(const TValue& v) { Fill(v); return *this; }
 	void swap(TSelf& r) { data.swap(r.data); }
 
-	TValue Get(unsigned i) const { TValue t; t.SetU(data[i / bits_per_value] >> (i % bits_per_value)); return t; }
-    void Set(unsigned i, TValue v) { TDataValue& r = data[i / bits_per_value]; unsigned shift = i % bits_per_value; r = (v.Get() ? (r | (1ull << shift)) : (r & (~(1ull << shift)))); }
+	TValue Get(unsigned i) const { TValue t; t.SetU(data[i / bits_per_data] >> (i % bits_per_data)); return t; }
+    void Set(unsigned i, TValue v) { TDataValue& r = data[i / bits_per_data]; unsigned shift = i % bits_per_data; r = (v.Get() ? (r | (1ull << shift)) : (r & (~(1ull << shift)))); }
 	TValue operator()(unsigned i) const { return Get(i); }
 
 	TSelf& operator+=(const TValue& v) { if (v.Get()) Complement(); return *this; }

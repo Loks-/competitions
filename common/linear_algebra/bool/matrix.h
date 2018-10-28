@@ -11,7 +11,7 @@ public:
 	using TValue = TBase::TValue;
     using TDataValue = TBase::TDataValue;
 	using TSelf = MatrixBool;
-    const unsigned bits_per_value = VectorBool::bits_per_value;
+    const unsigned bits_per_data = VectorBool::bits_per_data;
 
 	using diterator = TBase::diterator;
 	using const_diterator = TBase::const_diterator;
@@ -27,13 +27,15 @@ public:
     unsigned DataColumns() const { return data_columns; }
     unsigned TotalColumns() const { return total_columns; }
 
-	MatrixBool(unsigned _rows, unsigned _columns) : 
-        TBase(_rows * ((_columns + bits_per_value - 1) & ~(bits_per_value - 1))), 
-        rows(_rows), columns(_columns),
-        data_columns((_columns + bits_per_value - 1) / bits_per_value), total_columns(data_columns * bits_per_value) {}
+	MatrixBool(unsigned _rows, unsigned _columns) : rows(_rows), columns(_columns)
+    {
+        data_columns = TBase::SizeToDSize(columns);
+        total_columns = data_columns * bits_per_data;
+        TBase::Resize(rows * total_columns);
+    }
     MatrixBool(unsigned size) : MatrixBool(size, size) {}
 	MatrixBool(unsigned _rows, unsigned _columns, const TValue& v) : 
-        MatrixBool(_rows, _columns) { TBase::Fill(v); }
+        MatrixBool(_rows, _columns) { if (v.Get()) TBase::Fill(v); }
 	TSelf& operator=(const TValue& v) { TBase::Fill(v); return *this; }
 	
     void swap(TSelf& r)
