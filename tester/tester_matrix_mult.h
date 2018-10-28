@@ -1,10 +1,12 @@
 #pragma once
 
 #include "common/hash.h"
+#include "common/linear_algebra/bool/matrix.h"
 #include "common/linear_algebra/matrix.h"
 #include "common/linear_algebra/matrix_static_size.h"
 #include "common/modular/modular.h"
 #include "common/modular/modular_arithmetic_static_proxy.h"
+#include "common/modular/modular_bool.h"
 #include "common/timer.h"
 
 #include "matrix_mult.h"
@@ -13,19 +15,24 @@
 #include <string>
 #include <unordered_set>
 
+#include "common/linear_algebra/utils/write.h"
+#include "common/modular/modular_bool_io.h"
+#include "common/modular/modular_io.h"
+
 template<unsigned large_matrix_size, unsigned small_matrix_size, unsigned small_matrix_runs>
 class TesterMatrixMult
 {
 public:
 	using TModular = Modular<>;
+    using TModular2 = Modular<2>;
 	using TModularProxy = ModularArithmeticStaticProxy<>;
 
 public:
-	static size_t MatrixHash(const Matrix<uint64_t>& m)
+	static size_t MatrixHash(const Matrix<uint64_t>& m, bool use_bool_hash = false)
 	{
 		size_t h = 0;
 		for (uint64_t t : m.GetData())
-			h = hash_combine(h, TModularProxy::ApplyU(t));
+			h = hash_combine(h, (use_bool_hash ? t & 1 : TModularProxy::ApplyU(t)));
 		return h;
 	}
 
@@ -34,6 +41,22 @@ public:
 		size_t h = 0;
 		for (TModular t : m.GetData())
 			h = hash_combine(h, t.Get());
+		return h;
+	}
+
+	static size_t MatrixHash(const Matrix<TModular2>& m)
+	{
+		size_t h = 0;
+		for (TModular2 t : m.GetData())
+			h = hash_combine(h, t.Get());
+		return h;
+	}
+
+	static size_t MatrixHash(const Matrix<ModularBool>& m)
+	{
+		size_t h = 0;
+		for (ModularBool t : m.GetData())
+			h = hash_combine(h, t.Get() ? 1 : 0);
 		return h;
 	}
 
@@ -55,6 +78,17 @@ public:
 		return h;
 	}
 
+	static size_t MatrixHash(const MatrixBool& m)
+	{
+		size_t h = 0;
+        for (unsigned i = 0; i < m.Rows(); ++i)
+        {
+            for (unsigned j = 0; j < m.Columns(); ++j)
+                h = hash_combine(h, m.Get(i, j).Get());    
+        }
+		return h;
+	}
+
 	static void ApplyMod(Matrix<uint64_t>& m) { for (uint64_t& t : m) t = TModularProxy::ApplyU(t); }
 	static void ApplyMod(Matrix<TModular>& m) {}
 	template<unsigned matrix_size>
@@ -66,6 +100,9 @@ protected:
     std::unordered_set<size_t> results;
 	Matrix<uint64_t> mluA, mluB, mluC, msuA, msuB, msuC;
 	Matrix<TModular> mlmA, mlmB, mlmC, msmA, msmB, msmC;
+	Matrix<TModular2> mlm2A, mlm2B, mlm2C;
+	Matrix<ModularBool> mlmbA, mlmbB, mlmbC;
+    MatrixBool mlbA, mlbB, mlbC;
     MatrixStaticSize<uint64_t, small_matrix_size, small_matrix_size> mssuA, mssuB, mssuC;
     MatrixStaticSize<TModular, small_matrix_size, small_matrix_size> mssmA, mssmB, mssmC;
 
@@ -74,6 +111,9 @@ public:
         mluA(large_matrix_size), mluB(large_matrix_size), mluC(large_matrix_size),
 		msuA(small_matrix_size), msuB(small_matrix_size), msuC(small_matrix_size),
 		mlmA(large_matrix_size), mlmB(large_matrix_size), mlmC(large_matrix_size),
+		mlm2A(large_matrix_size), mlm2B(large_matrix_size), mlm2C(large_matrix_size),
+		mlmbA(large_matrix_size), mlmbB(large_matrix_size), mlmbC(large_matrix_size),
+		mlbA(large_matrix_size), mlbB(large_matrix_size), mlbC(large_matrix_size),
 		msmA(small_matrix_size), msmB(small_matrix_size), msmC(small_matrix_size)
 	{}
 
@@ -86,8 +126,14 @@ public:
             {
                 mluA(i, j) = i * large_matrix_size + j;
                 mlmA(i, j) = TModular(mluA(i, j));
+                mlm2A(i, j) = TModular2(mluA(i, j));
+                mlmbA(i, j) = ModularBool(mluA(i, j));
+                mlbA.Set(i, j, mlmbA(i, j));
                 mluB(i, j) = (i + 2) * large_matrix_size + j;
                 mlmB(i, j) = TModular(mluB(i, j));
+                mlm2B(i, j) = TModular2(mluB(i, j));
+                mlmbB(i, j) = ModularBool(mluB(i, j));
+                mlbB.Set(i, j, mlmbB(i, j));
             }
         }
 		for (unsigned i = 0; i < small_matrix_size; ++i)
@@ -109,6 +155,9 @@ public:
         size_t h = MatrixHash(C);
         std::cout << text << " base\t" << h << "\t" << t.GetMilliseconds() << std::endl;
         results.insert(h);
+        // WriteMatrix(A);
+        // WriteMatrix(B);
+        // WriteMatrix(C);
     }
 
     template<class TMatrix>
@@ -184,6 +233,17 @@ public:
 		results.insert(h);
 	}
 
+    template<class TMatrix>
+    void TestBoolMultBase(const std::string& text, const TMatrix& A, const TMatrix& B, TMatrix& C)
+    {
+        Timer t;
+        A.Mult(B, C);
+        t.Stop();
+        size_t h = MatrixHash(C, true);
+        std::cout << text << " base\t" << h << "\t" << t.GetMilliseconds() << std::endl;
+        results.insert(h);
+    }
+
 	void TestLargeMultAll()
     {
 		TestLargeMultBase("uint64t l ", mluA, mluB, mluC);
@@ -211,11 +271,20 @@ public:
 		TestSmallMultLoops("modular ss", mssmA, mssmB, mssmC);
 	}
 
+	void TestBoolMultAll()
+    {
+		TestBoolMultBase("uint64t b ", mluA, mluB, mluC);
+		TestLargeMultBase("modular b ", mlm2A, mlm2B, mlm2C);
+		TestLargeMultBase("modbool b ", mlmbA, mlmbB, mlmbC);
+		TestLargeMultBase("bmatrix b ", mlbA, mlbB, mlbC);
+    }
+
 	bool TestMultAll()
 	{
 		Init();
-		TestLargeMultAll();
-		TestSmallMultAll();
-		return (results.size() == 2);
+		// TestLargeMultAll();
+		// TestSmallMultAll();
+        TestBoolMultAll();
+		return (results.size() == 1);
 	}
 };
