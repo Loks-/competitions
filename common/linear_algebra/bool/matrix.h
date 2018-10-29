@@ -48,6 +48,7 @@ public:
     }
 
 	TValue Get(unsigned i, unsigned j) const { return TBase::Get(i * bits_per_row + j); }
+    TBlockValue GetBit(unsigned i, unsigned j) const { return TBase::GetBit(i * bits_per_row + j); }
     void Set(unsigned i, unsigned j, TValue v) { TBase::Set(i * bits_per_row + j, v); }
     TValue operator()(unsigned i, unsigned j) const { return Get(i, j); }
 
@@ -75,7 +76,7 @@ public:
 		{
 			for (unsigned j = 0; j < columns; ++j)
 			{
-				if (Get(i, j).Get())
+				if (GetBit(i, j))
                 {
                     const_biterator pB = v.GetBP(j, 0);
                     for (biterator pC = output.GetBP(i, 0), pCend = pC + blocks_per_row; pC < pCend; )

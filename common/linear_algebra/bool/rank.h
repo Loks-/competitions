@@ -12,16 +12,16 @@ inline unsigned BMatrixRank(const MatrixBool& matrix)
     {
         for (unsigned i = r; i < m.Rows(); ++i)
         {
-            if (m(i, j) != 0)
+            if (m.GetBit(i, j))
             {
                 MatrixRowsBSwap(m, r, i, j / MatrixBool::bits_per_block);
                 break;
             }
         }
-        if (m(r, j) == 0) continue;
+        if (m.GetBit(r, j) == 0) continue;
         for (unsigned i = r + 1; i < m.Rows(); ++i)
         {
-            if (m(i, j) == 0) continue;
+            if (m.GetBit(i, j) == 0) continue;
             MatrixRowsBAdd(m, i, r, j / MatrixBool::bits_per_block);
         }
         ++r;
