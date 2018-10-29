@@ -11,7 +11,7 @@ public:
 	using TValue = TBase::TValue;
     using TBlockValue = TBase::TBlockValue;
 	using TSelf = MatrixBool;
-    const unsigned bits_per_block = VectorBool::bits_per_block;
+    const static unsigned bits_per_block = VectorBool::bits_per_block;
 
 	using biterator = TBase::biterator;
 	using const_biterator = TBase::const_biterator;
