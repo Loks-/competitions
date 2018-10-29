@@ -49,7 +49,8 @@ public:
 	TValue Get(unsigned i) const { TValue t; t.SetU(data[i / bits_per_block] >> (i % bits_per_block)); return t; }
     TBlockValue GetBit(unsigned i) const { return (data[i / bits_per_block] >> (i % bits_per_block)) & 1ull; }
     void Set(unsigned i, TValue v) { TBlockValue& r = data[i / bits_per_block]; unsigned shift = i % bits_per_block; r = (v.Get() ? (r | (1ull << shift)) : (r & (~(1ull << shift)))); }
-	TValue operator()(unsigned i) const { return Get(i); }
+    void Complement(unsigned i) { TBlockValue& r = data[i / bits_per_block]; unsigned shift = i % bits_per_block; r ^= (1ull << shift); }
+    void Swap(unsigned i, unsigned j) { if (GetBit(i) ^ GetBit(j)) { Complement(i); Complement(j); } }
 
 	TSelf& operator+=(const TValue& v) { if (v.Get()) Complement(); return *this; }
 	TSelf& operator-=(const TValue& v) { if (v.Get()) Complement(); return *this; }

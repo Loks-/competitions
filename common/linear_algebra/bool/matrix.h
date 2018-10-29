@@ -50,7 +50,6 @@ public:
 	TValue Get(unsigned i, unsigned j) const { return TBase::Get(i * bits_per_row + j); }
     TBlockValue GetBit(unsigned i, unsigned j) const { return TBase::GetBit(i * bits_per_row + j); }
     void Set(unsigned i, unsigned j, TValue v) { TBase::Set(i * bits_per_row + j, v); }
-    TValue operator()(unsigned i, unsigned j) const { return Get(i, j); }
 
 	biterator GetBP(unsigned row, unsigned block_index) { return TBase::GetBP(row * blocks_per_row + block_index);}
 	const_biterator GetBP(unsigned row, unsigned block_index) const { return TBase::GetBP(row * blocks_per_row + block_index);}
