@@ -9,34 +9,34 @@ class VectorBool
 {
 public:
 	using TValue = ModularBool;
-    using TDataValue = uint64_t;
-	using TData = std::vector<TDataValue>;
+    using TBlockValue = uint64_t;
+	using TData = std::vector<TBlockValue>;
 	using TSelf = VectorBool;
 
-    const static unsigned bits_per_data = 64;
-    static unsigned SizeToDSize(unsigned size) { return (size + bits_per_data - 1) / bits_per_data; }
+    const static unsigned bits_per_block = 8 * sizeof(TBlockValue);
+    static unsigned MinBlockSize(unsigned size) { return (size + bits_per_block - 1) / bits_per_block; }
 
 protected:
     unsigned size;
 	TData data;
 
     VectorBool() : size(0) {}
-    void Resize(unsigned new_size) { size = new_size; data.resize(SizeToDSize(size)); }
+    void Resize(unsigned new_size) { size = new_size; data.resize(MinBlockSize(size)); }
     
 public:
-	using diterator = TDataValue*;
-	using const_diterator = const TDataValue*;
+	using biterator = TBlockValue*;
+	using const_biterator = const TBlockValue*;
 
-	diterator DBegin() { return &data.front(); }
-	const_diterator DBegin() const { return &data.front(); }
-	diterator DEnd() { return DBegin() + DSize(); }
-	const_diterator DEnd() const { return DBegin() + DSize(); }
-	diterator GetDP(unsigned i) { return DBegin() + i;}
-	const_diterator GetDP(unsigned i) const { return DBegin() + i;}
+	biterator BBegin() { return &data.front(); }
+	const_biterator BBegin() const { return &data.front(); }
+	biterator BEnd() { return BBegin() + DSize(); }
+	const_biterator BEnd() const { return BBegin() + DSize(); }
+	biterator GetBP(unsigned block_index) { return BBegin() + block_index;}
+	const_biterator GetBP(unsigned block_index) const { return BBegin() + block_index;}
 
 	void Fill(const TValue& v) { std::fill(data.begin(), data.end(), v.Get() ? ~0ull : 0ull); }
 	void Clear() { Fill(TValue(0)); }
-    void Complement() { for (diterator p = DBegin(), pend = DEnd(); p < pend; ++p) *p = ~*p; }
+    void Complement() { for (biterator p = BBegin(), pend = BEnd(); p < pend; ++p) *p = ~*p; }
 	unsigned Size() const { return size; }
     unsigned DSize() const { return unsigned(data.size()); }
 	const TData& GetData() const { return data; }
@@ -46,8 +46,8 @@ public:
 	TSelf& operator=(const TValue& v) { Fill(v); return *this; }
 	void swap(TSelf& r) { data.swap(r.data); }
 
-	TValue Get(unsigned i) const { TValue t; t.SetU(data[i / bits_per_data] >> (i % bits_per_data)); return t; }
-    void Set(unsigned i, TValue v) { TDataValue& r = data[i / bits_per_data]; unsigned shift = i % bits_per_data; r = (v.Get() ? (r | (1ull << shift)) : (r & (~(1ull << shift)))); }
+	TValue Get(unsigned i) const { TValue t; t.SetU(data[i / bits_per_block] >> (i % bits_per_block)); return t; }
+    void Set(unsigned i, TValue v) { TBlockValue& r = data[i / bits_per_block]; unsigned shift = i % bits_per_block; r = (v.Get() ? (r | (1ull << shift)) : (r & (~(1ull << shift)))); }
 	TValue operator()(unsigned i) const { return Get(i); }
 
 	TSelf& operator+=(const TValue& v) { if (v.Get()) Complement(); return *this; }
@@ -60,8 +60,8 @@ public:
 	TSelf operator/(const TValue& v) const { assert(v.Get()); return *this; }
 	TSelf operator-() const { return *this; }
 
-	TSelf& operator+=(const TSelf& v) { assert(Size() == v.Size()); const_diterator pv = v.DBegin(); for (diterator p = DBegin(), pend = DEnd(); p < pend; ) *p++ ^= *pv++; return *this; }
-	TSelf& operator-=(const TSelf& v) { assert(Size() == v.Size()); const_diterator pv = v.DBegin(); for (diterator p = DBegin(), pend = DEnd(); p < pend; ) *p++ ^= *pv++; return *this; }
+	TSelf& operator+=(const TSelf& v) { assert(Size() == v.Size()); const_biterator pv = v.BBegin(); for (biterator p = BBegin(), pend = BEnd(); p < pend; ) *p++ ^= *pv++; return *this; }
+	TSelf& operator-=(const TSelf& v) { assert(Size() == v.Size()); const_biterator pv = v.BBegin(); for (biterator p = BBegin(), pend = BEnd(); p < pend; ) *p++ ^= *pv++; return *this; }
 	TSelf operator+(const TSelf& v) const { TSelf t(*this); t += v; return t; }
 	TSelf operator-(const TSelf& v) const { TSelf t(*this); t -= v; return t; }
 };
