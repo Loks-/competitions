@@ -7,7 +7,7 @@
 #include "common/numeric/utils/pow.h"
 #include "common/stl/base.h"
 
-using TModular = ModularArithmetic<false, false, uint64_t>;
+using TModularA = ModularArithmetic<false, false, uint64_t>;
 
 int main_a_very_special_multiple()
 {
@@ -28,7 +28,7 @@ int main_a_very_special_multiple()
         sort(vd.begin(), vd.end());
         for (uint64_t d : vd)
         {
-            if (TModular::PowU(10, d, x) == 1)
+            if (TModularA::PowU(10, d, x) == 1)
             {
                 a = d;
                 break;

@@ -4,7 +4,7 @@
 #include "common/modular/modular_io.h"
 #include "common/stl/base.h"
 
-using TModular = Modular<1000007>;
+using TModular = TModular_P32<1000007>;
 
 int main_equations()
 {

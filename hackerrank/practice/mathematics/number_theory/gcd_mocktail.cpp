@@ -4,7 +4,7 @@
 #include "common/modular/sum_of_powers_modular.h"
 #include "common/stl/base.h"
 
-using TModular = Modular<30000001>;
+using TModular = TModular_P32<30000001>;
 
 int main_gcd_mocktail()
 {

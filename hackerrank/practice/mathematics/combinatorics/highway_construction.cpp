@@ -4,7 +4,7 @@
 #include "common/modular/sum_of_powers_modular.h"
 #include "common/stl/base.h"
 
-using TModular = Modular<1000000009>;
+using TModular = TModular_P32<1000000009>;
 
 int main_highway_construction()
 {
