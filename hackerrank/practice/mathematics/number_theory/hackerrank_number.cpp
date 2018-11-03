@@ -50,7 +50,8 @@ int main_hackerrank_number()
     // Final
     uint64_t lb = 1, pb = 10;
     for (; b >= pb; pb *= 10) ++lb;
-    uint64_t r = sL * cR * pb * 10 + cL * sR;
-    cout << r << endl;
+    LongUnsigned r1 = LongUnsigned(sL) * cR * pb * 10;
+    LongUnsigned r2 = LongUnsigned(sR) * cL;
+    (r1 + r2).Write();
 	return 0;
 }
