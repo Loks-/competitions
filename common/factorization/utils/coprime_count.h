@@ -4,7 +4,7 @@
 #include "../primes_list.h"
 
 // Return number of coprime to k numbers in the interval [1..n].
-inline uint64_t CoprimeNumers(const TFactorization& k_factorization, uint64_t n)
+inline uint64_t CoprimeCount(const TFactorization& k_factorization, uint64_t n)
 {
     if (k_factorization.size() == 0) return n;
     unsigned fs = unsigned(k_factorization.size()), p2 = 1u << fs;
