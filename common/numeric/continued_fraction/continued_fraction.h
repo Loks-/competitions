@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../base.h"
-#include "fraction.h"
+#include "../fraction.h"
+#include "../../base.h"
 #include <limits>
 #include <vector>
 
@@ -37,10 +37,15 @@ protected:
 public:
     ContinuedFraction(const std::vector<int64_t>& continued_fraction) : cf(continued_fraction)
     {
+        if (cf.size() == 0)
+            cf.push_back(0);
         it1 = 0; it2 = cf[0] - 1;
         n0 = 1; n1 = 0;
         d0 = 0; d1 = 1;
     }
+
+    unsigned Size() const { return unsigned(cf.size()); }
+    int64_t operator()(unsigned index) const { return cf[index]; }
 
     TIFraction GetCurrentFraction() { return TIFraction(it2 * n0 + n1, it2 * d0 + d1); }
     
