@@ -8,7 +8,7 @@
 class MillerRabinPrimalityTest
 {
 public:
-    using TModular = ModularArithmetic<false, false, uint64_t>;
+    using TModularA = ModularArithmetic<false, false, uint64_t>;
 	
     enum Primality
 	{
@@ -57,11 +57,11 @@ public:
 
 	static Primality CheckMillerRabinWitness(const Factorization& f, uint64_t witness)
 	{
-		uint64_t x = TModular::PowU(witness, f.d, f.n);
+		uint64_t x = TModularA::PowU(witness, f.d, f.n);
 		if ((x == 1) || (x == (f.n - 1))) return PROBABLY_PRIME;
 		for (uint64_t i = 0; i < f.s - 1; ++i)
 		{
-			x = TModular::Mult(x, x, f.n);
+			x = TModularA::Mult(x, x, f.n);
 			if (x == 1) return COMPOSITE;
 			if (x == f.n - 1) return PROBABLY_PRIME;
 		}

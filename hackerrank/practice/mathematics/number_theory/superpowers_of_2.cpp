@@ -6,7 +6,7 @@
 #include "common/modular/utils/merge_remainders.h"
 #include "common/stl/base.h"
 
-using TModular = TModularArithmetic_C32U;
+using TModularA = TModularArithmetic_C32U;
 
 int main_superpowers_of_2()
 {
@@ -15,13 +15,13 @@ int main_superpowers_of_2()
     if (b <= 2)
         r = 0;
     else if (a < 61)
-        r = TModular::PowUSafe(2, (one << a), b);
+        r = TModularA::PowUSafe(2, (one << a), b);
     else
     {
         for (; (b & 1) == 0; b /= 2) c *= 2;        
         d = EulersTotient(b, Factorize(b));
-        uint64_t aa = TModular::PowUSafe(2, a, d);
-        r = MergeRemainders<TModular>(c, 0, b, TModular::PowUSafe(2, aa, b));
+        uint64_t aa = TModularA::PowUSafe(2, a, d);
+        r = MergeRemainders<TModularA>(c, 0, b, TModularA::PowUSafe(2, aa, b));
     }
     cout << r << endl;
 	return 0;

@@ -1,7 +1,7 @@
 // https://www.hackerrank.com/challenges/arthur-and-coprimes
 
 #include "common/factorization/factorization.h"
-#include "common/factorization/utils/coprime.h"
+#include "common/factorization/utils/coprime_count.h"
 #include "common/stl/base.h"
 
 int main_coprime_conundrum()
@@ -14,7 +14,7 @@ int main_coprime_conundrum()
     {
         unsigned maxq = n / p;
         if (maxq <= p) break;
-        total += CoprimeNumers(ff.Factorize(p), maxq - p);
+        total += CoprimeCount(ff.Factorize(p), maxq - p);
     }
     cout << total << endl;
 	return 0;
