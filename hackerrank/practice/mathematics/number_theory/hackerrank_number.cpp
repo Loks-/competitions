@@ -12,6 +12,8 @@ int main_hackerrank_number()
 {
     uint64_t a, b;
     cin >> a >> b;
+    uint64_t raw_b = b;
+    if (a > b) swap(a, b);
     PrimesList primes_list(a);
     // L
     uint64_t cL = 0, sL = 0;
@@ -38,7 +40,6 @@ int main_hackerrank_number()
         cL += CoprimeCount(ff, cb);
         sL += c * CoprimeSum(ff, cb);
     }
-    // cout << cL << "\t" << sL << endl;
     // R
     uint64_t maxaxb = 0;
     for (unsigned i = 30; i--; )
@@ -54,23 +55,25 @@ int main_hackerrank_number()
             }
         }
     }
-    vector<bool> vR(maxaxb + 1, false);
-    for (uint64_t ia = 1; ia <= a; ++ia)
-        for (uint64_t ib = 1; ib <= b; ++ib)
-            vR[ia^ib] = true;
-    uint64_t cR = 0, sR = 0;
-    for (uint64_t i = 0; i <= maxaxb; ++i)
+    uint64_t cR = maxaxb + 1, sR = (maxaxb * (maxaxb + 1)) / 2;
+    if (a == 1)
     {
-        if (vR[i])
+        cR -= 1; sR -= a; // a is not possible
+        if ((b & 1) == 0)
         {
-            cR += 1;
-            sR += i;
+            cR -= 1; sR -= b; // b is not possible
         }
     }
-    // cout << cR << "\t" << sR << endl;
+    else
+    {
+        if ((b ^ (b - 1)) / 2 >= a)
+        {
+            cR -= 1; sR -= b; // b is not possible
+        }
+    }
     // Final
     uint64_t lb = 1, pb = 10;
-    for (; b >= pb; pb *= 10) ++lb;
+    for (; raw_b >= pb; pb *= 10) ++lb;
     LongUnsigned r1 = LongUnsigned(sL) * cR * pb * 10;
     LongUnsigned r2 = LongUnsigned(sR) * cL;
     (r1 + r2).Write();
