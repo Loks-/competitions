@@ -2,6 +2,7 @@
 
 #include "continued_fraction.h"
 #include "../fraction.h"
+#include "../../base.h"
 
 class CFConvergent
 {
@@ -10,29 +11,34 @@ protected:
     unsigned itc;
     int64_t n0, n1, d0, d1;
 
-public:
-    void ResetIterator()
+    void ResetIteratorI()
     {
         itc = 0;
-        n0 = cf(0); n1 = 1;
-        d0 = 1; d1 = 0;
+        n0 = 1; n1 = 0;
+        d0 = 0; d1 = 1;
     }
+
+public:
+    void ResetIterator() { ResetIteratorI(); Next(); }
 
     CFConvergent(const ContinuedFraction& continued_fraction) : cf(continued_fraction)
     {
         ResetIterator();
     }
 
-    bool End() const { return (itc + 1) >= cf.Size(); }
+    bool End() const { return itc > cf.Size(); }
     TIFraction Get() const { return TIFraction(n0, d0); }
     
     CFConvergent& Next()
     {
+        if (itc < cf.Size())
+        {
+            int64_t nn = cf(itc) * n0 + n1;
+            n1 = n0; n0 = nn;
+            int64_t dn = cf(itc) * d0 + d1;
+            d1 = d0; d0 = dn;
+        }
         ++itc;
-        int64_t nn = cf(itc) * n0 + n1;
-        n1 = n0; n0 = nn;
-        int64_t dn = cf(itc) * d0 + d1;
-        d1 = d0; d0 = dn;
         return *this;
     }
 
