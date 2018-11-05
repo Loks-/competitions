@@ -6,9 +6,6 @@
 #include "common/numeric/long_unsigned.h"
 #include "common/stl/base.h"
 
-#include "common/numeric/fraction_io.h"
-#include "common/vector/write.h"
-
 int main_minimal_distance_to_pi()
 {
     int64_t l, r;
@@ -83,9 +80,6 @@ int main_minimal_distance_to_pi()
         int64_t a = pi_seq[i], tnn = nn * a + nd, tnd = nn, tdn = dn * a + dd, tdd = dn;
         nn = tnn; nd = tnd; dn = tdn; dd = tdd;
     }
-    // cout << bestl.ToFraction() << "\t" << bestr.ToFraction() << endl;
-    // WriteVector(bestl.GetVector());
-    // WriteVector(bestr.GetVector());
 
     for (int64_t n = l / (dn + dd) + 1; n * dn <= r; ++n)
     {
@@ -106,9 +100,6 @@ int main_minimal_distance_to_pi()
             }
         }
     }
-    // cout << bestl.ToFraction() << "\t" << bestr.ToFraction() << endl;
-    // WriteVector(bestl.GetVector());
-    // WriteVector(bestr.GetVector());
 
     CFConvergent cfit(cf_pi);
     for (; cfit.Get().GetD() < 10 * r; cfit.Next()) ;
