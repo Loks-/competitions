@@ -19,9 +19,35 @@ public:
             cf.push_back(0);
     }
 
+    ContinuedFraction(const TIFraction& f)
+    {
+        int64_t n = f.GetN(), d = f.GetD();
+        int64_t a = n / d;
+        if (a*d > n) --a;
+        cf.push_back(a); n -= a*d;
+        for (; n; )
+        {
+            std::swap(n, d);
+            a = n / d;
+            cf.push_back(a);
+            n -= a * d;
+        }
+    }
+
     const std::vector<int64_t>& GetVector() const { return cf; }
     unsigned Size() const { return unsigned(cf.size()); }
     int64_t operator()(unsigned index) const { return cf[index]; }
+    
+    TIFraction ToFraction() const
+    {
+        int64_t n0 = 1, n1 = 0, d0 = 0, d1 = 1;
+        for (int64_t a : cf)
+        {
+            int64_t nn = a * n0 + n1; n1 = n0; n0 = nn;
+            int64_t dn = a * d0 + d1; d1 = d0; d0 = dn;
+        }
+        return TIFraction(n0, d0);
+    }
 
     bool operator==(const ContinuedFraction& r) const { return cf == r.cf; }
     bool operator<(const ContinuedFraction& r) const
