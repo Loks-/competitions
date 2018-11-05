@@ -109,4 +109,5 @@ foreach( testfile_in ${HACKERRANK_TESTS} )
 endforeach( testfile_in ${HACKERRANK_TESTS} )
 
 add_test( NAME tester_binary_search_tree COMMAND tester binary_search_tree )
+add_test( NAME tester_convergent COMMAND tester convergent )
 add_test( NAME tester_interpolation COMMAND tester interpolation )

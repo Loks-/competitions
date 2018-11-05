@@ -22,6 +22,8 @@ int main(int nargs, char **pargs)
 	{
 		if (tester_mode == "binary_search_tree")
 			Assert(TestBinarySearchTree(false));
+		else if (tester_mode == "convergent")
+			Assert(TestContinuedFractionConvergent());
 		else if (tester_mode == "interpolation")
 			Assert(TestInterpolation());
 		else if (tester_mode == "time_binary_search_tree")
