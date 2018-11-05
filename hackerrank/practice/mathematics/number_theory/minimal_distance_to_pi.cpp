@@ -49,6 +49,19 @@ int main_minimal_distance_to_pi()
                 if (ld < rd)
                 {
                     solution_exist = true;
+                    int64_t d = ld;
+                    TIFraction f(tnn * n + tnd * d, tdn * n + tdd * d);
+                    ContinuedFraction cf(f);
+                    if (cf < cf_pi)
+                    {
+                        if (bestl < cf)
+                            bestl = cf;
+                    }
+                    else
+                    {
+                        if (cf < bestr)
+                            bestr = cf;
+                    }
                     break;
                 }
             }
@@ -56,14 +69,27 @@ int main_minimal_distance_to_pi()
         if (!solution_exist) break;
         nn = tnn; nd = tnd; dn = tdn; dd = tdd;
     }
-    // cout << i << "\t" << pi_seq[i] << endl;
+    unsigned maxi = min(bestl.Size(), bestr.Size());
+    nn = 1, nd = 0, dn = 0, dd = 1;
+    for (i = 0; i < maxi; ++i)
+    {
+        int64_t a = pi_seq[i], tnn = nn * a + nd, tnd = nn, tdn = dn * a + dd, tdd = dn;
+        if ((bestl(i) != pi_seq[i]) || (bestr(i) != pi_seq[i])) break;
+        nn = tnn; nd = tnd; dn = tdn; dd = tdd;
+    }
+    if (i < 6)
+    {
+        // Fix later
+        int64_t a = pi_seq[i], tnn = nn * a + nd, tnd = nn, tdn = dn * a + dd, tdd = dn;
+        nn = tnn; nd = tnd; dn = tdn; dd = tdd;
+    }
     // cout << bestl.ToFraction() << "\t" << bestr.ToFraction() << endl;
     // WriteVector(bestl.GetVector());
     // WriteVector(bestr.GetVector());
 
     for (int64_t n = l / (dn + dd) + 1; n * dn <= r; ++n)
     {
-        int64_t ld = (l - dn * n + dd) / dd, rd = (r - dn * n + dd) / dd;
+        int64_t ld = dd ? (l - dn * n + dd) / dd : 0, rd = dd ? (r - dn * n + dd) / dd : 1;
         for (int64_t d = ld; d < rd; ++d)
         {
             TIFraction f(nn * n + nd * d, dn * n + dd * d);
