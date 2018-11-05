@@ -1,11 +1,12 @@
 // https://www.hackerrank.com/challenges/minimal-distance-to-pi
 
 #include "common/numeric/continued_fraction/continued_fraction.h"
-#include "common/numeric/fraction_io.h"
+#include "common/numeric/continued_fraction/convergent.h"
+#include "common/numeric/fraction.h"
+#include "common/numeric/long_unsigned.h"
 #include "common/stl/base.h"
 
-#include <cmath>
-
+#include "common/numeric/fraction_io.h"
 #include "common/vector/write.h"
 
 int main_minimal_distance_to_pi()
@@ -55,6 +56,7 @@ int main_minimal_distance_to_pi()
         if (!solution_exist) break;
         nn = tnn; nd = tnd; dn = tdn; dd = tdd;
     }
+    // cout << i << "\t" << pi_seq[i] << endl;
     // cout << bestl.ToFraction() << "\t" << bestr.ToFraction() << endl;
     // WriteVector(bestl.GetVector());
     // WriteVector(bestr.GetVector());
@@ -82,19 +84,15 @@ int main_minimal_distance_to_pi()
     // WriteVector(bestl.GetVector());
     // WriteVector(bestr.GetVector());
 
-    auto F2D = [](const TIFraction& f) { return ((long double)(f.GetN())) / ((long double)(f.GetD())); };
-    unsigned first_diff = 0;
-    for (; first_diff < bestl.Size() && first_diff < bestr.Size(); ++first_diff)
+    CFConvergent cfit(cf_pi);
+    for (; cfit.Get().GetD() < 10 * r; cfit.Next()) ;
+    TIFraction fpi = cfit.Get(), fl = bestl.ToFraction(), fr = bestr.ToFraction(), bestf;
     {
-        if (bestl(first_diff) != pi_seq[first_diff]) break;
-        if (bestr(first_diff) != pi_seq[first_diff]) break;
+        LongUnsigned lul1 = LongUnsigned(uint64_t(fpi.GetD())) * uint64_t(fl.GetN()) * uint64_t(fr.GetD());
+        LongUnsigned lul2 = LongUnsigned(uint64_t(fpi.GetD())) * uint64_t(fl.GetD()) * uint64_t(fr.GetN());
+        LongUnsigned lur = LongUnsigned(uint64_t(fpi.GetN())) * uint64_t(fl.GetD()) * uint64_t(fr.GetD()) * 2u;
+        bestf = (lul1 + lul2 < lur) ? fr : fl;
     }
-    first_diff &= ~1;
-    long double dl = F2D(ContinuedFraction(vector<int64_t>(bestl.GetVector().begin() + first_diff, bestl.GetVector().end())).ToFraction());
-    long double dr = F2D(ContinuedFraction(vector<int64_t>(bestr.GetVector().begin() + first_diff, bestr.GetVector().end())).ToFraction());
-    long double pi = F2D(ContinuedFraction(vector<int64_t>(pi_seq.begin() + first_diff, pi_seq.begin() + first_diff + 10)).ToFraction());
-    // cout << pi - dl << "\t" << dr - pi << endl;
-    TIFraction bestf = ((dl + dr < 2 * pi) ? bestr.ToFraction() : bestl.ToFraction());
 
     int64_t fn = bestf.GetN(), fd = bestf.GetD(), k = (l / fd) + 1;
     cout << fn * k << "/" << fd * k << endl;
