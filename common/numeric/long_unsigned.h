@@ -66,7 +66,7 @@ public:
     bool operator>(const LongUnsigned& lu) const { return !(lu <= (*this)); }
     bool operator>=(const LongUnsigned& lu) const { return !(lu < (*this)); }
 
-    LongUnsigned operator+(unsigned u) const
+    LongUnsigned operator+(uint64_t u) const
     {
         if (u == 0) return (*this);
         LongUnsigned lu;
@@ -98,6 +98,17 @@ public:
         if (t64)
             lu.data.push_back(unsigned(t64));
         return lu;
+    }
+
+    LongUnsigned operator*(uint64_t u) const
+    {
+        if (u == 0) return LongUnsigned();
+        unsigned u1(u), u2(u >> 32);
+        LongUnsigned lu1 = *this * u1;
+        if (u2 == 0) return lu1;
+        LongUnsigned lu2 = *this * u2;
+        lu2.data.insert(lu2.data.begin(), 0);
+        return lu1 + lu2;
     }
 
     LongUnsigned operator/(unsigned u) const
@@ -173,8 +184,9 @@ public:
         return lu;
     }
 
-    LongUnsigned& operator+=(unsigned u) { LongUnsigned t = (*this + u); swap(t); return *this; }
+    LongUnsigned& operator+=(uint64_t u) { LongUnsigned t = (*this + u); swap(t); return *this; }
     LongUnsigned& operator*=(unsigned u) { LongUnsigned t = (*this * u); swap(t); return *this; }
+    LongUnsigned& operator*=(uint64_t u) { LongUnsigned t = (*this * u); swap(t); return *this; }
     LongUnsigned& operator/=(unsigned u) { LongUnsigned t = (*this / u); swap(t); return *this; }
     LongUnsigned& operator+=(const LongUnsigned& r) { LongUnsigned t = (*this + r); swap(t); return *this; }
     LongUnsigned& operator-=(const LongUnsigned& r) { LongUnsigned t = (*this - r); swap(t); return *this; }

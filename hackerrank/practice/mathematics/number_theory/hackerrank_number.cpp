@@ -74,7 +74,7 @@ int main_hackerrank_number()
     // Final
     uint64_t lb = 1, pb = 10;
     for (; raw_b >= pb; pb *= 10) ++lb;
-    LongUnsigned r1 = LongUnsigned(sL) * cR * pb * 10;
+    LongUnsigned r1 = LongUnsigned(sL) * cR * pb * 10u;
     LongUnsigned r2 = LongUnsigned(sR) * cL;
     (r1 + r2).Write();
 	return 0;
