@@ -1,7 +1,7 @@
 // https://www.hackerrank.com/challenges/mehta-and-his-laziness
 
 #include "common/factorization/primes_list.h"
-#include "common/numeric/utils/gcd.h"
+#include "common/numeric/fraction_io.h"
 #include "common/stl/base.h"
 
 int main_mehta_and_his_laziness()
@@ -25,11 +25,7 @@ int main_mehta_and_his_laziness()
                 p *= (((i > 0) ? 1 : 0) + f[i].second / 2);
                 q *= (1 + f[i].second);
             }
-            p -= square ? 1 : 0;
-            q -= 1;
-            unsigned r = GCD(p, q);
-            p /= r; q /= r;
-            cout << p << "/" << q << endl;
+            cout << TIFraction(square ? p - 1 : p, q - 1) << endl;
         }
 	}
 	return 0;

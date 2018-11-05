@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/random-number-generator
 
-#include "common/numeric/utils/gcd.h"
+#include "common/numeric/fraction_io.h"
 #include "common/stl/base.h"
 
 int main_random_number_generator()
@@ -31,9 +31,7 @@ int main_random_number_generator()
 				S1 += 2 * A * B - e * e;
 			}
 		}
-		unsigned k = GCD(S1, S2);
-		S1 /= k; S2 /= k;
-		cout << S1 << "/" << S2 << endl;
+		cout << TIFraction(S1, S2) << endl;
 	}
 	return 0;
 }

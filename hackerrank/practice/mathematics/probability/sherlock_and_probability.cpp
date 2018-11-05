@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/sherlock-and-probability
 
-#include "common/numeric/utils/gcd.h"
+#include "common/numeric/fraction_io.h"
 #include "common/stl/base.h"
 
 #include <string>
@@ -26,9 +26,7 @@ int main_sherlock_and_probability()
 			uint64_t j2 = min(i + K + 1, N);
 			S1 += v[j2] - v[j1];
 		}
-		uint64_t k = GCD(S1, S2);
-		S1 /= k; S2 /= k;
-		cout << S1 << "/" << S2 << endl;
+		cout << TIFraction(S1, S2) << endl;
 	}
 	return 0;
 }
