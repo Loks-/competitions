@@ -37,6 +37,7 @@ public:
     const std::vector<int64_t>& GetVector() const { return cf; }
     unsigned Size() const { return unsigned(cf.size()); }
     int64_t operator()(unsigned index) const { return cf[index]; }
+    void SplitLast() { if (cf.back() > 1) { cf.back() -= 1; cf.push_back(1); }}
     
     TIFraction ToFraction() const
     {

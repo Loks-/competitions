@@ -52,26 +52,20 @@ int main_minimal_distance_to_pi()
             }
         }
     }
+    if (bestl(bestl.Size() - 1) > pi_seq[bestl.Size() - 1])
+        bestl.SplitLast();
+    if (bestr(bestr.Size() - 1) > pi_seq[bestr.Size() - 1])
+        bestr.SplitLast();
     unsigned maxi = min(bestl.Size(), bestr.Size());
     nn = 1, nd = 0, dn = 0, dd = 1;
-    for (i = 0; i < maxi; ++i)
-    {
-        if ((bestl(i) != pi_seq[i]) || (bestr(i) != pi_seq[i])) break;
+    for (i = 0; (i < maxi) && (bestl(i) == bestr(i)); ++i)
         UpdateM(pi_seq[i]);
-    }
-    if (i < 6)
-    {
-        // Fix later
-        UpdateM(pi_seq[i]);
-    }
 
     for (int64_t n = l / (dn + dd) + 1; n * dn <= r; ++n)
     {
         int64_t ld = dd ? (l - dn * n + dd) / dd : 0, rd = dd ? (r - dn * n + dd) / dd : 1;
         for (int64_t d = ld; d < rd; ++d)
-        {
             UpdateBestI(nn * n + nd * d, dn * n + dd * d);
-        }
     }
 
     CFConvergent cfit(cf_pi);
