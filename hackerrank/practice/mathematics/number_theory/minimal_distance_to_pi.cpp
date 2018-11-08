@@ -15,70 +15,54 @@ int main_minimal_distance_to_pi()
     // Based on https://oeis.org/A001203 .
     vector<int64_t> pi_seq { 3, 7, 15, 1, 292, 1, 1, 1, 2, 1, 3, 1, 14, 2, 1, 1, 2, 2, 2, 2, 1, 84, 2, 1, 1, 15, 3, 13, 1, 4, 2, 6, 6, 99, 1, 2, 2, 6, 3, 5, 1, 1, 6, 8, 1, 7, 1, 2, 3, 7, 1, 2, 1, 1, 12, 1, 1, 1, 3, 1, 1, 8, 1, 1, 2, 1, 6, 1, 1, 5, 2, 2, 3, 1, 2, 4, 4, 16, 1, 161, 45, 1, 22, 1, 2, 2, 1, 4, 1, 2, 24, 1, 2, 1, 3, 1, 2, 1 };
     ContinuedFraction bestl(TIFraction(3, 1)), bestr(TIFraction(4, 1)), cf_pi(pi_seq);
+
+    auto UpdateM = [&](int64_t a) { int64_t tnn = nn * a + nd, tnd = nn, tdn = dn * a + dd, tdd = dn; nn = tnn; nd = tnd; dn = tdn; dd = tdd; };
+    auto UpdateBestL = [&](const ContinuedFraction& current) { if (bestl < current) bestl = current; };
+    auto UpdateBestR = [&](const ContinuedFraction& current) { if (current < bestr) bestr = current; };
+    auto UpdateBestCF = [&](const ContinuedFraction& current) { if (current < cf_pi) UpdateBestL(current); else UpdateBestR(current); };
+    auto UpdateBestI = [&](int64_t n, int64_t m) { return UpdateBestCF(ContinuedFraction(TIFraction(n, m))); };
+
     unsigned i = 0;
-    for (; ; ++i)
+    for (bool solution_exist = true; solution_exist; ++i)
     {
-        int64_t a = pi_seq[i], tnn = nn * a + nd, tnd = nn, tdn = dn * a + dd, tdd = dn;
-        bool solution_exist = false;
-        if (l / tdn < r / tdn)
+        solution_exist = false;
+        UpdateM(pi_seq[i]);
+        if (l / dn < r / dn)
         {
             solution_exist = true;
-            TIFraction f(tnn, tdn);
-            if (i & 1)
-                bestr = f;
-            else
-                bestl = f;                
+            UpdateBestI(nn, dn);
         }
-        if (l / (tdn + tdd) < r / (tdn + tdd))
+        if (l / (dn + dd) < r / (dn + dd))
         {
             solution_exist = true;
-            TIFraction f(tnn + tnd, tdn + tdd);
-            if (i & 1)
-                bestl = f;
-            else
-                bestr = f;
+            UpdateBestI(nn + nd, dn + dd);
         }
         if (!solution_exist)
         {
-            for (int64_t n = l / (tdn + tdd) + 1; n * tdn <= r; ++n)
+            for (int64_t n = l / (dn + dd) + 1; n * dn <= r; ++n)
             {
-                int64_t ld = (l - tdn * n + tdd) / tdd, rd = (r - tdn * n + tdd) / tdd;
+                int64_t ld = (l - dn * n + dd) / dd, rd = (r - dn * n + dd) / dd;
                 if (ld < rd)
                 {
                     solution_exist = true;
                     int64_t d = ld;
-                    TIFraction f(tnn * n + tnd * d, tdn * n + tdd * d);
-                    ContinuedFraction cf(f);
-                    if (cf < cf_pi)
-                    {
-                        if (bestl < cf)
-                            bestl = cf;
-                    }
-                    else
-                    {
-                        if (cf < bestr)
-                            bestr = cf;
-                    }
+                    UpdateBestI(nn * n + nd * d, dn * n + dd * d);
                     break;
                 }
             }
         }
-        if (!solution_exist) break;
-        nn = tnn; nd = tnd; dn = tdn; dd = tdd;
     }
     unsigned maxi = min(bestl.Size(), bestr.Size());
     nn = 1, nd = 0, dn = 0, dd = 1;
     for (i = 0; i < maxi; ++i)
     {
-        int64_t a = pi_seq[i], tnn = nn * a + nd, tnd = nn, tdn = dn * a + dd, tdd = dn;
         if ((bestl(i) != pi_seq[i]) || (bestr(i) != pi_seq[i])) break;
-        nn = tnn; nd = tnd; dn = tdn; dd = tdd;
+        UpdateM(pi_seq[i]);
     }
     if (i < 6)
     {
         // Fix later
-        int64_t a = pi_seq[i], tnn = nn * a + nd, tnd = nn, tdn = dn * a + dd, tdd = dn;
-        nn = tnn; nd = tnd; dn = tdn; dd = tdd;
+        UpdateM(pi_seq[i]);
     }
 
     for (int64_t n = l / (dn + dd) + 1; n * dn <= r; ++n)
@@ -86,18 +70,7 @@ int main_minimal_distance_to_pi()
         int64_t ld = dd ? (l - dn * n + dd) / dd : 0, rd = dd ? (r - dn * n + dd) / dd : 1;
         for (int64_t d = ld; d < rd; ++d)
         {
-            TIFraction f(nn * n + nd * d, dn * n + dd * d);
-            ContinuedFraction cf(f);
-            if (cf < cf_pi)
-            {
-                if (bestl < cf)
-                    bestl = cf;
-            }
-            else
-            {
-                if (cf < bestr)
-                    bestr = cf;
-            }
+            UpdateBestI(nn * n + nd * d, dn * n + dd * d);
         }
     }
 
