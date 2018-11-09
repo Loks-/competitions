@@ -2,7 +2,7 @@
 
 #include "common/factorization/factorization.h"
 #include "common/linear_algebra/matrix_static_size.h"
-#include "common/modular/modular.h"
+#include "common/modular/static/modular.h"
 #include "common/stl/base.h"
 
 #include <numeric>

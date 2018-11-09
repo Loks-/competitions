@@ -1,7 +1,7 @@
 #include "message.h"
 #include "broken_memory.h"
 
-#include "common/modular/modular.h"
+#include "common/modular/static/modular.h"
 #include "common/stl/base.h"
 
 using TModular = Modular<>;

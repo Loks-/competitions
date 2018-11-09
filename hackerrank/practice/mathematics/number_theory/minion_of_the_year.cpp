@@ -1,13 +1,13 @@
 // https://www.hackerrank.com/challenges/minion-of-the-year
 
 #include "common/factorization/factorization.h"
-#include "common/modular/discrete_log_sqrt_map.h"
-#include "common/modular/modular_arithmetic.h"
+#include "common/modular/arithmetic.h"
+#include "common/modular/proxy/discrete_log_sqrt_map.h"
 #include "common/numeric/utils/gcd.h"
 #include "common/numeric/utils/lcm.h"
 #include "common/stl/base.h"
 
-using TDiscreteLog = DiscreteLogSqrtMap<>;
+using TDiscreteLog = PModularDiscreteLogSqrtMap;
 
 int main_minion_of_the_year()
 {

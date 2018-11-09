@@ -1,11 +1,11 @@
 // https://www.hackerrank.com/challenges/k-candy-store
 
-#include "common/modular/binomial_coefficient_table.h"
-#include "common/modular/modular_io.h"
+#include "common/modular/static/binomial_coefficient_table.h"
+#include "common/modular/static/modular_io.h"
 #include "common/stl/base.h"
 
 using TModular = TModular_C32<1000000000>;
-using TBinomialCoefficient = BinomialCoefficientTable<TModular>;
+using TBinomialCoefficient = ModularBinomialCoefficientTable<TModular>;
 
 int main_k_candy_store()
 {

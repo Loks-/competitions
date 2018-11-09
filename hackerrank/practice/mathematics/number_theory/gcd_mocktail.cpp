@@ -1,7 +1,7 @@
 // https://www.hackerrank.com/challenges/gcd-mocktail
 
-#include "common/modular/modular_io.h"
-#include "common/modular/sum_of_powers_modular.h"
+#include "common/modular/static/modular_io.h"
+#include "common/modular/static/sum_of_powers.h"
 #include "common/stl/base.h"
 
 using TModular = TModular_P32<30000001>;
@@ -24,7 +24,7 @@ int main_gcd_mocktail()
             vcache[l][i] += vcache[l][i-1];
     }
 
-    SumOfPowersModular<TModular> sum_of_powers;
+    ModularSumOfPowers<TModular> sum_of_powers;
     unsigned T, N, D, L, Q;
     cin >> T;
     for (unsigned iT = 0; iT < T; ++iT)

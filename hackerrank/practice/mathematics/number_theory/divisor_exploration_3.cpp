@@ -1,12 +1,12 @@
 // https://www.hackerrank.com/challenges/divisor-exploration-3
 
 #include "common/factorization/primes_list.h"
-#include "common/modular/factorial_modular.h"
-#include "common/modular/modular_io.h"
+#include "common/modular/static/factorial.h"
+#include "common/modular/static/modular_io.h"
 #include "common/stl/base.h"
 
 using TModular = Modular<>;
-using TFactorial = FactorialModular<TModular, true>;
+using TFactorial = ModularFactorial<TModular, true>;
 
 int main_divisor_exploration_3()
 {

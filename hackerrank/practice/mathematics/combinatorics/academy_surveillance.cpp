@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/surveillance
 
-#include "common/modular/modular_io.h"
+#include "common/modular/static/modular_io.h"
 #include "common/stl/base.h"
 
 using TModular = Modular<>;

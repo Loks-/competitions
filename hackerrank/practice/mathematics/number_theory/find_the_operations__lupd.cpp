@@ -3,7 +3,7 @@
 #include "common/linear_algebra/field/lup_decomposition.h"
 #include "common/linear_algebra/matrix.h"
 #include "common/linear_algebra/vector.h"
-#include "common/modular/modular_bool_io.h"
+#include "common/modular/static/modular_bool_io.h"
 #include "common/vector/read.h"
 #include "common/stl/base.h"
 

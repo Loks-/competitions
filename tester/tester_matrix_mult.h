@@ -4,9 +4,9 @@
 #include "common/linear_algebra/bool/matrix.h"
 #include "common/linear_algebra/matrix.h"
 #include "common/linear_algebra/matrix_static_size.h"
-#include "common/modular/modular.h"
-#include "common/modular/modular_arithmetic_static_proxy.h"
-#include "common/modular/modular_bool.h"
+#include "common/modular/static/modular.h"
+#include "common/modular/static/modular_bool.h"
+#include "common/modular/static/modular_proxy.h"
 #include "common/timer.h"
 
 #include "matrix_mult.h"
@@ -21,7 +21,7 @@ class TesterMatrixMult
 public:
 	using TModular = Modular<>;
     using TModular2 = Modular<2>;
-	using TModularProxy = ModularArithmeticStaticProxy<>;
+	using TModularProxy = ModularStaticProxy<>;
 
 public:
 	static size_t MatrixHash(const Matrix<uint64_t>& m, bool use_bool_hash = false)

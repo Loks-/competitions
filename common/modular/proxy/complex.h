@@ -1,22 +1,22 @@
 #pragma once
 
-#include "modular_arithmetic_proxy.h"
-#include "../numeric/complex.h"
+#include "modular_proxy.h"
+#include "../../numeric/complex.h"
 
-template <bool is_prime = true>
-class ComplexModularProxy
+template <bool is_modular_prime = true>
+class PModularComplex
 {
 public:
 	using TValue = int64_t;
 	using TComplex = Complex<TValue>;
-	using TModularProxy = ModularArithmeticProxy<is_prime, true, TValue>;
+	using TModularProxy = ModularProxy<is_modular_prime, true, TValue>;
 
 protected:
 	TModularProxy proxy;
 
 public:
-	ComplexModularProxy(TValue mod = 1000000007) : proxy(mod) {}
-	ComplexModularProxy(const TModularProxy& _proxy) : proxy(_proxy) {}
+	PModularComplex(TValue mod = 1000000007) : proxy(mod) {}
+	PModularComplex(const TModularProxy& _proxy) : proxy(_proxy) {}
 
 	TModularProxy GetProxy() const { return proxy; }
 	void SetProxy(const TModularProxy& _proxy) { proxy = _proxy; }

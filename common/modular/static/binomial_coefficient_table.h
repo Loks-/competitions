@@ -4,10 +4,10 @@
 
 // Time and space to initialize to size n is O(n^2).
 // If n is big it's better to use other classes:
-//   utils/binomial_coefficient_modular_prime.h for prime modular.
-//   binomial_coeffient_modular.h for general case.
+//   binomial_coefficient_prime.h for prime modular.
+//   binomial_coeffient.h for general case.
 template <class TModular>
-class BinomialCoefficientTable
+class ModularBinomialCoefficientTable
 {
 protected:
 	std::vector<std::vector<TModular>> nCr_table;

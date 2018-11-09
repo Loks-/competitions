@@ -1,14 +1,14 @@
 #pragma once
 
-#include "modular_arithmetic.h"
+#include "../arithmetic.h"
 
 template <bool is_prime = true, bool is_32bit = true, class _TValue = uint64_t>
-class ModularArithmeticProxy
+class ModularProxy
 {
 public:
 	using TValue = _TValue;
 	using TBase = ModularArithmetic<is_prime, is_32bit, TValue>;
-	using TSelf = ModularArithmeticProxy<is_prime, is_32bit, TValue>;
+	using TSelf = ModularProxy<is_prime, is_32bit, TValue>;
 
 protected:
 	TValue mod;
@@ -19,7 +19,7 @@ public:
 	TValue GetMod() const { return mod; }
 	void SetMod(TValue _mod) { mod = _mod; }
 
-	ModularArithmeticProxy(TValue _mod = 1000000007) : mod(_mod) {}
+	ModularProxy(TValue _mod = 1000000007) : mod(_mod) {}
 
 	TValue ApplyU(uint64_t value) const { return TBase::ApplyU(value, mod); }
 	TValue ApplyS(int64_t value) const { return TBase::ApplyS(value, mod); }
@@ -44,5 +44,5 @@ public:
 	TValue PowSSafe(TValue x, int64_t pow) const { return TBase::PowSSafe(x, pow, mod); }
 };
 
-using TModularArithmeticProxy_P32U = ModularArithmeticProxy<true, true, uint64_t>;
-using TModularArithmeticProxy_C32U = ModularArithmeticProxy<false, true, uint64_t>;
+using TModularProxy_P32U = ModularProxy<true, true, uint64_t>;
+using TModularProxy_C32U = ModularProxy<false, true, uint64_t>;

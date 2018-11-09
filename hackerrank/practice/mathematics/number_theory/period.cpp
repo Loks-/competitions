@@ -1,11 +1,11 @@
 // https://www.hackerrank.com/challenges/period
 
-#include "common/modular/modular_arithmetic_proxy.h"
+#include "common/modular/proxy/modular_proxy.h"
 #include "common/modular/utils/multiplicative_order.h"
 #include "common/numeric/utils/gcd.h"
 #include "common/stl/base.h"
 
-using TModularProxy = TModularArithmeticProxy_C32U;
+using TModularProxy = TModularProxy_C32U;
 
 int main_period()
 {

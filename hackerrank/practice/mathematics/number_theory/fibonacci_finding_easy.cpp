@@ -1,10 +1,10 @@
 // https://www.hackerrank.com/challenges/fibonacci-finding-easy
 
-#include "common/modular/fibonacci_modular_matrix.h"
-#include "common/modular/modular_io.h"
+#include "common/modular/static/fibonacci_matrix.h"
+#include "common/modular/static/modular_io.h"
 #include "common/stl/base.h"
 
-using TFibonacci = FibonacciModularMatrix<Modular<1000000007>>;
+using TFibonacci = ModularFibonacciMatrix<Modular<1000000007>>;
 
 int main_fibonacci_finding_easy()
 {

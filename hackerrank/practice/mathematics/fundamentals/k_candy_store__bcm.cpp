@@ -1,11 +1,11 @@
 // https://www.hackerrank.com/challenges/k-candy-store
 
-#include "common/modular/binomial_coefficient_modular.h"
+#include "common/modular/proxy/binomial_coefficient.h"
 #include "common/stl/base.h"
 
 int main_k_candy_store__bcm()
 {
-	BinomialCoefficientModular bcm(1000000000);
+	PModularBinomialCoefficient bcm(1000000000);
 	unsigned T, N, K;
 	cin >> T;
 	for (unsigned it = 0; it < T; ++it)

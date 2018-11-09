@@ -1,14 +1,14 @@
 // https://www.hackerrank.com/challenges/demidenko-computer-virus
 
-#include "common/modular/modular_io.h"
-#include "common/modular/factorial_modular.h"
+#include "common/modular/static/modular_io.h"
+#include "common/modular/static/factorial.h"
 #include "common/stl/base.h"
 
 using TModular = Modular<>;
 
 int main_computer_virus()
 {
-    FactorialModular<TModular> f;
+    ModularFactorial<TModular> f;
 	unsigned T, K;
 	cin >> T;
 	for (unsigned it = 0; it < T; ++it)

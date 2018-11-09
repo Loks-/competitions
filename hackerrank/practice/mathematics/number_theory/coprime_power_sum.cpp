@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/coprime-power-sum
 
-#include "common/modular/modular.h"
+#include "common/modular/static/modular.h"
 #include "common/polynomial/base_newton_polynomial.h"
 #include "common/vector/read.h"
 #include "common/stl/base.h"

@@ -1,9 +1,9 @@
 // https://www.hackerrank.com/challenges/a-very-special-multiple
 
 #include "common/factorization/factorization.h"
-#include "common/factorization/utils/eulers_totient.h"
 #include "common/factorization/utils/divisors.h"
-#include "common/modular/modular_arithmetic.h"
+#include "common/factorization/utils/eulers_totient.h"
+#include "common/modular/arithmetic.h"
 #include "common/numeric/utils/pow.h"
 #include "common/stl/base.h"
 

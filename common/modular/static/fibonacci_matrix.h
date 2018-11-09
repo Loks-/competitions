@@ -1,10 +1,10 @@
 #pragma once
 
-#include "../base.h"
-#include "../linear_algebra/matrix_static_size.h"
+#include "../../base.h"
+#include "../../linear_algebra/matrix_static_size.h"
 
 template<class TModular>
-class FibonacciModularMatrix
+class ModularFibonacciMatrix
 {
 public:
 	using TMatrix = TSquareMatrixStaticSize<TModular, 2>;

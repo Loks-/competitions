@@ -1,7 +1,7 @@
 // https://www.hackerrank.com/challenges/equations
 
 #include "common/factorization/primes_list.h"
-#include "common/modular/modular_io.h"
+#include "common/modular/static/modular_io.h"
 #include "common/stl/base.h"
 
 using TModular = TModular_P32<1000007>;

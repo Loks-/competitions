@@ -1,11 +1,11 @@
 // https://www.hackerrank.com/challenges/ncr
 
-#include "common/modular/binomial_coefficient_modular.h"
+#include "common/modular/proxy/binomial_coefficient.h"
 #include "common/stl/base.h"
 
 int main_ncr()
 {
-    BinomialCoefficientModular bcm(142857);
+    PModularBinomialCoefficient bcm(142857);
 	unsigned T, n, r;
 	cin >> T;
 	for (unsigned it = 0; it < T; ++it)

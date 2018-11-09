@@ -1,14 +1,14 @@
 // https://www.hackerrank.com/challenges/lucy-and-flowers
 
-#include "common/modular/factorial_modular.h"
-#include "common/modular/modular_io.h"
+#include "common/modular/static/factorial.h"
+#include "common/modular/static/modular_io.h"
 #include "common/stl/base.h"
 
 using TModular = TModular_P32<1000000009>;
 
 int main_lucy_and_flowers()
 {
-    FactorialModular<TModular, true> f;
+    ModularFactorial<TModular, true> f;
 	unsigned T, N;
 	cin >> T;
 	for (unsigned it = 0; it < T; ++it)

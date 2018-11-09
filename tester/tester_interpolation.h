@@ -1,8 +1,8 @@
 #pragma once
 
 #include "common/polynomial/base_newton_polynomial.h"
-#include "common/modular/modular.h"
-#include "common/modular/sum_of_powers_modular.h"
+#include "common/modular/static/modular.h"
+#include "common/modular/static/sum_of_powers.h"
 
 #include <iostream>
 #include <vector>
@@ -33,7 +33,7 @@ public:
 
     static bool TestSumOfPowers(unsigned power, const std::vector<TModular>& vp)
     {
-        SumOfPowersModular<TModular> s;
+        ModularSumOfPowers<TModular> s;
         for (unsigned i = 0; i < n; ++i)
         {
             if (s.Sum(i, power) != vp[i])

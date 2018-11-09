@@ -1,11 +1,11 @@
 // https://www.hackerrank.com/challenges/sherlock-and-permutations
 
-#include "common/modular/modular_io.h"
-#include "common/modular/factorial_modular.h"
+#include "common/modular/static/modular_io.h"
+#include "common/modular/static/factorial.h"
 #include "common/stl/base.h"
 
 using TModular = Modular<>;
-using TFactorial = FactorialModular<TModular, true>;
+using TFactorial = ModularFactorial<TModular, true>;
 
 int main_sherlock_and_permutations()
 {

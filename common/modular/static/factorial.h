@@ -3,13 +3,13 @@
 #include <vector>
 
 template <class TModular, bool keep_inverted = true>
-class FactorialModular
+class ModularFactorial
 {
 protected:
 	std::vector<TModular> vf, vfi;
 
 public:
-	FactorialModular() { vf.push_back(TModular(1)); if (keep_inverted) vfi.push_back(TModular(1)); }
+	ModularFactorial() { vf.push_back(TModular(1)); if (keep_inverted) vfi.push_back(TModular(1)); }
 
 	void Adjust(unsigned n)
 	{

@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/ajob-subsequence
 
-#include "common/modular/utils/binomial_coefficient_modular_prime.h"
+#include "common/modular/proxy/binomial_coefficient_prime.h"
 #include "common/stl/base.h"
 
 int main_ajob_subsequence()
@@ -11,7 +11,7 @@ int main_ajob_subsequence()
 	{
         uint64_t N, K;
         cin >> N >> K >> P;
-        cout << BinomialCoefficientModularPrime(N + 1, K + 1, P) << endl;
+        cout << PModularPrimeBinomialCoefficient(N + 1, K + 1, P) << endl;
 	}
 	return 0;
 }

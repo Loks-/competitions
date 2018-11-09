@@ -2,7 +2,7 @@
 
 #include "base.h"
 #include "primality_test.h"
-#include "../modular/modular_arithmetic_proxy.h"
+#include "../modular/proxy/modular_proxy.h"
 #include "../numeric/utils/gcd.h"
 #include <algorithm>
 #include <vector>
@@ -16,7 +16,7 @@ protected:
 
 	uint64_t FindFactor32(uint64_t n, uint64_t start)
 	{
-		ModularArithmeticProxy<false, true> proxy(n);
+		ModularProxy<false, true> proxy(n);
 		auto next = [&](uint64_t k) { return proxy.Add(proxy.Mult(k, k), 1); };
 		uint64_t x = start, y = start, d = 1;
 		for (; d == 1;)
@@ -30,7 +30,7 @@ protected:
 
 	uint64_t FindFactor64(uint64_t n, uint64_t start)
 	{
-		ModularArithmeticProxy<false, false> proxy(n);
+		ModularProxy<false, false> proxy(n);
 		auto next = [&](uint64_t k) { return proxy.Add(proxy.Mult(k, k), 1); };
 		uint64_t x = start, y = start, d = 1;
 		for (; d == 1;)

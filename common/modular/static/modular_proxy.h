@@ -1,14 +1,14 @@
 #pragma once
 
-#include "modular_arithmetic.h"
+#include "../arithmetic.h"
 
 template <uint64_t mod = 1000000007, bool is_prime = true, bool is_32bit = true>
-class ModularArithmeticStaticProxy
+class ModularStaticProxy
 {
 public:
 	using TValue = uint64_t;
 	using TBase = ModularArithmetic<is_prime, is_32bit, TValue>;
-	using TSelf = ModularArithmeticStaticProxy<mod, is_prime, is_32bit>;
+	using TSelf = ModularStaticProxy<mod, is_prime, is_32bit>;
 
 public:
 	static bool IsModPrime() { return is_prime; }
@@ -38,5 +38,5 @@ public:
 	static TValue PowSSafe(TValue x, int64_t pow) { return TBase::PowSSafe(x, pow, mod); }
 };
 
-template <uint64_t mod> using TModularArithmeticStaticProxy_P32 = ModularArithmeticStaticProxy<mod, true, true>;
-template <uint64_t mod> using TModularArithmeticStaticProxy_C32 = ModularArithmeticStaticProxy<mod, false, true>;
+template <uint64_t mod> using TModularStaticProxy_P32 = ModularStaticProxy<mod, true, true>;
+template <uint64_t mod> using TModularStaticProxy_C32 = ModularStaticProxy<mod, false, true>;

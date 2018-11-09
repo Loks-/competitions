@@ -1,7 +1,7 @@
 // https://www.hackerrank.com/challenges/cheese-and-random-toppings
 
 #include "common/factorization/primes_list.h"
-#include "common/modular/utils/binomial_coefficient_modular_prime.h"
+#include "common/modular/proxy/binomial_coefficient_prime.h"
 #include "common/modular/utils/merge_remainders.h"
 #include "common/stl/base.h"
 
@@ -17,7 +17,7 @@ int main_cheese_and_random_toppings()
         TFactorization vf = primes_list.Factorize(M);
         for (auto pf : vf)
         {
-            uint64_t rf = BinomialCoefficientModularPrime(N, R, unsigned(pf.first));
+            uint64_t rf = PModularPrimeBinomialCoefficient(N, R, unsigned(pf.first));
             r = MergeRemainders<TModularArithmetic_P32U>(m, r, pf.first, rf);
             m *= pf.first;
         }

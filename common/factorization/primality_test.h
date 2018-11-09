@@ -2,7 +2,7 @@
 
 #include "primes_list.h"
 #include "../base.h"
-#include "../modular/modular_arithmetic.h"
+#include "../modular/arithmetic.h"
 #include <vector>
 
 class MillerRabinPrimalityTest

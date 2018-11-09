@@ -2,7 +2,7 @@
 
 #include "common/factorization/utils/eulers_totient.h"
 #include "common/factorization/utils/factorize.h"
-#include "common/modular/modular_arithmetic.h"
+#include "common/modular/arithmetic.h"
 #include "common/modular/utils/merge_remainders.h"
 #include "common/stl/base.h"
 

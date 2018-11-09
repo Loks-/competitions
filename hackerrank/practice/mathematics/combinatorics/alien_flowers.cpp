@@ -1,11 +1,11 @@
 // https://www.hackerrank.com/challenges/alien-flowers
 
-#include "common/modular/factorial_modular.h"
-#include "common/modular/modular_io.h"
+#include "common/modular/static/factorial.h"
+#include "common/modular/static/modular_io.h"
 #include "common/stl/base.h"
 
 using TModular = Modular<>;
-using TFactorial = FactorialModular<TModular>;
+using TFactorial = ModularFactorial<TModular>;
 
 int main_alien_flowers()
 {

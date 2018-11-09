@@ -1,11 +1,11 @@
 #pragma once
 
-#include "../base.h"
-#include "../numeric/utils/gcd.h"
+#include "../../base.h"
+#include "../../numeric/utils/gcd.h"
 #include <vector>
 
 template <class TModularProxy, bool keep_inverted = true, bool coprime_only = false>
-class FactorialModularProxy
+class PModularFactorial
 {
 public:
     using TValue = typename TModularProxy::TValue;
@@ -15,7 +15,7 @@ protected:
 	std::vector<TValue> vf, vfi;
 
 public:
-	FactorialModularProxy(TValue mod) : proxy(mod) { vf.push_back(1); if (keep_inverted) vfi.push_back(1); }
+	PModularFactorial(TValue mod) : proxy(mod) { vf.push_back(1); if (keep_inverted) vfi.push_back(1); }
     const TModularProxy& GetProxy() const { return proxy; }
 
 	void Adjust(unsigned n)

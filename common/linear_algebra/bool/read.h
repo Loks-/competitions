@@ -2,7 +2,7 @@
 
 #include "matrix.h"
 #include "vector.h"
-#include "../../modular/modular_bool_io.h"
+#include "../../modular/static/modular_bool_io.h"
 #include <iostream>
 
 inline VectorBool ReadVectorBool(unsigned size)

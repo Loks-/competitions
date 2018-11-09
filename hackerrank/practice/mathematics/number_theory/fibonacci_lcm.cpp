@@ -1,7 +1,7 @@
 // https://www.hackerrank.com/challenges/fibonacci-lcm
 
-#include "common/modular/fibonacci_modular_matrix.h"
-#include "common/modular/modular_io.h"
+#include "common/modular/static/fibonacci_matrix.h"
+#include "common/modular/static/modular_io.h"
 #include "common/numeric/utils/gcd.h"
 #include "common/vector/read.h"
 #include "common/stl/base.h"
@@ -9,7 +9,7 @@
 #include <unordered_map>
 
 using TModular = Modular<>;
-using TFibonacci = FibonacciModularMatrix<TModular>;
+using TFibonacci = ModularFibonacciMatrix<TModular>;
 
 int main_fibonacci_lcm()
 {

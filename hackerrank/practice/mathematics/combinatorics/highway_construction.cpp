@@ -1,14 +1,14 @@
 // https://www.hackerrank.com/challenges/highway-construction
 
-#include "common/modular/modular.h"
-#include "common/modular/sum_of_powers_modular.h"
+#include "common/modular/static/modular.h"
+#include "common/modular/static/sum_of_powers.h"
 #include "common/stl/base.h"
 
 using TModular = TModular_P32<1000000009>;
 
 int main_highway_construction()
 {
-    SumOfPowersModular<TModular> sum_of_powers;
+    ModularSumOfPowers<TModular> sum_of_powers;
     unsigned T, K;
     cin >> T;
     for (unsigned i = 0; i < T; ++i)

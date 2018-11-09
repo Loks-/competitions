@@ -1,22 +1,22 @@
 #pragma once
 
-#include "factorial_modular_proxy.h"
-#include "modular_arithmetic_proxy.h"
-#include "utils/merge_remainders.h"
-#include "../base.h"
-#include "../factorization/utils/factorize.h"
-#include "../numeric/utils/pow.h"
+#include "factorial.h"
+#include "modular_proxy.h"
+#include "../utils/merge_remainders.h"
+#include "../../base.h"
+#include "../../factorization/utils/factorize.h"
+#include "../../numeric/utils/pow.h"
 #include <tuple>
 #include <vector>
 
 // Calculation Binomial coefficients by any modular.
 // Based on Andrew Granville paper.
 
-class BinomialCoefficientModular
+class PModularBinomialCoefficient
 {
 public:
-    using TPrimeFactorialProxy = FactorialModularProxy<TModularArithmeticProxy_P32U, true, false>;
-    using TPrimePowerFactorialProxy = FactorialModularProxy<TModularArithmeticProxy_C32U, true, true>;
+    using TPrimeFactorialProxy = PModularFactorial<TModularProxy_P32U, true, false>;
+    using TPrimePowerFactorialProxy = PModularFactorial<TModularProxy_C32U, true, true>;
 
     static uint64_t GetPPower(uint64_t n, uint64_t p) { uint64_t s = 0; for ( n /= p; n; n /= p) s += n; return s; }
     static uint64_t GetPPower(uint64_t n, uint64_t k, uint64_t p) { assert(n >= k); return GetPPower(n, p) - GetPPower(k, p) - GetPPower(n - k, p); }
@@ -57,7 +57,7 @@ protected:
     std::vector<std::tuple<uint64_t, unsigned, TPrimePowerFactorialProxy>> factorial_proxies_composite;
 
 public:
-    BinomialCoefficientModular(uint64_t n)
+    PModularBinomialCoefficient(uint64_t n)
     {
         TFactorization nf(Factorize(n));
         for (auto fp : nf)

@@ -1,7 +1,7 @@
 // https://www.hackerrank.com/challenges/palindromic-subsets
 
 #include "common/linear_algebra/vector_static_size.h"
-#include "common/modular/modular_io.h"
+#include "common/modular/static/modular_io.h"
 #include "common/segment_tree/action/rotate_vector.h"
 #include "common/segment_tree/base/add_action_to_segment.h"
 #include "common/segment_tree/base/get_segment.h"

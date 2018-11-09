@@ -1,8 +1,8 @@
 // https://www.hackerrank.com/challenges/gcd-sequence
 
 #include "common/factorization/primes_list_extended/mobius.h"
-#include "common/modular/modular_io.h"
-#include "common/modular/factorial_modular.h"
+#include "common/modular/static/modular_io.h"
+#include "common/modular/static/factorial.h"
 #include "common/stl/base.h"
 
 using TModular = Modular<>;
@@ -11,7 +11,7 @@ int main_gcd_sequence()
 {
     TPLEMobius primes_list(100000);
     primes_list.MobiusPrecalc();
-    FactorialModular<TModular> f;
+    ModularFactorial<TModular> f;
 
 	unsigned T, N, K;
 	cin >> T;

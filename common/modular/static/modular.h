@@ -1,13 +1,13 @@
 #pragma once
 
-#include "modular_arithmetic_static_proxy.h"
+#include "modular_proxy.h"
 
 template <uint64_t mod = 1000000007, bool is_prime = true, bool is_32bit = true>
 class Modular
 {
 public:
 	using TValue = uint64_t;
-	using TBase = ModularArithmeticStaticProxy<mod, is_prime, is_32bit>;
+	using TBase = ModularStaticProxy<mod, is_prime, is_32bit>;
 	using TSelf = Modular<mod, is_prime, is_32bit>;
 
 public:

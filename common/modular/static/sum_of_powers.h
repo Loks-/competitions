@@ -1,15 +1,15 @@
 #pragma once
 
-#include "factorial_modular.h"
-#include "../numeric/bernoulli.h"
+#include "factorial.h"
+#include "../../numeric/bernoulli.h"
 
 // Based on Bernoulli numbers ( https://en.wikipedia.org/wiki/Faulhaber's_formula ) .
 template <class TModular>
-class SumOfPowersModular
+class ModularSumOfPowers
 {
 public:
     using TBernoulli = Bernoulli<TModular, true>;
-    using TFactorial = FactorialModular<TModular, true>;
+    using TFactorial = ModularFactorial<TModular, true>;
 
 protected:
     TBernoulli b;

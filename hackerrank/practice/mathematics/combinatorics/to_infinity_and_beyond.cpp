@@ -1,11 +1,11 @@
 // https://www.hackerrank.com/challenges/to-infinity-and-beyond
 
-#include "common/modular/factorial_modular.h"
-#include "common/modular/modular_io.h"
+#include "common/modular/static/factorial.h"
+#include "common/modular/static/modular_io.h"
 #include "common/stl/base.h"
 
 using TModular = Modular<>;
-using TFactorial = FactorialModular<TModular>;
+using TFactorial = ModularFactorial<TModular>;
 
 int main_to_infinity_and_beyond()
 {

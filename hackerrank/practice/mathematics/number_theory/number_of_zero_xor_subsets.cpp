@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/number-of-subsets
 
-#include "common/modular/modular_arithmetic.h"
+#include "common/modular/arithmetic.h"
 #include "common/stl/base.h"
 
 int main_number_of_zero_xor_subsets()

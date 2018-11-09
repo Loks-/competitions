@@ -1,7 +1,7 @@
 // https://www.hackerrank.com/challenges/polynomial-division
 
 #include "common/binary_indexed_tree/bit.h"
-#include "common/modular/modular.h"
+#include "common/modular/static/modular.h"
 #include "common/vector/read.h"
 #include "common/stl/base.h"
 
