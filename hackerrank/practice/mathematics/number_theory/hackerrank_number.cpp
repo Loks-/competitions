@@ -4,7 +4,7 @@
 #include "common/factorization/utils/coprime_count.h" 
 #include "common/factorization/utils/coprime_sum.h" 
 #include "common/factorization/utils/divisors.h" 
-#include "common/numeric/long_unsigned.h"
+#include "common/numeric/long_unsigned_io.h"
 #include "common/numeric/utils/gcd.h"
 #include "common/stl/base.h"
 
@@ -76,6 +76,6 @@ int main_hackerrank_number()
     for (; raw_b >= pb; pb *= 10) ++lb;
     LongUnsigned r1 = LongUnsigned(sL) * cR * pb * 10u;
     LongUnsigned r2 = LongUnsigned(sR) * cL;
-    (r1 + r2).Write();
+    cout << r1 + r2 << endl;
 	return 0;
 }

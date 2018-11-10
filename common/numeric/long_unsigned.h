@@ -2,14 +2,15 @@
 
 #include "../base.h"
 #include <algorithm>
-#include <iostream>
-#include <string>
 #include <vector>
 
 class LongUnsigned
 {
+public:
+    using TData = std::vector<unsigned>;
+
 protected:
-    std::vector<unsigned> data;
+    TData data;
 
 public:
 	using iterator = unsigned*;
@@ -23,6 +24,7 @@ public:
         data.push_back(unsigned(u >> 32));
         Normalize();
     }
+    LongUnsigned(const TData& _data) : data(_data) {}
 
     void Normalize() { for (; (data.size() > 0) && (data.back() == 0);) data.pop_back(); }
     bool Empty() const { return data.empty(); }
@@ -41,9 +43,8 @@ public:
     {
         if (Size() < lu.Size()) return true;
         if (lu.Size() < Size()) return false;
-        for (size_t i = Size(); i; )
+        for (size_t i = Size(); i--; )
         {
-            --i;
             if (data[i] < lu.data[i]) return true;
             if (data[i] > lu.data[i]) return false;
         }
@@ -54,9 +55,8 @@ public:
     {
         if (Size() < lu.Size()) return true;
         if (lu.Size() < Size()) return false;
-        for (size_t i = Size(); i; )
+        for (size_t i = Size(); i--; )
         {
-            --i;
             if (data[i] < lu.data[i]) return true;
             if (data[i] > lu.data[i]) return false;
         }
@@ -191,26 +191,6 @@ public:
     LongUnsigned& operator+=(const LongUnsigned& r) { LongUnsigned t = (*this + r); swap(t); return *this; }
     LongUnsigned& operator-=(const LongUnsigned& r) { LongUnsigned t = (*this - r); swap(t); return *this; }
 
-    static LongUnsigned Parse(const std::string& s, unsigned base = 10)
-    {
-        assert(base == 10);
-        LongUnsigned lu;
-        for (char c : s)
-        {
-            lu *= base;
-            assert((c >= '0') && (c <= '9'));
-            lu += unsigned(c - '0');
-        }
-        return lu;
-    }
-
-    static LongUnsigned Read(unsigned base = 10)
-    {
-        std::string s;
-        std::cin >> s;
-        return Parse(s, base);
-    }
-
     std::vector<unsigned> ToVector(unsigned base) const
     {
         LongUnsigned t(*this);
@@ -218,24 +198,5 @@ public:
         for (; !t.Empty(); t /= base)
             v.push_back(t % base);
         return v;
-    }
-
-    std::string ToString(unsigned base = 10) const
-    {
-        if (Empty()) return "0";
-        assert(base == 10);
-        std::vector<unsigned> v = ToVector(base);
-        std::reverse(v.begin(), v.end());
-        std::string s; s.reserve(v.size());
-        for (unsigned u : v)
-            s.push_back('0' + char(u));
-        return s;
-    }
-
-    void Write(bool add_eod = true, unsigned base = 10) const
-    {
-        std::string s = ToString(base);
-        std::cout << s;
-        if (add_eod) std::cout << std::endl;
     }
 };
