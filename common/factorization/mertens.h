@@ -23,7 +23,9 @@ protected:
 public:
     Mertens(unsigned _u) : u(_u), mertens(u) { mertens.PrecalcMertens(); }
 
-    int Get(uint64_t x) const
+    int GetMobius(uint64_t x) const { return mertens.Mobius(x); }
+
+    int GetMertens(uint64_t x) const
     {
         if (x <= u) return mertens.Mertens(x);
         int r = 0;
@@ -35,5 +37,5 @@ public:
         return r;
     }
 
-    int operator()(uint64_t x) const { return Get(x); }
+    int operator()(uint64_t x) const { return GetMertens(x); }
 };

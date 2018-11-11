@@ -1,27 +1,42 @@
 // https://www.hackerrank.com/challenges/laser-beam
 
-#include "common/factorization/primes_list.h"
+#include "common/factorization/mertens.h"
 #include "common/modular/static/modular_io.h"
 #include "common/numeric/utils/usqrt.h"
 #include "common/stl/base.h"
-
-#include <unordered_map>
 
 using TModular = Modular<>;
 
 int main_laser_beam()
 {
-    PrimesList primes_list(60000);
-    uint64_t N0 = 10;
-    vector<TModular> vf(N0), vg(N0);
+    uint64_t N0 = 3000000;
+    Mertens mertens(N0);
+    vector<TModular> vf(N0), vfs(N0);
     for (uint64_t i = 1; i < N0; ++i)
         vf[i] = 24 * i * i + 2;
     for (uint64_t i = 1; 2 * i < N0; ++i)
     {
         for (uint64_t j = 2 * i; j < N0; j += i)
             vf[j] -= vf[i];
-        vg[i] = vg[i - 1] + vf[i];
+        vfs[i] = vfs[i - 1] + vf[i];
     }
+
+    auto Mobius = [&](uint64_t n) { TModular x; x.SetS(mertens.GetMobius(n)); return x; };
+    auto Mertens = [&](uint64_t n) { TModular x; x.SetS(mertens.GetMertens(n)); return x; };
+    auto G = [](uint64_t n) { TModular x(n); return x * x * 24 + 2; };
+    auto GS = [](uint64_t n) { TModular x(2*n + 1); return x*x*x; };
+
+    auto FS = [&](uint64_t n)
+    {
+        if (n < N0) return vfs[n];
+        uint64_t v = USqrt(n), ml = n / (v + 1);
+        TModular r;
+        for (uint64_t l = 1; l <= ml; ++l)
+            r += G(l) * Mertens(n / l);
+        for (uint64_t k = 1; k <= v; ++k)
+            r += (GS(n / k) - GS(n / (k + 1))) * Mertens(k);
+        return r;
+    };
 
     unsigned T;
     cin >> T;
@@ -30,38 +45,27 @@ int main_laser_beam()
         uint64_t N, M, D;
         cin >> N >> M >> D;
         uint64_t NM = N / M, maxk = 0;
-        unordered_map<uint64_t, TModular> mg, mgt;
-        if (D == 1)
+        // if (D == 1)
+        //     cout << FS(NM) << endl;
+        // else
         {
-            mg[NM] = 1;
-            maxk = NM;
-        }
-        else
-        {
+            TModular r = 0;
             uint64_t l = min(USqrt(N), NM);
             for (uint64_t k = 1;; ++k)
             {
                 uint64_t kd = k * D, i1 = N / kd, i0 = N / (kd + 1);
-                i0 = min(i0, NM), i1 = min(i1, NM);
-                if (i1 < N0) break;
-                if (i0 == i1) continue;
-                maxk = max(maxk, i1);
-                mg[i1] += 1;
-                mg[i0] -= 1;
+                i1 = min(i1, NM);
+                if (i1 <= l) break;
+                if (i0 >= i1) continue;
+                r += FS(i1) - FS(i0);
                 l = min(l, i0);
             }
             for (uint64_t i = 1; i <= l; ++i)
             {
-                if (((N / i) % D) == 0)
-                {
-                    mg[i - 1] -= 1;
-                    mg[i] += 1;
-                    maxk = max(maxk, i);
-                }
+                if (((N / i) % D) == 0) r += vf[i];
             }
+            cout << r << endl;
         }
-        cout << maxk << endl;
-        // cout << r + Solve() << endl;
     }
     return 0;
 }
