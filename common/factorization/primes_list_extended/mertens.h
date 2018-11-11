@@ -16,24 +16,19 @@ protected:
     std::vector<int> mertens;
 
 public:
-    PLEMertens(uint64_t size) : TPrimesList(size) {}
+    PLEMertens(uint64_t size) : TBase(size) {}
 
     void PrecalcMertens()
     {
         if (TBase::mobius.size() == 0) TBase::PrecalcMobius();
-        assert(TBase::mobius.size() == TPrimesList::table_size + 1);
-        mertens.resize(TPrimesList::table_size + 1);
+        assert(TBase::mobius.size() == TBase::table_size + 1);
+        mertens.resize(TBase::table_size + 1);
         mertens[0] = 0;
-        for (unsigned i = 1; i <= TPrimesList::table_size; ++i)
+        for (unsigned i = 1; i <= TBase::table_size; ++i)
             mertens[i] = mertens[i-1] + TBase::mobius[i];
     }
     
-    int Mertens(uint64_t n) const
-    {
-        if (mertens.size() == 0) PrecalcMertens();
-        assert(n < mertens.size());
-        return mertens[i];
-    }
+    int Mertens(uint64_t n) const { assert(n < mertens.size()); return mertens[n]; }
 };
 
 using TPLEMertens = PLEMertens<PrimesList>;

@@ -5,3 +5,4 @@ bool TestContinuedFractionConvergent();
 bool TestDisjointSet();
 bool TestInterpolation();
 bool TestMatrixMult();
+bool TestMertens();

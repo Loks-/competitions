@@ -26,6 +26,8 @@ int main(int nargs, char **pargs)
 			Assert(TestContinuedFractionConvergent());
 		else if (tester_mode == "interpolation")
 			Assert(TestInterpolation());
+		else if (tester_mode == "mertens")
+			Assert(TestMertens());
 		else if (tester_mode == "time_binary_search_tree")
 			Assert(TestBinarySearchTree(true));
 		else if (tester_mode == "time_disjoint_set")

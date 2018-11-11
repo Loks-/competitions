@@ -34,4 +34,6 @@ public:
         }
         return r;
     }
+
+    int operator()(uint64_t x) const { return Get(x); }
 };
