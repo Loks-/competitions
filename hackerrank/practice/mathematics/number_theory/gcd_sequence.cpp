@@ -10,7 +10,7 @@ using TModular = Modular<>;
 int main_gcd_sequence()
 {
     TPLEMobius primes_list(100000);
-    primes_list.MobiusPrecalc();
+    primes_list.PrecalcMobius();
     ModularFactorial<TModular> f;
 
 	unsigned T, N, K;

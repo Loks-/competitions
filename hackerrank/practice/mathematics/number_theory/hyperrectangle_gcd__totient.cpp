@@ -10,7 +10,7 @@ using TModular = Modular<>;
 int main_hyperrectangle_gcd__totient()
 {
     TPLEEulersTotient primes_list(100000);
-    primes_list.EulersTotientPrecalc();
+    primes_list.PrecalcEulersTotient();
     unsigned T, K;
     cin >> T;
     for (unsigned iT = 0; iT < T; ++iT)

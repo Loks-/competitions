@@ -6,7 +6,7 @@
 int main_a_weird_function()
 {
     TPLEEulersTotient primes_list(1500000);
-    primes_list.EulersTotientPrecalc();
+    primes_list.PrecalcEulersTotient();
     vector<uint64_t> vi, vs(1, 0);
     uint64_t phi1 = 1, phi2 = 1;
     for (uint64_t j = 2;; ++j)

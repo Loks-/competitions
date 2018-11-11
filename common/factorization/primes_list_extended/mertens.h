@@ -18,9 +18,9 @@ protected:
 public:
     PLEMobius(uint64_t size) : TPrimesList(size) {}
 
-    void MertensPrecalc()
+    void PrecalcMertens()
     {
-        if (TBase::mobius.size() == 0) TBase::MobiusPrecalc();
+        if (TBase::mobius.size() == 0) TBase::PrecalcMobius();
         assert(TBase::mobius.size() == TPrimesList::table_size + 1);
         mertens.resize(TPrimesList::table_size + 1);
         mertens[0] = 0;
@@ -30,7 +30,7 @@ public:
     
     int Mertens(uint64_t n) const
     {
-        if (mertens.size() == 0) MertensPrecalc();
+        if (mertens.size() == 0) PrecalcMertens();
         assert(n < mertens.size());
         return mertens[i];
     }

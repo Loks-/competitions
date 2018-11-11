@@ -12,7 +12,7 @@ protected:
 public:
     PLEEulersTotient(uint64_t size) : TPrimesList(size) {}
 
-    void EulersTotientPrecalc()
+    void PrecalcEulersTotient()
     {
         eulers_totient.resize(TPrimesList::table_size + 1);
         eulers_totient[0] = 0;

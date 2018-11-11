@@ -12,7 +12,7 @@ protected:
 public:
     PLEMobius(uint64_t size) : TPrimesList(size) {}
 
-    void MobiusPrecalc()
+    void PrecalcMobius()
     {
         mobius.resize(TPrimesList::table_size + 1);
         mobius[0] = 0;
