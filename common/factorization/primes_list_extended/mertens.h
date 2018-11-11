@@ -16,7 +16,7 @@ protected:
     std::vector<int> mertens;
 
 public:
-    PLEMobius(uint64_t size) : TPrimesList(size) {}
+    PLEMertens(uint64_t size) : TPrimesList(size) {}
 
     void PrecalcMertens()
     {
