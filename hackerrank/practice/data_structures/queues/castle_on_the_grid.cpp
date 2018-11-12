@@ -1,6 +1,7 @@
 // https://www.hackerrank.com/challenges/castle-on-the-grid
 
-#include "common/graph/base_graph.h"
+#include "common/graph/base_graph/base_graph.h"
+#include "common/graph/base_graph/distance.h"
 #include "common/stl/base.h"
 
 #include <string>
@@ -46,7 +47,7 @@ int main_castle_on_the_grid()
 	{
 		unsigned i1, i2, j1, j2;
 		cin >> i1 >> j1 >> i2 >> j2;
-		auto vd = g.GetDistances((i1 + 1) * N2 + (j1 + 1));
+		auto vd = GetDistancesFromSource(g, (i1 + 1) * N2 + (j1 + 1));
 		cout << vd[(i2 + 1) * N2 + (j2 + 1)] << endl;
 	}
 	return 0;

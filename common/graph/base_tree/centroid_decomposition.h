@@ -21,7 +21,7 @@ public:
 protected:
 	CentroidDecomposition(const BaseTree& _tree) : tree(_tree)
 	{
-		unsigned n = tree.nvertices;
+		unsigned n = tree.Size();
 		group.resize(n, 0);
 		parent.resize(n);
 		subtree_size.resize(n, 0);
@@ -31,10 +31,11 @@ protected:
 	void InitParentAndSubtreeSizes()
 	{
 		std::fill(subtree_size.begin(), subtree_size.end(), 0);
-		parent[tree.root] = CNone;
+		unsigned root = tree.GetRoot();
+		parent[root] = CNone;
 		group_root.clear();
-		group_root.push_back(tree.root);
-		for (vertices_to_check.push(tree.root); !vertices_to_check.empty(); )
+		group_root.push_back(root);
+		for (vertices_to_check.push(root); !vertices_to_check.empty(); )
 		{
 			unsigned v = vertices_to_check.top();
 			unsigned p = parent[v];
@@ -42,7 +43,7 @@ protected:
 			{
 				// First time here, add children
 				subtree_size[v] = 1;
-				for (unsigned c : tree.edges[v])
+				for (unsigned c : tree.Edges(v))
 				{
 					if (c == p) continue;
 					parent[c] = v;
@@ -53,7 +54,7 @@ protected:
 			{
 				// Second time here, finalize
 				vertices_to_check.pop();
-				for (unsigned c : tree.edges[v])
+				for (unsigned c : tree.Edges(v))
 				{
 					if (c == p) continue;
 					subtree_size[v] += subtree_size[c];
@@ -73,7 +74,7 @@ protected:
 		{
 			next = false;
 			unsigned p = parent[v];
-			for (unsigned c : tree.edges[v])
+			for (unsigned c : tree.Edges(v))
 			{
 				if (c == p) continue;
 				if (subtree_size[c] > group_size / 2)
@@ -108,12 +109,12 @@ protected:
 	{
 		unsigned root = group_root[current_group];
 		if (subtree_size[root] == 1) return;
-		for (unsigned v : tree.edges[root])
+		for (unsigned v : tree.Edges(root))
 		{
 			unsigned new_group = unsigned(group_root.size());
 			group_root.push_back(v);
 			group[v] = new_group;
-			std::vector<unsigned>& vedges = tree.edges[v];
+			std::vector<unsigned>& vedges = tree.Edges(v);
 			for (unsigned i = 0; i < vedges.size(); )
 			{
 				if (vedges[i] == root)
@@ -129,7 +130,7 @@ protected:
 				unsigned u = vertices_to_check.top(); vertices_to_check.pop();
 				unsigned p = parent[u];
 				group[u] = new_group;
-				for (unsigned c : tree.edges[u])
+				for (unsigned c : tree.Edges(u))
 				{
 					if (c == p) continue;
 					vertices_to_check.push(c);

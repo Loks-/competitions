@@ -1,7 +1,7 @@
 // https://www.hackerrank.com/challenges/self-driving-bus
 
-#include "common/graph/tree/base_tree.h"
-#include "common/graph/tree/centroid_decomposition.h"
+#include "common/graph/base_tree/base_tree.h"
+#include "common/graph/base_tree/centroid_decomposition.h"
 #include "common/stl/base.h"
 
 #include <stack>
@@ -37,7 +37,7 @@ namespace
 			{
 				unsigned current = s.top().first, from = s.top().second;
 				s.pop();
-				for (unsigned u : current_tree.edges[current])
+				for (unsigned u : current_tree.Edges(current))
 				{
 					if (u == from)
 						continue;

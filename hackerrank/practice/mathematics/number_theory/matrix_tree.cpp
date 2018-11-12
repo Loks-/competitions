@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/matrix-tree
 
-#include "common/graph/tree/base_tree.h"
+#include "common/graph/base_tree/base_tree.h"
 #include "common/modular/static/modular_io.h"
 #include "common/vector/read.h"
 #include "common/stl/base.h"
@@ -20,7 +20,7 @@ int main_matrix_tree()
     std::function<TModular(unsigned, unsigned, TModular)> SolveR = [&](unsigned node, unsigned p, TModular pw) -> TModular
     {
         TModular r = vw[node] - pw;
-        for (unsigned c : tree.edges[node])
+        for (unsigned c : tree.Edges(node))
         {
             if (c == p) continue;
             r *= SolveR(c, node, vw[node]);

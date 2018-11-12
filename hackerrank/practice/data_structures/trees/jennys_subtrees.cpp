@@ -1,8 +1,9 @@
 // https://www.hackerrank.com/challenges/jenny-subtrees
 
-#include "common/graph/tree/base_tree.h"
-#include "common/graph/base_subgraph.h"
-#include "common/graph/tree/base_tree_isomorphic_hash.h"
+#include "common/graph/base_tree/base_tree.h"
+#include "common/graph/base_tree/isomorphic_hash.h"
+#include "common/graph/base_graph/distance.h"
+#include "common/graph/base_graph/subgraph.h"
 #include "common/stl/base.h"
 
 #include <unordered_set>
@@ -18,7 +19,7 @@ int main_jennys_subtrees()
 	vector<unsigned> distance;
 	for (unsigned i = 0; i < n; ++i)
 	{
-		distance = tree.GetDistances(i);
+		distance = GetDistancesFromSource(tree, i);
 		for (unsigned j = 0; j < n; ++j)
 			keep[j] = (distance[j] <= r);
 		BaseSubgraph::CreateSubgraph(tree, keep, tree_temp);

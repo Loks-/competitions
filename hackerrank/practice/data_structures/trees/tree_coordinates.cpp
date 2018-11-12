@@ -1,6 +1,9 @@
 // https://www.hackerrank.com/challenges/tree-coordinates
 
-#include "common/graph/tree/lca.h"
+#include "common/graph/base_graph/distance.h"
+#include "common/graph/base_tree/base_tree.h"
+#include "common/graph/base_tree/deep.h"
+#include "common/graph/base_tree/lca.h"
 #include "common/stl/base.h"
 
 int main_tree_coordinates()
@@ -9,7 +12,7 @@ int main_tree_coordinates()
 	cin >> n >> m;
 	BaseTree t(n);
 	t.ReadEdges();
-	vector<unsigned> vd = t.GetDeep(), vdp1, vdp2;
+	vector<unsigned> vd = GetDeep(t), vdp1, vdp2;
 	LCA lca;
 	lca.Build(t);
 	vector<unsigned> vp1(m), vp2(m);
@@ -27,13 +30,13 @@ int main_tree_coordinates()
 		if (vd[i] > vd[bp1])
 			bp1 = i;
 	}
-	vdp1 = t.GetDistances(bp1);
+	vdp1 = GetDistancesFromSource(t, bp1);
 	for (unsigned i = 1; i < n; ++i)
 	{
 		if (vdp1[i] > vdp1[bp2])
 			bp2 = i;
 	}
-	vdp2 = t.GetDistances(bp2);
+	vdp2 = GetDistancesFromSource(t, bp2);
 
 	unsigned adj = 2 * vdp1[bp2];
 	vector<vector<unsigned>> vl11(5 * adj), vl12(5 * adj), vl21(5 * adj), vl22(5 * adj);

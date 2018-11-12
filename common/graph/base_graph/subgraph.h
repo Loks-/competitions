@@ -1,8 +1,8 @@
 #pragma once
 
 #include "base_graph.h"
-#include "tree/base_tree.h"
-#include "../base.h"
+#include "../base_tree/base_tree.h"
+#include "../../base.h"
 #include <vector>
 
 class BaseSubgraph
@@ -12,33 +12,33 @@ protected:
 	static void UpdateRoot(const TBaseGraph& graph, unsigned new_nvertices, const std::vector<unsigned>& old_to_new, TBaseGraph& output) {}
 	static void UpdateRoot(const BaseTree& graph, unsigned new_nvertices, const std::vector<unsigned>& old_to_new, BaseTree& output)
 	{
-		unsigned root_new = old_to_new[graph.root];
-		output.root = (root_new >= new_nvertices) ? 0 : root_new;
+		unsigned root_new = old_to_new[graph.GetRoot()];
+		output.SetRoot((root_new >= new_nvertices) ? 0 : root_new);
 	}
 
 public:
 	template<class TBaseGraph>
 	static void CreateSubgraph(const TBaseGraph& graph, unsigned new_nvertices, const std::vector<unsigned>& old_to_new, TBaseGraph& output)
 	{
-		assert(graph.nvertices == old_to_new.size());
+		assert(graph.Size() == old_to_new.size());
 		output.Resize(new_nvertices);
-		for (unsigned u = 0; u < graph.nvertices; ++u)
+		for (unsigned u = 0; u < graph.Size(); ++u)
 		{
 			unsigned unew = old_to_new[u];
 			if (unew >= new_nvertices) continue;
-			for (unsigned v : graph.edges[u])
+			for (unsigned v : graph.Edges(u))
 			{
 				unsigned vnew = old_to_new[v];
 				if (vnew >= new_nvertices) continue;
-				output.edges[unew].push_back(vnew);
+				output.AddBaseEdge(unew, vnew);
 			}
 			if (graph.directed_edges)
 			{
-				for (unsigned v : graph.inverted_edges[u])
+				for (unsigned v : graph.InvertedEdges(u))
 				{
 					unsigned vnew = old_to_new[v];
 					if (vnew >= new_nvertices) continue;
-					output.inverted_edges[unew].push_back(vnew);
+					output.AddInvertedEdge(unew, vnew);
 				}
 			}
 		}
@@ -48,10 +48,10 @@ public:
 	template<class TBaseGraph>
 	static void CreateSubgraph(const TBaseGraph& graph, const std::vector<bool>& keep, TBaseGraph& output)
 	{
-		assert(graph.nvertices == keep.size());
+		assert(graph.Size() == keep.size());
 		unsigned new_nvertices = 0;
-		std::vector<unsigned> old_to_new(graph.nvertices, CNone);
-		for (unsigned i = 0; i < graph.nvertices; ++i)
+		std::vector<unsigned> old_to_new(graph.Size(), CNone);
+		for (unsigned i = 0; i < keep.size(); ++i)
 		{
 			if (keep[i])
 				old_to_new[i] = new_nvertices++;

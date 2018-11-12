@@ -50,7 +50,7 @@ public:
 
 	void Build(const BaseTree& g)
 	{
-		n = g.nvertices;
+		n = g.Size();
 		Init();
 		DFS1(g);
 		DFS2(g);
@@ -62,9 +62,10 @@ protected:
 		std::stack<unsigned> s;
 		std::vector<bool> visited(n, false);
 		unsigned timer = 0;
-		parent[g.root] = CNone;
-		deep[g.root] = 0;
-		for (s.push(g.root); !s.empty(); )
+		unsigned root = g.GetRoot();
+		parent[root] = CNone;
+		deep[root] = 0;
+		for (s.push(root); !s.empty(); )
 		{
 			unsigned v = s.top();
 			unsigned p = parent[v];
@@ -74,7 +75,7 @@ protected:
 				// First time here, add children
 				visited[v] = true;
 				I[v] = preorder[v] = timer++;
-				for (unsigned c : g.edges[v])
+				for (unsigned c : g.Edges(v))
 				{
 					if (c == p) continue; // For undirected edges
 					parent[c] = v;
@@ -87,7 +88,7 @@ protected:
 				// Second time here, finalize
 				s.pop();
 				subtreesize[v] = timer - preorder[v];
-				if ((v != g.root) && (vrbit[I[v]] > vrbit[I[p]]))
+				if ((v != root) && (vrbit[I[v]] > vrbit[I[p]]))
 					I[p] = I[v];
 				lead[I[v]] = v;
 			}
@@ -97,11 +98,11 @@ protected:
 	void DFS2(const BaseTree& g)
 	{
 		std::stack<unsigned> s;
-		for (s.push(g.root); !s.empty(); )
+		for (s.push(g.GetRoot()); !s.empty(); )
 		{
 			unsigned v = s.top(); s.pop();
-			A[v] = ((v != g.root) ? A[parent[v]] : 0) | vrbit[I[v]];
-			for (unsigned c : g.edges[v])
+			A[v] = ((v != g.GetRoot()) ? A[parent[v]] : 0) | vrbit[I[v]];
+			for (unsigned c : g.Edges(v))
 			{
 				// Safety check
 				if (c == parent[v]) continue;  // For undirected edges

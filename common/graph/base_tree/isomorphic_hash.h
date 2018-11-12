@@ -18,10 +18,10 @@ protected:
 		{
 			unsigned node, parent;
 		};
-		unsigned n = tree.nvertices;
+		unsigned n = tree.Size();
 		std::vector<unsigned> subtree_size(n,  0);
 		std::stack<Node> s;
-		for (s.push({ tree.root, CNone }); !s.empty(); )
+		for (s.push({ tree.GetRoot(), CNone }); !s.empty(); )
 		{
 			unsigned v = s.top().node;
 			unsigned p = s.top().parent;
@@ -29,7 +29,7 @@ protected:
 			{
 				// First time here, add children
 				subtree_size[v] = 1;
-				for (unsigned c : tree.edges[v])
+				for (unsigned c : tree.Edges(v))
 				{
 					if (c == p) continue;
 					s.push({ c, v });
@@ -39,7 +39,7 @@ protected:
 			{
 				// Second time here, finalize
 				s.pop();
-				for (unsigned c : tree.edges[v])
+				for (unsigned c : tree.Edges(v))
 				{
 					if (c == p) continue;
 					subtree_size[v] += subtree_size[c];
@@ -51,14 +51,14 @@ protected:
 			}
 		}
 		assert(false);
-		return std::make_pair(tree.root, CNone);
+		return std::make_pair(tree.GetRoot(), CNone);
 	}
 
 	static size_t HashR(const BaseTree& tree, unsigned node, unsigned parent)
 	{
 		size_t current = std::hash<unsigned>{}(1);
 		std::vector<size_t> v;
-		for (unsigned c : tree.edges[node])
+		for (unsigned c : tree.Edges(node))
 		{
 			if (c == parent) continue;
 			v.push_back(HashR(tree, c, node));

@@ -1,7 +1,7 @@
 // https://www.hackerrank.com/challenges/balanced-forest
 
-#include "common/graph/tree/base_tree.h"
-#include "common/graph/tree/lca.h"
+#include "common/graph/base_tree/base_tree.h"
+#include "common/graph/base_tree/lca.h"
 #include "common/vector/read.h"
 #include "common/stl/base.h"
 
@@ -18,7 +18,7 @@ namespace {
 		int64_t RunR(unsigned node, unsigned parent)
 		{
 			int64_t total = vc[node];
-			for (unsigned i : t.edges[node])
+			for (unsigned i : t.Edges(node))
 			{
 				if (i == parent)
 					continue;
@@ -51,9 +51,7 @@ namespace {
 				if (2 * current > total)
 					current = total - current;
 				if (3 * current < total)
-				{
 					sc2[total - current].push_back(i);
-				}
 				else
 				{
 					if (sc1.find(current) != sc1.end())

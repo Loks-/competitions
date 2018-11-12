@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../base_graph.h"
+#include "../base_graph/base_graph.h"
 #include <iostream>
 #include <vector>
 
@@ -10,11 +10,13 @@ public:
 	using TBase = BaseUndirectedGraph;
 	using TSelf = BaseTree;
 
-public:
+protected:
 	unsigned root;
 
 public:
 	BaseTree(unsigned _nvertices = 0, unsigned _root = 0) : TBase(_nvertices), root(_root) {}
+	unsigned GetRoot() const { return root; }
+	void SetRoot(unsigned new_root) { root = new_root; }
 
 	void Resize(unsigned _nvertices, unsigned _root = 0)
 	{
@@ -34,6 +36,4 @@ public:
 			TBase::AddEdge(from - shift, i);
 		}
 	}
-
-	std::vector<unsigned> GetDeep() const { return TBase::GetDistances(root); }
 };
