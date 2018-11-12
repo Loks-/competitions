@@ -9,8 +9,8 @@ using TModular = Modular<>;
 
 int main_laser_beam()
 {
-    uint64_t N0 = 3000000;
-    Mertens mertens(N0);
+    uint64_t N0 = 1;
+    Mertens mertens(3000000);
     vector<TModular> vf(N0), vfs(N0);
     for (uint64_t i = 1; i < N0; ++i)
         vf[i] = 24 * i * i + 2;
@@ -30,13 +30,14 @@ int main_laser_beam()
     {
         if (n < N0) return vfs[n];
         uint64_t v = USqrt(n), ml = n / (v + 1);
-        TModular r;
+        TModular r = 0;
         for (uint64_t l = 1; l <= ml; ++l)
             r += G(l) * Mertens(n / l);
         for (uint64_t k = 1; k <= v; ++k)
             r += (GS(n / k) - GS(n / (k + 1))) * Mertens(k);
         return r;
     };
+    auto F = [&](uint64_t n) { return (n < N0) ? vf[n] : FS(n) - FS(n-1); };
 
     unsigned T;
     cin >> T;
@@ -62,7 +63,8 @@ int main_laser_beam()
             }
             for (uint64_t i = 1; i <= l; ++i)
             {
-                if (((N / i) % D) == 0) r += vf[i];
+                if (((N / i) % D) == 0)
+                    r += F(i);
             }
             cout << r << endl;
         }
