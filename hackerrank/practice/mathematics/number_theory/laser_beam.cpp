@@ -9,12 +9,12 @@ using TModular = Modular<>;
 
 int main_laser_beam()
 {
-    uint64_t N0 = 1;
     Mertens mertens(3000000);
+    uint64_t N0 = 1000000;
     vector<TModular> vf(N0), vfs(N0);
     for (uint64_t i = 1; i < N0; ++i)
         vf[i] = 24 * i * i + 2;
-    for (uint64_t i = 1; 2 * i < N0; ++i)
+    for (uint64_t i = 1; i < N0; ++i)
     {
         for (uint64_t j = 2 * i; j < N0; j += i)
             vf[j] -= vf[i];
@@ -46,9 +46,9 @@ int main_laser_beam()
         uint64_t N, M, D;
         cin >> N >> M >> D;
         uint64_t NM = N / M, maxk = 0;
-        // if (D == 1)
-        //     cout << FS(NM) << endl;
-        // else
+        if (D == 1)
+            cout << FS(NM) << endl;
+        else
         {
             TModular r = 0;
             uint64_t l = min(USqrt(N), NM);
