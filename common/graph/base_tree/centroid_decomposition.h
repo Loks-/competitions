@@ -1,6 +1,7 @@
 #pragma once
 
 #include "base_tree.h"
+#include "nodes_info.h"
 #include "../../base.h"
 #include <algorithm>
 #include <stack>
@@ -11,7 +12,8 @@ class CentroidDecomposition
 protected:
 	// Edges from smaller groups to parent are removed.
 	BaseTree tree;
-	std::vector<unsigned> group, parent, subtree_size, group_root;
+	BaseTreeNodesInfo info;
+	std::vector<unsigned> group, group_root;
 	std::stack<unsigned> vertices_to_check;
 
 public:
@@ -23,61 +25,31 @@ protected:
 	{
 		unsigned n = tree.Size();
 		group.resize(n, 0);
-		parent.resize(n);
-		subtree_size.resize(n, 0);
 		group_root.reserve(n);
 	}
 
 	void InitParentAndSubtreeSizes()
 	{
-		std::fill(subtree_size.begin(), subtree_size.end(), 0);
-		unsigned root = tree.GetRoot();
-		parent[root] = CNone;
+		info.Init(tree);
 		group_root.clear();
-		group_root.push_back(root);
-		for (vertices_to_check.push(root); !vertices_to_check.empty(); )
-		{
-			unsigned v = vertices_to_check.top();
-			unsigned p = parent[v];
-			if (subtree_size[v] == 0)
-			{
-				// First time here, add children
-				subtree_size[v] = 1;
-				for (unsigned c : tree.Edges(v))
-				{
-					if (c == p) continue;
-					parent[c] = v;
-					vertices_to_check.push(c);
-				}
-			}
-			else
-			{
-				// Second time here, finalize
-				vertices_to_check.pop();
-				for (unsigned c : tree.Edges(v))
-				{
-					if (c == p) continue;
-					subtree_size[v] += subtree_size[c];
-				}
-			}
-		}
+		group_root.push_back(info.root);
 	}
 
 	void FindCentroid(unsigned current_group)
 	{
 		unsigned root = group_root[current_group];
-		unsigned group_size = subtree_size[root];
+		unsigned group_size = info.subtree_size[root];
 		if (group_size <= 2) return;
 		unsigned best_size = group_size, best_node = root;
 		unsigned v = root;
 		for (bool next = true; next; )
 		{
 			next = false;
-			unsigned p = parent[v];
+			unsigned p = info.parent[v];
 			for (unsigned c : tree.Edges(v))
 			{
 				if (c == p) continue;
-				if (subtree_size[c] > group_size / 2)
+				if (info.subtree_size[c] > group_size / 2)
 				{
 					v = c;
 					next = true;
@@ -88,18 +60,18 @@ protected:
 		if (v != root)
 		{
 			// Update parent and subtree_size with new root in centroid
-			unsigned vparent = parent[v];
-			unsigned vsize = subtree_size[v];
+			unsigned vparent = info.parent[v];
+			unsigned vsize = info.subtree_size[v];
 			group_root[current_group] = v;
-			parent[v] = parent[root];
-			subtree_size[v] = group_size;
+			info.parent[v] = info.parent[root];
+			info.subtree_size[v] = group_size;
 			for (; v != root; )
 			{
-				unsigned vnextparent = parent[vparent];
-				parent[vparent] = v;
+				unsigned vnextparent = info.parent[vparent];
+				info.parent[vparent] = v;
 				v = vparent; vparent = vnextparent;
-				unsigned vnextsize = subtree_size[v];
-				subtree_size[v] = group_size - vsize;
+				unsigned vnextsize = info.subtree_size[v];
+				info.subtree_size[v] = group_size - vsize;
 				vsize = vnextsize;
 			}
 		}
@@ -108,7 +80,7 @@ protected:
 	void Decompose(unsigned current_group)
 	{
 		unsigned root = group_root[current_group];
-		if (subtree_size[root] == 1) return;
+		if (info.subtree_size[root] == 1) return;
 		for (unsigned v : tree.Edges(root))
 		{
 			unsigned new_group = unsigned(group_root.size());
@@ -128,7 +100,7 @@ protected:
 			for (; !vertices_to_check.empty();)
 			{
 				unsigned u = vertices_to_check.top(); vertices_to_check.pop();
-				unsigned p = parent[u];
+				unsigned p = info.parent[u];
 				group[u] = new_group;
 				for (unsigned c : tree.Edges(u))
 				{
