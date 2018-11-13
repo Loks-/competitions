@@ -18,17 +18,17 @@ protected:
 		{
 			unsigned node, parent;
 		};
-		unsigned n = tree.Size();
-		std::vector<unsigned> subtree_size(n,  0);
+		unsigned n = tree.Size(), timer = 1;
+		std::vector<unsigned> vtimer(n, 0);
 		std::stack<Node> s;
 		for (s.push({ tree.GetRoot(), CNone }); !s.empty(); )
 		{
 			unsigned v = s.top().node;
 			unsigned p = s.top().parent;
-			if (subtree_size[v] == 0)
+			if (vtimer[v] == 0)
 			{
 				// First time here, add children
-				subtree_size[v] = 1;
+				vtimer[v] = timer++;
 				for (unsigned c : tree.Edges(v))
 				{
 					if (c == p) continue;
@@ -39,14 +39,10 @@ protected:
 			{
 				// Second time here, finalize
 				s.pop();
-				for (unsigned c : tree.Edges(v))
-				{
-					if (c == p) continue;
-					subtree_size[v] += subtree_size[c];
-				}
-				if (2 * subtree_size[v] == n)
+				unsigned subtree_size = timer - vtimer[v];
+				if (2 * subtree_size == n)
 					return std::make_pair(v, p);				
-				if (2 * subtree_size[v] > n)
+				if (2 * subtree_size > n)
 					return std::make_pair(v, CNone);
 			}
 		}
