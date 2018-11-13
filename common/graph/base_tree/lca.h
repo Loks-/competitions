@@ -11,7 +11,7 @@ class LCA
 public:
 	unsigned n, n2p;
 	std::vector<unsigned> vlbit, vrbit;
-	std::vector<unsigned> parent, preorder, subtreesize, I, lead, A;
+	std::vector<unsigned> parent, preorder, I, lead, A;
 	std::vector<unsigned> deep;
 
 protected:
@@ -41,7 +41,6 @@ public:
 		InitBitMaps();
 		parent.resize(n);
 		preorder.resize(n);
-		subtreesize.resize(n);
 		I.resize(n);
 		lead.resize(n + 1);
 		A.resize(n);
@@ -87,7 +86,6 @@ protected:
 			{
 				// Second time here, finalize
 				s.pop();
-				subtreesize[v] = timer - preorder[v];
 				if ((v != root) && (vrbit[I[v]] > vrbit[I[p]]))
 					I[p] = I[v];
 				lead[I[v]] = v;
