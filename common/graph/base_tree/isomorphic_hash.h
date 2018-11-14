@@ -12,7 +12,7 @@
 class BaseTreeIsomorphicHash
 {
 protected:
-	static std::pair<unsigned, unsigned> GetCenter(const BaseTree& tree)
+	static std::pair<unsigned, unsigned> GetCenter(const TBaseTree& tree)
 	{
 		struct Node
 		{
@@ -50,7 +50,7 @@ protected:
 		return std::make_pair(tree.GetRoot(), CNone);
 	}
 
-	static size_t HashR(const BaseTree& tree, unsigned node, unsigned parent)
+	static size_t HashR(const TBaseTree& tree, unsigned node, unsigned parent)
 	{
 		size_t current = std::hash<unsigned>{}(1);
 		std::vector<size_t> v;
@@ -66,7 +66,7 @@ protected:
 	}
 
 public:
-	static size_t Hash(const BaseTree& tree)
+	static size_t Hash(const TBaseTree& tree)
 	{
 		auto p = GetCenter(tree);
 		if (p.second == CNone) return HashR(tree, p.first, p.second);

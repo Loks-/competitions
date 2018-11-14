@@ -12,7 +12,7 @@ namespace
 	{
 	protected:
 		unsigned n;
-		BaseTree tree;
+		TBaseTree tree;
 		uint64_t total_segments;
 		vector<unsigned> path_min, path_max;
 
@@ -29,7 +29,7 @@ namespace
 			cout << total_segments << endl;
 		}
 
-		void UpdatePaths(unsigned vertex, const BaseTree& current_tree)
+		void UpdatePaths(unsigned vertex, const TBaseTree& current_tree)
 		{
 			path_min[vertex] = path_max[vertex] = vertex;
 			static stack<pair<unsigned, unsigned>> s;

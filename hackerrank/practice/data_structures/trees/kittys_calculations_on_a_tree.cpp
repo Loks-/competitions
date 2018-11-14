@@ -14,7 +14,7 @@ namespace
 	class SolutionKittysCalculationOnATree : public ICentroidDecompositionCallBack
 	{
 	protected:
-		BaseTree tree;
+		TBaseTree tree;
 		LCA lca;
 		vector<TModular> results;
 		vector<unordered_map<unsigned, vector<unsigned>>> sets;

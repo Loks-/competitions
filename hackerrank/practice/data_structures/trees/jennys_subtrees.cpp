@@ -12,7 +12,7 @@ int main_jennys_subtrees()
 {
 	unsigned n, r;
 	cin >> n >> r;
-	BaseTree tree(n), tree_temp;
+	TBaseTree tree(n), tree_temp;
 	tree.ReadEdges();
 	unordered_set<size_t> hash_set;
 	vector<bool> keep(n);

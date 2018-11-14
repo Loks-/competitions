@@ -10,7 +10,7 @@ class BaseSubgraph
 protected:
 	template<class TBaseGraph>
 	static void UpdateRoot(const TBaseGraph& graph, unsigned new_nvertices, const std::vector<unsigned>& old_to_new, TBaseGraph& output) {}
-	static void UpdateRoot(const BaseTree& graph, unsigned new_nvertices, const std::vector<unsigned>& old_to_new, BaseTree& output)
+	static void UpdateRoot(const TBaseTree& graph, unsigned new_nvertices, const std::vector<unsigned>& old_to_new, TBaseTree& output)
 	{
 		unsigned root_new = old_to_new[graph.GetRoot()];
 		output.SetRoot((root_new >= new_nvertices) ? 0 : root_new);

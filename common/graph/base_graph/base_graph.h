@@ -1,7 +1,6 @@
 #pragma once
 
 #include <iostream>
-#include <queue>
 #include <vector>
 
 const static unsigned CNone = unsigned(-1);

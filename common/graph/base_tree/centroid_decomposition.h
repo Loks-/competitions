@@ -11,17 +11,17 @@ class CentroidDecomposition
 {
 protected:
 	// Edges from smaller groups to parent are removed.
-	BaseTree tree;
+	TBaseTree tree;
 	BaseTreeNodesInfo info;
 	std::vector<unsigned> group, group_root;
 	std::stack<unsigned> vertices_to_check;
 
 public:
-	const BaseTree& GetCurrentTree() const { return tree; }
+	const TBaseTree& GetCurrentTree() const { return tree; }
 	const std::vector<unsigned>& GetGroupMap() const { return group; }
 
 protected:
-	CentroidDecomposition(const BaseTree& _tree) : tree(_tree)
+	CentroidDecomposition(const TBaseTree& _tree) : tree(_tree)
 	{
 		unsigned n = tree.Size();
 		group.resize(n, 0);
@@ -113,7 +113,7 @@ protected:
 
 public:
 	template<class TCentroidDecompositionCallBack>
-	static void Run(const BaseTree& tree, TCentroidDecompositionCallBack& callback)
+	static void Run(const TBaseTree& tree, TCentroidDecompositionCallBack& callback)
 	{
 		CentroidDecomposition cd(tree);
 		cd.InitParentAndSubtreeSizes();

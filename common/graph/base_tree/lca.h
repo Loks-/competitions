@@ -34,7 +34,7 @@ protected:
 
 public:
 	LCA() : n(0), n2p(1) {}
-	LCA(const BaseTree& g) { Build(g); }
+	template<class TTBaseTree> LCA(const TTBaseTree& g) { Build(g); }
 
 	void Init()
 	{
@@ -47,7 +47,8 @@ public:
 		deep.resize(n);
 	}
 
-	void Build(const BaseTree& g)
+	template<class TTBaseTree>
+	void Build(const TTBaseTree& g)
 	{
 		n = g.Size();
 		Init();
@@ -56,7 +57,8 @@ public:
 	}
 
 protected:
-	void DFS1(const BaseTree& g)
+	template<class TTBaseTree>
+	void DFS1(const TTBaseTree& g)
 	{
 		std::stack<unsigned> s;
 		std::vector<bool> visited(n, false);
@@ -93,7 +95,8 @@ protected:
 		}
 	}
 
-	void DFS2(const BaseTree& g)
+	template<class TTBaseTree>
+	void DFS2(const TTBaseTree& g)
 	{
 		std::stack<unsigned> s;
 		for (s.push(g.GetRoot()); !s.empty(); )

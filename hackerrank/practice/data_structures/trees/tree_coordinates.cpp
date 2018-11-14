@@ -10,7 +10,7 @@ int main_tree_coordinates()
 {
 	unsigned n, m;
 	cin >> n >> m;
-	BaseTree t(n);
+	TBaseTree t(n);
 	t.ReadEdges();
 	vector<unsigned> vd = GetDeep(t), vdp1, vdp2;
 	LCA lca;

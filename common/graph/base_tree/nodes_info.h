@@ -11,7 +11,8 @@ public:
     unsigned root;
     std::vector<unsigned> parent, deep, preorder, subtree_size;
 
-    void Init(const BaseTree& tree, unsigned _root)
+    template <class TTBaseTree>
+    void Init(const TTBaseTree& tree, unsigned _root)
     {
         root = _root;
         unsigned size = tree.Size(), timer = 0;
@@ -47,8 +48,8 @@ public:
         }
     }
 
-    void Init(const BaseTree& tree) { Init(tree, tree.GetRoot()); }
+    template <class TTBaseTree> void Init(const TTBaseTree& tree) { Init(tree, tree.GetRoot()); }
     BaseTreeNodesInfo() : root(CNone) {}
-    BaseTreeNodesInfo(const BaseTree& tree) { Init(tree); }
-    BaseTreeNodesInfo(const BaseTree& tree, unsigned _root) { Init(tree, _root); }
+    template <class TTBaseTree> BaseTreeNodesInfo(const TTBaseTree& tree) { Init(tree); }
+    template <class TTBaseTree> BaseTreeNodesInfo(const TTBaseTree& tree, unsigned _root) { Init(tree, _root); }
 };

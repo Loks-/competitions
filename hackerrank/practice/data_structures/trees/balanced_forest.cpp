@@ -12,7 +12,7 @@ namespace {
 	{
 		unsigned n;
 		vector<int64_t> vc;
-		BaseTree t;
+		TBaseTree t;
 		vector<int64_t> vstc;
 
 		int64_t RunR(unsigned node, unsigned parent)

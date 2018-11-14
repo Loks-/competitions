@@ -4,10 +4,11 @@
 #include <iostream>
 #include <vector>
 
-class BaseTree : public BaseUndirectedGraph
+template <class TGraph>
+class BaseTree : public TGraph
 {
 public:
-	using TBase = BaseUndirectedGraph;
+	using TBase = TGraph;
 	using TSelf = BaseTree;
 
 protected:
@@ -37,3 +38,5 @@ public:
 		}
 	}
 };
+
+using TBaseTree = BaseTree<BaseUndirectedGraph>;

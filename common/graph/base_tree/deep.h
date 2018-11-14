@@ -3,4 +3,5 @@
 #include "base_tree.h"
 #include "../base_graph/distance.h"
 
-inline std::vector<unsigned> GetDeep(const BaseTree& tree) { return GetDistancesFromSource(tree, tree.GetRoot()); }
+template<class TTBaseTree>
+inline std::vector<unsigned> GetDeep(const TTBaseTree& tree) { return GetDistancesFromSource(tree, tree.GetRoot()); }

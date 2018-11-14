@@ -14,7 +14,7 @@ int main_matrix_tree()
 	unsigned N;
     cin >> N;
     vector<TModular> vw = ReadVector<TModular>(N);
-    BaseTree tree(N);
+    TBaseTree tree(N);
     tree.ReadEdges();
 
     std::function<TModular(unsigned, unsigned, TModular)> SolveR = [&](unsigned node, unsigned p, TModular pw) -> TModular
