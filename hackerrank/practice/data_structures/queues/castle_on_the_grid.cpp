@@ -47,7 +47,7 @@ int main_castle_on_the_grid()
 	{
 		unsigned i1, i2, j1, j2;
 		cin >> i1 >> j1 >> i2 >> j2;
-		auto vd = GetDistancesFromSource(g, (i1 + 1) * N2 + (j1 + 1));
+		auto vd = GetEdgeDistancesFromSource(g, (i1 + 1) * N2 + (j1 + 1));
 		cout << vd[(i2 + 1) * N2 + (j2 + 1)] << endl;
 	}
 	return 0;

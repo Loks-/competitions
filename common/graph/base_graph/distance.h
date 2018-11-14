@@ -3,10 +3,10 @@
 #include <queue>
 #include <vector>
 
-// Return distance to each vertex from required vertex.
+// Return distance (as number of edges) to each vertex from required vertex.
 // If some vertex is unreachable it returns -1 for it.
 template<class TGraph>
-inline std::vector<unsigned> GetDistancesFromSource(const TGraph& g, unsigned source)
+inline std::vector<unsigned> GetEdgeDistancesFromSource(const TGraph& g, unsigned source)
 {
     const unsigned none = -1;
     std::vector<unsigned> d(g.Size(), none);

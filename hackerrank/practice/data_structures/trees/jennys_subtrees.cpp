@@ -19,7 +19,7 @@ int main_jennys_subtrees()
 	vector<unsigned> distance;
 	for (unsigned i = 0; i < n; ++i)
 	{
-		distance = GetDistancesFromSource(tree, i);
+		distance = GetEdgeDistancesFromSource(tree, i);
 		for (unsigned j = 0; j < n; ++j)
 			keep[j] = (distance[j] <= r);
 		BaseSubgraph::CreateSubgraph(tree, keep, tree_temp);

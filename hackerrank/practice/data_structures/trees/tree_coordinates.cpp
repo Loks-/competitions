@@ -30,13 +30,13 @@ int main_tree_coordinates()
 		if (vd[i] > vd[bp1])
 			bp1 = i;
 	}
-	vdp1 = GetDistancesFromSource(t, bp1);
+	vdp1 = GetEdgeDistancesFromSource(t, bp1);
 	for (unsigned i = 1; i < n; ++i)
 	{
 		if (vdp1[i] > vdp1[bp2])
 			bp2 = i;
 	}
-	vdp2 = GetDistancesFromSource(t, bp2);
+	vdp2 = GetEdgeDistancesFromSource(t, bp2);
 
 	unsigned adj = 2 * vdp1[bp2];
 	vector<vector<unsigned>> vl11(5 * adj), vl12(5 * adj), vl21(5 * adj), vl22(5 * adj);
