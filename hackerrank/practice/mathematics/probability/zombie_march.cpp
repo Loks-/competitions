@@ -18,7 +18,7 @@ int main_zombie_march()
         graph.ReadEdges(m, true);
         vector<double> va = ReadVector<double>(n);
         
-        // Base solution. Works only for connected non-bipartite graphs.
+        // Base solution. Works only for connected non-bipartite graphs and (k >> n).
         double sa = accumulate(va.begin(), va.end(), 0.0);
         vector<double> vf(n);
         for (unsigned i = 0; i < n; ++i)
