@@ -12,7 +12,7 @@ protected:
     int S(uint64_t y) const
     {
         uint64_t v = USqrt(y), k = y / (v + 1);
-        int r = 1 + k * mertens.Mertens(v);
+        int r = 1 + int(k) * mertens.Mertens(v);
         for (uint64_t n = y / u + 1; n <= k; ++n)
             r -= mertens.Mertens(y / n);
         for (uint64_t n = 1; n <= v; ++n)
