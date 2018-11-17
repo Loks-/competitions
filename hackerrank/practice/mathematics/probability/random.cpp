@@ -1,23 +1,19 @@
 // https://www.hackerrank.com/challenges/random
 
+#include "common/vector/read.h"
 #include "common/stl/base.h"
 
 #include <cmath>
 #include <iomanip>
+#include <numeric>
 
 int main_random()
 {
 	cout << setprecision(6) << fixed;
 	unsigned n, a, b;
 	cin >> n >> a >> b;
-	vector<double> v(n), vt(n);
-	double s = 0, m;
-	for (unsigned i = 0; i < n; ++i)
-	{
-		cin >> v[i];
-		s += v[i];
-	}
-	m = s / n;
+	vector<double> v = ReadVector<double>(n), vt(n);
+	double s = accumulate(v.begin(), v.end(), 0.), m = s / n;
 	double w0 = pow((n - 3.0) / (n - 1.0), a);
 	for (unsigned i = 0; i < n; ++i)
 		v[i] = w0 * v[i] + (1 - w0) * m;
