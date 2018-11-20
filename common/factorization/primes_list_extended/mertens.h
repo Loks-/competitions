@@ -2,7 +2,7 @@
 
 #include "mobius.h"
 #include "../primes_list.h"
-#include "../../assert.h"
+#include "../../base.h"
 #include <vector>
 
 template<class TPrimesList>
