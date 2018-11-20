@@ -1,44 +1,59 @@
 // https://www.hackerrank.com/challenges/colorful-polygon
 
-#include "common/modular/static/fibonacci.h"
 #include "common/modular/static/modular_io.h"
 #include "common/vector/read.h"
 #include "common/stl/base.h"
 
 using TModular = Modular<>;
-using TFibonacci = ModularFibonacci<TModular>;
 
 int main_colorful_polygon()
 {
-    TFibonacci f;
-    unsigned n, i, j;
+    TModular two = 2;
+    unsigned n, i, j, u = -1u;
     cin >> n;
     vector<unsigned> v = ReadVector<unsigned>(n);
-    TModular r = 1;
-    for (i = 0; (i < n) && (v[i] == v[(i + n - 1) % n]);) ++i;
-    if (i == n)
+    vector<unsigned> vlast(n, n), vlast_map(n + 1, u);
+    unsigned best_i = 0, best_d = n, different_values = 0;
+    for (unsigned i = 0; i < 2*n; ++i)
     {
-        r = 7;
+        unsigned in = i % n, j = v[in];
+        if (vlast_map[j] != u)
+        {
+            vlast[in] = i - vlast_map[j];
+            if (best_d > vlast[in])
+            {
+                best_d = vlast[in];
+                best_i = in;
+            }
+        }
+        else
+            different_values += 1;
+        vlast_map[j] = i;
     }
+    if (different_values == n)
+        cout << two.PowU(n) - (n + 1) << endl;
+    else if (different_values == n - 1)
+        cout << two.PowU(n) - two.PowU(best_d - 1) - two.PowU(n - best_d - 1) - 1 << endl;
     else
     {
-        vector<unsigned> vt(4, 0);
-        for (; i < n; i += j)
+        TModular s = 0;
+        unsigned bis = best_i + n - vlast[best_i];
+        vector<TModular> vc(n), vcs(n);
+        for (unsigned is = bis; is <= best_i + n; ++is)
         {
-            for (j = 1; v[(i + j) % n] == v[i];) ++j;
-            r *= f(j + 2);
-            vt[min(j, 4u) - 1] += 1;
+            unsigned l = is;
+            fill(vc.begin(), vc.end(), 0);
+            fill(vcs.begin(), vcs.end(), 0);
+            vcs[is % n] = vc[is % n] = 1;
+            for (unsigned i = is + 1; i < is + n; ++i)
+            {
+                vc[i % n] = vcs[(i - 1) % n] - vcs[(l - 1) % n];
+                vcs[i % n] = vcs[(i - 1) % n] + vc[i % n];
+                l = max(l, i -  vlast[i % n]);
+            }
+            s += vcs[(bis - 1) % n] - vcs[(l - 1) % n];
         }
-        if ((vt[3] == 0) && (vt[1] + vt[2] <= 1))
-        {
-            if (vt[1] == 1)
-                r -= 2;
-            else if (vt[2] == 1)
-                r -= 1;
-            else // (vt[1] == 0) && (vt[2] == 0)
-                r -= (n + 1);
-        }
+        cout << s << endl;
     }
-    cout << r << endl;
 	return 0;
 }
