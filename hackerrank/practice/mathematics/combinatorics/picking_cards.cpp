@@ -20,10 +20,7 @@ int main_picking_cards()
         for (unsigned i = 0, j = 0; i < n; ++i)
         {
             for (; v[j] <= i;) ++j;
-            if (j <= i)
-                r = 0;
-            else
-                r *= j - i;
+            r *= max(i, j) - i;
         }
         cout << r << endl;
     }
