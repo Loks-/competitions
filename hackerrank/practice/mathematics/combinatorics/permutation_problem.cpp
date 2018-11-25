@@ -13,23 +13,24 @@ int main_permutation_problem()
     TFactorial f;
     unsigned maxd = 11, maxn = 1001;
     vector<vector<vector<TModular>>> v(maxd, vector<vector<TModular>>(maxn, vector<TModular>(maxn)));
-    v[0][0][0] = TModular(9)/TModular(10);
+    v[0][0][0] = f.Get(9) * 9; // 9/10 * 10!
     for (unsigned d = 1; d < maxd; ++d)
     {
+        TModular vd0 = v[0][0][0] * f.GetI(d);
         for (unsigned k = 0; k < maxn; ++k)
-            v[d][0][k] = v[0][0][0];
+            v[d][0][k] = vd0;
         for (unsigned n = 1; n < maxn; ++n)
         {
             for (unsigned k = 1; k <=n; ++k)
             {
-                TModular s = 0, fik = f.GetI(k), fikpe = 1;
+                TModular s = v[d][n][k-1], fik = f.GetI(k), fikpe = fik;
                 unsigned nek = n;
-                for (unsigned e = 0; e <= d; ++e)
+                for (unsigned e = 1; e <= d; ++e)
                 {
-                    if (e * k > n) break;
-                    s += f.BinomialCoefficient(d, e) * fikpe * v[d - e][nek][min(nek, k - 1)];
-                    fikpe *= fik;
+                    if (k > nek) break;
                     nek -= k;
+                    s += f.GetI(e) * fikpe * v[d - e][nek][min(nek, k - 1)];
+                    fikpe *= fik;
                 }
                 v[d][n][k] = s;
             }
