@@ -1,5 +1,6 @@
 // https://www.hackerrank.com/challenges/gcd-mocktail
 
+#include "common/local.h"
 #include "common/modular/static/modular_io.h"
 #include "common/polynomial/base_newton_polynomial.h"
 #include "common/polynomial/utils/sum_of_powers.h"
@@ -12,14 +13,14 @@ int main_gcd_mocktail__polynomial()
 {
     // Precalc polynoms.
     // O(maxl^3) ~ 10^6
-    unsigned maxl = 100;
+    unsigned maxl = local_run ? 10 : 100;
     vector<TPolynom> vpoly(maxl+1);
     for (unsigned l = 0; l < vpoly.size(); ++l)
         vpoly[l] = GetSumOfPowers<TModular>(l);
 
     // Precalc sums
     // O(maxl * precalc_n) ~ 10^6
-    unsigned precalc_n = 10000;
+    unsigned precalc_n = local_run ? 100 : 10000;
     vector<vector<TModular>> vcache(maxl+1, vector<TModular>(precalc_n + 1, 1));
     vcache[0][0] = 0;
     for (unsigned l = 1; l <= maxl; ++l)

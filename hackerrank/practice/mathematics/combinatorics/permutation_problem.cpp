@@ -1,5 +1,6 @@
 // https://www.hackerrank.com/challenges/permutation-problem
 
+#include "common/local.h"
 #include "common/modular/static/factorial.h"
 #include "common/modular/static/modular_io.h"
 #include "common/stl/base.h"
@@ -11,7 +12,7 @@ int main_permutation_problem()
 {
     const uint64_t M = TModular::GetMod();
     TFactorial f;
-    unsigned maxd = 11, maxn = 1001;
+    unsigned maxd = 11, maxn = local_run ? 10 : 1001;
     vector<vector<vector<TModular>>> v(maxd, vector<vector<TModular>>(maxn, vector<TModular>(maxn)));
     v[0][0][0] = f.Get(9) * 9; // 9/10 * 10!
     for (unsigned d = 1; d < maxd; ++d)

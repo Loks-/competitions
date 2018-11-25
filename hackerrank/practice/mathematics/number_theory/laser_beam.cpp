@@ -1,6 +1,7 @@
 // https://www.hackerrank.com/challenges/laser-beam
 
 #include "common/factorization/mertens.h"
+#include "common/local.h"
 #include "common/modular/static/modular_io.h"
 #include "common/numeric/utils/usqrt.h"
 #include "common/stl/base.h"
@@ -9,8 +10,8 @@ using TModular = Modular<>;
 
 int main_laser_beam()
 {
-    Mertens mertens(3000000);
-    uint64_t N0 = 1000000;
+    Mertens mertens(local_run ? 3000 : 3000000);
+    uint64_t N0 = local_run ? 1000 : 1000000;
     vector<TModular> vf(N0), vfs(N0);
     for (uint64_t i = 1; i < N0; ++i)
         vf[i] = 24 * i * i + 2;

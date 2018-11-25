@@ -6,9 +6,6 @@
 #include <string>
 #include <unordered_set>
 
-// TODO:
-//   Support Unix directories
-
 static std::unordered_set<std::string> used_files, used_stl_files;
 
 static std::string JoinPath(const std::string& sdir, const std::string& sfile)
@@ -99,6 +96,11 @@ static void AddFile(const std::string& input_filename, std::ofstream& output, bo
 		if (line.substr(0, 8) == "int main")
 		{
 			output << "int main()" << std::endl;
+			continue;
+		}
+		if (line == "const static bool local_run = true;")
+		{
+			output << "const static bool local_run = false;" << std::endl;
 			continue;
 		}
 		output << line << std::endl;
