@@ -138,7 +138,7 @@ bool TesterBinarySearchTree::TestAllTrees()
 bool TestBinarySearchTree(bool time_test)
 {
 	Timer t;
-	TesterBinarySearchTree tbst(time_test ? 10000000 : 10000, time_test ? TesterBinarySearchTree::time_test : TesterBinarySearchTree::hash_test);
+	TesterBinarySearchTree tbst(time_test ? 10000000 : 1000, time_test ? TesterBinarySearchTree::time_test : TesterBinarySearchTree::hash_test);
 	bool result = tbst.TestAllTrees();
 	if (result && time_test)
 		std::cout << "Total time = " << t.GetMilliseconds() << std::endl;
