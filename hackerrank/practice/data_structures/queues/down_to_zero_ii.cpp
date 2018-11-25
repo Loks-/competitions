@@ -1,10 +1,11 @@
 // https://www.hackerrank.com/challenges/down-to-zero-ii
 
+#include "common/local.h"
 #include "common/stl/base.h"
 
 int main_down_to_zero_ii()
 {
-	unsigned MN = 1000000 + 1;
+	unsigned MN = local_run ? 1000 : 1000000 + 1;
 	vector<unsigned> v(MN, MN);
 	v[0] = 0;
 	for (unsigned i = 0; i < MN - 1; ++i)

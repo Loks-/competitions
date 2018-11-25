@@ -1,5 +1,6 @@
 // https://www.hackerrank.com/challenges/gcd-mocktail
 
+#include "common/local.h"
 #include "common/modular/static/modular_io.h"
 #include "common/modular/static/sum_of_powers.h"
 #include "common/stl/base.h"
@@ -10,7 +11,7 @@ int main_gcd_mocktail()
 {
     // Precalc sums
     // O(maxl * precalc_n) ~ 10^6
-    unsigned maxl = 100, precalc_n = 10000;
+    unsigned maxl = local_run ? 10 : 100, precalc_n = local_run ? 100 : 10000;
     vector<vector<TModular>> vcache(maxl+1, vector<TModular>(precalc_n + 1, 1));
     vcache[0][0] = 0;
     for (unsigned l = 1; l <= maxl; ++l)
