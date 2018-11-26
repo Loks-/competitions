@@ -8,11 +8,12 @@
 class LogDouble
 {
 protected:
+    constexpr static double log0 = -std::numeric_limits<double>::infinity();
     double value;
 
 public:
-    static double safe_log(double x) { assert(x >= 0.); return (x == 0.) ? -std::numeric_limits<double>::infinity() : log(x); }
-    LogDouble() : value(-std::numeric_limits<double>::infinity()) {}
+    static double safe_log(double x) { assert(x >= 0.); return (x == 0.) ? log0 : log(x); }
+    LogDouble() : value(log0) {}
     LogDouble(double x) { value = safe_log(x); }
     
     double Get() const { return exp(value); }
@@ -30,12 +31,15 @@ public:
 
     LogDouble operator+(const LogDouble& r) const
     {
+        if (value == log0) return r;
+        if (r.value == log0) return *this;
         double v1 = std::max(value, r.value); 
         double v2 = std::min(value, r.value);
         return MakeLog(v1 + log(1.0 + exp(v2 - v1)));
     }
     LogDouble operator-(const LogDouble& r) const
-    { 
+    {
+        if (r.value == log0) return *this;
         if (value == r.value) return LogDouble();
         assert(r.value < value);
         return MakeLog(value + log(1.0 - exp(r.value - value)));
