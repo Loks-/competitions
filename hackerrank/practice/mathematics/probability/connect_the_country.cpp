@@ -53,14 +53,10 @@ int main_connect_the_country()
 						unsigned er = (ir * (ir - 1)) / 2;
 						if ((jl > el) || (jr > er))
 							continue;
-						double prec = log(pl) + log(pr);
-						double pedges = f.Get(e - j).GetLog() - f.Get(e).GetLog();
-						pedges += log(double(il)) + log(double(ir)); // last edge
-						pedges += f.BinomialCoefficient(j - 1, jl).GetLog();
-						pedges += f.Get(el).GetLog() - f.Get(el - jl).GetLog();
-						pedges += f.Get(er).GetLog() - f.Get(er - jr).GetLog();
-						double pf = prec + pedges + f.BinomialCoefficient(i, il).GetLog() - log(2.);
-						v[i].p[j] += exp(pf);
+						LogDouble pf = LogDouble(pl * pr) * f.Get(e - j) / f.Get(e) * LogDouble(il) * LogDouble(ir)
+							* f.BinomialCoefficient(j - 1, jl) * f.Get(el) /  f.Get(el - jl) * f.Get(er) / f.Get(er - jr)
+							* f.BinomialCoefficient(i, il) / 2.0;
+						v[i].p[j] += pf.Get();
 					}
 				}
 				v[i].sp[j] = min(v[i].sp[j - 1] + v[i].p[j], 1.0);
