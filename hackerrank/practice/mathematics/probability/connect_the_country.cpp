@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/connect-the-country
 
-#include "common/numeric/factorial_double.h"
+#include "common/numeric/log_double_factorial.h"
 #include "common/stl/base.h"
 
 int main_connect_the_country()
@@ -14,7 +14,7 @@ int main_connect_the_country()
         }
     };
 
-	FactorialDouble f;
+	LogDoubleFactorial f;
 	unsigned N;
 	cin >> N;
 	vector<CS> v;
@@ -54,12 +54,12 @@ int main_connect_the_country()
 						if ((jl > el) || (jr > er))
 							continue;
 						double prec = log(pl) + log(pr);
-						double pedges = f.GetLog(e - j) - f.GetLog(e);
+						double pedges = f.Get(e - j).GetLog() - f.Get(e).GetLog();
 						pedges += log(double(il)) + log(double(ir)); // last edge
-						pedges += f.BinomialCoefficientLog(j - 1, jl);
-						pedges += f.GetLog(el) - f.GetLog(el - jl);
-						pedges += f.GetLog(er) - f.GetLog(er - jr);
-						double pf = prec + pedges + f.BinomialCoefficientLog(i, il) - log(2.);
+						pedges += f.BinomialCoefficient(j - 1, jl).GetLog();
+						pedges += f.Get(el).GetLog() - f.Get(el - jl).GetLog();
+						pedges += f.Get(er).GetLog() - f.Get(er - jr).GetLog();
+						double pf = prec + pedges + f.BinomialCoefficient(i, il).GetLog() - log(2.);
 						v[i].p[j] += exp(pf);
 					}
 				}

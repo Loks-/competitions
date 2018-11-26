@@ -1,8 +1,8 @@
 // https://www.hackerrank.com/challenges/assignment
 
 #include "common/local.h"
-#include "common/numeric/factorial_double.h"
-#include "common/numeric/log_double.h"
+#include "common/numeric/log_double_factorial.h"
+#include "common/numeric/log_double_io.h"
 #include "common/statistics/stat_m1.h"
 #include "common/stl/base.h"
 
@@ -12,7 +12,7 @@
 
 int main_assignment_problem()
 {
-    FactorialDouble f;
+    LogDoubleFactorial f;
     unsigned maxm = local_run ? 65 : 251, maxm2 = maxm * maxm;
     vector<double> v(maxm * maxm * maxm); // layers max_length m
     for (unsigned l = 1; l < maxm; ++l)
@@ -26,7 +26,7 @@ int main_assignment_problem()
             for (unsigned ml = (m - 1) / l + 1; ml < ml_end; ++ml)
             {
                 if (l > 1 && 2 * ml > m)
-                    v[l * maxm2 + ml * maxm + m] = f.BinomialCoefficient(m - ml - 1, l - 2) * l;
+                    v[l * maxm2 + ml * maxm + m] = f.BinomialCoefficient(m - ml - 1, l - 2).Get() * l;
                 double c = v[l * maxm2 + ml * maxm + m];
                 for (unsigned k = 1; k < k_end; ++k)
                     v[(l + 1) * maxm2 + max(k, ml) * maxm + (m + k)] += c;
@@ -48,7 +48,7 @@ int main_assignment_problem()
             for (unsigned ml = 1; ml + l - 1 <= M; ++ml)
                 s.AddSample(double(ml), b * v[l* maxm2 + ml *maxm + M]);
         }
-        cout << s.Mean().Get() << endl;
+        cout << s.Mean() << endl;
 	}
 	return 0;
 }
