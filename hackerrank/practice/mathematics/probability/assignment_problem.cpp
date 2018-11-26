@@ -10,7 +10,7 @@
 
 int main_assignment_problem()
 {
-    unsigned maxm = 65, maxm2 = maxm * maxm; //251;
+    unsigned maxm = 251, maxm2 = maxm * maxm; //251;
     vector<LogDouble> v(maxm * maxm * maxm); // layers max_length m
     for (unsigned l = 1; l < maxm; ++l)
         v[1 * maxm2 + l * maxm + l] = 1.0;
@@ -18,10 +18,11 @@ int main_assignment_problem()
     {
         for (unsigned l = 1; l <= m; ++l)
         {
-            for (unsigned ml = 1; ml <= m; ++ml)
+            unsigned ml_end = m - l + 2;
+            for (unsigned ml = (m - 1) / l + 1; ml < ml_end; ++ml)
             {
-                LogDouble c = v[l * maxm2 + ml * maxm + m];
-                if (c.GetLog() < -0.5) continue; // c == 0
+                LogDouble c = v[l * maxm2 + ml * maxm + m];                
+                // if (c.GetLog() < -0.5) { cout << m << "\t" << l << "\t" << ml << endl; continue; }// c == 0
                 for (unsigned k = 1; m + k < maxm; ++k)
                     v[(l + 1) * maxm2 + max(k, ml) * maxm + (m + k)] += c;
             }
@@ -39,12 +40,8 @@ int main_assignment_problem()
         for (unsigned l = 1; l <= min(M, N); ++l)
         {
             b *= double(N - l + 1) / double(l);
-            for (unsigned ml = 1; ml <= M; ++ml)
-            {
-                LogDouble w = v[l* maxm2 + ml *maxm + M];
-                if (w.GetLog() < -0.5) continue;
-                s.AddSample(double(ml), w * b);
-            }
+            for (unsigned ml = 1; ml + l - 1 <= M; ++ml)
+                s.AddSample(double(ml), v[l* maxm2 + ml *maxm + M] * b);
         }
         cout << s.Mean().Get() << endl;
 	}
