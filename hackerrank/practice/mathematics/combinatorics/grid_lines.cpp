@@ -21,9 +21,7 @@ int main_grid_lines()
             {
                 if (GCD(dx, dy) != 1) continue;
                 for (unsigned l = k - 1; (dx * l < n) && (dy * l < m); ++l)
-                {
                     s += f.BinomialCoefficient(l - 1, k - 2) * (n - dx * l) * (m - dy * l) * 2;
-                }
             }
         }
         return s;
