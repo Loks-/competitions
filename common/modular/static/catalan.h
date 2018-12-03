@@ -3,13 +3,14 @@
 #include "factorial.h"
 
 template <class TModular>
-class ModularCatalan
+class ModularCatalan : public ModularFactorial<TModular, true>
 {
-protected:
-	ModularFactorial<TModular, true> f;
-
 public:
-    TModular Get(unsigned n) { return f.Get(2*n) * f.GetI(n + 1) * f.GetI(n); }
-	TModular operator()(unsigned n) { return Get(n); }
-    TModular GetF(unsigned n) { return f(n); }
+    using TBase = ModularFactorial<TModular, true>;
+
+	TModular Catalan(unsigned n)
+	{
+		TBase::Adjust(2 * n + 1);
+		return TBase::vf[2 * n] * TBase::vfi[n] * TBase::vfi[n + 1];
+	}
 };
