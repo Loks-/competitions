@@ -23,8 +23,8 @@ inline TModular ModularFactorialExtendedPrime(uint64_t n, ModularFactorial<TModu
 }
 
 template<class TModular>
-inline TModular ModularFactorialExtendedPrime(uint64_t n)
+inline TModular ModularFactorialExtendedPrime(uint64_t n, bool inverted = false)
 {
     static ModularFactorial<TModular, true> f;
-    return ModularFactorialExtendedPrime(n, f);
+    return ModularFactorialExtendedPrime(n, f, inverted);
 }
