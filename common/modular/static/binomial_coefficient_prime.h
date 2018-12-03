@@ -21,8 +21,8 @@ inline TModular ModularPrimeBinomialCoefficient(uint64_t n, uint64_t k, ModularF
 }
 
 template<class TModular>
-inline uint64_t ModularPrimeBinomialCoefficient(uint64_t n, uint64_t k)
+inline TModular ModularPrimeBinomialCoefficient(uint64_t n, uint64_t k)
 {
-    ModularFactorial<TModular> f;
+    static ModularFactorial<TModular> f;
     return ModularPrimeBinomialCoefficient(n, k, f);
 }
