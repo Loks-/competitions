@@ -1,8 +1,7 @@
 // https://www.hackerrank.com/challenges/manasa-and-combinatorics
 
-#include "common/modular/static/factorial_extended_prime.h"
+#include "common/modular/static/binomial_coefficient_prime.h"
 #include "common/modular/static/modular_io.h"
-#include "common/numeric/utils/factorial_prime_power.h"
 #include "common/stl/base.h"
 
 using TModular = TModular_P32<99991>;
@@ -16,10 +15,7 @@ int main_manasa_and_combinatorics()
     {
         uint64_t n;
         cin >> n;
-        unsigned pp = FactorialPrimePower(3 * n, p) - FactorialPrimePower(2 * n + 2, p) - FactorialPrimePower(n, p);
-        cout << (pp ? TModular(0) :
-            ModularFactorialExtendedPrime<TModular>(3 * n, false) * ModularFactorialExtendedPrime<TModular>(2 * n + 2, true) * ModularFactorialExtendedPrime<TModular>(n, true) * (TModular(n) * n + n + 2))
-            << endl;
+        cout << ModularPrimeBinomialCoefficient<TModular>(3 * n, n) - ModularPrimeBinomialCoefficient<TModular>(3 * n, n - 1) * 2 + ModularPrimeBinomialCoefficient<TModular>(3 * n, n - 2) << endl;
     }
 	return 0;
 }
