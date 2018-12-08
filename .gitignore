@@ -16,6 +16,8 @@ hackerrank/proxy_gen.h
 hackerrank/proxy_gen.cxx
 ipcs/proxy_gen.h
 ipcs/proxy_gen.cxx
+timus/proxy_gen.h
+timus/proxy_gen.cxx
 
 # Project specific files
 utils/current_solution.cpp
