@@ -1,4 +1,4 @@
-// https://www.hackerrank.com/challenges/cyclicquadruples
+// https://www.hackerrank.com/challenges/value-of-all-permutations
 
 #include "common/modular/proxy/factorial.h"
 #include "common/modular/proxy/modular_proxy.h"
