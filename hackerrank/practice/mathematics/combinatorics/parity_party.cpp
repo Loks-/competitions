@@ -1,4 +1,4 @@
-// https://www.hackerrank.com/challenges/alien-flowers
+// https://www.hackerrank.com/challenges/parity-party
 
 #include "common/modular/static/factorial.h"
 #include "common/modular/static/modular_io.h"
