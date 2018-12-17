@@ -43,7 +43,7 @@ public:
 		{
 			std::vector<TModular> v(k);
 			for (unsigned i = 0; i < k; ++i)
-				v[i] = base_roots[i * maxn / k];
+				v[i] = base_roots[i * (maxn / k)];
 			roots.push_back(v);
 		}
 
