@@ -10,11 +10,11 @@ using TFFT = ModularFFT<TModular>;
 int main_parity_party()
 {
     TModular one = 1;
-    TFFT fft;
 	unsigned n, a, b, c, s, l;
 	cin >> n >> a >> b >> c;
     s = a + b + c;
-    for (l = 1; l <= a + b; l *= 2);
+    l = TFFT::GetFFTN(a + b + 1);
+    TFFT fft(l);
     vector<TModular> va_fft = fft.FFT(l, {one, -one});
     vector<TModular> vb_fft = fft.FFT(l, {one, one});
     vector<TModular> vf_fft(l);
