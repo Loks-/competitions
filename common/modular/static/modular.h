@@ -8,6 +8,7 @@ class Modular
 public:
 	using TValue = uint64_t;
 	using TBase = ModularStaticProxy<mod, is_prime, is_32bit>;
+	using TArithmetic = typename TBase::TBase;
 	using TSelf = Modular<mod, is_prime, is_32bit>;
 
 public:
