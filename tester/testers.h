@@ -6,3 +6,4 @@ bool TestDisjointSet();
 bool TestInterpolation();
 bool TestMatrixMult();
 bool TestMertens();
+bool TestModularFFT();

@@ -82,6 +82,8 @@ public:
 
     ModularFFT(unsigned n = 0) { Init(n); }
 
+    unsigned GetMaxN() const { return maxn; }
+
     TVector FFT(unsigned n, const TVector& vx) const
 	{
         assert((n > 0) && (maxn % n == 0));

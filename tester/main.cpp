@@ -28,6 +28,8 @@ int main(int nargs, char **pargs)
 			Assert(TestInterpolation());
 		else if (tester_mode == "mertens")
 			Assert(TestMertens());
+		else if (tester_mode == "modular_fft")
+			Assert(TestModularFFT());
 		else if (tester_mode == "time_binary_search_tree")
 			Assert(TestBinarySearchTree(true));
 		else if (tester_mode == "time_disjoint_set")
