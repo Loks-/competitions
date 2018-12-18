@@ -1,8 +1,7 @@
 #pragma once
 
-template<class TInfo>
-class BSTInfoRBTColor : public TInfo
-{
-public:
-	bool is_black = false;
+template <class TInfo>
+class BSTInfoRBTColor : public TInfo {
+ public:
+  bool is_black = false;
 };

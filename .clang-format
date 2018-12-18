@@ -1,0 +1,15 @@
+BasedOnStyle: Google
+
+IncludeCategories:
+  - Regex:           'common/'
+    Priority:        1
+  - Regex:           '<.*>'
+    Priority:        6
+  - Regex:           '\.\./\.\./\.\./'
+    Priority:        5
+  - Regex:           '\.\./\.\./'
+    Priority:        4
+  - Regex:           '\.\./'
+    Priority:        3
+  - Regex:           '.*'
+    Priority:        2
