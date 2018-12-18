@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../base.h"
-#include <vector>
 #include <utility>
+#include <vector>
 
 using TFactorization = std::vector<std::pair<uint64_t, unsigned>>;
