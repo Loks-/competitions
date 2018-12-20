@@ -3,94 +3,142 @@
 #include "vector.h"
 #include <algorithm>
 
-template<class TTValue>
-class Matrix : public Vector<TTValue>
-{
-public:
-	using TValue = TTValue;
-	using TSelf = Matrix<TValue>;
-	using TBase = Vector<TValue>;
+template <class TTValue>
+class Matrix : public Vector<TTValue> {
+ public:
+  using TValue = TTValue;
+  using TSelf = Matrix<TValue>;
+  using TBase = Vector<TValue>;
 
-	using iterator = typename TBase::iterator;
-	using const_iterator = typename TBase::const_iterator;
+  using iterator = typename TBase::iterator;
+  using const_iterator = typename TBase::const_iterator;
 
-protected:
-	unsigned rows;
-	unsigned columns;
+ protected:
+  unsigned rows;
+  unsigned columns;
 
-public:
-    unsigned Rows() const { return rows; }
-    unsigned Columns() const { return columns; }
+ public:
+  unsigned Rows() const { return rows; }
+  unsigned Columns() const { return columns; }
 
-	Matrix(unsigned size) : TBase(size * size), rows(size), columns(size) {}
-	Matrix(unsigned _rows, unsigned _columns) : TBase(_rows * _columns), rows(_rows), columns(_columns) {}
-	Matrix(unsigned _rows, unsigned _columns, const TValue& v) : TBase(_rows * _columns, v), rows(_rows), columns(_columns) {}
-	TSelf& operator=(const TValue& v) { TBase::Fill(v); return *this; }
+  Matrix(unsigned size) : TBase(size * size), rows(size), columns(size) {}
 
-	TValue& operator()(unsigned i, unsigned j) { return TBase::data[i * columns + j]; }
-	const TValue& operator()(unsigned i, unsigned j) const { return TBase::data[i * columns + j]; }
-	iterator GetP(unsigned i, unsigned j) { return TBase::GetP(i * columns + j);}
-	const_iterator GetP(unsigned i, unsigned j) const { return TBase::GetP(i * columns + j);}
-	void swap(TSelf& r) { TBase::swap(r); std::swap(rows, r.rows); std::swap(columns, r.columns); }
+  Matrix(unsigned _rows, unsigned _columns)
+      : TBase(_rows * _columns), rows(_rows), columns(_columns) {}
 
-	void SetDiagonal(const TValue& v)
-	{
-		unsigned diagonal_length = std::min(rows, columns);
-		unsigned shift = columns + 1;
-		for (iterator p = TBase::begin(), pend = p + diagonal_length * shift; p < pend; p += shift) *p = v;
-	}
+  Matrix(unsigned _rows, unsigned _columns, const TValue& v)
+      : TBase(_rows * _columns, v), rows(_rows), columns(_columns) {}
 
-	TSelf& operator+=(const TSelf& v) { TBase::operator+=(v); return *this; }
-	TSelf& operator-=(const TSelf& v) { TBase::operator-=(v); return *this; }
-	TSelf operator+(const TSelf& v) const { TSelf t(*this); t += v; return t; }
-	TSelf operator-(const TSelf& v) const { TSelf t(*this); t -= v; return t; }
+  TSelf& operator=(const TValue& v) {
+    TBase::Fill(v);
+    return *this;
+  }
 
-	void Mult(const TSelf& v, TSelf& output) const
-	{
-        assert((v.rows == columns) && (output.rows == rows) && (output.columns == v.columns));
-        unsigned columns2 = output.columns;
-		output.Clear();
-		const_iterator pA = TBase::begin();
-		for (unsigned i = 0; i < rows; ++i)
-		{
-			for (const_iterator pB = v.begin(), pBend = v.end(); pB < pBend;)
-			{
-				const TValue& vA = *pA++;
-				for (iterator pC = output.GetP(i, 0), pCend = pC + columns2; pC < pCend; )
-					*pC++ += *pB++ * vA;
-			}
-		}
-	}
+  TValue& operator()(unsigned i, unsigned j) {
+    return TBase::data[i * columns + j];
+  }
 
-    void MultAx(const TBase& x, TBase& output) const
-    {
-        assert((x.Size() == columns) && (output.Size() == rows));
-        output.Clear();
-		const_iterator pA = TBase::begin(), pBbegin = x.begin(), pBend = x.end();        
-		for (iterator pO = output.begin(), pOend = output.end(); pO < pOend; ++pO)
-		{
-            for (const_iterator pB = pBbegin; pB < pBend; )
-                *pO += *pA++ * *pB++;
-		}
+  const TValue& operator()(unsigned i, unsigned j) const {
+    return TBase::data[i * columns + j];
+  }
+
+  iterator GetP(unsigned i, unsigned j) { return TBase::GetP(i * columns + j); }
+
+  const_iterator GetP(unsigned i, unsigned j) const {
+    return TBase::GetP(i * columns + j);
+  }
+
+  void swap(TSelf& r) {
+    TBase::swap(r);
+    std::swap(rows, r.rows);
+    std::swap(columns, r.columns);
+  }
+
+  void SetDiagonal(const TValue& v) {
+    unsigned diagonal_length = std::min(rows, columns);
+    unsigned shift = columns + 1;
+    for (iterator p = TBase::begin(), pend = p + diagonal_length * shift;
+         p < pend; p += shift)
+      *p = v;
+  }
+
+  TSelf& operator+=(const TSelf& v) {
+    TBase::operator+=(v);
+    return *this;
+  }
+
+  TSelf& operator-=(const TSelf& v) {
+    TBase::operator-=(v);
+    return *this;
+  }
+
+  TSelf operator+(const TSelf& v) const {
+    TSelf t(*this);
+    t += v;
+    return t;
+  }
+
+  TSelf operator-(const TSelf& v) const {
+    TSelf t(*this);
+    t -= v;
+    return t;
+  }
+
+  void Mult(const TSelf& v, TSelf& output) const {
+    assert((v.rows == columns) && (output.rows == rows) &&
+           (output.columns == v.columns));
+    unsigned columns2 = output.columns;
+    output.Clear();
+    const_iterator pA = TBase::begin();
+    for (unsigned i = 0; i < rows; ++i) {
+      for (const_iterator pB = v.begin(), pBend = v.end(); pB < pBend;) {
+        const TValue& vA = *pA++;
+        for (iterator pC = output.GetP(i, 0), pCend = pC + columns2;
+             pC < pCend;)
+          *pC++ += *pB++ * vA;
+      }
     }
+  }
 
-    TBase operator*(const TBase& x) const { TBase t(rows); MultAx(x, t); return t; }
-	TSelf operator*(const TSelf& v) const { TSelf t(rows, v.columns); Mult(v, t); return t; }
-	TSelf& operator*=(const TSelf& v) { TSelf t(rows, v.columns); Mult(v, t); swap(t); return *this; }
+  void MultAx(const TBase& x, TBase& output) const {
+    assert((x.Size() == columns) && (output.Size() == rows));
+    output.Clear();
+    const_iterator pA = TBase::begin(), pBbegin = x.begin(), pBend = x.end();
+    for (iterator pO = output.begin(), pOend = output.end(); pO < pOend; ++pO) {
+      for (const_iterator pB = pBbegin; pB < pBend;) *pO += *pA++ * *pB++;
+    }
+  }
 
-	TSelf PowU(uint64_t pow) const
-	{
-        assert(rows == columns);
-		TSelf ans(rows, columns); ans.SetDiagonal(TValue(1));
-		TSelf x = *this;
-		for (; pow; pow >>= 1)
-		{
-			if (pow & 1)
-				ans *= x;
-			x *= x;
-		}
-		return ans;
-	}
+  TBase operator*(const TBase& x) const {
+    TBase t(rows);
+    MultAx(x, t);
+    return t;
+  }
+
+  TSelf operator*(const TSelf& v) const {
+    TSelf t(rows, v.columns);
+    Mult(v, t);
+    return t;
+  }
+
+  TSelf& operator*=(const TSelf& v) {
+    TSelf t(rows, v.columns);
+    Mult(v, t);
+    swap(t);
+    return *this;
+  }
+
+  TSelf PowU(uint64_t pow) const {
+    assert(rows == columns);
+    TSelf ans(rows, columns);
+    ans.SetDiagonal(TValue(1));
+    TSelf x = *this;
+    for (; pow; pow >>= 1) {
+      if (pow & 1) ans *= x;
+      x *= x;
+    }
+    return ans;
+  }
 };
 
 using TDMatrix = Matrix<double>;
