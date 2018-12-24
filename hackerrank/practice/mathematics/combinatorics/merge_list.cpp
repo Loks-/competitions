@@ -7,15 +7,13 @@
 using TModular = Modular<>;
 using TFactorial = ModularFactorial<TModular>;
 
-int main_merge_list()
-{
-    TFactorial f;
-    unsigned T, n, m;
-    cin >> T;
-    for (unsigned iT = 0; iT < T; ++iT)
-    {
-        cin >> n >> m;
-        cout << f.BinomialCoefficient(n + m, n) << endl;
-    }
-	return 0;
+int main_merge_list() {
+  TFactorial f;
+  unsigned T, n, m;
+  cin >> T;
+  for (unsigned iT = 0; iT < T; ++iT) {
+    cin >> n >> m;
+    cout << f.BinomialCoefficient(n + m, n) << endl;
+  }
+  return 0;
 }

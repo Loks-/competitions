@@ -4,17 +4,15 @@
 
 #include <iomanip>
 
-int main_bday_gift()
-{
-	cout << setprecision(1) << fixed;
-	unsigned T, n;
-	cin >> T;
-	double sum = 0.;
-	for (unsigned it = 0; it < T; ++it)
-	{
-		cin >> n;
-		sum += n;
-	}
-	cout << sum / 2.0 << endl;
-	return 0;
+int main_bday_gift() {
+  cout << setprecision(1) << fixed;
+  unsigned T, n;
+  cin >> T;
+  double sum = 0.;
+  for (unsigned it = 0; it < T; ++it) {
+    cin >> n;
+    sum += n;
+  }
+  cout << sum / 2.0 << endl;
+  return 0;
 }

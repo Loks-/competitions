@@ -4,29 +4,25 @@
 #include "common/numeric/fraction_io.h"
 #include "common/stl/base.h"
 
-int main_mehta_and_his_laziness()
-{
-    PrimesList primes_list(1000);
-	unsigned T, N;
-	cin >> T;
-	for (unsigned it = 0; it < T; ++it)
-	{
-        cin >> N;
-        auto f = primes_list.Factorize(N);
-        if ((f.size() == 0) || (f[0].first != 2) || (f[0].second < 2) || (N == 4))
-            cout << 0 << endl;
-        else
-        {
-            bool square = true;
-            unsigned p = 1, q = 1;
-            for (unsigned i = 0; i < f.size(); ++i)
-            {
-                square = square && ((f[i].second & 1) == 0);
-                p *= (((i > 0) ? 1 : 0) + f[i].second / 2);
-                q *= (1 + f[i].second);
-            }
-            cout << TIFraction(square ? p - 1 : p, q - 1) << endl;
-        }
-	}
-	return 0;
+int main_mehta_and_his_laziness() {
+  PrimesList primes_list(1000);
+  unsigned T, N;
+  cin >> T;
+  for (unsigned it = 0; it < T; ++it) {
+    cin >> N;
+    auto f = primes_list.Factorize(N);
+    if ((f.size() == 0) || (f[0].first != 2) || (f[0].second < 2) || (N == 4)) {
+      cout << 0 << endl;
+    } else {
+      bool square = true;
+      unsigned p = 1, q = 1;
+      for (unsigned i = 0; i < f.size(); ++i) {
+        square = square && ((f[i].second & 1) == 0);
+        p *= (((i > 0) ? 1 : 0) + f[i].second / 2);
+        q *= (1 + f[i].second);
+      }
+      cout << TIFraction(square ? p - 1 : p, q - 1) << endl;
+    }
+  }
+  return 0;
 }

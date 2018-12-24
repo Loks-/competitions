@@ -2,10 +2,9 @@
 
 #include "common/stl/base.h"
 
-int main_army_game()
-{
-	uint64_t n, m;
-	cin >> n >> m;
-	cout << ((n + 1) / 2) * ((m + 1) / 2) << endl;
-	return 0;
+int main_army_game() {
+  uint64_t n, m;
+  cin >> n >> m;
+  cout << ((n + 1) / 2) * ((m + 1) / 2) << endl;
+  return 0;
 }
