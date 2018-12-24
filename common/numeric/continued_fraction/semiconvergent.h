@@ -4,53 +4,54 @@
 #include "convergent.h"
 #include "../fraction.h"
 
-class CFSemiConvergent : public CFConvergent
-{
-public:
-    using TBase = CFConvergent;
-    using TCFVector = ContinuedFraction::TCFVector;
+class CFSemiConvergent : public CFConvergent {
+ public:
+  using TBase = CFConvergent;
+  using TCFVector = ContinuedFraction::TCFVector;
 
-protected:
-    int64_t its;
+ protected:
+  int64_t its;
 
-    int64_t ItsLast() const { return End() ? 1 : TBase::cf(TBase::itc); }
-    void AdjustSemiIterator() { its = ItsLast() / 2; if ((ItsLast() & 1) || !IsHalfValid()) ++its; }
+  int64_t ItsLast() const { return End() ? 1 : TBase::cf(TBase::itc); }
 
-    bool IsHalfValid() const
-    {
-        const std::vector<int64_t>& v = TBase::cf.GetVector();
-        ContinuedFraction cfl(TCFVector(v.begin() + TBase::itc, v.end()));
-        ContinuedFraction cfr(TCFVector(v.rend() - TBase::itc - 1, v.rend() - 1));
-        return cfl < cfr;
-    }
+  void AdjustSemiIterator() {
+    its = ItsLast() / 2;
+    if ((ItsLast() & 1) || !IsHalfValid()) ++its;
+  }
 
-public:
-    void ResetIterator()
-    {
-        TBase::ResetIteratorI();
-        its = ItsLast();
-    }
+  bool IsHalfValid() const {
+    const std::vector<int64_t>& v = TBase::cf.GetVector();
+    ContinuedFraction cfl(TCFVector(v.begin() + TBase::itc, v.end()));
+    ContinuedFraction cfr(TCFVector(v.rend() - TBase::itc - 1, v.rend() - 1));
+    return cfl < cfr;
+  }
 
-    CFSemiConvergent(const ContinuedFraction& continued_fraction) : TBase(continued_fraction)
-    {
-        ResetIterator();
-    }
+ public:
+  void ResetIterator() {
+    TBase::ResetIteratorI();
+    its = ItsLast();
+  }
 
-    bool End() const { return TBase::itc >= TBase::cf.Size(); }
-    TIFraction Get() const { return TIFraction(its * TBase::n0 + TBase::n1, its * TBase::d0 + TBase::d1); }
-    
-    CFSemiConvergent& Next()
-    {
-        if (its == ItsLast())
-        {
-            TBase::Next();
-            AdjustSemiIterator();
-        }
-        else
-            ++its;
-        return *this;
-    }
+  CFSemiConvergent(const ContinuedFraction& continued_fraction)
+      : TBase(continued_fraction) {
+    ResetIterator();
+  }
 
-    TIFraction operator*() const { return Get(); }
-    CFSemiConvergent& operator++() { return Next(); }
+  bool End() const { return TBase::itc >= TBase::cf.Size(); }
+
+  TIFraction Get() const {
+    return TIFraction(its * TBase::n0 + TBase::n1, its * TBase::d0 + TBase::d1);
+  }
+
+  CFSemiConvergent& Next() {
+    if (its == ItsLast()) {
+      TBase::Next();
+      AdjustSemiIterator();
+    } else
+      ++its;
+    return *this;
+  }
+
+  TIFraction operator*() const { return Get(); }
+  CFSemiConvergent& operator++() { return Next(); }
 };
