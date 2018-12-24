@@ -3,17 +3,19 @@
 #include <cassert>
 
 namespace {
-	long long GetNumberOfBlocks() {
-		return 3LL;
-	}
+long long GetNumberOfBlocks() { return 3LL; }
 
-	long long GetBlockWeight(long long i) {
-		switch ((int)i) {
-		case 0: return 1LL;
-		case 1: return 1LL;
-		case 2: return 1LL;
-		default: assert(0);
-		}
-		return 0;
-	}
+long long GetBlockWeight(long long i) {
+  switch ((int)i) {
+    case 0:
+      return 1LL;
+    case 1:
+      return 1LL;
+    case 2:
+      return 1LL;
+    default:
+      assert(0);
+  }
+  return 0;
 }
+}  // namespace
