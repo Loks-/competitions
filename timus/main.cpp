@@ -3,17 +3,14 @@
 #include <iostream>
 #include <string>
 
-int main(int nargs, char **pargs)
-{
-	std::string solution_name;
-	if (nargs >= 2)
-	{
-		solution_name = pargs[1];
-	}
-	else
-	{
-		std::cout << "Input timus solution to run:" << std::endl;
-		std::cin >> solution_name;
-	}
-	return proxy_auto(solution_name, (nargs > 2) ? pargs[2] : "", (nargs > 3) ? pargs[3] : "");
+int main(int nargs, char **pargs) {
+  std::string solution_name;
+  if (nargs >= 2) {
+    solution_name = pargs[1];
+  } else {
+    std::cout << "Input timus solution to run:" << std::endl;
+    std::cin >> solution_name;
+  }
+  return proxy_auto(solution_name, (nargs > 2) ? pargs[2] : "",
+                    (nargs > 3) ? pargs[3] : "");
 }
