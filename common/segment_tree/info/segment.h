@@ -3,28 +3,26 @@
 #include "none.h"
 #include "proxy.h"
 
-template<class TTCoordinate = unsigned>
-class TSTInfoSegment : public TSTInfoNone
-{
-public:
-    using TCoordinate = TTCoordinate;
-    using TBase = TSTInfoNone;
-    using TSelf = TSTInfoSegment<TCoordinate>;
+template <class TTCoordinate = unsigned>
+class TSTInfoSegment : public TSTInfoNone {
+ public:
+  using TCoordinate = TTCoordinate;
+  using TBase = TSTInfoNone;
+  using TSelf = TSTInfoSegment<TCoordinate>;
 
-	static const bool is_none = false;
-	static const bool has_coordinate = true;
+  static const bool is_none = false;
+  static const bool has_coordinate = true;
 
-	TCoordinate left, right;
+  TCoordinate left, right;
 
-    void SetCoordinate(const TCoordinate& x) { left = right = x; }
+  void SetCoordinate(const TCoordinate& x) { left = right = x; }
 
-    void UpdateLR(const TSelf& l, const TSelf& r)
-    {
-        TBase::UpdateLR(l, r);
-        left = l.left;
-        right = r.right;
-    }
+  void UpdateLR(const TSelf& l, const TSelf& r) {
+    TBase::UpdateLR(l, r);
+    left = l.left;
+    right = r.right;
+  }
 };
 
-template<class TCoordinate = unsigned>
+template <class TCoordinate = unsigned>
 using STInfoSegment = STInfoProxy<TSTInfoSegment<TCoordinate>>;
