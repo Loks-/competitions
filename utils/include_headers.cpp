@@ -89,7 +89,7 @@ static void AddFile(const std::string& input_filename, std::ofstream& output,
       }
     }
     if (line.substr(0, 8) == "int main") {
-      output << "int main()" << std::endl;
+      output << "int main() {" << std::endl;
       continue;
     }
     if (line == "const static bool local_run = true;") {
