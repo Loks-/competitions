@@ -6,7 +6,7 @@
 template <class TValue>
 inline Matrix<TValue> ReadMatrix(unsigned rows, unsigned columns) {
   Matrix<TValue> m(rows, columns);
-  for (typename Matrix<T>::iterator it = m.begin(), it_end = m.end();
+  for (typename Matrix<TValue>::iterator it = m.begin(), it_end = m.end();
        it < it_end;)
     std::cin >> *it++;
   return m;
