@@ -3,8 +3,6 @@
 #include "common/stl/base.h"
 #include "common/vector/read.h"
 
-#include <numeric>
-
 int main_compare_the_triplets() {
   vector<unsigned> v1 = ReadVector<unsigned>(3), v2 = ReadVector<unsigned>(3);
   unsigned a = 0, b = 0;
