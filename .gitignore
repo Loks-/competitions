@@ -14,6 +14,8 @@ google/code_jam/proxy_gen.h
 google/code_jam/proxy_gen.cxx
 hackerrank/proxy_gen.h
 hackerrank/proxy_gen.cxx
+hackerrank/practice/language/c/proxy_gen.h
+hackerrank/practice/language/c/proxy_gen.c
 ipcs/proxy_gen.h
 ipcs/proxy_gen.cxx
 timus/proxy_gen.h

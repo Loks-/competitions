@@ -22,12 +22,12 @@ file ( WRITE ${GOOGLE_CODE_JAM_PROXY_CXX}
 foreach( problemsourcefile ${GOOGLE_CODE_JAM_SOURCES} )
     string( REPLACE ".cpp" "" problemfullname ${problemsourcefile} )
     get_filename_component( problembasename ${problemfullname} NAME )
-    if ( NOT ${problembasename} MATCHES "main")
+    if ( NOT ${problembasename} MATCHES "base|main")
         file ( APPEND ${GOOGLE_CODE_JAM_PROXY_H}
 			"int main_${problembasename}();\n" )
         file ( APPEND ${GOOGLE_CODE_JAM_PROXY_CXX}
 			"\t{ \"${problembasename}\", main_${problembasename} },\n")
-    endif ( NOT ${problembasename} MATCHES "main")
+    endif ( NOT ${problembasename} MATCHES "base|main")
 endforeach( problemsourcefile ${GOOGLE_CODE_JAM_SOURCES} )
 file ( APPEND ${GOOGLE_CODE_JAM_PROXY_CXX} "};\n" )
 add_executable( google_code_jam ${GOOGLE_CODE_JAM_SOURCES} ${GOOGLE_CODE_JAM_PROXY_CXX} )
@@ -46,15 +46,44 @@ file ( WRITE ${HACKERRANK_PROXY_CXX}
 foreach( problemsourcefile ${HACKERRANK_SOURCES} )
     string( REPLACE ".cpp" "" problemfullname ${problemsourcefile} )
     get_filename_component( problembasename ${problemfullname} NAME )
-    if ( NOT ${problembasename} MATCHES "main")
+    if ( NOT ${problembasename} MATCHES "base|main")
         file ( APPEND ${HACKERRANK_PROXY_H}
 			"int main_${problembasename}();\n" )
         file ( APPEND ${HACKERRANK_PROXY_CXX}
 			"\t{ \"${problembasename}\", main_${problembasename} },\n")
-    endif ( NOT ${problembasename} MATCHES "main")
+    endif ( NOT ${problembasename} MATCHES "base|main")
 endforeach( problemsourcefile ${HACKERRANK_SOURCES} )
 file ( APPEND ${HACKERRANK_PROXY_CXX} "};\n" )
 add_executable( hackerrank ${HACKERRANK_SOURCES} ${HACKERRANK_PROXY_CXX} )
+
+file( GLOB_RECURSE HACKERRANK_C_SOURCES RELATIVE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/hackerrank/practice/language/c/*.c" )
+list( SORT HACKERRANK_C_SOURCES )
+set( HACKERRANK_PROXY_C_H "${PROJECT_SOURCE_DIR}/hackerrank/practice/language/c/proxy_gen.h" )
+set( HACKERRANK_PROXY_C_C "${PROJECT_SOURCE_DIR}/hackerrank/practice/language/c/proxy_gen.c" )
+file ( WRITE ${HACKERRANK_PROXY_C_H} "" )
+file ( WRITE ${HACKERRANK_PROXY_C_C}
+    "#include \"proxy_gen.h\"\n"
+    "\n"
+    "#include <stdio.h>\n"
+    "#include <string.h>\n"
+	"\n"
+    "int proxy_run(const char* solution_name) {\n"
+    "  if (0) return 0;\n")
+foreach( problemsourcefile ${HACKERRANK_C_SOURCES} )
+    string( REPLACE ".c" "" problemfullname ${problemsourcefile} )
+    get_filename_component( problembasename ${problemfullname} NAME )
+    if ( NOT ${problembasename} MATCHES "main|proxy_gen" )
+        file ( APPEND ${HACKERRANK_PROXY_C_H}
+			"int main_${problembasename}();\n" )
+        file ( APPEND ${HACKERRANK_PROXY_C_C}
+            "  else if (strcmp(solution_name, \"${problembasename}\") == 0)\n"
+            "    return main_${problembasename}();\n" )
+    endif ( NOT ${problembasename} MATCHES "main|proxy_gen")
+endforeach( problemsourcefile ${HACKERRANK_SOURCES} )
+file ( APPEND ${HACKERRANK_PROXY_C_C}
+    "  printf(\"Unknown solution name: %s\", solution_name);\n"
+    "  return -2;\n}\n" )
+add_executable( hackerrank_c ${HACKERRANK_C_SOURCES} ${HACKERRANK_PROXY_C_C} )
 
 file( GLOB_RECURSE IPCS_SOURCES RELATIVE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/ipcs/*.cpp" )
 list( SORT IPCS_SOURCES )
@@ -70,12 +99,12 @@ file ( WRITE ${IPCS_PROXY_CXX}
 foreach( problemsourcefile ${IPCS_SOURCES} )
     string( REPLACE ".cpp" "" problemfullname ${problemsourcefile} )
     get_filename_component( problembasename ${problemfullname} NAME )
-    if ( NOT ${problembasename} MATCHES "main")
+    if ( NOT ${problembasename} MATCHES "base|main")
         file ( APPEND ${IPCS_PROXY_H}
 			"int main_${problembasename}();\n" )
         file ( APPEND ${IPCS_PROXY_CXX}
 			"\t{ \"${problembasename}\", main_${problembasename} },\n")
-    endif ( NOT ${problembasename} MATCHES "main")
+    endif ( NOT ${problembasename} MATCHES "base|main")
 endforeach( problemsourcefile ${IPCS_SOURCES} )
 file ( APPEND ${IPCS_PROXY_CXX} "};\n" )
 add_executable( ipcs ${IPCS_SOURCES} ${IPCS_PROXY_CXX} )
@@ -94,12 +123,12 @@ file ( WRITE ${TIMUS_PROXY_CXX}
 foreach( problemsourcefile ${TIMUS_SOURCES} )
     string( REPLACE ".cpp" "" problemfullname ${problemsourcefile} )
     get_filename_component( problembasename ${problemfullname} NAME )
-    if ( NOT ${problembasename} MATCHES "main")
+    if ( NOT ${problembasename} MATCHES "base|main")
         file ( APPEND ${TIMUS_PROXY_H}
 			"int main_${problembasename}();\n" )
         file ( APPEND ${TIMUS_PROXY_CXX}
 			"\t{ \"${problembasename}\", main_${problembasename} },\n")
-    endif ( NOT ${problembasename} MATCHES "main")
+    endif ( NOT ${problembasename} MATCHES "base|main")
 endforeach( problemsourcefile ${TIMUS_SOURCES} )
 file ( APPEND ${TIMUS_PROXY_CXX} "};\n" )
 add_executable( timus ${TIMUS_SOURCES} ${TIMUS_PROXY_CXX} )
@@ -131,6 +160,16 @@ foreach( testfile_in ${HACKERRANK_TESTS} )
     get_filename_component( solution ${testshortname} NAME_WE )
 	add_test( NAME ${testshortname} COMMAND hackerrank ${solution} ${testfile_in} ${testfile_out} WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} )
 endforeach( testfile_in ${HACKERRANK_TESTS} )
+
+file( GLOB_RECURSE HACKERRANK_LANGUAGE_C_TESTS RELATIVE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/tests/hackerrank_language/c/*.in" )
+list( SORT HACKERRANK_LANGUAGE_C_TESTS )
+foreach( testfile_in ${HACKERRANK_LANGUAGE_C_TESTS} )
+    string( REPLACE ".in" "" testfullname ${testfile_in} )
+    string( REPLACE ".in" ".out" testfile_out ${testfile_in} )
+    get_filename_component( testshortname ${testfullname} NAME )
+    get_filename_component( solution ${testshortname} NAME_WE )
+	add_test( NAME ${testshortname} COMMAND hackerrank_c ${solution} ${testfile_in} ${testfile_out} WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} )
+endforeach( testfile_in ${HACKERRANK_LANGUAGE_C_TESTS} )
 
 file( GLOB_RECURSE TIMUS_TESTS RELATIVE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/tests/timus/*.in" )
 list( SORT TIMUS_TESTS )
