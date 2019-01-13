@@ -11,6 +11,6 @@ int main(int nargs, char **pargs) {
     std::cout << "Input hackerrank solution to run:" << std::endl;
     std::cin >> solution_name;
   }
-  return proxy_auto(solution_name, (nargs > 2) ? pargs[2] : "",
-                    (nargs > 3) ? pargs[3] : "");
+  return ProxyAuto(solution_name, (nargs > 2) ? pargs[2] : "",
+                   (nargs > 3) ? pargs[3] : "");
 }

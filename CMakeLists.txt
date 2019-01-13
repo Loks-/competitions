@@ -67,7 +67,7 @@ file ( WRITE ${HACKERRANK_PROXY_C_C}
     "#include <stdio.h>\n"
     "#include <string.h>\n"
 	"\n"
-    "int proxy_run(const char* solution_name) {\n"
+    "int ProxyRun(const char* solution_name) {\n"
     "  if (0) return 0;\n")
 foreach( problemsourcefile ${HACKERRANK_C_SOURCES} )
     string( REPLACE ".c" "" problemfullname ${problemsourcefile} )

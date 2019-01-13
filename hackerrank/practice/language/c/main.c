@@ -1,27 +1,26 @@
 #include <stdio.h>
 
-int proxy_run(const char* solution_name);
+int ProxyRun(const char* solution_name);
 
-int proxy_run_with_input(const char* solution_name,
-                         const char* input_file_name) {
+int ProxyRunWithInput(const char* solution_name, const char* input_file_name) {
   FILE* fp = 0;
   if (input_file_name) fp = freopen(input_file_name, "r", stdin);
-  int solution_results = proxy_run(solution_name);
+  int solution_results = ProxyRun(solution_name);
   if (fp) fclose(fp);
   return solution_results;
 }
 
-int proxy_run_with_output(const char* solution_name,
-                          const char* input_file_name,
-                          const char* output_file_name) {
+int ProxyRunWithOutput(const char* solution_name, const char* input_file_name,
+                       const char* output_file_name) {
   FILE* fp = 0;
   if (output_file_name) fp = freopen(output_file_name, "w", stdout);
-  int solution_results = proxy_run_with_input(solution_name, input_file_name);
+  int solution_results = ProxyRunWithInput(solution_name, input_file_name);
   if (fp) fclose(fp);
   return solution_results;
 }
 
-int compare_files(const char* file1_name, const char* file2_name) {
+// Returns 0 if files are equal and -1 otherwise.
+int CompareFiles(const char* file1_name, const char* file2_name) {
   FILE* fp1 = fopen(file1_name, "r");
   FILE* fp2 = fopen(file2_name, "r");
   if (!fp1 || !fp2) return -4;
@@ -37,20 +36,20 @@ int compare_files(const char* file1_name, const char* file2_name) {
     return -1;
 }
 
-int proxy_test(const char* solution_name, const char* input_file_name,
-               const char* test_file_name) {
+int ProxyTest(const char* solution_name, const char* input_file_name,
+              const char* test_file_name) {
   const char* temp_file_name = "temp.out";
   int solution_results =
-      proxy_run_with_output(solution_name, input_file_name, temp_file_name);
+      ProxyRunWithOutput(solution_name, input_file_name, temp_file_name);
   if (solution_results) return solution_results;
-  return compare_files(temp_file_name, test_file_name);
+  return CompareFiles(temp_file_name, test_file_name);
 }
 
-int proxy_auto(const char* solution_name, const char* input_file_name,
-               const char* test_file_name) {
+int ProxyAuto(const char* solution_name, const char* input_file_name,
+              const char* test_file_name) {
   return test_file_name
-             ? proxy_test(solution_name, input_file_name, test_file_name)
-             : proxy_run_with_input(solution_name, input_file_name);
+             ? ProxyTest(solution_name, input_file_name, test_file_name)
+             : ProxyRunWithInput(solution_name, input_file_name);
 }
 
 int main(int nargs, char** pargs) {
@@ -63,6 +62,6 @@ int main(int nargs, char** pargs) {
     scanf("%255s", buf);
     solution_name = buf;
   }
-  return proxy_auto(solution_name, (nargs > 2) ? pargs[2] : 0,
-                    (nargs > 3) ? pargs[3] : 0);
+  return ProxyAuto(solution_name, (nargs > 2) ? pargs[2] : 0,
+                   (nargs > 3) ? pargs[3] : 0);
 }
