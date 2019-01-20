@@ -2,7 +2,7 @@
 
 #include <stdio.h>
 
-int find_nth_term(int n, int a, int b, int c) {
+static int find_nth_term(int n, int a, int b, int c) {
   switch (n) {
     case 1:
       return a;
