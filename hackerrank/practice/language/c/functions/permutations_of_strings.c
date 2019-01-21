@@ -16,7 +16,7 @@ static int next_permutation(int n, char **s) {
       int j = i + 2;
       for (; (j < n) && (strcmp(s[i], s[j]) < 0);) ++j;
       swap_strings(&s[i], &s[j - 1]);
-      for (j = 1; j < (n - i + 1) / 2; ++j) swap_strings(&s[i + j], &s[n - j]);
+      for (++i, --n; i < n;) swap_strings(&s[i++], &s[n--]);
       return 1;
     }
   }
