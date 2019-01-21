@@ -12,13 +12,13 @@ struct triangle {
 
 typedef struct triangle triangle;
 
-static double sq_area(triangle t) {
-  double p = (t.a + t.b + t.c) / 2.0;
-  return p * (p - t.a) * (p - t.b) * (p - t.c);
+static int sq_area(triangle t) {
+  return (t.a + t.b + t.c) * (t.a + t.b - t.c) * (t.a - t.b + t.c) *
+         (-t.a + t.b + t.c);
 }
 
 static int cmp(const void* p, const void* q) {
-  return sq_area(*(const triangle*)p) > sq_area(*(const triangle*)q);
+  sq_area(*(const triangle*)q) - sq_area(*(const triangle*)p);
 }
 
 static void sort_by_area(triangle* tr, int n) {
