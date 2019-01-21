@@ -18,7 +18,7 @@ static int sq_area(triangle t) {
 }
 
 static int cmp(const void* p, const void* q) {
-  sq_area(*(const triangle*)q) - sq_area(*(const triangle*)p);
+  return sq_area(*(const triangle*)p) - sq_area(*(const triangle*)q);
 }
 
 static void sort_by_area(triangle* tr, int n) {
