@@ -1,0 +1,14 @@
+Town with the most number of packages is B
+Town with the most number of packages is A
+A:
+    0:
+        a
+        b
+    1:
+        c
+        e
+        f
+        h
+B:
+    0:
+        d
