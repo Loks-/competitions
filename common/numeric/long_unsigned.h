@@ -33,6 +33,7 @@ class LongUnsigned {
     for (; (data.size() > 0) && (data.back() == 0);) data.pop_back();
   }
 
+  void Clear() { data.clear(); }
   bool Empty() const { return data.empty(); }
   size_t Size() const { return data.size(); }
 
@@ -202,6 +203,102 @@ class LongUnsigned {
 
   LongUnsigned& operator-=(const LongUnsigned& r) {
     LongUnsigned t = (*this - r);
+    swap(t);
+    return *this;
+  }
+
+  LongUnsigned& ShiftBlocksLeft(unsigned ublocks) {
+    if (ublocks) data.erase(data.begin(), data.begin() + ublocks);
+    return *this;
+  }
+
+  LongUnsigned& ShiftBlocksRight(unsigned ublocks) {
+    if (ublocks && !Empty()) data.insert(data.begin(), ublocks, 0);
+    return *this;
+  }
+
+  LongUnsigned& ShiftBitsLeft(unsigned ubits) {
+    ShiftBlocksLeft(ubits / 32);
+    ubits %= 32;
+    if (ubits && !Empty()) {
+      for (unsigned i = 0, ie = Size() - 1; i < ie; ++i) {
+        data[i] = (data[i] >> ubits) | (data[i + 1] << (32 - ubits));
+      }
+      data.back() >>= ubits;
+    }
+    Normalize();
+    return *this;
+  }
+
+  LongUnsigned& ShiftBitsRight(unsigned ubits) {
+    ShiftBlocksRight(ubits / 32);
+    ubits %= 32;
+    if (ubits && !Empty()) {
+      unsigned tail = data.back() >> (32 - ubits);
+      for (unsigned i = Size() - 1; i; --i) {
+        data[i] = (data[i] << ubits) | (data[i - 1] >> (32 - ubits));
+      }
+      data[0] <<= ubits;
+      if (tail) data.push_back(tail);
+    }
+    return *this;
+  }
+
+  LongUnsigned& operator>>=(unsigned ubits) { return ShiftBitsLeft(ubits); }
+  LongUnsigned& operator<<=(unsigned ubits) { return ShiftBitsRight(ubits); }
+
+  LongUnsigned operator<<(unsigned ubits) const {
+    LongUnsigned t(*this);
+    t <<= ubits;
+    return t;
+  }
+
+  LongUnsigned operator>>(unsigned ubits) const {
+    LongUnsigned t(*this);
+    t >>= ubits;
+    return t;
+  }
+
+  LongUnsigned operator/(const LongUnsigned& r) const {
+    assert(!r.Empty());
+    if (Empty()) return LongUnsigned();
+    LongUnsigned tl(*this), tr(r), lu;
+    unsigned total_shift = 1 + std::max(Size(), r.Size()) - r.Size();
+    tr.ShiftBlocksRight(total_shift);
+    for (unsigned i = 0; i < 32 * total_shift; ++i) {
+      lu.ShiftBitsRight(1);
+      tr.ShiftBitsLeft(1);
+      if (tr <= tl) {
+        tl -= tr;
+        lu += 1;
+      }
+    }
+    return lu;
+  }
+
+  LongUnsigned operator%(const LongUnsigned& r) const {
+    assert(!r.Empty());
+    if (Empty()) return LongUnsigned();
+    LongUnsigned tl(*this), tr(r);
+    unsigned total_shift = 1 + std::max(Size(), r.Size()) - r.Size();
+    tr.ShiftBlocksRight(total_shift);
+    for (unsigned i = 0; i < 32 * total_shift; ++i) {
+      tr.ShiftBitsLeft(1);
+      if (tr <= tl) {
+        tl -= tr;
+      }
+    }
+    return tl;
+  }
+
+  LongUnsigned& operator/=(const LongUnsigned& r) {
+    LongUnsigned t = (*this / r);
+    swap(t);
+    return *this;
+  }
+
+  LongUnsigned& operator%=(const LongUnsigned& r) {
+    LongUnsigned t = (*this % r);
     swap(t);
     return *this;
   }
