@@ -13,5 +13,5 @@ LongUnsigned GCD(LongUnsigned a, LongUnsigned b) {
     for (; (a % 2u) == 0;) a >>= 1;
     if (a < b) a.swap(b);
   }
-  return b.ShiftBitsRight(std::min(p2a, p2b));
+  return b << std::min(p2a, p2b);
 }
