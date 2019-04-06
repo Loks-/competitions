@@ -4,6 +4,7 @@ release/
 Testing/
 
 # VS Code
+.vscode/ipch/
 .vscode/tasks.json
 
 # VS
