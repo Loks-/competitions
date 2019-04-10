@@ -1,7 +1,7 @@
 #include "common/base.h"
 
-#include "assert.h"
-#include "testers.h"
+#include "tester/assert.h"
+#include "tester/testers.h"
 
 #include <iostream>
 

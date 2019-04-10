@@ -4,9 +4,9 @@
 #include "common/hash.h"
 #include "common/timer.h"
 
-#include "assert.h"
-#include "binary_search_tree_action.h"
-#include "binary_search_tree_info.h"
+#include "tester/assert.h"
+#include "tester/binary_search_tree_action.h"
+#include "tester/binary_search_tree_info.h"
 
 #include <iostream>
 #include <stack>

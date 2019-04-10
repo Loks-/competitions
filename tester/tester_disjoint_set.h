@@ -4,7 +4,7 @@
 #include "common/hash.h"
 #include "common/timer.h"
 
-#include "disjoint_set_proxy.h"
+#include "tester/disjoint_set_proxy.h"
 
 #include <iostream>
 #include <utility>

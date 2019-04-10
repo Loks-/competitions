@@ -9,7 +9,7 @@
 #include "common/modular/static/modular_proxy.h"
 #include "common/timer.h"
 
-#include "matrix_mult.h"
+#include "tester/matrix_mult.h"
 
 #include <iostream>
 #include <string>

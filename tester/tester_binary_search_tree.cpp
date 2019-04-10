@@ -5,7 +5,7 @@
 #include "common/binary_search_tree/treap.h"
 #include "common/timer.h"
 
-#include "tester_binary_search_tree.h"
+#include "tester/tester_binary_search_tree.h"
 
 #include <algorithm>
 #include <iostream>

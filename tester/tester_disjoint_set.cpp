@@ -1,5 +1,5 @@
-#include "tester_disjoint_set.h"
-#include "disjoint_set_proxy.h"
+#include "tester/tester_disjoint_set.h"
+#include "tester/disjoint_set_proxy.h"
 
 #include <random>
 

@@ -1,4 +1,4 @@
-#include "tester_interpolation.h"
+#include "tester/tester_interpolation.h"
 
 bool TestInterpolation() {
   TesterInterpolation tester;

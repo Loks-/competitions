@@ -46,6 +46,7 @@
         "system_error": "cpp",
         "typeinfo": "cpp",
         "optional": "cpp",
-        "algorithm": "cpp"
+        "algorithm": "cpp",
+        "string": "cpp"
     }
 }
