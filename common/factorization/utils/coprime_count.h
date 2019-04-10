@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../base.h"
+#include "common/factorization/base.h"
 
 // Return count of coprime to k numbers in the interval [1..n].
 inline uint64_t CoprimeCount(const TFactorization& k_factorization,

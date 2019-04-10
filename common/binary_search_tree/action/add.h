@@ -1,6 +1,6 @@
 #pragma once
 
-#include "none.h"
+#include "common/binary_search_tree/action/none.h"
 
 template <class TData>
 class BSTActionAdd : public BSTActionNone {

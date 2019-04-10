@@ -1,6 +1,6 @@
 #pragma once
 
-#include "vector_static_size.h"
+#include "common/linear_algebra/vector_static_size.h"
 #include <algorithm>
 
 template <class TTValue, unsigned _rows, unsigned _columns>

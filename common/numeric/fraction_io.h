@@ -1,6 +1,6 @@
 #pragma once
 
-#include "fraction.h"
+#include "common/numeric/fraction.h"
 #include <ostream>
 
 template <class TValue>

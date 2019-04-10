@@ -1,6 +1,6 @@
 #pragma once
 
-#include "modular_proxy.h"
+#include "common/modular/static/modular_proxy.h"
 
 template <uint64_t mod = 1000000007, bool is_prime = true, bool is_32bit = true>
 class Modular {

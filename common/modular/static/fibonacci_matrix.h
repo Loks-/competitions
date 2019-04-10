@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../../base.h"
-#include "../../linear_algebra/matrix_static_size.h"
+#include "common/base.h"
+#include "common/linear_algebra/matrix_static_size.h"
 #include <utility>
 
 template <class TModular>

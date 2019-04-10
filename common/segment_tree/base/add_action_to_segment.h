@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../base.h"
+#include "common/base.h"
 
 template <class TNode, class TActionValue>
 inline void STAddActionToSegmentI(TNode* root,

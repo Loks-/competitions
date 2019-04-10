@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../template.h"
+#include "common/template.h"
 #include <stack>
 
 template <class TNode>

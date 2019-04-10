@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../arithmetic.h"
+#include "common/modular/arithmetic.h"
 
 template <class TModularA = TModularArithmetic_P32U>
 inline int LegendreSymbol(uint64_t a, uint64_t p) {

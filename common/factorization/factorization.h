@@ -1,9 +1,9 @@
 #pragma once
 
-#include "base.h"
-#include "primality_test.h"
-#include "../modular/proxy/modular_proxy.h"
-#include "../numeric/utils/gcd.h"
+#include "common/factorization/base.h"
+#include "common/factorization/primality_test.h"
+#include "common/modular/proxy/modular_proxy.h"
+#include "common/numeric/utils/gcd.h"
 #include <algorithm>
 #include <vector>
 
@@ -88,6 +88,6 @@ class Factorization {
 };
 
 inline TFactorization FastFactorize(uint64_t n) {
-  Factorization f;
+  thread_local Factorization f;
   return f.Factorize(n);
 }

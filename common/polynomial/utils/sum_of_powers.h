@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../base_newton_polynomial.h"
+#include "common/polynomial/base_newton_polynomial.h"
 #include <vector>
 
 template <class TValue>

@@ -1,8 +1,8 @@
 #pragma once
 
-#include "continued_fraction.h"
-#include "convergent.h"
-#include "../fraction.h"
+#include "common/numeric/continued_fraction/continued_fraction.h"
+#include "common/numeric/continued_fraction/convergent.h"
+#include "common/numeric/fraction.h"
 
 class CFSemiConvergent : public CFConvergent {
  public:

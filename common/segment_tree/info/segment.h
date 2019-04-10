@@ -1,7 +1,7 @@
 #pragma once
 
-#include "none.h"
-#include "proxy.h"
+#include "common/segment_tree/info/none.h"
+#include "common/segment_tree/info/proxy.h"
 
 template <class TTCoordinate = unsigned>
 class TSTInfoSegment : public TSTInfoNone {

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "stat_m1.h"
+#include "common/statistics/stat_m1.h"
 
 template <class TValue = double>
 class StatM2 : public StatM1<TValue> {

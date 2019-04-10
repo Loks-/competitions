@@ -1,6 +1,6 @@
 #pragma once
 
-#include "none.h"
+#include "common/segment_tree/action/none.h"
 
 // Support only VectorStaticSize from LinearAlgebra.
 class STActionRotateVector : public STActionNone {

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "base_polynomial.h"
+#include "common/polynomial/base_polynomial.h"
 #include <vector>
 
 // Basis polynomials:

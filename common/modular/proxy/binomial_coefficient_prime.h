@@ -1,8 +1,8 @@
 #pragma once
 
-#include "factorial.h"
-#include "modular_proxy.h"
-#include "../../base.h"
+#include "common/base.h"
+#include "common/modular/proxy/factorial.h"
+#include "common/modular/proxy/modular_proxy.h"
 
 // Based on Lucas's theorem.
 

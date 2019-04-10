@@ -1,6 +1,6 @@
 #pragma once
 
-#include "permutation.h"
+#include "common/permutation/permutation.h"
 #include <vector>
 
 std::vector<unsigned> PermutationFixedPoints(const Permutation& p) {

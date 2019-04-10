@@ -1,6 +1,6 @@
 #pragma once
 
-#include "log_double.h"
+#include "common/numeric/log_double.h"
 #include <istream>
 #include <ostream>
 

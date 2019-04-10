@@ -1,8 +1,8 @@
 #pragma once
 
-#include "primes_list.h"
-#include "../base.h"
-#include "../modular/arithmetic.h"
+#include "common/base.h"
+#include "common/factorization/primes_list.h"
+#include "common/modular/arithmetic.h"
 #include <vector>
 
 class MillerRabinPrimalityTest {

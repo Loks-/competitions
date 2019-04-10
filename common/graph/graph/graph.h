@@ -1,7 +1,7 @@
 #pragma once
 
-#include "edge.h"
-#include "../base_graph/base_graph.h"
+#include "common/graph/base_graph/base_graph.h"
+#include "common/graph/graph/edge.h"
 #include <iostream>
 #include <vector>
 

@@ -1,11 +1,10 @@
 #pragma once
 
+#include "common/base.h"
+#include "common/factorization/factorization.h"
+#include "common/modular/utils/primitive_root.h"
 #include <algorithm>
 #include <vector>
-
-#include "../utils/primitive_root.h"
-#include "../../base.h"
-#include "../../factorization/factorization.h"
 
 template <class TModular>
 class ModularFFT {

@@ -1,10 +1,10 @@
 #pragma once
 
-#include "../arithmetic.h"
-#include "../utils/primitive_root.h"
-#include "../../base.h"
-#include "../../factorization/base.h"
-#include "../../factorization/utils/factorize.h"
+#include "common/base.h"
+#include "common/factorization/base.h"
+#include "common/factorization/utils/factorize.h"
+#include "common/modular/arithmetic.h"
+#include "common/modular/utils/primitive_root.h"
 #include <vector>
 
 // Calculate discrete logarithm.

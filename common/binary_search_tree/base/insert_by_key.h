@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../info/update_info.h"
+#include "common/binary_search_tree/info/update_info.h"
 
 template <class TNode>
 inline void BSTInsertByKey(TNode* root, TNode* node) {

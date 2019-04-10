@@ -1,7 +1,7 @@
 #pragma once
 
-#include "primes_list_extended/mertens.h"
-#include "../numeric/utils/usqrt.h"
+#include "common/factorization/primes_list_extended/mertens.h"
+#include "common/numeric/utils/usqrt.h"
 
 class Mertens {
  protected:

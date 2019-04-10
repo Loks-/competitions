@@ -1,7 +1,7 @@
 #pragma once
 
-#include "factorial.h"
-#include "../../numeric/bernoulli.h"
+#include "common/modular/static/factorial.h"
+#include "common/numeric/bernoulli.h"
 
 // Based on Bernoulli numbers
 // ( https://en.wikipedia.org/wiki/Faulhaber's_formula ) .

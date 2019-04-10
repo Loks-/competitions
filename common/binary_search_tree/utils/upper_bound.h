@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../base.h"
+#include "common/base.h"
 
 template <class TNode, class TValue>
 inline TNode* BSTPrefixSumUpperBound(TNode* root, TValue value) {

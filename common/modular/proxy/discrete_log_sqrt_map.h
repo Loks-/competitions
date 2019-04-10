@@ -1,10 +1,10 @@
 #pragma once
 
-#include "../arithmetic.h"
-#include "../utils/primitive_root.h"
-#include "../../base.h"
-#include "../../factorization/base.h"
-#include "../../numeric/utils/usqrt.h"
+#include "common/base.h"
+#include "common/factorization/base.h"
+#include "common/modular/arithmetic.h"
+#include "common/modular/utils/primitive_root.h"
+#include "common/numeric/utils/usqrt.h"
 #include <algorithm>
 #include <unordered_map>
 

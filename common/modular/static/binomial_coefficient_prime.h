@@ -1,7 +1,7 @@
 #pragma once
 
-#include "factorial.h"
-#include "../../base.h"
+#include "common/base.h"
+#include "common/modular/static/factorial.h"
 
 // Based on Lucas's theorem.
 
@@ -21,6 +21,6 @@ inline TModular ModularPrimeBinomialCoefficient(uint64_t n, uint64_t k,
 
 template <class TModular>
 inline TModular ModularPrimeBinomialCoefficient(uint64_t n, uint64_t k) {
-  static ModularFactorial<TModular> f;
+  thread_local ModularFactorial<TModular> f;
   return ModularPrimeBinomialCoefficient(n, k, f);
 }

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "proxy.h"
+#include "common/segment_tree/info/proxy.h"
 
 class TSTInfoNone {
  public:

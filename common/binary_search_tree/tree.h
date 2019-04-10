@@ -1,10 +1,10 @@
 #pragma once
 
-#include "base/find_by_key.h"
-#include "base/find_by_order.h"
-#include "nodes_manager.h"
-#include "../base.h"
-#include "../template.h"
+#include "common/base.h"
+#include "common/binary_search_tree/base/find_by_key.h"
+#include "common/binary_search_tree/base/find_by_order.h"
+#include "common/binary_search_tree/nodes_manager.h"
+#include "common/template.h"
 #include <algorithm>
 #include <utility>
 #include <vector>

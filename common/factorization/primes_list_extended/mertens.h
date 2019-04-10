@@ -1,8 +1,8 @@
 #pragma once
 
-#include "mobius.h"
-#include "../primes_list.h"
-#include "../../base.h"
+#include "common/base.h"
+#include "common/factorization/primes_list.h"
+#include "common/factorization/primes_list_extended/mobius.h"
 #include <vector>
 
 template <class TPrimesList>

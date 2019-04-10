@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../base.h"
+#include "common/base.h"
 
 template <class TNode>
 inline typename TNode::TInfo STGetSegmentI(

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "vector.h"
-// #include "../../numeric/utils/bits_count.h"
+#include "common/linear_algebra/bool/vector.h"
+// #include "common/numeric/utils/bits_count.h"
 #include <algorithm>
 
 class MatrixBool : public VectorBool {

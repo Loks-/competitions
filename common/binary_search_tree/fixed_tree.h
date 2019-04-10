@@ -1,10 +1,10 @@
 #pragma once
 
-#include "action/none.h"
-#include "info/size.h"
-#include "node.h"
-#include "nodes_manager.h"
-#include "../base.h"
+#include "common/base.h"
+#include "common/binary_search_tree/action/none.h"
+#include "common/binary_search_tree/info/size.h"
+#include "common/binary_search_tree/node.h"
+#include "common/binary_search_tree/nodes_manager.h"
 #include <algorithm>
 #include <utility>
 #include <vector>

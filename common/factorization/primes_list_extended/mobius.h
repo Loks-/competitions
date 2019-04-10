@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../primes_list.h"
+#include "common/factorization/primes_list.h"
 #include <vector>
 
 template <class TPrimesList>

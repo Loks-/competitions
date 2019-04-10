@@ -1,6 +1,6 @@
 #pragma once
 
-#include "none.h"
+#include "common/binary_search_tree/info/none.h"
 
 class BSTInfoSize : public BSTInfoNone {
  public:

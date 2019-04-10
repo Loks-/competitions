@@ -1,7 +1,7 @@
 #pragma once
 
-#include "utils/gcd.h"
-#include "../base.h"
+#include "common/base.h"
+#include "common/numeric/utils/gcd.h"
 
 template <class TTValue>
 class Fraction {

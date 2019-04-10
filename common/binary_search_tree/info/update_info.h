@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../template.h"
+#include "common/template.h"
 
 template <class TNode>
 inline void UpdateInfoNodeToRoot(TNode* node, TFakeFalse) {}

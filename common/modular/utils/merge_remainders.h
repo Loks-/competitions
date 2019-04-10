@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../arithmetic.h"
+#include "common/modular/arithmetic.h"
 
 // From chinese remainder theorem
 template <class TModularAQ = TModularArithmetic_C32U>

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../base.h"
+#include "common/base.h"
 
 // Swap intervals [first, middle) and [middle, last)
 template <class TBST>

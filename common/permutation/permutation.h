@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../base.h"
-#include "../vector/read.h"
+#include "common/base.h"
+#include "common/vector/read.h"
 #include <algorithm>
 #include <utility>
 #include <vector>

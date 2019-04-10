@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../base.h"
-#include "../template.h"
+#include "common/base.h"
+#include "common/template.h"
 #include <random>
 #include <stack>
 #include <vector>

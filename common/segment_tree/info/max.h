@@ -1,6 +1,6 @@
 #pragma once
 
-#include "proxy.h"
+#include "common/segment_tree/info/proxy.h"
 #include <algorithm>
 
 template <class TMaxValue, class TInfo>

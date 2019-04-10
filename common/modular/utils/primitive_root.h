@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../arithmetic.h"
-#include "../../base.h"
-#include "../../factorization/base.h"
+#include "common/base.h"
+#include "common/factorization/base.h"
+#include "common/modular/arithmetic.h"
 
 template <class TModularA = TModularArithmetic_P32U>
 inline uint64_t FindSmallestPrimitive(uint64_t p,

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../base/find_by_order.h"
-#include "../../base.h"
+#include "common/base.h"
+#include "common/binary_search_tree/base/find_by_order.h"
 
 template <class TNode, class TValue>
 inline TValue BSTMedian(TNode* root) {

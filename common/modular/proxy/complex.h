@@ -1,7 +1,7 @@
 #pragma once
 
-#include "modular_proxy.h"
-#include "../../numeric/complex.h"
+#include "common/modular/proxy/modular_proxy.h"
+#include "common/numeric/complex.h"
 
 template <bool is_modular_prime = true>
 class PModularComplex {

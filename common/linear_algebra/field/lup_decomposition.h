@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../rows/sub_m.h"
-#include "../rows/swap.h"
-#include "../../base.h"
+#include "common/base.h"
+#include "common/linear_algebra/rows/sub_m.h"
+#include "common/linear_algebra/rows/swap.h"
 #include <vector>
 
 template <class TTMatrix>

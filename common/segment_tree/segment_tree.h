@@ -1,10 +1,10 @@
 #pragma once
 
-#include "action/none.h"
-#include "info/segment.h"
-#include "node.h"
-#include "../base.h"
-#include "../vector/enumerate.h"
+#include "common/base.h"
+#include "common/segment_tree/action/none.h"
+#include "common/segment_tree/info/segment.h"
+#include "common/segment_tree/node.h"
+#include "common/vector/enumerate.h"
 
 #include <vector>
 

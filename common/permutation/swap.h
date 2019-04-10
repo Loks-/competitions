@@ -1,6 +1,6 @@
 #pragma once
 
-#include "permutation.h"
+#include "common/permutation/permutation.h"
 
 // Returns list of elements to swap, not positions.
 Permutation::TSwaps PermutationToSwaps(const Permutation& p) {

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../rows/sub_m.h"
-#include "../rows/swap.h"
+#include "common/linear_algebra/rows/sub_m.h"
+#include "common/linear_algebra/rows/swap.h"
 
 template <class TMatrix>
 inline unsigned FMatrixRank(const TMatrix& matrix) {

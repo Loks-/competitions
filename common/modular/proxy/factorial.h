@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../../base.h"
-#include "../../numeric/utils/gcd.h"
+#include "common/base.h"
+#include "common/numeric/utils/gcd.h"
 #include <vector>
 
 template <class TModularProxy, bool keep_inverted = true,

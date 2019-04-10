@@ -1,8 +1,8 @@
 #pragma once
 
-#include "permutation.h"
-#include "../base.h"
-#include "../numeric/utils/gcd.h"
+#include "common/base.h"
+#include "common/numeric/utils/gcd.h"
+#include "common/permutation/permutation.h"
 
 void PermutationSimpleCyclePow(Permutation::TCycle& cycle, unsigned pow) {
   unsigned size = cycle.size();

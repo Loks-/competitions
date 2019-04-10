@@ -1,6 +1,6 @@
 #pragma once
 
-#include "modular_bool.h"
+#include "common/modular/static/modular_bool.h"
 #include <istream>
 #include <ostream>
 

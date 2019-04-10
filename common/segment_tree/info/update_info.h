@@ -1,3 +1,3 @@
 #pragma once
 
-#include "../../binary_search_tree/info/update_info.h"
+#include "common/binary_search_tree/info/update_info.h"

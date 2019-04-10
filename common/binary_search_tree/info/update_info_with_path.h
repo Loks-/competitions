@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../template.h"
+#include "common/template.h"
 #include <vector>
 
 template <class TNode>

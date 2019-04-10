@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../base.h"
+#include "common/factorization/base.h"
 
 // Return sum of coprime to k numbers in the interval [1..n].
 inline uint64_t CoprimeSum(const TFactorization& k_factorization, uint64_t n) {

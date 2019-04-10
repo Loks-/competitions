@@ -1,6 +1,6 @@
 #pragma once
 
-#include "vector.h"
+#include "common/linear_algebra/vector.h"
 #include <algorithm>
 
 template <class TTValue>

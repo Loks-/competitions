@@ -1,8 +1,8 @@
 #pragma once
 
-#include "continued_fraction.h"
-#include "../fraction.h"
-#include "../../base.h"
+#include "common/base.h"
+#include "common/numeric/continued_fraction/continued_fraction.h"
+#include "common/numeric/fraction.h"
 
 class CFConvergent {
  protected:

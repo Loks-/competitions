@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../numeric/utils/gcd.h"
+#include "common/numeric/utils/gcd.h"
 
 template <class TGCDType, class TInfo>
 class BSTInfoGCD : public TInfo {

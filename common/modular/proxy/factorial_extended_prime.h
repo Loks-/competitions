@@ -1,7 +1,7 @@
 #pragma once
 
-#include "factorial.h"
-#include "modular_proxy.h"
+#include "common/modular/proxy/factorial.h"
+#include "common/modular/proxy/modular_proxy.h"
 
 // Calculate (n!/p^k) mod p, where k is the power of p in n!.
 // Based on Wilson theorem.

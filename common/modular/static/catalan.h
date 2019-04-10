@@ -1,6 +1,6 @@
 #pragma once
 
-#include "factorial.h"
+#include "common/modular/static/factorial.h"
 
 template <class TModular>
 class ModularCatalan : public ModularFactorial<TModular, true> {

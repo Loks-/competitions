@@ -1,6 +1,6 @@
 #pragma once
 
-#include "modular.h"
+#include "common/modular/static/modular.h"
 #include <istream>
 #include <ostream>
 

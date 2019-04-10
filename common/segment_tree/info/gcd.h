@@ -1,7 +1,7 @@
 #pragma once
 
-#include "proxy.h"
-#include "../../numeric/utils/gcd.h"
+#include "common/numeric/utils/gcd.h"
+#include "common/segment_tree/info/proxy.h"
 
 template <class TGCDValue, class TInfo>
 class TSTInfoGCD : public TInfo {

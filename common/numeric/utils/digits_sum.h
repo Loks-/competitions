@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../base.h"
+#include "common/base.h"
 
 inline uint64_t DigitsSum(uint64_t x, uint64_t base = 10) {
   uint64_t s = 0;

@@ -1,13 +1,13 @@
 #pragma once
 
-#include "action/apply_action.h"
-#include "action/none.h"
-#include "base/rotate.h"
-#include "info/height.h"
-#include "info/size.h"
-#include "node.h"
-#include "tree.h"
-#include "../base.h"
+#include "common/base.h"
+#include "common/binary_search_tree/action/apply_action.h"
+#include "common/binary_search_tree/action/none.h"
+#include "common/binary_search_tree/base/rotate.h"
+#include "common/binary_search_tree/info/height.h"
+#include "common/binary_search_tree/info/size.h"
+#include "common/binary_search_tree/node.h"
+#include "common/binary_search_tree/tree.h"
 
 template <bool _use_parent, class TTData, class TTInfo = BSTInfoSize,
           class TTAction = BSTActionNone, class TTKey = int64_t>

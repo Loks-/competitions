@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../matrix.h"
+#include "common/linear_algebra/matrix.h"
 #include <iostream>
 
 template <class TValue>

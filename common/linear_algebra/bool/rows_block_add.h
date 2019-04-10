@@ -1,6 +1,6 @@
 #pragma once
 
-#include "matrix.h"
+#include "common/linear_algebra/bool/matrix.h"
 
 inline void MatrixRowsBAdd(MatrixBool& matrix, unsigned row_i, unsigned row_j,
                            unsigned row_first_block = 0) {

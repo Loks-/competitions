@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../primality_test.h"
-#include "../primes_list.h"
-#include "../../numeric/utils/usqrt.h"
+#include "common/factorization/primality_test.h"
+#include "common/factorization/primes_list.h"
+#include "common/numeric/utils/usqrt.h"
 #include <vector>
 
 class PLEPrimesPowers : public PrimesList {

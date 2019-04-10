@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../base.h"
+#include "common/base.h"
 
 template <class TNode, bool update_child, bool apply_action>
 inline void BSTRotate(TNode* child, TNode* parent, TNode* gparent) {

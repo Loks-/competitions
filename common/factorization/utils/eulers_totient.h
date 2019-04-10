@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../base.h"
+#include "common/factorization/base.h"
 
 // Number of relative prime integers to n.
 inline uint64_t EulersTotient(uint64_t n, const TFactorization& factorization) {

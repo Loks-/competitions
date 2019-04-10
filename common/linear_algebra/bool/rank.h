@@ -1,8 +1,8 @@
 #pragma once
 
-#include "matrix.h"
-#include "rows_block_add.h"
-#include "rows_block_swap.h"
+#include "common/linear_algebra/bool/matrix.h"
+#include "common/linear_algebra/bool/rows_block_add.h"
+#include "common/linear_algebra/bool/rows_block_swap.h"
 
 inline unsigned BMatrixRank(const MatrixBool& matrix) {
   MatrixBool m(matrix);

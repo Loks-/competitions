@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../hash.h"
+#include "common/hash.h"
 #include <utility>
 
 namespace std {

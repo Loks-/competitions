@@ -1,7 +1,7 @@
 #pragma once
 
-#include "factorial.h"
-#include "modular.h"
+#include "common/modular/static/factorial.h"
+#include "common/modular/static/modular.h"
 
 // Calculate (n!/p^k) mod p, where k is the power of p in n!.
 // Based on Wilson theorem.
@@ -26,6 +26,6 @@ inline TModular ModularFactorialExtendedPrime(
 template <class TModular>
 inline TModular ModularFactorialExtendedPrime(uint64_t n,
                                               bool inverted = false) {
-  static ModularFactorial<TModular, true> f;
+  thread_local ModularFactorial<TModular, true> f;
   return ModularFactorialExtendedPrime(n, f, inverted);
 }

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../base.h"
+#include "common/factorization/base.h"
 
 inline unsigned GetDivisorsCount(const TFactorization& factorization) {
   unsigned k = 1;

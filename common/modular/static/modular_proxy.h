@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../arithmetic.h"
+#include "common/modular/arithmetic.h"
 
 template <uint64_t mod = 1000000007, bool is_prime = true, bool is_32bit = true>
 class ModularStaticProxy {

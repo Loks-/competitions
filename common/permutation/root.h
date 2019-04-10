@@ -1,9 +1,9 @@
 #pragma once
 
-#include "permutation.h"
-#include "simple_cycle_pow.h"
-#include "../modular/arithmetic.h"
-#include "../numeric/utils/gcd.h"
+#include "common/modular/arithmetic.h"
+#include "common/numeric/utils/gcd.h"
+#include "common/permutation/permutation.h"
+#include "common/permutation/simple_cycle_pow.h"
 #include <vector>
 
 // If root is not exist function returns permutation with size 0.

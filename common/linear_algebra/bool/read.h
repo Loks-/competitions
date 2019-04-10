@@ -1,8 +1,8 @@
 #pragma once
 
-#include "matrix.h"
-#include "vector.h"
-#include "../../modular/static/modular_bool_io.h"
+#include "common/linear_algebra/bool/matrix.h"
+#include "common/linear_algebra/bool/vector.h"
+#include "common/modular/static/modular_bool_io.h"
 #include <iostream>
 
 inline VectorBool ReadVectorBool(unsigned size) {

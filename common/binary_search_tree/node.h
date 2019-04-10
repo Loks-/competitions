@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../base.h"
+#include "common/base.h"
 
 template <bool use_height, class THeight>
 class TBSTNodeProxyHeight {};

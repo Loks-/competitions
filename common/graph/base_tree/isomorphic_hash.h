@@ -1,8 +1,8 @@
 #pragma once
 
-#include "base_tree.h"
-#include "../../base.h"
-#include "../../hash.h"
+#include "common/base.h"
+#include "common/graph/base_tree/base_tree.h"
+#include "common/hash.h"
 #include <algorithm>
 #include <functional>
 #include <stack>

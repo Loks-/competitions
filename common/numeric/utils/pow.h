@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../base.h"
+#include "common/base.h"
 
 template <class T>
 inline T PowU(T x, uint64_t pow) {

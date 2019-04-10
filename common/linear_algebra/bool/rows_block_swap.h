@@ -1,6 +1,6 @@
 #pragma once
 
-#include "matrix.h"
+#include "common/linear_algebra/bool/matrix.h"
 #include <algorithm>
 
 inline void MatrixRowsBSwap(MatrixBool& matrix, unsigned row_i, unsigned row_j,
