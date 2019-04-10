@@ -78,7 +78,7 @@ class ScapegoatTree
   static TNode* RemoveRootI(TNode* root) {
     if (!root->l) return root->r;
     if (!root->r) return root->l;
-    static thread_local std::stack<TNode*> s;
+    thread_local std::stack<TNode*> s;
     TNode *l = root->l, *r = root->r, *new_root;
     if (l->info.size < r->info.size) {
       new_root = r;

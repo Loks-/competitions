@@ -69,7 +69,7 @@ class RedBlackTree
 
  protected:
   static TNode* InsertByKeyI(TNode* root, TNode* node, TFakeFalse) {
-    static thread_local std::vector<TNode*> node_to_root_path;
+    thread_local std::vector<TNode*> node_to_root_path;
     if (!root) {
       node->info.is_black = true;
       return node;
@@ -170,7 +170,7 @@ class RedBlackTree
  protected:
   static TNode* RemoveByKeyI(TNode* root, const TKey& key, TNode*& removed_node,
                              TFakeFalse) {
-    static thread_local std::vector<TNode*> node_to_root_path;
+    thread_local std::vector<TNode*> node_to_root_path;
     // Find node
     if (!root) return root;
     node_to_root_path.clear();

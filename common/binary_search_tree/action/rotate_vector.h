@@ -1,6 +1,6 @@
 #pragma once
 
-#include "none.h"
+#include "common/binary_search_tree/action/none.h"
 
 // Support only VectorStaticSize from LinearAlgebra.
 class BSTActionRotateVector : public BSTActionNone {
@@ -8,7 +8,7 @@ class BSTActionRotateVector : public BSTActionNone {
   template <class TVector>
   static void Rotate(TVector& v, unsigned r) {
     if (r == 0) return;
-    static thread_local TVector vt;
+    thread_local TVector vt;
     unsigned size = v.Size();
     for (unsigned i = 0; i < size; ++i) vt((i + r) % size) = v(i);
     v.swap(vt);

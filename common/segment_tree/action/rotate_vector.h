@@ -8,7 +8,7 @@ class STActionRotateVector : public STActionNone {
   template <class TVector>
   static void Rotate(TVector& v, unsigned r) {
     if (r == 0) return;
-    static thread_local TVector vt;
+    thread_local TVector vt;
     unsigned size = v.Size();
     for (unsigned i = 0; i < size; ++i) vt((i + r) % size) = v(i);
     v.swap(vt);
