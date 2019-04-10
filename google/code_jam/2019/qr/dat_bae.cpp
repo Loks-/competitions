@@ -24,7 +24,7 @@ class Block {
     return s;
   }
 
-  vector<Block> Process(char*& p) const {
+  vector<Block> Process(const char*& p) const {
     if (!UnknownPositions()) {
       p += (l - b);
       return {*this};
@@ -73,7 +73,7 @@ int main_dat_bae() {
       if (finished) break;
       cout << s << endl;
       cin >> s;
-      char* p = &(s[0]);
+      const char* p = s.c_str();
       vn.clear();
       for (const Block& l : vc) {
         auto vt = l.Process(p);
