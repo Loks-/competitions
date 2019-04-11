@@ -10,13 +10,12 @@
 using TDiscreteLog = PModularDiscreteLogSqrtMap;
 
 int main_minion_of_the_year() {
-  Factorization ff;
   unsigned T, N, P;
   cin >> T;
   for (unsigned iT = 0; iT < T; ++iT) {
     cin >> P >> N;
     uint64_t P1 = P - 1;
-    TDiscreteLog dl(P, ff.Factorize(P1), 500000);
+    TDiscreteLog dl(P, Factorize(P1), 500000);
     for (unsigned iN = 0; iN < N; ++iN) {
       uint64_t A, B, C, D;
       cin >> A >> B >> C >> D;

@@ -14,7 +14,6 @@ using TModular = ModularBool;
 using TMatrix = MatrixBool;
 
 int main_degree_of_an_algebraic_number__mb() {
-  Factorization ff;
   unsigned T, N;
   cin >> T;
   for (unsigned iT = 0; iT < T; ++iT) {
@@ -23,7 +22,7 @@ int main_degree_of_an_algebraic_number__mb() {
     vector<unsigned> va = ReadVector<unsigned>(N);
     vector<vector<unsigned>> vap;
     for (unsigned a : va) {
-      TFactorization f = ff.Factorize(a);
+      TFactorization f = Factorize(a);
       vector<unsigned> vp;
       for (auto p : f) {
         if (p.second & 1) {

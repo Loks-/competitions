@@ -1,7 +1,7 @@
 #pragma once
 
 #include "common/base.h"
-#include "common/factorization/utils/factorize.h"
+#include "common/factorization/utils/factorization_base.h"
 #include "common/modular/proxy/factorial.h"
 #include "common/modular/proxy/modular_proxy.h"
 #include "common/modular/utils/merge_remainders.h"
@@ -79,7 +79,7 @@ class PModularBinomialCoefficient {
 
  public:
   PModularBinomialCoefficient(uint64_t n) {
-    TFactorization nf(Factorize(n));
+    TFactorization nf(FactorizeBase(n));
     for (auto fp : nf) {
       if (fp.second == 1)
         factorial_proxies_prime.push_back(TPrimeFactorialProxy(fp.first));

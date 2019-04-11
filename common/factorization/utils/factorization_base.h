@@ -4,7 +4,7 @@
 #include <utility>
 #include <vector>
 
-inline TFactorization Factorize(uint64_t n) {
+inline TFactorization FactorizeBase(uint64_t n) {
   TFactorization output;
   unsigned p2 = 0;
   for (; (n % 2) == 0; n /= 2) ++p2;

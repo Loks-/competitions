@@ -2,7 +2,7 @@
 
 #include "common/base.h"
 #include "common/factorization/base.h"
-#include "common/factorization/utils/factorize.h"
+#include "common/factorization/utils/factorization_base.h"
 #include "common/modular/arithmetic.h"
 #include "common/modular/utils/primitive_root.h"
 #include <vector>
@@ -40,7 +40,7 @@ class PModularDiscreteLogFullMap {
       : PModularDiscreteLogFullMap(
             prime, FindSmallestPrimitive(prime, p1_factorization)) {}
   PModularDiscreteLogFullMap(unsigned prime)
-      : PModularDiscreteLogFullMap(prime, Factorize(prime - 1)) {}
+      : PModularDiscreteLogFullMap(prime, FactorizeBase(prime - 1)) {}
 
   unsigned Log(uint64_t x) const {
     x = TModularA::ApplyU(x, p);

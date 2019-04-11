@@ -1,4 +1,4 @@
-#include "common/factorization/utils/factorize.h"
+#include "common/factorization/utils/factorization_base.h"
 #include "common/numeric/utils/pow.h"
 #include "common/stl/base.h"
 
@@ -7,7 +7,7 @@ int main_partitioning_a_square() {
   cin >> T;
   for (unsigned iT = 0; iT < T; ++iT) {
     cin >> N;
-    TFactorization f = Factorize(N);
+    TFactorization f = FactorizeBase(N);
     unsigned l = 1;
     for (auto p : f) l *= PowU(unsigned(p.first), (p.second + 1) / 2);
     cout << l << endl;

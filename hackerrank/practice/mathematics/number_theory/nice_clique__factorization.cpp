@@ -6,13 +6,12 @@
 #include "common/vector/read.h"
 
 int main_nice_clique__factorization() {
-  Factorization ff;
   unsigned n;
   cin >> n;
   vector<uint64_t> v = ReadVector<uint64_t>(n);
   vector<unsigned> m1(2), m2(2);
   for (uint64_t x : v) {
-    auto f = ff.Factorize(x);
+    auto f = Factorize(x);
     m1[f.size() & 1] += 1;
     m2[GetDivisorsSum(f) & 1] += 1;
   }

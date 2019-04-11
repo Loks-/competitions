@@ -1,7 +1,7 @@
 // https://www.hackerrank.com/challenges/bus-station
 
 #include "common/factorization/utils/divisors.h"
-#include "common/factorization/utils/factorize.h"
+#include "common/factorization/utils/factorization_base.h"
 #include "common/stl/base.h"
 
 #include <unordered_set>
@@ -17,7 +17,7 @@ int main_bus_station() {
     m = max(m, x);
     us.insert(s);
   }
-  vector<uint64_t> vd = GetDivisors(Factorize(s));
+  vector<uint64_t> vd = GetDivisors(FactorizeBase(s));
   sort(vd.begin(), vd.end());
   for (uint64_t d : vd) {
     if (d < m) continue;

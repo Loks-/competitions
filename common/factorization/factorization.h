@@ -87,7 +87,7 @@ class Factorization {
   }
 };
 
-inline TFactorization FastFactorize(uint64_t n) {
+inline TFactorization Factorize(uint64_t n) {
   thread_local Factorization f;
   return f.Factorize(n);
 }

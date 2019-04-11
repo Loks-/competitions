@@ -20,7 +20,7 @@ class ModularFFT {
  protected:
   void Init(unsigned n) {
     uint64_t p = TModular::GetMod();
-    TFactorization p1f = FastFactorize(p - 1);
+    TFactorization p1f = Factorize(p - 1);
     assert(p1f.size() > 0);
     primitive = FindSmallestPrimitive<typename TModular::TArithmetic>(p, p1f);
     unsigned max2p;

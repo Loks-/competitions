@@ -20,7 +20,7 @@ int main_unfriendly_numbers() {
   sort(un.begin(), un.end());
   reverse(un.begin(), un.end());
 
-  vector<uint64_t> fd = GetDivisors(FastFactorize(f));
+  vector<uint64_t> fd = GetDivisors(Factorize(f));
   unsigned ud = 0;
   for (uint64_t d : fd) {
     if (d > un[0]) {

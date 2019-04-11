@@ -2,7 +2,7 @@
 #include "message.h"
 
 #include "common/factorization/utils/divisors.h"
-#include "common/factorization/utils/factorize.h"
+#include "common/factorization/utils/factorization_base.h"
 #include "common/modular/static/modular.h"
 #include "common/stl/base.h"
 
@@ -56,7 +56,7 @@ int main_kenneth() {
     }
   }
 
-  auto vd = GetDivisors(Factorize(l));
+  auto vd = GetDivisors(FactorizeBase(l));
   sort(vd.begin(), vd.end());
   vector<char> vok(vd.size(), 1);
   for (unsigned k = 0; k < vd.size(); ++k) {

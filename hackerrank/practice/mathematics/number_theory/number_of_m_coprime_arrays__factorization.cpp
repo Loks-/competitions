@@ -11,7 +11,6 @@ using TModular = Modular<>;
 using TMatrix = TSquareMatrixStaticSize<TModular, 2>;
 
 int main_number_of_m_coprime_arrays__factorization() {
-  Factorization ff;
   TMatrix m;
   m(0, 0) = m(0, 1) = 1;
 
@@ -20,7 +19,7 @@ int main_number_of_m_coprime_arrays__factorization() {
   for (unsigned it = 0; it < T; ++it) {
     uint64_t N, M;
     cin >> N >> M;
-    TFactorization fp = ff.Factorize(M);
+    TFactorization fp = Factorize(M);
     TModular r = 1;
     for (auto q : fp) {
       m(1, 0) = q.second;

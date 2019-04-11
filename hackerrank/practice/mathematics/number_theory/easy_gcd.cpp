@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/easy-gcd-1
 
-#include "common/factorization/utils/factorize.h"
+#include "common/factorization/utils/factorization_base.h"
 #include "common/numeric/utils/gcd.h"
 #include "common/stl/base.h"
 
@@ -11,7 +11,7 @@ int main_easy_gcd() {
     cin >> t;
     g = GCD(t, g);
   }
-  TFactorization f = Factorize(g);
+  TFactorization f = FactorizeBase(g);
   for (auto p : f) b = max(b, k - (k % unsigned(p.first)));
   cout << b << endl;
   return 0;

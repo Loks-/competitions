@@ -7,7 +7,6 @@
 #include <string>
 
 int main_qizz_quzz_q1() {
-  Factorization ff;
   auto get_type = [](const std::string& s) {
     unsigned type = 0;
     for (char c : s) {
@@ -31,7 +30,7 @@ int main_qizz_quzz_q1() {
       string s = vs[i - 1];
       unsigned type = get_type(s);
       if ((type != 1) && (type != 2)) break;
-      vector<uint64_t> vd = GetDivisors(ff.Factorize(i));
+      vector<uint64_t> vd = GetDivisors(Factorize(i));
       sort(vd.begin(), vd.end());
       for (uint64_t d : vd) {
         if (d == i) continue;
