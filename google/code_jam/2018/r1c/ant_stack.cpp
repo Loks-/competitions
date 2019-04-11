@@ -1,8 +1,6 @@
 #include "common/stl/base.h"
 #include "common/vector/read.h"
 
-#include <algorithm>
-
 int main_ant_stack() {
   unsigned T;
   cin >> T;

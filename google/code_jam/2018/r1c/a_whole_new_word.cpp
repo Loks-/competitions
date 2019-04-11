@@ -1,7 +1,6 @@
 #include "common/stl/base.h"
 #include "common/vector/read.h"
 
-#include <algorithm>
 #include <string>
 
 int main_a_whole_new_word() {
