@@ -17,9 +17,9 @@ int main_jennys_subtrees() {
   vector<bool> keep(n);
   vector<unsigned> distance;
   for (unsigned i = 0; i < n; ++i) {
-    distance = GetEdgeDistancesFromSource(tree, i);
+    distance = DistanceFromSource(tree, i);
     for (unsigned j = 0; j < n; ++j) keep[j] = (distance[j] <= r);
-    BaseSubgraph::CreateSubgraph(tree, keep, tree_temp);
+    tree_temp = Subgraph(tree, keep);
     hash_set.insert(BaseTreeIsomorphicHash::Hash(tree_temp));
   }
   cout << hash_set.size() << endl;

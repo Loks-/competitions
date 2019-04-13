@@ -4,6 +4,6 @@
 #include "common/graph/tree.h"
 
 template <class TTBaseTree>
-inline std::vector<unsigned> GetDeep(const TTBaseTree& tree) {
-  return GetEdgeDistancesFromSource(tree, tree.GetRoot());
+inline std::vector<unsigned> TreeDeep(const TTBaseTree& tree) {
+  return DistanceFromSource(tree, tree.GetRoot());
 }
