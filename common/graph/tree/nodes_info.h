@@ -5,13 +5,13 @@
 #include <stack>
 #include <vector>
 
-class BaseTreeNodesInfo {
+class TreeNodesInfo {
  public:
   unsigned root;
   std::vector<unsigned> parent, deep, preorder, subtree_size;
 
-  template <class TTBaseTree>
-  void Init(const TTBaseTree& tree, unsigned _root) {
+  template <class TTTree>
+  void Init(const TTTree& tree, unsigned _root) {
     root = _root;
     unsigned size = tree.Size(), timer = 0;
     parent.resize(size);
@@ -41,20 +41,20 @@ class BaseTreeNodesInfo {
     }
   }
 
-  template <class TTBaseTree>
-  void Init(const TTBaseTree& tree) {
+  template <class TTTree>
+  void Init(const TTTree& tree) {
     Init(tree, tree.GetRoot());
   }
 
-  BaseTreeNodesInfo() : root(CNone) {}
+  TreeNodesInfo() : root(CNone) {}
 
-  template <class TTBaseTree>
-  BaseTreeNodesInfo(const TTBaseTree& tree) {
+  template <class TTTree>
+  TreeNodesInfo(const TTTree& tree) {
     Init(tree);
   }
 
-  template <class TTBaseTree>
-  BaseTreeNodesInfo(const TTBaseTree& tree, unsigned _root) {
+  template <class TTTree>
+  TreeNodesInfo(const TTTree& tree, unsigned _root) {
     Init(tree, _root);
   }
 };

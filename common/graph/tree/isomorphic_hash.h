@@ -9,7 +9,7 @@
 #include <utility>
 #include <vector>
 
-class BaseTreeIsomorphicHash {
+class TreeIsomorphicHash {
  protected:
   static std::pair<unsigned, unsigned> GetCenter(const TTree& tree) {
     struct Node {

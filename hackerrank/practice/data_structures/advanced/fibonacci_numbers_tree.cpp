@@ -17,7 +17,7 @@ int main_fibonacci_numbers_tree() {
   cin >> N >> Q;
   TTree tree(N);
   tree.ReadTreeEdges();
-  BaseTreeNodesInfo nodes_info(tree);
+  TreeNodesInfo nodes_info(tree);
   LCA lca(tree);
   TBIT bit_c(N), bit_f0(N), bit_f1(N);
 

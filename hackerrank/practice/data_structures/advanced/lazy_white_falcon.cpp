@@ -13,7 +13,7 @@ int main_lazy_white_falcon() {
   cin >> N >> Q;
   TTree tree(N);
   tree.ReadEdges(true);
-  BaseTreeNodesInfo nodes_info(tree);
+  TreeNodesInfo nodes_info(tree);
   LCA lca(tree);
   TBIT bit(N);
   vector<int64_t> current_values(N, 0);

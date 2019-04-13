@@ -11,7 +11,7 @@ class CentroidDecomposition {
  protected:
   // Edges from smaller groups to parent are removed.
   TTree tree;
-  BaseTreeNodesInfo info;
+  TreeNodesInfo info;
   std::vector<unsigned> group, group_root;
   std::stack<unsigned> vertices_to_check;
 
