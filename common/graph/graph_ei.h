@@ -11,13 +11,12 @@ class GraphEI : public Graph<_directed_edges> {
  public:
   const static bool directed_edges = _directed_edges;
   using TEdgeInfo = TTEdgeInfo;
-  using TGraphEdge = GraphEdge<TEdgeInfo>;
-  using TGraphEdges = GraphEdgesFromVertex<TEdgeInfo>;
+  using TEdge = Edge<TEdgeInfo>;
+  using TEdges = EdgesFromVertex<TEdgeInfo>;
   using TBase = Graph<directed_edges>;
   using TSelf = GraphEI<TEdgeInfo, directed_edges>;
 
  protected:
-  unsigned nvertices;
   std::vector<std::vector<TEdgeInfo>> edges_info;
   std::vector<std::vector<TEdgeInfo>> inverted_edges_info;
 
@@ -37,12 +36,12 @@ class GraphEI : public Graph<_directed_edges> {
 
   GraphEI(unsigned _nvertices = 0) { Resize(_nvertices); }
 
-  TGraphEdges GraphEdges(unsigned from) const {
-    return TGraphEdges(TBase::edges[from], edges_info[from]);
+  TEdges EdgesEI(unsigned from) const {
+    return TEdges(TBase::edges[from], edges_info[from]);
   }
 
-  TGraphEdges InvertedGraphEdges(unsigned from) const {
-    return TGraphEdges(TBase::inverted_edges[from], inverted_edges_info[from]);
+  TEdges InvertedEdgesEI(unsigned from) const {
+    return TEdges(TBase::inverted_edges[from], inverted_edges_info[from]);
   }
 
   void AddBaseEdge(unsigned from, unsigned to, const TEdgeInfo& edge_info) {

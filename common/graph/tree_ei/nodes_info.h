@@ -36,7 +36,7 @@ class TreeEINodesInfo {
         // First time here
         preorder[v] = timer++;
         subtree_size[v] = 1;
-        for (auto ce : tree.GraphEdges(v)) {
+        for (auto ce : tree.EdgesEI(v)) {
           unsigned c = ce.to;
           if (c == p) continue;
           parent[c] = v;

@@ -4,28 +4,28 @@
 
 namespace graph {
 template <class TEdgeInfo>
-class GraphEdge {
+class Edge {
  public:
   unsigned to;
   TEdgeInfo info;
 };
 
 template <class TEdgeInfo>
-class GraphEdgeConstIterator {
+class EdgeConstIterator {
  public:
-  using TSelf = GraphEdgeConstIterator<TEdgeInfo>;
+  using TSelf = EdgeConstIterator<TEdgeInfo>;
 
  protected:
   const unsigned* p1;
   const TEdgeInfo* p2;
 
  public:
-  GraphEdgeConstIterator(const unsigned* _p1, const TEdgeInfo* _p2)
+  EdgeConstIterator(const unsigned* _p1, const TEdgeInfo* _p2)
       : p1(_p1), p2(_p2) {}
 
-  GraphEdge<TEdgeInfo> operator*() const { return {*p1, *p2}; }
+  Edge<TEdgeInfo> operator*() const { return {*p1, *p2}; }
 
-  GraphEdgeConstIterator& operator++() {
+  EdgeConstIterator& operator++() {
     ++p1;
     ++p2;
     return *this;
@@ -35,15 +35,15 @@ class GraphEdgeConstIterator {
 };
 
 template <class TEdgeInfo>
-class GraphEdgesFromVertex {
+class EdgesFromVertex {
  public:
-  using const_iterator = GraphEdgeConstIterator<TEdgeInfo>;
+  using const_iterator = EdgeConstIterator<TEdgeInfo>;
 
   const std::vector<unsigned>& to;
   const std::vector<TEdgeInfo>& info;
 
-  GraphEdgesFromVertex(const std::vector<unsigned>& _to,
-                       const std::vector<TEdgeInfo>& _info)
+  EdgesFromVertex(const std::vector<unsigned>& _to,
+                  const std::vector<TEdgeInfo>& _info)
       : to(_to), info(_info) {}
 
   unsigned Size() const { return unsigned(to.size()); }
