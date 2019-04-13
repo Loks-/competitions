@@ -9,9 +9,10 @@
 #include <utility>
 #include <vector>
 
+namespace graph {
 class TreeIsomorphicHash {
  protected:
-  static std::pair<unsigned, unsigned> GetCenter(const TTree& tree) {
+  static std::pair<unsigned, unsigned> GetCenter(const TreeGraph& tree) {
     struct Node {
       unsigned node, parent;
     };
@@ -40,7 +41,7 @@ class TreeIsomorphicHash {
     return std::make_pair(tree.GetRoot(), CNone);
   }
 
-  static size_t HashR(const TTree& tree, unsigned node, unsigned parent) {
+  static size_t HashR(const TreeGraph& tree, unsigned node, unsigned parent) {
     size_t current = std::hash<unsigned>{}(1);
     std::vector<size_t> v;
     for (unsigned c : tree.Edges(node)) {
@@ -53,7 +54,7 @@ class TreeIsomorphicHash {
   }
 
  public:
-  static size_t Hash(const TTree& tree) {
+  static size_t Hash(const TreeGraph& tree) {
     auto p = GetCenter(tree);
     if (p.second == CNone) return HashR(tree, p.first, p.second);
     size_t h1 = HashR(tree, p.first, p.second);
@@ -61,3 +62,4 @@ class TreeIsomorphicHash {
     return (h1 < h2) ? hash_combine(h1, h2) : hash_combine(h2, h1);
   }
 };
+}  // namespace graph

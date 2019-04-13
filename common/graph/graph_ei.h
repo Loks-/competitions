@@ -5,6 +5,7 @@
 #include <iostream>
 #include <vector>
 
+namespace graph {
 template <class TTEdgeInfo, bool _directed_edges = false>
 class GraphEI : public Graph<_directed_edges> {
  public:
@@ -72,8 +73,9 @@ class GraphEI : public Graph<_directed_edges> {
     }
   }
 };
+}  // namespace graph
 
-template <class EdgeInfo>
-using UndirectedGraphEI = GraphEI<EdgeInfo, false>;
-template <class EdgeInfo>
-using DirectedGraphEI = GraphEI<EdgeInfo, true>;
+template <class TEdgeInfo>
+using UndirectedGraphEI = graph::GraphEI<TEdgeInfo, false>;
+template <class TEdgeInfo>
+using DirectedGraphEI = graph::GraphEI<TEdgeInfo, true>;

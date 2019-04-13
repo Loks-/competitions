@@ -5,14 +5,15 @@
 #include "common/graph/tree.h"
 #include <vector>
 
+namespace graph {
 template <class TGraph>
 inline void SubgraphUpdateRootI(const TGraph& graph, unsigned new_nvertices,
                                 const std::vector<unsigned>& old_to_new,
                                 TGraph& output) {}
 
-inline void SubgraphUpdateRootI(const TTree& graph, unsigned new_nvertices,
+inline void SubgraphUpdateRootI(const TreeGraph& graph, unsigned new_nvertices,
                                 const std::vector<unsigned>& old_to_new,
-                                TTree& output) {
+                                TreeGraph& output) {
   unsigned root_new = old_to_new[graph.GetRoot()];
   output.SetRoot((root_new >= new_nvertices) ? 0 : root_new);
 }
@@ -52,3 +53,4 @@ static TGraph Subgraph(const TGraph& graph, const std::vector<bool>& keep) {
   }
   return Subgraph(graph, new_nvertices, old_to_new);
 }
+}  // namespace graph

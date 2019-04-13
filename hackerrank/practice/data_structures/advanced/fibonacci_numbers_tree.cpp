@@ -15,10 +15,10 @@ using TFibonacci = ModularFibonacciMatrix<TModular>;
 int main_fibonacci_numbers_tree() {
   unsigned N, Q;
   cin >> N >> Q;
-  TTree tree(N);
+  TreeGraph tree(N);
   tree.ReadTreeEdges();
-  TreeNodesInfo nodes_info(tree);
-  LCA lca(tree);
+  graph::TreeNodesInfo nodes_info(tree);
+  graph::LCA lca(tree);
   TBIT bit_c(N), bit_f0(N), bit_f1(N);
 
   auto Calc = [&](unsigned from) {

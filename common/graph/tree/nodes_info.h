@@ -5,13 +5,14 @@
 #include <stack>
 #include <vector>
 
+namespace graph {
 class TreeNodesInfo {
  public:
   unsigned root;
   std::vector<unsigned> parent, deep, preorder, subtree_size;
 
-  template <class TTTree>
-  void Init(const TTTree& tree, unsigned _root) {
+  template <class TTree>
+  void Init(const TTree& tree, unsigned _root) {
     root = _root;
     unsigned size = tree.Size(), timer = 0;
     parent.resize(size);
@@ -41,20 +42,21 @@ class TreeNodesInfo {
     }
   }
 
-  template <class TTTree>
-  void Init(const TTTree& tree) {
+  template <class TTree>
+  void Init(const TTree& tree) {
     Init(tree, tree.GetRoot());
   }
 
   TreeNodesInfo() : root(CNone) {}
 
-  template <class TTTree>
-  TreeNodesInfo(const TTTree& tree) {
+  template <class TTree>
+  TreeNodesInfo(const TTree& tree) {
     Init(tree);
   }
 
-  template <class TTTree>
-  TreeNodesInfo(const TTTree& tree, unsigned _root) {
+  template <class TTree>
+  TreeNodesInfo(const TTree& tree, unsigned _root) {
     Init(tree, _root);
   }
 };
+}  // namespace graph

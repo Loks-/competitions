@@ -6,11 +6,13 @@
 
 #include <stack>
 
+using graph::CentroidDecomposition;
+
 namespace {
-class SolutionSelfDrivingBus : public ICentroidDecompositionCallBack {
+class SolutionSelfDrivingBus : public graph::ICentroidDecompositionCallBack {
  protected:
   unsigned n;
-  TTree tree;
+  TreeGraph tree;
   uint64_t total_segments;
   vector<unsigned> path_min, path_max;
 
@@ -26,7 +28,7 @@ class SolutionSelfDrivingBus : public ICentroidDecompositionCallBack {
     cout << total_segments << endl;
   }
 
-  void UpdatePaths(unsigned vertex, const TTree& current_tree) {
+  void UpdatePaths(unsigned vertex, const TreeGraph& current_tree) {
     path_min[vertex] = path_max[vertex] = vertex;
     static stack<pair<unsigned, unsigned>> s;
     for (s.push(make_pair(vertex, vertex)); !s.empty();) {

@@ -11,16 +11,16 @@
 int main_jennys_subtrees() {
   unsigned n, r;
   cin >> n >> r;
-  TTree tree(n), tree_temp;
+  TreeGraph tree(n), tree_temp;
   tree.ReadEdges();
   unordered_set<size_t> hash_set;
   vector<bool> keep(n);
   vector<unsigned> distance;
   for (unsigned i = 0; i < n; ++i) {
-    distance = DistanceFromSource(tree, i);
+    distance = graph::DistanceFromSource(tree, i);
     for (unsigned j = 0; j < n; ++j) keep[j] = (distance[j] <= r);
-    tree_temp = Subgraph(tree, keep);
-    hash_set.insert(TreeIsomorphicHash::Hash(tree_temp));
+    tree_temp = graph::Subgraph(tree, keep);
+    hash_set.insert(graph::TreeIsomorphicHash::Hash(tree_temp));
   }
   cout << hash_set.size() << endl;
   return 0;

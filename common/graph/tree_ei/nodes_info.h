@@ -5,6 +5,7 @@
 #include <stack>
 #include <vector>
 
+namespace graph {
 template <class TTEdgeInfo>
 class TreeEINodesInfo {
  public:
@@ -57,3 +58,4 @@ class TreeEINodesInfo {
     Init(tree, _root);
   }
 };
+}  // namespace graph

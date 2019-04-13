@@ -4,6 +4,7 @@
 #include <iostream>
 #include <vector>
 
+namespace graph {
 template <class TGraph>
 class Tree : public TGraph {
  public:
@@ -37,5 +38,6 @@ class Tree : public TGraph {
     }
   }
 };
+}  // namespace graph
 
-using TTree = Tree<UndirectedGraph>;
+using TreeGraph = graph::Tree<UndirectedGraph>;

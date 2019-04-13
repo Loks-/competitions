@@ -3,6 +3,7 @@
 #include <queue>
 #include <vector>
 
+namespace graph {
 // Return distance (as number of edges) to each vertex from required vertex.
 // If some vertex is unreachable it returns -1 for it.
 template <class TGraph>
@@ -26,3 +27,4 @@ inline std::vector<unsigned> DistanceFromSource(const TGraph& g,
   }
   return d;
 }
+}  // namespace graph

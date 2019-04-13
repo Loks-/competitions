@@ -7,20 +7,21 @@
 #include <stack>
 #include <vector>
 
+namespace graph {
 class CentroidDecomposition {
  protected:
   // Edges from smaller groups to parent are removed.
-  TTree tree;
+  TreeGraph tree;
   TreeNodesInfo info;
   std::vector<unsigned> group, group_root;
   std::stack<unsigned> vertices_to_check;
 
  public:
-  const TTree& GetCurrentTree() const { return tree; }
+  const TreeGraph& GetCurrentTree() const { return tree; }
   const std::vector<unsigned>& GetGroupMap() const { return group; }
 
  protected:
-  CentroidDecomposition(const TTree& _tree) : tree(_tree) {
+  CentroidDecomposition(const TreeGraph& _tree) : tree(_tree) {
     unsigned n = tree.Size();
     group.resize(n, 0);
     group_root.reserve(n);
@@ -100,7 +101,8 @@ class CentroidDecomposition {
 
  public:
   template <class TCentroidDecompositionCallBack>
-  static void Run(const TTree& tree, TCentroidDecompositionCallBack& callback) {
+  static void Run(const TreeGraph& tree,
+                  TCentroidDecompositionCallBack& callback) {
     CentroidDecomposition cd(tree);
     cd.InitParentAndSubtreeSizes();
     for (unsigned i = 0; i < cd.group_root.size(); ++i) {
@@ -123,3 +125,4 @@ class ICentroidDecompositionCallBack {
   bool IsComposeRequired() const { return false; }
   void Compose(unsigned vertex, const CentroidDecomposition& cd) {}
 };
+}  // namespace graph

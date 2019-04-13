@@ -13,7 +13,7 @@ int main_matrix_tree() {
   unsigned N;
   cin >> N;
   vector<TModular> vw = ReadVector<TModular>(N);
-  TTree tree(N);
+  TreeGraph tree(N);
   tree.ReadEdges();
 
   std::function<TModular(unsigned, unsigned, TModular)> SolveR =

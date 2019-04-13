@@ -9,17 +9,17 @@
 
 using TModular = TModular_P32<1000000009>;
 using TFactorial = ModularFactorial<TModular>;
-using TTreeEI = TreeEI<TModular>;
+using TTree = TreeGraphEI<TModular>;
 
 // We don't need LCA here, but with LCA code is simpler.
 int main_magic_number_tree() {
   TFactorial f;
   unsigned n;
   cin >> n;
-  TTreeEI tree(n);
+  TTree tree(n);
   tree.ReadEdges();
-  LCA lca(tree);
-  TreeEINodesInfo<TModular> nodes_info(tree);
+  graph::LCA lca(tree);
+  graph::TreeEINodesInfo<TModular> nodes_info(tree);
   TModular r = 0;
   for (unsigned i = 0; i < n; ++i) {
     for (unsigned j = i + 1; j < n; ++j) {

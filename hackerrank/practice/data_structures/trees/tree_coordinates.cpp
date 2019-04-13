@@ -9,10 +9,10 @@
 int main_tree_coordinates() {
   unsigned n, m;
   cin >> n >> m;
-  TTree t(n);
+  TreeGraph t(n);
   t.ReadEdges();
-  vector<unsigned> vd = TreeDeep(t), vdp1, vdp2;
-  LCA lca;
+  vector<unsigned> vd = graph::TreeDeep(t), vdp1, vdp2;
+  graph::LCA lca;
   lca.Build(t);
   vector<unsigned> vp1(m), vp2(m);
   for (unsigned it = 0; it < m; ++it) {

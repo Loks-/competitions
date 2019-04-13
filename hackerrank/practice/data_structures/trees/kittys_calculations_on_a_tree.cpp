@@ -7,13 +7,15 @@
 
 #include <unordered_map>
 
+using graph::CentroidDecomposition;
 using TModular = Modular<>;
 
 namespace {
-class SolutionKittysCalculationOnATree : public ICentroidDecompositionCallBack {
+class SolutionKittysCalculationOnATree
+    : public graph::ICentroidDecompositionCallBack {
  protected:
-  TTree tree;
-  LCA lca;
+  TreeGraph tree;
+  graph::LCA lca;
   vector<TModular> results;
   vector<unordered_map<unsigned, vector<unsigned>>> sets;
 

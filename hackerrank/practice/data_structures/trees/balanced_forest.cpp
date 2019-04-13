@@ -11,7 +11,7 @@ namespace {
 struct BalancedForest {
   unsigned n;
   vector<int64_t> vc;
-  TTree t;
+  TreeGraph t;
   vector<int64_t> vstc;
 
   int64_t RunR(unsigned node, unsigned parent) {
@@ -51,7 +51,7 @@ struct BalancedForest {
           sc1[current] = i;
       }
     }
-    LCA lca(t);
+    graph::LCA lca(t);
     for (auto p : sc1) {
       if (p.first >= best) continue;
       unsigned i = p.second;

@@ -11,10 +11,10 @@ using TBIT = BIT<>;
 int main_lazy_white_falcon() {
   unsigned N, Q;
   cin >> N >> Q;
-  TTree tree(N);
+  TreeGraph tree(N);
   tree.ReadEdges(true);
-  TreeNodesInfo nodes_info(tree);
-  LCA lca(tree);
+  graph::TreeNodesInfo nodes_info(tree);
+  graph::LCA lca(tree);
   TBIT bit(N);
   vector<int64_t> current_values(N, 0);
 

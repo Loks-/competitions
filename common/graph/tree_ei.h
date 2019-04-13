@@ -5,6 +5,7 @@
 #include <iostream>
 #include <vector>
 
+namespace graph {
 template <class TTEdgeInfo>
 class TreeEI : public Tree<UndirectedGraphEI<TTEdgeInfo>> {
  public:
@@ -32,3 +33,7 @@ class TreeEI : public Tree<UndirectedGraphEI<TTEdgeInfo>> {
     }
   }
 };
+}  // namespace graph
+
+template <class TEdgeInfo>
+using TreeGraphEI = graph::TreeEI<TEdgeInfo>;

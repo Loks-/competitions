@@ -2,6 +2,7 @@
 
 #include <vector>
 
+namespace graph {
 template <class TEdgeInfo>
 class GraphEdge {
  public:
@@ -55,3 +56,4 @@ class GraphEdgesFromVertex {
     return const_iterator(&to.front() + Size(), &info.front() + Size());
   }
 };
+}  // namespace graph

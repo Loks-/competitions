@@ -3,14 +3,14 @@
 #include <stack>
 #include <vector>
 
-using TGraphConnectedComponents = std::vector<std::vector<unsigned>>;
+namespace graph {
+using TConnectedComponents = std::vector<std::vector<unsigned>>;
 
 template <class TUndirectedGraph>
-inline TGraphConnectedComponents ConnectedComponents(
-    const TUndirectedGraph& graph) {
+inline TConnectedComponents ConnectedComponents(const TUndirectedGraph& graph) {
   static_assert(!UndirectedGraph::directed_edges,
                 "Graph should be undirected.");
-  TGraphConnectedComponents components;
+  TConnectedComponents components;
   unsigned n = graph.Size();
   std::vector<unsigned> visited(n, 0);
   std::stack<unsigned> s;
@@ -34,3 +34,4 @@ inline TGraphConnectedComponents ConnectedComponents(
   }
   return components;
 }
+}  // namespace graph
