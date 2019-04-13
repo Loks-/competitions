@@ -1,7 +1,7 @@
 // https://www.hackerrank.com/challenges/lazy-white-falcon
 
 #include "common/binary_indexed_tree/bit.h"
-#include "common/graph/base_tree/base_tree.h"
+#include "common/graph/base_tree.h"
 #include "common/graph/base_tree/lca.h"
 #include "common/graph/base_tree/nodes_info.h"
 #include "common/stl/base.h"

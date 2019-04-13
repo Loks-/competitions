@@ -1,7 +1,7 @@
 #pragma once
 
-#include "common/graph/base_tree/base_tree.h"
-#include "common/graph/graph/graph.h"
+#include "common/graph/base_tree.h"
+#include "common/graph/graph.h"
 #include <iostream>
 #include <vector>
 

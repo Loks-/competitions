@@ -1,7 +1,7 @@
 #pragma once
 
 #include "common/base.h"
-#include "common/graph/base_tree/base_tree.h"
+#include "common/graph/base_tree.h"
 #include "common/hash.h"
 #include <algorithm>
 #include <functional>

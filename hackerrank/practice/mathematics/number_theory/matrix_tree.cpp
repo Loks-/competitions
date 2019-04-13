@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/matrix-tree
 
-#include "common/graph/base_tree/base_tree.h"
+#include "common/graph/base_tree.h"
 #include "common/modular/static/modular_io.h"
 #include "common/stl/base.h"
 #include "common/vector/read.h"

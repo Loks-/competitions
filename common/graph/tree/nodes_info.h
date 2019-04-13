@@ -1,6 +1,6 @@
 #pragma once
 
-#include "common/graph/tree/tree.h"
+#include "common/graph/tree.h"
 #include <algorithm>
 #include <stack>
 #include <vector>

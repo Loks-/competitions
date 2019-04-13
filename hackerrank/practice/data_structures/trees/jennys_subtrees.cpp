@@ -2,7 +2,7 @@
 
 #include "common/graph/base_graph/distance.h"
 #include "common/graph/base_graph/subgraph.h"
-#include "common/graph/base_tree/base_tree.h"
+#include "common/graph/base_tree.h"
 #include "common/graph/base_tree/isomorphic_hash.h"
 #include "common/stl/base.h"
 

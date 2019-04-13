@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/self-driving-bus
 
-#include "common/graph/base_tree/base_tree.h"
+#include "common/graph/base_tree.h"
 #include "common/graph/base_tree/centroid_decomposition.h"
 #include "common/stl/base.h"
 

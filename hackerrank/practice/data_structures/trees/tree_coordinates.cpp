@@ -1,7 +1,7 @@
 // https://www.hackerrank.com/challenges/tree-coordinates
 
 #include "common/graph/base_graph/distance.h"
-#include "common/graph/base_tree/base_tree.h"
+#include "common/graph/base_tree.h"
 #include "common/graph/base_tree/deep.h"
 #include "common/graph/base_tree/lca.h"
 #include "common/stl/base.h"

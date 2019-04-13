@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/zombie-march
 
-#include "common/graph/base_graph/base_graph.h"
+#include "common/graph/base_graph.h"
 #include "common/stl/base.h"
 #include "common/vector/read.h"
 

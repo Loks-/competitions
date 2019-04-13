@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/castle-on-the-grid
 
-#include "common/graph/base_graph/base_graph.h"
+#include "common/graph/base_graph.h"
 #include "common/graph/base_graph/distance.h"
 #include "common/stl/base.h"
 

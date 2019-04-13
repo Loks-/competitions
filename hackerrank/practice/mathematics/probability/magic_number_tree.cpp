@@ -2,7 +2,7 @@
 
 #include "common/graph/base_tree/lca.h"
 #include "common/graph/tree/nodes_info.h"
-#include "common/graph/tree/tree.h"
+#include "common/graph/tree.h"
 #include "common/modular/static/factorial.h"
 #include "common/modular/static/modular_io.h"
 #include "common/stl/base.h"
