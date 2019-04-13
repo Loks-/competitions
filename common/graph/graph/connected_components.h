@@ -1,15 +1,13 @@
 #pragma once
 
+#include "common/graph/graph.h"
 #include <stack>
 #include <vector>
 
 namespace graph {
 using TConnectedComponents = std::vector<std::vector<unsigned>>;
 
-template <class TUndirectedGraph>
-inline TConnectedComponents ConnectedComponents(const TUndirectedGraph& graph) {
-  static_assert(!UndirectedGraph::directed_edges,
-                "Graph should be undirected.");
+inline TConnectedComponents ConnectedComponents(const UndirectedGraph& graph) {
   TConnectedComponents components;
   unsigned n = graph.Size();
   std::vector<unsigned> visited(n, 0);
