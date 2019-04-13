@@ -32,8 +32,8 @@ class LCA {
  public:
   LCA() : n(0), n2p(1) {}
 
-  template <class TTree>
-  LCA(const TTree& g) {
+  template <class TGraph>
+  LCA(const Tree<TGraph>& g) {
     Build(g);
   }
 
@@ -47,8 +47,8 @@ class LCA {
     deep.resize(n);
   }
 
-  template <class TTree>
-  void Build(const TTree& g) {
+  template <class TGraph>
+  void Build(const Tree<TGraph>& g) {
     n = g.Size();
     Init();
     DFS1(g);
@@ -56,8 +56,8 @@ class LCA {
   }
 
  protected:
-  template <class TTree>
-  void DFS1(const TTree& g) {
+  template <class TGraph>
+  void DFS1(const Tree<TGraph>& g) {
     std::stack<unsigned> s;
     std::vector<bool> visited(n, false);
     unsigned timer = 0;
@@ -87,8 +87,8 @@ class LCA {
     }
   }
 
-  template <class TTree>
-  void DFS2(const TTree& g) {
+  template <class TGraph>
+  void DFS2(const Tree<TGraph>& g) {
     std::stack<unsigned> s;
     for (s.push(g.GetRoot()); !s.empty();) {
       unsigned v = s.top();

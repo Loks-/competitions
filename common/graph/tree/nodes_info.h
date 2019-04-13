@@ -11,8 +11,8 @@ class TreeNodesInfo {
   unsigned root;
   std::vector<unsigned> parent, deep, preorder, subtree_size;
 
-  template <class TTree>
-  void Init(const TTree& tree, unsigned _root) {
+  template <class TGraph>
+  void Init(const Tree<TGraph>& tree, unsigned _root) {
     root = _root;
     unsigned size = tree.Size(), timer = 0;
     parent.resize(size);
@@ -42,20 +42,20 @@ class TreeNodesInfo {
     }
   }
 
-  template <class TTree>
-  void Init(const TTree& tree) {
+  template <class TGraph>
+  void Init(const Tree<TGraph>& tree) {
     Init(tree, tree.GetRoot());
   }
 
   TreeNodesInfo() : root(CNone) {}
 
-  template <class TTree>
-  TreeNodesInfo(const TTree& tree) {
+  template <class TGraph>
+  TreeNodesInfo(const Tree<TGraph>& tree) {
     Init(tree);
   }
 
-  template <class TTree>
-  TreeNodesInfo(const TTree& tree, unsigned _root) {
+  template <class TGraph>
+  TreeNodesInfo(const Tree<TGraph>& tree, unsigned _root) {
     Init(tree, _root);
   }
 };

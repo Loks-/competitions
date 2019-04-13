@@ -3,9 +3,7 @@
 #include "common/graph/graph/distance.h"
 #include "common/graph/tree.h"
 
-namespace graph {
-template <class TTree>
-inline std::vector<unsigned> TreeDeep(const TTree& tree) {
+template <class TGraph>
+inline std::vector<unsigned> Deep(const graph::Tree<TGraph>& tree) {
   return DistanceFromSource(tree, tree.GetRoot());
 }
-}  // namespace graph

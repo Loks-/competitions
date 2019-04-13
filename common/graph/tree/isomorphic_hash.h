@@ -63,3 +63,7 @@ class TreeIsomorphicHash {
   }
 };
 }  // namespace graph
+
+inline size_t IsomorphicHash(const TreeGraph& tree) {
+  return graph::TreeIsomorphicHash::Hash(tree);
+}

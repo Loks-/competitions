@@ -11,7 +11,7 @@ int main_tree_coordinates() {
   cin >> n >> m;
   TreeGraph t(n);
   t.ReadEdges();
-  vector<unsigned> vd = graph::TreeDeep(t), vdp1, vdp2;
+  vector<unsigned> vd = Deep(t), vdp1, vdp2;
   graph::LCA lca;
   lca.Build(t);
   vector<unsigned> vp1(m), vp2(m);

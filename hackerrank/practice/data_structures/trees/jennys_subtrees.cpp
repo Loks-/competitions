@@ -20,7 +20,7 @@ int main_jennys_subtrees() {
     distance = DistanceFromSource(tree, i);
     for (unsigned j = 0; j < n; ++j) keep[j] = (distance[j] <= r);
     tree_temp = graph::Subgraph(tree, keep);
-    hash_set.insert(graph::TreeIsomorphicHash::Hash(tree_temp));
+    hash_set.insert(IsomorphicHash(tree_temp));
   }
   cout << hash_set.size() << endl;
   return 0;
