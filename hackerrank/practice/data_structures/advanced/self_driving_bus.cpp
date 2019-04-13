@@ -1,7 +1,7 @@
 // https://www.hackerrank.com/challenges/self-driving-bus
 
-#include "common/graph/base_tree.h"
-#include "common/graph/base_tree/centroid_decomposition.h"
+#include "common/graph/tree.h"
+#include "common/graph/tree/centroid_decomposition.h"
 #include "common/stl/base.h"
 
 #include <stack>
@@ -10,7 +10,7 @@ namespace {
 class SolutionSelfDrivingBus : public ICentroidDecompositionCallBack {
  protected:
   unsigned n;
-  TBaseTree tree;
+  TTree tree;
   uint64_t total_segments;
   vector<unsigned> path_min, path_max;
 
@@ -26,7 +26,7 @@ class SolutionSelfDrivingBus : public ICentroidDecompositionCallBack {
     cout << total_segments << endl;
   }
 
-  void UpdatePaths(unsigned vertex, const TBaseTree& current_tree) {
+  void UpdatePaths(unsigned vertex, const TTree& current_tree) {
     path_min[vertex] = path_max[vertex] = vertex;
     static stack<pair<unsigned, unsigned>> s;
     for (s.push(make_pair(vertex, vertex)); !s.empty();) {

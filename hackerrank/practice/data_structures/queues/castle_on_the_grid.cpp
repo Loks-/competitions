@@ -1,7 +1,7 @@
 // https://www.hackerrank.com/challenges/castle-on-the-grid
 
-#include "common/graph/base_graph.h"
-#include "common/graph/base_graph/distance.h"
+#include "common/graph/graph.h"
+#include "common/graph/graph/distance.h"
 #include "common/stl/base.h"
 
 #include <string>
@@ -20,7 +20,7 @@ int main_castle_on_the_grid() {
     }
   }
   vector<pair<int, int>> vd{{0, -1}, {0, 1}, {-1, 0}, {1, 0}};
-  BaseUndirectedGraph g(N2 * N2);
+  UndirectedGraph g(N2 * N2);
   for (int i = 1; i <= int(N); ++i) {
     for (int j = 1; j <= int(N); ++j) {
       if (!vg[i][j]) continue;

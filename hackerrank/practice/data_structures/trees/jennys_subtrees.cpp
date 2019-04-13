@@ -1,9 +1,9 @@
 // https://www.hackerrank.com/challenges/jenny-subtrees
 
-#include "common/graph/base_graph/distance.h"
-#include "common/graph/base_graph/subgraph.h"
-#include "common/graph/base_tree.h"
-#include "common/graph/base_tree/isomorphic_hash.h"
+#include "common/graph/graph/distance.h"
+#include "common/graph/graph/subgraph.h"
+#include "common/graph/tree.h"
+#include "common/graph/tree/isomorphic_hash.h"
 #include "common/stl/base.h"
 
 #include <unordered_set>
@@ -11,7 +11,7 @@
 int main_jennys_subtrees() {
   unsigned n, r;
   cin >> n >> r;
-  TBaseTree tree(n), tree_temp;
+  TTree tree(n), tree_temp;
   tree.ReadEdges();
   unordered_set<size_t> hash_set;
   vector<bool> keep(n);

@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/zombie-march
 
-#include "common/graph/base_graph.h"
+#include "common/graph/graph.h"
 #include "common/stl/base.h"
 #include "common/vector/read.h"
 
@@ -12,7 +12,7 @@ int main_zombie_march() {
   for (unsigned iT = 0; iT < T; ++iT) {
     unsigned n, m, k;
     cin >> n >> m >> k;
-    BaseUndirectedGraph graph(n);
+    UndirectedGraph graph(n);
     graph.ReadEdges(m, true);
     vector<double> va = ReadVector<double>(n);
 

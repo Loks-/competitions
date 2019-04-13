@@ -1,34 +1,41 @@
 #pragma once
 
-#include "common/graph/base_tree.h"
 #include "common/graph/graph.h"
 #include <iostream>
 #include <vector>
 
-template <class TTEdgeInfo>
-class Tree : public BaseTree<UndirectedGraph<TTEdgeInfo>> {
+template <class TGraph>
+class Tree : public TGraph {
  public:
-  using TBaseTree = BaseTree<UndirectedGraph<TTEdgeInfo>>;
-  using TGraph = typename TBaseTree::TBase;
-  using TBaseGraph = typename TGraph::TBase;
-  using TEdgeInfo = typename TGraph::TEdgeInfo;
-  using TSelf = Tree<TTEdgeInfo>;
+  using TBase = TGraph;
+  using TSelf = Tree;
+
+ protected:
+  unsigned root;
 
  public:
   Tree(unsigned _nvertices = 0, unsigned _root = 0)
-      : TBaseTree(_nvertices, _root) {}
+      : TBase(_nvertices), root(_root) {}
+  unsigned GetRoot() const { return root; }
+  void SetRoot(unsigned new_root) { root = new_root; }
+
+  void Resize(unsigned _nvertices, unsigned _root = 0) {
+    TBase::Resize(_nvertices);
+    root = _root;
+  }
 
   void ReadEdges(bool zero_based_indexes = false) {
-    TGraph::ReadEdges(TBaseGraph::nvertices - 1, zero_based_indexes);
+    TBase::ReadEdges(TBase::nvertices - 1, zero_based_indexes);
   }
 
   void ReadTreeEdges(bool zero_based_indexes = false) {
     unsigned shift = zero_based_indexes ? 0 : 1;
-    for (unsigned i = 1; i < TBaseGraph::nvertices; ++i) {
-      TEdgeInfo edge_info;
+    for (unsigned i = 1; i < TBase::nvertices; ++i) {
       unsigned from;
-      std::cin >> from >> edge_info;
-      TGraph::AddEdge(from - shift, i, edge_info);
+      std::cin >> from;
+      TBase::AddEdge(from - shift, i);
     }
   }
 };
+
+using TTree = Tree<UndirectedGraph>;

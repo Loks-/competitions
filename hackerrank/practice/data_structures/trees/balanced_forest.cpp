@@ -1,7 +1,7 @@
 // https://www.hackerrank.com/challenges/balanced-forest
 
-#include "common/graph/base_tree.h"
-#include "common/graph/base_tree/lca.h"
+#include "common/graph/tree.h"
+#include "common/graph/tree/lca.h"
 #include "common/stl/base.h"
 #include "common/vector/read.h"
 
@@ -11,7 +11,7 @@ namespace {
 struct BalancedForest {
   unsigned n;
   vector<int64_t> vc;
-  TBaseTree t;
+  TTree t;
   vector<int64_t> vstc;
 
   int64_t RunR(unsigned node, unsigned parent) {

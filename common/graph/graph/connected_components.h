@@ -10,7 +10,7 @@ class GraphConnectedComponents {
   template <class TBaseUndirectedGraph>
   void Init(const TBaseUndirectedGraph& graph) {
     static_assert(!TBaseUndirectedGraph::directed_edges,
-                  "Graph should be undirected.");
+                  "GraphEI should be undirected.");
     components.clear();
     unsigned n = graph.Size();
     std::vector<unsigned> visited(n, 0);

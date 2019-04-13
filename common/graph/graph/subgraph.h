@@ -1,8 +1,8 @@
 #pragma once
 
 #include "common/base.h"
-#include "common/graph/base_graph.h"
-#include "common/graph/base_tree.h"
+#include "common/graph/graph.h"
+#include "common/graph/tree.h"
 #include <vector>
 
 class BaseSubgraph {
@@ -11,9 +11,9 @@ class BaseSubgraph {
   static void UpdateRoot(const TBaseGraph& graph, unsigned new_nvertices,
                          const std::vector<unsigned>& old_to_new,
                          TBaseGraph& output) {}
-  static void UpdateRoot(const TBaseTree& graph, unsigned new_nvertices,
+  static void UpdateRoot(const TTree& graph, unsigned new_nvertices,
                          const std::vector<unsigned>& old_to_new,
-                         TBaseTree& output) {
+                         TTree& output) {
     unsigned root_new = old_to_new[graph.GetRoot()];
     output.SetRoot((root_new >= new_nvertices) ? 0 : root_new);
   }

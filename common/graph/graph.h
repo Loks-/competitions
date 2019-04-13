@@ -1,79 +1,76 @@
 #pragma once
 
-#include "common/graph/base_graph.h"
-#include "common/graph/edge.h"
 #include <iostream>
 #include <vector>
 
-template <class TTEdgeInfo, bool _directed_edges = false>
-class Graph : public BaseGraph<_directed_edges> {
+const static unsigned CNone = unsigned(-1);
+
+template <bool _directed_edges = false>
+class Graph {
  public:
   const static bool directed_edges = _directed_edges;
-  using TEdgeInfo = TTEdgeInfo;
-  using TGraphEdge = GraphEdge<TEdgeInfo>;
-  using TGraphEdges = GraphEdgesFromVertex<TEdgeInfo>;
-  using TBase = BaseGraph<directed_edges>;
-  using TSelf = Graph<TEdgeInfo, directed_edges>;
+  using TSelf = Graph<directed_edges>;
 
  protected:
   unsigned nvertices;
-  std::vector<std::vector<TEdgeInfo>> edges_info;
-  std::vector<std::vector<TEdgeInfo>> inverted_edges_info;
+  std::vector<std::vector<unsigned>> edges;
+  std::vector<std::vector<unsigned>> inverted_edges;
 
  public:
   void Clear() {
-    TBase::Clear();
-    edges_info.clear();
-    inverted_edges_info.clear();
+    nvertices = 0;
+    edges.clear();
+    inverted_edges.clear();
   }
 
-  void Resize(unsigned nvertices) {
+  void Resize(unsigned _nvertices) {
     Clear();
-    TBase::Resize(nvertices);
-    edges_info.resize(nvertices);
-    if (directed_edges) inverted_edges_info.resize(nvertices);
+    nvertices = _nvertices;
+    edges.resize(nvertices);
+    if (directed_edges) inverted_edges.resize(nvertices);
   }
 
   Graph(unsigned _nvertices = 0) { Resize(_nvertices); }
-
-  TGraphEdges GraphEdges(unsigned from) const {
-    return TGraphEdges(TBase::edges[from], edges_info[from]);
+  unsigned Size() const { return nvertices; }
+  std::vector<std::vector<unsigned>>& Edges() { return edges; }
+  const std::vector<std::vector<unsigned>>& Edges() const { return edges; }
+  std::vector<unsigned>& Edges(unsigned from) { return edges[from]; }
+  const std::vector<unsigned>& Edges(unsigned from) const {
+    return edges[from];
+  }
+  std::vector<std::vector<unsigned>>& InvertedEdges() { return inverted_edges; }
+  const std::vector<std::vector<unsigned>>& InvertedEdges() const {
+    return inverted_edges;
+  }
+  std::vector<unsigned>& InvertedEdges(unsigned from) {
+    return inverted_edges[from];
+  }
+  const std::vector<unsigned>& InvertedEdges(unsigned from) const {
+    return inverted_edges[from];
   }
 
-  TGraphEdges InvertedGraphEdges(unsigned from) const {
-    return TGraphEdges(TBase::inverted_edges[from], inverted_edges_info[from]);
+  void AddBaseEdge(unsigned from, unsigned to) { edges[from].push_back(to); }
+  void AddInvertedEdge(unsigned from, unsigned to) {
+    inverted_edges[from].push_back(to);
   }
 
-  void AddBaseEdge(unsigned from, unsigned to, const TEdgeInfo& edge_info) {
-    TBase::AddBaseEdge(from, to);
-    edges_info[from].push_back(edge_info);
-  }
-
-  void AddInvertedEdge(unsigned from, unsigned to, const TEdgeInfo& edge_info) {
-    TBase::AddInvertedEdge(from, to);
-    inverted_edges_info[from].push_back(edge_info);
-  }
-
-  void AddEdge(unsigned from, unsigned to, const TEdgeInfo& edge_info) {
-    AddBaseEdge(from, to, edge_info);
+  void AddEdge(unsigned from, unsigned to) {
+    AddBaseEdge(from, to);
     if (directed_edges)
-      AddInvertedEdge(to, from, edge_info);
+      AddInvertedEdge(to, from);
     else
-      AddBaseEdge(to, from, edge_info);
+      AddBaseEdge(to, from);
   }
 
   void ReadEdges(unsigned edges_to_read, bool zero_based_indexes = false) {
     unsigned shift = zero_based_indexes ? 0 : 1;
     for (; edges_to_read--;) {
       unsigned from, to;
-      TEdgeInfo edge_info;
-      std::cin >> from >> to >> edge_info;
-      AddEdge(from - shift, to - shift, edge_info);
+      std::cin >> from >> to;
+      AddEdge(from - shift, to - shift);
     }
   }
 };
 
-template <class EdgeInfo>
-using UndirectedGraph = Graph<EdgeInfo, false>;
-template <class EdgeInfo>
-using DirectedGraph = Graph<EdgeInfo, true>;
+using UndirectedGraph = Graph<false>;
+using DirectedGraph = Graph<true>;

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "common/base.h"
-#include "common/graph/base_tree.h"
+#include "common/graph/tree.h"
 #include "common/hash.h"
 #include <algorithm>
 #include <functional>
@@ -11,7 +11,7 @@
 
 class BaseTreeIsomorphicHash {
  protected:
-  static std::pair<unsigned, unsigned> GetCenter(const TBaseTree& tree) {
+  static std::pair<unsigned, unsigned> GetCenter(const TTree& tree) {
     struct Node {
       unsigned node, parent;
     };
@@ -40,7 +40,7 @@ class BaseTreeIsomorphicHash {
     return std::make_pair(tree.GetRoot(), CNone);
   }
 
-  static size_t HashR(const TBaseTree& tree, unsigned node, unsigned parent) {
+  static size_t HashR(const TTree& tree, unsigned node, unsigned parent) {
     size_t current = std::hash<unsigned>{}(1);
     std::vector<size_t> v;
     for (unsigned c : tree.Edges(node)) {
@@ -53,7 +53,7 @@ class BaseTreeIsomorphicHash {
   }
 
  public:
-  static size_t Hash(const TBaseTree& tree) {
+  static size_t Hash(const TTree& tree) {
     auto p = GetCenter(tree);
     if (p.second == CNone) return HashR(tree, p.first, p.second);
     size_t h1 = HashR(tree, p.first, p.second);

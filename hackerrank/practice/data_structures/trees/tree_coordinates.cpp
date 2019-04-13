@@ -1,15 +1,15 @@
 // https://www.hackerrank.com/challenges/tree-coordinates
 
-#include "common/graph/base_graph/distance.h"
-#include "common/graph/base_tree.h"
-#include "common/graph/base_tree/deep.h"
-#include "common/graph/base_tree/lca.h"
+#include "common/graph/graph/distance.h"
+#include "common/graph/tree.h"
+#include "common/graph/tree/deep.h"
+#include "common/graph/tree/lca.h"
 #include "common/stl/base.h"
 
 int main_tree_coordinates() {
   unsigned n, m;
   cin >> n >> m;
-  TBaseTree t(n);
+  TTree t(n);
   t.ReadEdges();
   vector<unsigned> vd = GetDeep(t), vdp1, vdp2;
   LCA lca;

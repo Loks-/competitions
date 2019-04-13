@@ -1,9 +1,9 @@
 // https://www.hackerrank.com/challenges/lazy-white-falcon
 
 #include "common/binary_indexed_tree/bit.h"
-#include "common/graph/base_tree.h"
-#include "common/graph/base_tree/lca.h"
-#include "common/graph/base_tree/nodes_info.h"
+#include "common/graph/tree.h"
+#include "common/graph/tree/lca.h"
+#include "common/graph/tree/nodes_info.h"
 #include "common/stl/base.h"
 
 using TBIT = BIT<>;
@@ -11,7 +11,7 @@ using TBIT = BIT<>;
 int main_lazy_white_falcon() {
   unsigned N, Q;
   cin >> N >> Q;
-  TBaseTree tree(N);
+  TTree tree(N);
   tree.ReadEdges(true);
   BaseTreeNodesInfo nodes_info(tree);
   LCA lca(tree);

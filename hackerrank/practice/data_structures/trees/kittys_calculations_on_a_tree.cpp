@@ -1,7 +1,7 @@
 // https://www.hackerrank.com/challenges/kittys-calculations-on-a-tree
 
-#include "common/graph/base_tree/centroid_decomposition.h"
-#include "common/graph/base_tree/lca.h"
+#include "common/graph/tree/centroid_decomposition.h"
+#include "common/graph/tree/lca.h"
 #include "common/modular/static/modular_io.h"
 #include "common/stl/base.h"
 
@@ -12,7 +12,7 @@ using TModular = Modular<>;
 namespace {
 class SolutionKittysCalculationOnATree : public ICentroidDecompositionCallBack {
  protected:
-  TBaseTree tree;
+  TTree tree;
   LCA lca;
   vector<TModular> results;
   vector<unordered_map<unsigned, vector<unsigned>>> sets;

@@ -1,10 +1,10 @@
-#include "common/graph/base_graph.h"
+#include "common/graph/graph.h"
 #include "common/hash.h"
 #include "common/stl/base.h"
 
 #include <unordered_set>
 
-// bool FindHamiltonPathI(const BaseUndirectedGraph& g,
+// bool FindHamiltonPathI(const UndirectedGraph& g,
 //                        vector<unsigned>& path_output, vector<bool>& vused) {
 //   assert(path_output.size() > 0);
 //   unsigned N = g.Size();
@@ -24,8 +24,8 @@
 
 unordered_set<size_t> hash_set;
 
-bool FindHamiltonPathI(const BaseUndirectedGraph& g,
-                       vector<unsigned>& path_output, vector<bool>& vused) {
+bool FindHamiltonPathI(const UndirectedGraph& g, vector<unsigned>& path_output,
+                       vector<bool>& vused) {
   assert(path_output.size() > 0);
   unsigned N = g.Size();
   if (path_output.size() == N) return true;
@@ -57,8 +57,7 @@ bool FindHamiltonPathI(const BaseUndirectedGraph& g,
   return false;
 }
 
-bool FindHamiltonPath(const BaseUndirectedGraph& g,
-                      vector<unsigned>& path_output) {
+bool FindHamiltonPath(const UndirectedGraph& g, vector<unsigned>& path_output) {
   hash_set.clear();
   unsigned N = g.Size();
   path_output.clear();
@@ -81,7 +80,7 @@ int main_pylons() {
     unsigned R, C;
     cin >> R >> C;
     unsigned N = R * C;
-    BaseUndirectedGraph g(N);
+    UndirectedGraph g(N);
     for (unsigned i = 0; i < N; ++i) {
       unsigned ir = i / C, ic = i % C;
       for (unsigned j = 0; j < N; ++j) {

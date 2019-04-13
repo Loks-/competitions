@@ -1,25 +1,25 @@
 // https://www.hackerrank.com/challenges/james-tree
 
-#include "common/graph/base_tree/lca.h"
-#include "common/graph/tree/nodes_info.h"
-#include "common/graph/tree.h"
+#include "common/graph/tree/lca.h"
+#include "common/graph/tree_ei.h"
+#include "common/graph/tree_ei/nodes_info.h"
 #include "common/modular/static/factorial.h"
 #include "common/modular/static/modular_io.h"
 #include "common/stl/base.h"
 
 using TModular = TModular_P32<1000000009>;
 using TFactorial = ModularFactorial<TModular>;
-using TTree = Tree<TModular>;
+using TTreeEI = TreeEI<TModular>;
 
 // We don't need LCA here, but with LCA code is simpler.
 int main_magic_number_tree() {
   TFactorial f;
   unsigned n;
   cin >> n;
-  TTree tree(n);
+  TTreeEI tree(n);
   tree.ReadEdges();
   LCA lca(tree);
-  TreeNodesInfo<TModular> nodes_info(tree);
+  TreeEINodesInfo<TModular> nodes_info(tree);
   TModular r = 0;
   for (unsigned i = 0; i < n; ++i) {
     for (unsigned j = i + 1; j < n; ++j) {

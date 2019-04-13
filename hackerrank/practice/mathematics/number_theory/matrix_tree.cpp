@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/matrix-tree
 
-#include "common/graph/base_tree.h"
+#include "common/graph/tree.h"
 #include "common/modular/static/modular_io.h"
 #include "common/stl/base.h"
 #include "common/vector/read.h"
@@ -13,7 +13,7 @@ int main_matrix_tree() {
   unsigned N;
   cin >> N;
   vector<TModular> vw = ReadVector<TModular>(N);
-  TBaseTree tree(N);
+  TTree tree(N);
   tree.ReadEdges();
 
   std::function<TModular(unsigned, unsigned, TModular)> SolveR =
