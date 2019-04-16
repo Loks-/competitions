@@ -49,7 +49,7 @@ class Bipartite : public TGraph {
   Bipartite(const std::vector<bool>& _partition) { Resize(_partition); }
 
   bool Partition(unsigned node) const { return partition[node]; }
-  const std::vector<unsigned>& Partition() const { return partition; };
+  const std::vector<bool>& Partition() const { return partition; };
   unsigned Partition0Size() const { return nvertices0; }
   unsigned Partition1Size() const { return nvertices1; }
 
