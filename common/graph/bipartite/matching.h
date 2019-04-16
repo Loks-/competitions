@@ -22,9 +22,9 @@ class BipartiteMatching {
     vdist[size] = inf;
     for (unsigned u = 0; u < size; ++u) {
       if (graph.Partition(u) || (vpair[u] != size)) {
-        vdist[size] = inf;
+        vdist[u] = inf;
       } else {
-        vdist[size] = 0;
+        vdist[u] = 0;
         q.push(u);
       }
     }
