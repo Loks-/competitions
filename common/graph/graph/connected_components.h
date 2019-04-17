@@ -4,11 +4,9 @@
 #include <stack>
 #include <vector>
 
-namespace graph {
-using TConnectedComponents = std::vector<std::vector<unsigned>>;
-
-inline TConnectedComponents ConnectedComponents(const UndirectedGraph& graph) {
-  TConnectedComponents components;
+inline std::vector<std::vector<unsigned>> ConnectedComponents(
+    const UndirectedGraph& graph) {
+  std::vector<std::vector<unsigned>> components;
   unsigned n = graph.Size();
   std::vector<unsigned> visited(n, 0);
   std::stack<unsigned> s;
@@ -32,4 +30,3 @@ inline TConnectedComponents ConnectedComponents(const UndirectedGraph& graph) {
   }
   return components;
 }
-}  // namespace graph
