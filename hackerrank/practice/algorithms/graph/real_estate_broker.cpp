@@ -4,8 +4,6 @@
 #include "common/graph/bipartite/matching.h"
 #include "common/stl/base.h"
 
-#include <numeric>
-
 int main_real_estate_broker() {
   unsigned n, m, a, p;
   cin >> n >> m;
