@@ -21,7 +21,7 @@ int main_subset_component() {
     for (unsigned i = 0; i < n; ++i) {
       if ((1u << i) & ss) {
         for (unsigned j = 1; j < vv[i].size(); ++j) {
-          ds.Union(vv[i][j - 1], vv[i][j]);
+          ds.Union(vv[i][0], vv[i][j]);
         }
       }
     }
