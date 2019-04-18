@@ -14,8 +14,9 @@ std::vector<TEdgeCost> DistanceFromSourcePositiveCost(
   using TPair = std::pair<TEdgeCost, unsigned>;
   std::vector<TEdgeCost> vd(graph.Size(), max_cost);
   std::priority_queue<TPair, std::vector<TPair>, std::greater<TPair>> q;
-  for (q.push({TEdgeCost(), source}); !q.empty(); q.pop()) {
+  for (q.push({TEdgeCost(), source}); !q.empty();) {
     auto p = q.top();
+    q.pop();
     unsigned u = p.second;
     if (vd[u] == max_cost) {
       vd[u] = p.first;
