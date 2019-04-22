@@ -1,7 +1,7 @@
 #include "tester/tester_heap.h"
 
 #include "common/hash.h"
-#include "common/heap/heap.h"
+#include "common/heap/binary_heap.h"
 #include "common/timer.h"
 
 #include <iostream>
