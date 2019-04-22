@@ -42,8 +42,7 @@ size_t TesterHeap::TestBinaryHeap() {
   size_t h = 0;
   heap::BinaryHeap<size_t> heap(vinit);
   for (unsigned i = 0; i < vloop.size(); ++i) {
-    h = hash_combine(h, heap.Top());
-    heap.Pop();
+    h = hash_combine(h, heap.GetTop());
     heap.Add(vloop[i]);
   }
   for (; !heap.Empty(); heap.Pop()) h = hash_combine(h, heap.Top());

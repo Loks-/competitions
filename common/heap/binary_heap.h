@@ -35,6 +35,12 @@ class BinaryHeap {
     SiftDown(0);
   }
 
+  TData GetTop() {
+    TData t = Top();
+    Pop();
+    return t;
+  }
+
   void SiftUp(unsigned pos) {
     if (pos == 0) return;
     unsigned npos = (pos - 1) / 2;
