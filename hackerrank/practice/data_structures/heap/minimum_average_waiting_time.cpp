@@ -1,5 +1,6 @@
 // https://www.hackerrank.com/challenges/minimum-average-waiting-time
 
+#include "common/heap/heap.h"
 #include "common/stl/base.h"
 
 #include <functional>
@@ -7,24 +8,20 @@
 
 int main_minimum_average_waiting_time() {
   uint64_t N, a, l, sum_a = 0, sum_f = 0, time = 0;
-  priority_queue<uint64_t, vector<uint64_t>, greater<uint64_t>>
-      q_current_orders;
-  priority_queue<pair<uint64_t, uint64_t>, vector<pair<uint64_t, uint64_t>>,
-                 greater<pair<uint64_t, uint64_t>>>
-      q_all_orders;
+  HeapMinOnTop<uint64_t> q_current_orders;
+  HeapMinOnTop<pair<uint64_t, uint64_t>> q_all_orders;
   cin >> N;
   for (unsigned i = 0; i < N; ++i) {
     cin >> a >> l;
     sum_a += a;
-    q_all_orders.push({a, l});
+    q_all_orders.Add({a, l});
   }
-  for (; !q_all_orders.empty() || !q_current_orders.empty();
-       q_current_orders.pop()) {
-    if (q_current_orders.empty()) time = max(time, q_all_orders.top().first);
-    for (; !q_all_orders.empty() && (q_all_orders.top().first <= time);
-         q_all_orders.pop())
-      q_current_orders.push(q_all_orders.top().second);
-    time += q_current_orders.top();
+  for (; !q_all_orders.Empty() || !q_current_orders.Empty();) {
+    if (q_current_orders.Empty()) time = max(time, q_all_orders.Top().first);
+    for (; !q_all_orders.Empty() && (q_all_orders.Top().first <= time);
+         q_all_orders.Pop())
+      q_current_orders.Add(q_all_orders.Top().second);
+    time += q_current_orders.GetTop();
     sum_f += time;
   }
   cout << (sum_f - sum_a) / N << endl;
