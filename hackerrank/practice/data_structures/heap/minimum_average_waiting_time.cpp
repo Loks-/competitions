@@ -3,9 +3,6 @@
 #include "common/heap/heap.h"
 #include "common/stl/base.h"
 
-#include <functional>
-#include <queue>
-
 int main_minimum_average_waiting_time() {
   uint64_t N, a, l, sum_a = 0, sum_f = 0, time = 0;
   HeapMinOnTop<uint64_t> q_current_orders;
