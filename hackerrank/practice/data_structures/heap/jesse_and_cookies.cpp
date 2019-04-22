@@ -2,17 +2,15 @@
 
 #include "common/heap/heap.h"
 #include "common/stl/base.h"
+#include "common/vector/read.h"
 
 int main_jesse_and_cookies() {
   unsigned N;
   int count = 0;
   uint64_t K, a1, a2;
-  HeapMinOnTop<uint64_t> q;
   cin >> N >> K;
-  for (unsigned i = 0; i < N; ++i) {
-    cin >> a1;
-    q.Add(a1);
-  }
+  auto v = ReadVector<uint64_t>(N);
+  HeapMinOnTop<uint64_t> q(v);
   for (; (q.Size() > 1) && (q.Top() < K);) {
     a1 = q.GetTop();
     a2 = q.GetTop();
