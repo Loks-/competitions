@@ -3,9 +3,6 @@
 #include "common/heap/heap.h"
 #include "common/stl/base.h"
 
-#include <functional>
-#include <queue>
-
 int main_strange_numbers() {
   uint64_t max_value = 1000000000000000000ull;
   auto length = [](uint64_t t) {
