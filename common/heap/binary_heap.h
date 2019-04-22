@@ -35,7 +35,7 @@ class BinaryHeap {
     SiftDown(0);
   }
 
-  TData GetTop() {
+  TData Extract() {
     TData t = Top();
     Pop();
     return t;

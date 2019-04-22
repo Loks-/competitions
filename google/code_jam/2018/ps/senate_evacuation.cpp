@@ -15,14 +15,14 @@ int main_senate_evacuation() {
     }
     cout << "Case #" << it << ": ";
     if (s & 1) {
-      auto p = pq.GetTop();
+      auto p = pq.Extract();
       printf("%c ", p.second + 'A');
       p.first -= 1;
       if (p.first > 0) pq.Add(p);
     }
     for (;;) {
       for (unsigned i = 0; i < 2; ++i) {
-        auto p = pq.GetTop();
+        auto p = pq.Extract();
         printf("%c", p.second + 'A');
         p.first -= 1;
         if (p.first > 0) pq.Add(p);

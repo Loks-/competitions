@@ -14,7 +14,7 @@ int main_strange_numbers() {
   HeapMinOnTop<uint64_t> q;
   for (unsigned i = 1; i < 10; ++i) q.Add(i);
   for (; !q.Empty();) {
-    uint64_t u = q.GetTop();
+    uint64_t u = q.Extract();
     if (u <= v.back()) continue;
     v.push_back(u);
     for (uint64_t l = length(u);; ++l) {

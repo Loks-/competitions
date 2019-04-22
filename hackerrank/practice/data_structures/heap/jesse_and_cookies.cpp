@@ -12,8 +12,8 @@ int main_jesse_and_cookies() {
   auto v = ReadVector<uint64_t>(N);
   HeapMinOnTop<uint64_t> q(v);
   for (; (q.Size() > 1) && (q.Top() < K);) {
-    a1 = q.GetTop();
-    a2 = q.GetTop();
+    a1 = q.Extract();
+    a2 = q.Extract();
     q.Add(a1 + 2 * a2);
     ++count;
   }

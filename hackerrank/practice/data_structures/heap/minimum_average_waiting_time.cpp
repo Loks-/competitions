@@ -18,7 +18,7 @@ int main_minimum_average_waiting_time() {
     for (; !q_all_orders.Empty() && (q_all_orders.Top().first <= time);
          q_all_orders.Pop())
       q_current_orders.Add(q_all_orders.Top().second);
-    time += q_current_orders.GetTop();
+    time += q_current_orders.Extract();
     sum_f += time;
   }
   cout << (sum_f - sum_a) / N << endl;
