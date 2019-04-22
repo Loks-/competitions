@@ -36,20 +36,7 @@ class TesterDisjointSet {
     return h;
   }
 
-  size_t TestExtended() const {
-    Timer t;
-    size_t h = 0;
-    DisjointSetExtended<unsigned> dsp;
-    dsp.Reserve(size);
-    for (unsigned i = 0; i < unions; ++i) {
-      if ((i > 0) && ((i % unions_per_block) == 0)) dsp.Reset();
-      dsp.Union(vunions[i].first, vunions[i].second);
-      h = hash_combine(h, dsp.GetUnions());
-    }
-    std::cout << "Test results: E\t" << h << "\t" << t.GetMilliseconds()
-              << std::endl;
-    return h;
-  }
+  size_t TestExtended() const;
 
   void TestAll() const;
 };

@@ -16,6 +16,21 @@ TesterDisjointSet::TesterDisjointSet(unsigned _size, unsigned _unions,
         {distribution(random_engine), distribution(random_engine)});
 }
 
+size_t TesterDisjointSet::TestExtended() const {
+  Timer t;
+  size_t h = 0;
+  DisjointSetExtended<unsigned> dsp;
+  dsp.Reserve(size);
+  for (unsigned i = 0; i < unions; ++i) {
+    if ((i > 0) && ((i % unions_per_block) == 0)) dsp.Reset();
+    dsp.Union(vunions[i].first, vunions[i].second);
+    h = hash_combine(h, dsp.GetUnions());
+  }
+  std::cout << "Test results: E\t" << h << "\t" << t.GetMilliseconds()
+            << std::endl;
+  return h;
+}
+
 void TesterDisjointSet::TestAll() const {
   // Test<pc_none>();
   Test<pc_default>();
