@@ -1,5 +1,6 @@
 // https://www.hackerrank.com/challenges/strange-numbers
 
+#include "common/heap/heap.h"
 #include "common/stl/base.h"
 
 #include <functional>
@@ -13,18 +14,17 @@ int main_strange_numbers() {
     return l;
   };
   vector<uint64_t> v(1, 0);
-  priority_queue<uint64_t, vector<uint64_t>, greater<uint64_t>> q;
-  for (unsigned i = 1; i < 10; ++i) q.push(i);
-  for (; !q.empty();) {
-    uint64_t u = q.top();
-    q.pop();
+  THeapMin<uint64_t> q;
+  for (unsigned i = 1; i < 10; ++i) q.Add(i);
+  for (; !q.Empty();) {
+    uint64_t u = q.GetTop();
     if (u <= v.back()) continue;
     v.push_back(u);
     for (uint64_t l = length(u);; ++l) {
       uint64_t u2 = u * l;
       if ((u2 > max_value) || (length(u2) < l)) break;
       if (length(u2) > l) continue;
-      q.push(u2);
+      q.Add(u2);
     }
   }
 
