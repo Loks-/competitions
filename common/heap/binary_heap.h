@@ -38,12 +38,12 @@ class BinaryHeap {
   void SiftUp(unsigned pos) {
     if (pos == 0) return;
     unsigned npos = (pos - 1) / 2;
-    if (compare(data[pos], data[npos])) {
+    if (compare(data[npos], data[pos])) {
       TData x = data[pos];
       data[pos] = data[npos];
       for (pos = npos; pos; pos = npos) {
         npos = (pos - 1) / 2;
-        if (compare(x, data[npos])) {
+        if (compare(data[npos], x)) {
           data[pos] = data[npos];
         } else {
           break;
@@ -56,17 +56,16 @@ class BinaryHeap {
   void SiftDown(unsigned pos) {
     unsigned npos = 2 * pos + 1;
     if (npos >= data.size()) return;
-    if ((npos + 1 < data.size()) && !compare(data[npos], data[npos + 1]))
-      ++npos;
-    if (compare(data[npos], data[pos])) {
+    if ((npos + 1 < data.size()) && compare(data[npos], data[npos + 1])) ++npos;
+    if (compare(data[pos], data[npos])) {
       TData x = data[pos];
       data[pos] = data[npos];
       for (pos = npos;; pos = npos) {
         npos = 2 * pos + 1;
         if (npos >= data.size()) break;
-        if ((npos + 1 < data.size()) && !compare(data[npos], data[npos + 1]))
+        if ((npos + 1 < data.size()) && compare(data[npos], data[npos + 1]))
           ++npos;
-        if (compare(data[npos], x)) {
+        if (compare(x, data[npos])) {
           data[pos] = data[npos];
         } else {
           break;

@@ -40,7 +40,7 @@ size_t TesterHeap::TestPriorityQueue() {
 size_t TesterHeap::TestBinaryHeap() {
   Timer t;
   size_t h = 0;
-  heap::BinaryHeap<size_t, std::greater<size_t>> heap(vinit);
+  heap::BinaryHeap<size_t> heap(vinit);
   for (unsigned i = 0; i < vloop.size(); ++i) {
     h = hash_combine(h, heap.Top());
     heap.Pop();
@@ -60,6 +60,6 @@ bool TesterHeap::TestAll() {
 }
 
 bool TestHeap(bool time_test) {
-  TesterHeap th(time_test ? 1000000 : 10000, time_test ? 1000000 : 10000);
+  TesterHeap th(time_test ? 10000000 : 10000, time_test ? 10000000 : 10000);
   return th.TestAll();
 }
