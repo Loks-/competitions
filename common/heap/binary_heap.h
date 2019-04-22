@@ -19,8 +19,8 @@ class BinaryHeap {
   BinaryHeap(unsigned expected_size) { data.reserve(expected_size); }
   BinaryHeap(const std::vector<TData>& v) : data(v) { Heapify(); }
 
-  bool Empty() { return data.empty(); }
-  size_t Size() { return data.size(); }
+  bool Empty() const { return data.empty(); }
+  size_t Size() const { return data.size(); }
 
   void Add(const TData& value) {
     data.push_back(value);
