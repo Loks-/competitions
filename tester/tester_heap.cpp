@@ -2,6 +2,7 @@
 
 #include "common/hash.h"
 #include "common/heap/binary_heap.h"
+#include "common/heap/ukey_value_heap.h"
 #include "common/timer.h"
 
 #include <iostream>
@@ -32,7 +33,7 @@ size_t TesterHeap::TestPriorityQueue() {
     heap.push(vloop[i]);
   }
   for (; !heap.empty(); heap.pop()) h = hash_combine(h, heap.top());
-  std::cout << "Test results [PQ]: " << h << "\t" << t.GetMilliseconds()
+  std::cout << "Test results [  PQ]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
 }
@@ -46,7 +47,27 @@ size_t TesterHeap::TestBinaryHeap() {
     heap.Add(vloop[i]);
   }
   for (; !heap.Empty(); heap.Pop()) h = hash_combine(h, heap.Top());
-  std::cout << "Test results [BH]: " << h << "\t" << t.GetMilliseconds()
+  std::cout << "Test results [  BH]: " << h << "\t" << t.GetMilliseconds()
+            << std::endl;
+  return h;
+}
+
+size_t TesterHeap::TestUKeyValueHeap() {
+  using THeap = heap::UKeyValueHeap<size_t>;
+  using TData = THeap::TData;
+  std::vector<TData> vinit_adj;
+  vinit_adj.reserve(vinit.size());
+  for (unsigned i = 0; i < vinit.size(); ++i)
+    vinit_adj.push_back({i, vinit[i]});
+  Timer t;
+  size_t h = 0;
+  THeap heap(vinit.size() + vloop.size(), vinit_adj);
+  for (unsigned i = 0; i < vloop.size(); ++i) {
+    h = hash_combine(h, heap.Extract().value);
+    heap.Set(vinit.size() + i, vloop[i]);
+  }
+  for (; !heap.Empty(); heap.Pop()) h = hash_combine(h, heap.Top().value);
+  std::cout << "Test results [UKVH]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
 }
@@ -55,10 +76,11 @@ bool TesterHeap::TestAll() {
   std::unordered_set<size_t> hs;
   hs.insert(TestPriorityQueue());
   hs.insert(TestBinaryHeap());
+  hs.insert(TestUKeyValueHeap());
   return hs.size() == 1;
 }
 
 bool TestHeap(bool time_test) {
-  TesterHeap th(time_test ? 10000000 : 10000, time_test ? 10000000 : 10000);
+  TesterHeap th(time_test ? 1000000 : 10000, time_test ? 1000000 : 10000);
   return th.TestAll();
 }

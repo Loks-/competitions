@@ -13,6 +13,7 @@ class TesterHeap {
 
   size_t TestPriorityQueue();
   size_t TestBinaryHeap();
+  size_t TestUKeyValueHeap();
 
   bool TestAll();
 };
