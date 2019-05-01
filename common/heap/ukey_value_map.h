@@ -55,6 +55,7 @@ class UKeyValueMap {
   unsigned UKeySize() const { return unsigned(values.size()); }
 
   const TValue& Get(unsigned key) const { return values[key]; }
+  const std::vector<TValue>& GetValues() const { return values; }
 
   void Set(unsigned key, const TValue& new_value, bool skip_heap = false) {
     unsigned key_position = heap_position[key];
