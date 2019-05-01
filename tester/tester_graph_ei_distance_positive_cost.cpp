@@ -11,7 +11,7 @@
 #include <vector>
 
 namespace {
-std::vector<std::string> vnames = {"  PQ", "  BH"};
+std::vector<std::string> vnames = {"  PQ", "  BH", " CBH"};
 }  // namespace
 
 TesterGraphEIDistancePositiveCost::TesterGraphEIDistancePositiveCost(
@@ -43,6 +43,9 @@ size_t TesterGraphEIDistancePositiveCost::TestI(unsigned type) {
         break;
       case 1:
         v = DistanceFromSourcePositiveCost_BH(g, edge_proxy, i, max_cost);
+        break;
+      case 2:
+        v = DistanceFromSourcePositiveCost_CBH(g, edge_proxy, i, max_cost);
         break;
       default:
         assert(false);

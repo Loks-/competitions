@@ -56,4 +56,31 @@ std::vector<TEdgeCost> DistanceFromSourcePositiveCost_BH(
   }
   return vd;
 }
+
+template <class TGraph, class TEdgeCostFunction, class TEdgeCost>
+std::vector<TEdgeCost> DistanceFromSourcePositiveCost_CBH(
+    const TGraph& graph, const TEdgeCostFunction& f, unsigned source,
+    const TEdgeCost& max_cost) {
+  using TPair = std::pair<TEdgeCost, unsigned>;
+  std::vector<TEdgeCost> vd(graph.Size(), max_cost);
+  std::vector<unsigned> visited(graph.Size(), 0);
+  heap::BinaryHeap<TPair, std::greater<TPair>> q;
+  vd[source] = TEdgeCost();
+  for (q.Add({TEdgeCost(), source}); !q.Empty();) {
+    auto p = q.Extract();
+    unsigned u = p.second;
+    if (!visited[u]) {
+      visited[u] = true;
+      for (auto e : graph.EdgesEI(u)) {
+        unsigned v = e.to;
+        TEdgeCost cost = p.first + f(e.info);
+        if (cost < vd[v]) {
+          vd[v] = cost;
+          q.Add({cost, v});
+        }
+      }
+    }
+  }
+  return vd;
+}
 }  // namespace graph
