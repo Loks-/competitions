@@ -3,6 +3,8 @@
 #include "common/graph/graph_ei.h"
 #include "common/graph/graph_ei/edge_cost_proxy.h"
 #include "common/heap/binary_heap.h"
+#include "common/heap/ukey_value_heap.h"
+
 #include <queue>
 #include <utility>
 #include <vector>
@@ -78,6 +80,28 @@ std::vector<TEdgeCost> DistanceFromSourcePositiveCost_CBH(
           vd[v] = cost;
           q.Add({cost, v});
         }
+      }
+    }
+  }
+  return vd;
+}
+
+template <class TGraph, class TEdgeCostFunction, class TEdgeCost>
+std::vector<TEdgeCost> DistanceFromSourcePositiveCost_KVH(
+    const TGraph& graph, const TEdgeCostFunction& f, unsigned source,
+    const TEdgeCost& max_cost) {
+  std::vector<TEdgeCost> vd(graph.Size(), max_cost);
+  heap::UKeyValueHeap<TEdgeCost, std::greater<TEdgeCost>> q(graph.Size());
+  vd[source] = TEdgeCost();
+  for (q.Set(source, TEdgeCost()); !q.Empty();) {
+    auto p = q.Extract();
+    unsigned u = p.key;
+    for (auto e : graph.EdgesEI(u)) {
+      unsigned v = e.to;
+      TEdgeCost cost = p.value + f(e.info);
+      if (cost < vd[v]) {
+        vd[v] = cost;
+        q.Set(v, cost);
       }
     }
   }

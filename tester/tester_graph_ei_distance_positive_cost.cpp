@@ -11,7 +11,7 @@
 #include <vector>
 
 namespace {
-std::vector<std::string> vnames = {"  PQ", "  BH", " CBH"};
+std::vector<std::string> vnames = {" PQ", " BH", "CBH", "KVH"};
 }  // namespace
 
 TesterGraphEIDistancePositiveCost::TesterGraphEIDistancePositiveCost(
@@ -47,6 +47,9 @@ size_t TesterGraphEIDistancePositiveCost::TestI(unsigned type) {
       case 2:
         v = DistanceFromSourcePositiveCost_CBH(g, edge_proxy, i, max_cost);
         break;
+      case 3:
+        v = DistanceFromSourcePositiveCost_KVH(g, edge_proxy, i, max_cost);
+        break;
       default:
         assert(false);
     }
@@ -58,20 +61,20 @@ size_t TesterGraphEIDistancePositiveCost::TestI(unsigned type) {
 size_t TesterGraphEIDistancePositiveCost::Test(unsigned type) {
   Timer t;
   size_t h = TestI(type);
-  std::cout << "Test results [" << Name(type) << "]: " << h << "\t"
+  std::cout << "Test results  [" << Name(type) << "]: " << h << "\t"
             << t.GetMilliseconds() << std::endl;
   return h;
 }
 
 bool TesterGraphEIDistancePositiveCost::TestAll() {
   std::unordered_set<size_t> hs;
-  for (unsigned i = 0; i < Size(); ++i) hs.insert(Test(i));
+  for (unsigned i = 2; i < Size(); ++i) hs.insert(Test(i));
   return hs.size() == 1;
 }
 
 bool TestGraphEIDistancePositiveCost(bool time_test) {
   if (time_test) {
-    TesterGraphEIDistancePositiveCost t1(10000, 4), t2(1000, 500);
+    TesterGraphEIDistancePositiveCost t1(10000, 4), t2(2000, 1000);
     return t1.TestAll() && t2.TestAll();
   } else {
     TesterGraphEIDistancePositiveCost t(100, 4);
