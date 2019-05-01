@@ -184,6 +184,7 @@ endforeach( testfile_in ${TIMUS_TESTS} )
 
 add_test( NAME tester_binary_search_tree COMMAND tester binary_search_tree )
 add_test( NAME tester_convergent COMMAND tester convergent )
+add_test( NAME tester_graph_distance_pc COMMAND tester graph_distance_positive_cost )
 add_test( NAME tester_heap COMMAND tester heap )
 add_test( NAME tester_interpolation COMMAND tester interpolation )
 add_test( NAME tester_mertens COMMAND tester mertens )
