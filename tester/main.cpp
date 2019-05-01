@@ -19,6 +19,8 @@ int main(int nargs, char **pargs) {
       Assert(TestBinarySearchTree(false));
     else if (tester_mode == "convergent")
       Assert(TestContinuedFractionConvergent());
+    else if (tester_mode == "graph_distance_positive_cost")
+      Assert(TestGraphEIDistancePositiveCost(false));
     else if (tester_mode == "heap")
       Assert(TestHeap(false));
     else if (tester_mode == "interpolation")
@@ -31,6 +33,8 @@ int main(int nargs, char **pargs) {
       Assert(TestBinarySearchTree(true));
     else if (tester_mode == "time_disjoint_set")
       Assert(TestDisjointSet());
+    else if (tester_mode == "time_graph_distance_positive_cost")
+      Assert(TestGraphEIDistancePositiveCost(true));
     else if (tester_mode == "time_heap")
       Assert(TestHeap(true));
     else if (tester_mode == "time_matrix_mult")
@@ -42,5 +46,6 @@ int main(int nargs, char **pargs) {
     return -1;
   }
 
+  std::cout << "Done." << std::endl;
   return 0;
 }
