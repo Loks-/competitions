@@ -152,8 +152,8 @@ foreach( testfile_in ${GOOGLE_CODE_JAM_TESTS} )
 	add_test( NAME ${testshortname} COMMAND google_code_jam ${solution} ${testfile_in} ${testfile_out} WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} )
 endforeach( testfile_in ${GOOGLE_CODE_JAM_TESTS} )
 
-add_test( NAME golf_gophers.0 COMMAND python google/code_jam/interactive_runner.py python tests/google/code_jam/2019/r1a/golf_gophers.py 0 -- ./release/build/google_code_jam golf_gophers WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} )
-add_test( NAME golf_gophers.1 COMMAND python google/code_jam/interactive_runner.py python tests/google/code_jam/2019/r1a/golf_gophers.py 1 -- ./release/build/google_code_jam golf_gophers WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} )
+add_test( NAME golf_gophers.0 COMMAND python3 google/code_jam/interactive_runner.py python3 tests/google/code_jam/2019/r1a/golf_gophers.py 0 -- ./release/build/google_code_jam golf_gophers WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} )
+add_test( NAME golf_gophers.1 COMMAND python3 google/code_jam/interactive_runner.py python3 tests/google/code_jam/2019/r1a/golf_gophers.py 1 -- ./release/build/google_code_jam golf_gophers WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} )
 
 file( GLOB_RECURSE HACKERRANK_TESTS RELATIVE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/tests/hackerrank/*.in" )
 list( SORT HACKERRANK_TESTS )
