@@ -48,7 +48,7 @@ class FixedTree
 
   TNode* Build(const std::vector<TData>& data, const std::vector<TKey>& keys) {
     assert(data.size() == keys.size());
-    assert(TNodesManager::AvailableNodes() >= data.size());
+    TNodesManager::ReserveAvailableNodes(data.size());
     if (data.size() == 0) return 0;
     std::vector<std::pair<TKey, TNode*>> vp(data.size());
     for (unsigned i = 0; i < data.size(); ++i) {

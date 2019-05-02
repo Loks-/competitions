@@ -42,7 +42,7 @@ class BSTree : public BSTNodesManager<TTNode> {
   }
 
   TNode* Build(const std::vector<TData>& data) {
-    assert(TNodesManager::AvailableNodes() >= data.size());
+    TNodesManager::ReserveAvailableNodes(data.size());
     if (data.size() == 0) return 0;
     std::vector<TNode*> v(data.size());
     for (unsigned i = 0; i < data.size(); ++i)
@@ -53,7 +53,7 @@ class BSTree : public BSTNodesManager<TTNode> {
   TNode* Build(const std::vector<TData>& data, const std::vector<TKey>& keys) {
     static_assert(use_key, "use_key should be true");
     assert(data.size() == keys.size());
-    assert(TNodesManager::AvailableNodes() >= data.size());
+    TNodesManager::ReserveAvailableNodes(data.size());
     if (data.size() == 0) return 0;
     std::vector<std::pair<TKey, TNode*>> vp(data.size());
     for (unsigned i = 0; i < data.size(); ++i) {
