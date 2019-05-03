@@ -54,33 +54,51 @@ class UKeyValueHeap {
     return data[key_position];
   }
 
-  void Set(unsigned key, const TValue& new_value) {
-    unsigned key_position = heap_position[key];
-    if (key_position == not_in_heap) {
-      heap_position[key] = data.size();
-      data.push_back({key, new_value});
-      SiftUp(heap_position[key]);
-    } else if (compare(new_value, data[key_position].value)) {
-      data[key_position].value = new_value;
-      SiftUp(key_position);
-    } else {
-      data[key_position].value = new_value;
-      SiftDown(key_position);
-    }
+ protected:
+  void AddNewKeyI(unsigned key, const TValue& new_value) {
+    heap_position[key] = data.size();
+    data.push_back({key, new_value});
+    SiftUp(heap_position[key]);
   }
 
-  void DecreaseKey(unsigned key, const TValue& new_value) {
-    unsigned key_position = heap_position[key];
-    assert(key_position != not_in_heap);
+  void DecreaseValueI(unsigned key_position, const TValue& new_value) {
     data[key_position].value = new_value;
     SiftUp(key_position);
   }
 
-  void IncreaseKey(unsigned key, const TValue& new_value) {
-    unsigned key_position = heap_position[key];
-    assert(key_position != not_in_heap);
+  void IncreaseValueI(unsigned key_position, const TValue& new_value) {
     data[key_position].value = new_value;
     SiftDown(key_position);
+  }
+
+ public:
+  void AddNewKey(unsigned key, const TValue& new_value) {
+    assert(heap_position[key] == not_in_heap);
+    AddNewKeyI(key, new_value);
+  }
+
+  void DecreaseValue(unsigned key, const TValue& new_value) {
+    unsigned key_position = heap_position[key];
+    if (key_position == not_in_heap)
+      AddNewKeyI(key, new_value);
+    else
+      DecreaseValueI(key_position, new_value);
+  }
+
+  void IncreaseValue(unsigned key, const TValue& new_value) {
+    unsigned key_position = heap_position[key];
+    assert(key_position != not_in_heap);
+    IncreaseValueI(key_position, new_value);
+  }
+
+  void Set(unsigned key, const TValue& new_value) {
+    unsigned key_position = heap_position[key];
+    if (key_position == not_in_heap)
+      AddNewKeyI(key, new_value);
+    else if (compare(new_value, data[key_position].value))
+      DecreaseValueI(key_position, new_value);
+    else
+      IncreaseValueI(key_position, new_value);
   }
 
   void Add(const TData& x) { Set(x.key, x.value); }
@@ -105,6 +123,7 @@ class UKeyValueHeap {
     return t;
   }
 
+ protected:
   void SiftUp(unsigned pos) {
     if (pos == 0) return;
     unsigned npos = (pos - 1) / 2;
