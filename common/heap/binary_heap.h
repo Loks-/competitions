@@ -85,5 +85,10 @@ class BinaryHeap {
   void Heapify() {
     for (unsigned pos = data.size() / 2; pos;) SiftDown(--pos);
   }
+
+  void Union(const TSelf& r) {
+    data.insert(data.end(), r.data.begin(), r.data.end());
+    Heapify();
+  }
 };
 }  // namespace heap
