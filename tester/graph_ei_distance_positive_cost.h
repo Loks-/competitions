@@ -10,7 +10,6 @@
 #include <utility>
 #include <vector>
 
-namespace graph {
 template <class TGraph, class TEdgeCostFunction, class TEdgeCost>
 std::vector<TEdgeCost> DistanceFromSourcePositiveCost_PQ(
     const TGraph& graph, const TEdgeCostFunction& f, unsigned source,
@@ -128,4 +127,3 @@ std::vector<TEdgeCost> DistanceFromSourcePositiveCost_KVM(
   }
   return q.GetValues();
 }
-}  // namespace graph
