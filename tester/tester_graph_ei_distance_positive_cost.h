@@ -7,8 +7,11 @@
 #include <vector>
 
 class TesterGraphEIDistancePositiveCost {
+ public:
+  using TGraph = graph::GraphEI<uint64_t, true>;
+
  protected:
-  graph::GraphEI<uint64_t, true> g;
+  TGraph g;
 
  public:
   TesterGraphEIDistancePositiveCost(unsigned graph_size,
