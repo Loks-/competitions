@@ -44,7 +44,7 @@ std::vector<TEdgeCost> DistanceFromSourcePositiveCost_KVH(
   std::vector<TEdgeCost> vd(graph.Size(), max_cost);
   heap::UKeyValueHeap<TEdgeCost> q(graph.Size());
   vd[source] = TEdgeCost();
-  for (q.Set(source, TEdgeCost()); !q.Empty();) {
+  for (q.AddNewKey(source, TEdgeCost()); !q.Empty();) {
     auto p = q.Extract();
     unsigned u = p.key;
     for (auto e : graph.EdgesEI(u)) {
@@ -52,7 +52,7 @@ std::vector<TEdgeCost> DistanceFromSourcePositiveCost_KVH(
       TEdgeCost cost = p.value + f(e.info);
       if (cost < vd[v]) {
         vd[v] = cost;
-        q.Set(v, cost);
+        q.DecreaseValue(v, cost);
       }
     }
   }
@@ -65,14 +65,14 @@ std::vector<TEdgeCost> DistanceFromSourcePositiveCost_KVM(
     const TEdgeCost& max_cost) {
   heap::UKeyValueMap<TEdgeCost> q(
       std::vector<TEdgeCost>(graph.Size(), max_cost), true);
-  for (q.Set(source, TEdgeCost()); !q.Empty();) {
+  for (q.AddNewKey(source, TEdgeCost()); !q.Empty();) {
     unsigned u = q.ExtractKey();
     TEdgeCost ucost = q.Get(u);
     for (auto e : graph.EdgesEI(u)) {
       unsigned v = e.to;
       TEdgeCost cost = ucost + f(e.info);
       if (cost < q.Get(v)) {
-        q.Set(v, cost);
+        q.DecreaseValue(v, cost);
       }
     }
   }

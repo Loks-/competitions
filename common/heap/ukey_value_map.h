@@ -92,7 +92,7 @@ class UKeyValueMap {
   void DecreaseValue(unsigned key, const TValue& new_value) {
     unsigned key_position = heap_position[key];
     if (key_position == not_in_heap)
-      AddNewKeyI(key, new_value);
+      AddNewKeyI(key, new_value, false);
     else
       DecreaseValueI(key, key_position, new_value);
   }
