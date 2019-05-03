@@ -2,6 +2,7 @@
 
 #include "common/hash.h"
 #include "common/heap/binary_heap.h"
+#include "common/heap/dheap.h"
 #include "common/heap/ukey_value_heap.h"
 #include "common/heap/ukey_value_map.h"
 #include "common/timer.h"
@@ -91,12 +92,31 @@ size_t TesterHeap::TestUKeyValueMap() {
   return h;
 }
 
+template <unsigned d>
+size_t TesterHeap::TestDHeap() {
+  Timer t;
+  size_t h = 0;
+  heap::DHeap<d, size_t> heap(vinit);
+  for (unsigned i = 0; i < vloop.size(); ++i) {
+    h = hash_combine(h, heap.Extract());
+    heap.Add(vloop[i]);
+  }
+  for (; !heap.Empty(); heap.Pop()) h = hash_combine(h, heap.Top());
+  std::cout << "Test results [ D" << d << "H]: " << h << "\t"
+            << t.GetMilliseconds() << std::endl;
+  return h;
+}
+
 bool TesterHeap::TestAll() {
   std::unordered_set<size_t> hs;
   hs.insert(TestPriorityQueue());
   hs.insert(TestBinaryHeap());
   hs.insert(TestUKeyValueHeap());
   hs.insert(TestUKeyValueMap());
+  hs.insert(TestDHeap<2>());
+  hs.insert(TestDHeap<3>());
+  hs.insert(TestDHeap<4>());
+  hs.insert(TestDHeap<5>());
   return hs.size() == 1;
 }
 
