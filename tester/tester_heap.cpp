@@ -54,7 +54,7 @@ size_t TesterHeap::TestBinaryHeap() {
 }
 
 size_t TesterHeap::TestUKeyValueHeap() {
-  using THeap = heap::UKeyValueHeap<size_t>;
+  using THeap = heap::UKeyValueHeap<size_t, std::greater<size_t>>;
   using TData = THeap::TData;
   std::vector<TData> vinit_adj;
   vinit_adj.reserve(vinit.size());

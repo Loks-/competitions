@@ -91,7 +91,7 @@ std::vector<TEdgeCost> DistanceFromSourcePositiveCost_KVH(
     const TGraph& graph, const TEdgeCostFunction& f, unsigned source,
     const TEdgeCost& max_cost) {
   std::vector<TEdgeCost> vd(graph.Size(), max_cost);
-  heap::UKeyValueHeap<TEdgeCost, std::greater<TEdgeCost>> q(graph.Size());
+  heap::UKeyValueHeap<TEdgeCost> q(graph.Size());
   vd[source] = TEdgeCost();
   for (q.Set(source, TEdgeCost()); !q.Empty();) {
     auto p = q.Extract();
