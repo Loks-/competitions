@@ -21,11 +21,11 @@ class BinaryHeap {
   BinaryHeap(const std::vector<TData>& v) : data(v) { Heapify(); }
 
   bool Empty() const { return data.empty(); }
-  size_t Size() const { return data.size(); }
+  unsigned Size() const { return unsigned(data.size()); }
 
   void Add(const TData& value) {
     data.push_back(value);
-    SiftUp(unsigned(data.size() - 1));
+    SiftUp(Size() - 1);
   }
 
   const TData& Top() const { return data[0]; }
@@ -63,16 +63,15 @@ class BinaryHeap {
 
   void SiftDown(unsigned pos) {
     unsigned npos = 2 * pos + 1;
-    if (npos >= data.size()) return;
-    if ((npos + 1 < data.size()) && compare(data[npos + 1], data[npos])) ++npos;
+    if (npos >= Size()) return;
+    if ((npos + 1 < Size()) && compare(data[npos + 1], data[npos])) ++npos;
     if (compare(data[npos], data[pos])) {
       TData x = data[pos];
       data[pos] = data[npos];
       for (pos = npos;; pos = npos) {
         npos = 2 * pos + 1;
-        if (npos >= data.size()) break;
-        if ((npos + 1 < data.size()) && compare(data[npos + 1], data[npos]))
-          ++npos;
+        if (npos >= Size()) break;
+        if ((npos + 1 < Size()) && compare(data[npos + 1], data[npos])) ++npos;
         if (compare(data[npos], x)) {
           data[pos] = data[npos];
         } else {
@@ -84,7 +83,7 @@ class BinaryHeap {
   }
 
   void Heapify() {
-    for (unsigned pos = data.size() / 2; pos;) SiftDown(--pos);
+    for (unsigned pos = Size() / 2; pos;) SiftDown(--pos);
   }
 
  public:

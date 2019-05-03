@@ -54,7 +54,7 @@ class UKeyValueMap {
   }
 
   bool Empty() const { return heap_keys.empty(); }
-  size_t Size() const { return heap_keys.size(); }
+  unsigned Size() const { return unsigned(heap_keys.size()); }
   unsigned UKeySize() const { return unsigned(values.size()); }
 
   const TValue& Get(unsigned key) const { return values[key]; }
@@ -64,7 +64,7 @@ class UKeyValueMap {
   void AddNewKeyI(unsigned key, const TValue& new_value, bool skip_heap) {
     values[key] = new_value;
     if (!skip_heap) {
-      heap_position[key] = heap_keys.size();
+      heap_position[key] = Size();
       heap_keys.push_back(key);
       SiftUp(heap_position[key]);
     }
@@ -181,9 +181,8 @@ class UKeyValueMap {
     unsigned xkey = heap_keys[pos];
     const TValue& xvalue = values[xkey];
     unsigned npos = 2 * pos + 1;
-    if (npos >= heap_keys.size()) return;
-    if ((npos + 1 < heap_keys.size()) &&
-        Compare(heap_keys[npos + 1], heap_keys[npos]))
+    if (npos >= Size()) return;
+    if ((npos + 1 < Size()) && Compare(heap_keys[npos + 1], heap_keys[npos]))
       ++npos;
     unsigned nkey = heap_keys[npos];
     if (compare(values[nkey], xvalue)) {
@@ -191,8 +190,8 @@ class UKeyValueMap {
       heap_position[nkey] = pos;
       for (pos = npos;; pos = npos) {
         npos = 2 * pos + 1;
-        if (npos >= heap_keys.size()) break;
-        if ((npos + 1 < heap_keys.size()) &&
+        if (npos >= Size()) break;
+        if ((npos + 1 < Size()) &&
             Compare(heap_keys[npos + 1], heap_keys[npos]))
           ++npos;
         nkey = heap_keys[npos];
@@ -210,7 +209,7 @@ class UKeyValueMap {
 
  public:
   void Heapify() {
-    for (unsigned pos = heap_keys.size() / 2; pos;) SiftDown(--pos);
+    for (unsigned pos = Size() / 2; pos;) SiftDown(--pos);
   }
 };
 }  // namespace heap

@@ -47,7 +47,7 @@ class UKeyValueHeap {
   }
 
   bool Empty() const { return data.empty(); }
-  size_t Size() const { return data.size(); }
+  unsigned Size() const { return unsigned(data.size()); }
   unsigned UKeySize() const { return unsigned(heap_position.size()); }
 
   TValue Get(unsigned key) const {
@@ -58,7 +58,7 @@ class UKeyValueHeap {
 
  protected:
   void AddNewKeyI(unsigned key, const TValue& new_value) {
-    heap_position[key] = data.size();
+    heap_position[key] = Size();
     data.push_back({key, new_value});
     SiftUp(heap_position[key]);
   }
@@ -149,17 +149,16 @@ class UKeyValueHeap {
 
   void SiftDown(unsigned pos) {
     unsigned npos = 2 * pos + 1;
-    if (npos >= data.size()) return;
-    if ((npos + 1 < data.size()) && Compare(data[npos + 1], data[npos])) ++npos;
+    if (npos >= Size()) return;
+    if ((npos + 1 < Size()) && Compare(data[npos + 1], data[npos])) ++npos;
     if (Compare(data[npos], data[pos])) {
       TData x = data[pos];
       data[pos] = data[npos];
       heap_position[data[pos].key] = pos;
       for (pos = npos;; pos = npos) {
         npos = 2 * pos + 1;
-        if (npos >= data.size()) break;
-        if ((npos + 1 < data.size()) && Compare(data[npos + 1], data[npos]))
-          ++npos;
+        if (npos >= Size()) break;
+        if ((npos + 1 < Size()) && Compare(data[npos + 1], data[npos])) ++npos;
         if (Compare(data[npos], x)) {
           data[pos] = data[npos];
           heap_position[data[pos].key] = pos;
@@ -173,9 +172,9 @@ class UKeyValueHeap {
   }
 
   void Heapify() {
-    for (unsigned pos = 0; pos < data.size(); ++pos)
+    for (unsigned pos = 0; pos < Size(); ++pos)
       heap_position[data[pos].key] = pos;
-    for (unsigned pos = data.size() / 2; pos;) SiftDown(--pos);
+    for (unsigned pos = Size() / 2; pos;) SiftDown(--pos);
   }
 };
 }  // namespace heap
