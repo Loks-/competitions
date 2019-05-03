@@ -1,9 +1,10 @@
 #include "tester/tester_graph_ei_distance_positive_cost.h"
 
-#include "tester/graph_ei_distance_positive_cost.h"
 #include "common/graph/graph_ei/edge_cost_proxy.h"
 #include "common/hash.h"
 #include "common/timer.h"
+
+#include "tester/graph_ei_distance_positive_cost.h"
 
 #include <iostream>
 #include <string>

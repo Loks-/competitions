@@ -1,6 +1,7 @@
 #pragma once
 
 #include "common/disjoint_set.h"
+
 #include <stack>
 
 enum EPathCompression {
