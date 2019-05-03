@@ -58,22 +58,57 @@ class UKeyValueMap {
   const TValue& Get(unsigned key) const { return values[key]; }
   const std::vector<TValue>& GetValues() const { return values; }
 
-  void Set(unsigned key, const TValue& new_value, bool skip_heap = false) {
-    unsigned key_position = heap_position[key];
-    if (key_position == not_in_heap) {
-      values[key] = new_value;
-      if (!skip_heap) {
-        heap_position[key] = heap_keys.size();
-        heap_keys.push_back(key);
-        SiftUp(heap_position[key]);
-      }
-    } else if (compare(new_value, values[key])) {
-      values[key] = new_value;
-      SiftUp(key_position);
-    } else {
-      values[key] = new_value;
-      SiftDown(key_position);
+ protected:
+  void AddNewKeyI(unsigned key, const TValue& new_value, bool skip_heap) {
+    values[key] = new_value;
+    if (!skip_heap) {
+      heap_position[key] = heap_keys.size();
+      heap_keys.push_back(key);
+      SiftUp(heap_position[key]);
     }
+  }
+
+  void DecreaseValueI(unsigned key, unsigned key_position,
+                      const TValue& new_value) {
+    values[key] = new_value;
+    SiftUp(key_position);
+  }
+
+  void IncreaseValueI(unsigned key, unsigned key_position,
+                      const TValue& new_value) {
+    values[key] = new_value;
+    SiftDown(key_position);
+  }
+
+ public:
+  void AddNewKey(unsigned key, const TValue& new_value,
+                 bool skip_heap = false) {
+    assert(heap_position[key] == not_in_heap);
+    AddNewKeyI(key, new_value, skip_heap);
+  }
+
+  void DecreaseValue(unsigned key, const TValue& new_value) {
+    unsigned key_position = heap_position[key];
+    if (key_position == not_in_heap)
+      AddNewKeyI(key, new_value);
+    else
+      DecreaseValueI(key, key_position, new_value);
+  }
+
+  void IncreaseValue(unsigned key, const TValue& new_value) {
+    unsigned key_position = heap_position[key];
+    assert(key_position != not_in_heap);
+    IncreaseValueI(key, key_position, new_value);
+  }
+
+  void Set(unsigned key, const TValue& new_value) {
+    unsigned key_position = heap_position[key];
+    if (key_position == not_in_heap)
+      AddNewKeyI(key, new_value, false);
+    else if (compare(new_value, values[key]))
+      DecreaseValueI(key, key_position, new_value);
+    else
+      IncreaseValueI(key, key_position, new_value);
   }
 
   void Add(const TData& x) { Set(x.key, x.value); }
@@ -115,6 +150,7 @@ class UKeyValueMap {
     return t;
   }
 
+ protected:
   void SiftUp(unsigned pos) {
     if (pos == 0) return;
     unsigned npos = (pos - 1) / 2;
@@ -164,6 +200,7 @@ class UKeyValueMap {
     }
   }
 
+ public:
   void Heapify() {
     for (unsigned pos = heap_keys.size() / 2; pos;) SiftDown(--pos);
   }
