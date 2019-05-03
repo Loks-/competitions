@@ -50,7 +50,7 @@ MinimumSpanningTree_Prim_BH(const TGraph& graph, const TEdgeCostFunction& f,
   std::vector<unsigned> visited(graph.Size(), 0);
   unsigned edges_added = -1u;
   TEdgeCost total_cost = TEdgeCost();
-  heap::BinaryHeap<TPair, std::greater<TPair>> q;
+  heap::BinaryHeap<TPair> q;
   for (q.Add({TEdgeCost(), source}); !q.Empty();) {
     auto p = q.Extract();
     if (!visited[p.second]) {

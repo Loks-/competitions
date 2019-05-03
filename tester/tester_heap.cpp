@@ -42,7 +42,7 @@ size_t TesterHeap::TestPriorityQueue() {
 size_t TesterHeap::TestBinaryHeap() {
   Timer t;
   size_t h = 0;
-  heap::BinaryHeap<size_t> heap(vinit);
+  heap::BinaryHeap<size_t, std::greater<size_t>> heap(vinit);
   for (unsigned i = 0; i < vloop.size(); ++i) {
     h = hash_combine(h, heap.Extract());
     heap.Add(vloop[i]);

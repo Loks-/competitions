@@ -41,7 +41,7 @@ std::vector<TEdgeCost> DistanceFromSourcePositiveCost_BH(
     const TEdgeCost& max_cost) {
   using TPair = std::pair<TEdgeCost, unsigned>;
   std::vector<TEdgeCost> vd(graph.Size(), max_cost);
-  heap::BinaryHeap<TPair, std::greater<TPair>> q;
+  heap::BinaryHeap<TPair> q;
   for (q.Add({TEdgeCost(), source}); !q.Empty();) {
     auto p = q.Extract();
     unsigned u = p.second;
@@ -66,7 +66,7 @@ std::vector<TEdgeCost> DistanceFromSourcePositiveCost_CBH(
   using TPair = std::pair<TEdgeCost, unsigned>;
   std::vector<TEdgeCost> vd(graph.Size(), max_cost);
   std::vector<unsigned> visited(graph.Size(), 0);
-  heap::BinaryHeap<TPair, std::greater<TPair>> q;
+  heap::BinaryHeap<TPair> q;
   vd[source] = TEdgeCost();
   for (q.Add({TEdgeCost(), source}); !q.Empty();) {
     auto p = q.Extract();
