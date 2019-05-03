@@ -20,6 +20,9 @@ class TesterHeap {
   template <unsigned d>
   size_t TestDHeap();
 
+  template <unsigned d>
+  size_t TestUKeyValueDMap();
+
  public:
   bool TestAll();
 };
