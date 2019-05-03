@@ -5,6 +5,8 @@
 #include <vector>
 
 namespace heap {
+// Binary Heap with map to position by key.
+// Values are stored inside heap.
 template <class TTValue, class TTCompare = std::less<TTValue>>
 class UKeyValueHeap {
  public:
