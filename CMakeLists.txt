@@ -196,4 +196,5 @@ add_test( NAME tester_graph_distance_pc COMMAND tester graph_distance_positive_c
 add_test( NAME tester_heap COMMAND tester heap )
 add_test( NAME tester_interpolation COMMAND tester interpolation )
 add_test( NAME tester_mertens COMMAND tester mertens )
+add_test( NAME tester_minimum_spanning_tree COMMAND tester minimum_spanning_tree )
 add_test( NAME tester_modular_fft COMMAND tester modular_fft )

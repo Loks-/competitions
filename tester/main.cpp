@@ -27,6 +27,8 @@ int main(int nargs, char **pargs) {
       Assert(TestInterpolation());
     else if (tester_mode == "mertens")
       Assert(TestMertens());
+    else if (tester_mode == "minimum_spanning_tree")
+      Assert(TestMinimumSpanningTree(false));
     else if (tester_mode == "modular_fft")
       Assert(TestModularFFT());
     else if (tester_mode == "time_binary_search_tree")
@@ -39,6 +41,8 @@ int main(int nargs, char **pargs) {
       Assert(TestHeap(true));
     else if (tester_mode == "time_matrix_mult")
       Assert(TestMatrixMult());
+    else if (tester_mode == "time_minimum_spanning_tree")
+      Assert(TestMinimumSpanningTree(true));
     else
       Assert(false, "Unknown tester mode");
   } catch (AssertException) {

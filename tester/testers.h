@@ -8,4 +8,5 @@ bool TestHeap(bool time_test);
 bool TestInterpolation();
 bool TestMatrixMult();
 bool TestMertens();
+bool TestMinimumSpanningTree(bool time_test);
 bool TestModularFFT();
