@@ -12,6 +12,7 @@ class UKeyValueMap {
   const unsigned not_in_heap = unsigned(-1);
   using TValue = TTValue;
   using TCompare = TTCompare;
+  using TSelf = UKeyValueMap<TValue, TCompare>;
 
   struct TData {
     unsigned key;
@@ -66,7 +67,7 @@ class UKeyValueMap {
         heap_keys.push_back(key);
         SiftUp(heap_position[key]);
       }
-    } else if (compare(values[key], new_value)) {
+    } else if (compare(new_value, values[key])) {
       values[key] = new_value;
       SiftUp(key_position);
     } else {
@@ -117,13 +118,13 @@ class UKeyValueMap {
   void SiftUp(unsigned pos) {
     if (pos == 0) return;
     unsigned npos = (pos - 1) / 2;
-    if (Compare(heap_keys[npos], heap_keys[pos])) {
+    if (Compare(heap_keys[pos], heap_keys[npos])) {
       unsigned xkey = heap_keys[pos];
       heap_keys[pos] = heap_keys[npos];
       heap_position[heap_keys[pos]] = pos;
       for (pos = npos; pos; pos = npos) {
         npos = (pos - 1) / 2;
-        if (Compare(heap_keys[npos], xkey)) {
+        if (Compare(xkey, heap_keys[npos])) {
           heap_keys[pos] = heap_keys[npos];
           heap_position[heap_keys[pos]] = pos;
         } else {
@@ -139,9 +140,9 @@ class UKeyValueMap {
     unsigned npos = 2 * pos + 1;
     if (npos >= heap_keys.size()) return;
     if ((npos + 1 < heap_keys.size()) &&
-        Compare(heap_keys[npos], heap_keys[npos + 1]))
+        Compare(heap_keys[npos + 1], heap_keys[npos]))
       ++npos;
-    if (Compare(heap_keys[pos], heap_keys[npos])) {
+    if (Compare(heap_keys[npos], heap_keys[pos])) {
       unsigned xkey = heap_keys[pos];
       heap_keys[pos] = heap_keys[npos];
       heap_position[heap_keys[pos]] = pos;
@@ -149,9 +150,9 @@ class UKeyValueMap {
         npos = 2 * pos + 1;
         if (npos >= heap_keys.size()) break;
         if ((npos + 1 < heap_keys.size()) &&
-            Compare(heap_keys[npos], heap_keys[npos + 1]))
+            Compare(heap_keys[npos + 1], heap_keys[npos]))
           ++npos;
-        if (Compare(xkey, heap_keys[npos])) {
+        if (Compare(heap_keys[npos], xkey)) {
           heap_keys[pos] = heap_keys[npos];
           heap_position[heap_keys[pos]] = pos;
         } else {

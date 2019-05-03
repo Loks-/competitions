@@ -12,7 +12,7 @@ template <class TGraph, class TEdgeCostFunction, class TEdgeCost>
 std::vector<TEdgeCost> DistanceFromSourcePositiveCost(
     const TGraph& graph, const TEdgeCostFunction& f, unsigned source,
     const TEdgeCost& max_cost) {
-  heap::UKeyValueMap<TEdgeCost, std::greater<TEdgeCost>> q(
+  heap::UKeyValueMap<TEdgeCost> q(
       std::vector<TEdgeCost>(graph.Size(), max_cost), true);
   for (q.Set(source, TEdgeCost()); !q.Empty();) {
     unsigned u = q.ExtractKey();

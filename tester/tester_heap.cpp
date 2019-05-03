@@ -74,7 +74,7 @@ size_t TesterHeap::TestUKeyValueHeap() {
 }
 
 size_t TesterHeap::TestUKeyValueMap() {
-  using THeap = heap::UKeyValueMap<size_t>;
+  using THeap = heap::UKeyValueMap<size_t, std::greater<size_t>>;
   using TData = THeap::TData;
   Timer t;
   size_t h = 0;
