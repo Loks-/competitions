@@ -51,11 +51,10 @@ class BinaryHeap {
       data[pos] = data[npos];
       for (pos = npos; pos; pos = npos) {
         npos = (pos - 1) / 2;
-        if (compare(x, data[npos])) {
+        if (compare(x, data[npos]))
           data[pos] = data[npos];
-        } else {
+        else
           break;
-        }
       }
       data[pos] = x;
     }
@@ -72,11 +71,10 @@ class BinaryHeap {
         npos = 2 * pos + 1;
         if (npos >= Size()) break;
         if ((npos + 1 < Size()) && compare(data[npos + 1], data[npos])) ++npos;
-        if (compare(data[npos], x)) {
+        if (compare(data[npos], x))
           data[pos] = data[npos];
-        } else {
+        else
           break;
-        }
       }
       data[pos] = x;
     }
