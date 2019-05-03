@@ -69,6 +69,20 @@ class UKeyValueHeap {
     }
   }
 
+  void DecreaseKey(unsigned key, const TValue& new_value) {
+    unsigned key_position = heap_position[key];
+    assert(key_position != not_in_heap);
+    data[key_position].value = new_value;
+    SiftUp(key_position);
+  }
+
+  void IncreaseKey(unsigned key, const TValue& new_value) {
+    unsigned key_position = heap_position[key];
+    assert(key_position != not_in_heap);
+    data[key_position].value = new_value;
+    SiftDown(key_position);
+  }
+
   void Add(const TData& x) { Set(x.key, x.value); }
 
   const TData& Top() const { return data[0]; }
