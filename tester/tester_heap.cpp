@@ -27,7 +27,8 @@ TesterHeap::TesterHeap(unsigned size_init, unsigned size_loop) {
 size_t TesterHeap::TestPriorityQueue() {
   Timer t;
   size_t h = 0;
-  std::priority_queue<size_t> heap(vinit.begin(), vinit.end());
+  std::priority_queue<size_t, std::vector<size_t>, std::greater<size_t>> heap(
+      vinit.begin(), vinit.end());
   for (unsigned i = 0; i < vloop.size(); ++i) {
     h = hash_combine(h, heap.top());
     heap.pop();
@@ -42,7 +43,7 @@ size_t TesterHeap::TestPriorityQueue() {
 size_t TesterHeap::TestBinaryHeap() {
   Timer t;
   size_t h = 0;
-  heap::BinaryHeap<size_t, std::greater<size_t>> heap(vinit);
+  heap::BinaryHeap<size_t> heap(vinit);
   for (unsigned i = 0; i < vloop.size(); ++i) {
     h = hash_combine(h, heap.Extract());
     heap.Add(vloop[i]);
@@ -54,7 +55,7 @@ size_t TesterHeap::TestBinaryHeap() {
 }
 
 size_t TesterHeap::TestUKeyValueHeap() {
-  using THeap = heap::UKeyValueHeap<size_t, std::greater<size_t>>;
+  using THeap = heap::UKeyValueHeap<size_t>;
   using TData = THeap::TData;
   std::vector<TData> vinit_adj;
   vinit_adj.reserve(vinit.size());
@@ -74,7 +75,7 @@ size_t TesterHeap::TestUKeyValueHeap() {
 }
 
 size_t TesterHeap::TestUKeyValueMap() {
-  using THeap = heap::UKeyValueMap<size_t, std::greater<size_t>>;
+  using THeap = heap::UKeyValueMap<size_t>;
   using TData = THeap::TData;
   Timer t;
   size_t h = 0;
