@@ -1,6 +1,7 @@
 #include "tester/tester_minimum_spanning_tree.h"
 
 #include "common/graph/graph_ei/edge_cost_proxy.h"
+#include "common/graph/graph_ei/mst/kruskal.h"
 #include "common/hash.h"
 #include "common/timer.h"
 
@@ -37,7 +38,7 @@ uint64_t TesterMinimumSpanningTree::TestI(unsigned type) {
   static auto edge_proxy = graph::EdgeCostProxy<uint64_t>();
   switch (type) {
     case 0:
-      return MinimumSpanningTree_Kruskal(g, edge_proxy).second;
+      return graph::mst::Kruskal(g, edge_proxy).second;
     case 1:
       return MinimumSpanningTree_Prim_BH(g, edge_proxy).second;
     default:
