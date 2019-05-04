@@ -1,9 +1,9 @@
 #pragma once
 
-#include "common/heap/binary_heap.h"
+#include "common/heap/dheap.h"
 #include <functional>
 
 template <class TValue>
-using HeapMinOnTop = heap::BinaryHeap<TValue, std::less<TValue>>;
+using HeapMinOnTop = heap::DHeap<2u, TValue, std::less<TValue>>;
 template <class TValue>
-using HeapMaxOnTop = heap::BinaryHeap<TValue, std::greater<TValue>>;
+using HeapMaxOnTop = heap::DHeap<2u, TValue, std::greater<TValue>>;
