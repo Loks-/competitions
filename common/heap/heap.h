@@ -1,6 +1,7 @@
 #pragma once
 
 #include "common/heap/binary_heap.h"
+#include <functional>
 
 template <class TValue>
 using HeapMinOnTop = heap::BinaryHeap<TValue, std::less<TValue>>;
