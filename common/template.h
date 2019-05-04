@@ -7,5 +7,8 @@ class TFakeBool {};
 using TFakeFalse = TFakeBool<false>;
 using TFakeTrue = TFakeBool<true>;
 
+template <unsigned>
+class TFakeUnsigned {};
+
 template <class T>
 class TFakeType {};
