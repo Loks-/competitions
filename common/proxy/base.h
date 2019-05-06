@@ -1,7 +1,11 @@
 #pragma once
 
-template <class TValue>
+template <class TTValue>
 class ProxyBase {
+ public:
+  using TValue = TTValue;
+  using TSelf = ProxyBase<TValue>;
+
  protected:
   TValue data;
 
@@ -10,4 +14,6 @@ class ProxyBase {
   const TValue& Get() const { return data; }
   TValue& Get() { return data; }
   void Set(const TValue& _data) { data = _data; }
+
+  bool operator<(const TSelf& r) const { return data < r.data; }
 };
