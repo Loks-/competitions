@@ -181,6 +181,7 @@ class Binomial {
       c = nc;
     }
     c->p = 0;
+    c->s = pc;
     return c;
   }
 };

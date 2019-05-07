@@ -8,10 +8,10 @@
             "name": "(gdb) Launch",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/debug/build/google_code_jam",
+            "program": "${workspaceFolder}/debug/build/tester",
             "args": [
-                "manhattan_crepe_cart",
-                "tests/google/code_jam/2019/r1b/manhattan_crepe_cart.in"
+                "heap"
+                // "tests/google/code_jam/2019/r1b/manhattan_crepe_cart.in"
             ],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",

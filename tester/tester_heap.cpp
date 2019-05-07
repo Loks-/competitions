@@ -151,7 +151,7 @@ bool TesterHeap::TestAll() {
   hs.insert(TestDHeap<3>());
   hs.insert(TestDHeap<4>());
   hs.insert(TestDHeap<5>());
-  // hs.insert(TestBinomialHeap());
+  hs.insert(TestBinomialHeap());
   hs.insert(TestUKeyValueHeap());
   hs.insert(TestUKeyValueMap());
   hs.insert(TestUKeyValueDMap<2>());
