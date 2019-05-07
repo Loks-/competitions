@@ -4,8 +4,8 @@
 #include "common/heap/binary_heap.h"
 #include "common/heap/binomial.h"
 #include "common/heap/dheap.h"
+#include "common/heap/dheap_ukey_pos_map.h"
 #include "common/heap/dheap_ukey_value_map.h"
-#include "common/heap/ukey_value_heap.h"
 #include "common/timer.h"
 
 #include <iostream>
@@ -72,8 +72,24 @@ size_t TesterHeap::TestBinomialHeap() {
   return h;
 }
 
-size_t TesterHeap::TestUKeyValueHeap() {
-  using THeap = heap::UKeyValueHeap<size_t>;
+template <unsigned d>
+size_t TesterHeap::TestDHeap() {
+  Timer t;
+  size_t h = 0;
+  heap::DHeap<d, size_t> heap(vinit);
+  for (unsigned i = 0; i < vloop.size(); ++i) {
+    h = hash_combine(h, heap.Extract());
+    heap.Add(vloop[i]);
+  }
+  for (; !heap.Empty(); heap.Pop()) h = hash_combine(h, heap.Top());
+  std::cout << "Test results [ D" << d << "H]: " << h << "\t"
+            << t.GetMilliseconds() << std::endl;
+  return h;
+}
+
+template <unsigned d>
+size_t TesterHeap::TestDHeapUKeyPosMap() {
+  using THeap = heap::DHeapUKeyPosMap<d, size_t>;
   using TData = typename THeap::TData;
   std::vector<TData> vinit_adj;
   vinit_adj.reserve(vinit.size());
@@ -87,22 +103,7 @@ size_t TesterHeap::TestUKeyValueHeap() {
     heap.Set(vinit.size() + i, vloop[i]);
   }
   for (; !heap.Empty(); heap.Pop()) h = hash_combine(h, heap.Top().value);
-  std::cout << "Test results [UKVH]: " << h << "\t" << t.GetMilliseconds()
-            << std::endl;
-  return h;
-}
-
-template <unsigned d>
-size_t TesterHeap::TestDHeap() {
-  Timer t;
-  size_t h = 0;
-  heap::DHeap<d, size_t> heap(vinit);
-  for (unsigned i = 0; i < vloop.size(); ++i) {
-    h = hash_combine(h, heap.Extract());
-    heap.Add(vloop[i]);
-  }
-  for (; !heap.Empty(); heap.Pop()) h = hash_combine(h, heap.Top());
-  std::cout << "Test results [ D" << d << "H]: " << h << "\t"
+  std::cout << "Test results [DKP" << d << "]: " << h << "\t"
             << t.GetMilliseconds() << std::endl;
   return h;
 }
@@ -134,7 +135,10 @@ bool TesterHeap::TestAll() {
   hs.insert(TestDHeap<4>());
   hs.insert(TestDHeap<5>());
   hs.insert(TestBinomialHeap());
-  hs.insert(TestUKeyValueHeap());
+  hs.insert(TestDHeapUKeyPosMap<2>());
+  hs.insert(TestDHeapUKeyPosMap<3>());
+  hs.insert(TestDHeapUKeyPosMap<4>());
+  hs.insert(TestDHeapUKeyPosMap<5>());
   hs.insert(TestDHeapUKeyValueMap<2>());
   hs.insert(TestDHeapUKeyValueMap<3>());
   hs.insert(TestDHeapUKeyValueMap<4>());

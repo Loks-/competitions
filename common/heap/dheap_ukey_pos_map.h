@@ -7,13 +7,14 @@
 namespace heap {
 // Binary Heap with map to position by key.
 // Values are stored inside heap.
-template <class TTValue, class TTCompare = std::less<TTValue>>
-class UKeyValueHeap {
+template <unsigned d_, class TTValue, class TTCompare = std::less<TTValue>>
+class DHeapUKeyPosMap {
  public:
+  const unsigned d = d_;
   const unsigned not_in_heap = unsigned(-1);
   using TValue = TTValue;
   using TCompare = TTCompare;
-  using TSelf = UKeyValueHeap<TValue, TCompare>;
+  using TSelf = DHeapUKeyPosMap<d_, TValue, TCompare>;
 
   struct TData {
     unsigned key;
@@ -26,7 +27,7 @@ class UKeyValueHeap {
   std::vector<unsigned> heap_position;
 
  protected:
-  bool Compare(const TData& l, const TData& r) {
+  bool Compare(const TData& l, const TData& r) const {
     return compare(l.value, r.value);
   }
 
@@ -36,12 +37,12 @@ class UKeyValueHeap {
   }
 
  public:
-  UKeyValueHeap(unsigned ukey_size) {
+  DHeapUKeyPosMap(unsigned ukey_size) {
     ResetHeapPosition(ukey_size);
     data.reserve(ukey_size);
   }
 
-  UKeyValueHeap(unsigned ukey_size, const std::vector<TData>& v) : data(v) {
+  DHeapUKeyPosMap(unsigned ukey_size, const std::vector<TData>& v) : data(v) {
     ResetHeapPosition(ukey_size);
     Heapify();
   }
@@ -128,13 +129,13 @@ class UKeyValueHeap {
  protected:
   void SiftUp(unsigned pos) {
     if (pos == 0) return;
-    unsigned npos = (pos - 1) / 2;
+    unsigned npos = (pos - 1) / d;
     if (Compare(data[pos], data[npos])) {
       TData x = data[pos];
       data[pos] = data[npos];
       heap_position[data[pos].key] = pos;
       for (pos = npos; pos; pos = npos) {
-        npos = (pos - 1) / 2;
+        npos = (pos - 1) / d;
         if (Compare(x, data[npos])) {
           data[pos] = data[npos];
           heap_position[data[pos].key] = pos;
@@ -147,19 +148,24 @@ class UKeyValueHeap {
     }
   }
 
+  bool SiftDownNext(const TData& x, unsigned pos, unsigned& npos) const {
+    unsigned cb = d * pos + 1, ce = std::min(cb + d, Size());
+    if (cb >= ce) return false;
+    npos = cb;
+    for (unsigned i = cb + 1; i < ce; ++i) {
+      if (Compare(data[i], data[npos])) npos = i;
+    }
+    return compare(data[npos].value, x.value);
+  }
+
   void SiftDown(unsigned pos) {
-    unsigned npos = 2 * pos + 1;
-    if (npos >= Size()) return;
-    if ((npos + 1 < Size()) && Compare(data[npos + 1], data[npos])) ++npos;
-    if (Compare(data[npos], data[pos])) {
-      TData x = data[pos];
+    unsigned npos;
+    TData x = data[pos];
+    if (SiftDownNext(x, pos, npos)) {
       data[pos] = data[npos];
       heap_position[data[pos].key] = pos;
       for (pos = npos;; pos = npos) {
-        npos = 2 * pos + 1;
-        if (npos >= Size()) break;
-        if ((npos + 1 < Size()) && Compare(data[npos + 1], data[npos])) ++npos;
-        if (Compare(data[npos], x)) {
+        if (SiftDownNext(x, pos, npos)) {
           data[pos] = data[npos];
           heap_position[data[pos].key] = pos;
         } else {
@@ -174,7 +180,7 @@ class UKeyValueHeap {
   void Heapify() {
     for (unsigned pos = 0; pos < Size(); ++pos)
       heap_position[data[pos].key] = pos;
-    for (unsigned pos = Size() / 2; pos;) SiftDown(--pos);
+    for (unsigned pos = Size() / d; pos;) SiftDown(--pos);
   }
 };
 }  // namespace heap
