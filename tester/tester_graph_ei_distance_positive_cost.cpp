@@ -2,7 +2,7 @@
 
 #include "common/graph/graph_ei/edge_cost_proxy.h"
 #include "common/hash.h"
-#include "common/heap/ukey_value_dmap.h"
+#include "common/heap/dheap_ukey_value_map.h"
 #include "common/heap/ukey_value_map.h"
 #include "common/timer.h"
 
@@ -54,27 +54,27 @@ size_t TesterGraphEIDistancePositiveCost::TestI(unsigned type) {
         break;
       case 3:
         v = DistanceFromSourcePositiveCost_KVM<
-            heap::UKeyValueDMap<2, uint64_t>>(g, edge_proxy, i, max_cost);
+            heap::DHeapUKeyValueMap<2, uint64_t>>(g, edge_proxy, i, max_cost);
         break;
       case 4:
         v = DistanceFromSourcePositiveCost_KVM<
-            heap::UKeyValueDMap<4, uint64_t>>(g, edge_proxy, i, max_cost);
+            heap::DHeapUKeyValueMap<4, uint64_t>>(g, edge_proxy, i, max_cost);
         break;
       case 5:
         v = DistanceFromSourcePositiveCost_KVM<
-            heap::UKeyValueDMap<8, uint64_t>>(g, edge_proxy, i, max_cost);
+            heap::DHeapUKeyValueMap<8, uint64_t>>(g, edge_proxy, i, max_cost);
         break;
       case 6:
         v = DistanceFromSourcePositiveCost_KVM<
-            heap::UKeyValueDMap<16, uint64_t>>(g, edge_proxy, i, max_cost);
+            heap::DHeapUKeyValueMap<16, uint64_t>>(g, edge_proxy, i, max_cost);
         break;
       case 7:
         v = DistanceFromSourcePositiveCost_KVM<
-            heap::UKeyValueDMap<32, uint64_t>>(g, edge_proxy, i, max_cost);
+            heap::DHeapUKeyValueMap<32, uint64_t>>(g, edge_proxy, i, max_cost);
         break;
       case 8:
         v = DistanceFromSourcePositiveCost_KVM<
-            heap::UKeyValueDMap<64, uint64_t>>(g, edge_proxy, i, max_cost);
+            heap::DHeapUKeyValueMap<64, uint64_t>>(g, edge_proxy, i, max_cost);
         break;
       default:
         assert(false);

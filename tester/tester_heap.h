@@ -22,7 +22,7 @@ class TesterHeap {
   size_t TestDHeap();
 
   template <unsigned d>
-  size_t TestUKeyValueDMap();
+  size_t TestDHeapUKeyValueMap();
 
  public:
   bool TestAll();

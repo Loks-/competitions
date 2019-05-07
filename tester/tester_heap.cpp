@@ -4,7 +4,7 @@
 #include "common/heap/binary_heap.h"
 #include "common/heap/binomial.h"
 #include "common/heap/dheap.h"
-#include "common/heap/ukey_value_dmap.h"
+#include "common/heap/dheap_ukey_value_map.h"
 #include "common/heap/ukey_value_heap.h"
 #include "common/heap/ukey_value_map.h"
 #include "common/timer.h"
@@ -126,8 +126,8 @@ size_t TesterHeap::TestDHeap() {
 }
 
 template <unsigned d>
-size_t TesterHeap::TestUKeyValueDMap() {
-  using THeap = heap::UKeyValueDMap<d, size_t>;
+size_t TesterHeap::TestDHeapUKeyValueMap() {
+  using THeap = heap::DHeapUKeyValueMap<d, size_t>;
   using TData = typename THeap::TData;
   Timer t;
   size_t h = 0;
@@ -138,7 +138,7 @@ size_t TesterHeap::TestUKeyValueDMap() {
     heap.Set(vinit.size() + i, vloop[i]);
   }
   for (; !heap.Empty(); heap.Pop()) h = hash_combine(h, heap.TopValue());
-  std::cout << "Test results [KVD" << d << "]: " << h << "\t"
+  std::cout << "Test results [DKV" << d << "]: " << h << "\t"
             << t.GetMilliseconds() << std::endl;
   return h;
 }
@@ -154,10 +154,10 @@ bool TesterHeap::TestAll() {
   hs.insert(TestBinomialHeap());
   hs.insert(TestUKeyValueHeap());
   hs.insert(TestUKeyValueMap());
-  hs.insert(TestUKeyValueDMap<2>());
-  hs.insert(TestUKeyValueDMap<3>());
-  hs.insert(TestUKeyValueDMap<4>());
-  hs.insert(TestUKeyValueDMap<5>());
+  hs.insert(TestDHeapUKeyValueMap<2>());
+  hs.insert(TestDHeapUKeyValueMap<3>());
+  hs.insert(TestDHeapUKeyValueMap<4>());
+  hs.insert(TestDHeapUKeyValueMap<5>());
   return hs.size() == 1;
 }
 
