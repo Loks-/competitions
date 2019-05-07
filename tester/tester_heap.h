@@ -14,6 +14,7 @@ class TesterHeap {
  protected:
   size_t TestPriorityQueue();
   size_t TestBinaryHeap();
+  size_t TestBinomialHeap();
   size_t TestUKeyValueHeap();
   size_t TestUKeyValueMap();
 

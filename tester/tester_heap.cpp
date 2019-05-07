@@ -2,6 +2,7 @@
 
 #include "common/hash.h"
 #include "common/heap/binary_heap.h"
+#include "common/heap/binomial.h"
 #include "common/heap/dheap.h"
 #include "common/heap/ukey_value_dmap.h"
 #include "common/heap/ukey_value_heap.h"
@@ -52,6 +53,22 @@ size_t TesterHeap::TestBinaryHeap() {
   }
   for (; !heap.Empty(); heap.Pop()) h = hash_combine(h, heap.Top());
   std::cout << "Test results [  BH]: " << h << "\t" << t.GetMilliseconds()
+            << std::endl;
+  return h;
+}
+
+size_t TesterHeap::TestBinomialHeap() {
+  Timer t;
+  size_t h = 0;
+  heap::Binomial<size_t>::TNodesManager nodes_manager(vloop.size());
+  heap::Binomial<size_t> heap(nodes_manager);
+  for (size_t v : vinit) heap.Add(v);
+  for (unsigned i = 0; i < vloop.size(); ++i) {
+    h = hash_combine(h, heap.Extract());
+    heap.Add(vloop[i]);
+  }
+  for (; !heap.Empty(); heap.Pop()) h = hash_combine(h, heap.Top());
+  std::cout << "Test results [BNML]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
 }
@@ -130,12 +147,13 @@ bool TesterHeap::TestAll() {
   std::unordered_set<size_t> hs;
   hs.insert(TestPriorityQueue());
   hs.insert(TestBinaryHeap());
-  hs.insert(TestUKeyValueHeap());
-  hs.insert(TestUKeyValueMap());
   hs.insert(TestDHeap<2>());
   hs.insert(TestDHeap<3>());
   hs.insert(TestDHeap<4>());
   hs.insert(TestDHeap<5>());
+  // hs.insert(TestBinomialHeap());
+  hs.insert(TestUKeyValueHeap());
+  hs.insert(TestUKeyValueMap());
   hs.insert(TestUKeyValueDMap<2>());
   hs.insert(TestUKeyValueDMap<3>());
   hs.insert(TestUKeyValueDMap<4>());
