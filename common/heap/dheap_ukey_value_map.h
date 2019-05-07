@@ -179,33 +179,16 @@ class DHeapUKeyValueMap {
     }
   }
 
-  void BestChildD(unsigned cb, unsigned& npos, unsigned& nkey) const {
-    npos = cb;
-    nkey = heap_keys[npos];
-    for (unsigned i = cb, j = 1; j < d; ++j) {
-      if (Compare(heap_keys[++i], nkey)) {
-        npos = i;
-        nkey = heap_keys[i];
-      }
-    }
-  }
-
   bool SiftDownNext(const TValue& xvalue, unsigned pos, unsigned& npos,
                     unsigned& nkey) const {
-    unsigned cb = d * pos + 1;
-    if (cb >= Size()) return false;
-    unsigned ce = cb + d;
-    if (ce <= Size()) {
-      BestChildD(cb, npos, nkey);
-    } else {
-      ce = Size();
-      npos = cb;
-      nkey = heap_keys[npos];
-      for (unsigned i = cb + 1; i < ce; ++i) {
-        if (Compare(heap_keys[i], nkey)) {
-          npos = i;
-          nkey = heap_keys[i];
-        }
+    unsigned cb = d * pos + 1, ce = std::min(cb + d, Size());
+    if (cb >= ce) return false;
+    npos = cb;
+    nkey = heap_keys[npos];
+    for (unsigned i = cb + 1; i < ce; ++i) {
+      if (Compare(heap_keys[i], nkey)) {
+        npos = i;
+        nkey = heap_keys[i];
       }
     }
     return compare(values[nkey], xvalue);
