@@ -2,7 +2,7 @@
 
 #include "common/graph/graph_ei.h"
 #include "common/graph/graph_ei/edge_cost_proxy.h"
-#include "common/heap/ukey_value_map.h"
+#include "common/heap/dheap_ukey_value_map.h"
 
 #include <functional>
 #include <vector>
@@ -12,7 +12,7 @@ template <class TGraph, class TEdgeCostFunction, class TEdgeCost>
 std::vector<TEdgeCost> DistanceFromSourcePositiveCost(
     const TGraph& graph, const TEdgeCostFunction& f, unsigned source,
     const TEdgeCost& max_cost) {
-  heap::UKeyValueMap<TEdgeCost> q(
+  heap::DHeapUKeyValueMap<2u, TEdgeCost> q(
       std::vector<TEdgeCost>(graph.Size(), max_cost), true);
   for (q.AddNewKey(source, TEdgeCost()); !q.Empty();) {
     unsigned u = q.ExtractKey();

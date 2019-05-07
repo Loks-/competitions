@@ -6,7 +6,6 @@
 #include "common/heap/dheap.h"
 #include "common/heap/dheap_ukey_value_map.h"
 #include "common/heap/ukey_value_heap.h"
-#include "common/heap/ukey_value_map.h"
 #include "common/timer.h"
 
 #include <iostream>
@@ -93,23 +92,6 @@ size_t TesterHeap::TestUKeyValueHeap() {
   return h;
 }
 
-size_t TesterHeap::TestUKeyValueMap() {
-  using THeap = heap::UKeyValueMap<size_t>;
-  using TData = typename THeap::TData;
-  Timer t;
-  size_t h = 0;
-  THeap heap(vinit.size() + vloop.size());
-  for (unsigned i = 0; i < vinit.size(); ++i) heap.Set(i, vinit[i]);
-  for (unsigned i = 0; i < vloop.size(); ++i) {
-    h = hash_combine(h, heap.ExtractValue());
-    heap.Set(vinit.size() + i, vloop[i]);
-  }
-  for (; !heap.Empty(); heap.Pop()) h = hash_combine(h, heap.TopValue());
-  std::cout << "Test results [UKVM]: " << h << "\t" << t.GetMilliseconds()
-            << std::endl;
-  return h;
-}
-
 template <unsigned d>
 size_t TesterHeap::TestDHeap() {
   Timer t;
@@ -153,7 +135,6 @@ bool TesterHeap::TestAll() {
   hs.insert(TestDHeap<5>());
   hs.insert(TestBinomialHeap());
   hs.insert(TestUKeyValueHeap());
-  hs.insert(TestUKeyValueMap());
   hs.insert(TestDHeapUKeyValueMap<2>());
   hs.insert(TestDHeapUKeyValueMap<3>());
   hs.insert(TestDHeapUKeyValueMap<4>());
