@@ -30,7 +30,7 @@ class DHeapUKeyValueMap {
   std::vector<TValue> values;
 
  protected:
-  bool Compare(unsigned lkey, unsigned rkey) {
+  bool Compare(unsigned lkey, unsigned rkey) const {
     return compare(values[lkey], values[rkey]);
   }
 
@@ -179,33 +179,46 @@ class DHeapUKeyValueMap {
     }
   }
 
-  void SiftDown(unsigned pos) {
-    unsigned xkey = heap_keys[pos];
-    const TValue& xvalue = values[xkey];
-    unsigned cb = d * pos + 1, ce = std::min(cb + d, Size());
-    if (ce <= cb) return;
-    unsigned npos = cb, nkey = heap_keys[npos];
-    for (unsigned i = cb + 1; i < ce; ++i) {
-      if (Compare(heap_keys[i], nkey)) {
+  void BestChildD(unsigned cb, unsigned& npos, unsigned& nkey) const {
+    npos = cb;
+    nkey = heap_keys[npos];
+    for (unsigned i = cb, j = 1; j < d; ++j) {
+      if (Compare(heap_keys[++i], nkey)) {
         npos = i;
-        nkey = heap_keys[npos];
+        nkey = heap_keys[i];
       }
     }
-    if (compare(values[nkey], xvalue)) {
+  }
+
+  bool SiftDownNext(const TValue& xvalue, unsigned pos, unsigned& npos,
+                    unsigned& nkey) const {
+    unsigned cb = d * pos + 1;
+    if (cb >= Size()) return false;
+    unsigned ce = cb + d;
+    if (ce <= Size()) {
+      BestChildD(cb, npos, nkey);
+    } else {
+      ce = Size();
+      npos = cb;
+      nkey = heap_keys[npos];
+      for (unsigned i = cb + 1; i < ce; ++i) {
+        if (Compare(heap_keys[i], nkey)) {
+          npos = i;
+          nkey = heap_keys[i];
+        }
+      }
+    }
+    return compare(values[nkey], xvalue);
+  }
+
+  void SiftDown(unsigned pos) {
+    unsigned xkey = heap_keys[pos], npos, nkey;
+    const TValue& xvalue = values[xkey];
+    if (SiftDownNext(xvalue, pos, npos, nkey)) {
       heap_keys[pos] = nkey;
       heap_position[nkey] = pos;
       for (pos = npos;; pos = npos) {
-        cb = d * pos + 1, ce = std::min(cb + d, Size());
-        if (ce <= cb) break;
-        npos = cb;
-        nkey = heap_keys[npos];
-        for (unsigned i = cb + 1; i < ce; ++i) {
-          if (Compare(heap_keys[i], nkey)) {
-            npos = i;
-            nkey = heap_keys[npos];
-          }
-        }
-        if (compare(values[nkey], xvalue)) {
+        if (SiftDownNext(xvalue, pos, npos, nkey)) {
           heap_keys[pos] = nkey;
           heap_position[nkey] = pos;
         } else {
