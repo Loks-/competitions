@@ -16,14 +16,14 @@ class Binomial {
   class Node : public BaseNode {
    public:
     TValue value;
-    Node *p, *l, *s;
+    Node *l, *s;
     unsigned d;
 
     Node() { Clear(); }
     Node(const TValue& _value) : value(_value) { Clear(); }
 
     void Clear() {
-      p = l = s = 0;
+      l = s = 0;
       d = 0;
     }
 
@@ -99,7 +99,6 @@ class Binomial {
   }
 
   static void Link(Node* x, Node* y) {
-    x->p = y;
     x->s = y->l;
     y->l = x;
     ++y->d;
@@ -175,12 +174,10 @@ class Binomial {
     if (!c) return c;
     Node *pc = 0, *nc = c->s;
     for (; nc; nc = c->s) {
-      c->p = 0;
       c->s = pc;
       pc = c;
       c = nc;
     }
-    c->p = 0;
     c->s = pc;
     return c;
   }
