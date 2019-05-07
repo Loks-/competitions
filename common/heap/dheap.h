@@ -1,6 +1,5 @@
 #pragma once
 
-#include "common/template.h"
 #include <functional>
 #include <vector>
 
@@ -62,31 +61,12 @@ class DHeap {
     }
   }
 
-  template <unsigned dd>
-  unsigned BestChildD(unsigned cb, TFakeUnsigned<dd>) const {
-    unsigned npos = cb;
-    for (unsigned i = cb, j = 1; j < dd; ++j) {
-      if (compare(data[++i], data[npos])) npos = i;
-    }
-    return npos;
-  }
-
-  unsigned BestChildD(unsigned cb, TFakeUnsigned<2u>) const {
-    return compare(data[cb], data[cb + 1]) ? cb : cb + 1;
-  }
-
   bool SiftDownNext(const TData& x, unsigned pos, unsigned& npos) const {
-    unsigned cb = d * pos + 1;
-    if (cb >= Size()) return false;
-    unsigned ce = cb + d;
-    if (ce <= Size()) {
-      npos = BestChildD(cb, TFakeUnsigned<d_>());
-    } else {
-      ce = Size();
-      npos = cb;
-      for (unsigned i = cb + 1; i < ce; ++i) {
-        if (compare(data[i], data[npos])) npos = i;
-      }
+    unsigned cb = d * pos + 1, ce = std::min(cb + d, Size());
+    if (cb >= ce) return false;
+    npos = cb;
+    for (unsigned i = cb + 1; i < ce; ++i) {
+      if (compare(data[i], data[npos])) npos = i;
     }
     return compare(data[npos], x);
   }
