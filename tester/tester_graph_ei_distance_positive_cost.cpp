@@ -2,6 +2,7 @@
 
 #include "common/graph/graph_ei/edge_cost_proxy.h"
 #include "common/hash.h"
+#include "common/heap/binomial_ukey_value_map.h"
 #include "common/heap/dheap_ukey_pos_map.h"
 #include "common/heap/dheap_ukey_value_map.h"
 #include "common/timer.h"
@@ -14,8 +15,8 @@
 #include <vector>
 
 namespace {
-std::vector<std::string> vnames = {"CBH", "KPM", "DM2", "DM4",
-                                   "DM8", "D16", "D32", "D64"};
+std::vector<std::string> vnames = {"CBH", "KPM", "DM2", "DM4", "DM8",
+                                   "D16", "D32", "D64", "BML"};
 }  // namespace
 
 TesterGraphEIDistancePositiveCost::TesterGraphEIDistancePositiveCost(
@@ -72,6 +73,10 @@ size_t TesterGraphEIDistancePositiveCost::TestI(unsigned type) {
       case 7:
         v = DistanceFromSourcePositiveCost_KVM<
             heap::DHeapUKeyValueMap<64, uint64_t>>(g, edge_proxy, i, max_cost);
+        break;
+      case 8:
+        v = DistanceFromSourcePositiveCost_KVM<
+            heap::BinomialUKeyValueMap<uint64_t>>(g, edge_proxy, i, max_cost);
         break;
       default:
         assert(false);
