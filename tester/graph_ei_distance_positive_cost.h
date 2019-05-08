@@ -67,13 +67,8 @@ std::vector<TEdgeCost> DistanceFromSourcePositiveCost_KVM(
   for (q.AddNewKey(source, TEdgeCost()); !q.Empty();) {
     unsigned u = q.ExtractKey();
     TEdgeCost ucost = q.Get(u);
-    for (auto e : graph.EdgesEI(u)) {
-      unsigned v = e.to;
-      TEdgeCost cost = ucost + f(e.info);
-      if (cost < q.Get(v)) {
-        q.DecreaseValue(v, cost);
-      }
-    }
+    for (auto e : graph.EdgesEI(u))
+      q.DecreaseValueIfLess(e.to, ucost + f(e.info));
   }
   return q.GetValues();
 }
