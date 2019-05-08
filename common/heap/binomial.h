@@ -72,15 +72,7 @@ class Binomial {
     UnionI(pv);
   }
 
-  void Delete(Node* node) {
-    assert(node && !node->p);
-    if (top == node) ResetTopNode();
-    CutTree(node);
-    UnionI(CutChildren(node));
-    nodes_manager.Release(node);
-  }
-
-  void Pop() { Delete(TopNode()); }
+  void Pop() { DeleteI(TopNode()); }
 
   TValue Extract() {
     TValue v = Top();
@@ -180,6 +172,14 @@ class Binomial {
     }
     c->s = pc;
     return c;
+  }
+
+  void DeleteI(Node* node) {
+    assert(node);
+    ResetTopNode();
+    CutTree(node);
+    UnionI(CutChildren(node));
+    nodes_manager.Release(node);
   }
 };
 }  // namespace heap

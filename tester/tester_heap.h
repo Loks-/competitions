@@ -15,6 +15,7 @@ class TesterHeap {
   size_t TestPriorityQueue();
   size_t TestBinaryHeap();
   size_t TestBinomialHeap();
+  size_t TestBinomialUKeyValueMap();
 
   template <unsigned d>
   size_t TestDHeap();

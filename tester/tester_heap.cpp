@@ -3,6 +3,7 @@
 #include "common/hash.h"
 #include "common/heap/binary_heap.h"
 #include "common/heap/binomial.h"
+#include "common/heap/binomial_ukey_value_map.h"
 #include "common/heap/dheap.h"
 #include "common/heap/dheap_ukey_pos_map.h"
 #include "common/heap/dheap_ukey_value_map.h"
@@ -68,6 +69,21 @@ size_t TesterHeap::TestBinomialHeap() {
   }
   for (; !heap.Empty(); heap.Pop()) h = hash_combine(h, heap.Top());
   std::cout << "Test results [BNML]: " << h << "\t" << t.GetMilliseconds()
+            << std::endl;
+  return h;
+}
+
+size_t TesterHeap::TestBinomialUKeyValueMap() {
+  Timer t;
+  size_t h = 0;
+  heap::BinomialUKeyValueMap<size_t> heap(vinit.size() + vloop.size());
+  for (unsigned i = 0; i < vinit.size(); ++i) heap.Set(i, vinit[i]);
+  for (unsigned i = 0; i < vloop.size(); ++i) {
+    h = hash_combine(h, heap.ExtractValue());
+    heap.Set(vinit.size() + i, vloop[i]);
+  }
+  for (; !heap.Empty(); heap.Pop()) h = hash_combine(h, heap.TopValue());
+  std::cout << "Test results [BKVM]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
 }
@@ -143,6 +159,7 @@ bool TesterHeap::TestAll() {
   hs.insert(TestDHeapUKeyValueMap<3>());
   hs.insert(TestDHeapUKeyValueMap<4>());
   hs.insert(TestDHeapUKeyValueMap<5>());
+  hs.insert(TestBinomialUKeyValueMap());
   return hs.size() == 1;
 }
 
