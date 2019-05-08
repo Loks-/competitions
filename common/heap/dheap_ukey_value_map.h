@@ -152,8 +152,8 @@ class DHeapUKeyValueMap {
     return t;
   }
 
-  TValue ExtractValue() {
-    TValue t = TopValue();
+  const TValue& ExtractValue() {
+    const TValue& t = TopValue();
     Pop();
     return t;
   }
