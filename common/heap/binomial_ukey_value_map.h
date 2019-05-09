@@ -90,7 +90,7 @@ class BinomialUKeyValueMap {
       Node* pv = nodes_manager.New(key);
       heap_position[key] = pv;
       if (top && Compare(pv, top)) top = pv;
-      Union(pv);
+      AddOneNode(pv);
       ++size;
     }
   }
@@ -207,6 +207,21 @@ class BinomialUKeyValueMap {
     x->s = y->l;
     y->l = x;
     ++y->d;
+  }
+
+  void AddOneNode(Node* p) {
+    p->s = head;
+    head = p;
+    for (Node* ps = p->s; ps && (p->d == ps->d); ps = p->s) {
+      if (Compare(p, ps)) {
+        p->s = ps->s;
+        Link(ps, p);
+      } else {
+        head = ps;
+        Link(p, ps);
+        p = ps;
+      }
+    }
   }
 
   static Node* Merge(Node* h1, Node* h2) {
