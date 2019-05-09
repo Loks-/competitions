@@ -6,21 +6,21 @@
 #include <functional>
 
 namespace heap {
-template <class TTValue, class TTCompare = std::less<TTValue>>
+template <class TTData, class TTCompare = std::less<TTData>>
 class Binomial {
  public:
-  using TValue = TTValue;
+  using TData = TTData;
   using TCompare = TTCompare;
-  using TSelf = Binomial<TValue, TCompare>;
+  using TSelf = Binomial<TData, TCompare>;
 
   class Node : public BaseNode {
    public:
-    TValue value;
+    TData value;
     Node *l, *s;
     unsigned d;
 
     Node() { Clear(); }
-    Node(const TValue& _value) : value(_value) { Clear(); }
+    Node(const TData& _value) : value(_value) { Clear(); }
 
     void Clear() {
       l = s = 0;
@@ -36,16 +36,25 @@ class Binomial {
   TCompare compare;
   TNodesManager& nodes_manager;
   Node* head;
+  unsigned size;
   mutable Node* top;
 
   bool Compare(Node* l, Node* r) const { return compare(l->value, r->value); }
 
  public:
   Binomial(TNodesManager& _nodes_manager)
-      : nodes_manager(_nodes_manager), head(0), top(0) {}
+      : nodes_manager(_nodes_manager), head(0), top(0), size(0) {}
 
   TSelf Make() const { return TSelf(nodes_manager); }
   bool Empty() const { return !head; }
+  unsigned Size() const { return size; }
+
+  void Add(const TData& v) {
+    Node* pv = nodes_manager.New(v);
+    if (top && Compare(pv, top)) top = pv;
+    Union(pv);
+    ++size;
+  }
 
   Node* TopNode() const {
     assert(!Empty());
@@ -53,7 +62,15 @@ class Binomial {
     return top;
   }
 
-  const TValue& Top() const { return TopNode()->value; }
+  const TData& Top() const { return TopNode()->value; }
+
+  void Pop() { DeleteI(TopNode()); }
+
+  TData Extract() {
+    TData v = Top();
+    Pop();
+    return v;
+  }
 
   void Union(TSelf& h) {
     assert(&nodes_manager == &(h.nodes_manager));
@@ -61,23 +78,11 @@ class Binomial {
       top = Compare(top, h.top) ? top : h.top;
     else
       ResetTopNode();
-    UnionI(h.head);
+    Union(h.head);
     h.head = 0;
+    size += h.size;
+    h.size = 0;
     h.ResetTopNode();
-  }
-
-  void Add(const TValue& v) {
-    Node* pv = nodes_manager.New(v);
-    if (top && Compare(pv, top)) top = pv;
-    UnionI(pv);
-  }
-
-  void Pop() { DeleteI(TopNode()); }
-
-  TValue Extract() {
-    TValue v = Top();
-    Pop();
-    return v;
   }
 
  protected:
@@ -144,7 +149,7 @@ class Binomial {
     }
   }
 
-  void UnionI(Node* rhead) {
+  void Union(Node* rhead) {
     head = Merge(head, rhead);
     Compress();
   }
@@ -178,8 +183,9 @@ class Binomial {
     assert(node);
     ResetTopNode();
     CutTree(node);
-    UnionI(CutChildren(node));
+    Union(CutChildren(node));
     nodes_manager.Release(node);
+    --size;
   }
 };
 }  // namespace heap

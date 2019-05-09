@@ -7,6 +7,7 @@
 #include "common/heap/dheap.h"
 #include "common/heap/dheap_ukey_pos_map.h"
 #include "common/heap/dheap_ukey_value_map.h"
+#include "common/heap/fibonacci.h"
 #include "common/timer.h"
 
 #include <iostream>
@@ -88,6 +89,22 @@ size_t TesterHeap::TestBinomialUKeyValueMap() {
   return h;
 }
 
+size_t TesterHeap::TestFibonacciHeap() {
+  Timer t;
+  size_t h = 0;
+  heap::Fibonacci<size_t>::TNodesManager nodes_manager(vloop.size());
+  heap::Fibonacci<size_t> heap(nodes_manager);
+  for (size_t v : vinit) heap.Add(v % 100);
+  for (unsigned i = 0; i < vloop.size(); ++i) {
+    h = hash_combine(h, heap.Extract());
+    heap.Add(vloop[i] % 100);
+  }
+  for (; !heap.Empty(); heap.Pop()) h = hash_combine(h, heap.Top());
+  std::cout << "Test results [FBNC]: " << h << "\t" << t.GetMilliseconds()
+            << std::endl;
+  return h;
+}
+
 template <unsigned d>
 size_t TesterHeap::TestDHeap() {
   Timer t;
@@ -151,6 +168,7 @@ bool TesterHeap::TestAll() {
   hs.insert(TestDHeap<4>());
   hs.insert(TestDHeap<5>());
   hs.insert(TestBinomialHeap());
+  // hs.insert(TestFibonacciHeap());
   hs.insert(TestDHeapUKeyPosMap<2>());
   hs.insert(TestDHeapUKeyPosMap<3>());
   hs.insert(TestDHeapUKeyPosMap<4>());

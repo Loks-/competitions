@@ -41,6 +41,7 @@ class BinomialUKeyValueMap {
   TCompare compare;
   TNodesManager nodes_manager;
   Node* head;
+  unsigned size;
   std::vector<Node*> heap_position;
   std::vector<TValue> values;
   mutable Node* top;
@@ -59,22 +60,24 @@ class BinomialUKeyValueMap {
 
  public:
   BinomialUKeyValueMap(unsigned ukey_size)
-      : nodes_manager(ukey_size), head(0), top(0) {
+      : nodes_manager(ukey_size), head(0), size(0), top(0) {
     ResetHeapPosition(ukey_size);
   }
 
   BinomialUKeyValueMap(const std::vector<TValue>& v, bool skip_heap)
-      : nodes_manager(v.size()), head(0), values(v), top(0) {
+      : nodes_manager(v.size()), head(0), size(0), values(v), top(0) {
     if (skip_heap) {
       ResetHeapPosition(v.size());
     } else {
       assert(false);
+      // size = v.size();
       // heap_position = heap_keys = Enumerate<unsigned>(0, v.size());
       // Heapify();
     }
   }
 
   bool Empty() const { return !head; }
+  unsigned Size() const { return size; }
   unsigned UKeySize() const { return unsigned(values.size()); }
 
   const TValue& Get(unsigned key) const { return values[key]; }
@@ -88,6 +91,7 @@ class BinomialUKeyValueMap {
       heap_position[key] = pv;
       if (top && Compare(pv, top)) top = pv;
       Union(pv);
+      ++size;
     }
   }
 
@@ -165,6 +169,7 @@ class BinomialUKeyValueMap {
     CutNode(node);
     heap_position[node->key] = 0;
     nodes_manager.Release(node);
+    --size;
   }
 
   void Pop() { Delete(TopNode()); }
