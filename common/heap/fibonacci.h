@@ -150,7 +150,6 @@ class Fibonacci {
   }
 
   static void Link(Node* x, Node* y) {
-    RemoveFromList(x);
     if (y->c) {
       x->r = y->c->r;
       y->c->r = x;
@@ -183,7 +182,7 @@ class Fibonacci {
       pn = p->r;
       d = Degree(p);
       for (; q = VCGet(d); ++d) {
-        if (Compare(q, p)) {
+        if (Compare(p, q)) {
           Link(q, p);
         } else {
           Link(p, q);

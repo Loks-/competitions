@@ -94,10 +94,10 @@ size_t TesterHeap::TestFibonacciHeap() {
   size_t h = 0;
   heap::Fibonacci<size_t>::TNodesManager nodes_manager(vloop.size());
   heap::Fibonacci<size_t> heap(nodes_manager);
-  for (size_t v : vinit) heap.Add(v % 100);
+  for (size_t v : vinit) heap.Add(v);
   for (unsigned i = 0; i < vloop.size(); ++i) {
     h = hash_combine(h, heap.Extract());
-    heap.Add(vloop[i] % 100);
+    heap.Add(vloop[i]);
   }
   for (; !heap.Empty(); heap.Pop()) h = hash_combine(h, heap.Top());
   std::cout << "Test results [FBNC]: " << h << "\t" << t.GetMilliseconds()
@@ -168,7 +168,7 @@ bool TesterHeap::TestAll() {
   hs.insert(TestDHeap<4>());
   hs.insert(TestDHeap<5>());
   hs.insert(TestBinomialHeap());
-  // hs.insert(TestFibonacciHeap());
+  hs.insert(TestFibonacciHeap());
   hs.insert(TestDHeapUKeyPosMap<2>());
   hs.insert(TestDHeapUKeyPosMap<3>());
   hs.insert(TestDHeapUKeyPosMap<4>());
