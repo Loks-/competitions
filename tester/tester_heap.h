@@ -16,6 +16,7 @@ class TesterHeap {
   size_t TestBinaryHeap();
   size_t TestBinomialHeap();
   size_t TestBinomialUKeyValueMap();
+  size_t TestFibonacciHeap();
 
   template <unsigned d>
   size_t TestDHeap();
