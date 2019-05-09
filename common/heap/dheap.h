@@ -43,6 +43,11 @@ class DHeap {
     return t;
   }
 
+  void Union(const TSelf& r) {
+    data.insert(data.end(), r.data.begin(), r.data.end());
+    Heapify();
+  }
+
  protected:
   void SiftUp(unsigned pos) {
     if (pos == 0) return;
@@ -88,12 +93,6 @@ class DHeap {
 
   void Heapify() {
     for (unsigned pos = Size() / d; pos;) SiftDown(--pos);
-  }
-
- public:
-  void Union(const TSelf& r) {
-    data.insert(data.end(), r.data.begin(), r.data.end());
-    Heapify();
   }
 };
 }  // namespace heap
