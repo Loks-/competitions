@@ -6,21 +6,21 @@
 #include <functional>
 
 namespace heap {
-template <class TTValue, class TTCompare = std::less<TTValue>>
+template <class TTData, class TTCompare = std::less<TTData>>
 class Binomial {
  public:
-  using TValue = TTValue;
+  using TData = TTData;
   using TCompare = TTCompare;
-  using TSelf = Binomial<TValue, TCompare>;
+  using TSelf = Binomial<TData, TCompare>;
 
   class Node : public BaseNode {
    public:
-    TValue value;
+    TData value;
     Node *l, *s;
     unsigned d;
 
     Node() { Clear(); }
-    Node(const TValue& _value) : value(_value) { Clear(); }
+    Node(const TData& _value) : value(_value) { Clear(); }
 
     void Clear() {
       l = s = 0;
@@ -49,7 +49,7 @@ class Binomial {
   bool Empty() const { return !head; }
   unsigned Size() const { return size; }
 
-  void Add(const TValue& v) {
+  void Add(const TData& v) {
     Node* pv = nodes_manager.New(v);
     if (top && Compare(pv, top)) top = pv;
     Union(pv);
@@ -62,12 +62,12 @@ class Binomial {
     return top;
   }
 
-  const TValue& Top() const { return TopNode()->value; }
+  const TData& Top() const { return TopNode()->value; }
 
   void Pop() { DeleteI(TopNode()); }
 
-  TValue Extract() {
-    TValue v = Top();
+  TData Extract() {
+    TData v = Top();
     Pop();
     return v;
   }
