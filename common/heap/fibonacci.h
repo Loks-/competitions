@@ -101,10 +101,49 @@ class Fibonacci {
     h.size = 0;
   }
 
-  void DecreaseValue(Node* node, TData& new_value);
-  void DecreaseValueIfLess(Node* node, TData& new_value);
-  void IncreaseValue(Node* node, TData& new_value);
-  void SetValue(Node* node, TData& new_value);
+  void DecreaseValue(Node* node, TData& new_value) {
+    assert(node);
+    node->value = new_value;
+    if (node->p) {
+      if (Compare(node, node->p)) {
+        CutNode(node);
+        if (Compare(node, head)) head = node;
+      }
+    } else {
+      if ((node != head) && Compare(node, head)) head = node;
+    }
+  }
+
+  void DecreaseValueIfLess(Node* node, TData& new_value) {
+    assert(node);
+    if (compare(new_value, node->value)) DecreaseValue(node, new_value);
+  }
+
+  void IncreaseValue(Node* node, TData& new_value) {
+    assert(node);
+    node->value = new_value;
+    if (node->c) {
+      ClearParentLink(node->c);
+      Union(node->c);
+      node->c = 0;
+      Node* p = node->p;
+      if (p && Marked(p) && p->p)
+        CutNode(p);
+      else
+        Mark(p);
+    }
+    if (node == head) {
+      Consolidate();
+    }
+  }
+
+  void SetValue(Node* node, TData& new_value) {
+    assert(node);
+    if (compare(node->value, new_value))
+      IncreaseValue(node, new_value);
+    else
+      DecreaseValue(node, new_value);
+  }
 
   void Delete(Node* node) {
     if (node->c) {
@@ -121,8 +160,18 @@ class Fibonacci {
         head = 0;
       }
     } else if (node->p) {
-      assert(false);
-      // ...
+      Node* p = node->p;
+      if (node == p->c) {
+        if (node->r == node)
+          p->c = 0;
+        else
+          p->c = node->r;
+      }
+      node->p = 0;
+      if (Marked(p) && p->p)
+        CutNode(p);
+      else
+        Mark(p);
     }
     nodes_manager.Release(node);
     --size;
@@ -130,6 +179,8 @@ class Fibonacci {
 
  protected:
   static unsigned Degree(const Node* node) { return node->d & ~mask; }
+  static void Mark(Node* node) { node->d |= mask; }
+  static unsigned Marked(const Node* node) { return node->d & mask; }
 
   void Union(Node* node) {
     if (!node) return;
@@ -204,6 +255,30 @@ class Fibonacci {
       } else {
         head = p;
         p->r = p->l = p;
+      }
+    }
+  }
+
+  void CutNode(Node* node) {
+    for (;;) {
+      Node *p = node->p, *r = node->r;
+      if (r != node) {
+        if (p->c == node) p->c = r;
+        r->l = node->l;
+        r->l->r = r;
+      } else {
+        p->c = 0;
+      }
+      node->p = 0;
+      node->r = head->r;
+      node->r->l = node;
+      node->l = head;
+      head->r = node;
+      if (Marked(p) && p->p) {
+        node = p;
+      } else {
+        Mark(p);
+        break;
       }
     }
   }
