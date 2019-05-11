@@ -13,7 +13,7 @@
 #include <vector>
 
 namespace {
-std::vector<std::string> vnames = {"Kruskal", "Prim_BH"};
+std::vector<std::string> vnames = {"Kruskal", "Prim_BH", "Prim_CBH"};
 }  // namespace
 
 TesterMinimumSpanningTree::TesterMinimumSpanningTree(unsigned graph_size,
@@ -41,6 +41,8 @@ uint64_t TesterMinimumSpanningTree::TestI(unsigned type) {
       return graph::mst::Kruskal(g, edge_proxy).second;
     case 1:
       return MinimumSpanningTree_Prim_BH(g, edge_proxy).second;
+    case 2:
+      return MinimumSpanningTree_Prim_CBH(g, edge_proxy, -1ull).second;
     default:
       assert(false);
       return 0;
