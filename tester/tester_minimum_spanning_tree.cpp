@@ -3,6 +3,8 @@
 #include "common/graph/graph_ei/edge_cost_proxy.h"
 #include "common/graph/graph_ei/mst/kruskal.h"
 #include "common/hash.h"
+#include "common/heap/binary_heap.h"
+#include "common/heap/dheap.h"
 #include "common/timer.h"
 
 #include "tester/minimum_spanning_tree.h"
@@ -12,9 +14,16 @@
 #include <unordered_set>
 #include <vector>
 
-namespace {
-std::vector<std::string> vnames = {"Kruskal", "Prim_BH"};
-}  // namespace
+template <class TData>
+using TBinaryHeap = heap::BinaryHeap<TData>;
+template <class TData>
+using TDHeap2 = heap::DHeap<2u, TData>;
+template <class TData>
+using TDHeap4 = heap::DHeap<4u, TData>;
+template <class TData>
+using TDHeap8 = heap::DHeap<8u, TData>;
+template <class TData>
+using TDHeap16 = heap::DHeap<16u, TData>;
 
 TesterMinimumSpanningTree::TesterMinimumSpanningTree(unsigned graph_size,
                                                      unsigned edges_per_node)
@@ -28,38 +37,47 @@ TesterMinimumSpanningTree::TesterMinimumSpanningTree(unsigned graph_size,
   }
 }
 
-unsigned TesterMinimumSpanningTree::Size() { return vnames.size(); }
-
-std::string TesterMinimumSpanningTree::Name(unsigned type) const {
-  return vnames[type];
-}
-
-uint64_t TesterMinimumSpanningTree::TestI(unsigned type) {
-  static auto edge_proxy = graph::EdgeCostProxy<uint64_t>();
-  switch (type) {
-    case 0:
-      return graph::mst::Kruskal(g, edge_proxy).second;
-    case 1:
-      return MinimumSpanningTree_Prim_BH(g, edge_proxy).second;
-    default:
-      assert(false);
-      return 0;
-  }
-}
-
-uint64_t TesterMinimumSpanningTree::Test(unsigned type) {
+uint64_t TesterMinimumSpanningTree::TestKruskal() const {
   Timer t;
-  uint64_t r = TestI(type);
-  std::string name = Name(type);
-  name.resize(10, ' ');
-  std::cout << "Test results " << name << ": " << r << "\t"
+  uint64_t d = graph::mst::Kruskal(g, edge_proxy).second;
+  std::cout << "Test results Kruskal   : " << d << "\t" << t.GetMilliseconds()
+            << std::endl;
+  return d;
+}
+
+uint64_t TesterMinimumSpanningTree::TestPrimBaseBinaryHeap() const {
+  Timer t;
+  uint64_t cost =
+      MinimumSpanningTreePrimBaseHeap<TBinaryHeap, TGraph, TEdgeCostFunction>(
+          g, edge_proxy)
+          .second;
+  ;
+  std::cout << "Test results Prim BBH  : " << cost << "\t"
             << t.GetMilliseconds() << std::endl;
-  return r;
+  return cost;
+}
+
+template <template <class> class THeap>
+uint64_t TesterMinimumSpanningTree::TestPrimDHeap(
+    const std::string& name) const {
+  Timer t;
+  uint64_t cost = MinimumSpanningTreePrimHeap<THeap, TGraph, TEdgeCostFunction>(
+                      g, edge_proxy, -1ull)
+                      .second;
+  ;
+  std::cout << "Test results Prim " << name << "  : " << cost << "\t"
+            << t.GetMilliseconds() << std::endl;
+  return cost;
 }
 
 bool TesterMinimumSpanningTree::TestAll() {
   std::unordered_set<uint64_t> hs;
-  for (unsigned i = 0; i < Size(); ++i) hs.insert(Test(i));
+  hs.insert(TestKruskal());
+  hs.insert(TestPrimBaseBinaryHeap());
+  hs.insert(TestPrimDHeap<TDHeap2>("DH2"));
+  hs.insert(TestPrimDHeap<TDHeap4>("DH4"));
+  hs.insert(TestPrimDHeap<TDHeap8>("DH8"));
+  hs.insert(TestPrimDHeap<TDHeap16>("D16"));
   return hs.size() == 1;
 }
 
