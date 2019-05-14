@@ -2,20 +2,20 @@
 
 #include "common/graph/graph_ei.h"
 #include "common/graph/graph_ei/edge_cost_proxy.h"
-#include "common/heap/binary_heap.h"
 
 #include <queue>
 #include <utility>
 #include <vector>
 
-template <class TGraph, class TEdgeCostFunction, class TEdgeCost>
+template <template <class TData> class THeap, class TGraph,
+          class TEdgeCostFunction, class TEdgeCost>
 std::vector<TEdgeCost> DistanceFromSourcePositiveCost_CBH(
     const TGraph& graph, const TEdgeCostFunction& f, unsigned source,
     const TEdgeCost& max_cost) {
   using TPair = std::pair<TEdgeCost, unsigned>;
   std::vector<TEdgeCost> vd(graph.Size(), max_cost);
   std::vector<unsigned> visited(graph.Size(), 0);
-  heap::BinaryHeap<TPair> q;
+  THeap<TPair> q;
   vd[source] = TEdgeCost();
   for (q.Add({TEdgeCost(), source}); !q.Empty();) {
     auto p = q.Extract();
