@@ -18,17 +18,19 @@ class BinomialUKeyValueMap {
     TValue value;
   };
 
+  struct TPositionValue;
+
   class Node : public BaseNode {
    public:
-    unsigned key;
+    TPositionValue* pv;
     Node *p, *l, *s;
     unsigned d;
 
-    Node() { Clear(); }
-    Node(unsigned _key) : key(_key) { Clear(); }
+    Node() : pv(nullptr) { Clear(); }
+    Node(TPositionValue* _pv) : pv(_pv) { Clear(); }
 
     void Clear() {
-      p = l = s = 0;
+      p = l = s = nullptr;
       d = 0;
     }
 
@@ -37,58 +39,61 @@ class BinomialUKeyValueMap {
 
   using TNodesManager = NodesManager<Node>;
 
+  struct TPositionValue {
+    Node* heap_position;
+    TValue value;
+  };
+
  protected:
   TCompare compare;
   TNodesManager nodes_manager;
   Node* head;
   unsigned size;
-  std::vector<Node*> heap_position;
-  std::vector<TValue> values;
   mutable Node* top;
+  std::vector<TPositionValue> key_map;
+  TPositionValue* pv_begin;
 
-  bool Compare(unsigned lkey, unsigned rkey) const {
-    return compare(values[lkey], values[rkey]);
+ protected:
+  bool Compare(const TPositionValue* pvl, const TPositionValue* pvr) const {
+    return compare(pvl->value, pvr->value);
   }
 
-  bool Compare(Node* l, Node* r) const { return Compare(l->key, r->key); }
-
-  void ResetHeapPosition(unsigned ukey_size) {
-    heap_position.clear();
-    heap_position.resize(ukey_size);
-    values.resize(ukey_size);
+  bool Compare(const Node* l, const Node* r) const {
+    return Compare(l->pv, r->pv);
   }
 
  public:
   BinomialUKeyValueMap(unsigned ukey_size)
       : nodes_manager(ukey_size), head(0), size(0), top(0) {
-    ResetHeapPosition(ukey_size);
+    key_map.resize(ukey_size, {nullptr, TValue()});
+    pv_begin = &(key_map[0]);
   }
 
   BinomialUKeyValueMap(const std::vector<TValue>& v, bool skip_heap)
-      : nodes_manager(v.size()), head(0), size(0), values(v), top(0) {
-    if (skip_heap) {
-      ResetHeapPosition(v.size());
-    } else {
-      assert(false);
-      // size = v.size();
-      // heap_position = heap_keys = Enumerate<unsigned>(0, v.size());
-      // Heapify();
-    }
+      : BinomialUKeyValueMap(v.size()) {
+    unsigned n = UKeySize();
+    for (unsigned i = 0; i < n; ++i) AddNewKeyI(i, v[i], skip_heap);
   }
 
   bool Empty() const { return !head; }
   unsigned Size() const { return size; }
-  unsigned UKeySize() const { return unsigned(values.size()); }
+  unsigned UKeySize() const { return unsigned(key_map.size()); }
 
-  const TValue& Get(unsigned key) const { return values[key]; }
-  const std::vector<TValue>& GetValues() const { return values; }
+  const TValue& Get(unsigned key) const { return key_map[key].value; }
+
+  std::vector<TValue> GetValues() const {
+    unsigned n = UKeySize();
+    std::vector<TValue> v(n);
+    for (unsigned i = 0; i < n; ++i) v[i] = key_map[i].value;
+    return v;
+  }
 
  protected:
   void AddNewKeyI(unsigned key, const TValue& new_value, bool skip_heap) {
-    values[key] = new_value;
+    key_map[key].value = new_value;
     if (!skip_heap) {
-      Node* pv = nodes_manager.New(key);
-      heap_position[key] = pv;
+      Node* pv = nodes_manager.New(pv_begin + key);
+      key_map[key].heap_position = pv;
       if (top && Compare(pv, top)) top = pv;
       AddOneNode(pv);
       ++size;
@@ -96,24 +101,24 @@ class BinomialUKeyValueMap {
   }
 
   void DecreaseValueI(unsigned key, Node* node, const TValue& new_value) {
-    values[key] = new_value;
+    key_map[key].value = new_value;
     SiftUp(node);
   }
 
   void IncreaseValueI(unsigned key, Node* node, const TValue& new_value) {
-    values[key] = new_value;
+    key_map[key].value = new_value;
     SiftDown(node);
   }
 
  public:
   void AddNewKey(unsigned key, const TValue& new_value,
                  bool skip_heap = false) {
-    assert(!heap_position[key]);
+    assert(!key_map[key].heap_position);
     AddNewKeyI(key, new_value, skip_heap);
   }
 
   void DecreaseValue(unsigned key, const TValue& new_value) {
-    Node* node = heap_position[key];
+    Node* node = key_map[key].heap_position;
     if (!node)
       AddNewKeyI(key, new_value, false);
     else
@@ -121,26 +126,20 @@ class BinomialUKeyValueMap {
   }
 
   void DecreaseValueIfLess(unsigned key, const TValue& new_value) {
-    if (compare(new_value, values[key])) {
-      Node* node = heap_position[key];
-      if (!node)
-        AddNewKeyI(key, new_value, false);
-      else
-        DecreaseValueI(key, node, new_value);
-    }
+    if (compare(new_value, key_map[key].value)) DecreaseValue(key, new_value);
   }
 
   void IncreaseValue(unsigned key, const TValue& new_value) {
-    Node* node = heap_position[key];
+    Node* node = key_map[key].heap_position;
     assert(node);
     IncreaseValueI(key, node, new_value);
   }
 
   void Set(unsigned key, const TValue& new_value) {
-    Node* node = heap_position[key];
+    Node* node = key_map[key].heap_position;
     if (!node)
       AddNewKeyI(key, new_value, false);
-    else if (compare(new_value, values[key]))
+    else if (compare(new_value, key_map[key].value))
       DecreaseValueI(key, node, new_value);
     else
       IncreaseValueI(key, node, new_value);
@@ -154,12 +153,12 @@ class BinomialUKeyValueMap {
     return top;
   }
 
-  unsigned TopKey() const { return TopNode()->key; }
-  const TValue& TopValue() const { return Get(TopKey()); }
+  unsigned TopKey() const { return TopNode()->pv - pv_begin; }
+  const TValue& TopValue() const { return TopNode()->pv->value; }
 
   TData Top() const {
-    unsigned key = TopKey();
-    return {key, Get(key)};
+    TPositionValue* pv = TopNode()->pv;
+    return {pv - pv_begin, pv->value};
   }
 
   void Delete(Node* node) {
@@ -167,7 +166,7 @@ class BinomialUKeyValueMap {
     if (top == node) ResetTopNode();
     node = ForceSiftUp(node);
     CutNode(node);
-    heap_position[node->key] = 0;
+    node->pv->heap_position = nullptr;
     nodes_manager.Release(node);
     --size;
   }
@@ -272,40 +271,6 @@ class BinomialUKeyValueMap {
     }
   }
 
-  void Heapify() {
-    if (Empty()) return;
-    Node* l = head;
-    for (; l->s;) l = l->s;
-    Node *pp = 0, *pc = head, *pn = pc->s;
-    for (; pn; pn = pc->s) {
-      if (pc->d == pn->d) {
-        if (pp)
-          pp->s = pn->s;
-        else
-          head = pn->s;
-        if (Compare(pc, pn)) {
-          Link(pn, pc);
-          pc->s = 0;
-          if (l != pn) {
-            l->s = pc;
-            l = pc;
-          }
-        } else {
-          Link(pc, pn);
-          pn->s = 0;
-          if (l != pn) {
-            l->s = pn;
-            l = pn;
-          }
-        }
-        pc = pp ? pp->s : head;
-      } else {
-        pp = pc;
-        pc = pn;
-      }
-    }
-  }
-
   void Union(Node* rhead) {
     head = Merge(head, rhead);
     Compress();
@@ -346,28 +311,28 @@ class BinomialUKeyValueMap {
 
   Node* ForceSiftUp(Node* node) {
     if (!node->p) return node;
-    unsigned key = node->key;
+    TPositionValue* pv = node->pv;
     for (; node->p; node = node->p) {
-      node->key = node->p->key;
-      heap_position[node->key] = node;
+      node->pv = node->p->pv;
+      node->pv->heap_position = node;
     }
-    node->key = key;
-    heap_position[key] = node;
+    node->pv = pv;
+    pv->heap_position = node;
     if (top == node) ResetTopNode();
     return node;
   }
 
   void SiftUp(Node* node) {
     if (!node->p || !Compare(node, node->p)) return;
-    unsigned key = node->key;
-    node->key = node->p->key;
-    heap_position[node->key] = node;
+    TPositionValue* pv = node->pv;
+    node->pv = node->p->pv;
+    node->pv->heap_position = node;
     for (node = node->p; node->p && Compare(node, node->p); node = node->p) {
-      node->key = node->p->key;
-      heap_position[node->key] = node;
+      node->pv = node->p->pv;
+      node->pv->heap_position = node;
     }
-    node->key = key;
-    heap_position[key] = node;
+    node->pv = pv;
+    pv->heap_position = node;
     if (top && !node->p && Compare(node, top)) top = node;
   }
 
