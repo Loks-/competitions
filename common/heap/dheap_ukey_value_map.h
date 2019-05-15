@@ -115,13 +115,7 @@ class DHeapUKeyValueMap {
   }
 
   void DecreaseValueIfLess(unsigned key, const TValue& new_value) {
-    if (compare(new_value, key_map[key].value)) {
-      unsigned key_position = key_map[key].heap_position;
-      if (key_position == not_in_heap)
-        AddNewKeyI(key, new_value, false);
-      else
-        DecreaseValueI(key, key_position, new_value);
-    }
+    if (compare(new_value, key_map[key].value)) DecreaseValue(key, new_value);
   }
 
   void IncreaseValue(unsigned key, const TValue& new_value) {
