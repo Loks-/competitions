@@ -12,7 +12,7 @@
     * unsigned Size() const;
     * unsigned UKeySize() const;
     * const TValue& Get(unsigned key) const;
-    * const std::vector<TValue>& GetValues() const;
+    * std::vector<TValue> GetValues() const;
     * void AddNewKey(unsigned key, const TValue& value, bool skip_heap = false);
     * void DecreaseValue(unsigned key, const TValue& value);
     * void DecreaseValueIfLess(unsigned key, const TValue& value);
