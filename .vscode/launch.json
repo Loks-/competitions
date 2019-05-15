@@ -10,7 +10,8 @@
             "request": "launch",
             "program": "${workspaceFolder}/debug/build/tester",
             "args": [
-                "heap"
+                // "heap"
+                "graph_distance_positive_cost"
                 // "tests/google/code_jam/2019/r1b/manhattan_crepe_cart.in"
             ],
             "stopAtEntry": false,
