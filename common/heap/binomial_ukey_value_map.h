@@ -64,7 +64,7 @@ class BinomialUKeyValueMap {
 
  public:
   BinomialUKeyValueMap(unsigned ukey_size)
-      : nodes_manager(ukey_size), head(0), size(0), top(0) {
+      : nodes_manager(ukey_size), head(nullptr), size(0), top(nullptr) {
     key_map.resize(ukey_size, {nullptr, TValue()});
     pv_begin = &(key_map[0]);
   }
@@ -192,7 +192,7 @@ class BinomialUKeyValueMap {
   }
 
  protected:
-  void ResetTopNode() const { top = 0; }
+  void ResetTopNode() const { top = nullptr; }
 
   void SetTopNode() const {
     top = head;
@@ -250,7 +250,7 @@ class BinomialUKeyValueMap {
 
   void Compress() {
     if (Empty()) return;
-    Node *pp = 0, *pc = head, *pn = pc->s;
+    Node *pp = nullptr, *pc = head, *pn = pc->s;
     for (; pn; pn = pc->s) {
       if ((pc->d != pn->d) || (pn->s && (pn->d == pn->s->d))) {
         pp = pc;
@@ -284,21 +284,21 @@ class BinomialUKeyValueMap {
       for (; c->s != node;) c = c->s;
       c->s = node->s;
     }
-    node->s = 0;
+    node->s = nullptr;
   }
 
   Node* CutChildren(Node* node) {
     Node* c = node->l;
-    node->l = 0;
+    node->l = nullptr;
     if (!c) return c;
-    Node *pc = 0, *nc = c->s;
+    Node *pc = nullptr, *nc = c->s;
     for (; nc; nc = c->s) {
-      c->p = 0;
+      c->p = nullptr;
       c->s = pc;
       pc = c;
       c = nc;
     }
-    c->p = 0;
+    c->p = nullptr;
     c->s = pc;
     return c;
   }

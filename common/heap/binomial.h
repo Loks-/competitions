@@ -23,7 +23,7 @@ class Binomial {
     Node(const TData& _value) : value(_value) { Clear(); }
 
     void Clear() {
-      l = s = 0;
+      l = s = nullptr;
       d = 0;
     }
 
@@ -43,7 +43,7 @@ class Binomial {
 
  public:
   Binomial(TNodesManager& _nodes_manager)
-      : nodes_manager(_nodes_manager), head(0), top(0), size(0) {}
+      : nodes_manager(_nodes_manager), head(nullptr), top(nullptr), size(0) {}
 
   TSelf Make() const { return TSelf(nodes_manager); }
   bool Empty() const { return !head; }
@@ -79,14 +79,14 @@ class Binomial {
     else
       ResetTopNode();
     Union(h.head);
-    h.head = 0;
+    h.head = nullptr;
     size += h.size;
     h.size = 0;
     h.ResetTopNode();
   }
 
  protected:
-  void ResetTopNode() const { top = 0; }
+  void ResetTopNode() const { top = nullptr; }
 
   void SetTopNode() const {
     top = head;
@@ -143,7 +143,7 @@ class Binomial {
 
   void Compress() {
     if (Empty()) return;
-    Node *pp = 0, *pc = head, *pn = pc->s;
+    Node *pp = nullptr, *pc = head, *pn = pc->s;
     for (; pn; pn = pc->s) {
       if ((pc->d != pn->d) || (pn->s && (pn->d == pn->s->d))) {
         pp = pc;
@@ -177,14 +177,14 @@ class Binomial {
       for (; c->s != node;) c = c->s;
       c->s = node->s;
     }
-    node->s = 0;
+    node->s = nullptr;
   }
 
   Node* CutChildren(Node* node) {
     Node* c = node->l;
-    node->l = 0;
+    node->l = nullptr;
     if (!c) return c;
-    Node *pc = 0, *nc = c->s;
+    Node *pc = nullptr, *nc = c->s;
     for (; nc; nc = c->s) {
       c->s = pc;
       pc = c;
