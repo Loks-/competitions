@@ -11,13 +11,13 @@ namespace heap {
 // Values are stored outside of heap.
 // Heap stores pointers to value instead of keys.
 template <unsigned d_, class TTValue, class TTCompare = std::less<TTValue>>
-class DPHeapUKeyValueMap {
+class DHeapUKeyValueMap {
  public:
   const unsigned d = d_;
   const unsigned not_in_heap = unsigned(-1);
   using TValue = TTValue;
   using TCompare = TTCompare;
-  using TSelf = DPHeapUKeyValueMap<d_, TValue, TCompare>;
+  using TSelf = DHeapUKeyValueMap<d_, TValue, TCompare>;
 
   struct TData {
     unsigned key;
@@ -43,14 +43,14 @@ class DPHeapUKeyValueMap {
   }
 
  public:
-  DPHeapUKeyValueMap(unsigned ukey_size) {
+  DHeapUKeyValueMap(unsigned ukey_size) {
     key_map.resize(ukey_size, {not_in_heap, TValue()});
     pbegin = &(key_map[0]);
     heap_pointers.reserve(ukey_size);
   }
 
-  DPHeapUKeyValueMap(const std::vector<TValue>& v, bool skip_heap)
-      : DPHeapUKeyValueMap(v.size()) {
+  DHeapUKeyValueMap(const std::vector<TValue>& v, bool skip_heap)
+      : DHeapUKeyValueMap(v.size()) {
     unsigned n = UKeySize();
     if (skip_heap) {
       for (unsigned i = 0; i < n; ++i) key_map[i].value = v[i];
