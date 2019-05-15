@@ -164,19 +164,16 @@ bool TesterHeap::TestAll() {
   hs.insert(TestPriorityQueue());
   hs.insert(TestBinaryHeap());
   hs.insert(TestDHeap<2>());
-  hs.insert(TestDHeap<3>());
   hs.insert(TestDHeap<4>());
-  hs.insert(TestDHeap<5>());
+  hs.insert(TestDHeap<8>());
   hs.insert(TestBinomialHeap());
   hs.insert(TestFibonacciHeap());
   hs.insert(TestDHeapUKeyPosMap<2>());
-  hs.insert(TestDHeapUKeyPosMap<3>());
   hs.insert(TestDHeapUKeyPosMap<4>());
-  hs.insert(TestDHeapUKeyPosMap<5>());
+  hs.insert(TestDHeapUKeyPosMap<8>());
   hs.insert(TestDHeapUKeyValueMap<2>());
-  hs.insert(TestDHeapUKeyValueMap<3>());
   hs.insert(TestDHeapUKeyValueMap<4>());
-  hs.insert(TestDHeapUKeyValueMap<5>());
+  hs.insert(TestDHeapUKeyValueMap<8>());
   hs.insert(TestBinomialUKeyValueMap());
   return hs.size() == 1;
 }
