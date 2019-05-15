@@ -1,4 +1,4 @@
-#include "common/heap/heap.h"
+#include "common/heap.h"
 #include "common/stl/base.h"
 
 int main_senate_evacuation() {

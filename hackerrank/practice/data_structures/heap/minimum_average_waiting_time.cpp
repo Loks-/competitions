@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/minimum-average-waiting-time
 
-#include "common/heap/heap.h"
+#include "common/heap.h"
 #include "common/stl/base.h"
 
 int main_minimum_average_waiting_time() {

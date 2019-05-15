@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/strange-numbers
 
-#include "common/heap/heap.h"
+#include "common/heap.h"
 #include "common/stl/base.h"
 
 int main_strange_numbers() {

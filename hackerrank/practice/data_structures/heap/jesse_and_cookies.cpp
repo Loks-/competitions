@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/jesse-and-cookies
 
-#include "common/heap/heap.h"
+#include "common/heap.h"
 #include "common/stl/base.h"
 #include "common/vector/read.h"
 
