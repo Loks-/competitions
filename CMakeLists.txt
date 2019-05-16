@@ -161,6 +161,8 @@ add_test( NAME golf_gophers.0 COMMAND python3 google/code_jam/interactive_runner
 add_test( NAME golf_gophers.1 COMMAND python3 google/code_jam/interactive_runner.py python3 tests/google/code_jam/2019/r1a/golf_gophers.py 1 -- ./release/build/google_code_jam golf_gophers WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} )
 add_test( NAME draupnir.0 COMMAND python3 google/code_jam/interactive_runner.py python3 tests/google/code_jam/2019/r1b/draupnir.py 0 -- ./release/build/google_code_jam draupnir WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} )
 add_test( NAME draupnir.1 COMMAND python3 google/code_jam/interactive_runner.py python3 tests/google/code_jam/2019/r1b/draupnir.py 1 -- ./release/build/google_code_jam draupnir WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} )
+add_test( NAME power_arrangers.0 COMMAND python3 google/code_jam/interactive_runner.py python3 tests/google/code_jam/2019/r1c/power_arrangers.py 0 -- ./release/build/google_code_jam power_arrangers WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} )
+add_test( NAME power_arrangers.1 COMMAND python3 google/code_jam/interactive_runner.py python3 tests/google/code_jam/2019/r1c/power_arrangers.py 1 -- ./release/build/google_code_jam power_arrangers WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} )
 
 file( GLOB_RECURSE HACKERRANK_TESTS RELATIVE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/tests/hackerrank/*.in" )
 list( SORT HACKERRANK_TESTS )
