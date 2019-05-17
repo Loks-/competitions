@@ -13,6 +13,8 @@ namespace graph {
 // https://en.wikipedia.org/wiki/Bron%E2%80%93Kerbosch_algorithm
 // Callback function will be called with one parameter - UnsignedSet that
 // contains maximal clique.
+// TODO:
+//   1. Use degeneracy ordering on first step.
 class MaximalCliquesList {
  protected:
   const UndirectedGraph& g;
