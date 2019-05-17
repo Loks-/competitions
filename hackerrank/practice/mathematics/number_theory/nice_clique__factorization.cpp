@@ -13,7 +13,7 @@ int main_nice_clique__factorization() {
   for (uint64_t x : v) {
     auto f = Factorize(x);
     m1[f.size() & 1] += 1;
-    m2[GetDivisorsSum(f) & 1] += 1;
+    m2[DivisorsSum(f) & 1] += 1;
   }
   cout << max(max(m1[0], m1[1]), max(m2[0], m2[1])) << endl;
   return 0;

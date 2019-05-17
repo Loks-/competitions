@@ -3,51 +3,54 @@
 #include "common/factorization/primes_list.h"
 #include <vector>
 
-template <class TPrimesList>
-class PLEMobius : public TPrimesList {
+namespace factorization {
+namespace ple {
+class Mobius : public PrimesList {
  protected:
   std::vector<int> mobius;
 
  public:
-  PLEMobius(uint64_t size) : TPrimesList(size) {}
+  Mobius(uint64_t size) : PrimesList(size) {}
 
-  void PrecalcMobius() {
-    mobius.resize(TPrimesList::table_size + 1);
+  void Precalc() {
+    mobius.resize(PrimesList::table_size + 1);
     mobius[0] = 0;
     mobius[1] = 1;
-    for (unsigned i = 2; i <= TPrimesList::table_size; ++i) {
-      unsigned p = TPrimesList::table[i];
-      mobius[i] = (TPrimesList::table[i / p] == p ? 0 : -1 * mobius[i / p]);
+    for (unsigned i = 2; i <= PrimesList::table_size; ++i) {
+      unsigned p = PrimesList::table[i];
+      mobius[i] = (PrimesList::table[i / p] == p ? 0 : -1 * mobius[i / p]);
     }
   }
 
-  int MobiusTable(uint64_t n) const {
-    assert(n <= TPrimesList::table_size);
+  int GetTable(uint64_t n) const {
+    assert(n <= PrimesList::table_size);
     unsigned primes_count = 0;
     for (; n > 1;) {
-      unsigned p = TPrimesList::table[n];
+      unsigned p = PrimesList::table[n];
       n /= p;
-      if (TPrimesList::table[n] == p) return 0;
+      if (PrimesList::table[n] == p) return 0;
       ++primes_count;
     }
     return (primes_count & 1) ? -1 : 1;
   }
 
-  int Mobius(uint64_t n) const {
+  int Get(uint64_t n) const {
     if (n < mobius.size()) return mobius[n];
-    if (n <= TPrimesList::table_size) return MobiusTable(n);
+    if (n <= PrimesList::table_size) return GetTable(n);
     unsigned primes_count = 0;
-    for (uint64_t p : TPrimesList::primes) {
+    for (uint64_t p : PrimesList::primes) {
       if (n < p * p) break;
       if ((n % p) == 0) {
         n /= p;
         if ((n % p) == 0) return 0;
       }
     }
-    assert(TPrimesList::squared_table_size > n);
+    assert(PrimesList::squared_table_size > n);
     if (n != 1) ++primes_count;
     return (primes_count & 1) ? -1 : 1;
   }
-};
 
-using TPLEMobius = PLEMobius<PrimesList>;
+  int operator()(uint64_t n) const { return Get(n); }
+};
+}  // namespace ple
+}  // namespace factorization

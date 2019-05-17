@@ -11,15 +11,15 @@ int main_mehta_and_his_laziness() {
   for (unsigned it = 0; it < T; ++it) {
     cin >> N;
     auto f = primes_list.Factorize(N);
-    if ((f.size() == 0) || (f[0].first != 2) || (f[0].second < 2) || (N == 4)) {
+    if ((f.size() == 0) || (f[0].prime != 2) || (f[0].power < 2) || (N == 4)) {
       cout << 0 << endl;
     } else {
       bool square = true;
       unsigned p = 1, q = 1;
       for (unsigned i = 0; i < f.size(); ++i) {
-        square = square && ((f[i].second & 1) == 0);
-        p *= (((i > 0) ? 1 : 0) + f[i].second / 2);
-        q *= (1 + f[i].second);
+        square = square && ((f[i].power & 1) == 0);
+        p *= (((i > 0) ? 1 : 0) + f[i].power / 2);
+        q *= (1 + f[i].power);
       }
       cout << TIFraction(square ? p - 1 : p, q - 1) << endl;
     }

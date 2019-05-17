@@ -43,9 +43,8 @@ int main_megaprime_numbers() {
   cin >> f >> l;
   unsigned total = 0;
   MegaPrime mp(f);
-  MillerRabinPrimalityTest pt;
   for (; mp.value <= l; mp.Next()) {
-    if (pt.IsPrime(uint64_t(mp.value))) ++total;
+    if (IsPrime(uint64_t(mp.value))) ++total;
   }
   cout << total << endl;
   return 0;

@@ -13,7 +13,7 @@ inline uint64_t GetMultiplicativeOrder(uint64_t n, uint64_t u) {
   TFactorization ntf = Factorize(nt);
   uint64_t np = nt;
   for (auto p : ntf) {
-    for (uint64_t pp = p.first;
+    for (uint64_t pp = p.prime;
          ((np % pp) == 0) && (TModularA::PowU(u, np / pp, n) == 1);)
       np /= pp;
   }

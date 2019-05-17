@@ -7,12 +7,13 @@
 #include <algorithm>
 #include <vector>
 
+namespace factorization {
 // Based on Pollard's rho algorithm (
 // https://en.wikipedia.org/wiki/Pollard%27s_rho_algorithm ).
 class Factorization {
  protected:
   const uint64_t u32threshold = (1u << 31);
-  MillerRabinPrimalityTest primality_test;
+  PrimalityTest primality_test;
 
   uint64_t FindFactor32(uint64_t n, uint64_t start) {
     ModularProxy<false, true> proxy(n);
@@ -78,16 +79,17 @@ class Factorization {
     std::sort(v.begin(), v.end());
     TFactorization f;
     for (uint64_t p : v) {
-      if ((f.size() == 0) || (f.back().first != p))
+      if ((f.size() == 0) || (f.back().prime != p))
         f.push_back({p, 1});
       else
-        f.back().second += 1;
+        f.back().power += 1;
     }
     return f;
   }
 };
+}  // namespace factorization
 
 inline TFactorization Factorize(uint64_t n) {
-  thread_local Factorization f;
+  thread_local factorization::Factorization f;
   return f.Factorize(n);
 }

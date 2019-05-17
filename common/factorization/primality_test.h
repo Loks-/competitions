@@ -5,8 +5,10 @@
 #include "common/modular/arithmetic.h"
 #include <vector>
 
-class MillerRabinPrimalityTest {
- public:
+namespace factorization {
+// Miller Rabin Primality Test
+class PrimalityTest {
+ protected:
   using TModularA = ModularArithmetic<false, false, uint64_t>;
 
   enum Primality {
@@ -15,14 +17,14 @@ class MillerRabinPrimalityTest {
   };
 
   // n - 1 == d * 2^s
-  struct Factorization {
+  struct P2Factorization {
     uint64_t n;
     uint64_t s;
     uint64_t d;
   };
 
-  static Factorization Factor(uint64_t n) {
-    Factorization f;
+  static P2Factorization Factor(uint64_t n) {
+    P2Factorization f;
     f.n = n;
     f.d = n - 1;
     f.s = 0;
@@ -58,7 +60,7 @@ class MillerRabinPrimalityTest {
       return wmax;
   }
 
-  static Primality CheckMillerRabinWitness(const Factorization& f,
+  static Primality CheckMillerRabinWitness(const P2Factorization& f,
                                            uint64_t witness) {
     uint64_t x = TModularA::PowU(witness, f.d, f.n);
     if ((x == 1) || (x == (f.n - 1))) return PROBABLY_PRIME;
@@ -72,7 +74,7 @@ class MillerRabinPrimalityTest {
 
   static Primality RunMillerRabinTest(uint64_t n) {
     if ((~n) & 1) return COMPOSITE;
-    Factorization f = Factor(n);
+    P2Factorization f = Factor(n);
     const std::vector<uint64_t>& witnesses = SelectWitnesses(n);
     for (size_t i = 0; i < witnesses.size(); ++i) {
       uint64_t witness = witnesses[i];
@@ -81,13 +83,13 @@ class MillerRabinPrimalityTest {
     return PROBABLY_PRIME;
   }
 
- private:
+ protected:
   uint64_t N, M;
   std::vector<uint8_t> primes;
   std::vector<uint8_t> table;
 
  public:
-  MillerRabinPrimalityTest(unsigned maxprime = 13) {
+  PrimalityTest(unsigned maxprime = 13) {
     N = maxprime, M = 1;
     PrimesList primes_list(maxprime);
     const std::vector<uint64_t>& pl_primes = primes_list.GetPrimes();
@@ -108,3 +110,9 @@ class MillerRabinPrimalityTest {
     return (RunMillerRabinTest(n) == PROBABLY_PRIME);
   }
 };
+}  // namespace factorization
+
+inline bool IsPrime(uint64_t n) {
+  thread_local factorization::PrimalityTest test;
+  return test.IsPrime(n);
+}

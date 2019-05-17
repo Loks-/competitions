@@ -5,7 +5,7 @@
 #include <vector>
 
 bool TestMertens() {
-  Mertens mertens(1ull << 20);
+  factorization::Mertens mertens(1ull << 20);
   std::vector<int> expected{1,   0,     -1,  -2,   -1,    -4,   -1,    -2,
                             -1,  -4,    -4,  7,    -19,   22,   -32,   26,
                             14,  -20,   24,  -125, 257,   -362, 228,   -10,

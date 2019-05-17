@@ -15,7 +15,7 @@ inline uint64_t CoprimeCount(const TFactorization& k_factorization,
     for (unsigned j = 0; j < fs; ++j) {
       if ((1u << j) & i) {
         ++bits;
-        t /= k_factorization[j].first;
+        t /= k_factorization[j].prime;
       }
     }
     total = ((bits & 1) ? total - t : total + t);

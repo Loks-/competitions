@@ -9,7 +9,7 @@ int main_identify_smith_numbers() {
   cin >> n;
   uint64_t s = 0;
   TFactorization vf = FactorizeBase(n);
-  for (auto p : vf) s += DigitsSum(p.first) * p.second;
+  for (auto p : vf) s += DigitsSum(p.prime) * p.power;
   cout << (s == DigitsSum(n) ? 1 : 0) << endl;
   return 0;
 }
