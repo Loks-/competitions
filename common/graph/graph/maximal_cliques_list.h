@@ -6,8 +6,6 @@
 #include <stack>
 #include <vector>
 
-#include "common/vector/write.h"
-
 namespace graph {
 // Bron–Kerbosch algorithm
 // https://en.wikipedia.org/wiki/Bron%E2%80%93Kerbosch_algorithm
@@ -45,14 +43,6 @@ class MaximalCliquesList {
 
   template <class TCallbackFunction>
   void SearchI(TCallbackFunction& f) {
-    // std::cout << "SearchI" << std::endl;
-    // std::cout << "r = ";
-    // WriteVector(r.vlist);
-    // std::cout << "p = ";
-    // WriteVector(p.vlist);
-    // std::cout << "x = ";
-    // WriteVector(x.vlist);
-
     if (p.Empty() && x.Empty()) f(r);
     if (p.Empty()) return;
     // Find pivot
