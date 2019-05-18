@@ -13,7 +13,7 @@ int main_breaking_sticks() {
     reverse(vf.begin(), vf.end());
     uint64_t t = 1;
     for (auto p : vf) {
-      for (unsigned j = 0; j < p.second; ++j) sum += (t *= p.first);
+      for (unsigned j = 0; j < p.power; ++j) sum += (t *= p.prime);
     }
   }
   cout << sum << endl;

@@ -8,7 +8,6 @@
 
 int main_bear_and_cryptography() {
   PrimesList primes_list(1000000);
-  MillerRabinPrimalityTest pt;
   uint64_t best_so_far;
 
   auto GetMaxPrimeLessOrEqualN = [&](uint64_t N, uint64_t minN) -> uint64_t {
@@ -21,7 +20,7 @@ int main_bear_and_cryptography() {
     } else {
       if ((N & 1) == 0) N -= 1;
       for (; N > minN; N -= 2) {
-        if (pt.IsPrime(N)) return N;
+        if (IsPrime(N)) return N;
       }
       return 1;  // Not Zero!
     }

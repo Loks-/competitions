@@ -4,7 +4,7 @@
 #include <vector>
 
 class UnsignedSet {
- protected:
+ public:
   std::vector<unsigned> vset;
   std::vector<unsigned> vlist;
 
@@ -13,7 +13,10 @@ class UnsignedSet {
     vlist.reserve(total_size);
   };
 
+  bool Empty() const { return vlist.empty(); }
+  unsigned Size() const { return unsigned(vlist.size()); }
   unsigned HasKey(unsigned key) const { return vset[key]; }
+  unsigned Last() const { return vlist.back(); }
 
   void Insert(unsigned key) {
     if (!vset[key]) {
@@ -35,8 +38,11 @@ class UnsignedSet {
     }
   }
 
-  bool Empty() const { return vlist.empty(); }
-  unsigned Size() const { return unsigned(vlist.size()); }
+  void RemoveLast() {
+    unsigned u = Last();
+    vlist.pop_back();
+    vset[u] = 0;
+  }
 
   void Clear() {
     for (unsigned u : vlist) vset[u] = 0;

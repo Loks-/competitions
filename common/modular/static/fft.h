@@ -28,7 +28,7 @@ class ModularFFT {
       maxn = GetFFTN(n);
       for (max2p = 0; (1u << max2p) < maxn;) ++max2p;
     } else {
-      max2p = ((p1f[0].first == 2) ? p1f[0].second : 0u);
+      max2p = ((p1f[0].prime == 2) ? p1f[0].power : 0u);
       maxn = 1u << max2p;
     }
 

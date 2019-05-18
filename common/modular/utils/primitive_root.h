@@ -11,7 +11,7 @@ inline uint64_t FindSmallestPrimitive(uint64_t p,
   for (uint64_t u = 2; u < p; ++u) {
     bool good = true;
     for (unsigned i = 0; i < p1_factorization.size(); ++i) {
-      uint64_t t = TModularA::PowU(u, (p - 1) / p1_factorization[i].first, p);
+      uint64_t t = TModularA::PowU(u, (p - 1) / p1_factorization[i].prime, p);
       if (t == 1) {
         good = false;
         break;

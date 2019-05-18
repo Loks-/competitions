@@ -14,8 +14,8 @@ inline uint64_t CoprimeSum(const TFactorization& k_factorization, uint64_t n) {
     for (unsigned j = 0; j < fs; ++j) {
       if ((1u << j) & i) {
         ++bits;
-        tn /= k_factorization[j].first;
-        tm *= k_factorization[j].first;
+        tn /= k_factorization[j].prime;
+        tm *= k_factorization[j].prime;
       }
     }
     uint64_t t = tm * ((tn * (tn + 1)) / 2);

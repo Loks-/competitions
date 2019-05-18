@@ -1,24 +1,23 @@
 #pragma once
 
 #include "common/base.h"
-#include "common/factorization/primes_list.h"
 #include "common/factorization/primes_list_extended/mobius.h"
 #include <vector>
 
-template <class TPrimesList>
-class PLEMertens : public PLEMobius<TPrimesList> {
+namespace factorization {
+namespace ple {
+class Mertens : public Mobius {
  public:
-  using TBase = PLEMobius<TPrimesList>;
-  using TSelf = PLEMertens<TPrimesList>;
+  using TBase = Mobius;
 
  protected:
   std::vector<int> mertens;
 
  public:
-  PLEMertens(uint64_t size) : TBase(size) {}
+  Mertens(uint64_t size) : TBase(size) {}
 
-  void PrecalcMertens() {
-    if (TBase::mobius.size() == 0) TBase::PrecalcMobius();
+  void Precalc() {
+    if (TBase::mobius.size() == 0) TBase::Precalc();
     assert(TBase::mobius.size() == TBase::table_size + 1);
     mertens.resize(TBase::table_size + 1);
     mertens[0] = 0;
@@ -26,10 +25,14 @@ class PLEMertens : public PLEMobius<TPrimesList> {
       mertens[i] = mertens[i - 1] + TBase::mobius[i];
   }
 
-  int Mertens(uint64_t n) const {
+  int GetMobius(uint64_t n) const { return TBase::Get(n); }
+
+  int Get(uint64_t n) const {
     assert(n < mertens.size());
     return mertens[n];
   }
-};
 
-using TPLEMertens = PLEMertens<PrimesList>;
+  int operator()(uint64_t n) const { return Get(n); }
+};
+}  // namespace ple
+}  // namespace factorization

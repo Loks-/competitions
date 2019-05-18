@@ -2,7 +2,6 @@
 
 #include "common/factorization/base.h"
 #include <algorithm>
-#include <utility>
 #include <vector>
 
 class PrimesList {
@@ -57,7 +56,7 @@ class PrimesList {
     for (; n > 1;) {
       unsigned p = table[n], cnt = 1;
       for (n /= p; table[n] == p; ++cnt) n /= p;
-      output.push_back(std::make_pair(uint64_t(p), cnt));
+      output.push_back({uint64_t(p), cnt});
     }
     return output;
   }
@@ -71,11 +70,11 @@ class PrimesList {
         n /= p;
         unsigned cnt = 1;
         for (; (n % p) == 0; ++cnt) n /= p;
-        output.push_back(std::make_pair(p, cnt));
+        output.push_back({p, cnt});
       }
     }
     if (!skip_assert) assert(squared_table_size > n);
-    if (n != 1) output.push_back(std::make_pair(n, 1));
+    if (n != 1) output.push_back({n, 1});
     return output;
   }
 };

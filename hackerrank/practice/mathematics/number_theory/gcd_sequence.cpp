@@ -8,8 +8,8 @@
 using TModular = Modular<>;
 
 int main_gcd_sequence() {
-  TPLEMobius primes_list(100000);
-  primes_list.PrecalcMobius();
+  factorization::ple::Mobius primes_list(100000);
+  primes_list.Precalc();
   ModularFactorial<TModular> f;
 
   unsigned T, N, K;
@@ -18,7 +18,7 @@ int main_gcd_sequence() {
     cin >> N >> K;
     TModular r = 0, one = 1;
     for (unsigned i = 1; i <= N; ++i) {
-      int m = primes_list.Mobius(i);
+      int m = primes_list(i);
       if (m == 0) continue;
       r += ((m == 1) ? one : -one) * f.BinomialCoefficient(K + N / i - 1, K);
     }

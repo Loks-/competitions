@@ -12,7 +12,7 @@ int main_easy_gcd() {
     g = GCD(t, g);
   }
   TFactorization f = FactorizeBase(g);
-  for (auto p : f) b = max(b, k - (k % unsigned(p.first)));
+  for (auto p : f) b = max(b, k - (k % unsigned(p.prime)));
   cout << b << endl;
   return 0;
 }

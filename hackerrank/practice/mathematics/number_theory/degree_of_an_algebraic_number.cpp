@@ -25,9 +25,9 @@ int main_degree_of_an_algebraic_number() {
       TFactorization f = Factorize(a);
       vector<unsigned> vp;
       for (auto p : f) {
-        if (p.second & 1) {
-          ps.insert(unsigned(p.first));
-          vp.push_back(unsigned(p.first));
+        if (p.power & 1) {
+          ps.insert(unsigned(p.prime));
+          vp.push_back(unsigned(p.prime));
         }
       }
       vap.push_back(vp);

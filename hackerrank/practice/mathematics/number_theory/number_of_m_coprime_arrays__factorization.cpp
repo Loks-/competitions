@@ -22,7 +22,7 @@ int main_number_of_m_coprime_arrays__factorization() {
     TFactorization fp = Factorize(M);
     TModular r = 1;
     for (auto q : fp) {
-      m(1, 0) = q.second;
+      m(1, 0) = q.power;
       r *= m.PowU(N + 1)(0, 0);
     }
     cout << r.Get() << endl;

@@ -1,7 +1,13 @@
 #pragma once
 
 #include "common/base.h"
-#include <utility>
 #include <vector>
 
-using TFactorization = std::vector<std::pair<uint64_t, unsigned>>;
+namespace factorization {
+struct PrimePower {
+  uint64_t prime;
+  unsigned power;
+};
+}  // namespace factorization
+
+using TFactorization = std::vector<factorization::PrimePower>;

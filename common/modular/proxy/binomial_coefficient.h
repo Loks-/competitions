@@ -81,12 +81,12 @@ class PModularBinomialCoefficient {
   PModularBinomialCoefficient(uint64_t n) {
     TFactorization nf(FactorizeBase(n));
     for (auto fp : nf) {
-      if (fp.second == 1)
-        factorial_proxies_prime.push_back(TPrimeFactorialProxy(fp.first));
+      if (fp.power == 1)
+        factorial_proxies_prime.push_back(TPrimeFactorialProxy(fp.prime));
       else
         factorial_proxies_composite.push_back(std::make_tuple(
-            fp.first, fp.second,
-            TPrimePowerFactorialProxy(PowU(fp.first, fp.second))));
+            fp.prime, fp.power,
+            TPrimePowerFactorialProxy(PowU(fp.prime, fp.power))));
     }
   }
 
