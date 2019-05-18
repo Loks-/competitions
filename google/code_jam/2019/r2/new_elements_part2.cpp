@@ -1,26 +1,21 @@
 #include "common/numeric/continued_fraction/continued_fraction.h"
 #include "common/numeric/fraction.h"
 #include "common/stl/base.h"
+#include "common/stl/pair_io.h"
+#include "common/vector/read.h"
 
 int main_new_elements_part2() {
-  struct CJ {
-    int64_t c, j;
-  };
-
   unsigned T;
   cin >> T;
   for (unsigned it = 1; it <= T; ++it) {
     unsigned n;
     cin >> n;
-    vector<CJ> v(n);
-    for (unsigned i = 0; i < n; ++i) {
-      cin >> v[i].c >> v[i].j;
-    }
+    auto v = ReadVector<pair<int64_t, int64_t>>(n);
     bool impossible = false;
-    TIFraction fl(1, 0), fr(0, 1);
+    TIFraction fg(1, 0), fl(0, 1);
     for (unsigned i = 0; i + 1 < n; ++i) {
-      int64_t dc = v[i + 1].c - v[i].c;
-      int64_t dj = v[i + 1].j - v[i].j;
+      int64_t dc = v[i + 1].first - v[i].first;
+      int64_t dj = v[i + 1].second - v[i].second;
       if ((dc <= 0) && (dj <= 0)) {
         impossible = true;
         break;
@@ -28,26 +23,26 @@ int main_new_elements_part2() {
       if ((dc >= 0) && (dj >= 0)) continue;
       if (dc < 0) {
         TIFraction f(-dc, dj);
-        if (fr < f) fr = f;
+        if (fl < f) fl = f;
       } else {
         TIFraction f(dc, -dj);
-        if (f < fl) fl = f;
+        if (f < fg) fg = f;
       }
     }
-    if (!(fr < fl)) impossible = true;
+    if (!(fl < fg)) impossible = true;
     if (!impossible) {
       int64_t c = 0, j = 0;
-      if ((fr.GetN() == 0) && (fl.GetD() == 0)) {
+      if ((fl.GetN() == 0) && (fg.GetD() == 0)) {
         c = j = 1;
-      } else if (fr.GetN() == 0) {
-        c = fl.GetD() / fl.GetN() + 1;
+      } else if (fl.GetN() == 0) {
+        c = fg.GetD() / fg.GetN() + 1;
         j = 1;
-      } else if (fl.GetD() == 0) {
+      } else if (fg.GetD() == 0) {
         c = 1;
-        j = fr.GetN() / fr.GetD() + 1;
+        j = fl.GetN() / fl.GetD() + 1;
       } else {
-        vector<ContinuedFraction> vcl(2, fr);
-        vector<ContinuedFraction> vcr(2, fl);
+        vector<ContinuedFraction> vcl(2, fl);
+        vector<ContinuedFraction> vcr(2, fg);
         vcl[1].SplitLast();
         vcr[1].SplitLast();
         for (unsigned i = 0; i < 4; ++i) {
@@ -69,10 +64,8 @@ int main_new_elements_part2() {
             }
           }
           auto f = ContinuedFraction(vm).ToFraction();
-          if ((f < fl) && (fr < f)) {
+          if ((f < fg) && (fl < f)) {
             int64_t cc = f.GetD(), cj = f.GetN();
-            for (--cj; fr < TIFraction(cj, cc);) --cj;
-            ++cj;
             if ((c == 0) || (cc < c) || ((cc == c) && (cj < j))) {
               c = cc;
               j = cj;
