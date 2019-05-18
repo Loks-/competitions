@@ -1,6 +1,5 @@
 #pragma once
 
-#include "common/hash.h"
 #include <utility>
 
 namespace std {
