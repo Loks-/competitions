@@ -37,6 +37,10 @@ class Fraction {
   bool operator==(const TSelf& r) const {
     return (numerator == r.numerator) && (denominator == r.denominator);
   }
+
+  bool operator<(const TSelf& r) const {
+    return numerator * r.denominator < r.numerator * denominator;
+  }
 };
 
 using TIFraction = Fraction<int64_t>;

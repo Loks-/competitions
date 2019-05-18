@@ -36,7 +36,7 @@ class ContinuedFraction {
   int64_t operator()(unsigned index) const { return cf[index]; }
 
   void SplitLast() {
-    if (cf.back() > 1) {
+    if (!cf.empty() && ((cf.back() > 1) || (cf.size() == 1))) {
       cf.back() -= 1;
       cf.push_back(1);
     }
