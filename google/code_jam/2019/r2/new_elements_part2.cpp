@@ -63,7 +63,6 @@ int main_new_elements_part2() {
           }
         }
       }
-      // }
       assert(c > 0);
       cout << "Case #" << it << ": " << c << " " << j << endl;
     } else {
