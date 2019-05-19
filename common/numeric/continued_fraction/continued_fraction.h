@@ -1,5 +1,6 @@
 #pragma once
 
+#include "common/base.h"
 #include "common/numeric/fraction.h"
 #include <algorithm>
 #include <vector>
@@ -19,6 +20,10 @@ class ContinuedFraction {
 
   ContinuedFraction(const TIFraction& f) {
     int64_t n = f.GetN(), d = f.GetD();
+    if (d == 0) {
+      assert(n > 0);
+      return;
+    }
     int64_t a = n / d;
     if (a * d > n) --a;
     cf.push_back(a);

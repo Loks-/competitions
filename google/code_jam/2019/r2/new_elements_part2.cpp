@@ -32,47 +32,38 @@ int main_new_elements_part2() {
     if (!(fl < fg)) impossible = true;
     if (!impossible) {
       int64_t c = 0, j = 0;
-      if ((fl.GetN() == 0) && (fg.GetD() == 0)) {
-        c = j = 1;
-      } else if (fl.GetN() == 0) {
-        c = fg.GetD() / fg.GetN() + 1;
-        j = 1;
-      } else if (fg.GetD() == 0) {
-        c = 1;
-        j = fl.GetN() / fl.GetD() + 1;
-      } else {
-        vector<ContinuedFraction> vcl(2, fl);
-        vector<ContinuedFraction> vcr(2, fg);
-        vcl[1].SplitLast();
-        vcr[1].SplitLast();
-        for (unsigned i = 0; i < 4; ++i) {
-          auto vl = vcl[i % 2].GetVector();
-          auto vr = vcr[i / 2].GetVector();
-          vector<int64_t> vm;
-          for (unsigned k = 0;; ++k) {
-            if (k == vl.size()) {
-              vm.push_back(vr[k] + 1);
-              break;
-            } else if (k == vr.size()) {
-              vm.push_back(vl[k] + 1);
-              break;
-            } else if (vl[k] != vr[k]) {
-              vm.push_back(min(vl[k], vr[k]) + 1);
-              break;
-            } else {
-              vm.push_back(vl[k]);
-            }
+      vector<ContinuedFraction> vcl(2, fl);
+      vector<ContinuedFraction> vcr(2, fg);
+      vcl[1].SplitLast();
+      vcr[1].SplitLast();
+      for (unsigned i = 0; i < 4; ++i) {
+        auto vl = vcl[i % 2].GetVector();
+        auto vr = vcr[i / 2].GetVector();
+        vector<int64_t> vm;
+        for (unsigned k = 0;; ++k) {
+          if (k == vl.size()) {
+            vm.push_back(vr[k] + 1);
+            break;
+          } else if (k == vr.size()) {
+            vm.push_back(vl[k] + 1);
+            break;
+          } else if (vl[k] != vr[k]) {
+            vm.push_back(min(vl[k], vr[k]) + 1);
+            break;
+          } else {
+            vm.push_back(vl[k]);
           }
-          auto f = ContinuedFraction(vm).ToFraction();
-          if ((f < fg) && (fl < f)) {
-            int64_t cc = f.GetD(), cj = f.GetN();
-            if ((c == 0) || (cc < c) || ((cc == c) && (cj < j))) {
-              c = cc;
-              j = cj;
-            }
+        }
+        auto f = ContinuedFraction(vm).ToFraction();
+        if ((f < fg) && (fl < f)) {
+          int64_t cc = f.GetD(), cj = f.GetN();
+          if ((c == 0) || (cc < c) || ((cc == c) && (cj < j))) {
+            c = cc;
+            j = cj;
           }
         }
       }
+      // }
       assert(c > 0);
       cout << "Case #" << it << ": " << c << " " << j << endl;
     } else {
