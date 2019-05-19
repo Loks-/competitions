@@ -50,14 +50,10 @@ int main_contransmutation() {
         if (--edges_in[j] == 0) q.push(j);
       }
     }
-    if (!valid[0]) {
-      cout << "Case #" << it << ": " << vc[0] << endl;
-      continue;
-    }
     bool unbounded = false;
     TModular s = 0;
     for (unsigned i = 0; i < n; ++i) {
-      if (!valid[i]) continue;
+      if (i && !valid[i]) continue;
       s += vc[i];
       unsigned e = 0;
       for (unsigned j : g.Edges(i)) {
@@ -65,11 +61,8 @@ int main_contransmutation() {
       }
       if (e > 1) unbounded = true;
     }
-    if (unbounded)
-      cout << "Case #" << it << ": "
-           << "UNBOUNDED" << endl;
-    else
-      cout << "Case #" << it << ": " << s << endl;
+    cout << "Case #" << it << ": "
+         << (unbounded ? "UNBOUNDED" : to_string(s.Get())) << endl;
   }
   return 0;
 }
