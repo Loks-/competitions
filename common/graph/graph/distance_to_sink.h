@@ -18,7 +18,7 @@ inline std::vector<unsigned> DistanceToSink(
     unsigned f = q.front();
     q.pop();
     unsigned l = d[f];
-    for (unsigned k : g.Edges(f)) {
+    for (unsigned k : g.InvertedEdges(f)) {
       if (d[k] == none) {
         d[k] = l + 1;
         q.push(k);
