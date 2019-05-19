@@ -1,7 +1,6 @@
 #include "common/graph/graph.h"
 #include "common/graph/graph/distance.h"
 #include "common/graph/graph/distance_to_sink.h"
-#include "common/modular/static/modular.h"
 #include "common/modular/static/modular_io.h"
 #include "common/stl/base.h"
 #include "common/vector/read.h"
@@ -32,10 +31,6 @@ int main_contransmutation() {
     vector<bool> valid(n + 1, false);
     for (unsigned i = 0; i < n; ++i)
       valid[i] = (vd1[i] != -1u) && (vd2[i] != -1u);
-    if (!valid[0]) {
-      cout << "Case #" << it << ": " << 0 << endl;
-      continue;
-    }
     vector<unsigned> edges_in(n, 0);
     queue<unsigned> q;
     for (unsigned i = 0; i < n; ++i) {
@@ -56,7 +51,7 @@ int main_contransmutation() {
       }
     }
     if (!valid[0]) {
-      cout << "Case #" << it << ": " << vc[0].Get() << endl;
+      cout << "Case #" << it << ": " << vc[0] << endl;
       continue;
     }
     bool unbounded = false;
