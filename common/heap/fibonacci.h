@@ -101,7 +101,7 @@ class Fibonacci {
     h.size = 0;
   }
 
-  void DecreaseValue(Node* node, TData& new_value) {
+  void DecreaseValue(Node* node, const TData& new_value) {
     assert(node);
     node->value = new_value;
     if (node->p) {
@@ -114,12 +114,12 @@ class Fibonacci {
     }
   }
 
-  void DecreaseValueIfLess(Node* node, TData& new_value) {
+  void DecreaseValueIfLess(Node* node, const TData& new_value) {
     assert(node);
     if (compare(new_value, node->value)) DecreaseValue(node, new_value);
   }
 
-  void IncreaseValue(Node* node, TData& new_value) {
+  void IncreaseValue(Node* node, const TData& new_value) {
     assert(node);
     node->value = new_value;
     if (node->c) {
@@ -137,7 +137,7 @@ class Fibonacci {
     }
   }
 
-  void SetValue(Node* node, TData& new_value) {
+  void SetValue(Node* node, const TData& new_value) {
     assert(node);
     if (compare(node->value, new_value))
       IncreaseValue(node, new_value);
@@ -146,35 +146,8 @@ class Fibonacci {
   }
 
   void Delete(Node* node) {
-    if (node->c) {
-      ClearParentLink(node->c);
-      Union(node->c);
-      node->c = 0;
-    }
-    RemoveFromList(node);
-    if (node == head) {
-      if (node != node->r) {
-        head = node->r;
-        Consolidate();
-      } else {
-        head = 0;
-      }
-    } else if (node->p) {
-      Node* p = node->p;
-      if (node == p->c) {
-        if (node->r == node)
-          p->c = 0;
-        else
-          p->c = node->r;
-      }
-      node->p = 0;
-      if (Marked(p) && p->p)
-        CutNode(p);
-      else
-        Mark(p);
-    }
+    DeleteI(node);
     nodes_manager.Release(node);
-    --size;
   }
 
  protected:
@@ -281,6 +254,37 @@ class Fibonacci {
         break;
       }
     }
+  }
+
+  void DeleteI(Node* node) {
+    if (node->c) {
+      ClearParentLink(node->c);
+      Union(node->c);
+      node->c = 0;
+    }
+    RemoveFromList(node);
+    if (node == head) {
+      if (node != node->r) {
+        head = node->r;
+        Consolidate();
+      } else {
+        head = 0;
+      }
+    } else if (node->p) {
+      Node* p = node->p;
+      if (node == p->c) {
+        if (node->r == node)
+          p->c = 0;
+        else
+          p->c = node->r;
+      }
+      node->p = 0;
+      if (Marked(p) && p->p)
+        CutNode(p);
+      else
+        Mark(p);
+    }
+    --size;
   }
 };
 }  // namespace heap

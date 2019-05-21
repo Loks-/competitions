@@ -8,6 +8,7 @@
 #include "common/heap/dheap_ukey_pos_map.h"
 #include "common/heap/dheap_ukey_value_map.h"
 #include "common/heap/fibonacci.h"
+#include "common/heap/fibonacci_ukey_value_map.h"
 #include "common/timer.h"
 
 #include <iostream>
@@ -105,6 +106,21 @@ size_t TesterHeap::TestFibonacciHeap() {
   return h;
 }
 
+size_t TesterHeap::TestFibonacciUKeyValueMap() {
+  Timer t;
+  size_t h = 0;
+  heap::FibonacciUKeyValueMap<size_t> heap(vinit.size() + vloop.size());
+  for (unsigned i = 0; i < vinit.size(); ++i) heap.Set(i, vinit[i]);
+  for (unsigned i = 0; i < vloop.size(); ++i) {
+    h = hash_combine(h, heap.ExtractValue());
+    heap.Set(vinit.size() + i, vloop[i]);
+  }
+  for (; !heap.Empty(); heap.Pop()) h = hash_combine(h, heap.TopValue());
+  std::cout << "Test results [FKVM]: " << h << "\t" << t.GetMilliseconds()
+            << std::endl;
+  return h;
+}
+
 template <unsigned d>
 size_t TesterHeap::TestDHeap() {
   Timer t;
@@ -175,6 +191,7 @@ bool TesterHeap::TestAll() {
   hs.insert(TestDHeapUKeyValueMap<4>());
   hs.insert(TestDHeapUKeyValueMap<8>());
   hs.insert(TestBinomialUKeyValueMap());
+  hs.insert(TestFibonacciUKeyValueMap());
   return hs.size() == 1;
 }
 
