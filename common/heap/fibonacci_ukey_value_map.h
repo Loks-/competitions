@@ -52,7 +52,7 @@ class FibonacciUKeyValueMap : public Fibonacci<TTValue, TCompare> {
     return manager.NodeByRawIndex(key);
   }
 
-  const TValue& Get(unsigned key) const { return Get(key)->value; }
+  const TValue& Get(unsigned key) const { return GetNode(key)->value; }
 
   std::vector<TValue> GetValues() const {
     unsigned n = UKeySize();
@@ -83,12 +83,12 @@ class FibonacciUKeyValueMap : public Fibonacci<TTValue, TCompare> {
     if (UnusedNode(node))
       AddNewKeyI(node, new_value, false);
     else
-      TBase::DecreaseValue(key, node, new_value);
+      TBase::DecreaseValue(node, new_value);
   }
 
   void DecreaseValueIfLess(unsigned key, const TValue& new_value) {
-    if (TBase::compare(new_value, GetNode(key)->value))
-      TBase::DecreaseValue(key, new_value);
+    TNode* node = GetNode(key);
+    if (TBase::compare(new_value, node->value)) DecreaseValue(key, new_value);
   }
 
   void IncreaseValue(unsigned key, const TValue& new_value) {

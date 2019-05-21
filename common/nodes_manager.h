@@ -61,6 +61,7 @@ class NodesManager {
   unsigned Reserved() const { return Size() - Used(); }
 
   TNode* NodeByRawIndex(unsigned index) { return &(nodes[index]); }
+  const TNode* NodeByRawIndex(unsigned index) const { return &(nodes[index]); }
 
   void ResetNodes() {
     std::stack<TNode*>().swap(released_nodes);
