@@ -2,7 +2,7 @@
 
 #include "common/base.h"
 #include "common/node.h"
-#include "common/nodes_manager.h"
+#include "common/nodes_manager_fixed_size.h"
 #include <functional>
 
 namespace heap {
@@ -37,7 +37,7 @@ class BinomialUKeyValueMap {
     void ClearReuse() { d = 0; }
   };
 
-  using TNodesManager = NodesManager<Node>;
+  using TNodesManager = NodesManagerFixedSize<Node>;
 
   struct TPositionValue {
     Node* heap_position;

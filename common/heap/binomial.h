@@ -6,7 +6,8 @@
 #include <functional>
 
 namespace heap {
-template <class TTData, class TTCompare = std::less<TTData>>
+template <class TTData, class TTCompare = std::less<TTData>,
+          template <class TNode> class TTNodesManager = NodesManager>
 class Binomial {
  public:
   using TData = TTData;
@@ -30,7 +31,7 @@ class Binomial {
     void ClearReuse() { d = 0; }
   };
 
-  using TNodesManager = NodesManager<Node>;
+  using TNodesManager = TTNodesManager<Node>;
 
  protected:
   TCompare compare;
