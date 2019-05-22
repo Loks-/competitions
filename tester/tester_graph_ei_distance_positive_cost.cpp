@@ -6,6 +6,7 @@
 #include "common/heap/binomial_ukey_value_map.h"
 #include "common/heap/dheap_ukey_pos_map.h"
 #include "common/heap/dheap_ukey_value_map.h"
+#include "common/heap/fibonacci_ukey_value_map.h"
 #include "common/timer.h"
 
 #include "tester/graph_ei_distance_positive_cost.h"
@@ -98,6 +99,7 @@ bool TesterGraphEIDistancePositiveCost::TestAll() {
   hs.insert(TestKVM<heap::DHeapUKeyValueMap<8, uint64_t>>("DM 8"));
   hs.insert(TestKVM<heap::DHeapUKeyValueMap<16, uint64_t>>("DM16"));
   hs.insert(TestKVM<heap::BinomialUKeyValueMap<uint64_t>>("BNML"));
+  hs.insert(TestKVM<heap::FibonacciUKeyValueMap<uint64_t>>("FBNC"));
   return hs.size() == 1;
 }
 

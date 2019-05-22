@@ -8,13 +8,13 @@
             "name": "(gdb) Launch",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/debug/build/google_code_jam",
-            // "program": "${workspaceFolder}/debug/build/tester",
+            // "program": "${workspaceFolder}/debug/build/google_code_jam",
+            "program": "${workspaceFolder}/debug/build/tester",
             "args": [
                 // "heap"
-                // "graph_distance_positive_cost"
-                "p3",
-                "tests/google/code_jam/2019/r2/p3.in"
+                "graph_distance_positive_cost"
+                // "p3",
+                // "tests/google/code_jam/2019/r2/p3.in"
             ],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",

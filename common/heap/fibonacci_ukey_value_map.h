@@ -2,16 +2,17 @@
 
 #include "common/base.h"
 #include "common/heap/fibonacci.h"
-#include "common/nodes_manager.h"
+#include "common/nodes_manager_fixed_size.h"
 #include <functional>
 #include <vector>
 
 namespace heap {
 template <class TTValue, class TCompare = std::less<TTValue>>
-class FibonacciUKeyValueMap : public Fibonacci<TTValue, TCompare> {
+class FibonacciUKeyValueMap
+    : public Fibonacci<TTValue, TCompare, NodesManagerFixedSize> {
  public:
   using TValue = TTValue;
-  using TBase = Fibonacci<TValue, TCompare>;
+  using TBase = Fibonacci<TValue, TCompare, NodesManagerFixedSize>;
   using TSelf = FibonacciUKeyValueMap<TValue, TCompare>;
   using TNode = typename TBase::Node;
   using TNodesManager = typename TBase::TNodesManager;
@@ -61,6 +62,8 @@ class FibonacciUKeyValueMap : public Fibonacci<TTValue, TCompare> {
     return v;
   }
 
+  unsigned GetKey(const TNode* node) const { return manager.RawIndex(node); }
+
  protected:
   void AddNewKeyI(TNode* node, const TValue& new_value, bool skip_heap) {
     node->value = new_value;
@@ -109,12 +112,12 @@ class FibonacciUKeyValueMap : public Fibonacci<TTValue, TCompare> {
 
   void Add(const TData& x) { Set(x.key, x.value); }
 
-  unsigned TopKey() const { return TBase::TopNode() - GetNode(0); }
+  unsigned TopKey() const { return GetKey(TBase::TopNode()); }
   const TValue& TopValue() const { return TBase::Top(); }
 
   TData Top() const {
     TNode* node = TBase::TopNode();
-    return {node - GetNode(0), node->value};
+    return {GetKey(node), node->value};
   }
 
   void Delete(TNode* node) {
