@@ -12,7 +12,7 @@ class Binomial {
  public:
   using TData = TTData;
   using TCompare = TTCompare;
-  using TSelf = Binomial<TData, TCompare>;
+  using TSelf = Binomial<TData, TCompare, TTNodesManager>;
 
   class Node : public BaseNode {
    public:

@@ -15,7 +15,7 @@ class Fibonacci {
   static const unsigned mask = (1u << 31);
   using TData = TTData;
   using TCompare = TTCompare;
-  using TSelf = Fibonacci<TData, TCompare>;
+  using TSelf = Fibonacci<TData, TCompare, TTNodesManager>;
 
   class Node : public BaseNode {
    public:
