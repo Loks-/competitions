@@ -121,7 +121,7 @@ class FibonacciUKeyValueMap
   }
 
   void Delete(TNode* node) {
-    TBase::DeleteI(node);
+    TBase::RemoveNode(node);
     SetUnused(node);
   }
 

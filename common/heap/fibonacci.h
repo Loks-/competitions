@@ -146,8 +146,39 @@ class Fibonacci {
       DecreaseValue(node, new_value);
   }
 
+  void RemoveNode(Node* node) {
+    if (node->c) {
+      ClearParentLink(node->c);
+      Union(node->c);
+      node->c = nullptr;
+    }
+    RemoveFromList(node);
+    if (node == head) {
+      if (node != node->r) {
+        head = node->r;
+        Consolidate();
+      } else {
+        head = nullptr;
+      }
+    } else if (node->p) {
+      Node* p = node->p;
+      if (node == p->c) {
+        if (node->r == node)
+          p->c = nullptr;
+        else
+          p->c = node->r;
+      }
+      node->p = nullptr;
+      if (Marked(p) && p->p)
+        CutNode(p);
+      else
+        Mark(p);
+    }
+    --size;
+  }
+
   void Delete(Node* node) {
-    DeleteI(node);
+    RemoveNode(node);
     nodes_manager.Release(node);
   }
 
@@ -255,37 +286,6 @@ class Fibonacci {
         break;
       }
     }
-  }
-
-  void DeleteI(Node* node) {
-    if (node->c) {
-      ClearParentLink(node->c);
-      Union(node->c);
-      node->c = nullptr;
-    }
-    RemoveFromList(node);
-    if (node == head) {
-      if (node != node->r) {
-        head = node->r;
-        Consolidate();
-      } else {
-        head = nullptr;
-      }
-    } else if (node->p) {
-      Node* p = node->p;
-      if (node == p->c) {
-        if (node->r == node)
-          p->c = nullptr;
-        else
-          p->c = node->r;
-      }
-      node->p = nullptr;
-      if (Marked(p) && p->p)
-        CutNode(p);
-      else
-        Mark(p);
-    }
-    --size;
   }
 };
 }  // namespace heap
