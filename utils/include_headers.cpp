@@ -92,8 +92,8 @@ static void AddFile(const std::string& input_filename, std::ofstream& output,
       output << "int main() {" << std::endl;
       continue;
     }
-    if (line == "const static bool local_run = true;") {
-      output << "const static bool local_run = false;" << std::endl;
+    if (line == "static const bool local_run = true;") {
+      output << "static const bool local_run = false;" << std::endl;
       continue;
     }
     output << line << std::endl;

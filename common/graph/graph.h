@@ -4,12 +4,12 @@
 #include <vector>
 
 namespace graph {
-const static unsigned CNone = unsigned(-1);
+static const unsigned CNone = unsigned(-1);
 
 template <bool _directed_edges = false>
 class Graph {
  public:
-  const static bool directed_edges = _directed_edges;
+  static const bool directed_edges = _directed_edges;
   using TSelf = Graph<directed_edges>;
 
  protected:

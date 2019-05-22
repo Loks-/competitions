@@ -6,9 +6,9 @@
 template <class TTValue, unsigned _rows, unsigned _columns>
 class MatrixStaticSize : public VectorStaticSize<TTValue, _rows * _columns> {
  public:
-  const static unsigned rows = _rows;
-  const static unsigned columns = _columns;
-  const static bool is_square = (rows == columns);
+  static const unsigned rows = _rows;
+  static const unsigned columns = _columns;
+  static const bool is_square = (rows == columns);
 
   using TValue = TTValue;
   using TSelf = MatrixStaticSize<TValue, rows, columns>;

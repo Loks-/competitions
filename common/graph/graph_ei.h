@@ -9,7 +9,7 @@ namespace graph {
 template <class TTEdgeInfo, bool _directed_edges = false>
 class GraphEI : public Graph<_directed_edges> {
  public:
-  const static bool directed_edges = _directed_edges;
+  static const bool directed_edges = _directed_edges;
   using TEdgeInfo = TTEdgeInfo;
   using TEdge = Edge<TEdgeInfo>;
   using TEdges = EdgesFromVertex<TEdgeInfo>;

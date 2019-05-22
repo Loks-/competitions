@@ -5,7 +5,7 @@
 template <class TTValue, unsigned _size>
 class VectorStaticSize {
  public:
-  const static unsigned size = _size;
+  static const unsigned size = _size;
 
   using TValue = TTValue;
   using TData = std::array<TValue, size>;

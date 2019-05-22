@@ -12,7 +12,7 @@ template <class TTData, class TTCompare = std::less<TTData>,
           template <class TNode> class TTNodesManager = NodesManager>
 class Fibonacci {
  public:
-  const static unsigned mask = (1u << 31);
+  static const unsigned mask = (1u << 31);
   using TData = TTData;
   using TCompare = TTCompare;
   using TSelf = Fibonacci<TData, TCompare>;

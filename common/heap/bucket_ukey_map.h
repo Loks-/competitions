@@ -7,7 +7,7 @@
 namespace heap {
 class BucketUKeyMap {
  public:
-  const static unsigned not_in_queue = -1u;
+  static const unsigned not_in_queue = -1u;
   using TValue = unsigned;
   using TSelf = BucketUKeyMap;
 

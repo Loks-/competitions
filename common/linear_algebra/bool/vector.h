@@ -12,7 +12,7 @@ class VectorBool {
   using TData = std::vector<TBlockValue>;
   using TSelf = VectorBool;
 
-  const static unsigned bits_per_block = 8 * sizeof(TBlockValue);
+  static const unsigned bits_per_block = 8 * sizeof(TBlockValue);
 
   static unsigned MinBlockSize(unsigned size) {
     return (size + bits_per_block - 1) / bits_per_block;
