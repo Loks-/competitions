@@ -29,6 +29,8 @@ class FibonacciUKeyValueMap
   void SetUnused(TNode* p) { p->d = -1u; }
   void CleanUnused(TNode* p) { p->d = 0; }
 
+  TNode* GetNode(unsigned key) { return manager.NodeByRawIndex(key); }
+
  public:
   FibonacciUKeyValueMap(unsigned ukey_size)
       : TBase(manager), manager(ukey_size) {
@@ -48,7 +50,6 @@ class FibonacciUKeyValueMap
 
   unsigned UKeySize() const { return manager.Size(); }
 
-  TNode* GetNode(unsigned key) { return manager.NodeByRawIndex(key); }
   const TNode* GetNode(unsigned key) const {
     return manager.NodeByRawIndex(key);
   }

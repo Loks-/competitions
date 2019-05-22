@@ -57,7 +57,7 @@ class Binomial {
     ++size;
   }
 
-  Node* TopNode() const {
+  const Node* TopNode() const {
     assert(!Empty());
     if (!top) SetTopNode();
     return top;
@@ -94,6 +94,12 @@ class Binomial {
     for (Node* c = top->s; c; c = c->s) {
       if (Compare(c, top)) top = c;
     }
+  }
+
+  Node* TopNode() {
+    assert(!Empty());
+    if (!top) SetTopNode();
+    return top;
   }
 
   static void Link(Node* x, Node* y) {

@@ -147,7 +147,7 @@ class BinomialUKeyValueMap {
 
   void Add(const TData& x) { Set(x.key, x.value); }
 
-  Node* TopNode() const {
+  const Node* TopNode() const {
     assert(!Empty());
     if (!top) SetTopNode();
     return top;
@@ -199,6 +199,12 @@ class BinomialUKeyValueMap {
     for (Node* c = top->s; c; c = c->s) {
       if (Compare(c, top)) top = c;
     }
+  }
+
+  Node* TopNode() {
+    assert(!Empty());
+    if (!top) SetTopNode();
+    return top;
   }
 
   static void Link(Node* x, Node* y) {

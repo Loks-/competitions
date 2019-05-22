@@ -73,7 +73,7 @@ class Fibonacci {
     return p;
   }
 
-  Node* TopNode() const {
+  const Node* TopNode() const {
     assert(head);
     return head;
   }
@@ -186,6 +186,11 @@ class Fibonacci {
   static unsigned Degree(const Node* node) { return node->d & ~mask; }
   static void Mark(Node* node) { node->d |= mask; }
   static unsigned Marked(const Node* node) { return node->d & mask; }
+
+  Node* TopNode() {
+    assert(head);
+    return head;
+  }
 
   void Union(Node* node) {
     if (!node) return;
