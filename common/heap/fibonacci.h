@@ -27,7 +27,7 @@ class Fibonacci {
     Node(const TData& _value) : value(_value) { Clear(); }
 
     void Clear() {
-      p = l = r = c = 0;
+      p = l = r = c = nullptr;
       d = 0;
     }
 
@@ -47,7 +47,7 @@ class Fibonacci {
 
  public:
   Fibonacci(TNodesManager& _nodes_manager)
-      : nodes_manager(_nodes_manager), head(0), size(0) {}
+      : nodes_manager(_nodes_manager), head(nullptr), size(0) {}
 
   TSelf Make() const { return TSelf(nodes_manager); }
   bool Empty() const { return !head; }
@@ -97,7 +97,7 @@ class Fibonacci {
       Union(h.head);
       if (Compare(h.head, head)) head = h.head;
     }
-    h.head = 0;
+    h.head = nullptr;
     size += h.size;
     h.size = 0;
   }
@@ -126,7 +126,7 @@ class Fibonacci {
     if (node->c) {
       ClearParentLink(node->c);
       Union(node->c);
-      node->c = 0;
+      node->c = nullptr;
       Node* p = node->p;
       if (p && Marked(p) && p->p)
         CutNode(p);
@@ -165,8 +165,8 @@ class Fibonacci {
   }
 
   static void ClearParentLink(Node* node) {
-    node->p = 0;
-    for (Node* c = node->r; c != node; c = c->r) c->p = 0;
+    node->p = nullptr;
+    for (Node* c = node->r; c != node; c = c->r) c->p = nullptr;
   }
 
   static void RemoveFromList(Node* node) {
@@ -213,11 +213,11 @@ class Fibonacci {
           Link(p, q);
           p = q;
         }
-        vconsolidate[d] = 0;
+        vconsolidate[d] = nullptr;
       }
       vconsolidate[d] = p;
     }
-    head = 0;
+    head = nullptr;
     for (Node* p : vconsolidate) {
       if (!p) continue;
       if (head) {
@@ -241,9 +241,9 @@ class Fibonacci {
         r->l = node->l;
         r->l->r = r;
       } else {
-        p->c = 0;
+        p->c = nullptr;
       }
-      node->p = 0;
+      node->p = nullptr;
       node->r = head->r;
       node->r->l = node;
       node->l = head;
@@ -261,7 +261,7 @@ class Fibonacci {
     if (node->c) {
       ClearParentLink(node->c);
       Union(node->c);
-      node->c = 0;
+      node->c = nullptr;
     }
     RemoveFromList(node);
     if (node == head) {
@@ -269,17 +269,17 @@ class Fibonacci {
         head = node->r;
         Consolidate();
       } else {
-        head = 0;
+        head = nullptr;
       }
     } else if (node->p) {
       Node* p = node->p;
       if (node == p->c) {
         if (node->r == node)
-          p->c = 0;
+          p->c = nullptr;
         else
           p->c = node->r;
       }
-      node->p = 0;
+      node->p = nullptr;
       if (Marked(p) && p->p)
         CutNode(p);
       else
