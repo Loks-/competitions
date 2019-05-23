@@ -28,7 +28,7 @@ class TesterHeap {
   template <unsigned d>
   size_t TestDHeapUKeyValueMap();
 
-  template <bool multipass>
+  template <bool multipass, bool auxiliary>
   size_t TestPairingBaseHeap();
 
   template <bool multipass>

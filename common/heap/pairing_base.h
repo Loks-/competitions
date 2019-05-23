@@ -10,13 +10,15 @@ namespace heap {
 // Simplified Pairing heap.
 template <class TTData, class TTCompare = std::less<TTData>,
           template <class TNode> class TTNodesManager = NodesManager,
-          bool _multipass = false>
+          bool _multipass = false, bool _auxiliary = false>
 class PairingBase {
  public:
   static const bool multipass = _multipass;
+  static const bool auxiliary = _auxiliary;
   using TData = TTData;
   using TCompare = TTCompare;
-  using TSelf = PairingBase<TData, TCompare, TTNodesManager, multipass>;
+  using TSelf =
+      PairingBase<TData, TCompare, TTNodesManager, multipass, auxiliary>;
 
   class Node : public BaseNode {
    public:
@@ -38,8 +40,6 @@ class PairingBase {
   unsigned size;
 
   bool Compare(Node* l, Node* r) const { return compare(l->value, r->value); }
-  Node* TopNode() { return head; }
-  const Node* TopNode() const { return head; }
 
  public:
   PairingBase(unsigned expected_size)
@@ -48,10 +48,11 @@ class PairingBase {
   bool Empty() const { return !head; }
   unsigned Size() const { return size; }
   void Add(const TData& v) { AddNode(nodes_manager.New(v)); }
-  const TData& Top() const { return TopNode()->value; }
+  const TData& Top() { return TopNode()->value; }
 
   void Pop() {
     assert(head);
+    ProcessAux();
     Node* t = head;
     head = Compress(head->l);
     t->l = nullptr;
@@ -88,13 +89,25 @@ class PairingBase {
     }
   }
 
-  void AddNode(Node* node) {
+  void AddNode(Node* node, TFakeFalse) {
     if (!head)
       head = node;
     else
       ComparisonLinkHead(node);
     ++size;
   }
+
+  void AddNode(Node* node, TFakeTrue) {
+    if (!head) {
+      head = node;
+    } else {
+      node->r = head->r;
+      head->r = node;
+    }
+    ++size;
+  }
+
+  void AddNode(Node* node) { AddNode(node, TFakeBool<auxiliary>()); }
 
   Node* Compress(Node* f, TFakeFalse) {
     if (f && f->r) {
@@ -136,5 +149,22 @@ class PairingBase {
   }
 
   Node* Compress(Node* f) { return Compress(f, TFakeBool<multipass>()); }
+
+  void ProcessAux(TFakeFalse) {}
+
+  void ProcessAux(TFakeTrue) {
+    if (head->r) {
+      Node* t = Compress(head->r, TFakeTrue());
+      head->r = nullptr;
+      ComparisonLinkHead(t);
+    }
+  }
+
+  void ProcessAux() { ProcessAux(TFakeBool<auxiliary>()); }
+
+  Node* TopNode() {
+    ProcessAux();
+    return head;
+  }
 };
 }  // namespace heap

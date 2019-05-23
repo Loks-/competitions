@@ -177,10 +177,10 @@ size_t TesterHeap::TestDHeapUKeyValueMap() {
   return h;
 }
 
-template <bool multipass>
+template <bool multipass, bool auxiliary>
 size_t TesterHeap::TestPairingBaseHeap() {
-  using THeap =
-      heap::PairingBase<size_t, std::less<size_t>, NodesManager, multipass>;
+  using THeap = heap::PairingBase<size_t, std::less<size_t>, NodesManager,
+                                  multipass, auxiliary>;
   using TData = typename THeap::TData;
   Timer t;
   size_t h = 0;
@@ -191,8 +191,8 @@ size_t TesterHeap::TestPairingBaseHeap() {
     heap.Add(vloop[i]);
   }
   for (; !heap.Empty(); heap.Pop()) h = hash_combine(h, heap.Top());
-  std::cout << "Test results [PRB" << multipass << "]: " << h << "\t"
-            << t.GetMilliseconds() << std::endl;
+  std::cout << "Test results [PB" << auxiliary << multipass << "]: " << h
+            << "\t" << t.GetMilliseconds() << std::endl;
   return h;
 }
 
@@ -225,8 +225,10 @@ bool TesterHeap::TestAll() {
   hs.insert(TestDHeap<8>());
   hs.insert(TestBinomialHeap());
   hs.insert(TestFibonacciHeap());
-  hs.insert(TestPairingBaseHeap<0>());
-  hs.insert(TestPairingBaseHeap<1>());
+  hs.insert(TestPairingBaseHeap<0, 0>());
+  hs.insert(TestPairingBaseHeap<1, 0>());
+  hs.insert(TestPairingBaseHeap<0, 1>());
+  hs.insert(TestPairingBaseHeap<1, 1>());
   hs.insert(TestPairingHeap<0>());
   hs.insert(TestPairingHeap<1>());
   hs.insert(TestDHeapUKeyPosMap<2>());
