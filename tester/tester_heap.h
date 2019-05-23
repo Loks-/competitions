@@ -28,6 +28,12 @@ class TesterHeap {
   template <unsigned d>
   size_t TestDHeapUKeyValueMap();
 
+  template <bool multipass>
+  size_t TestPairingBaseHeap();
+
+  template <bool multipass>
+  size_t TestPairingHeap();
+
  public:
   bool TestAll();
 };

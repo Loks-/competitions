@@ -10,7 +10,7 @@ namespace heap {
 // Simplified Pairing heap.
 template <class TTData, class TTCompare = std::less<TTData>,
           template <class TNode> class TTNodesManager = NodesManager,
-          bool _multipass = true>
+          bool _multipass = false>
 class PairingBase {
  public:
   static const bool multipass = _multipass;

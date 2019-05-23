@@ -9,6 +9,8 @@
 #include "common/heap/dheap_ukey_value_map.h"
 #include "common/heap/fibonacci.h"
 #include "common/heap/fibonacci_ukey_value_map.h"
+#include "common/heap/pairing.h"
+#include "common/heap/pairing_base.h"
 #include "common/timer.h"
 
 #include <iostream>
@@ -62,7 +64,7 @@ size_t TesterHeap::TestBinaryHeap() {
 size_t TesterHeap::TestBinomialHeap() {
   Timer t;
   size_t h = 0;
-  heap::Binomial<size_t>::TNodesManager nodes_manager(vloop.size());
+  heap::Binomial<size_t>::TNodesManager nodes_manager(vinit.size());
   heap::Binomial<size_t> heap(nodes_manager);
   for (size_t v : vinit) heap.Add(v);
   for (unsigned i = 0; i < vloop.size(); ++i) {
@@ -93,7 +95,7 @@ size_t TesterHeap::TestBinomialUKeyValueMap() {
 size_t TesterHeap::TestFibonacciHeap() {
   Timer t;
   size_t h = 0;
-  heap::Fibonacci<size_t>::TNodesManager nodes_manager(vloop.size());
+  heap::Fibonacci<size_t>::TNodesManager nodes_manager(vinit.size());
   heap::Fibonacci<size_t> heap(nodes_manager);
   for (size_t v : vinit) heap.Add(v);
   for (unsigned i = 0; i < vloop.size(); ++i) {
@@ -175,6 +177,45 @@ size_t TesterHeap::TestDHeapUKeyValueMap() {
   return h;
 }
 
+template <bool multipass>
+size_t TesterHeap::TestPairingBaseHeap() {
+  using THeap =
+      heap::PairingBase<size_t, std::less<size_t>, NodesManager, multipass>;
+  using TData = typename THeap::TData;
+  Timer t;
+  size_t h = 0;
+  THeap heap(vinit.size());
+  for (size_t v : vinit) heap.Add(v);
+  for (unsigned i = 0; i < vloop.size(); ++i) {
+    h = hash_combine(h, heap.Extract());
+    heap.Add(vloop[i]);
+  }
+  for (; !heap.Empty(); heap.Pop()) h = hash_combine(h, heap.Top());
+  std::cout << "Test results [PRB" << multipass << "]: " << h << "\t"
+            << t.GetMilliseconds() << std::endl;
+  return h;
+}
+
+template <bool multipass>
+size_t TesterHeap::TestPairingHeap() {
+  using THeap =
+      heap::Pairing<size_t, std::less<size_t>, NodesManager, multipass>;
+  using TData = typename THeap::TData;
+  Timer t;
+  size_t h = 0;
+  typename THeap::TNodesManager nodes_manager(vinit.size());
+  THeap heap(nodes_manager);
+  for (size_t v : vinit) heap.Add(v);
+  for (unsigned i = 0; i < vloop.size(); ++i) {
+    h = hash_combine(h, heap.Extract());
+    heap.Add(vloop[i]);
+  }
+  for (; !heap.Empty(); heap.Pop()) h = hash_combine(h, heap.Top());
+  std::cout << "Test results [PR " << multipass << "]: " << h << "\t"
+            << t.GetMilliseconds() << std::endl;
+  return h;
+}
+
 bool TesterHeap::TestAll() {
   std::unordered_set<size_t> hs;
   hs.insert(TestPriorityQueue());
@@ -184,6 +225,10 @@ bool TesterHeap::TestAll() {
   hs.insert(TestDHeap<8>());
   hs.insert(TestBinomialHeap());
   hs.insert(TestFibonacciHeap());
+  hs.insert(TestPairingBaseHeap<0>());
+  hs.insert(TestPairingBaseHeap<1>());
+  hs.insert(TestPairingHeap<0>());
+  hs.insert(TestPairingHeap<1>());
   hs.insert(TestDHeapUKeyPosMap<2>());
   hs.insert(TestDHeapUKeyPosMap<4>());
   hs.insert(TestDHeapUKeyPosMap<8>());

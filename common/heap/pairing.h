@@ -9,7 +9,7 @@
 namespace heap {
 template <class TTData, class TTCompare = std::less<TTData>,
           template <class TNode> class TTNodesManager = NodesManager,
-          bool _multipass = true>
+          bool _multipass = false>
 class Pairing {
  public:
   static const bool multipass = _multipass;
@@ -111,19 +111,31 @@ class Pairing {
     if (compare(new_value, node->value)) DecreaseValue(node, new_value);
   }
 
-  //   void IncreaseValue(Node* node, const TData& new_value) {
-  //     // assert(node);
-  //     // node->value = new_value;
-  //     assert(false);
-  //   }
+  void IncreaseValue(Node* node, const TData& new_value) {
+    assert(node);
+    node->value = new_value;
+    if (node == head) {
+      node->r = node->l;
+      node->l = nullptr;
+      head = Compress(node);
+    } else {
+      Node* t = Compress(node->l);
+      if (t) {
+        t->r = node->r;
+        if (t->r) t->r->p = t;
+        node->r = t;
+        t->p = node;
+      }
+    }
+  }
 
-  //   void SetValue(Node* node, const TData& new_value) {
-  //     assert(node);
-  //     if (compare(node->value, new_value))
-  //       IncreaseValue(node, new_value);
-  //     else
-  //       DecreaseValue(node, new_value);
-  //   }
+  void SetValue(Node* node, const TData& new_value) {
+    assert(node);
+    if (compare(node->value, new_value))
+      IncreaseValue(node, new_value);
+    else
+      DecreaseValue(node, new_value);
+  }
 
   void Delete(Node* node) {
     RemoveNode(node);
@@ -155,14 +167,7 @@ class Pairing {
     }
   }
 
-  void RemoveNonHead(Node* x) {
-    // ...
-    assert(false);
-  }
-
-  void RemoveHead(TFakeFalse) {
-    Node* f = head->l;
-    head->l = nullptr;
+  Node* Compress(Node* f, TFakeFalse) {
     if (f && f->r) {
       Node* l = nullptr;
       for (; f && f->r;) {
@@ -184,12 +189,10 @@ class Pairing {
       f->r = nullptr;
     }
     if (f) f->p = nullptr;
-    head = f;
+    return f;
   }
 
-  void RemoveHead(TFakeTrue) {
-    Node* f = head->l;
-    head->l = nullptr;
+  Node* Compress(Node* f, TFakeTrue) {
     if (f && f->r) {
       Node* l = f->r;
       for (; l->r;) l = l->r;
@@ -202,14 +205,35 @@ class Pairing {
       f->r = nullptr;
     }
     if (f) f->p = nullptr;
-    head = f;
+    return f;
   }
 
+  Node* Compress(Node* f) { return Compress(f, TFakeBool<multipass>()); }
+
   void RemoveNode(Node* x) {
-    if (x == head)
-      RemoveHead(TFakeBool<multipass>());
-    else
-      RemoveNonHead(x);
+    if (x == head) {
+      Node* t = Compress(x->l);
+      x->l = nullptr;
+      head = t;
+    } else {
+      Node* t = Compress(x->l);
+      if (t) {
+        if (x->p->l == x)
+          x->p->l = t;
+        else
+          x->p->r = t;
+        t->p = x->p;
+        t->r = x->r;
+        if (x->r) x->r->p = t;
+      } else {
+        if (x->p->l == x)
+          x->p->l = x->r;
+        else
+          x->p->r = x->r;
+        if (x->r) x->r->p = x->p;
+      }
+      x->p = x->r = nullptr;
+    }
     --size;
   }
 };
