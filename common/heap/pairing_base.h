@@ -53,7 +53,8 @@ class PairingBase {
   void Pop() {
     assert(head);
     Node* t = head;
-    RemoveHead(TFakeBool<multipass>());
+    head = Compress(head->l);
+    t->l = nullptr;
     --size;
     nodes_manager.Release(t);
   }
@@ -95,9 +96,7 @@ class PairingBase {
     ++size;
   }
 
-  void RemoveHead(TFakeFalse) {
-    Node* f = head->l;
-    head->l = nullptr;
+  Node* Compress(Node* f, TFakeFalse) {
     if (f && f->r) {
       Node* l = nullptr;
       for (; f && f->r;) {
@@ -118,12 +117,10 @@ class PairingBase {
       }
       f->r = nullptr;
     }
-    head = f;
+    return f;
   }
 
-  void RemoveHead(TFakeTrue) {
-    Node* f = head->l;
-    head->l = nullptr;
+  Node* Compress(Node* f, TFakeTrue) {
     if (f && f->r) {
       Node* l = f->r;
       for (; l->r;) l = l->r;
@@ -135,7 +132,9 @@ class PairingBase {
       f = ComparisonLink(f, l);
       f->r = nullptr;
     }
-    head = f;
+    return f;
   }
+
+  Node* Compress(Node* f) { return Compress(f, TFakeBool<multipass>()); }
 };
 }  // namespace heap
