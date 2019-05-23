@@ -9,13 +9,14 @@
 namespace heap {
 template <class TTData, class TTCompare = std::less<TTData>,
           template <class TNode> class TTNodesManager = NodesManager,
-          bool _multipass = false>
+          bool _multipass = false, bool _auxiliary = false>
 class Pairing {
  public:
   static const bool multipass = _multipass;
+  static const bool auxiliary = _auxiliary;
   using TData = TTData;
   using TCompare = TTCompare;
-  using TSelf = Pairing<TData, TCompare, TTNodesManager, multipass>;
+  using TSelf = Pairing<TData, TCompare, TTNodesManager, multipass, auxiliary>;
 
   class Node : public BaseNode {
    public:
@@ -38,11 +39,6 @@ class Pairing {
 
   bool Compare(Node* l, Node* r) const { return compare(l->value, r->value); }
 
-  Node* TopNode() {
-    assert(head);
-    return head;
-  }
-
  public:
   Pairing(TNodesManager& _nodes_manager)
       : nodes_manager(_nodes_manager), head(nullptr), size(0) {}
@@ -51,13 +47,7 @@ class Pairing {
   bool Empty() const { return !head; }
   unsigned Size() const { return size; }
 
-  void AddNode(Node* node) {
-    if (!head)
-      head = node;
-    else
-      ComparisonLinkHead(node);
-    ++size;
-  }
+  void AddNode(Node* node) { AddNode(node, TFakeBool<auxiliary>()); }
 
   Node* Add(const TData& v) {
     Node* p = nodes_manager.New(v);
@@ -65,14 +55,12 @@ class Pairing {
     return p;
   }
 
-  const Node* TopNode() const {
-    assert(head);
-    return head;
+  const TData& Top() { return TopNode()->value; }
+
+  void Pop() {
+    ProcessAux();
+    Delete(head);
   }
-
-  const TData& Top() const { return TopNode()->value; }
-
-  void Pop() { Delete(head); }
 
   TData Extract() {
     TData v = Top();
@@ -83,10 +71,13 @@ class Pairing {
   void Union(TSelf& h) {
     assert(&nodes_manager == &(h.nodes_manager));
     if (h.Empty()) return;
-    if (Empty())
+    if (Empty()) {
       head = h.head;
-    else
+    } else {
+      ProcessAux();
+      h.ProcessAux();
       ComparisonLinkHead(h.head);
+    }
     h.head = nullptr;
     size += h.size;
     h.size = 0;
@@ -101,8 +92,15 @@ class Pairing {
         node->p->l = node->r;
       else
         node->p->r = node->r;
-      node->p = node->r = nullptr;
-      ComparisonLinkHead(node);
+      if (auxiliary) {
+        node->p = head;
+        node->r = head->r;
+        if (node->r) node->r->p = node;
+        head->r = node;
+      } else {
+        node->p = node->r = nullptr;
+        ComparisonLinkHead(node);
+      }
     }
   }
 
@@ -114,6 +112,7 @@ class Pairing {
   void IncreaseValue(Node* node, const TData& new_value) {
     assert(node);
     node->value = new_value;
+    if (auxiliary && (node == head)) ProcessAux();
     if (node == head) {
       node->r = node->l;
       node->l = nullptr;
@@ -167,6 +166,24 @@ class Pairing {
     }
   }
 
+  void AddNode(Node* node, TFakeFalse) {
+    if (!head)
+      head = node;
+    else
+      ComparisonLinkHead(node);
+    ++size;
+  }
+
+  void AddNode(Node* node, TFakeTrue) {
+    if (!head) {
+      head = node;
+    } else {
+      node->r = head->r;
+      head->r = node;
+    }
+    ++size;
+  }
+
   Node* Compress(Node* f, TFakeFalse) {
     if (f && f->r) {
       Node* l = nullptr;
@@ -209,6 +226,24 @@ class Pairing {
   }
 
   Node* Compress(Node* f) { return Compress(f, TFakeBool<multipass>()); }
+
+  void ProcessAux(TFakeFalse) {}
+
+  void ProcessAux(TFakeTrue) {
+    if (head->r) {
+      Node* t = Compress(head->r, TFakeTrue());
+      head->r = nullptr;
+      ComparisonLinkHead(t);
+    }
+  }
+
+  void ProcessAux() { ProcessAux(TFakeBool<auxiliary>()); }
+
+  Node* TopNode() {
+    assert(head);
+    ProcessAux();
+    return head;
+  }
 
   void RemoveNode(Node* x) {
     if (x == head) {
