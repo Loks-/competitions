@@ -34,6 +34,9 @@ class TesterHeap {
   template <bool multipass, bool auxiliary>
   size_t TestPairingHeap();
 
+  template <bool multipass, bool auxiliary>
+  size_t TestPairingUKeyValueMap();
+
  public:
   bool TestAll();
 };
