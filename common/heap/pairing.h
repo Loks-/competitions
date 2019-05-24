@@ -92,6 +92,7 @@ class Pairing {
         node->p->l = node->r;
       else
         node->p->r = node->r;
+      if (node->r) node->r->p = node->p;
       if (auxiliary) {
         node->p = head;
         node->r = head->r;
@@ -179,7 +180,9 @@ class Pairing {
       head = node;
     } else {
       node->r = head->r;
+      if (node->r) node->r->p = node;
       head->r = node;
+      node->p = head;
     }
     ++size;
   }
