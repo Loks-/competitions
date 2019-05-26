@@ -57,6 +57,10 @@ class BucketUKeyMap {
   unsigned Size() const { return size; }
   unsigned UKeySize() const { return unsigned(queue_position.size()); }
 
+  bool HasKey(unsigned key) const {
+    return queue_position[key].index != not_in_queue;
+  }
+
   unsigned GetPriority(unsigned key) const {
     return queue_position[key].priority;
   }
@@ -132,7 +136,7 @@ class BucketUKeyMap {
     queue_position[key].priority = priority;
     if (!skip_heap) {
       AdjustQueueSize(priority);
-      queue_position[priority].index = queue[priority].size();
+      queue_position[key].index = queue[priority].size();
       queue[priority].push_back(key);
       ++size;
       top_priority = std::min(top_priority, priority);
