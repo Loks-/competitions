@@ -1,5 +1,5 @@
 #include "common/graph/graph.h"
-#include "common/graph/graph/hamiltonian_path.h"
+#include "common/graph/graph/hamiltonian_path_undirected_graph.h"
 #include "common/hash.h"
 #include "common/stl/base.h"
 
@@ -21,7 +21,7 @@ int main_pylons() {
         g.AddEdge(i, j);
       }
     }
-    vector<unsigned> hpath = FindHamiltonianPath(g);
+    vector<unsigned> hpath = HamiltonianPath(g);
     cout << "Case #" << it << ": "
          << (hpath.empty() ? "IMPOSSIBLE" : "POSSIBLE") << endl;
     for (unsigned u : hpath) {

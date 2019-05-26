@@ -12,10 +12,9 @@
 #include <vector>
 
 namespace graph {
-template <class TGraph>
-class HamiltonianPath {
+class HamiltonianPathUndirectedGraph {
  protected:
-  TGraph graph;
+  UndirectedGraph graph;
   unsigned size;
   std::vector<unsigned> current_path;
   std::vector<unsigned> visited;
@@ -85,16 +84,15 @@ class HamiltonianPath {
     return false;
   }
 
-  HamiltonianPath(const TGraph& g) : graph(g), size(graph.Size()) {
+  HamiltonianPathUndirectedGraph(const UndirectedGraph& g)
+      : graph(g), size(graph.Size()) {
     current_path.reserve(size);
     visited.resize(size, 0);
   }
 };
 }  // namespace graph
 
-template <bool directed_edges>
-std::vector<unsigned> FindHamiltonianPath(
-    const graph::Graph<directed_edges>& graph) {
-  graph::HamiltonianPath<graph::Graph<directed_edges>> hp(graph);
+std::vector<unsigned> HamiltonianPath(const UndirectedGraph& graph) {
+  graph::HamiltonianPathUndirectedGraph hp(graph);
   return hp.Find() ? hp.GetPath() : std::vector<unsigned>();
 }
