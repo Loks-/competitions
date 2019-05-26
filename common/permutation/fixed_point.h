@@ -1,13 +1,14 @@
 #pragma once
 
-#include "common/permutation/permutation.h"
+#include "common/permutation/base.h"
 #include <vector>
 
-std::vector<unsigned> PermutationFixedPoints(const Permutation& p) {
+namespace permutation {
+inline std::vector<unsigned> FixedPoints(const TLine& line) {
   std::vector<unsigned> output;
-  const Permutation::TLine& l = p.Line();
-  for (unsigned i = 0; i < l.size(); ++i) {
-    if (l[i] == i) output.push_back(i);
+  for (unsigned i = 0; i < line.size(); ++i) {
+    if (line[i] == i) output.push_back(i);
   }
   return output;
 }
+}  // namespace permutation

@@ -1,19 +1,14 @@
 #pragma once
 
 #include "common/base.h"
+#include "common/permutation/base.h"
 #include "common/vector/read.h"
 #include <algorithm>
 #include <utility>
 #include <vector>
 
+namespace permutation {
 class Permutation {
- public:
-  using TLine = std::vector<unsigned>;
-  using TCycle = std::vector<unsigned>;
-  using TCycles = std::vector<TCycle>;
-  using TSwap = std::pair<unsigned, unsigned>;
-  using TSwaps = std::vector<TSwap>;
-
  protected:
   unsigned n;
   mutable TLine line;
@@ -43,7 +38,7 @@ class Permutation {
     if (enabled_cycles) return;
     assert(enabled_line);
     ResetCycles();
-    thread_local TLine t;
+    thread_local std::vector<unsigned> t;
     t.resize(n);
     std::fill(t.begin(), t.end(), 0);
     for (unsigned i = 0; i < n; ++i) {
@@ -58,11 +53,7 @@ class Permutation {
   }
 
  public:
-  Permutation(unsigned size = 0) {
-    n = size;
-    line.resize(n);
-    Reset();
-  }
+  Permutation(unsigned size = 0) { SetSize(size); }
 
   Permutation(const TLine& l, bool shited_line) { SetLine(l, shited_line); }
 
@@ -117,3 +108,4 @@ class Permutation {
     SetLine(l, shited_line);
   }
 };
+}  // namespace permutation
