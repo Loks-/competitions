@@ -4,8 +4,8 @@
 #include "common/permutation/invert_line.h"
 #include <algorithm>
 
-void SortEdgesByOrder(UndirectedGraph& g, std::vector<unsigned>& order,
-                      bool inversed_order = false) {
+inline void SortEdgesByOrder(UndirectedGraph& g, std::vector<unsigned>& order,
+                             bool inversed_order = false) {
   auto order_pos = InvertLine(order);
   auto cmp = [&](unsigned i, unsigned j) {
     return inversed_order != (order_pos[i] < order_pos[j]);
