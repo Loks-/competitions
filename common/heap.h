@@ -4,6 +4,6 @@
 #include <functional>
 
 template <class TValue>
-using HeapMinOnTop = heap::DHeap<2u, TValue, std::less<TValue>>;
+using HeapMinOnTop = heap::DHeap<4u, TValue, std::less<TValue>>;
 template <class TValue>
-using HeapMaxOnTop = heap::DHeap<2u, TValue, std::greater<TValue>>;
+using HeapMaxOnTop = heap::DHeap<4u, TValue, std::greater<TValue>>;
