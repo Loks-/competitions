@@ -5,7 +5,7 @@
 #include "common/stl/base.h"
 
 int main_mehta_and_his_laziness() {
-  PrimesList primes_list(1000);
+  factorization::PrimesList primes_list(1000);
   unsigned T, N;
   cin >> T;
   for (unsigned it = 0; it < T; ++it) {

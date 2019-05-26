@@ -13,7 +13,7 @@ int main_waiter() {
     cin >> x;
     sa.push(x);
   }
-  PrimesList primes_list(10000);
+  factorization::PrimesList primes_list(10000);
   const vector<uint64_t>& primes = primes_list.GetPrimes();
   for (unsigned iq = 0; iq < Q; ++iq) {
     unsigned p = unsigned(primes[iq]);

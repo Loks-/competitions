@@ -4,7 +4,7 @@
 #include "common/stl/base.h"
 
 int main_leonardos_prime_factors() {
-  PrimesList primes_list(100);
+  factorization::PrimesList primes_list(100);
   const vector<uint64_t>& primes = primes_list.GetPrimes();
   unsigned T;
   cin >> T;

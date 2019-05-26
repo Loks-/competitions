@@ -7,7 +7,7 @@
 #include <functional>
 
 int main_bear_and_cryptography() {
-  PrimesList primes_list(1000000);
+  factorization::PrimesList primes_list(1000000);
   uint64_t best_so_far;
 
   auto GetMaxPrimeLessOrEqualN = [&](uint64_t N, uint64_t minN) -> uint64_t {

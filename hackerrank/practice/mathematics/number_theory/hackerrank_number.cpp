@@ -13,7 +13,7 @@ int main_hackerrank_number() {
   cin >> a >> b;
   uint64_t raw_b = b;
   if (a > b) swap(a, b);
-  PrimesList primes_list(a);
+  factorization::PrimesList primes_list(a);
   // L
   uint64_t cL = 0, sL = 0;
   TFactorization f;

@@ -11,7 +11,7 @@ int main_gcd_product() {
   cin >> n >> m;
   if (n < m) swap(n, m);
   TModular r = 1;
-  PrimesList primes_list(m);
+  factorization::PrimesList primes_list(m);
   for (uint64_t p : primes_list.GetPrimes()) {
     for (uint64_t pp = p; pp <= m; pp *= p)
       r *= TModular(p).PowU((m / pp) * (n / pp));

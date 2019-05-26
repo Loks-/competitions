@@ -7,7 +7,7 @@
 using TModular = Modular<>;
 
 int main_divisor_exploration_ii() {
-  PrimesList primes_list(2000000);
+  factorization::PrimesList primes_list(2000000);
   const vector<uint64_t>& primes = primes_list.GetPrimes();
   unsigned T, m, a;
   cin >> T;

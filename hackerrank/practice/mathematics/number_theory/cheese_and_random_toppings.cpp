@@ -7,7 +7,7 @@
 
 int main_cheese_and_random_toppings() {
   unsigned T, N, R, M;
-  PrimesList primes_list(50);
+  factorization::PrimesList primes_list(50);
   cin >> T;
   for (unsigned it = 0; it < T; ++it) {
     cin >> N >> R >> M;

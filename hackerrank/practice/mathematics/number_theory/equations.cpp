@@ -10,7 +10,7 @@ int main_equations() {
   uint64_t n;
   cin >> n;
   TModular r = 1;
-  PrimesList primes_list(n);
+  factorization::PrimesList primes_list(n);
   for (uint64_t p : primes_list.GetPrimes()) {
     if (p > n) break;
     uint64_t c = 0;

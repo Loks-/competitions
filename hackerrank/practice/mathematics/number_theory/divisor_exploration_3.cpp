@@ -10,7 +10,7 @@ using TFactorial = ModularFactorial<TModular, true>;
 
 int main_divisor_exploration_3() {
   TFactorial f;
-  PrimesList primes_list(100000);
+  factorization::PrimesList primes_list(100000);
   const vector<uint64_t>& primes = primes_list.GetPrimes();
   unsigned T, m, a, d;
   cin >> T;

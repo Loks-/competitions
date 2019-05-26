@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <vector>
 
+namespace factorization {
 class PrimesList {
  protected:
   uint64_t table_size, squared_table_size;
@@ -78,3 +79,4 @@ class PrimesList {
     return output;
   }
 };
+}  // namespace factorization
