@@ -2,14 +2,15 @@
 
 #include "common/proxy/base.h"
 
+namespace proxy {
 template <class TValue>
-class ProxyOr : public ProxyBase<TValue> {
+class Or : public Base<TValue> {
  public:
-  using TBase = ProxyBase<TValue>;
-  using TSelf = ProxyOr<TValue>;
+  using TBase = Base<TValue>;
+  using TSelf = Or<TValue>;
 
-  ProxyOr() : TBase() {}
-  ProxyOr(const TValue& _data) : TBase(_data) {}
+  Or() : TBase() {}
+  Or(const TValue& _data) : TBase(_data) {}
 
   TSelf& operator+=(const TSelf& r) {
     TBase::data |= r.data;
@@ -18,3 +19,4 @@ class ProxyOr : public ProxyBase<TValue> {
 
   TSelf operator+(const TSelf& r) { return TSelf(TBase::data | r.data); }
 };
+}  // namespace proxy

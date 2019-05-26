@@ -5,7 +5,7 @@
 #include "common/stl/base.h"
 #include "common/vector/read.h"
 
-using TProxy = ProxyMax<uint64_t>;
+using TProxy = proxy::Max<uint64_t>;
 using TBIT = BITSparse<TProxy>;
 
 int main_subsequence_weighting__bit_sparse() {

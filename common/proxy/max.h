@@ -4,14 +4,15 @@
 #include <algorithm>
 #include <limits>
 
+namespace proxy {
 template <class TValue>
-class ProxyMax : public ProxyBase<TValue> {
+class Max : public Base<TValue> {
  public:
-  using TBase = ProxyBase<TValue>;
-  using TSelf = ProxyMax<TValue>;
+  using TBase = Base<TValue>;
+  using TSelf = Max<TValue>;
 
-  ProxyMax() : TBase(std::numeric_limits<TValue>::lowest()) {}
-  ProxyMax(const TValue& _data) : TBase(_data) {}
+  Max() : TBase(std::numeric_limits<TValue>::lowest()) {}
+  Max(const TValue& _data) : TBase(_data) {}
 
   TSelf& operator+=(const TSelf& r) {
     TBase::data = std::max(TBase::data, r.data);
@@ -22,3 +23,4 @@ class ProxyMax : public ProxyBase<TValue> {
     return TSelf(std::max(TBase::data, r.data));
   }
 };
+}  // namespace proxy
