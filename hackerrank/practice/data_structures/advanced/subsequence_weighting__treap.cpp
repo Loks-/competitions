@@ -5,8 +5,9 @@
 #include "common/stl/base.h"
 #include "common/vector/read.h"
 
-using TTree = Treap<true, false, uint64_t, BSTInfoMax<uint64_t, BSTInfoNone>,
-                    BSTActionNone, uint64_t>;
+using TTree =
+    bst::Treap<true, false, uint64_t, bst::info::Max<uint64_t, bst::info::None>,
+               bst::action::None, uint64_t>;
 using TNode = TTree::TNode;
 
 int main_subsequence_weighting__treap() {
@@ -19,7 +20,7 @@ int main_subsequence_weighting__treap() {
     TNode *root = 0, *l, *r;
     for (unsigned i = 0; i < N; ++i) {
       tree.SplitByKey(root, va[i], l, r);
-      TNode* m = tree.GetNewNode(vw[i] + (l ? l->info.subtree_max : 0), va[i]);
+      TNode* m = tree.New(vw[i] + (l ? l->info.subtree_max : 0), va[i]);
       root = tree.Join(tree.Join(l, m), r);
     }
     cout << root->info.subtree_max << endl;

@@ -8,27 +8,32 @@
 #include "common/binary_search_tree/info/size.h"
 #include "common/binary_search_tree/node.h"
 #include "common/binary_search_tree/tree.h"
+#include "common/nodes_manager_fixed_size.h"
 
-template <bool _use_parent, class TTData, class TTInfo = BSTInfoSize,
-          class TTAction = BSTActionNone, class TTKey = int64_t>
-class AVLTree
-    : public BSTree<BSTNode<TTData, BSTInfoHeight<TTInfo>, TTAction, true,
-                            _use_parent, false, TTKey>,
-                    AVLTree<_use_parent, TTData, TTInfo, TTAction, TTKey>> {
+namespace bst {
+template <bool _use_parent, class TTData, class TTInfo = info::Size,
+          class TTAction = action::None, class TTKey = int64_t,
+          template <class> class TTNodesManager = NodesManagerFixedSize>
+class AVLTree : public Tree<Node<TTData, info::Height<TTInfo>, TTAction, true,
+                                 _use_parent, false, TTKey>,
+                            TTNodesManager,
+                            AVLTree<_use_parent, TTData, TTInfo, TTAction,
+                                    TTKey, TTNodesManager>> {
  public:
   static const bool use_key = true;
   static const bool use_parent = _use_parent;
   static const bool use_height = false;
 
   using TData = TTData;
-  using TInfo = BSTInfoHeight<TTInfo>;
+  using TInfo = info::Height<TTInfo>;
   using TAction = TTAction;
   using TKey = TTKey;
   using TNode =
-      BSTNode<TData, TInfo, TAction, use_key, use_parent, use_height, TKey>;
-  using TSelf = AVLTree<use_parent, TData, TTInfo, TAction, TKey>;
-  using TTree = BSTree<TNode, TSelf>;
-  friend class BSTree<TNode, TSelf>;
+      Node<TData, TInfo, TAction, use_key, use_parent, use_height, TKey>;
+  using TSelf =
+      AVLTree<use_parent, TData, TTInfo, TAction, TKey, TTNodesManager>;
+  using TTree = Tree<TNode, TTNodesManager, TSelf>;
+  friend class Tree<TNode, TTNodesManager, TSelf>;
 
  public:
   AVLTree(unsigned max_nodes) : TTree(max_nodes) {}
@@ -44,17 +49,15 @@ class AVLTree
   static TNode* FixBalance(TNode* root) {
     if (Balance(root) == 2) {
       if (Balance(root->l) == -1)
-        BSTRotate<TNode, false, apply_action_on_child>(root->l->r, root->l,
-                                                       root);
+        Rotate<TNode, false, apply_action_on_child>(root->l->r, root->l, root);
       TNode* child = root->l;
-      BSTRotate<TNode, true, apply_action_on_child>(child, root, 0);
+      Rotate<TNode, true, apply_action_on_child>(child, root, nullptr);
       return child;
     } else if (Balance(root) == -2) {
       if (Balance(root->r) == 1)
-        BSTRotate<TNode, false, apply_action_on_child>(root->r->l, root->r,
-                                                       root);
+        Rotate<TNode, false, apply_action_on_child>(root->r->l, root->r, root);
       TNode* child = root->r;
-      BSTRotate<TNode, true, apply_action_on_child>(child, root, 0);
+      Rotate<TNode, true, apply_action_on_child>(child, root, nullptr);
       return child;
     }
     root->UpdateInfo();
@@ -154,7 +157,8 @@ class AVLTree
       parent = node->p;
       child = FixBalance<true>(node);
     }
-    if (child) child->SetP(0);
+    if (child) child->SetP(nullptr);
     return child;
   }
 };
+}  // namespace bst

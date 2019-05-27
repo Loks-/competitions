@@ -2,8 +2,9 @@
 
 #include "common/binary_search_tree/info/update_info.h"
 
+namespace bst {
 template <class TNode>
-inline void BSTInsertByKey(TNode* root, TNode* node) {
+inline void InsertByKey(TNode* root, TNode* node) {
   static_assert(TNode::use_key, "use_key should be true");
   static_assert(TNode::use_parent, "use_parent should be true");
   if (!root || !node) return;
@@ -28,3 +29,4 @@ inline void BSTInsertByKey(TNode* root, TNode* node) {
   node->p = root;
   UpdateInfoNodeToRoot(root);
 }
+}  // namespace bst

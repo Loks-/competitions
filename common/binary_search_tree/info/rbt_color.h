@@ -1,7 +1,11 @@
 #pragma once
 
+namespace bst {
+namespace info {
 template <class TInfo>
-class BSTInfoRBTColor : public TInfo {
+class RBTColor : public TInfo {
  public:
-  bool is_black = false;
+  bool black = false;
 };
+}  // namespace info
+}  // namespace bst

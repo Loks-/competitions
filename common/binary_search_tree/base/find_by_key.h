@@ -1,9 +1,10 @@
 #pragma once
 
+namespace bst {
 template <class TNode>
-inline TNode* BSTFindByKey(TNode* root, const typename TNode::TKey& key) {
+inline TNode* FindByKey(TNode* root, const typename TNode::TKey& key) {
   static_assert(TNode::use_key, "use_key should be true");
-  for (TNode* node = root; node != 0;) {
+  for (TNode* node = root; node;) {
     node->ApplyAction();
     if (node->key < key)
       node = node->r;
@@ -12,5 +13,6 @@ inline TNode* BSTFindByKey(TNode* root, const typename TNode::TKey& key) {
     else
       return node;
   }
-  return 0;
+  return nullptr;
 }
+}  // namespace bst

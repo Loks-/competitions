@@ -2,9 +2,11 @@
 
 #include "common/binary_search_tree/info/none.h"
 
-class BSTInfoSize : public BSTInfoNone {
+namespace bst {
+namespace info {
+class Size : public None {
  public:
-  using TSelf = BSTInfoSize;
+  using TSelf = Size;
   static const bool is_none = false;
   static const bool has_size = true;
 
@@ -17,3 +19,5 @@ class BSTInfoSize : public BSTInfoNone {
            (node->r ? node->r->info.size : 0);
   }
 };
+}  // namespace info
+}  // namespace bst

@@ -7,18 +7,23 @@
 #include "common/binary_search_tree/info/size.h"
 #include "common/binary_search_tree/node.h"
 #include "common/binary_search_tree/tree.h"
+#include "common/nodes_manager_fixed_size.h"
 #include <stack>
 #include <vector>
 
+namespace bst {
 // In this implementation delete operation is different from wiki Scapegoat
 // tree. It removes node from tree (similar to other trees), not just mark for
 // future deletion.
-template <bool _use_parent, class TTData, class TTInfo = BSTInfoSize,
-          class TTAction = BSTActionNone, class TTKey = int64_t>
+template <bool _use_parent, class TTData, class TTInfo = info::Size,
+          class TTAction = action::None, class TTKey = int64_t,
+          template <class> class TTNodesManager = NodesManagerFixedSize>
 class ScapegoatTree
-    : public BSTree<
-          BSTNode<TTData, TTInfo, TTAction, true, _use_parent, false, TTKey>,
-          ScapegoatTree<_use_parent, TTData, TTInfo, TTAction, TTKey>> {
+    : public Tree<
+          Node<TTData, TTInfo, TTAction, true, _use_parent, false, TTKey>,
+          TTNodesManager,
+          ScapegoatTree<_use_parent, TTData, TTInfo, TTAction, TTKey,
+                        TTNodesManager>> {
  public:
   static const bool use_key = true;
   static const bool use_parent = _use_parent;
@@ -31,10 +36,11 @@ class ScapegoatTree
   using TAction = TTAction;
   using TKey = TTKey;
   using TNode =
-      BSTNode<TData, TInfo, TAction, use_key, use_parent, use_height, TKey>;
-  using TSelf = ScapegoatTree<use_parent, TData, TInfo, TAction, TKey>;
-  using TTree = BSTree<TNode, TSelf>;
-  friend class BSTree<TNode, TSelf>;
+      Node<TData, TInfo, TAction, use_key, use_parent, use_height, TKey>;
+  using TSelf =
+      ScapegoatTree<use_parent, TData, TInfo, TAction, TKey, TTNodesManager>;
+  using TTree = Tree<TNode, TTNodesManager, TSelf>;
+  friend class Tree<TNode, TTNodesManager, TSelf>;
 
  public:
   ScapegoatTree(unsigned max_nodes) : TTree(max_nodes) {}
@@ -144,7 +150,7 @@ class ScapegoatTree
         temp = temp->r;
         temp->ApplyAction();
       }
-      BSTSwapAuto(node, node->p, temp, temp->p);
+      SwapAuto(node, node->p, temp, temp->p);
     }
 
     // Drop node from tree
@@ -174,3 +180,4 @@ class ScapegoatTree
     return child;
   }
 };
+}  // namespace bst

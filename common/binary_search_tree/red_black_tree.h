@@ -13,31 +13,36 @@
 #include "common/binary_search_tree/info/update_info_with_path.h"
 #include "common/binary_search_tree/node.h"
 #include "common/binary_search_tree/tree.h"
+#include "common/nodes_manager_fixed_size.h"
 #include <algorithm>
 #include <utility>
 #include <vector>
 
-template <bool _use_parent, class TTData, class TTInfo = BSTInfoSize,
-          class TTAction = BSTActionNone, class TTKey = int64_t>
+namespace bst {
+template <bool _use_parent, class TTData, class TTInfo = info::Size,
+          class TTAction = action::None, class TTKey = int64_t,
+          template <class> class TTNodesManager = NodesManagerFixedSize>
 class RedBlackTree
-    : public BSTree<
-          BSTNode<TTData, BSTInfoRBTColor<TTInfo>, TTAction, true, _use_parent,
-                  false, TTKey>,
-          RedBlackTree<_use_parent, TTData, TTInfo, TTAction, TTKey>> {
+    : public Tree<Node<TTData, info::RBTColor<TTInfo>, TTAction, true,
+                       _use_parent, false, TTKey>,
+                  TTNodesManager,
+                  RedBlackTree<_use_parent, TTData, TTInfo, TTAction, TTKey,
+                               TTNodesManager>> {
  public:
   static const bool use_key = true;
   static const bool use_parent = _use_parent;
   static const bool use_height = false;
 
   using TData = TTData;
-  using TInfo = BSTInfoRBTColor<TTInfo>;
+  using TInfo = info::RBTColor<TTInfo>;
   using TAction = TTAction;
   using TKey = TTKey;
   using TNode =
-      BSTNode<TData, TInfo, TAction, use_key, use_parent, use_height, TKey>;
-  using TSelf = RedBlackTree<use_parent, TData, TTInfo, TAction, TKey>;
-  using TTree = BSTree<TNode, TSelf>;
-  friend class BSTree<TNode, TSelf>;
+      Node<TData, TInfo, TAction, use_key, use_parent, use_height, TKey>;
+  using TSelf =
+      RedBlackTree<use_parent, TData, TTInfo, TAction, TKey, TTNodesManager>;
+  using TTree = Tree<TNode, TTNodesManager, TSelf>;
+  friend class Tree<TNode, TTNodesManager, TSelf>;
 
  public:
   RedBlackTree(unsigned max_nodes) : TTree(max_nodes) {}
@@ -47,23 +52,23 @@ class RedBlackTree
     assert(root || !height);
     if (!root) return;
     if (height) {
-      root->info.is_black = true;
+      root->info.black = true;
       BuildTreeIFixColorsR(root->l, height - 1);
       BuildTreeIFixColorsR(root->r, height - 1);
     } else {
-      root->info.is_black = false;
+      root->info.black = false;
       assert(!root->l && !root->r);
     }
   }
 
  public:
   static TNode* BuildTree(const std::vector<TNode*>& nodes) {
-    if (nodes.size() == 0) return 0;
+    if (nodes.size() == 0) return nullptr;
     unsigned h = 0;
     for (; unsigned(nodes.size()) >= (1u << h);) ++h;
     TNode* root = TTree::BuildTree(nodes);
     BuildTreeIFixColorsR(root, h - 1);
-    root->info.is_black = true;
+    root->info.black = true;
     return root;
   }
 
@@ -71,7 +76,7 @@ class RedBlackTree
   static TNode* InsertByKeyI(TNode* root, TNode* node, TFakeFalse) {
     thread_local std::vector<TNode*> node_to_root_path;
     if (!root) {
-      node->info.is_black = true;
+      node->info.black = true;
       return node;
     }
     node_to_root_path.clear();
@@ -97,68 +102,68 @@ class RedBlackTree
     node_to_root_path.push_back(node);
     std::reverse(node_to_root_path.begin(), node_to_root_path.end());
     UpdateInfoNodeToRootWithPath(node_to_root_path, 1);
-    node_to_root_path.push_back(0);
-    node->info.is_black = false;
+    node_to_root_path.push_back(nullptr);
+    node->info.black = false;
     for (unsigned node_index = 1;;) {
       TNode* parent = node_to_root_path[node_index++];
       if (!parent) {
-        node->info.is_black = true;
+        node->info.black = true;
         return node;
       }
-      if (parent->info.is_black) return root;
+      if (parent->info.black) return root;
       TNode* gparent = node_to_root_path[node_index++];
-      TNode* uncle = BSTSibling(parent, gparent);
-      if (!uncle || uncle->info.is_black) {
+      TNode* uncle = Sibling(parent, gparent);
+      if (!uncle || uncle->info.black) {
         bool rotate_required = ((gparent->l == parent) != (parent->l == node));
         if (rotate_required) {
-          BSTRotate<TNode, false, false>(node, parent, gparent);
+          Rotate<TNode, false, false>(node, parent, gparent);
           parent = node;
         }
         TNode* ggparent = node_to_root_path[node_index++];
-        BSTRotate<TNode, true, false>(parent, gparent, ggparent);
-        gparent->info.is_black = false;
-        parent->info.is_black = true;
+        Rotate<TNode, true, false>(parent, gparent, ggparent);
+        gparent->info.black = false;
+        parent->info.black = true;
         return ggparent ? root : parent;
       }
-      gparent->info.is_black = false;
-      parent->info.is_black = true;
-      uncle->info.is_black = true;
+      gparent->info.black = false;
+      parent->info.black = true;
+      uncle->info.black = true;
       node = gparent;
     }
     assert(false);
-    return 0;
+    return nullptr;
   }
 
   static TNode* InsertByKeyI(TNode* root, TNode* node, TFakeTrue) {
-    BSTInsertByKey<TNode>(root, node);
-    node->info.is_black = false;
+    bst::InsertByKey<TNode>(root, node);
+    node->info.black = false;
     for (;;) {
       TNode* parent = node->p;
       if (!parent) {
-        node->info.is_black = true;
+        node->info.black = true;
         return node;
       }
-      if (parent->info.is_black) return root;
+      if (parent->info.black) return root;
       TNode* gparent = parent->p;
-      TNode* uncle = BSTSibling(parent, gparent);
-      if (!uncle || uncle->info.is_black) {
+      TNode* uncle = Sibling(parent, gparent);
+      if (!uncle || uncle->info.black) {
         bool rotate_required = ((gparent->l == parent) != (parent->l == node));
         if (rotate_required) {
-          BSTRotateUp<TNode, false, false>(node);
+          RotateUp<TNode, false, false>(node);
           parent = node;
         }
-        BSTRotateUp<TNode, true, false>(parent);
-        gparent->info.is_black = false;
-        parent->info.is_black = true;
+        RotateUp<TNode, true, false>(parent);
+        gparent->info.black = false;
+        parent->info.black = true;
         return parent->p ? root : parent;
       }
-      parent->info.is_black = true;
-      uncle->info.is_black = true;
-      gparent->info.is_black = false;
+      parent->info.black = true;
+      uncle->info.black = true;
+      gparent->info.black = false;
       node = gparent;
     }
     assert(false);
-    return 0;
+    return nullptr;
   }
 
  public:
@@ -198,10 +203,10 @@ class RedBlackTree
         temp = temp->r;
         temp->ApplyAction();
       }
-      BSTSwapAuto(node,
-                  (node_index > 0) ? node_to_root_path[node_index - 1] : 0,
-                  temp, node_to_root_path.back());
-      std::swap(node->info.is_black, temp->info.is_black);
+      SwapAuto(node,
+               (node_index > 0) ? node_to_root_path[node_index - 1] : nullptr,
+               temp, node_to_root_path.back());
+      std::swap(node->info.black, temp->info.black);
       node_to_root_path[node_index] = temp;
       node_to_root_path.push_back(node);
       root = node_to_root_path[0];
@@ -210,83 +215,83 @@ class RedBlackTree
     // Drop node from tree
     std::reverse(node_to_root_path.begin(), node_to_root_path.end());
     TNode* child = node->l ? node->l : node->r;
-    TNode* parent = node_to_root_path.size() > 1 ? node_to_root_path[1] : 0;
+    TNode* parent =
+        node_to_root_path.size() > 1 ? node_to_root_path[1] : nullptr;
     if (parent) {
       if (parent->l == node)
         parent->SetL(child);
       else
         parent->SetR(child);
     } else if (child) {
-      child->SetP(0);
+      child->SetP(nullptr);
     }
     node->ResetLinksAndUpdateInfo();
     UpdateInfoNodeToRootWithPath(node_to_root_path, 1);
 
     // Fix colors
-    node_to_root_path.push_back(0);
+    node_to_root_path.push_back(nullptr);
     unsigned current_index = 2;
-    if (!node->info.is_black) return (parent ? root : child);
+    if (!node->info.black) return (parent ? root : child);
     for (;;) {
-      if (child && !child->info.is_black) {
-        child->info.is_black = true;
+      if (child && !child->info.black) {
+        child->info.black = true;
         return (parent ? root : child);
       }
       if (!parent) return child;
-      TNode* sibling = BSTSibling(child, parent);
+      TNode* sibling = Sibling(child, parent);
       assert(sibling);
       sibling->ApplyAction();
       TNode* gparent = node_to_root_path[current_index];
-      if (!sibling->info.is_black) {
-        assert(parent->info.is_black);
-        BSTRotate<TNode, true, false>(sibling, parent, gparent);
+      if (!sibling->info.black) {
+        assert(parent->info.black);
+        Rotate<TNode, true, false>(sibling, parent, gparent);
         node_to_root_path[--current_index] = sibling;
         if (!gparent) root = sibling;
         gparent = sibling;
-        sibling->info.is_black = true;
-        parent->info.is_black = false;
-        sibling = BSTSibling(child, parent);
+        sibling->info.black = true;
+        parent->info.black = false;
+        sibling = Sibling(child, parent);
         sibling->ApplyAction();
       }
-      assert(sibling && sibling->info.is_black);
-      if (parent->info.is_black && (!sibling->l || sibling->l->info.is_black) &&
-          (!sibling->r || sibling->r->info.is_black)) {
-        sibling->info.is_black = false;
+      assert(sibling && sibling->info.black);
+      if (parent->info.black && (!sibling->l || sibling->l->info.black) &&
+          (!sibling->r || sibling->r->info.black)) {
+        sibling->info.black = false;
         child = parent;
         parent = node_to_root_path[current_index++];
         continue;
       }
-      if (!parent->info.is_black &&
-          (!sibling->l || sibling->l->info.is_black) &&
-          (!sibling->r || sibling->r->info.is_black)) {
-        sibling->info.is_black = false;
-        parent->info.is_black = true;
+      if (!parent->info.black && (!sibling->l || sibling->l->info.black) &&
+          (!sibling->r || sibling->r->info.black)) {
+        sibling->info.black = false;
+        parent->info.black = true;
         return root;
       }
-      if ((parent->l == child) && (!sibling->r || sibling->r->info.is_black)) {
-        assert(sibling->l && !sibling->l->info.is_black);
-        BSTRotate<TNode, false, true>(sibling->l, sibling, parent);
-        sibling->info.is_black = false;
+      if ((parent->l == child) && (!sibling->r || sibling->r->info.black)) {
+        assert(sibling->l && !sibling->l->info.black);
+        Rotate<TNode, false, true>(sibling->l, sibling, parent);
+        sibling->info.black = false;
         sibling = parent->r;
-        sibling->info.is_black = true;
+        sibling->info.black = true;
       } else if ((parent->r == child) &&
-                 (!sibling->l || sibling->l->info.is_black)) {
-        assert(sibling->r && !sibling->r->info.is_black);
-        BSTRotate<TNode, false, true>(sibling->r, sibling, parent);
-        sibling->info.is_black = false;
+                 (!sibling->l || sibling->l->info.black)) {
+        assert(sibling->r && !sibling->r->info.black);
+        Rotate<TNode, false, true>(sibling->r, sibling, parent);
+        sibling->info.black = false;
         sibling = parent->l;
-        sibling->info.is_black = true;
+        sibling->info.black = true;
       }
-      sibling->info.is_black = parent->info.is_black;
-      parent->info.is_black = true;
+      sibling->info.black = parent->info.black;
+      parent->info.black = true;
       if (parent->l == child)
-        sibling->r->info.is_black = true;
+        sibling->r->info.black = true;
       else
-        sibling->l->info.is_black = true;
-      BSTRotate<TNode, true, false>(sibling, parent, gparent);
+        sibling->l->info.black = true;
+      Rotate<TNode, true, false>(sibling, parent, gparent);
       return gparent ? root : sibling;
     }
     assert(false);
-    return 0;
+    return nullptr;
   }
 
   static TNode* RemoveByKeyI(TNode* root, const TKey& key, TNode*& removed_node,
@@ -308,8 +313,8 @@ class RedBlackTree
         temp = temp->r;
         temp->ApplyAction();
       }
-      BSTSwapAuto(node, node->p, temp, temp->p);
-      std::swap(node->info.is_black, temp->info.is_black);
+      SwapAuto(node, node->p, temp, temp->p);
+      std::swap(node->info.black, temp->info.black);
     }
 
     // Drop node from tree
@@ -326,63 +331,63 @@ class RedBlackTree
     UpdateInfoNodeToRoot(parent);
 
     // Fix colors
-    if (!node->info.is_black) return (parent ? Root(parent) : child);
+    if (!node->info.black) return (parent ? Root(parent) : child);
     for (;;) {
-      if (child && !child->info.is_black) {
-        child->info.is_black = true;
+      if (child && !child->info.black) {
+        child->info.black = true;
         return Root(child);
       }
       if (!parent) return child;
-      TNode* sibling = BSTSibling(child, parent);
+      TNode* sibling = Sibling(child, parent);
       assert(sibling);
       sibling->ApplyAction();
-      if (!sibling->info.is_black) {
-        assert(parent->info.is_black);
-        BSTRotateUp<TNode, true, false>(sibling);
-        sibling->info.is_black = true;
-        parent->info.is_black = false;
-        sibling = BSTSibling(child, parent);
+      if (!sibling->info.black) {
+        assert(parent->info.black);
+        RotateUp<TNode, true, false>(sibling);
+        sibling->info.black = true;
+        parent->info.black = false;
+        sibling = Sibling(child, parent);
         sibling->ApplyAction();
       }
-      assert(sibling && sibling->info.is_black);
-      if (parent->info.is_black && (!sibling->l || sibling->l->info.is_black) &&
-          (!sibling->r || sibling->r->info.is_black)) {
-        sibling->info.is_black = false;
+      assert(sibling && sibling->info.black);
+      if (parent->info.black && (!sibling->l || sibling->l->info.black) &&
+          (!sibling->r || sibling->r->info.black)) {
+        sibling->info.black = false;
         child = parent;
         parent = child->p;
         continue;
       }
-      if (!parent->info.is_black &&
-          (!sibling->l || sibling->l->info.is_black) &&
-          (!sibling->r || sibling->r->info.is_black)) {
-        sibling->info.is_black = false;
-        parent->info.is_black = true;
+      if (!parent->info.black && (!sibling->l || sibling->l->info.black) &&
+          (!sibling->r || sibling->r->info.black)) {
+        sibling->info.black = false;
+        parent->info.black = true;
         return Root(parent);
       }
-      if ((parent->l == child) && (!sibling->r || sibling->r->info.is_black)) {
-        assert(sibling->l && !sibling->l->info.is_black);
-        BSTRotateUp<TNode, false, true>(sibling->l);
-        sibling->info.is_black = false;
+      if ((parent->l == child) && (!sibling->r || sibling->r->info.black)) {
+        assert(sibling->l && !sibling->l->info.black);
+        RotateUp<TNode, false, true>(sibling->l);
+        sibling->info.black = false;
         sibling = sibling->p;
-        sibling->info.is_black = true;
+        sibling->info.black = true;
       } else if ((parent->r == child) &&
-                 (!sibling->l || sibling->l->info.is_black)) {
-        assert(sibling->r && !sibling->r->info.is_black);
-        BSTRotateUp<TNode, false, true>(sibling->r);
-        sibling->info.is_black = false;
+                 (!sibling->l || sibling->l->info.black)) {
+        assert(sibling->r && !sibling->r->info.black);
+        RotateUp<TNode, false, true>(sibling->r);
+        sibling->info.black = false;
         sibling = sibling->p;
-        sibling->info.is_black = true;
+        sibling->info.black = true;
       }
-      sibling->info.is_black = parent->info.is_black;
-      parent->info.is_black = true;
+      sibling->info.black = parent->info.black;
+      parent->info.black = true;
       if (parent->l == child)
-        sibling->r->info.is_black = true;
+        sibling->r->info.black = true;
       else
-        sibling->l->info.is_black = true;
-      BSTRotateUp<TNode, true, false>(sibling);
+        sibling->l->info.black = true;
+      RotateUp<TNode, true, false>(sibling);
       return Root(sibling);
     }
     assert(false);
-    return 0;
+    return nullptr;
   }
 };
+}  // namespace bst

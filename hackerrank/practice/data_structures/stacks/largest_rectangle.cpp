@@ -3,7 +3,7 @@
 #include "common/binary_search_tree/treap.h"
 #include "common/stl/base.h"
 
-using TTreap = Treap<false, false, TEmpty>;
+using TTreap = bst::Treap<false, false, TEmpty>;
 using TNode = TTreap::TNode;
 
 int main_largest_rectangle() {
@@ -13,7 +13,7 @@ int main_largest_rectangle() {
   vector<TNode*> vnodes(N);
   for (unsigned i = 0; i < N; ++i) {
     cin >> h;
-    vnodes[i] = tree.GetNewNode();
+    vnodes[i] = tree.New();
     vnodes[i]->height = ~h;
   }
   tree.BuildTree(vnodes);

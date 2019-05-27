@@ -2,6 +2,7 @@
 
 #include "common/template.h"
 
+namespace bst {
 template <class TNode>
 inline void UpdateInfoNodeToRoot(TNode* node, TFakeFalse) {}
 
@@ -15,3 +16,4 @@ template <class TNode>
 inline void UpdateInfoNodeToRoot(TNode* node) {
   UpdateInfoNodeToRoot(node, TFakeBool<!TNode::TInfo::is_none>());
 }
+}  // namespace bst

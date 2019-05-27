@@ -6,7 +6,7 @@
 
 #include <iomanip>
 
-using TTree = RedBlackTree<true, TEmpty>;
+using TTree = bst::RedBlackTree<true, TEmpty>;
 using TNode = TTree::TNode;
 
 int main_median_updates__upt_red_black() {
@@ -34,7 +34,7 @@ int main_median_updates__upt_red_black() {
       cout << "Wrong!" << endl;
     } else {
       unsigned size = root->info.size;
-      int64_t s = BSTMedian<TNode, int64_t>(root);
+      int64_t s = bst::Median<TNode, int64_t>(root);
       if (s & 1)
         cout << s / 2.0 << endl;
       else

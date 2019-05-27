@@ -3,12 +3,13 @@
 #include "common/template.h"
 #include <stack>
 
+namespace bst {
 template <class TNode>
 inline void ResetParentLinksI(TNode* root, TFakeFalse) {}
 
 template <class TNode>
 inline void ResetParentLinksI(TNode* root, TFakeTrue) {
-  root->p = 0;
+  root->p = nullptr;
   std::stack<TNode*> s;
   for (s.push(root); !s.empty();) {
     TNode* node = s.top();
@@ -28,3 +29,4 @@ template <class TNode>
 inline void ResetParentLinks(TNode* root) {
   ResetParentLinksI(root, TFakeBool<TNode::use_parent>());
 }
+}  // namespace bst

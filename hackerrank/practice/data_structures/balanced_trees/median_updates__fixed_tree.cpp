@@ -11,7 +11,8 @@
 #include <iomanip>
 #include <unordered_set>
 
-using TTree = FixedTree<true, unsigned, BSTInfoSum<unsigned, BSTInfoSize>>;
+using TTree =
+    bst::FixedTree<true, unsigned, bst::info::Sum<unsigned, bst::info::Size>>;
 using TNode = TTree::TNode;
 
 int main_median_updates__fixed_tree() {
@@ -33,7 +34,7 @@ int main_median_updates__fixed_tree() {
   TNode* root = tree.Build(vector<unsigned>(vx.size(), 0), vx);
 
   for (auto p : input) {
-    TNode* node = BSTFindByKey(root, p.second);
+    TNode* node = bst::FindByKey(root, p.second);
     assert(node);
     if (p.first == 'a') {
       node->data += 1;
@@ -44,14 +45,14 @@ int main_median_updates__fixed_tree() {
       }
       node->data -= 1;
     }
-    UpdateInfoNodeToRoot(node);
+    bst::UpdateInfoNodeToRoot(node);
     if (root->info.sum == 0) {
       cout << "Wrong!" << endl;
       continue;
     }
     unsigned size = root->info.sum;
-    int64_t s = (BSTPrefixSumUpperBound(root, (size - 1) / 2)->key +
-                 BSTPrefixSumUpperBound(root, size / 2)->key) /
+    int64_t s = (bst::PrefixSumUpperBound(root, (size - 1) / 2)->key +
+                 bst::PrefixSumUpperBound(root, size / 2)->key) /
                 2;
     if (s & 1)
       cout << s / 2.0 << endl;

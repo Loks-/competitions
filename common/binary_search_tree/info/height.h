@@ -2,11 +2,13 @@
 
 #include <algorithm>
 
+namespace bst {
+namespace info {
 template <class TInfo>
-class BSTInfoHeight : public TInfo {
+class Height : public TInfo {
  public:
   using TBase = TInfo;
-  using TSelf = BSTInfoHeight<TInfo>;
+  using TSelf = Height<TInfo>;
   static const bool is_none = false;
 
   // Leaf node has height = 1.
@@ -19,3 +21,5 @@ class BSTInfoHeight : public TInfo {
                           (node->r ? node->r->info.height : 0));
   }
 };
+}  // namespace info
+}  // namespace bst

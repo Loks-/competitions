@@ -5,7 +5,7 @@
 
 #include <iomanip>
 
-using TTree = SplayTree<true, TEmpty>;
+using TTree = bst::SplayTree<true, TEmpty>;
 using TNode = TTree::TNode;
 
 int main_median_updates__upt_splay() {

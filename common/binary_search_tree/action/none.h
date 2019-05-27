@@ -1,8 +1,10 @@
 #pragma once
 
-class BSTActionNone {
+namespace bst {
+namespace action {
+class None {
  public:
-  using TSelf = BSTActionNone;
+  using TSelf = None;
   static const bool is_none = true;
 
   bool IsEmpty() const { return true; }
@@ -12,3 +14,5 @@ class BSTActionNone {
   template <class TNode>
   void Apply(const TNode* node) {}
 };
+}  // namespace action
+}  // namespace bst

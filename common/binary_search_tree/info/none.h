@@ -1,8 +1,10 @@
 #pragma once
 
-class BSTInfoNone {
+namespace bst {
+namespace info {
+class None {
  public:
-  using TSelf = BSTInfoNone;
+  using TSelf = None;
   static const bool is_none = true;
   static const bool use_data = false;
   static const bool has_size = false;
@@ -10,3 +12,5 @@ class BSTInfoNone {
   template <class TNode>
   void Update(const TNode* node) {}
 };
+}  // namespace info
+}  // namespace bst

@@ -2,16 +2,18 @@
 
 #include "common/binary_search_tree/action/none.h"
 
+namespace bst {
+namespace action {
 template <class TData>
-class BSTActionAdd : public BSTActionNone {
+class AddEach : public None {
  public:
-  using TBase = BSTActionNone;
-  using TSelf = BSTActionAdd<TData>;
+  using TBase = None;
+  using TSelf = AddEach<TData>;
   static const bool is_none = false;
 
   TData add_value;
 
-  BSTActionAdd() : add_value(0) {}
+  AddEach() : add_value(0) {}
   bool IsEmpty() const { return add_value == 0; }
   void Clear() { add_value = 0; };
 
@@ -30,3 +32,5 @@ class BSTActionAdd : public BSTActionNone {
     add_value = 0;
   }
 };
+}  // namespace action
+}  // namespace bst

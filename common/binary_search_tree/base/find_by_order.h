@@ -2,11 +2,12 @@
 
 #include "common/base.h"
 
+namespace bst {
 template <class TNode>
-inline TNode* BSTFindByOrder(TNode* root, unsigned order_index) {
+inline TNode* FindByOrder(TNode* root, unsigned order_index) {
   static_assert(TNode::TInfo::has_size, "info should contain size");
-  if (!root) return 0;
-  if (order_index >= root->info.size) return 0;
+  if (!root) return nullptr;
+  if (order_index >= root->info.size) return nullptr;
   for (TNode* node = root; node;) {
     node->ApplyAction();
     unsigned ls = (node->l ? node->l->info.size : 0);
@@ -20,5 +21,6 @@ inline TNode* BSTFindByOrder(TNode* root, unsigned order_index) {
     }
   }
   assert(false);
-  return 0;
+  return nullptr;
 }
+}  // namespace bst

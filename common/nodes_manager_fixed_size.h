@@ -16,13 +16,15 @@ class NodesManagerFixedSize {
   TNode* first;
 
  public:
-  NodesManagerFixedSize(unsigned reserve_nodes)
-      : nodes(reserve_nodes), used_nodes(0), first(&nodes[0]) {}
+  NodesManagerFixedSize(unsigned max_nodes)
+      : nodes(max_nodes), used_nodes(0), first(&nodes[0]) {}
 
   void Reserve(unsigned new_max_nodes) {
-    if (new_max_nodes > nodes.size()) {
-      nodes.resize(std::max(new_max_nodes, unsigned(2 * nodes.size())));
-    }
+    assert(new_max_nodes <= nodes.size());
+  }
+
+  void ReserveAdditional(unsigned new_nodes) {
+    assert(new_nodes <= Reserved());
   }
 
   TNode* New() {

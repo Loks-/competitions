@@ -3,38 +3,45 @@
 #include "common/base.h"
 #include "common/binary_search_tree/base/find_by_key.h"
 #include "common/binary_search_tree/base/find_by_order.h"
-#include "common/binary_search_tree/nodes_manager.h"
 #include "common/template.h"
 #include <algorithm>
 #include <utility>
 #include <vector>
 
-template <class TTNode, class TTMe>
-class BSTree : public BSTNodesManager<TTNode> {
+namespace bst {
+template <class TTNode, template <class> class TTNodesManager, class TTMe>
+class Tree : public TTNodesManager<TTNode> {
  public:
   using TNode = TTNode;
   using TData = typename TNode::TData;
   using TKey = typename TNode::TKey;
+  using TNodesManager = TTNodesManager<TNode>;
   using TMe = TTMe;
-  using TNodesManager = BSTNodesManager<TNode>;
 
   static const bool use_key = TNode::use_key;
   static const bool use_parent = TNode::use_parent;
 
  public:
-  BSTree(unsigned max_nodes) : TNodesManager(max_nodes) {}
+  Tree(unsigned max_nodes) : TNodesManager(max_nodes) {}
   TMe* Me() { return static_cast<TMe*>(this); }
   const TMe* Me() const { return static_cast<const TMe*>(this); }
 
-  static TNode* BuildTreeI(const std::vector<TNode*>& vnodes, unsigned first,
-                           unsigned last) {
-    if (first >= last) return 0;
-    unsigned m = (first + last) / 2;
-    TNode* root = vnodes[m];
-    root->SetL(BuildTreeI(vnodes, first, m));
-    root->SetR(BuildTreeI(vnodes, m + 1, last));
-    root->UpdateInfo();
-    return root;
+  TNode* New() { return TNodesManager::New(); }
+
+  TNode* New(const TData& data) {
+    auto p = New();
+    p->data = data;
+    p->UpdateInfo();
+    return p;
+  }
+
+  TNode* New(const TData& data, const TKey& key) {
+    static_assert(use_key, "use_key should be true");
+    auto p = New();
+    p->data = data;
+    p->key = key;
+    p->UpdateInfo();
+    return p;
   }
 
   static TNode* BuildTree(const std::vector<TNode*>& vnodes) {
@@ -42,24 +49,21 @@ class BSTree : public BSTNodesManager<TTNode> {
   }
 
   TNode* Build(const std::vector<TData>& data) {
-    TNodesManager::ReserveAvailableNodes(data.size());
-    if (data.size() == 0) return 0;
+    TNodesManager::ReserveAdditional(data.size());
+    if (data.size() == 0) return nullptr;
     std::vector<TNode*> v(data.size());
-    for (unsigned i = 0; i < data.size(); ++i)
-      v[i] = TNodesManager::GetNewNode(data[i]);
+    for (unsigned i = 0; i < data.size(); ++i) v[i] = New(data[i]);
     return TMe::BuildTree(v);
   }
 
   TNode* Build(const std::vector<TData>& data, const std::vector<TKey>& keys) {
     static_assert(use_key, "use_key should be true");
     assert(data.size() == keys.size());
-    TNodesManager::ReserveAvailableNodes(data.size());
-    if (data.size() == 0) return 0;
+    TNodesManager::ReserveAdditional(data.size());
+    if (data.size() == 0) return nullptr;
     std::vector<std::pair<TKey, TNode*>> vp(data.size());
-    for (unsigned i = 0; i < data.size(); ++i) {
-      vp[i] =
-          std::make_pair(keys[i], TNodesManager::GetNewNode(data[i], keys[i]));
-    }
+    for (unsigned i = 0; i < data.size(); ++i)
+      vp[i] = std::make_pair(keys[i], New(data[i], keys[i]));
     std::sort(vp.begin(), vp.end());
     std::vector<TNode*> v(vp.size());
     for (unsigned i = 0; i < vp.size(); ++i) v[i] = vp[i].second;
@@ -67,11 +71,11 @@ class BSTree : public BSTNodesManager<TTNode> {
   }
 
   static TNode* FindByKey(TNode* root, const TKey& key) {
-    return BSTFindByKey(root, key);
+    return bst::FindByKey(root, key);
   }
 
   static TNode* FindByOrder(TNode* root, unsigned order_index) {
-    return BSTFindByOrder(root, order_index);
+    return bst::FindByOrder(root, order_index);
   }
 
   static TNode* InsertByKey(TNode* root, TNode* node) {
@@ -82,23 +86,9 @@ class BSTree : public BSTNodesManager<TTNode> {
   }
 
   TNode* InsertNewNode(TNode* root, const TData& data, const TKey& key) {
-    return TMe::InsertByKey(root, TNodesManager::GetNewNode(data, key));
+    return TMe::InsertByKey(root, New(data, key));
   }
 
- protected:
-  static TNode* RemoveByKeyI(TNode* root, const TKey& key, TNode*& removed_node,
-                             TFakeTrue) {
-    removed_node = TMe::FindByKey(root, key);
-    return (removed_node ? TMe::RemoveByNode(removed_node) : root);
-  }
-
-  static TNode* RemoveByOrderI(TNode* root, unsigned order_index,
-                               TNode*& removed_node, TFakeTrue) {
-    removed_node = TMe::FindByOrder(root, order_index);
-    return (removed_node ? TMe::RemoveByNode(removed_node) : root);
-  }
-
- public:
   static TNode* RemoveByKey(TNode* root, const TKey& key,
                             TNode*& removed_node) {
     return TMe::RemoveByKeyI(root, key, removed_node, TFakeBool<use_parent>());
@@ -112,21 +102,21 @@ class BSTree : public BSTNodesManager<TTNode> {
 
   TNode* RemoveAndReleaseByNode(TNode* node) {
     TNode* new_root = TMe::RemoveByNode(node);
-    TNodesManager::ReleaseNode(node);
+    TNodesManager::Release(node);
     return new_root;
   }
 
   TNode* RemoveAndReleaseByKey(TNode* root, const TKey& key) {
-    TNode *removed_node = 0,
+    TNode *removed_node = nullptr,
           *new_root = TMe::RemoveByKey(root, key, removed_node);
-    if (removed_node) TNodesManager::ReleaseNode(removed_node);
+    if (removed_node) TNodesManager::Release(removed_node);
     return new_root;
   }
 
   TNode* RemoveAndReleaseByOrder(TNode* root, unsigned order_index) {
-    TNode *removed_node = 0,
+    TNode *removed_node = nullptr,
           *new_root = TMe::RemoveByOrder(root, order_index, removed_node);
-    if (removed_node) TNodesManager::ReleaseNode(removed_node);
+    if (removed_node) TNodesManager::Release(removed_node);
     return new_root;
   }
 
@@ -134,7 +124,32 @@ class BSTree : public BSTNodesManager<TTNode> {
     if (root) {
       ReleaseTree(root->l);
       ReleaseTree(root->r);
-      TNodesManager::ReleaseNode(root);
+      TNodesManager::Release(root);
     }
   }
+
+ protected:
+  static TNode* BuildTreeI(const std::vector<TNode*>& vnodes, unsigned first,
+                           unsigned last) {
+    if (first >= last) return nullptr;
+    unsigned m = (first + last) / 2;
+    TNode* root = vnodes[m];
+    root->SetL(BuildTreeI(vnodes, first, m));
+    root->SetR(BuildTreeI(vnodes, m + 1, last));
+    root->UpdateInfo();
+    return root;
+  }
+
+  static TNode* RemoveByKeyI(TNode* root, const TKey& key, TNode*& removed_node,
+                             TFakeTrue) {
+    removed_node = TMe::FindByKey(root, key);
+    return (removed_node ? TMe::RemoveByNode(removed_node) : root);
+  }
+
+  static TNode* RemoveByOrderI(TNode* root, unsigned order_index,
+                               TNode*& removed_node, TFakeTrue) {
+    removed_node = TMe::FindByOrder(root, order_index);
+    return (removed_node ? TMe::RemoveByNode(removed_node) : root);
+  }
 };
+}  // namespace bst

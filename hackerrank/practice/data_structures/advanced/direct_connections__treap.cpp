@@ -8,8 +8,9 @@
 #include "common/vector/read.h"
 
 using TModular = Modular<>;
-using TTree = Treap<true, false, TEmpty, BSTInfoSumKeys<uint64_t, BSTInfoSize>,
-                    BSTActionNone, uint64_t>;
+using TTree = bst::Treap<true, false, TEmpty,
+                         bst::info::SumKeys<uint64_t, bst::info::Size>,
+                         bst::action::None, uint64_t>;
 using TNode = TTree::TNode;
 
 int main_direct_connections__treap() {
@@ -31,7 +32,7 @@ int main_direct_connections__treap() {
       if (l) s += TModular(l->info.size * px.second - l->info.sum_keys);
       if (r) s += TModular(r->info.sum_keys - r->info.size * px.second);
       total += s * TModular(px.first);
-      TNode* m = tree.GetNewNode(TEmpty(), px.second);
+      TNode* m = tree.New(TEmpty(), px.second);
       root = tree.Join(tree.Join(l, m), r);
     }
     tree.ReleaseTree(root);

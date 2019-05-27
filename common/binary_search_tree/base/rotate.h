@@ -2,8 +2,9 @@
 
 #include "common/base.h"
 
+namespace bst {
 template <class TNode, bool update_child, bool apply_action>
-inline void BSTRotate(TNode* child, TNode* parent, TNode* gparent) {
+inline void Rotate(TNode* child, TNode* parent, TNode* gparent) {
   assert(child && parent);
   if (apply_action) {
     parent->ApplyAction();
@@ -28,9 +29,10 @@ inline void BSTRotate(TNode* child, TNode* parent, TNode* gparent) {
 }
 
 template <class TNode, bool update_child, bool apply_action>
-inline bool BSTRotateUp(TNode* node) {
+inline bool RotateUp(TNode* node) {
   static_assert(TNode::use_parent, "use_parent should be true");
   if (!node || !node->p) return false;
-  BSTRotate<TNode, update_child, apply_action>(node, node->p, node->p->p);
+  Rotate<TNode, update_child, apply_action>(node, node->p, node->p->p);
   return true;
 }
+}  // namespace bst

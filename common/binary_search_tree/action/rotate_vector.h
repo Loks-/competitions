@@ -2,8 +2,10 @@
 
 #include "common/binary_search_tree/action/none.h"
 
+namespace bst {
+namespace action {
 // Support only VectorStaticSize from LinearAlgebra.
-class BSTActionRotateVector : public BSTActionNone {
+class RotateVector : public None {
  protected:
   template <class TVector>
   static void Rotate(TVector& v, unsigned r) {
@@ -15,8 +17,8 @@ class BSTActionRotateVector : public BSTActionNone {
   }
 
  public:
-  using TBase = BSTActionNone;
-  using TSelf = BSTActionRotateVector;
+  using TBase = None;
+  using TSelf = RotateVector;
   static const bool is_none = false;
 
   unsigned r = 0;
@@ -39,3 +41,5 @@ class BSTActionRotateVector : public BSTActionNone {
     r = 0;
   }
 };
+}  // namespace action
+}  // namespace bst

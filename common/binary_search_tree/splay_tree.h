@@ -7,13 +7,17 @@
 #include "common/binary_search_tree/info/size.h"
 #include "common/binary_search_tree/node.h"
 #include "common/binary_search_tree/tree.h"
+#include "common/nodes_manager_fixed_size.h"
 
-template <bool _use_key, class TTData, class TTInfo = BSTInfoSize,
-          class TTAction = BSTActionNone, class TTKey = int64_t>
+namespace bst {
+template <bool _use_key, class TTData, class TTInfo = info::Size,
+          class TTAction = action::None, class TTKey = int64_t,
+          template <class> class TTNodesManager = NodesManagerFixedSize>
 class SplayTree
-    : public BSTree<
-          BSTNode<TTData, TTInfo, TTAction, _use_key, true, false, TTKey>,
-          SplayTree<_use_key, TTData, TTInfo, TTAction, TTKey>> {
+    : public Tree<Node<TTData, TTInfo, TTAction, _use_key, true, false, TTKey>,
+                  TTNodesManager,
+                  SplayTree<_use_key, TTData, TTInfo, TTAction, TTKey,
+                            TTNodesManager>> {
  public:
   static const bool use_key = _use_key;
   static const bool use_parent = true;
@@ -24,9 +28,9 @@ class SplayTree
   using TAction = TTAction;
   using TKey = TTKey;
   using TNode =
-      BSTNode<TData, TInfo, TAction, use_key, use_parent, use_height, TKey>;
-  using TSelf = SplayTree<use_key, TData, TInfo, TAction, TKey>;
-  using TTree = BSTree<TNode, TSelf>;
+      Node<TData, TInfo, TAction, use_key, use_parent, use_height, TKey>;
+  using TSelf = SplayTree<use_key, TData, TInfo, TAction, TKey, TTNodesManager>;
+  using TTree = Tree<TNode, TTNodesManager, TSelf>;
 
  public:
   SplayTree(unsigned max_nodes) : TTree(max_nodes) {}
@@ -39,16 +43,16 @@ class SplayTree
       if (!parent) break;
       TNode* gparent = parent->p;
       if (!gparent) {
-        BSTRotateUp<TNode, true, false>(node);
+        RotateUp<TNode, true, false>(node);
         break;
       }
       bool zigzig = ((gparent->l == parent) == (parent->l == node));
       if (zigzig) {
-        BSTRotateUp<TNode, false, false>(parent);
-        BSTRotateUp<TNode, true, false>(node);
+        RotateUp<TNode, false, false>(parent);
+        RotateUp<TNode, true, false>(node);
       } else {
-        BSTRotateUp<TNode, false, false>(node);
-        BSTRotateUp<TNode, true, false>(node);
+        RotateUp<TNode, false, false>(node);
+        RotateUp<TNode, true, false>(node);
       }
     }
     node->UpdateInfo();
@@ -73,12 +77,12 @@ class SplayTree
   // p and everything left will go to left tree (and p is root).
   // everything right will go to right tree.
   static TNode* Split(TNode* p) {
-    if (!p) return 0;
+    if (!p) return nullptr;
     Splay(p);
     TNode* r = p->r;
     if (r) {
-      r->p = 0;
-      p->r = 0;
+      r->p = nullptr;
+      p->r = nullptr;
       p->UpdateInfo();
     }
     return r;
@@ -86,8 +90,8 @@ class SplayTree
 
   static TNode* FindByKey(TNode*& root, const TKey& key) {
     static_assert(use_key, "use_key should be true");
-    TNode *node = root, *last_node = 0;
-    for (; node != 0;) {
+    TNode *node = root, *last_node = nullptr;
+    for (; node;) {
       last_node = node;
       node->ApplyAction();
       if (node->key < key)
@@ -104,8 +108,8 @@ class SplayTree
 
   static TNode* FindByKey_Less(TNode*& root, const TKey& key) {
     static_assert(use_key, "use_key should be true");
-    TNode *last_less = 0, *last_node = root;
-    for (TNode* node = root; node != 0;) {
+    TNode *last_less = nullptr, *last_node = root;
+    for (TNode* node = root; node;) {
       node->ApplyAction();
       if (node->key < key) {
         last_less = node;
@@ -124,7 +128,7 @@ class SplayTree
                          TNode*& output_r) {
     static_assert(use_key, "use_key should be true");
     if (!root) {
-      output_l = output_r = 0;
+      output_l = output_r = nullptr;
       return;
     }
     TNode* p = FindByKey_Less(root, key);
@@ -134,8 +138,8 @@ class SplayTree
 
   static TNode* FindByOrder(TNode*& root, unsigned order_index) {
     static_assert(TInfo::has_size, "info should contain size");
-    if (!root) return 0;
-    if (order_index >= root->info.size) return 0;
+    if (!root) return nullptr;
+    if (order_index >= root->info.size) return nullptr;
     for (TNode* node = root; node;) {
       node->ApplyAction();
       unsigned ls = (node->l ? node->l->info.size : 0);
@@ -151,20 +155,20 @@ class SplayTree
       }
     }
     assert(false);
-    return 0;
+    return nullptr;
   }
 
   static void SplitBySize(TNode* root, unsigned lsize, TNode*& output_l,
                           TNode*& output_r) {
     static_assert(TInfo::has_size, "info should contain size");
     if (!root) {
-      output_l = output_r = 0;
+      output_l = output_r = nullptr;
     } else if (lsize == 0) {
-      output_l = 0;
+      output_l = nullptr;
       output_r = root;
     } else if (lsize >= root->info.size) {
       output_l = root;
-      output_r = 0;
+      output_r = nullptr;
     } else {
       TNode* p = FindByOrder(root, lsize - 1);
       output_l = p;
@@ -187,9 +191,9 @@ class SplayTree
     assert(node);
     ApplyActionRootToNode(node);
     TNode* l = node->l;
-    if (l) l->SetP(0);
+    if (l) l->SetP(nullptr);
     TNode* r = node->r;
-    if (r) r->SetP(0);
+    if (r) r->SetP(nullptr);
     TNode* p = node->p;
     node->ResetLinksAndUpdateInfo();
     TNode* m = Join(l, r);
@@ -202,3 +206,4 @@ class SplayTree
     return p;
   }
 };
+}  // namespace bst

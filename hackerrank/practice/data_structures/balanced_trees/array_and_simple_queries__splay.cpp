@@ -2,12 +2,12 @@
 
 #include "common/binary_search_tree/base/traversal.h"
 #include "common/binary_search_tree/splay_tree.h"
-#include "common/binary_search_tree/utils/rotate.h"
+#include "common/binary_search_tree/utils/swap_intervals.h"
 #include "common/stl/base.h"
 #include "common/vector/read.h"
 #include "common/vector/write.h"
 
-using TSplayTree = SplayTree<false, int>;
+using TSplayTree = bst::SplayTree<false, int>;
 using TNode = TSplayTree::TNode;
 
 int main_array_and_simple_queries__splay() {
@@ -19,13 +19,13 @@ int main_array_and_simple_queries__splay() {
   for (; M; --M) {
     unsigned t, i, j;
     cin >> t >> i >> j;
-    if (t == 1) {
-      Rotate<TSplayTree>(root, 0, i - 1, j);
-    } else {
-      Rotate<TSplayTree>(root, i - 1, j, N);
-    }
+    if (t == 1)
+      bst::SwapIntervals<TSplayTree>(root, 0, i - 1, j);
+    else
+      bst::SwapIntervals<TSplayTree>(root, i - 1, j, N);
   }
-  vector<int> vf = BSTTraversal::Traverse<TNode, int>(root, EBST_Inorder);
+  vector<int> vf =
+      bst::Traverse<TNode, int>(root, bst::ETraversalOrder::Inorder);
   cout << abs(vf[0] - vf.back()) << endl;
   WriteVector(vf);
   return 0;

@@ -212,7 +212,7 @@ class TesterBinarySearchTree {
     size_t h = 0;
     for (unsigned i = 0; i < Size(); ++i) {
       AddAction(root);
-      root = tree.RemoveAndReleaseByNode(tree.GetNodeByRawIndex(i));
+      root = tree.RemoveAndReleaseByNode(tree.NodeByRawIndex(i));
       VerifyParentLinksLazy(root);
       h = hash_combine(h, GetInfoValue(root));
     }

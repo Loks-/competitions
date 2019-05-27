@@ -3,6 +3,7 @@
 #include "common/template.h"
 #include <vector>
 
+namespace bst {
 template <class TNode>
 inline void UpdateInfoNodeToRootWithPath(
     const std::vector<TNode*>& node_to_root_path, unsigned start_from_index,
@@ -24,3 +25,4 @@ inline void UpdateInfoNodeToRootWithPath(
   UpdateInfoNodeToRootWithPath(node_to_root_path, start_from_index,
                                TFakeBool<!TNode::TInfo::is_none>());
 }
+}  // namespace bst

@@ -5,7 +5,8 @@
 #include "common/stl/base.h"
 #include "common/vector/read.h"
 
-using TTreap = Treap<false, true, uint64_t, BSTInfoGCD<uint64_t, BSTInfoNone>>;
+using TTreap = bst::Treap<false, true, uint64_t,
+                          bst::info::GCD<uint64_t, bst::info::None>>;
 using TNode = TTreap::TNode;
 
 int main_the_chosen_one__treap() {
@@ -19,7 +20,7 @@ int main_the_chosen_one__treap() {
   TTreap treap(n);
   TNode* root = treap.Build(v);
   for (unsigned i = 0; i < n; ++i) {
-    TNode* node = treap.GetNodeByRawIndex(i);
+    TNode* node = treap.NodeByRawIndex(i);
     uint64_t value = node->data;
     node->data = 0;
     UpdateInfoNodeToRoot(node);

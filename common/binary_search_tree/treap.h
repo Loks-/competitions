@@ -7,17 +7,20 @@
 #include "common/binary_search_tree/info/update_info.h"
 #include "common/binary_search_tree/node.h"
 #include "common/binary_search_tree/tree.h"
+#include "common/nodes_manager_fixed_size.h"
 #include <stack>
 #include <vector>
 
+namespace bst {
 template <bool _use_key, bool _use_parent, class TTData,
-          class TTInfo = BSTInfoSize, class TTAction = BSTActionNone,
-          class TTKey = int64_t>
-class Treap
-    : public BSTree<
-          BSTNode<TTData, TTInfo, TTAction, _use_key, _use_parent, true, TTKey,
-                  unsigned>,
-          Treap<_use_key, _use_parent, TTData, TTInfo, TTAction, TTKey>> {
+          class TTInfo = info::Size, class TTAction = action::None,
+          class TTKey = int64_t,
+          template <class> class TTNodesManager = NodesManagerFixedSize>
+class Treap : public Tree<Node<TTData, TTInfo, TTAction, _use_key, _use_parent,
+                               true, TTKey, unsigned>,
+                          TTNodesManager,
+                          Treap<_use_key, _use_parent, TTData, TTInfo, TTAction,
+                                TTKey, TTNodesManager>> {
  public:
   static const bool use_key = _use_key;
   static const bool use_parent = _use_parent;
@@ -27,18 +30,19 @@ class Treap
   using TInfo = TTInfo;
   using TAction = TTAction;
   using TKey = TTKey;
-  using TNode = BSTNode<TData, TInfo, TAction, use_key, use_parent, use_height,
-                        TKey, unsigned>;
-  using TSelf = Treap<use_key, use_parent, TData, TInfo, TAction, TKey>;
-  using TTree = BSTree<TNode, TSelf>;
-  friend class BSTree<TNode, TSelf>;
+  using TNode = Node<TData, TInfo, TAction, use_key, use_parent, use_height,
+                     TKey, unsigned>;
+  using TSelf =
+      Treap<use_key, use_parent, TData, TInfo, TAction, TKey, TTNodesManager>;
+  using TTree = Tree<TNode, TTNodesManager, TSelf>;
+  friend class Tree<TNode, TTNodesManager, TSelf>;
 
  public:
   Treap(unsigned max_nodes) : TTree(max_nodes) {}
 
  public:
   static TNode* BuildTree(const std::vector<TNode*>& nodes) {
-    if (nodes.size() == 0) return 0;
+    if (nodes.size() == 0) return nullptr;
     TNode* proot = nodes[0];
     TNode* plast = proot;
     std::stack<TNode*> s;
@@ -107,7 +111,7 @@ class Treap
         if (p->r) p->r->SetP(p);
       } else {
         output_l = p;
-        output_r = 0;
+        output_r = nullptr;
       }
     } else {
       if (p->l) {
@@ -116,7 +120,7 @@ class Treap
         p->UpdateInfo();
         if (p->l) p->l->SetP(p);
       } else {
-        output_l = 0;
+        output_l = nullptr;
         output_r = p;
       }
     }
@@ -127,11 +131,11 @@ class Treap
                          TNode*& output_r) {
     static_assert(use_key, "use_key should be true");
     if (!root) {
-      output_l = output_r = 0;
+      output_l = output_r = nullptr;
     } else {
       SplitByKeyI(root, key, output_l, output_r);
-      if (output_l) output_l->SetP(0);
-      if (output_r) output_r->SetP(0);
+      if (output_l) output_l->SetP(nullptr);
+      if (output_r) output_r->SetP(nullptr);
     }
   }
 
@@ -147,11 +151,11 @@ class Treap
     } else if (lsize == hlsize) {
       output_l = p->l;
       output_r = p;
-      p->l = 0;
+      p->l = nullptr;
     } else if (lsize == hlsize + 1) {
       output_l = p;
       output_r = p->r;
-      p->r = 0;
+      p->r = nullptr;
     } else {
       output_l = p;
       SplitBySizeI(p->r, lsize - hlsize - 1, p->r, output_r);
@@ -165,17 +169,17 @@ class Treap
                           TNode*& output_r) {
     static_assert(TInfo::has_size, "info should contain size");
     if (!root) {
-      output_l = output_r = 0;
+      output_l = output_r = nullptr;
     } else if (lsize == 0) {
-      output_l = 0;
+      output_l = nullptr;
       output_r = root;
     } else if (lsize >= root->info.size) {
       output_l = root;
-      output_r = 0;
+      output_r = nullptr;
     } else {
       SplitBySizeI(root, lsize, output_l, output_r);
-      if (output_l) output_l->SetP(0);
-      if (output_r) output_r->SetP(0);
+      if (output_l) output_l->SetP(nullptr);
+      if (output_r) output_r->SetP(nullptr);
     }
   }
 
@@ -211,9 +215,9 @@ class Treap
     } else {
       removed_node = root;
       TNode* l = root->l;
-      if (l) l->SetP(0);
+      if (l) l->SetP(nullptr);
       TNode* r = root->r;
-      if (r) r->SetP(0);
+      if (r) r->SetP(nullptr);
       root->ResetLinksAndUpdateInfo();
       return Join(l, r);
     }
@@ -226,9 +230,9 @@ class Treap
     assert(node);
     ApplyActionRootToNode(node);
     TNode* l = node->l;
-    if (l) l->SetP(0);
+    if (l) l->SetP(nullptr);
     TNode* r = node->r;
-    if (r) r->SetP(0);
+    if (r) r->SetP(nullptr);
     TNode* p = node->p;
     node->ResetLinksAndUpdateInfo();
     TNode* m = Join(l, r);
@@ -241,3 +245,4 @@ class Treap
     return Root(p);
   }
 };
+}  // namespace bst

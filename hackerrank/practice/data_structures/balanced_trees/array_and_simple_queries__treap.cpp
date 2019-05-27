@@ -2,12 +2,12 @@
 
 #include "common/binary_search_tree/base/traversal.h"
 #include "common/binary_search_tree/treap.h"
-#include "common/binary_search_tree/utils/rotate.h"
+#include "common/binary_search_tree/utils/swap_intervals.h"
 #include "common/stl/base.h"
 #include "common/vector/read.h"
 #include "common/vector/write.h"
 
-using TTreap = Treap<false, false, int>;
+using TTreap = bst::Treap<false, false, int>;
 using TNode = TTreap::TNode;
 
 int main_array_and_simple_queries__treap() {
@@ -19,13 +19,13 @@ int main_array_and_simple_queries__treap() {
   for (; M; --M) {
     unsigned t, i, j;
     cin >> t >> i >> j;
-    if (t == 1) {
-      Rotate<TTreap>(root, 0, i - 1, j);
-    } else {
-      Rotate<TTreap>(root, i - 1, j, N);
-    }
+    if (t == 1)
+      bst::SwapIntervals<TTreap>(root, 0, i - 1, j);
+    else
+      bst::SwapIntervals<TTreap>(root, i - 1, j, N);
   }
-  vector<int> vf = BSTTraversal::Traverse<TNode, int>(root, EBST_Inorder);
+  vector<int> vf =
+      bst::Traverse<TNode, int>(root, bst::ETraversalOrder::Inorder);
   cout << abs(vf[0] - vf.back()) << endl;
   WriteVector(vf);
   return 0;

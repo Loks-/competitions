@@ -2,11 +2,13 @@
 
 #include <algorithm>
 
+namespace bst {
+namespace info {
 template <class TMinType, class TInfo>
-class BSTInfoMin : public TInfo {
+class Min : public TInfo {
  public:
   using TBase = TInfo;
-  using TSelf = BSTInfoMin<TMinType, TInfo>;
+  using TSelf = Min<TMinType, TInfo>;
   static const bool is_none = false;
   static const bool use_data = true;
 
@@ -20,3 +22,5 @@ class BSTInfoMin : public TInfo {
     if (node->r) subtree_min = std::min(subtree_min, node->r->info.subtree_min);
   }
 };
+}  // namespace info
+}  // namespace bst

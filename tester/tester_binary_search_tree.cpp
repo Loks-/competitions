@@ -94,43 +94,50 @@ TesterBinarySearchTree::TesterBinarySearchTree(unsigned size, TBSTMode _mode)
 bool TesterBinarySearchTree::TestAllTrees() {
   std::cout << "Testing base trees:" << std::endl;
   current_job = "base";
-  TestAll<AVLTree<false, TKey, BSTInfoSize, BSTActionNone, TKey>>(
+  TestAll<bst::AVLTree<false, TKey, bst::info::Size, bst::action::None, TKey>>(
       "avltree_upf");
-  TestAll<AVLTree<true, TKey, BSTInfoSize, BSTActionNone, TKey>>("avltree_upt");
-  TestAll<RedBlackTree<false, TKey, BSTInfoSize, BSTActionNone, TKey>>(
+  TestAll<bst::AVLTree<true, TKey, bst::info::Size, bst::action::None, TKey>>(
+      "avltree_upt");
+  TestAll<
+      bst::RedBlackTree<false, TKey, bst::info::Size, bst::action::None, TKey>>(
       "rbtree_upf");
-  TestAll<RedBlackTree<true, TKey, BSTInfoSize, BSTActionNone, TKey>>(
+  TestAll<
+      bst::RedBlackTree<true, TKey, bst::info::Size, bst::action::None, TKey>>(
       "rbtree_upt");
-  TestAll<ScapegoatTree<false, TKey, BSTInfoSize, BSTActionNone, TKey>>(
-      "scape_upf");
-  TestAll<ScapegoatTree<true, TKey, BSTInfoSize, BSTActionNone, TKey>>(
+  TestAll<bst::ScapegoatTree<false, TKey, bst::info::Size, bst::action::None,
+                             TKey>>("scape_upf");
+  TestAll<
+      bst::ScapegoatTree<true, TKey, bst::info::Size, bst::action::None, TKey>>(
       "scape_upt");
-  TestAll<SplayTree<true, TKey, BSTInfoSize, BSTActionNone, TKey>>("splay_upt");
-  TestAll<Treap<true, false, TKey, BSTInfoSize, BSTActionNone, TKey>>(
+  TestAll<bst::SplayTree<true, TKey, bst::info::Size, bst::action::None, TKey>>(
+      "splay_upt");
+  TestAll<
+      bst::Treap<true, false, TKey, bst::info::Size, bst::action::None, TKey>>(
       "treap_upf");
-  TestAll<Treap<true, true, TKey, BSTInfoSize, BSTActionNone, TKey>>(
+  TestAll<
+      bst::Treap<true, true, TKey, bst::info::Size, bst::action::None, TKey>>(
       "treap_upt");
 
   std::cout << "Testing full trees:" << std::endl;
   current_job = "full";
-  TestAll<AVLTree<false, TKey, BSTInfoSum<TKey, BSTInfoSize>,
-                  BSTActionAdd<TKey>, TKey>>("avltree_upf");
-  TestAll<AVLTree<true, TKey, BSTInfoSum<TKey, BSTInfoSize>, BSTActionAdd<TKey>,
-                  TKey>>("avltree_upt");
-  TestAll<RedBlackTree<false, TKey, BSTInfoSum<TKey, BSTInfoSize>,
-                       BSTActionAdd<TKey>, TKey>>("rbtree_upf");
-  TestAll<RedBlackTree<true, TKey, BSTInfoSum<TKey, BSTInfoSize>,
-                       BSTActionAdd<TKey>, TKey>>("rbtree_upt");
-  TestAll<ScapegoatTree<false, TKey, BSTInfoSum<TKey, BSTInfoSize>,
-                        BSTActionAdd<TKey>, TKey>>("scape_upf");
-  TestAll<ScapegoatTree<true, TKey, BSTInfoSum<TKey, BSTInfoSize>,
-                        BSTActionAdd<TKey>, TKey>>("scape_upt");
-  TestAll<SplayTree<true, TKey, BSTInfoSum<TKey, BSTInfoSize>,
-                    BSTActionAdd<TKey>, TKey>>("splay_upt");
-  TestAll<Treap<true, false, TKey, BSTInfoSum<TKey, BSTInfoSize>,
-                BSTActionAdd<TKey>, TKey>>("treap_upf");
-  TestAll<Treap<true, true, TKey, BSTInfoSum<TKey, BSTInfoSize>,
-                BSTActionAdd<TKey>, TKey>>("treap_upt");
+  TestAll<bst::AVLTree<false, TKey, bst::info::Sum<TKey, bst::info::Size>,
+                       bst::action::AddEach<TKey>, TKey>>("avltree_upf");
+  TestAll<bst::AVLTree<true, TKey, bst::info::Sum<TKey, bst::info::Size>,
+                       bst::action::AddEach<TKey>, TKey>>("avltree_upt");
+  TestAll<bst::RedBlackTree<false, TKey, bst::info::Sum<TKey, bst::info::Size>,
+                            bst::action::AddEach<TKey>, TKey>>("rbtree_upf");
+  TestAll<bst::RedBlackTree<true, TKey, bst::info::Sum<TKey, bst::info::Size>,
+                            bst::action::AddEach<TKey>, TKey>>("rbtree_upt");
+  TestAll<bst::ScapegoatTree<false, TKey, bst::info::Sum<TKey, bst::info::Size>,
+                             bst::action::AddEach<TKey>, TKey>>("scape_upf");
+  TestAll<bst::ScapegoatTree<true, TKey, bst::info::Sum<TKey, bst::info::Size>,
+                             bst::action::AddEach<TKey>, TKey>>("scape_upt");
+  TestAll<bst::SplayTree<true, TKey, bst::info::Sum<TKey, bst::info::Size>,
+                         bst::action::AddEach<TKey>, TKey>>("splay_upt");
+  TestAll<bst::Treap<true, false, TKey, bst::info::Sum<TKey, bst::info::Size>,
+                     bst::action::AddEach<TKey>, TKey>>("treap_upf");
+  TestAll<bst::Treap<true, true, TKey, bst::info::Sum<TKey, bst::info::Size>,
+                     bst::action::AddEach<TKey>, TKey>>("treap_upt");
 
   bool output = TestHash();
   if ((mode == time_test) && output) {

@@ -2,11 +2,13 @@
 
 #include <algorithm>
 
+namespace bst {
+namespace info {
 template <class TMaxType, class TInfo>
-class BSTInfoMax : public TInfo {
+class Max : public TInfo {
  public:
   using TBase = TInfo;
-  using TSelf = BSTInfoMax<TMaxType, TInfo>;
+  using TSelf = Max<TMaxType, TInfo>;
   static const bool is_none = false;
   static const bool use_data = true;
 
@@ -20,3 +22,5 @@ class BSTInfoMax : public TInfo {
     if (node->r) subtree_max = std::max(subtree_max, node->r->info.subtree_max);
   }
 };
+}  // namespace info
+}  // namespace bst

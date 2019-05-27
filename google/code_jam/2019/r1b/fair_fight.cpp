@@ -5,8 +5,9 @@
 #include "common/vector/read.h"
 
 using TTree =
-    Treap<true, true, int, BSTInfoMin<int, BSTInfoMax<int, BSTInfoNone>>,
-          BSTActionNone, int>;
+    bst::Treap<true, true, int,
+               bst::info::Min<int, bst::info::Max<int, bst::info::None>>,
+               bst::action::None, int>;
 using TNode = TTree::TNode;
 
 int main_fair_fight() {
@@ -20,12 +21,12 @@ int main_fair_fight() {
     vector<TNode*> vh(4, 0);
     for (int j = 0; j < 2; ++j) {
       for (int i = 0; i < n; ++i) {
-        TNode* p = tree.GetNewNode(i, vv[j][i]);
+        TNode* p = tree.New(i, vv[j][i]);
         vh[2 * j + 1] = tree.InsertByKey(vh[2 * j + 1], p);
       }
     }
     for (int j = 0; j < 4; ++j) {
-      TNode* p = tree.GetNewNode((j & 1) ? n : -1, 300000);
+      TNode* p = tree.New((j & 1) ? n : -1, 300000);
       vh[j] = tree.InsertByKey(vh[j], p);
     }
     int64_t total = 0;
@@ -57,7 +58,7 @@ int main_fair_fight() {
       total += int64_t(i - l1) * (r1 - i);
       total -= int64_t(i - l2) * (r2 - i);
       for (unsigned j = 0; j < 2; ++j) {
-        TNode* p = tree.GetNodeByRawIndex(i + j * n);
+        TNode* p = tree.NodeByRawIndex(i + j * n);
         vh[2 * j + 1] = tree.RemoveByNode(p);
         vh[2 * j] = tree.InsertByKey(vh[2 * j], p);
       }

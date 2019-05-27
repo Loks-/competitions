@@ -1,7 +1,8 @@
 #pragma once
 
+namespace bst {
 template <class TTree, class TActionValue>
-inline typename TTree::TNode* BSTAddActionToSegment(
+inline typename TTree::TNode* AddActionToSegment(
     typename TTree::TNode* root, unsigned begin, unsigned end,
     const TActionValue& action_value) {
   using TNode = typename TTree::TNode;
@@ -11,3 +12,4 @@ inline typename TTree::TNode* BSTAddActionToSegment(
   m->AddAction(action_value);
   return TTree::Join(TTree::Join(l, m), r);
 }
+}  // namespace bst

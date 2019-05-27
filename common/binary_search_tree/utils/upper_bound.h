@@ -2,10 +2,11 @@
 
 #include "common/base.h"
 
+namespace bst {
 template <class TNode, class TValue>
-inline TNode* BSTPrefixSumUpperBound(TNode* root, TValue value) {
-  if (!root) return 0;
-  if (value >= root->info.sum) return 0;
+inline TNode* PrefixSumUpperBound(TNode* root, TValue value) {
+  if (!root) return nullptr;
+  if (value >= root->info.sum) return nullptr;
   for (TNode* node = root; node;) {
     node->ApplyAction();
     TValue ls = (node->l ? node->l->info.sum : 0);
@@ -19,5 +20,6 @@ inline TNode* BSTPrefixSumUpperBound(TNode* root, TValue value) {
     }
   }
   assert(false);
-  return 0;
+  return nullptr;
 }
+}  // namespace bst

@@ -6,7 +6,7 @@
 
 #include <iomanip>
 
-using TTree = ScapegoatTree<false, TEmpty>;
+using TTree = bst::ScapegoatTree<false, TEmpty>;
 using TNode = TTree::TNode;
 
 int main_median_updates__upf_scapegoat() {
@@ -34,7 +34,7 @@ int main_median_updates__upf_scapegoat() {
       cout << "Wrong!" << endl;
     } else {
       unsigned size = root->info.size;
-      int64_t s = BSTMedian<TNode, int64_t>(root);
+      int64_t s = bst::Median<TNode, int64_t>(root);
       if (s & 1)
         cout << s / 2.0 << endl;
       else

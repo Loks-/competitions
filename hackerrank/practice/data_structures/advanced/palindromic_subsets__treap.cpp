@@ -12,8 +12,9 @@
 #include <string>
 
 using TVector = VectorStaticSize<unsigned, 26>;
-using TTree = Treap<false, false, TVector, BSTInfoSum<TVector, BSTInfoSize>,
-                    BSTActionRotateVector>;
+using TTree =
+    bst::Treap<false, false, TVector, bst::info::Sum<TVector, bst::info::Size>,
+               bst::action::RotateVector>;
 using TNode = TTree::TNode;
 using TModular = Modular<>;
 
@@ -31,11 +32,11 @@ int main_palindromic_subsets__treap() {
     cin >> t;
     if (t == 1) {
       cin >> a >> b >> c;
-      root = BSTAddActionToSegment<TTree>(root, a, b + 1, c);
+      root = bst::AddActionToSegment<TTree>(root, a, b + 1, c);
     } else if (t == 2) {
       cin >> a >> b;
       TTree::TInfo info;
-      root = BSTGetSegmentInfo<TTree>(root, a, b + 1, info);
+      root = bst::GetSegmentInfo<TTree>(root, a, b + 1, info);
       unsigned nsum = 0, nnonzero = 0;
       for (unsigned j = 0; j < 26; ++j) {
         if (info.sum(j)) {

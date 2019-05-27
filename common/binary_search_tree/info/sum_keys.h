@@ -1,10 +1,12 @@
 #pragma once
 
+namespace bst {
+namespace info {
 template <class TSumType, class TInfo>
-class BSTInfoSumKeys : public TInfo {
+class SumKeys : public TInfo {
  public:
   using TBase = TInfo;
-  using TSelf = BSTInfoSumKeys<TSumType, TInfo>;
+  using TSelf = SumKeys<TSumType, TInfo>;
   static const bool is_none = false;
 
   TSumType sum_keys;
@@ -16,3 +18,5 @@ class BSTInfoSumKeys : public TInfo {
                (node->r ? node->r->info.sum_keys : 0);
   }
 };
+}  // namespace info
+}  // namespace bst
