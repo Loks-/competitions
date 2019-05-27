@@ -4,7 +4,7 @@
 #include "common/binary_search_tree/info/sum.h"
 #include "common/binary_search_tree/treap.h"
 #include "common/binary_search_tree/utils/add_action_to_segment.h"
-#include "common/binary_search_tree/utils/get_segment_info.h"
+#include "common/binary_search_tree/utils/segment_info_by_index.h"
 #include "common/linear_algebra/vector_static_size.h"
 #include "common/modular/static/modular_io.h"
 #include "common/stl/base.h"
@@ -36,7 +36,7 @@ int main_palindromic_subsets__treap() {
     } else if (t == 2) {
       cin >> a >> b;
       TTree::TInfo info;
-      root = bst::GetSegmentInfo<TTree>(root, a, b + 1, info);
+      root = bst::SegmentInfoByIndex<TTree>(root, a, b + 1, info);
       unsigned nsum = 0, nnonzero = 0;
       for (unsigned j = 0; j < 26; ++j) {
         if (info.sum(j)) {
