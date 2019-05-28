@@ -26,7 +26,7 @@ int main_raise_the_roof() {
     for (unsigned i = 1; i < N; ++i) {
       if (v[mi].p.z < v[i].p.z) mi = i;
     }
-    if (mi != 0) swap(v[0], v[mi]);
+    swap(v[0], v[mi]);
     mi = N;
     double mvalue = 1.;
     for (unsigned i = 1; i < N; ++i) {
@@ -45,7 +45,7 @@ int main_raise_the_roof() {
       }
     }
     assert(mi < N);
-    if (mi != 1) swap(v[1], v[mi]);
+    swap(v[1], v[mi]);
     for (unsigned k = 2; k < N; ++k) {
       mi = N;
       for (unsigned i = k; i < N; ++i) {
@@ -65,7 +65,7 @@ int main_raise_the_roof() {
         }
       }
       assert(mi < N);
-      if (mi != k) swap(v[k], v[mi]);
+      swap(v[k], v[mi]);
     }
     reverse(v.begin(), v.end());
     cout << "Case #" << it << ":";
