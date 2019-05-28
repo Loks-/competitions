@@ -5,10 +5,6 @@
 #include "common/geometry/d3/vector.h"
 #include "common/stl/base.h"
 
-#include <cmath>
-
-namespace {}  // namespace
-
 int main_raise_the_roof() {
   struct Point {
     unsigned index;
@@ -56,9 +52,6 @@ int main_raise_the_roof() {
         auto p = PlaneFromPoints(v[k - 2].p, v[k - 1].p, v[i].p);
         assert(p.Valid() && (p.c != 0));
         if (p.c < 0) p.Flip();
-        // cout << k - 2 << "\t" << k - 1 << "\t" << i << endl;
-        // for (unsigned j = 0; j < N; ++j) cout << p(v[j].p) << "\t";
-        // cout << endl;
         bool ok = true;
         for (unsigned j = k; j < N; ++j) {
           if ((j != i) && (p(v[j].p) > 0)) {
