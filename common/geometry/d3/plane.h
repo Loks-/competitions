@@ -1,5 +1,6 @@
 #pragma once
 
+#include "common/base.h"
 #include "common/geometry/d3/point.h"
 #include "common/geometry/d3/vector.h"
 
@@ -42,3 +43,4 @@ class Plane {
 }  // namespace geometry
 
 using D3Plane = geometry::d3::Plane<double>;
+using I3Plane = geometry::d3::Plane<int64_t>;

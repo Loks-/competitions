@@ -46,3 +46,4 @@ class Vector {
 }  // namespace geometry
 
 using D3Vector = geometry::d3::Vector<double>;
+using I3Vector = geometry::d3::Vector<int64_t>;

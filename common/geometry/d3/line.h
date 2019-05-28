@@ -1,5 +1,6 @@
 #pragma once
 
+#include "common/base.h"
 #include "common/geometry/d3/point.h"
 #include "common/geometry/d3/vector.h"
 
@@ -22,3 +23,4 @@ class Line {
 }  // namespace geometry
 
 using D3Line = geometry::d3::Line<double>;
+using I3Line = geometry::d3::Line<int64_t>;

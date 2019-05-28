@@ -1,5 +1,7 @@
 #pragma once
 
+#include "common/base.h"
+
 namespace geometry {
 namespace d3 {
 template <class T>
@@ -14,3 +16,4 @@ class Point {
 }  // namespace geometry
 
 using D3Point = geometry::d3::Point<double>;
+using I3Point = geometry::d3::Point<int64_t>;

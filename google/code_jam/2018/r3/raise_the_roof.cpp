@@ -8,8 +8,7 @@
 int main_raise_the_roof() {
   struct Point {
     unsigned index;
-    // D3Point p;
-    geometry::d3::Point<int64_t> p;
+    I3Point p;
   };
 
   unsigned T;
@@ -32,11 +31,6 @@ int main_raise_the_roof() {
     for (unsigned i = 1; i < N; ++i) {
       auto vi = v[0].p - v[i].p;
       assert(!vi.Empty());
-      //   vi.Normalize();
-      //   if (vi.dz < mvalue) {
-      //     mvalue = vi.dz;
-      //     mi = i;
-      //   }
       double t = double(vi.dz * vi.dz) /
                  (vi.dx * vi.dx + vi.dy * vi.dy + vi.dz * vi.dz);
       if (t < mvalue) {
