@@ -34,8 +34,12 @@ class Vector {
     return *this;
   }
 
-  TSelf& operator*(const T& r) { return TSelf(dx * r, dy * r, dz * r); }
-  TSelf& operator/(const T& r) { return TSelf(dx / r, dy / r, dz / r); }
+  TSelf operator*(const T& r) const { return TSelf(dx * r, dy * r, dz * r); }
+  TSelf operator/(const T& r) const { return TSelf(dx / r, dy / r, dz / r); }
+  TSelf operator-() const { return TSelf(-dx, -dy, -dz); }
+  T operator*(const TSelf& r) const {
+    return dx * r.dx + dy * r.dy + dz * r.dz;
+  }
 
   void Normalize() {
     assert(!Empty());

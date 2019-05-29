@@ -1,14 +1,14 @@
 #include "common/geometry/d3/base.h"
-#include "common/geometry/d3/plane.h"
+#include "common/geometry/d3/plane_pn.h"
 #include "common/geometry/d3/point_io.h"
-#include "common/geometry/d3/utils/plane_from_points.h"
+#include "common/geometry/d3/utils/plane_pn_from_points.h"
 #include "common/geometry/d3/vector.h"
 #include "common/stl/base.h"
 
-int main_raise_the_roof() {
+int main_raise_the_roof__pnd() {
   struct Point {
     unsigned index;
-    I3Point p;
+    D3Point p;
   };
 
   unsigned T;
@@ -31,10 +31,9 @@ int main_raise_the_roof() {
     for (unsigned i = 1; i < N; ++i) {
       auto vi = v[0].p - v[i].p;
       assert(!vi.Empty());
-      double t = double(vi.dz * vi.dz) /
-                 (vi.dx * vi.dx + vi.dy * vi.dy + vi.dz * vi.dz);
-      if (t < mvalue) {
-        mvalue = t;
+      vi.Normalize();
+      if (vi.dz < mvalue) {
+        mvalue = vi.dz;
         mi = i;
       }
     }
@@ -43,9 +42,9 @@ int main_raise_the_roof() {
     for (unsigned k = 2; k < N; ++k) {
       mi = N;
       for (unsigned i = k; i < N; ++i) {
-        auto p = PlaneFromPoints(v[k - 2].p, v[k - 1].p, v[i].p);
-        assert(p.Valid() && (p.c != 0));
-        if (p.c < 0) p.SetOppositeNormal();
+        auto p = PlanePNFromPoints(v[k - 2].p, v[k - 1].p, v[i].p);
+        assert(p.Valid() && (p.n.dz != 0));
+        if (p.n.dz < 0) p.SetOppositeNormal();
         bool ok = true;
         for (unsigned j = k; j < N; ++j) {
           if ((j != i) && (p(v[j].p) > 0)) {

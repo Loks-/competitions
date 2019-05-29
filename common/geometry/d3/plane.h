@@ -6,6 +6,7 @@
 
 namespace geometry {
 namespace d3 {
+// Plane in general form.
 template <class T>
 class Plane {
  public:
@@ -23,7 +24,7 @@ class Plane {
     return a * p.x + b * p.y + c * p.z + d;
   }
 
-  void Flip() {
+  void SetOppositeNormal() {
     a = -a;
     b = -b;
     c = -c;
