@@ -25,9 +25,11 @@ using TDHeap8 = heap::DHeap<8u, TData>;
 template <class TData>
 using TDHeap16 = heap::DHeap<16u, TData>;
 
-TesterMinimumSpanningTree::TesterMinimumSpanningTree(unsigned graph_size,
+TesterMinimumSpanningTree::TesterMinimumSpanningTree(EGraphType _gtype,
+                                                     unsigned graph_size,
                                                      unsigned edges_per_node)
-    : g(CreateRandomGraph<uint64_t, false>(graph_size, edges_per_node,
+    : gtype(_gtype),
+      g(CreateRandomGraph<uint64_t, false>(graph_size, edges_per_node,
                                            (1u << 30))) {}
 
 uint64_t TesterMinimumSpanningTree::TestKruskal() const {
@@ -64,6 +66,19 @@ uint64_t TesterMinimumSpanningTree::TestPrimDHeap(
 }
 
 bool TesterMinimumSpanningTree::TestAll() {
+  switch (gtype) {
+    case EGraphType::SMALL:
+      std::cout << "Small:" << std::endl;
+      break;
+    case EGraphType::SPARSE:
+      std::cout << "Sparse:" << std::endl;
+      break;
+    case EGraphType::DENSE:
+      std::cout << "Dense:" << std::endl;
+      break;
+    default:
+      assert(false);
+  }
   std::unordered_set<uint64_t> hs;
   hs.insert(TestKruskal());
   hs.insert(TestPrimBaseBinaryHeap());
@@ -76,10 +91,11 @@ bool TesterMinimumSpanningTree::TestAll() {
 
 bool TestMinimumSpanningTree(bool time_test) {
   if (time_test) {
-    TesterMinimumSpanningTree t1(1000000, 10), t2(4000, 2000);
+    TesterMinimumSpanningTree t1(EGraphType::SPARSE, 1000000, 10),
+        t2(EGraphType::DENSE, 4000, 2000);
     return t1.TestAll() && t2.TestAll();
   } else {
-    TesterMinimumSpanningTree t(100, 10);
+    TesterMinimumSpanningTree t(EGraphType::SMALL, 100, 10);
     return t.TestAll();
   }
 }

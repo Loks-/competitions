@@ -99,7 +99,6 @@ size_t TesterGraphEIDistancePositiveCost::TestKVM(
 }
 
 bool TesterGraphEIDistancePositiveCost::TestAll() {
-  std::unordered_set<size_t> hs;
   switch (gtype) {
     case EGraphType::SMALL:
       std::cout << "Small:" << std::endl;
@@ -113,6 +112,7 @@ bool TesterGraphEIDistancePositiveCost::TestAll() {
     default:
       assert(false);
   }
+  std::unordered_set<size_t> hs;
   hs.insert(TestCBH<TBinaryHeap>("  BH"));
   hs.insert(TestCBH<TDHeap2>("DH 2"));
   hs.insert(TestCBH<TDHeap4>("DH 4"));
