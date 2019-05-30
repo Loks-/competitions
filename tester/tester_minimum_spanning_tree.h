@@ -33,6 +33,9 @@ class TesterMinimumSpanningTree {
   template <class THeap>
   uint64_t TestPrimKPM(const std::string& name) const;
 
+  template <class THeap>
+  uint64_t TestPrimKVM(const std::string& name) const;
+
  public:
   bool TestAll();
 };

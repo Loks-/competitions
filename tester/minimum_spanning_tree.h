@@ -71,7 +71,6 @@ MinimumSpanningTreePrimKPM(const TGraph& graph, const TEdgeCostFunction& f,
                            typename TEdgeCostFunction::TEdgeCost max_cost,
                            unsigned source = 0) {
   using TEdgeCost = typename TEdgeCostFunction::TEdgeCost;
-  using TPair = std::pair<TEdgeCost, unsigned>;
   std::vector<unsigned> visited(graph.Size(), 0);
   std::vector<unsigned> best_cost_in_queue(graph.Size(), max_cost);
   unsigned edges_added = -1u;
@@ -79,18 +78,38 @@ MinimumSpanningTreePrimKPM(const TGraph& graph, const TEdgeCostFunction& f,
   TUKeyPosMap q(graph.Size());
   for (q.AddNewKey(source, TEdgeCost()); !q.Empty();) {
     auto p = q.Extract();
-    if (!visited[p.key]) {
-      visited[p.key] = true;
-      ++edges_added;
-      total_cost += p.value;
-      for (auto e : graph.EdgesEI(p.key)) {
-        unsigned v = e.to;
-        auto cost = f(e.info);
-        if (!visited[v] && (cost < best_cost_in_queue[v])) {
-          best_cost_in_queue[v] = cost;
-          q.DecreaseValue(v, cost);
-        }
+    visited[p.key] = true;
+    ++edges_added;
+    total_cost += p.value;
+    for (auto e : graph.EdgesEI(p.key)) {
+      unsigned v = e.to;
+      auto cost = f(e.info);
+      if (!visited[v] && (cost < best_cost_in_queue[v])) {
+        best_cost_in_queue[v] = cost;
+        q.DecreaseValue(v, cost);
       }
+    }
+  }
+  return {edges_added, total_cost};
+}
+
+template <class TUKeyValueMap, class TGraph, class TEdgeCostFunction>
+std::pair<unsigned, typename TEdgeCostFunction::TEdgeCost>
+MinimumSpanningTreePrimKVM(const TGraph& graph, const TEdgeCostFunction& f,
+                           typename TEdgeCostFunction::TEdgeCost max_cost,
+                           unsigned source = 0) {
+  using TEdgeCost = typename TEdgeCostFunction::TEdgeCost;
+  std::vector<unsigned> visited(graph.Size(), 0);
+  unsigned edges_added = -1u;
+  TEdgeCost total_cost = TEdgeCost();
+  TUKeyValueMap q(std::vector<TEdgeCost>(graph.Size(), max_cost), true);
+  for (q.AddNewKey(source, TEdgeCost()); !q.Empty();) {
+    unsigned u = q.ExtractKey();
+    visited[u] = true;
+    ++edges_added;
+    total_cost += q.Get(u);
+    for (auto e : graph.EdgesEI(u)) {
+      if (!visited[e.to]) q.DecreaseValueIfLess(e.to, f(e.info));
     }
   }
   return {edges_added, total_cost};

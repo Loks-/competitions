@@ -6,6 +6,7 @@
 #include "common/heap/binary_heap.h"
 #include "common/heap/dheap.h"
 #include "common/heap/dheap_ukey_pos_map.h"
+#include "common/heap/dheap_ukey_value_map.h"
 #include "common/timer.h"
 
 #include "tester/minimum_spanning_tree.h"
@@ -75,6 +76,17 @@ uint64_t TesterMinimumSpanningTree::TestPrimKPM(const std::string& name) const {
   return cost;
 }
 
+template <class THeap>
+uint64_t TesterMinimumSpanningTree::TestPrimKVM(const std::string& name) const {
+  Timer t;
+  uint64_t cost = MinimumSpanningTreePrimKVM<THeap, TGraph, TEdgeCostFunction>(
+                      g, edge_proxy, -1ull)
+                      .second;
+  std::cout << "Test results Prim " << name << " : " << cost << "\t"
+            << t.GetMilliseconds() << std::endl;
+  return cost;
+}
+
 bool TesterMinimumSpanningTree::TestAll() {
   switch (gtype) {
     case EGraphType::SMALL:
@@ -100,6 +112,10 @@ bool TesterMinimumSpanningTree::TestAll() {
   hs.insert(TestPrimKPM<heap::DHeapUKeyPosMap<4, uint64_t>>("DP 4"));
   hs.insert(TestPrimKPM<heap::DHeapUKeyPosMap<8, uint64_t>>("DP 8"));
   hs.insert(TestPrimKPM<heap::DHeapUKeyPosMap<16, uint64_t>>("DP16"));
+  hs.insert(TestPrimKVM<heap::DHeapUKeyValueMap<2, uint64_t>>("DM 2"));
+  hs.insert(TestPrimKVM<heap::DHeapUKeyValueMap<4, uint64_t>>("DM 4"));
+  hs.insert(TestPrimKVM<heap::DHeapUKeyValueMap<8, uint64_t>>("DM 8"));
+  hs.insert(TestPrimKVM<heap::DHeapUKeyValueMap<16, uint64_t>>("DM16"));
   return hs.size() == 1;
 }
 
