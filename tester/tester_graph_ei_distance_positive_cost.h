@@ -24,6 +24,8 @@ class TesterGraphEIDistancePositiveCost {
                                     unsigned edges_per_node);
 
  protected:
+  size_t TestFloydWarshall() const;
+
   template <template <class TData> class THeap>
   size_t TestCBH(const std::string& name) const;
 

@@ -1,6 +1,7 @@
 #include "tester/tester_graph_ei_distance_positive_cost.h"
 
 #include "common/graph/graph_ei/create_random_graph.h"
+#include "common/graph/graph_ei/distance_all_pairs.h"
 #include "common/graph/graph_ei/edge_cost_proxy.h"
 #include "common/hash.h"
 #include "common/heap/binary_heap.h"
@@ -39,6 +40,18 @@ TesterGraphEIDistancePositiveCost::TesterGraphEIDistancePositiveCost(
     : gtype(_gtype),
       g(CreateRandomGraph<uint64_t, true>(graph_size, edges_per_node,
                                           (1u << 30))) {}
+
+size_t TesterGraphEIDistancePositiveCost::TestFloydWarshall() const {
+  Timer t;
+  size_t h = 0, max_cost = -1ull;
+  auto vv = DistanceAllPairs(g, max_cost);
+  for (unsigned i = 0; i < vv.size(); ++i) {
+    for (uint64_t d : vv[i]) h = hash_combine(h, d);
+  }
+  std::cout << "Test results  [FLYD]: " << h << "\t" << t.GetMilliseconds()
+            << std::endl;
+  return h;
+}
 
 template <template <class TData> class THeap>
 size_t TesterGraphEIDistancePositiveCost::TestCBH(
@@ -118,6 +131,7 @@ bool TesterGraphEIDistancePositiveCost::TestAll() {
   hs.insert(TestKVM<TPairing<1, 0>>("PR01"));
   hs.insert(TestKVM<TPairing<0, 1>>("PR10"));
   hs.insert(TestKVM<TPairing<1, 1>>("PR11"));
+  if (gtype != EGraphType::SPARSE) hs.insert(TestFloydWarshall());
   return hs.size() == 1;
 }
 
