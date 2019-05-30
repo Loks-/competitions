@@ -4,6 +4,8 @@
 #include "common/graph/graph_ei.h"
 #include "common/graph/graph_ei/edge_cost_proxy.h"
 
+#include "tester/graph_type.h"
+
 #include <string>
 #include <vector>
 
@@ -13,11 +15,12 @@ class TesterGraphEIDistancePositiveCost {
   using TEdgeCostFunction = graph::EdgeCostProxy<uint64_t>;
 
  protected:
+  EGraphType gtype;
   TGraph g;
   TEdgeCostFunction edge_proxy;
 
  public:
-  TesterGraphEIDistancePositiveCost(unsigned graph_size,
+  TesterGraphEIDistancePositiveCost(EGraphType _gtype, unsigned graph_size,
                                     unsigned edges_per_node);
 
  protected:

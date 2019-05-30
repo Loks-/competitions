@@ -12,6 +12,7 @@
 #include "common/timer.h"
 
 #include "tester/graph_ei_distance_positive_cost.h"
+#include "tester/graph_type.h"
 
 #include <functional>
 #include <iostream>
@@ -34,8 +35,9 @@ using TPairing = heap::PairingUKeyValueMap<uint64_t, std::less<uint64_t>,
                                            multipass, auxiliary>;
 
 TesterGraphEIDistancePositiveCost::TesterGraphEIDistancePositiveCost(
-    unsigned graph_size, unsigned edges_per_node)
-    : g(CreateRandomGraph<uint64_t, true>(graph_size, edges_per_node,
+    EGraphType _gtype, unsigned graph_size, unsigned edges_per_node)
+    : gtype(_gtype),
+      g(CreateRandomGraph<uint64_t, true>(graph_size, edges_per_node,
                                           (1u << 30))) {}
 
 template <template <class TData> class THeap>
@@ -85,6 +87,19 @@ size_t TesterGraphEIDistancePositiveCost::TestKVM(
 
 bool TesterGraphEIDistancePositiveCost::TestAll() {
   std::unordered_set<size_t> hs;
+  switch (gtype) {
+    case EGraphType::SMALL:
+      std::cout << "Small:" << std::endl;
+      break;
+    case EGraphType::SPARSE:
+      std::cout << "Sparse:" << std::endl;
+      break;
+    case EGraphType::DENSE:
+      std::cout << "Dense:" << std::endl;
+      break;
+    default:
+      assert(false);
+  }
   hs.insert(TestCBH<TBinaryHeap>("  BH"));
   hs.insert(TestCBH<TDHeap2>("DH 2"));
   hs.insert(TestCBH<TDHeap4>("DH 4"));
@@ -108,10 +123,11 @@ bool TesterGraphEIDistancePositiveCost::TestAll() {
 
 bool TestGraphEIDistancePositiveCost(bool time_test) {
   if (time_test) {
-    TesterGraphEIDistancePositiveCost t1(5000, 4), t2(2000, 500);
+    TesterGraphEIDistancePositiveCost t1(EGraphType::SPARSE, 5000, 4),
+        t2(EGraphType::DENSE, 2000, 500);
     return t1.TestAll() && t2.TestAll();
   } else {
-    TesterGraphEIDistancePositiveCost t(100, 4);
+    TesterGraphEIDistancePositiveCost t(EGraphType::SMALL, 100, 4);
     return t.TestAll();
   }
 }
