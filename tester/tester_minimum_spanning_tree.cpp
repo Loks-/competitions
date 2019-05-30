@@ -1,8 +1,8 @@
 #include "tester/tester_minimum_spanning_tree.h"
 
+#include "common/graph/graph_ei/create_random_graph.h"
 #include "common/graph/graph_ei/edge_cost_proxy.h"
 #include "common/graph/graph_ei/mst/kruskal.h"
-#include "common/hash.h"
 #include "common/heap/binary_heap.h"
 #include "common/heap/dheap.h"
 #include "common/timer.h"
@@ -27,15 +27,8 @@ using TDHeap16 = heap::DHeap<16u, TData>;
 
 TesterMinimumSpanningTree::TesterMinimumSpanningTree(unsigned graph_size,
                                                      unsigned edges_per_node)
-    : g(graph_size) {
-  size_t h = 0, mask = (1u << 30) - 1u;
-  for (unsigned i = 0; i < graph_size; ++i) {
-    for (unsigned j = 0; j < (edges_per_node + (i % 2)) / 2; ++j) {
-      h = hash_combine(h, i);
-      g.AddEdge(i, h % graph_size, h & mask);
-    }
-  }
-}
+    : g(CreateRandomGraph<uint64_t, false>(graph_size, edges_per_node,
+                                           (1u << 30))) {}
 
 uint64_t TesterMinimumSpanningTree::TestKruskal() const {
   Timer t;

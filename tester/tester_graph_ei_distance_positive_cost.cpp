@@ -1,5 +1,6 @@
 #include "tester/tester_graph_ei_distance_positive_cost.h"
 
+#include "common/graph/graph_ei/create_random_graph.h"
 #include "common/graph/graph_ei/edge_cost_proxy.h"
 #include "common/hash.h"
 #include "common/heap/binary_heap.h"
@@ -34,15 +35,8 @@ using TPairing = heap::PairingUKeyValueMap<uint64_t, std::less<uint64_t>,
 
 TesterGraphEIDistancePositiveCost::TesterGraphEIDistancePositiveCost(
     unsigned graph_size, unsigned edges_per_node)
-    : g(graph_size) {
-  size_t h = 0, mask = (1u << 30) - 1u;
-  for (unsigned i = 0; i < graph_size; ++i) {
-    for (unsigned j = 0; j < edges_per_node; ++j) {
-      h = hash_combine(h, i);
-      g.AddEdge(i, h % graph_size, h & mask);
-    }
-  }
-}
+    : g(CreateRandomGraph<uint64_t, true>(graph_size, edges_per_node,
+                                          (1u << 30))) {}
 
 template <template <class TData> class THeap>
 size_t TesterGraphEIDistancePositiveCost::TestCBH(
