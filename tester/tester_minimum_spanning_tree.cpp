@@ -80,8 +80,8 @@ bool TesterMinimumSpanningTree::TestAll() {
       assert(false);
   }
   std::unordered_set<uint64_t> hs;
-  hs.insert(TestKruskal());
-  hs.insert(TestPrimBaseBinaryHeap());
+  if (gtype != EGraphType::DENSE) hs.insert(TestKruskal());
+  if (gtype != EGraphType::DENSE) hs.insert(TestPrimBaseBinaryHeap());
   hs.insert(TestPrimDHeap<TDHeap2>("DH2"));
   hs.insert(TestPrimDHeap<TDHeap4>("DH4"));
   hs.insert(TestPrimDHeap<TDHeap8>("DH8"));
@@ -92,7 +92,7 @@ bool TesterMinimumSpanningTree::TestAll() {
 bool TestMinimumSpanningTree(bool time_test) {
   if (time_test) {
     TesterMinimumSpanningTree t1(EGraphType::SPARSE, 1000000, 10),
-        t2(EGraphType::DENSE, 4000, 2000);
+        t2(EGraphType::DENSE, 10000, 5000);
     return t1.TestAll() && t2.TestAll();
   } else {
     TesterMinimumSpanningTree t(EGraphType::SMALL, 100, 10);
