@@ -50,6 +50,12 @@ class Graph {
     return inverted_edges[from];
   }
 
+  unsigned EdgesSize() const {
+    size_t total = 0;
+    for (unsigned i = 0; i < nvertices; ++i) total += edges[i].size();
+    return (directed_edges ? total : total / 2);
+  }
+
   void AddBaseEdge(unsigned from, unsigned to) { edges[from].push_back(to); }
   void AddInvertedEdge(unsigned from, unsigned to) {
     inverted_edges[from].push_back(to);

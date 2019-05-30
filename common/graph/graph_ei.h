@@ -27,6 +27,11 @@ class GraphEI : public Graph<_directed_edges> {
     inverted_edges_info.clear();
   }
 
+  void ClearEdges(unsigned from) {
+    TBase::edges[from].clear();
+    edges_info[from].clear();
+  }
+
   void Resize(unsigned nvertices) {
     Clear();
     TBase::Resize(nvertices);

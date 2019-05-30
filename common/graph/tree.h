@@ -25,8 +25,10 @@ class Tree : public TGraph {
     root = _root;
   }
 
+  unsigned EdgesSize() const { return TBase::Size() - 1; }
+
   void ReadEdges(bool zero_based_indexes = false) {
-    TBase::ReadEdges(TBase::nvertices - 1, zero_based_indexes);
+    TBase::ReadEdges(TBase::Size() - 1, zero_based_indexes);
   }
 
   void ReadTreeEdges(bool zero_based_indexes = false) {

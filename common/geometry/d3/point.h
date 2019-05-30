@@ -7,6 +7,8 @@ namespace d3 {
 template <class T>
 class Point {
  public:
+  using TSelf = Point<T>;
+
   T x, y, z;
 
   Point() : x(), y(), z() {}
