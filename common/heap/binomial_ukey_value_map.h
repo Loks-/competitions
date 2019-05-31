@@ -194,6 +194,14 @@ class BinomialUKeyValueMap {
  protected:
   void ResetTopNode() const { top = nullptr; }
 
+  void UpdateTopNode() const {
+    // It's possible that after compress top node will be under node with same
+    // value.
+    if (top) {
+      for (; top->p;) top = top->p;
+    }
+  }
+
   void SetTopNode() const {
     top = head;
     for (Node* c = top->s; c; c = c->s) {
@@ -227,6 +235,7 @@ class BinomialUKeyValueMap {
         p = ps;
       }
     }
+    UpdateTopNode();
   }
 
   static Node* Merge(Node* h1, Node* h2) {
@@ -275,6 +284,7 @@ class BinomialUKeyValueMap {
         }
       }
     }
+    UpdateTopNode();
   }
 
   void Union(Node* rhead) {
@@ -329,16 +339,18 @@ class BinomialUKeyValueMap {
   }
 
   void SiftUp(Node* node) {
-    if (!node->p || !Compare(node, node->p)) return;
-    TPositionValue* pv = node->pv;
-    node->pv = node->p->pv;
-    node->pv->heap_position = node;
-    for (node = node->p; node->p && Compare(node, node->p); node = node->p) {
+    if (node->p) {
+      if (!Compare(node, node->p)) return;
+      TPositionValue* pv = node->pv;
       node->pv = node->p->pv;
       node->pv->heap_position = node;
+      for (node = node->p; node->p && Compare(node, node->p); node = node->p) {
+        node->pv = node->p->pv;
+        node->pv->heap_position = node;
+      }
+      node->pv = pv;
+      pv->heap_position = node;
     }
-    node->pv = pv;
-    pv->heap_position = node;
     if (top && !node->p && Compare(node, top)) top = node;
   }
 

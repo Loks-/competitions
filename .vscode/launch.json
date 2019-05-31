@@ -12,7 +12,7 @@
             "program": "${workspaceFolder}/debug/build/tester",
             "args": [
                 // "heap"
-                "graph_distance_positive_cost"
+                "minimum_spanning_tree"
                 // "p3",
                 // "tests/google/code_jam/2019/r2/p3.in"
             ],

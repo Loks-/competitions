@@ -52,7 +52,6 @@ class Binomial {
 
   void Add(const TData& v) {
     Node* pv = nodes_manager.New(v);
-    if (top && Compare(pv, top)) top = pv;
     AddOneNode(pv);
     ++size;
   }
@@ -75,10 +74,6 @@ class Binomial {
 
   void Union(TSelf& h) {
     assert(&nodes_manager == &(h.nodes_manager));
-    if (top && h.top)
-      top = Compare(top, h.top) ? top : h.top;
-    else
-      ResetTopNode();
     Union(h.head);
     h.head = nullptr;
     size += h.size;
@@ -109,6 +104,7 @@ class Binomial {
   }
 
   void AddOneNode(Node* p) {
+    ResetTopNode();
     p->s = head;
     head = p;
     for (Node* ps = p->s; ps && (p->d == ps->d); ps = p->s) {
@@ -150,6 +146,7 @@ class Binomial {
 
   void Compress() {
     if (Empty()) return;
+    ResetTopNode();
     Node *pp = nullptr, *pc = head, *pn = pc->s;
     for (; pn; pn = pc->s) {
       if ((pc->d != pn->d) || (pn->s && (pn->d == pn->s->d))) {
