@@ -47,7 +47,13 @@ class PairingBase {
 
   bool Empty() const { return !head; }
   unsigned Size() const { return size; }
-  void Add(const TData& v) { AddNode(nodes_manager.New(v)); }
+
+  void Add(const TData& v) {
+    Node* p = nodes_manager.New();
+    p->value = v;
+    AddNode(p);
+  }
+
   const TData& Top() { return TopNode()->value; }
 
   void Pop() {

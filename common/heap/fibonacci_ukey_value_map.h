@@ -40,7 +40,8 @@ class FibonacciUKeyValueMap
   FibonacciUKeyValueMap(const std::vector<TValue>& v, bool skip_heap)
       : TBase(manager), manager(v.size()) {
     for (unsigned i = 0; i < v.size(); ++i) {
-      auto p = manager.New(v[i]);
+      auto p = manager.New();
+      p->value = v[i];
       if (skip_heap)
         SetUnused(p);
       else

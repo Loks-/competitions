@@ -92,7 +92,8 @@ class BinomialUKeyValueMap {
   void AddNewKeyI(unsigned key, const TValue& new_value, bool skip_heap) {
     key_map[key].value = new_value;
     if (!skip_heap) {
-      Node* pv = nodes_manager.New(pv_begin + key);
+      Node* pv = nodes_manager.New();
+      pv->pv = pv_begin + key;
       key_map[key].heap_position = pv;
       if (top && Compare(pv, top)) top = pv;
       AddOneNode(pv);

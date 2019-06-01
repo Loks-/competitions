@@ -51,7 +51,8 @@ class Binomial {
   unsigned Size() const { return size; }
 
   void Add(const TData& v) {
-    Node* pv = nodes_manager.New(v);
+    Node* pv = nodes_manager.New();
+    pv->value = v;
     AddOneNode(pv);
     ++size;
   }

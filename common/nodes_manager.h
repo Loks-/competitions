@@ -43,12 +43,6 @@ class NodesManager {
     }
   }
 
-  TNode* New(const TNode& v) {
-    TNode* p = New();
-    *p = v;
-    return p;
-  }
-
   void Release(TNode* p) {
     p->ClearRelease();
     released_nodes.push(p);

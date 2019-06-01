@@ -50,7 +50,8 @@ class Pairing {
   void AddNode(Node* node) { AddNode(node, TFakeBool<auxiliary>()); }
 
   Node* Add(const TData& v) {
-    Node* p = nodes_manager.New(v);
+    Node* p = nodes_manager.New();
+    p->value = v;
     AddNode(p);
     return p;
   }
