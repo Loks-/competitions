@@ -4,6 +4,7 @@
 #include <stack>
 #include <vector>
 
+// Time: O(V + E)
 inline std::vector<std::vector<unsigned>> ConnectedComponents(
     const UndirectedGraph& graph) {
   std::vector<std::vector<unsigned>> components;

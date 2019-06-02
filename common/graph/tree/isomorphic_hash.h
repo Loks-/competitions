@@ -10,6 +10,7 @@
 #include <vector>
 
 namespace graph {
+// Time: O(V log V)
 class TreeIsomorphicHash {
  protected:
   static std::pair<unsigned, unsigned> GetCenter(const TreeGraph& tree) {

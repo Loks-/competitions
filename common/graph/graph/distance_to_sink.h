@@ -6,6 +6,7 @@
 
 // Return distance (as number of edges) from each vertex to required vertex.
 // If from some vertex sink is unreachable it returns -1 for it.
+// Time: O(V + E)
 template <bool directed_edges>
 inline std::vector<unsigned> DistanceToSink(
     const graph::Graph<directed_edges>& g, unsigned sink) {

@@ -5,6 +5,9 @@
 
 namespace graph {
 namespace mst {
+// Kruskal algorithm
+// https://en.wikipedia.org/wiki/Kruskal%27s_algorithm
+// Time: O(V + E log E)
 template <class TGraph, class TEdgeCostFunction>
 std::pair<unsigned, typename TEdgeCostFunction::TEdgeCost> Kruskal(
     const TGraph& graph, const TEdgeCostFunction& f) {

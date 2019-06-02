@@ -7,6 +7,9 @@
 #include <vector>
 
 namespace graph {
+// Dijkstra's algorithm with d-ary heap.
+// https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm
+// Time: O((V + E) log V)
 template <class TGraph, class TEdgeCostFunction, class TEdgeCost>
 std::vector<TEdgeCost> DistanceFromSourcePositiveCost(
     const TGraph& graph, const TEdgeCostFunction& f, unsigned source,

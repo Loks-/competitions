@@ -6,6 +6,7 @@
 #include <vector>
 
 namespace graph {
+// Time: O(V)
 class TreeNodesInfo {
  public:
   unsigned root;

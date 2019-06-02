@@ -6,6 +6,7 @@
 
 // Return distance (as number of edges) to each vertex from required vertex.
 // If some vertex is unreachable it returns -1 for it.
+// Time: O(V + E)
 template <bool directed_edges>
 inline std::vector<unsigned> DistanceFromSource(
     const graph::Graph<directed_edges>& g, unsigned source) {

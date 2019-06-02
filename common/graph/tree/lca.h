@@ -7,6 +7,7 @@
 
 namespace graph {
 // Schieber-Vishkin decomposition
+// Time: O(V) preprocessing, O(1) lca
 class LCA {
  public:
   unsigned n, n2p;

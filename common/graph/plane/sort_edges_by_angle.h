@@ -7,6 +7,7 @@
 #include <algorithm>
 #include <vector>
 
+// Time: O(V + E log V)
 template <class TEdgeInfo>
 inline void SortEdgesByAngle(UndirectedGraphEI<TEdgeInfo>& g) {
   auto cmp = [](const graph::Edge<TEdgeInfo>& e1,

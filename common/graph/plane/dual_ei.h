@@ -9,6 +9,7 @@
 #include <vector>
 
 template <class TEdgeInfo>
+// Time: O(V + E)
 inline UndirectedGraphEI<TEdgeInfo> Dual(
     const UndirectedGraphEI<TEdgeInfo>& g) {
   std::vector<std::unordered_map<unsigned, unsigned>> node_to_index(g.Size());

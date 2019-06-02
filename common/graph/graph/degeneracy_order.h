@@ -4,6 +4,7 @@
 #include "common/heap/bucket_ukey_map.h"
 #include <vector>
 
+// Time: O(V + E)
 inline std::vector<unsigned> DegeneracyOrder(const UndirectedGraph& g) {
   unsigned n = g.Size();
   heap::BucketUKeyMap queue(n);

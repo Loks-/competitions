@@ -6,6 +6,7 @@
 #include <vector>
 
 namespace graph {
+// Time: O(V)
 template <class TTEdgeInfo>
 class TreeEINodesInfo {
  public:

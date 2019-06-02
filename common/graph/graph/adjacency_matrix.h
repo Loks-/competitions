@@ -3,6 +3,7 @@
 #include "common/graph/graph.h"
 #include <vector>
 
+// Time: O(V^2)
 template <bool directed_edges>
 inline std::vector<std::vector<bool>> AdjacencyMatrix(
     const graph::Graph<directed_edges>& g) {

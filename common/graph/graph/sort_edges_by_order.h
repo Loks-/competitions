@@ -4,6 +4,7 @@
 #include "common/permutation/inverse_line.h"
 #include <algorithm>
 
+// Time: O(V + E log V)
 inline void SortEdgesByOrder(UndirectedGraph& g, std::vector<unsigned>& order,
                              bool inversed_order = false) {
   auto order_pos = permutation::Inverse(order);

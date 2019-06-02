@@ -6,7 +6,9 @@
 #include <vector>
 
 namespace graph {
-// Based on Floyd–Warshall algorithm.
+// Floyd–Warshall algorithm.
+// https://en.wikipedia.org/wiki/Floyd%E2%80%93Warshall_algorithm
+// Time: O(V^3)
 template <class TGraph, class TEdgeCostFunction, class TEdgeCost>
 std::vector<std::vector<TEdgeCost>> DistanceAllPairs(
     const TGraph& graph, const TEdgeCostFunction& f,

@@ -3,6 +3,7 @@
 #include "common/graph/graph.h"
 #include "common/graph/graph/adjacency_matrix.h"
 
+// Time: O(V^2)
 inline UndirectedGraph Complement(const UndirectedGraph& g) {
   unsigned n = g.Size();
   UndirectedGraph gnew(n);
