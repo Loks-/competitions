@@ -35,7 +35,7 @@ std::vector<TEdgeCost> DistanceFromSource(const TGraph& graph,
 }  // namespace graph
 
 template <class TEdgeInfo, bool directed_edges>
-std::vector<TEdgeInfo> DistanceFromSourcet(
+std::vector<TEdgeInfo> DistanceFromSource(
     const graph::GraphEI<TEdgeInfo, directed_edges>& g, unsigned source,
     TEdgeInfo max_cost) {
   return graph::DistanceFromSource(g, graph::EdgeCostProxy<TEdgeInfo>(), source,
