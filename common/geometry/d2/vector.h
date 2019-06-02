@@ -43,6 +43,11 @@ class Vector {
   }
 
   bool UpperHalfPlane() const { return (dy > 0) || ((dy == 0) && (dx >= 0)); }
+
+  double Angle() const {
+    assert(!Empty());
+    return atan2(y, x);
+  }
 };
 }  // namespace d2
 }  // namespace geometry
