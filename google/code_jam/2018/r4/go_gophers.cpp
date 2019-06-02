@@ -1,5 +1,4 @@
 #include "common/stl/base.h"
-#include "common/vector/read.h"
 
 #include <numeric>
 
@@ -29,8 +28,6 @@ class KGophers {
     if (!valid) return;
     unsigned s = accumulate(v.begin() + b, v.begin() + b + count, 0u),
              k = count;
-    // cerr << "AddBlockI\t" << count << "\t" << q << "\t" << b << "\t" << s
-    //      << endl;
     for (unsigned i = 0; i < gophers.size(); ++i) {
       if (gophers[i].taste_max <= q)
         s -= gophers[i].count;
@@ -41,7 +38,6 @@ class KGophers {
       Gopher& g = gophers[k];
       if (s > g.count) {
         valid = false;
-        cerr << "\tInvalidate1\n\t\t" << g.count << "\t" << s << endl;
       } else if (s == 0) {
         g.taste_min = q + 1;
       } else if (s == g.count) {
@@ -51,16 +47,13 @@ class KGophers {
         g.taste_max = q;
         g.count = s;
         gophers.push_back(gnew);
-        cerr << "\tSplit gophers" << endl;
       }
     } else {
       valid = (s == 0);
-      if (s) cerr << "\tInvalidate2\t" << int(s) << endl;
     }
   }
 
   void AddBlock(unsigned q, unsigned s, const vector<unsigned>& v) {
-    if (valid) cerr << "AddBlock\t" << count << "\t" << q << "\t" << s << endl;
     s %= count;
     unsigned b = (s ? count - s : 0);
     for (; b + count <= v.size(); b += count) AddBlockI(q, v, b);
@@ -78,7 +71,6 @@ class UGophers {
   bool Solved() const {
     unsigned s = 0;
     for (const KGophers& kg : candidates) s += (kg.valid ? 1 : 0);
-    cerr << "Solved().s = " << s << endl;
     return s == 1;
   }
 
@@ -101,7 +93,6 @@ class UGophers {
     for (KGophers& kg : candidates) kg.AddBlock(q, s, v);
   }
 };
-
 }  // namespace
 
 int main_go_gophers() {
@@ -123,7 +114,6 @@ int main_go_gophers() {
       gophers.AddBlock(q, s, vb);
     }
     unsigned r = gophers.Guess();
-    cerr << "Guess\t" << r << endl;
     cout << "-" << r << endl;
   }
   return 0;
