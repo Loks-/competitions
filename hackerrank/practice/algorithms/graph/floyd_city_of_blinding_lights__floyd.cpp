@@ -1,7 +1,8 @@
 // https://www.hackerrank.com/challenges/floyd-city-of-blinding-lights
 
 #include "common/graph/graph_ei.h"
-#include "common/graph/graph_ei/distance_all_pairs.h"
+#include "common/graph/graph_ei/distance/floyd_warshall.h"
+#include "common/graph/graph_ei/edge_cost_proxy.h"
 #include "common/stl/base.h"
 
 int main_floyd_city_of_blinding_lights__floyd() {
@@ -20,7 +21,8 @@ int main_floyd_city_of_blinding_lights__floyd() {
       if (vt[i][j]) g.AddEdge(i, j, vt[i][j]);
     }
   }
-  vector<vector<unsigned>> vd = DistanceAllPairs(g, -1u);
+  vector<vector<unsigned>> vd =
+      graph::distance::FloydWarshall(g, graph::EdgeCostProxy<unsigned>(), -1u);
   cin >> Q;
   for (unsigned i = 0; i < Q; ++i) {
     cin >> j >> k;

@@ -1,8 +1,8 @@
 #include "tester/tester_graph_ei_distance_positive_cost.h"
 
 #include "common/graph/graph_ei/create_random_graph.h"
-#include "common/graph/graph_ei/distance.h"
-#include "common/graph/graph_ei/distance_all_pairs.h"
+#include "common/graph/graph_ei/distance/bellman_ford.h"
+#include "common/graph/graph_ei/distance/floyd_warshall.h"
 #include "common/graph/graph_ei/edge_cost_proxy.h"
 #include "common/hash.h"
 #include "common/heap/binary_heap.h"
@@ -47,7 +47,7 @@ size_t TesterGraphEIDistancePositiveCost::TestBellmanFord() const {
   size_t h = 0, max_cost = -1ull;
   std::vector<uint64_t> v;
   for (unsigned i = 0; i < g.Size(); ++i) {
-    v = DistanceFromSource(g, edge_proxy, i, max_cost);
+    v = graph::distance::BellmanFord(g, edge_proxy, i, max_cost);
     for (uint64_t d : v) h = hash_combine(h, d);
   }
   std::cout << "Test results  [BlFd]: " << h << "\t" << t.GetMilliseconds()
@@ -58,7 +58,7 @@ size_t TesterGraphEIDistancePositiveCost::TestBellmanFord() const {
 size_t TesterGraphEIDistancePositiveCost::TestFloydWarshall() const {
   Timer t;
   size_t h = 0, max_cost = -1ull;
-  auto vv = DistanceAllPairs(g, max_cost);
+  auto vv = graph::distance::FloydWarshall(g, edge_proxy, max_cost);
   for (unsigned i = 0; i < vv.size(); ++i) {
     for (uint64_t d : vv[i]) h = hash_combine(h, d);
   }
