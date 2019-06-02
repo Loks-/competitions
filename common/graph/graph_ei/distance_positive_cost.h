@@ -3,7 +3,6 @@
 #include "common/graph/graph_ei.h"
 #include "common/graph/graph_ei/edge_cost_proxy.h"
 #include "common/heap/dheap_ukey_value_map.h"
-#include <functional>
 #include <vector>
 
 namespace graph {

@@ -1,6 +1,7 @@
 #include "tester/tester_graph_ei_distance_positive_cost.h"
 
 #include "common/graph/graph_ei/create_random_graph.h"
+#include "common/graph/graph_ei/distance.h"
 #include "common/graph/graph_ei/distance_all_pairs.h"
 #include "common/graph/graph_ei/edge_cost_proxy.h"
 #include "common/hash.h"
@@ -40,6 +41,19 @@ TesterGraphEIDistancePositiveCost::TesterGraphEIDistancePositiveCost(
     : gtype(_gtype),
       g(CreateRandomGraph<uint64_t, true>(graph_size, edges_per_node,
                                           (1u << 30))) {}
+
+size_t TesterGraphEIDistancePositiveCost::TestBellmanFord() const {
+  Timer t;
+  size_t h = 0, max_cost = -1ull;
+  std::vector<uint64_t> v;
+  for (unsigned i = 0; i < g.Size(); ++i) {
+    v = DistanceFromSource(g, edge_proxy, i, max_cost);
+    for (uint64_t d : v) h = hash_combine(h, d);
+  }
+  std::cout << "Test results  [BlFd]: " << h << "\t" << t.GetMilliseconds()
+            << std::endl;
+  return h;
+}
 
 size_t TesterGraphEIDistancePositiveCost::TestFloydWarshall() const {
   Timer t;
@@ -131,6 +145,7 @@ bool TesterGraphEIDistancePositiveCost::TestAll() {
   hs.insert(TestKVM<TPairing<1, 0>>("PR01"));
   hs.insert(TestKVM<TPairing<0, 1>>("PR10"));
   hs.insert(TestKVM<TPairing<1, 1>>("PR11"));
+  if (gtype == EGraphType::SMALL) hs.insert(TestBellmanFord());
   if (gtype != EGraphType::SPARSE) hs.insert(TestFloydWarshall());
   return hs.size() == 1;
 }
