@@ -46,7 +46,7 @@ class Vector {
 
   double Angle() const {
     assert(!Empty());
-    return atan2(y, x);
+    return atan2(dy, dx);
   }
 };
 }  // namespace d2
