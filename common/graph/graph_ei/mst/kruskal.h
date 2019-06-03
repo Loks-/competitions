@@ -2,6 +2,7 @@
 
 #include "common/disjoint_set.h"
 #include <algorithm>
+#include <vector>
 
 namespace graph {
 namespace mst {
