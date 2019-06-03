@@ -1,17 +1,21 @@
 #include "common/geometry/d2/base.h"
 #include "common/geometry/d2/iangle.h"
-#include "common/geometry/d2/point.h"
+#include "common/geometry/d2/point_io.h"
 #include "common/stl/base.h"
 
 #include <functional>
 #include <iomanip>
 #include <unordered_map>
 
-using TPoint = geometry::d2::Point<__int128_t>;
-using TAngle = geometry::d2::IAngle<__int128_t>;
+using TPoint = I2Point;
+using TAngle = I2Angle;
 
 int main_the_cartesian_job() {
   cout << setprecision(6) << fixed;
+  auto cmp = [](const TAngle& l, const TAngle& r) {
+    return l.Compare02Pi_i128(r);
+  };
+
   const TPoint x0(0, 0), x1(0, 1000);
   unsigned T, N;
   cin >> T;
@@ -20,16 +24,13 @@ int main_the_cartesian_job() {
     vector<pair<TAngle, TAngle>> vpa;
     TAngle angle_f(1, 0), angle_l(-1, 0);
     for (unsigned i = 0; i < N; ++i) {
-      int64_t i1, i2, i3, i4;
-      cin >> i1 >> i2 >> i3 >> i4;
-      TPoint p1(i1, i2), p2(i3, i4);
-      // cin >> p1 >> p2;
+      TPoint p1, p2;
+      cin >> p1 >> p2;
       if (p1.x == 0) continue;
       if (p1.x > 0) {
         p1.x = -p1.x;
         p2.x = -p2.x;
       }
-      // cerr << p1 << "\t" << p2 << endl;
       auto v0 = x0 - p1, v1 = x1 - p1, v2 = p2 - p1;
       TAngle a0(v0), a1(v1), a2(v2);
       assert(a0 < a1);
@@ -40,8 +41,8 @@ int main_the_cartesian_job() {
           auto b0 = a2 - a0, b1 = a1 - a2;
           assert(b0.CompareVSPi());
           assert(b1.CompareVSPi());
-          if (b1 < b0) swap(b0, b1);
-          if (angle_f < b0) angle_f = b0;
+          if (cmp(b1, b0)) swap(b0, b1);
+          if (cmp(angle_f, b0)) angle_f = b0;
           if (b0 != b1) vpa.push_back({b0, b1});
         } else {
           vpa.push_back({a2 - a1, a2 - a0});
@@ -55,8 +56,8 @@ int main_the_cartesian_job() {
           auto b0 = a0 - a2, b1 = a2 - a1;
           assert(b0.CompareVSPi());
           assert(b1.CompareVSPi());
-          if (b1 < b0) swap(b0, b1);
-          if (b1 < angle_l) angle_l = b1;
+          if (cmp(b1, b0)) swap(b0, b1);
+          if (cmp(b1, angle_l)) angle_l = b1;
           if (b0 != b1) vpa.push_back({b0, b1});
         } else {
           vpa.push_back({a0 - a2, a1 - a2});
@@ -64,9 +65,6 @@ int main_the_cartesian_job() {
       }
     }
     // cerr << "vpa.size() = " << vpa.size() << endl;
-    auto cmp = [](const TAngle& l, const TAngle& r) {
-      return l.Compare02Pi(r);
-    };
     assert((angle_f.dx > 0) && (angle_f.dy >= 0));
     assert((angle_l.dx < 0) && (angle_f.dy >= 0));
     assert(cmp(angle_f, angle_l));
