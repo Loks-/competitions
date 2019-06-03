@@ -52,7 +52,6 @@ int main_the_cartesian_job() {
           vpa.push_back({b0, b1});
       }
     }
-    // cerr << "vpa.size() = " << vpa.size() << endl;
     assert((angle_f.dx > 0) && (angle_f.dy >= 0));
     assert((angle_l.dx < 0) && (angle_f.dy >= 0));
     assert(cmp(angle_f, angle_l));
@@ -64,14 +63,11 @@ int main_the_cartesian_job() {
       va.push_back(p.first);
       va.push_back(p.second);
     }
-    // cerr << "va.size() = " << va.size() << endl;
     sort(va.begin(), va.end(), cmp);
     auto va_it = unique(va.begin(), va.end());
     va.resize(va_it - va.begin());
-    // cerr << "va.size() = " << va.size() << endl;
     auto it_f = lower_bound(va.begin(), va.end(), angle_f, cmp);
     auto it_l = lower_bound(va.begin(), va.end(), angle_l, cmp);
-    // cerr << it_f - va.begin() << "\t" << it_l - va.begin() << endl;
     unsigned l = it_l - it_f;
     assert(l > 0);
     vector<pair<unsigned, unsigned>> vpu;
@@ -84,7 +80,6 @@ int main_the_cartesian_job() {
       if (it1 < it2) vpu.push_back({it1 - it_f, it2 - it_f});
     }
     sort(vpu.begin(), vpu.end());
-    // cerr << "vpu.size() = " << vpu.size() << endl;
 
     std::unordered_map<uint64_t, double> cache;
     std::function<double(unsigned, unsigned, unsigned)> SolveR =
