@@ -60,7 +60,6 @@ int main_the_cartesian_job() {
       assert(p.first.dy >= 0);
       assert(p.second.dy >= 0);
       assert(cmp(p.first, p.second));
-      va.push_back(p.first);
       va.push_back(p.second);
     }
     sort(va.begin(), va.end(), cmp);
@@ -74,7 +73,7 @@ int main_the_cartesian_job() {
     for (auto p : vpa) {
       auto it1 = lower_bound(va.begin(), va.end(), p.first, cmp);
       auto it2 = lower_bound(va.begin(), va.end(), p.second, cmp);
-      assert(it1 < it2);
+      assert(it1 <= it2);
       if (it1 < it_f) it1 = it_f;
       if (it_l < it2) it2 = it_l;
       if (it1 < it2) vpu.push_back({it1 - it_f, it2 - it_f});
@@ -91,6 +90,7 @@ int main_the_cartesian_job() {
       if (itc != cache.end()) return itc->second;
       // cerr << "SolveR(" << i << ", " << l0 << ", " << l1 << ")" << endl;
       if (l0 >= l) return (cache[h] = 0.);
+      for (; (i < vpu.size()) && (vpu[i].second <= l0);) ++i;
       if (i >= vpu.size()) return (cache[h] = 1.);
       if (vpu[i].first > l0) return (cache[h] = 1.);
       return (cache[h] = 0.5 * (SolveR(i + 1, max(l0, vpu[i].second), l1) +
