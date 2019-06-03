@@ -130,7 +130,7 @@ bool TesterMinimumSpanningTree::TestAll() {
   hs.insert(TestPrimKVM<heap::DHeapUKeyValueMap<4, uint64_t>>("DM 4"));
   hs.insert(TestPrimKVM<heap::DHeapUKeyValueMap<8, uint64_t>>("DM 8"));
   hs.insert(TestPrimKVM<heap::DHeapUKeyValueMap<16, uint64_t>>("DM16"));
-  // hs.insert(TestPrimKVM<heap::BinomialUKeyValueMap<uint64_t>>("BNML"));
+  hs.insert(TestPrimKVM<heap::BinomialUKeyValueMap<uint64_t>>("BNML"));
   hs.insert(TestPrimKVM<heap::FibonacciUKeyValueMap<uint64_t>>("FBNC"));
   hs.insert(TestPrimKVM<TPairing<0, 0>>("PR00"));
   hs.insert(TestPrimKVM<TPairing<1, 0>>("PR01"));

@@ -345,7 +345,8 @@ class BinomialUKeyValueMap {
       TPositionValue* pv = node->pv;
       node->pv = node->p->pv;
       node->pv->heap_position = node;
-      for (node = node->p; node->p && Compare(node, node->p); node = node->p) {
+      for (node = node->p; node->p && Compare(pv, node->p->pv);
+           node = node->p) {
         node->pv = node->p->pv;
         node->pv->heap_position = node;
       }
