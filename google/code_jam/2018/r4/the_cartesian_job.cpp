@@ -90,22 +90,16 @@ int main_the_cartesian_job() {
     std::function<double(unsigned, unsigned, unsigned)> SolveR =
         [&](unsigned i, unsigned l0, unsigned l1) -> double {
       if (l1 < l0) swap(l0, l1);
-      if (i + 1 < vpu.size()) assert(vpu[i].first <= vpu[i + 1].first);
       uint64_t one = 1ull;
       uint64_t h = i + (one << 15) * l0 + (one << 30) * l1;
-      // auto itc = cache.find(h);
-      // if (itc != cache.end()) return itc->second;
+      auto itc = cache.find(h);
+      if (itc != cache.end()) return itc->second;
       // cerr << "SolveR(" << i << ", " << l0 << ", " << l1 << ")" << endl;
-      // if (l0 >= l) return (cache[h] = 0.);
-      // if (i >= vpu.size()) return (cache[h] = 1.);
-      // if (vpu[i].first > l0) return (cache[h] = 1.);
-      // return (cache[h] = 0.5 * (SolveR(i + 1, max(l0, vpu[i].second), l1) +
-      //                           SolveR(i + 1, l0, max(l1, vpu[i].second))));
-      if (l0 >= l) return 0.;
-      if (i >= vpu.size()) return 1.;
-      if (vpu[i].first > l0) return 1.;
-      return 0.5 * (SolveR(i + 1, max(l0, vpu[i].second), l1) +
-                    SolveR(i + 1, l0, max(l1, vpu[i].second)));
+      if (l0 >= l) return (cache[h] = 0.);
+      if (i >= vpu.size()) return (cache[h] = 1.);
+      if (vpu[i].first > l0) return (cache[h] = 1.);
+      return (cache[h] = 0.5 * (SolveR(i + 1, max(l0, vpu[i].second), l1) +
+                                SolveR(i + 1, l0, max(l1, vpu[i].second))));
     };
 
     cout << "Case #" << it << ": " << SolveR(0, 0, 0) << endl;
