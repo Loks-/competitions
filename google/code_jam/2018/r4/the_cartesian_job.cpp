@@ -3,7 +3,6 @@
 #include "common/geometry/d2/point_io.h"
 #include "common/stl/base.h"
 
-#include <functional>
 #include <iomanip>
 #include <unordered_map>
 
@@ -111,7 +110,6 @@ int main_the_cartesian_job() {
       else
         s1 += p.second;
     }
-    // cerr << s0 + s1 << "\t" << s0 << "\t" << s1 << endl;
     cout << "Case #" << it << ": " << s1 << endl;
   }
   return 0;
