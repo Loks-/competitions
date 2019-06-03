@@ -78,7 +78,7 @@ class IAngle {
   }
 
   bool operator==(const TSelf& r) const { return (dx == r.dx) && (dy == r.dy); }
-  bool operator!=(const TSelf& r) const { !(*this == r); }
+  bool operator!=(const TSelf& r) const { return (dx != r.dx) || (dy != r.dy); }
   bool operator<(const TSelf& r) const { return ComparePiPi(r); }
   bool operator>(const TSelf& r) const { return r < *this; }
   bool operator<=(const TSelf& r) const { return !(r < *this); }

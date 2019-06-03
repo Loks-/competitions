@@ -27,7 +27,7 @@ int main_the_cartesian_job__t1() {
   for (unsigned it = 1; it <= T; ++it) {
     cin >> N;
     vector<SLaser> vpa;
-    TAngle angle_f(1, 0), angle_l(-1, 0);
+    TAngle angle_f(1, 0), angle_l(-1, 0), ll;
     for (unsigned i = 0; i < N; ++i) {
       TPoint p1, p2;
       cin >> p1 >> p2;
@@ -37,36 +37,61 @@ int main_the_cartesian_job__t1() {
         p2.x = -p2.x;
       }
       auto v0 = x0 - p1, v1 = x1 - p1, v2 = p2 - p1;
-      TAngle a0(v0), a1(v1), a2(v2);
+      TAngle a0(v0), a1(v1), a2(v2), a2i(-v2);
       assert(a0 < a1);
       if ((a0 < a2) && (a2 < a1)) {
-        vpa.push_back({a0 - a2, TAngle(1, 0), i});
-        vpa.push_back({TAngle(1, 0), a1 - a2, i});
+        auto b0 = a2 - a0, b1 = a1 - a2;
+        if (cmp(b1, b0)) swap(b0, b1);
+        if (cmp(angle_f, b0)) angle_f = b0;
+        if (b0 != b1) vpa.push_back({b0, b1, i});
+      } else if ((a0 < a2i) && (a2i < a1)) {
+        auto b0 = a0 - a2, b1 = a2 - a1;
+        if (cmp(b1, b0)) swap(b0, b1);
+        if (cmp(b1, angle_l)) angle_l = b1;
+        if (b0 != b1) vpa.push_back({b0, b1, i});
       } else {
-        vpa.push_back({a0 - a2, a1 - a2, i});
+        auto b0 = a0 - a2, b1 = a1 - a2;
+        if (b0.CompareVS0())
+          vpa.push_back({-b1, -b0, i});
+        else
+          vpa.push_back({b0, b1, i});
       }
     }
     unsigned cnt1 = 0, cnt2 = 0;
     for (unsigned mask = 0; mask < (1u << N); ++mask) {
       ++cnt2;
-      vector<pair<TAngle, TAngle>> vca;
+      vector<pair<TAngle, TAngle>> vca1, vca2;
       for (auto sl : vpa) {
-        if ((1u << sl.index) & mask)
-          vca.push_back({sl.l, sl.r});
-        else
-          vca.push_back({-sl.r, -sl.l});
+        if ((1u << sl.index) & mask) {
+          vca1.push_back({sl.l, sl.r});
+        } else {
+          vca2.push_back({sl.l, sl.r});
+        }
       }
-      sort(vca.begin(), vca.end(),
+      sort(vca1.begin(), vca1.end(),
            [&](auto pl, auto pr) { return cmp(pl.first, pr.first); });
-      TAngle ll(1, 0), le(1, 0);
-      for (auto p : vca) {
+      sort(vca2.begin(), vca2.end(),
+           [&](auto pl, auto pr) { return cmp(pl.first, pr.first); });
+      bool f1 = false, f2 = false;
+      ll = angle_f;
+      for (auto p : vca1) {
         if (cmp(ll, p.first)) break;
-        if (p.second == le) {
-          ++cnt1;
+        if (cmp(ll, p.second)) ll = p.second;
+        if (!cmp(ll, angle_l)) {
+          f1 = true;
           break;
         }
-        if (cmp(ll, p.second)) ll = p.second;
       }
+      ll = angle_f;
+      for (auto p : vca2) {
+        if (cmp(ll, p.first)) break;
+        if (cmp(ll, p.second)) ll = p.second;
+        if (!cmp(ll, angle_l)) {
+          f2 = true;
+          break;
+        }
+      }
+      if (f1 && f2) ++cnt1;
     }
     cout << "Case #" << it << ": " << double(cnt2 - cnt1) / double(cnt2)
          << endl;

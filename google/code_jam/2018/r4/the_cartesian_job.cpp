@@ -32,36 +32,24 @@ int main_the_cartesian_job() {
         p2.x = -p2.x;
       }
       auto v0 = x0 - p1, v1 = x1 - p1, v2 = p2 - p1;
-      TAngle a0(v0), a1(v1), a2(v2);
+      TAngle a0(v0), a1(v1), a2(v2), a2i(-v2);
       assert(a0 < a1);
-      if (v2.dx >= 0) {
-        if (a2 <= a0) {
-          vpa.push_back({a0 - a2, a1 - a2});
-        } else if (a2 < a1) {
-          auto b0 = a2 - a0, b1 = a1 - a2;
-          assert(b0.CompareVSPi());
-          assert(b1.CompareVSPi());
-          if (cmp(b1, b0)) swap(b0, b1);
-          if (cmp(angle_f, b0)) angle_f = b0;
-          if (b0 != b1) vpa.push_back({b0, b1});
-        } else {
-          vpa.push_back({a2 - a1, a2 - a0});
-        }
+      if ((a0 < a2) && (a2 < a1)) {
+        auto b0 = a2 - a0, b1 = a1 - a2;
+        if (cmp(b1, b0)) swap(b0, b1);
+        if (cmp(angle_f, b0)) angle_f = b0;
+        if (b0 != b1) vpa.push_back({b0, b1});
+      } else if ((a0 < a2i) && (a2i < a1)) {
+        auto b0 = a0 - a2, b1 = a2 - a1;
+        if (cmp(b1, b0)) swap(b0, b1);
+        if (cmp(b1, angle_l)) angle_l = b1;
+        if (b0 != b1) vpa.push_back({b0, b1});
       } else {
-        auto v2i = -v2;
-        TAngle a2i(v2i);
-        if (a2i <= a0) {
-          vpa.push_back({a2 - a1, a2 - a0});
-        } else if (a2i < a1) {
-          auto b0 = a0 - a2, b1 = a2 - a1;
-          assert(b0.CompareVSPi());
-          assert(b1.CompareVSPi());
-          if (cmp(b1, b0)) swap(b0, b1);
-          if (cmp(b1, angle_l)) angle_l = b1;
-          if (b0 != b1) vpa.push_back({b0, b1});
-        } else {
-          vpa.push_back({a0 - a2, a1 - a2});
-        }
+        auto b0 = a0 - a2, b1 = a1 - a2;
+        if (b0.CompareVS0())
+          vpa.push_back({-b1, -b0});
+        else
+          vpa.push_back({b0, b1});
       }
     }
     // cerr << "vpa.size() = " << vpa.size() << endl;
