@@ -79,25 +79,40 @@ int main_the_cartesian_job() {
       if (it1 < it2) vpu.push_back({it1 - it_f, it2 - it_f});
     }
     sort(vpu.begin(), vpu.end());
-
-    std::unordered_map<uint64_t, double> cache;
-    std::function<double(unsigned, unsigned, unsigned)> SolveR =
-        [&](unsigned i, unsigned l0, unsigned l1) -> double {
-      if (l1 < l0) swap(l0, l1);
-      uint64_t one = 1ull;
-      uint64_t h = i + (one << 15) * l0 + (one << 30) * l1;
-      auto itc = cache.find(h);
-      if (itc != cache.end()) return itc->second;
-      // cerr << "SolveR(" << i << ", " << l0 << ", " << l1 << ")" << endl;
-      if (l0 >= l) return (cache[h] = 0.);
-      for (; (i < vpu.size()) && (vpu[i].second <= l0);) ++i;
-      if (i >= vpu.size()) return (cache[h] = 1.);
-      if (vpu[i].first > l0) return (cache[h] = 1.);
-      return (cache[h] = 0.5 * (SolveR(i + 1, max(l0, vpu[i].second), l1) +
-                                SolveR(i + 1, l0, max(l1, vpu[i].second))));
-    };
-
-    cout << "Case #" << it << ": " << SolveR(0, 0, 0) << endl;
+    std::vector<unsigned> vl1(vpu.size() + 1, 0);
+    unsigned rcurrent = 0;
+    for (unsigned i = 0; i < vpu.size(); ++i) {
+      rcurrent = max(rcurrent, vpu[i].second);
+      vl1[i + 1] = rcurrent;
+    }
+    double s0 = 0., s1 = 0.;
+    vector<unordered_map<unsigned, double>> vtasks(vpu.size() + 1);
+    vtasks[0][0] = 1.0;
+    for (unsigned i = 0; i < vpu.size(); ++i) {
+      for (auto p : vtasks[i]) {
+        if (p.first >= l) {
+          s0 += p.second;
+          continue;
+        }
+        unsigned j = i;
+        for (; (j < vpu.size()) && (vpu[j].second <= p.first);) ++j;
+        if ((j == vpu.size()) || (vpu[j].first > p.first)) {
+          s1 += p.second;
+          continue;
+        }
+        vtasks[j + 1][p.first] += 0.5 * p.second;
+        vtasks[j + 1][min(vl1[i], vpu[j].second)] += 0.5 * p.second;
+      }
+      vtasks[i] = unordered_map<unsigned, double>();
+    }
+    for (auto p : vtasks[vpu.size()]) {
+      if (p.first >= l)
+        s0 += p.second;
+      else
+        s1 += p.second;
+    }
+    // cerr << s0 + s1 << "\t" << s0 << "\t" << s1 << endl;
+    cout << "Case #" << it << ": " << s1 << endl;
   }
   return 0;
 }
