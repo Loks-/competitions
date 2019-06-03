@@ -1,7 +1,7 @@
 #pragma once
 
 #include "common/disjoint_set.h"
-#include <utility>
+#include <algorithm>
 
 namespace graph {
 namespace mst {
