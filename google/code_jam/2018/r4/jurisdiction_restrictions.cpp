@@ -7,7 +7,7 @@
 
 int main_jurisdiction_restrictions() {
   struct PS {
-    int64_t r, rb, re, c, cb, ce;
+    int64_t r, c, d;
   };
 
   unsigned T;
@@ -20,20 +20,17 @@ int main_jurisdiction_restrictions() {
     for (unsigned i = 0; i < S; ++i) {
       int64_t r, c, d;
       cin >> r >> c >> d;
-      PS ps{r, (d < r) ? r - d - 1 : 0, (r + d > R) ? R : r + d,
-            c, (d < c) ? c - d - 1 : 0, (c + d > C) ? C : c + d};
-      vr.push_back(ps.rb);
-      vr.push_back(ps.re);
-      vc.push_back(ps.cb);
-      vc.push_back(ps.ce);
-      stations.push_back(ps);
+      stations.push_back({r - 1, c - 1, d});
+      vr.push_back(max<int64_t>(0, r - d - 1));
+      vr.push_back(min<int64_t>(R, r + d));
+      vc.push_back(max<int64_t>(0, c - d - 1));
+      vc.push_back(min<int64_t>(C, c + d));
     }
     CoordinateCompression<int64_t> ccr(vr), ccc(vc);
     unsigned sr = ccr.Size() - 1, sc = ccc.Size() - 1,
              sg = 2 + stations.size() + sr * sc;
     FlowGraph<FlowGraphEdge> g(sg, 0, sg - 1);
-    int64_t max_flow =
-        (ccr.GetOld(sr) - ccr.GetOld(0)) * (ccc.GetOld(sc) - ccc.GetOld(0));
+    int64_t max_flow = R * C;
     for (unsigned i = 0; i < stations.size(); ++i)
       g.AddEdge(0, i + 1, max_flow);
     for (unsigned r = 0; r < sr; ++r) {
@@ -44,9 +41,10 @@ int main_jurisdiction_restrictions() {
         int64_t s = (re - rb) * (ce - cb);
         for (unsigned i = 0; i < stations.size(); ++i) {
           auto ps = stations[i];
-          if ((ps.rb <= rb) && (ps.re >= re) && (ps.cb <= cb) && (ps.ce >= ce))
+          if ((ps.r - ps.d <= rb) && (ps.r + ps.d + 1 >= re) &&
+              (ps.c - ps.d <= cb) && (ps.c + ps.d + 1 >= ce))
             g.AddEdge(i + 1, index, max_flow);
-          if ((ps.r > rb) && (ps.r <= re) && (ps.c > cb) && (ps.c <= ce)) --s;
+          if ((ps.r >= rb) && (ps.r < re) && (ps.c >= cb) && (ps.c < ce)) --s;
         }
         g.AddEdge(index, sg - 1, s);
       }
@@ -67,9 +65,9 @@ int main_jurisdiction_restrictions() {
       auto gf = MaxFlow(g);
       return gf == g_max_flow;
     };
-    auto t1 = LowerBoundB(int64_t(0), g_max_flow, f1) - 1;
-    auto t2 = LowerBoundB(int64_t(0), g_max_flow, f2);
-    cout << "Case #" << it << ": " << t2 - t1 << endl;
+    auto t1 = LowerBoundB(int64_t(0), max_flow, f1);
+    auto t2 = LowerBoundB(int64_t(0), max_flow, f2);
+    cout << "Case #" << it << ": " << t2 - t1 + 1 << endl;
   }
   return 0;
 }
