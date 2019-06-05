@@ -1,4 +1,6 @@
+#include "common/coordinate_compression.h"
 #include "common/numeric/long_unsigned.h"
+#include "common/numeric/long_unsigned_hash.h"
 #include "common/numeric/long_unsigned_io.h"
 #include "common/numeric/utils/long_unsigned_gcd.h"
 #include "common/stl/base.h"
@@ -20,15 +22,9 @@ int main_cryptopangrams() {
         break;
       }
     }
-    vector<LongUnsigned> v3(v2);
-    sort(v3.begin(), v3.end());
-    v3.erase(unique(v3.begin(), v3.end()), v3.end());
-
+    CoordinateCompression<LongUnsigned> cc(v2);
     string s2(l + 1, ' ');
-    for (unsigned i = 0; i <= l; ++i) {
-      auto it = lower_bound(v3.begin(), v3.end(), v2[i]);
-      s2[i] = 'A' + char(it - v3.begin());
-    }
+    for (unsigned i = 0; i <= l; ++i) s2[i] = 'A' + char(cc.GetNew(v2[i]));
     cout << "Case #" << it + 1 << ": " << s2 << endl;
   }
   return 0;

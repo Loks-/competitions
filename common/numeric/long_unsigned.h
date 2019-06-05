@@ -36,6 +36,7 @@ class LongUnsigned {
   void Clear() { data.clear(); }
   bool Empty() const { return data.empty(); }
   size_t Size() const { return data.size(); }
+  const TData& Data() const { return data; }
 
   iterator begin() { return &data.front(); }
   const_iterator begin() const { return &data.front(); }
