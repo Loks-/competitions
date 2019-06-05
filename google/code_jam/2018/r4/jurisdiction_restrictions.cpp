@@ -10,10 +10,10 @@ int main_jurisdiction_restrictions() {
     int64_t r, c, d;
   };
 
-  unsigned T;
+  unsigned T, S;
   cin >> T;
   for (unsigned it = 1; it <= T; ++it) {
-    unsigned R, C, S;
+    int64_t R, C;
     cin >> R >> C >> S;
     vector<PS> stations;
     vector<int64_t> vr, vc;
@@ -46,27 +46,27 @@ int main_jurisdiction_restrictions() {
             g.AddEdge(i + 1, index, max_flow);
           if ((ps.r >= rb) && (ps.r < re) && (ps.c >= cb) && (ps.c < ce)) --s;
         }
-        g.AddEdge(index, sg - 1, s);
+        if (s > 0) g.AddEdge(index, sg - 1, s);
       }
     }
     int64_t g_max_flow = MaxFlow(g);
 
-    auto set_source_flow = [&](unsigned f) {
+    auto set_source_flow = [&](int64_t f) {
       g.ResetFlow();
       for (auto& e : g.Edges(0)) e.max_flow = f;
     };
-    auto f1 = [&](unsigned f) {
+    auto f1 = [&](int64_t f) {
       set_source_flow(f);
       auto gf = MaxFlow(g);
       return gf < f * stations.size();
     };
-    auto f2 = [&](unsigned f) {
+    auto f2 = [&](int64_t f) {
       set_source_flow(f);
       auto gf = MaxFlow(g);
       return gf == g_max_flow;
     };
-    auto t1 = LowerBoundB(int64_t(0), max_flow, f1);
-    auto t2 = LowerBoundB(int64_t(0), max_flow, f2);
+    auto t1 = LowerBoundB<int64_t>(0, max_flow, f1);
+    auto t2 = LowerBoundB<int64_t>(0, max_flow, f2);
     cout << "Case #" << it << ": " << t2 - t1 + 1 << endl;
   }
   return 0;
