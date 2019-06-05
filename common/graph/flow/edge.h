@@ -14,8 +14,9 @@ class Edge {
   TTData data;
   TFlow max_flow;
   TFlow flow;
+  unsigned from;
   unsigned to;
-  unsigned reverse_edge_index;
+  unsigned reversed_edge_index;
 };
 }  // namespace flow
 }  // namespace graph

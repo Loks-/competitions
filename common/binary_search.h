@@ -25,3 +25,15 @@ inline TValue1 UpperBoundF(TValue1 begin, TValue1 end, const TValue2& value,
   }
   return begin;
 }
+
+template <class TValue1, class TFunction>
+inline TValue1 LowerBoundB(TValue1 begin, TValue1 end, TFunction& f) {
+  for (; begin < end;) {
+    TValue1 m = (begin + end) / 2;
+    if (f(m))
+      end = m;
+    else
+      begin = m + 1;
+  }
+  return begin;
+}
