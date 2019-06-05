@@ -17,7 +17,6 @@ inline typename TEdge::TFlow EdmondsKarp(Graph<TEdge>& g) {
   thread_local std::vector<TEdge*> p;
   unsigned source = g.Source(), sink = g.Sink();
   p.resize(g.Size());
-  auto f = g.Flow();
   for (;;) {
     for (; !q.empty();) q.pop();
     std::fill(p.begin(), p.end(), nullptr);
@@ -40,9 +39,8 @@ inline typename TEdge::TFlow EdmondsKarp(Graph<TEdge>& g) {
       pe->flow += new_flow;
       g.ReversedEdge(*pe).flow -= new_flow;
     }
-    f += new_flow;
   }
-  return f;
+  return g.Flow();
 }
 }  // namespace max_flow
 }  // namespace flow
