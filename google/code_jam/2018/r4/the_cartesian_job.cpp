@@ -54,27 +54,24 @@ int main_the_cartesian_job() {
     assert((angle_f.dx > 0) && (angle_f.dy >= 0));
     assert((angle_l.dx < 0) && (angle_f.dy >= 0));
     assert(cmp(angle_f, angle_l));
-    vector<TAngle> va{angle_f, angle_l};
+    vector<TAngle> va{angle_f};
     for (auto p : vpa) {
       assert(p.first.dy >= 0);
       assert(p.second.dy >= 0);
       assert(cmp(p.first, p.second));
-      va.push_back(p.second);
+      if (cmp(angle_f, p.second) && cmp(p.second, angle_l))
+        va.push_back(p.second);
     }
     sort(va.begin(), va.end(), cmp);
-    auto va_it = unique(va.begin(), va.end());
-    va.resize(va_it - va.begin());
+    va.erase(unique(va.begin(), va.end()), va.end());
     auto it_f = lower_bound(va.begin(), va.end(), angle_f, cmp);
     auto it_l = lower_bound(va.begin(), va.end(), angle_l, cmp);
+    assert((it_f == va.begin()) && (it_l == va.end()));
     unsigned l = it_l - it_f;
-    assert(l > 0);
     vector<pair<unsigned, unsigned>> vpu;
     for (auto p : vpa) {
       auto it1 = lower_bound(va.begin(), va.end(), p.first, cmp);
       auto it2 = lower_bound(va.begin(), va.end(), p.second, cmp);
-      assert(it1 <= it2);
-      if (it1 < it_f) it1 = it_f;
-      if (it_l < it2) it2 = it_l;
       if (it1 < it2) vpu.push_back({it1 - it_f, it2 - it_f});
     }
     sort(vpu.begin(), vpu.end());
