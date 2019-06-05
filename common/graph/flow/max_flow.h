@@ -5,5 +5,5 @@
 
 template <class TEdge>
 inline typename TEdge::TFlow MaxFlow(graph::flow::Graph<TEdge>& g) {
-  return graph::flow::MaxFlowEdmondsKarp(g);
+  return graph::flow::max_flow::EdmondsKarp(g);
 }

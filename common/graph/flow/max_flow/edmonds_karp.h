@@ -7,11 +7,12 @@
 
 namespace graph {
 namespace flow {
+namespace max_flow {
 // Edmonds-Karp algorithm
 // https://en.wikipedia.org/wiki/Edmonds%E2%80%93Karp_algorithm
 // Time: O(VE^2)
 template <class TEdge>
-inline typename TEdge::TFlow MaxFlowEdmondsKarp(Graph<TEdge>& g) {
+inline typename TEdge::TFlow EdmondsKarp(Graph<TEdge>& g) {
   thread_local std::queue<unsigned> q;
   thread_local std::vector<TEdge*> p;
   unsigned source = g.Source(), sink = g.Sink();
@@ -43,5 +44,6 @@ inline typename TEdge::TFlow MaxFlowEdmondsKarp(Graph<TEdge>& g) {
   }
   return f;
 }
+}  // namespace max_flow
 }  // namespace flow
 }  // namespace graph
