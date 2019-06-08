@@ -23,7 +23,6 @@ int main_zilionim() {
     }
     for (i = 0; us.HasKey(i);) ++i;
     us.Clear();
-    // cerr << KE << "\t" << i << endl;
     if (vp.back().second == i)
       vp.back().first = KE;
     else
@@ -33,6 +32,7 @@ int main_zilionim() {
   unsigned T, W;
   cin >> T >> W;
   for (unsigned iT = 1; iT <= T; ++iT) {
+    bool win_move_found = false;
     vector<pair<uint64_t, uint64_t>> v;
     v.push_back({1, N + 1});
     int64_t M;
@@ -60,7 +60,7 @@ int main_zilionim() {
           auto it =
               lower_bound(vp.begin(), vp.end(),
                           make_pair<uint64_t, unsigned>(p.second - p.first, 0));
-          if (it->second ^ e < it->second) {
+          if ((it->second ^ e) < it->second) {
             unsigned ite = it->second ^ e;
             uint64_t K = p.second - p.first;
             unsigned i = 0, j = vp.size() - 1;
@@ -82,14 +82,19 @@ int main_zilionim() {
                 break;
               }
             }
-            // assert(found);
+            // if (!found) {
+            cerr << K << "\t" << it->second << "\t" << e << "\t" << ite << endl;
+            // }
+            assert(found);
             if (found) break;
           }
         }
+        win_move_found = true;
       }
+      // assert(!win_move_found || e);
       assert((e == 0) || (M > 0));
       if (M == 0) {
-        random_shuffle(v.begin(), v.end());
+        // random_shuffle(v.begin(), v.end());
         for (auto p : v) {
           if (p.second - p.first >= B) {
             M = p.first;
@@ -108,6 +113,14 @@ int main_zilionim() {
         }
       }
       assert(found);
+      unsigned enew = 0;
+      for (auto p : v) {
+        auto it =
+            lower_bound(vp.begin(), vp.end(),
+                        make_pair<uint64_t, unsigned>(p.second - p.first, 0));
+        enew ^= it->second;
+      }
+      cerr << "My move " << e << " -> " << enew << endl;
     }
   }
   return 0;
