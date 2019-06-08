@@ -4,7 +4,7 @@
 
 using TModular = Modular<>;
 
-int main_p2() {
+int main_pancake_pyramid() {
   unsigned T, S;
   cin >> T;
   for (unsigned iT = 1; iT <= T; ++iT) {
