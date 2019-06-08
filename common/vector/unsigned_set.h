@@ -4,7 +4,7 @@
 #include <vector>
 
 class UnsignedSet {
- public:
+ protected:
   std::vector<unsigned> vset;
   std::vector<unsigned> vlist;
 
