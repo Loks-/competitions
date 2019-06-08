@@ -33,22 +33,18 @@ int main_zilionim() {
   unsigned T, W;
   cin >> T >> W;
   for (unsigned iT = 1; iT <= T; ++iT) {
-    bool win_move_found = false;
     vector<pair<uint64_t, uint64_t>> v;
     v.push_back({1, N + 1});
     int64_t M;
 
     auto Move = [&]() {
-      bool found = false;
       for (unsigned i = 0; i < v.size(); ++i) {
         if ((v[i].first <= M) && (v[i].second >= M + B)) {
-          found = true;
           v.push_back({M + B, v[i].second});
           v[i].second = M;
           break;
         }
       }
-      assert(found);
     };
 
     for (cin >> M; M > 0; cin >> M) {
@@ -63,21 +59,15 @@ int main_zilionim() {
             unsigned er = e1 ^ e;
             uint64_t l = p.second - p.first;
             unsigned i = 0, j = vp.size() - 1;
-            bool found = false;
             for (; vp[i].first + B <= l; ++i) {
               if ((vp[i].second ^ Eval(l - vp[i].first - B)) == er) {
-                found = true;
                 M = p.first + vp[i].first;
                 break;
               }
             }
-            assert(found);
-            break;
           }
         }
-        win_move_found = true;
       } else {
-        assert(!win_move_found);
         for (auto p : v) {
           if (p.second - p.first >= B) {
             M = p.first;
