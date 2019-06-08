@@ -12,7 +12,7 @@
 
 #include <string>
 
-using TVector = VectorStaticSize<unsigned, 26>;
+using TVector = la::VectorStaticSize<unsigned, 26>;
 using TTree = SegmentTree<TVector, STInfoSum<TVector, STInfoSegment<>>,
                           STActionRotateVector, false>;
 using TNode = TTree::TNode;

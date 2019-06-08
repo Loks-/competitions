@@ -24,7 +24,7 @@ class TesterMatrixMult {
   using TModularProxy = ModularStaticProxy<>;
 
  public:
-  static size_t MatrixHash(const Matrix<uint64_t>& m,
+  static size_t MatrixHash(const la::Matrix<uint64_t>& m,
                            bool use_bool_hash = false) {
     size_t h = 0;
     for (uint64_t t : m.GetData())
@@ -32,19 +32,19 @@ class TesterMatrixMult {
     return h;
   }
 
-  static size_t MatrixHash(const Matrix<TModular>& m) {
+  static size_t MatrixHash(const la::Matrix<TModular>& m) {
     size_t h = 0;
     for (TModular t : m.GetData()) h = hash_combine(h, t.Get());
     return h;
   }
 
-  static size_t MatrixHash(const Matrix<TModular2>& m) {
+  static size_t MatrixHash(const la::Matrix<TModular2>& m) {
     size_t h = 0;
     for (TModular2 t : m.GetData()) h = hash_combine(h, t.Get());
     return h;
   }
 
-  static size_t MatrixHash(const Matrix<ModularBool>& m) {
+  static size_t MatrixHash(const la::Matrix<ModularBool>& m) {
     size_t h = 0;
     for (ModularBool t : m.GetData()) h = hash_combine(h, t.Get() ? 1 : 0);
     return h;
@@ -67,7 +67,7 @@ class TesterMatrixMult {
     return h;
   }
 
-  static size_t MatrixHash(const MatrixBool& m) {
+  static size_t MatrixHash(const la::MatrixBool& m) {
     size_t h = 0;
     for (unsigned i = 0; i < m.Rows(); ++i) {
       for (unsigned j = 0; j < m.Columns(); ++j)
@@ -76,11 +76,11 @@ class TesterMatrixMult {
     return h;
   }
 
-  static void ApplyMod(Matrix<uint64_t>& m) {
+  static void ApplyMod(la::Matrix<uint64_t>& m) {
     for (uint64_t& t : m) t = TModularProxy::ApplyU(t);
   }
 
-  static void ApplyMod(Matrix<TModular>& m) {}
+  static void ApplyMod(la::Matrix<TModular>& m) {}
 
   template <unsigned matrix_size>
   static void ApplyMod(
@@ -94,11 +94,11 @@ class TesterMatrixMult {
 
  protected:
   std::unordered_set<size_t> results;
-  Matrix<uint64_t> mluA, mluB, mluC, msuA, msuB, msuC;
-  Matrix<TModular> mlmA, mlmB, mlmC, msmA, msmB, msmC;
-  Matrix<TModular2> mlm2A, mlm2B, mlm2C;
-  Matrix<ModularBool> mlmbA, mlmbB, mlmbC;
-  MatrixBool mlbA, mlbB, mlbC;
+  la::Matrix<uint64_t> mluA, mluB, mluC, msuA, msuB, msuC;
+  la::Matrix<TModular> mlmA, mlmB, mlmC, msmA, msmB, msmC;
+  la::Matrix<TModular2> mlm2A, mlm2B, mlm2C;
+  la::Matrix<ModularBool> mlmbA, mlmbB, mlmbC;
+  la::MatrixBool mlbA, mlbB, mlbC;
   MatrixStaticSize<uint64_t, small_matrix_size, small_matrix_size> mssuA, mssuB,
       mssuC;
   MatrixStaticSize<TModular, small_matrix_size, small_matrix_size> mssmA, mssmB,

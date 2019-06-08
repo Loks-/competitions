@@ -11,7 +11,7 @@
 #include <set>
 
 using TModular = ModularBool;
-using TMatrix = Matrix<TModular>;
+using TMatrix = la::Matrix<TModular>;
 
 int main_degree_of_an_algebraic_number() {
   unsigned T, N;
@@ -41,7 +41,7 @@ int main_degree_of_an_algebraic_number() {
         m(i, j) = 1;
       }
     }
-    cout << PowU<uint64_t>(2, FMatrixRank(m)) << endl;
+    cout << PowU<uint64_t>(2, la::field::Rank(m)) << endl;
   }
   return 0;
 }

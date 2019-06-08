@@ -1,7 +1,7 @@
 // https://www.hackerrank.com/challenges/palindromes
 
-#include "common/linear_algebra/float/lup_decomposition.h"
 #include "common/linear_algebra/matrix.h"
+#include "common/linear_algebra/real/lup_decomposition.h"
 #include "common/stl/base.h"
 
 #include <iomanip>
@@ -60,7 +60,7 @@ int main_palindromes() {
         next_permutation(st.begin(), st.end());
         if (st == s) break;
       }
-      TDMatrix m(n);
+      DMatrix m(n);
       m(0, 0) = 1.0;
       for (const auto& psu : ms2u) {
         string st = psu.first;
@@ -87,9 +87,9 @@ int main_palindromes() {
           }
         }
       }
-      DLUPDecomposition<TDMatrix> lupd;
+      la::real::LUPDecomposition<DMatrix> lupd;
       lupd.Build(m);
-      TDVector b(n), x(n);
+      DVector b(n), x(n);
       b(0) = 1.0;
       lupd.Solve(b, x);
       for (const auto& psu : ms2u) {

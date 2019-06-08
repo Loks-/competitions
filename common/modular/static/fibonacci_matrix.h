@@ -7,7 +7,7 @@
 template <class TModular>
 class ModularFibonacciMatrix {
  public:
-  using TMatrix = TSquareMatrixStaticSize<TModular, 2>;
+  using TMatrix = SquareMatrixStaticSize<TModular, 2>;
 
   // Return { F_{n-1}, F_n }.
   static std::pair<TModular, TModular> GetPU(uint64_t n) {

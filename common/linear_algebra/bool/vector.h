@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <vector>
 
+namespace la {
 class VectorBool {
  public:
   using TValue = ModularBool;
@@ -172,3 +173,4 @@ class VectorBool {
     return t;
   }
 };
+}  // namespace la

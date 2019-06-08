@@ -2,6 +2,7 @@
 
 #include <array>
 
+namespace la {
 template <class TTValue, unsigned _size>
 class VectorStaticSize {
  public:
@@ -114,6 +115,7 @@ class VectorStaticSize {
     return t;
   }
 };
+}  // namespace la
 
 template <unsigned size>
-using TDVectorStaticSize = VectorStaticSize<double, size>;
+using DVectorStaticSize = la::VectorStaticSize<double, size>;

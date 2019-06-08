@@ -4,6 +4,7 @@
 // #include "common/numeric/utils/bits_count.h"
 #include <algorithm>
 
+namespace la {
 class MatrixBool : public VectorBool {
  public:
   using TBase = VectorBool;
@@ -117,23 +118,25 @@ class MatrixBool : public VectorBool {
     }
   }
 
-  // void MultAx(const TBase& x, TBase& output) const
-  // {
-  //     assert((x.Size() == columns) && (output.Size() == rows));
-  //     output.Clear();
-  // 	const_biterator pA = TBase::BBegin(), pBbegin = x.BBegin(), pBend1 =
-  // x.BEnd() - 1; 	for (unsigned i = 0; i < rows; ++i)
-  // 	{
-  //         TBlockValue t = 0;
-  //         for (const_biterator pB = pBbegin; pB < pBend1; )
-  //             t ^= *pA++ & *pB++;
-  //         t ^= *pA++ & *pBend1 & ((1ull << (((columns - 1) % bits_per_value)
-  //         + 1)) - 1); output.Set(i, TValue(BitsCount(t)));
-  // 	}
+  // void MultAx(const TBase& x, TBase& output) const {
+  //   assert((x.Size() == columns) && (output.Size() == rows));
+  //   output.Clear();
+  //   const_biterator pA = TBase::BBegin(), pBbegin = x.BBegin(),
+  //                   pBend1 = x.BEnd() - 1;
+  //   for (unsigned i = 0; i < rows; ++i) {
+  //     TBlockValue t = 0;
+  //     for (const_biterator pB = pBbegin; pB < pBend1;) t ^= *pA++ & *pB++;
+  //     t ^= *pA++ & *pBend1 &
+  //          ((1ull << (((columns - 1) % bits_per_value) + 1)) - 1);
+  //     output.Set(i, TValue(BitsCount(t)));
+  //   }
   // }
 
-  // TBase operator*(const TBase& x) const { TBase t(rows); MultAx(x, t); return
-  // t; }
+  // TBase operator*(const TBase& x) const {
+  //   TBase t(rows);
+  //   MultAx(x, t);
+  //   return t;
+  // }
 
   TSelf operator*(const TSelf& v) const {
     TSelf t(rows, v.columns);
@@ -160,3 +163,4 @@ class MatrixBool : public VectorBool {
     return ans;
   }
 };
+}  // namespace la

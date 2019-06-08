@@ -8,8 +8,8 @@
 #include "common/vector/read.h"
 
 using TModular = ModularBool;
-using TVector = Vector<TModular>;
-using TMatrix = Matrix<TModular>;
+using TVector = la::Vector<TModular>;
+using TMatrix = la::Matrix<TModular>;
 
 int main_find_the_operations__lupd() {
   unsigned N, D;
@@ -24,7 +24,7 @@ int main_find_the_operations__lupd() {
       if (abs(i1 - j1) + abs(i2 - j2) <= int(D)) M(i, j) = 1;
     }
   }
-  FLUPDecomposition<TMatrix> lupd;
+  la::field::LUPDecomposition<TMatrix> lupd;
   lupd.Build(M);
   if (lupd.Solve(v, x)) {
     cout << "Possible" << endl;

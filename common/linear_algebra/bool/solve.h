@@ -7,9 +7,10 @@
 #include "common/linear_algebra/bool/vector.h"
 #include <vector>
 
+namespace la {
 // Solve Ax = b
-inline bool BMatrixSolve(const MatrixBool& A, const VectorBool& b,
-                         VectorBool& output_x) {
+inline bool Solve(const MatrixBool& A, const VectorBool& b,
+                  VectorBool& output_x) {
   assert((A.Rows() == b.Size()) && (A.Columns() == output_x.Size()));
   MatrixBool m(A);
   VectorBool v(b);
@@ -18,7 +19,7 @@ inline bool BMatrixSolve(const MatrixBool& A, const VectorBool& b,
   for (unsigned j = 0; (r < m.Rows()) && (j < m.Columns()); ++j) {
     for (unsigned i = r; i < m.Rows(); ++i) {
       if (m.GetBit(i, j)) {
-        MatrixRowsBSwap(m, r, i, j / MatrixBool::bits_per_block);
+        RowsBlockSwap(m, r, i, j / MatrixBool::bits_per_block);
         v.Swap(r, i);
         break;
       }
@@ -27,7 +28,7 @@ inline bool BMatrixSolve(const MatrixBool& A, const VectorBool& b,
     VectorBool::TBlockValue vrb = v.GetBit(r);
     for (unsigned i = r + 1; i < m.Rows(); ++i) {
       if (m.GetBit(i, j) == 0) continue;
-      MatrixRowsBAdd(m, i, r, j / MatrixBool::bits_per_block);
+      RowsBlockAdd(m, i, r, j / MatrixBool::bits_per_block);
       if (vrb) v.Complement(i);
     }
     vj[r++] = j;
@@ -46,3 +47,4 @@ inline bool BMatrixSolve(const MatrixBool& A, const VectorBool& b,
   }
   return true;
 }
+}  // namespace la

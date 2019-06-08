@@ -6,10 +6,11 @@
 #include <algorithm>
 #include <vector>
 
+namespace la {
+namespace field {
 // Solve Ax = b
 template <class TMatrix, class TVector>
-inline bool FMatrixSolve(const TMatrix& A, const TVector& b,
-                         TVector& output_x) {
+inline bool Solve(const TMatrix& A, const TVector& b, TVector& output_x) {
   using TValue = typename TMatrix::TValue;
   assert((A.Rows() == b.Size()) && (A.Columns() == output_x.Size()));
   TMatrix m(A);
@@ -20,7 +21,7 @@ inline bool FMatrixSolve(const TMatrix& A, const TVector& b,
     for (unsigned i = r; i < m.Rows(); ++i) {
       if (m(i, j) != 0) {
         if (i != r) {
-          MatrixRowsSwap(m, r, i, j);
+          rows::Swap(m, r, i, j);
           std::swap(v(r), v(i));
         }
         break;
@@ -30,7 +31,7 @@ inline bool FMatrixSolve(const TMatrix& A, const TVector& b,
     for (unsigned i = r + 1; i < m.Rows(); ++i) {
       if (m(i, j) == 0) continue;
       TValue rm = m(r, j) / m(i, j);
-      MatrixRowsSubM(m, i, r, rm, j);
+      rows::SubM(m, i, r, rm, j);
       v(i) -= rm * v(r);
     }
     vj[r++] = j;
@@ -48,3 +49,5 @@ inline bool FMatrixSolve(const TMatrix& A, const TVector& b,
   }
   return true;
 }
+}  // namespace field
+}  // namespace la

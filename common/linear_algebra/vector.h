@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <vector>
 
+namespace la {
 template <class TTValue>
 class Vector {
  public:
@@ -117,5 +118,6 @@ class Vector {
     return t;
   }
 };
+}  // namespace la
 
-using TDVector = Vector<double>;
+using DVector = la::Vector<double>;

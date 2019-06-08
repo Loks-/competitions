@@ -7,8 +7,8 @@
 #include "common/stl/base.h"
 
 using TModular = ModularBool;
-using TVector = VectorBool;
-using TMatrix = MatrixBool;
+using TVector = la::VectorBool;
+using TMatrix = la::MatrixBool;
 
 int main_find_the_operations__mb() {
   unsigned N, D;
@@ -23,7 +23,7 @@ int main_find_the_operations__mb() {
       if (abs(i1 - j1) + abs(i2 - j2) <= int(D)) M.Set(i, j, 1);
     }
   }
-  if (BMatrixSolve(M, v, x)) {
+  if (la::Solve(M, v, x)) {
     cout << "Possible" << endl;
     uint64_t s = 0;
     for (unsigned i = 0; i < NN; ++i) s += x.GetBit(i);

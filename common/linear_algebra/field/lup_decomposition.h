@@ -5,8 +5,10 @@
 #include "common/linear_algebra/rows/swap.h"
 #include <vector>
 
+namespace la {
+namespace field {
 template <class TTMatrix>
-class FLUPDecomposition {
+class LUPDecomposition {
  public:
   using TMatrix = TTMatrix;
   using TValue = typename TMatrix::TValue;
@@ -17,7 +19,7 @@ class FLUPDecomposition {
   TValue det_sign;
 
  public:
-  FLUPDecomposition() : lu(0), det_sign(1) {}
+  LUPDecomposition() : lu(0), det_sign(1) {}
 
   bool Build(const TMatrix& m) {
     assert(m.Rows() == m.Columns());
@@ -30,7 +32,7 @@ class FLUPDecomposition {
       for (unsigned i = k; i < n; ++i) {
         if (lu(i, k) != 0) {
           if (i != k) {
-            MatrixRowsSwap(lu, k, i);
+            rows::Swap(lu, k, i);
             det_sign = -det_sign;
             p[k] = i;
           }
@@ -45,7 +47,7 @@ class FLUPDecomposition {
         TValue ilukk = TValue(1) / lu(k, k);
         for (unsigned i = k + 1; i < n; ++i) {
           lu(i, k) *= ilukk;
-          MatrixRowsSubM(lu, i, k, lu(i, k), k + 1);
+          rows::SubM(lu, i, k, lu(i, k), k + 1);
         }
       }
     }
@@ -89,3 +91,5 @@ class FLUPDecomposition {
     return true;
   }
 };
+}  // namespace field
+}  // namespace la

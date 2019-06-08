@@ -7,8 +7,10 @@
 #include <cmath>
 #include <vector>
 
+namespace la {
+namespace real {
 template <class TTMatrix>
-class DLUPDecomposition {
+class LUPDecomposition {
  public:
   using TMatrix = TTMatrix;
   using TValue = typename TMatrix::TValue;
@@ -22,7 +24,7 @@ class DLUPDecomposition {
   double det_sign;
 
  public:
-  DLUPDecomposition(double _eps_build = 1e-10, double _eps_solve = 1e-5)
+  LUPDecomposition(double _eps_build = 1e-10, double _eps_solve = 1e-5)
       : eps_build(_eps_build), eps_solve(_eps_solve), lu(0), det_sign(1.0) {}
 
   bool Build(const TMatrix& m) {
@@ -49,7 +51,7 @@ class DLUPDecomposition {
         }
       }
       if (imax != k) {
-        MatrixRowsSwap(lu, k, imax);
+        rows::Swap(lu, k, imax);
         det_sign = -det_sign;
         vv[imax] = vv[k];
       }
@@ -63,7 +65,7 @@ class DLUPDecomposition {
         double ilukk = 1.0 / lu(k, k);
         for (unsigned i = k + 1; i < n; ++i) {
           lu(i, k) *= ilukk;
-          MatrixRowsSubM(lu, i, k, lu(i, k), k + 1);
+          rows::SubM(lu, i, k, lu(i, k), k + 1);
         }
       }
     }
@@ -107,3 +109,5 @@ class DLUPDecomposition {
     return true;
   }
 };
+}  // namespace real
+}  // namespace la

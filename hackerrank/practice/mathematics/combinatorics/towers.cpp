@@ -5,7 +5,7 @@
 #include "common/stl/base.h"
 
 using TModular = Modular<>;
-using TMatrix = TSquareMatrixStaticSize<TModular, 15>;
+using TMatrix = SquareMatrixStaticSize<TModular, 15>;
 
 int main_towers() {
   uint64_t n;

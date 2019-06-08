@@ -8,7 +8,7 @@
 #include <numeric>
 
 using TModular = Modular<>;
-using TMatrix = TSquareMatrixStaticSize<TModular, 2>;
+using TMatrix = SquareMatrixStaticSize<TModular, 2>;
 
 int main_number_of_m_coprime_arrays() {
   factorization::ple::PrimesPowers primes_list(1000000);

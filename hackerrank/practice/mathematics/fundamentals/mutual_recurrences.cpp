@@ -5,7 +5,7 @@
 #include "common/stl/base.h"
 
 using TModular = TModular_C32<1000000000>;
-using TMatrix = TSquareMatrixStaticSize<TModular, 22>;
+using TMatrix = SquareMatrixStaticSize<TModular, 22>;
 
 int main_mutual_recurrences() {
   unsigned T;

@@ -3,6 +3,7 @@
 #include "common/linear_algebra/vector.h"
 #include <algorithm>
 
+namespace la {
 template <class TTValue>
 class Matrix : public Vector<TTValue> {
  public:
@@ -140,5 +141,6 @@ class Matrix : public Vector<TTValue> {
     return ans;
   }
 };
+}  // namespace la
 
-using TDMatrix = Matrix<double>;
+using DMatrix = la::Matrix<double>;

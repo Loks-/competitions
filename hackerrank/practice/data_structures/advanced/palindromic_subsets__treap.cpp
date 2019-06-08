@@ -11,7 +11,7 @@
 
 #include <string>
 
-using TVector = VectorStaticSize<unsigned, 26>;
+using TVector = la::VectorStaticSize<unsigned, 26>;
 using TTree =
     bst::Treap<false, false, TVector, bst::info::Sum<TVector, bst::info::Size>,
                bst::action::RotateVector>;

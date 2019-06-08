@@ -6,12 +6,13 @@
 #include <unordered_map>
 
 using TModular = Modular<>;
+using TMatrix = la::Matrix<TModular>;
 
 int main_name_preserving_network() {
   auto generate_random_graph = [](unsigned n) {
     vector<unsigned> v(4 * n);
     for (unsigned i = 0; i < 4 * n; ++i) v[i] = i / 4;
-    Matrix<TModular> m(n, n);
+    TMatrix m(n, n);
     for (bool next_try = true; next_try;) {
       next_try = false;
       m.Clear();
@@ -43,7 +44,7 @@ int main_name_preserving_network() {
     cin >> N >> N2;
     unsigned trun = 0, k;
     unordered_map<uint64_t, unsigned> um;
-    Matrix<TModular> mg(0);
+    TMatrix mg(0);
     for (bool next_try = true; next_try; ++trun) {
       auto m = generate_random_graph(N);
       mg = m;

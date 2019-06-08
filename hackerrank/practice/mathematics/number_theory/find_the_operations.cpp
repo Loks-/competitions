@@ -8,8 +8,8 @@
 #include "common/vector/read.h"
 
 using TModular = ModularBool;
-using TVector = Vector<TModular>;
-using TMatrix = Matrix<TModular>;
+using TVector = la::Vector<TModular>;
+using TMatrix = la::Matrix<TModular>;
 
 int main_find_the_operations() {
   unsigned N, D;
@@ -24,7 +24,7 @@ int main_find_the_operations() {
       if (abs(i1 - j1) + abs(i2 - j2) <= int(D)) M(i, j) = 1;
     }
   }
-  if (FMatrixSolve(M, v, x)) {
+  if (la::field::Solve(M, v, x)) {
     cout << "Possible" << endl;
     uint64_t s = 0;
     for (TModular t : x) s += t.Get();

@@ -3,6 +3,7 @@
 #include "common/linear_algebra/vector_static_size.h"
 #include <algorithm>
 
+namespace la {
 template <class TTValue, unsigned _rows, unsigned _columns>
 class MatrixStaticSize : public VectorStaticSize<TTValue, _rows * _columns> {
  public:
@@ -118,10 +119,13 @@ class MatrixStaticSize : public VectorStaticSize<TTValue, _rows * _columns> {
     return ans;
   }
 };
+}  // namespace la
 
+template <class TValue, unsigned rows, unsigned columns>
+using MatrixStaticSize = la::MatrixStaticSize<TValue, rows, columns>;
 template <unsigned rows, unsigned columns>
-using TDMatrixStaticSize = MatrixStaticSize<double, rows, columns>;
+using DMatrixStaticSize = la::MatrixStaticSize<double, rows, columns>;
 template <class TValue, unsigned size>
-using TSquareMatrixStaticSize = MatrixStaticSize<TValue, size, size>;
+using SquareMatrixStaticSize = la::MatrixStaticSize<TValue, size, size>;
 template <unsigned size>
-using TDSquareMatrixStaticSize = MatrixStaticSize<double, size, size>;
+using DSquareMatrixStaticSize = la::MatrixStaticSize<double, size, size>;
