@@ -48,8 +48,7 @@ int main_pancake_pyramid() {
         ssr.push({vs[i], i});
         smr += sr;
       }
-      s +=
-          (sml + (mvi - b + 1)) * (smr + (e - mvi)) - (mvi - b + 1) * (e - mvi);
+      s += sml * (e - mvi) + smr * (mvi - b + 1);
       Solve(b, mvi);
       Solve(mvi + 1, e);
     };
