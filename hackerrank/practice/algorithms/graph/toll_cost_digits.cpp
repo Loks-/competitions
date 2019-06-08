@@ -3,7 +3,7 @@
 #include "common/graph/graph.h"
 #include "common/graph/graph/connected_components.h"
 #include "common/stl/base.h"
-#include "common/vector/unsigned_set.h"
+#include "common/unsigned_set.h"
 
 int main_toll_cost_digits() {
   unsigned n, m;

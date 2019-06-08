@@ -4,7 +4,7 @@
 #include "common/graph/graph/degeneracy_order.h"
 #include "common/graph/graph/sort_edges_by_order.h"
 #include "common/stl/base.h"
-#include "common/vector/unsigned_multiset.h"
+#include "common/unsigned_multiset.h"
 
 int main_jogging_cats() {
   unsigned N, M;

@@ -1,9 +1,7 @@
 // https://www.hackerrank.com/challenges/pairs-again
 
 #include "common/stl/base.h"
-#include "common/vector/unsigned_set.h"
-
-#include <unordered_set>
+#include "common/unsigned_set.h"
 
 int main_satisfactory_pairs() {
   unsigned n;
