@@ -19,7 +19,6 @@ int main_zilionim() {
     }
     for (i = 0; us.HasKey(i);) ++i;
     us.Clear();
-    // cerr << K << "\t" << KE << "\t" << i << endl;
     if (vp.back().second == i) {
       vp.back().first = KE;
     } else {
@@ -27,7 +26,9 @@ int main_zilionim() {
       vp.push_back({KE, i});
     }
   }
-  cerr << vp.size() << endl;
+  auto Eval = [&](uint64_t l) {
+    return lower_bound(vp.begin(), vp.end(), make_pair(l, 0u))->second;
+  };
 
   unsigned T, W;
   cin >> T >> W;
@@ -49,29 +50,22 @@ int main_zilionim() {
       }
       assert(found);
     };
-    auto Eval1 = [&](uint64_t l) {
-      return lower_bound(vp.begin(), vp.end(), make_pair(l, 0u))->second;
-    };
-    auto Eval = [&] {
-      unsigned k = 0;
-      for (auto p : v) k ^= Eval1(p.second - p.first);
-      return k;
-    };
 
     for (cin >> M; M > 0; cin >> M) {
       Move();
-      unsigned e = Eval();
+      unsigned e = 0;
+      for (auto p : v) e ^= Eval(p.second - p.first);
       M = 0;
       if (e) {
         for (auto p : v) {
-          unsigned e1 = Eval1(p.second - p.first);
+          unsigned e1 = Eval(p.second - p.first);
           if ((e1 ^ e) < e1) {
             unsigned er = e1 ^ e;
             uint64_t l = p.second - p.first;
             unsigned i = 0, j = vp.size() - 1;
             bool found = false;
             for (; vp[i].first + B <= l; ++i) {
-              if ((vp[i].second ^ Eval1(l - vp[i].first - B)) == er) {
+              if ((vp[i].second ^ Eval(l - vp[i].first - B)) == er) {
                 found = true;
                 M = p.first + vp[i].first;
                 break;
@@ -84,7 +78,6 @@ int main_zilionim() {
         win_move_found = true;
       } else {
         assert(!win_move_found);
-        // random_shuffle(v.begin(), v.end());
         for (auto p : v) {
           if (p.second - p.first >= B) {
             M = p.first;
@@ -94,7 +87,6 @@ int main_zilionim() {
       }
       cout << M << endl;
       Move();
-      cerr << "My move " << e << " -> " << Eval() << endl;
     }
   }
   return 0;
