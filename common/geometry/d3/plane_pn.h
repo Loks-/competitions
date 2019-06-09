@@ -18,7 +18,6 @@ class PlanePN {
 
   bool Valid() const { return !n.Empty(); }
   const Vector<T>& Normal() const { return n; }
-
   T operator()(const Point<T>& pp) const { return n * (pp - p); }
 
   void SetOppositeNormal() { n = -n; }

@@ -3,7 +3,6 @@
 #include "common/geometry/d3/base.h"
 #include "common/geometry/d3/plane_pn.h"
 #include "common/geometry/d3/point.h"
-#include "common/geometry/d3/utils/determinant.h"
 
 template <class T>
 inline geometry::d3::PlanePN<T> PlanePNFromPoints(

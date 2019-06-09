@@ -17,7 +17,6 @@ class Plane {
       : a(_a), b(_b), c(_c), d(_d) {}
 
   bool Valid() const { return (a != 0) || (b != 0) || (c != 0); }
-
   Vector<T> Normal() const { return Vector<T>(a, b, c); }
 
   T operator()(const Point<T>& p) const {
