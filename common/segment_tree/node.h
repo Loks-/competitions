@@ -1,25 +1,27 @@
 #pragma once
 
 #include "common/base.h"
+#include "common/node.h"
 
+namespace st {
 template <bool use_parent, class TSelf>
-class TSTNodeProxyParent {};
+class TNodeProxyParent {};
 
 template <class TSelf>
-class TSTNodeProxyParent<false, TSelf> {
+class TNodeProxyParent<false, TSelf> : public BaseNode {
  public:
-  TSelf *l = 0, *r = 0;
+  TSelf *l = nullptr, *r = nullptr;
 
   void SetL(TSelf* node) { l = node; }
   void SetR(TSelf* node) { r = node; }
   void SetP(TSelf* node) {}
-  void ResetLinks() { l = r = 0; }
+  void ResetLinks() { l = r = nullptr; }
 };
 
 template <class TSelf>
-class TSTNodeProxyParent<true, TSelf> {
+class TNodeProxyParent<true, TSelf> : public BaseNode {
  public:
-  TSelf *l = 0, *r = 0, *p = 0;
+  TSelf *l = nullptr, *r = nullptr, *p = nullptr;
 
   void SetL(TSelf* node) {
     l = node;
@@ -32,26 +34,26 @@ class TSTNodeProxyParent<true, TSelf> {
   }
 
   void SetP(TSelf* node) { p = node; }
-  void ResetLinks() { l = r = p = 0; }
+  void ResetLinks() { l = r = p = nullptr; }
 };
 
 template <class TTData, class TTInfo, class TTAction, bool _use_parent = true>
-class STNode
-    : public TSTNodeProxyParent<_use_parent,
-                                STNode<TTData, TTInfo, TTAction, _use_parent>> {
+class Node
+    : public TNodeProxyParent<_use_parent,
+                              Node<TTData, TTInfo, TTAction, _use_parent>> {
  public:
   static const bool use_parent = _use_parent;
 
   using TData = TTData;
   using TInfo = TTInfo;
   using TAction = TTAction;
-  using TSelf = STNode<TData, TInfo, TAction, use_parent>;
-  using TBase = TSTNodeProxyParent<use_parent, TSelf>;
+  using TSelf = Node<TData, TInfo, TAction, use_parent>;
+  using TBase = TNodeProxyParent<use_parent, TSelf>;
 
   TInfo info;
   TAction action;
 
-  bool IsLeaf() const { return (TBase::l == 0); }
+  bool IsLeaf() const { return (TBase::l == nullptr); }
 
   TData& GetData() {
     assert(IsLeaf());
@@ -78,3 +80,4 @@ class STNode
 
   void ApplyAction() { action.Apply(this); }
 };
+}  // namespace st

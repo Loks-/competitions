@@ -2,11 +2,13 @@
 
 #include "common/base.h"
 
+namespace st {
+namespace info {
 template <class TTBase>
-class STInfoProxy : public TTBase {
+class Proxy : public TTBase {
  public:
   using TBase = TTBase;
-  using TSelf = STInfoProxy<TBase>;
+  using TSelf = Proxy<TBase>;
 
   template <class TNode>
   void Update(TNode* node) {
@@ -24,3 +26,5 @@ class STInfoProxy : public TTBase {
     return t;
   }
 };
+}  // namespace info
+}  // namespace st

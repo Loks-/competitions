@@ -2,8 +2,10 @@
 
 #include "common/segment_tree/action/none.h"
 
+namespace st {
+namespace action {
 // Support only VectorStaticSize from LinearAlgebra.
-class STActionRotateVector : public STActionNone {
+class RotateVector : public None {
  protected:
   template <class TVector>
   static void Rotate(TVector& v, unsigned r) {
@@ -15,8 +17,8 @@ class STActionRotateVector : public STActionNone {
   }
 
  public:
-  using TBase = STActionNone;
-  using TSelf = STActionRotateVector;
+  using TBase = None;
+  using TSelf = RotateVector;
   static const bool is_none = false;
 
   unsigned r = 0;
@@ -42,3 +44,5 @@ class STActionRotateVector : public STActionNone {
     r = 0;
   }
 };
+}  // namespace action
+}  // namespace st

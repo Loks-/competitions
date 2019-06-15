@@ -13,8 +13,9 @@
 #include <string>
 
 using TVector = la::VectorStaticSize<unsigned, 26>;
-using TTree = SegmentTree<TVector, STInfoSum<TVector, STInfoSegment<>>,
-                          STActionRotateVector, false>;
+using TTree =
+    st::SegmentTree<TVector, st::info::Sum<TVector, st::info::Segment<>>,
+                    st::action::RotateVector, false>;
 using TNode = TTree::TNode;
 using TModular = Modular<>;
 
@@ -32,10 +33,10 @@ int main_palindromic_subsets__segment_tree() {
     cin >> t;
     if (t == 1) {
       cin >> a >> b >> c;
-      STAddActionToSegment<TNode>(root, a, b, c);
+      st::AddActionToSegment<TNode>(root, a, b, c);
     } else if (t == 2) {
       cin >> a >> b;
-      TTree::TInfo info = STGetSegment<TNode>(root, a, b);
+      TTree::TInfo info = st::GetSegment<TNode>(root, a, b);
       unsigned nsum = 0, nnonzero = 0;
       for (unsigned j = 0; j < 26; ++j) {
         if (info.segment_sum(j)) {

@@ -3,12 +3,14 @@
 #include "common/numeric/utils/gcd.h"
 #include "common/segment_tree/info/proxy.h"
 
+namespace st {
+namespace info {
 template <class TGCDValue, class TInfo>
-class TSTInfoGCD : public TInfo {
+class TGCD : public TInfo {
  public:
   using TValue = TGCDValue;
   using TBase = TInfo;
-  using TSelf = TSTInfoGCD<TValue, TBase>;
+  using TSelf = TGCD<TValue, TBase>;
 
   static const bool is_none = false;
   static const bool use_data = true;
@@ -28,4 +30,6 @@ class TSTInfoGCD : public TInfo {
 };
 
 template <class TGCDValue, class TInfo>
-using STInfoGCD = STInfoProxy<TSTInfoGCD<TGCDValue, TInfo>>;
+using GCD = Proxy<TGCD<TGCDValue, TInfo>>;
+}  // namespace info
+}  // namespace st

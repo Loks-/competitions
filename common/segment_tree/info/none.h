@@ -2,10 +2,12 @@
 
 #include "common/segment_tree/info/proxy.h"
 
-class TSTInfoNone {
+namespace st {
+namespace info {
+class TNone {
  public:
   using TCoordinate = unsigned;
-  using TSelf = TSTInfoNone;
+  using TSelf = TNone;
 
   static const bool is_none = true;
   static const bool use_data = false;
@@ -19,4 +21,6 @@ class TSTInfoNone {
   void UpdateLR(const TSelf& l, const TSelf& r) {}
 };
 
-using STInfoNone = STInfoProxy<TSTInfoNone>;
+using None = Proxy<TNone>;
+}  // namespace info
+}  // namespace st

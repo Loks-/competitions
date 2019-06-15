@@ -1,8 +1,9 @@
 #pragma once
 
+namespace st {
 template <class TNode>
-inline TNode* STFindLeaf(TNode* root,
-                         const typename TNode::TInfo::TCoordinate& x) {
+inline TNode* FindLeaf(TNode* root,
+                       const typename TNode::TInfo::TCoordinate& x) {
   using TInfo = typename TNode::TInfo;
   static_assert(TInfo::has_coordinate, "has_coordinate should be true");
   for (TNode* node = root; node != 0;) {
@@ -22,3 +23,4 @@ inline TNode* STFindLeaf(TNode* root,
   }
   return 0;
 }
+}  // namespace st

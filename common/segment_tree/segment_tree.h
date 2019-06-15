@@ -8,8 +8,9 @@
 
 #include <vector>
 
-template <class TTData, class TTInfo = STInfoSegment<>,
-          class TTAction = STActionNone, bool _use_parent = true>
+namespace st {
+template <class TTData, class TTInfo = info::Segment<>,
+          class TTAction = action::None, bool _use_parent = true>
 class SegmentTree {
  public:
   static const bool use_parent = _use_parent;
@@ -18,7 +19,7 @@ class SegmentTree {
   using TInfo = TTInfo;
   using TAction = TTAction;
   using TSelf = SegmentTree<TData, TInfo, TAction, use_parent>;
-  using TNode = STNode<TData, TInfo, TAction, use_parent>;
+  using TNode = Node<TData, TInfo, TAction, use_parent>;
   using TCoordinate = typename TInfo::TCoordinate;
 
  protected:
@@ -90,3 +91,4 @@ class SegmentTree {
     return BuildTreeI(vdata, vx, 0, unsigned(vdata.size()) - 1);
   }
 };
+}  // namespace st

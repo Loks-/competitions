@@ -11,7 +11,8 @@
 #include <set>
 
 using TTree =
-    SegmentTree<uint64_t, STInfoMax<uint64_t, STInfoSegment<uint64_t>>>;
+    st::SegmentTree<uint64_t,
+                    st::info::Max<uint64_t, st::info::Segment<uint64_t>>>;
 using TNode = TTree::TNode;
 using TInfo = TNode::TInfo;
 
@@ -27,11 +28,11 @@ int main_subsequence_weighting__segment_tree() {
     vector<uint64_t> vaus(s.begin(), s.end());
     TNode* root = tree.BuildTree(vector<uint64_t>(vaus.size(), 0), vaus);
     for (unsigned i = 0; i < N; ++i) {
-      TInfo info = STGetSegment<TNode>(root, 0, va[i] - 1);
-      TNode* node = STFindLeaf(root, va[i]);
+      TInfo info = st::GetSegment<TNode>(root, 0, va[i] - 1);
+      TNode* node = st::FindLeaf(root, va[i]);
       assert(node && node->IsLeaf());
       node->GetData() = std::max(node->GetData(), info.segment_max + vw[i]);
-      UpdateInfoNodeToRoot<TNode>(node);
+      st::UpdateInfoNodeToRoot<TNode>(node);
     }
     cout << root->info.segment_max << endl;
   }

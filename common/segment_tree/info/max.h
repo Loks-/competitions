@@ -3,12 +3,14 @@
 #include "common/segment_tree/info/proxy.h"
 #include <algorithm>
 
+namespace st {
+namespace info {
 template <class TMaxValue, class TInfo>
-class TSTInfoMax : public TInfo {
+class TMax : public TInfo {
  public:
   using TValue = TMaxValue;
   using TBase = TInfo;
-  using TSelf = TSTInfoMax<TValue, TBase>;
+  using TSelf = TMax<TValue, TBase>;
 
   static const bool is_none = false;
   static const bool use_data = true;
@@ -28,4 +30,6 @@ class TSTInfoMax : public TInfo {
 };
 
 template <class TMaxValue, class TInfo>
-using STInfoMax = STInfoProxy<TSTInfoMax<TMaxValue, TInfo>>;
+using Max = Proxy<TMax<TMaxValue, TInfo>>;
+}  // namespace info
+}  // namespace st
