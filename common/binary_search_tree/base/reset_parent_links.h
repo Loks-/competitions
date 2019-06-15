@@ -4,6 +4,7 @@
 #include <stack>
 
 namespace bst {
+namespace hidden {
 template <class TNode>
 inline void ResetParentLinksI(TNode* root, TFakeFalse) {}
 
@@ -24,9 +25,10 @@ inline void ResetParentLinksI(TNode* root, TFakeTrue) {
     }
   }
 }
+}  // namespace hidden
 
 template <class TNode>
 inline void ResetParentLinks(TNode* root) {
-  ResetParentLinksI(root, TFakeBool<TNode::use_parent>());
+  hidden::ResetParentLinksI(root, TFakeBool<TNode::use_parent>());
 }
 }  // namespace bst
