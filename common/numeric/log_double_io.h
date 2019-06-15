@@ -5,8 +5,7 @@
 #include <ostream>
 
 inline std::ostream& operator<<(std::ostream& s, const LogDouble& d) {
-  s << d.Get();
-  return s;
+  return s << d.Get();
 }
 
 inline std::istream& operator>>(std::istream& s, LogDouble& d) {

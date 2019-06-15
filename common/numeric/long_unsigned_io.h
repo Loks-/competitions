@@ -43,13 +43,12 @@ inline std::string ToString(const LongUnsigned& lu, unsigned base = 10) {
 }
 
 inline std::ostream& operator<<(std::ostream& s, const LongUnsigned& lu) {
-  s << ToString(lu);
-  return s;
+  return s << ToString(lu);
 }
 
 inline void Write(const LongUnsigned& lu, bool add_eod = true,
                   unsigned base = 10) {
-  std::string s = ToString(base);
+  std::string s = ToString(lu, base);
   std::cout << s;
   if (add_eod) std::cout << std::endl;
 }

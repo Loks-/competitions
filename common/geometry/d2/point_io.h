@@ -7,12 +7,10 @@
 template <class T>
 inline std::ostream& operator<<(std::ostream& s,
                                 const geometry::d2::Point<T>& p) {
-  s << p.x << " " << p.y;
-  return s;
+  return s << p.x << " " << p.y;
 }
 
 template <class T>
 inline std::istream& operator>>(std::istream& s, geometry::d2::Point<T>& p) {
-  s >> p.x >> p.y;
-  return s;
+  return s >> p.x >> p.y;
 }

@@ -5,8 +5,7 @@
 #include <ostream>
 
 inline std::ostream& operator<<(std::ostream& s, const ModularBool& m) {
-  s << m.Get();
-  return s;
+  return s << m.Get();
 }
 
 inline std::istream& operator>>(std::istream& s, ModularBool& m) {
