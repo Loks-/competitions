@@ -20,6 +20,20 @@ class Vector {
   T LengthSquared() const { return dx * dx + dy * dy + dz * dz; }
   T Length() const { return sqrt(LengthSquared()); }
 
+  TSelf& operator+=(const TSelf& r) {
+    dx += r.dx;
+    dy += r.dy;
+    dz += r.dz;
+    return *this;
+  }
+
+  TSelf& operator-=(const TSelf& r) {
+    dx -= r.dx;
+    dy -= r.dy;
+    dz -= r.dz;
+    return *this;
+  }
+
   TSelf& operator*=(const T& r) {
     dx *= r;
     dy *= r;
@@ -32,6 +46,14 @@ class Vector {
     dy /= r;
     dz /= r;
     return *this;
+  }
+
+  TSelf operator+(const TSelf& r) const {
+    return TSelf(dx + r.dx, dy + r.dy, dz + r.dz);
+  }
+
+  TSelf operator-(const TSelf& r) const {
+    return TSelf(dx - r.dx, dy - r.dy, dz - r.dz);
   }
 
   TSelf operator*(const T& r) const { return TSelf(dx * r, dy * r, dz * r); }
