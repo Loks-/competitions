@@ -58,8 +58,7 @@ int main_zilionim() {
           if ((e1 ^ e) < e1) {
             unsigned er = e1 ^ e;
             uint64_t l = p.second - p.first;
-            unsigned i = 0, j = vp.size() - 1;
-            for (; vp[i].first + B <= l; ++i) {
+            for (unsigned i = 0; vp[i].first + B <= l; ++i) {
               if ((vp[i].second ^ Eval(l - vp[i].first - B)) == er) {
                 M = p.first + vp[i].first;
                 break;
