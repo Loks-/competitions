@@ -86,6 +86,9 @@ file ( APPEND ${HACKERRANK_PROXY_C_C}
 add_executable( hackerrank_c ${HACKERRANK_C_SOURCES} ${HACKERRANK_PROXY_C_C} )
 set_target_properties( hackerrank_c PROPERTIES COMPILE_FLAGS "-Wno-unused-result" )
 
+file( GLOB_RECURSE ICFPPC_2019_SOURCES RELATIVE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/icfppc/2019/*.cpp" )
+add_executable( icfppc_2019 ${ICFPPC_2019_SOURCES} )
+
 file( GLOB_RECURSE IPCS_SOURCES RELATIVE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/ipcs/*.cpp" )
 list( SORT IPCS_SOURCES )
 set( IPCS_PROXY_H "${PROJECT_SOURCE_DIR}/ipcs/proxy_gen.h" )
