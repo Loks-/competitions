@@ -7,6 +7,7 @@
 #include "common/geometry/d2/segment.h"
 #include "common/geometry/d2/utils/segment_intersect.h"
 #include <algorithm>
+#include <cmath>
 
 namespace base {
 Manipulator::Manipulator(Point _p) {
@@ -45,5 +46,11 @@ void Manipulator::Wrap(const Point& pworker, Map& map) const {
     }
   }
   if (visible) map.Wrap(p);
+}
+
+bool Manipulator::operator==(const Point& _p) const { return p == _p; }
+
+bool Manipulator::Neighbor(const Point& _p) const {
+  return std::abs(p.x - _p.x) + std::abs(p.y - _p.y) == 1;
 }
 }  // namespace base

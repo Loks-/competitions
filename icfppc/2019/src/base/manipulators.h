@@ -15,6 +15,7 @@ class Manipulators {
  public:
   Manipulators();
 
+  void Add(const Point& p);
   void Rotate(RotationType type);
   void Wrap(const Point& pworker, Map& map) const;
 };

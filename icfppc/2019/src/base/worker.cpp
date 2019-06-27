@@ -2,10 +2,13 @@
 
 #include "base/action.h"
 #include "base/action_type.h"
+#include "base/booster_type.h"
+#include "base/boosters.h"
 #include "base/manipulator.h"
 #include "base/point.h"
 #include "base/rotation.h"
 #include "base/world.h"
+#include <algorithm>
 #include <cassert>
 
 namespace base {
@@ -36,13 +39,21 @@ void Worker::operator()(const Action& action) {
       Wrap();
     } break;
     case ActionType::ATTACH_MANIPULATOR:
-      assert(false);
+      assert(pworld->GetBoosters().Available(BoosterType::EXTENSION));
+      pworld->GetBoosters().Remove(BoosterType::EXTENSION);
+      manipulators.Add(Point{action.x, action.y});
+      Wrap();
       break;
     case ActionType::ATTACH_FAST_WHEELS:
-      assert(false);
+      assert(pworld->GetBoosters().Available(BoosterType::FAST_WHEELS));
+      pworld->GetBoosters().Remove(BoosterType::FAST_WHEELS);
+      time_fast_move =
+          std::max(time_fast_move, pworld->GetTime()) + TIME_FAST_WHEELS;
       break;
     case ActionType::USING_DRILL:
-      assert(false);
+      assert(pworld->GetBoosters().Available(BoosterType::DRILL));
+      pworld->GetBoosters().Remove(BoosterType::DRILL);
+      time_drill = std::max(time_drill, pworld->GetTime()) + TIME_DRILL;
       break;
     case ActionType::SET_BEACON:
       assert(false);

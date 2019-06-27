@@ -2,6 +2,7 @@
 
 #include "base/point.h"
 #include "base/rotation_type.h"
+#include <cassert>
 
 namespace base {
 Manipulators::Manipulators() {
@@ -9,6 +10,19 @@ Manipulators::Manipulators() {
   v.push_back(Manipulator({1, -1}));
   v.push_back(Manipulator({1, 0}));
   v.push_back(Manipulator({1, 1}));
+}
+
+void Manipulators::Add(const Point& p) {
+  bool correct = false;
+  for (const auto& m : v) {
+    if (m == p) {
+      correct = false;
+      break;
+    }
+    if (m.Neighbor(p)) correct = true;
+  }
+  assert(correct);
+  if (correct) v.push_back(Manipulator(p));
 }
 
 void Manipulators::Rotate(RotationType type) {

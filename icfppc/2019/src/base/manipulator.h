@@ -17,5 +17,8 @@ class Manipulator {
 
   void Rotate(RotationType type);
   void Wrap(const Point& pworker, Map& map) const;
+
+  bool operator==(const Point& _p) const;
+  bool Neighbor(const Point& _p) const;
 };
 }  // namespace base

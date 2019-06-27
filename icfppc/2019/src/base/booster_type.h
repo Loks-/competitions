@@ -8,7 +8,7 @@ enum class BoosterType {
   DRILL,
   TELEPORT,
   CLONING,
-  UNKNOWN
+  END
 };
 
 const int TIME_FAST_WHEELS = 50;
