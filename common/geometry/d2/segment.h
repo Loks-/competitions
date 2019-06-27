@@ -20,4 +20,4 @@ class Segment {
 using D2ClosedSegment = geometry::d2::Segment<double, true>;
 using D2OpenSegment = geometry::d2::Segment<double, false>;
 using I2ClosedSegment = geometry::d2::Segment<int64_t, true>;
-using I2OpendSegment = geometry::d2::Segment<int64_t, false>;
+using I2OpenSegment = geometry::d2::Segment<int64_t, false>;
