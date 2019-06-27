@@ -20,10 +20,17 @@ class LinePV {
 
   bool Valid() const { return !v.Empty(); }
   Vector<T> Normal() const { return {-v.dy, v.dx}; }
-  T operator()(const Point<T>& pp) const { return n % (pp - p); }
+  T operator()(const Point<T>& pp) const { return v % (pp - p); }
 
   void SetOppositeNormal() { v = -v; }
   void Normalize() { v.Normalize(); }
+
+  bool operator==(const LinePV<T>& r) const {
+    return (r(p) == 0) && ((v % r.v) == 0);
+  }
+  bool operator!=(const LinePV<T>& r) const {
+    return (r(p) != 0) || ((v % r.v) != 0);
+  }
 };
 }  // namespace d2
 }  // namespace geometry
