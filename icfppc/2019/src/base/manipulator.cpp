@@ -4,6 +4,8 @@
 #include "base/point.h"
 #include "base/rotation.h"
 #include "base/rotation_type.h"
+#include "common/geometry/d2/segment.h"
+#include "common/geometry/d2/utils/segment_intersect.h"
 #include <algorithm>
 
 namespace base {
@@ -13,13 +15,18 @@ Manipulator::Manipulator(Point _p) {
   int x1 = std::max(p.x, 0);
   int y0 = std::min(p.y, 0);
   int y1 = std::max(p.y, 0);
+  I2OpenSegment s0({0, 0}, {2 * p.x, 2 * p.y});
   for (int x = x0; x <= x1; ++x) {
     for (int y = y0; y <= y1; ++y) {
       if ((x == 0) && (y == 0)) continue;
-      // ...
-      // Real check using common library
+      I2OpenSegment s1({2 * x - 1, 2 * y - 1}, {2 * x + 1, 2 * y + 1}),
+          s2({2 * x - 1, 2 * y + 1}, {2 * x + 1, 2 * y - 1});
+      if (Intersect(s0, s1) || Intersect(s0, s2)) {
+        check_list.push_back(Point{x, y});
+      }
     }
   }
+  check_list.push_back(p);
 }
 
 void Manipulator::Rotate(RotationType type) {
