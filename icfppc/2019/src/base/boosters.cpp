@@ -1,5 +1,6 @@
 #include "base/boosters.h"
 
+#include "assert_exception.h"
 #include "base/booster_type.h"
 #include <algorithm>
 #include <cassert>
@@ -21,9 +22,10 @@ void Boosters::Add(BoosterType type) {
   assert(type < BoosterType::END);
   count[unsigned(type)] += 1;
 }
+
 void Boosters::Remove(BoosterType type) {
   assert(type < BoosterType::END);
-  assert(Available(type));
+  Assert(Available(type), "Using unavailable booster.");
   count[unsigned(type)] -= 1;
 }
 }  // namespace base

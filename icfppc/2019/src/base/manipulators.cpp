@@ -1,5 +1,6 @@
 #include "base/manipulators.h"
 
+#include "assert_exception.h"
 #include "base/point.h"
 #include "base/rotation_type.h"
 #include <cassert>
@@ -21,8 +22,8 @@ void Manipulators::Add(const Point& p) {
     }
     if (m.Neighbor(p)) correct = true;
   }
-  assert(correct);
-  if (correct) v.push_back(Manipulator(p));
+  Assert(correct, "Attaching manipulator with inccorect coordinates.");
+  v.push_back(Manipulator(p));
 }
 
 void Manipulators::Rotate(RotationType type) {
