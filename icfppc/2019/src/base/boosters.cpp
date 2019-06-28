@@ -1,7 +1,7 @@
 #include "base/boosters.h"
 
-#include "assert_exception.h"
 #include "base/booster_type.h"
+#include "common/assert_exception.h"
 #include <algorithm>
 #include <cassert>
 

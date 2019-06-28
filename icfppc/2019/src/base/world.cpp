@@ -1,10 +1,10 @@
 #include "base/world.h"
 
-#include "assert_exception.h"
 #include "base/action.h"
 #include "base/action_type.h"
 #include "base/map.h"
 #include "base/solution.h"
+#include "common/assert_exception.h"
 #include <cassert>
 
 namespace base {

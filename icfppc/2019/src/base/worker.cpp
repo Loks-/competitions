@@ -1,6 +1,5 @@
 #include "base/worker.h"
 
-#include "assert_exception.h"
 #include "base/action.h"
 #include "base/action_type.h"
 #include "base/booster_type.h"
@@ -10,6 +9,7 @@
 #include "base/point.h"
 #include "base/rotation.h"
 #include "base/world.h"
+#include "common/assert_exception.h"
 #include <algorithm>
 #include <cassert>
 

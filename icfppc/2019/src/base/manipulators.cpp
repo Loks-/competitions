@@ -1,8 +1,8 @@
 #include "base/manipulators.h"
 
-#include "assert_exception.h"
 #include "base/point.h"
 #include "base/rotation_type.h"
+#include "common/assert_exception.h"
 #include <cassert>
 
 namespace base {

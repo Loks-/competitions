@@ -1,9 +1,9 @@
 #include "base/decode.h"
 
-#include "assert_exception.h"
 #include "base/action.h"
 #include "base/point.h"
 #include "base/solution.h"
+#include "common/assert_exception.h"
 #include <string>
 
 namespace base {
