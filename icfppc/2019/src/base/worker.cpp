@@ -19,6 +19,8 @@ Worker::Worker(const Point& _p, World& world) : p(_p), pworld(&world) {
   time_drill = -1;
 }
 
+const Point& Worker::Location() const { return p; }
+
 void Worker::Wrap() {
   assert(pworld);
   manipulators.Wrap(p, pworld->GetMap());

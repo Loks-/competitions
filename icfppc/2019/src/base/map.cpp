@@ -51,4 +51,8 @@ bool Map::CheckBeacon(const Point& p) const {
   return beacons.find(Index(p)) != beacons.end();
 }
 
+bool Map::CheckCodeX(const Point& p) const {
+  assert(Inside(p));
+  return codex.find(Index(p)) != codex.end();
+}
 }  // namespace base

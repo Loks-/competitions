@@ -19,6 +19,7 @@ class Worker {
  public:
   Worker(const Point& _p, World& world);
 
+  const Point& Location() const;
   void Wrap();
   void PickupItem();
   void operator()(const Action& action);

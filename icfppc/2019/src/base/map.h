@@ -19,6 +19,7 @@ class Map {
   std::vector<uint8_t> map;
   std::unordered_map<unsigned, BoosterType> boosters;
   std::unordered_set<unsigned> beacons;
+  std::unordered_set<unsigned> codex;
 
  public:
   unsigned Index(const Point& p) const;
@@ -33,5 +34,6 @@ class Map {
 
   void AddBeacon(const Point& p);
   bool CheckBeacon(const Point& p) const;
+  bool CheckCodeX(const Point& p) const;
 };
 }  // namespace base
