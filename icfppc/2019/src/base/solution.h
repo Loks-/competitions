@@ -5,7 +5,7 @@
 
 namespace base {
 class Solution {
- protected:
+ public:
   std::vector<ActionsList> actions;
 };
 }  // namespace base

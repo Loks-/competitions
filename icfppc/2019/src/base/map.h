@@ -35,5 +35,7 @@ class Map {
   void AddBeacon(const Point& p);
   bool CheckBeacon(const Point& p) const;
   bool CheckCodeX(const Point& p) const;
+
+  bool Wrapped() const;
 };
 }  // namespace base

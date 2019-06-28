@@ -55,4 +55,11 @@ bool Map::CheckCodeX(const Point& p) const {
   assert(Inside(p));
   return codex.find(Index(p)) != codex.end();
 }
+
+bool Map::Wrapped() const {
+  for (unsigned x : map) {
+    if ((x & (OBSTACLE | WRAPPED)) == 0) return false;
+  }
+  return false;
+}
 }  // namespace base

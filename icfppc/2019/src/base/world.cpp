@@ -4,6 +4,7 @@
 #include "base/action.h"
 #include "base/action_type.h"
 #include "base/map.h"
+#include "base/solution.h"
 #include <cassert>
 
 namespace base {
@@ -27,4 +28,22 @@ void World::Apply(unsigned worker_index, const Action& action) {
     w(action);
   }
 }
+
+void World::Apply(const Solution& solution) {
+  unsigned max_workers = solution.actions.size();
+  std::vector<unsigned> vindex(max_workers, 0);
+  for (bool last = false; !last;) {
+    ++time;
+    last = true;
+    unsigned l = workers.size();
+    for (unsigned i = 0; i < l; ++i) {
+      if (vindex[i] < solution.actions[i].size()) {
+        Apply(i, solution.actions[i][vindex[i]++]);
+        last = false;
+      }
+    }
+  }
+}
+
+bool World::Solved() const { return map.Wrapped(); }
 }  // namespace base
