@@ -4,6 +4,7 @@
 #include "base/point.h"
 #include "base/solution.h"
 #include "common/assert_exception.h"
+#include "common/string/split.h"
 #include <string>
 
 namespace base {
@@ -81,12 +82,11 @@ ActionsList DecodeActionList(const std::string& s) {
   return al;
 }
 
-// Solution DecodeSolution(const std::string& s) {
-//   Solution output;
-//   for (const std::string& ss : Split(s, '#')) {
-//     output.actions.push_back(DecodeActionList(ss));
-//   }
-//   return output;
-// }
-
+Solution DecodeSolution(const std::string& s) {
+  Solution output;
+  for (const std::string& ss : Split(s, '#')) {
+    output.actions.push_back(DecodeActionList(ss));
+  }
+  return output;
+}
 }  // namespace base
