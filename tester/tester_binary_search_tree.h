@@ -1,10 +1,10 @@
 #pragma once
 
+#include "common/assert_exception.h"
 #include "common/base.h"
 #include "common/hash.h"
 #include "common/timer.h"
 
-#include "tester/assert.h"
 #include "tester/binary_search_tree_action.h"
 #include "tester/binary_search_tree_info.h"
 

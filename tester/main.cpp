@@ -1,7 +1,7 @@
 #include "common/base.h"
 
-#include "tester/assert.h"
 #include "tester/testers.h"
+#include "common/assert_exception.h"
 
 #include <iostream>
 
