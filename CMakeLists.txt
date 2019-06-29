@@ -1,7 +1,7 @@
-cmake_minimum_required( VERSION 3.9 )
+cmake_minimum_required( VERSION 3.5 )
 project( competitions )
 string( TOLOWER ${CMAKE_BUILD_TYPE} BUILD_TYPE_LOWERCASE )
-set( CMAKE_CXX_STANDARD 17 )
+set( CMAKE_CXX_STANDARD 14 )
 set( CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_HOME_DIRECTORY}/${BUILD_TYPE_LOWERCASE}/build" )
 include_directories( PRIVATE "${PROJECT_SOURCE_DIR}" )
 
