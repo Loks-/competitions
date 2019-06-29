@@ -3,24 +3,30 @@
 #include "common/solvers/base.h"
 #include "common/solvers/psolver.h"
 #include <cassert>
-#include <filesystem>
 #include <string>
+#include <sys/stat.h>
 #include <vector>
 
 namespace solvers {
 class Merger {
  protected:
-  std::filesystem::path dir_main, dir_sub;
+  std::string dir_main, dir_sub;
   std::vector<PSolver> vsolvers;
+
+ protected:
+  static void MakeDir(const std::string& dir) { mkdir(dir.c_str(), S_IRWXU); }
 
  public:
   Merger(const std::string& main_dir, const std::string& sub_dir)
-      : dir_main(main_dir), dir_sub(dir_main / sub_dir) {}
+      : dir_main(main_dir), dir_sub(dir_main + "/" + sub_dir) {
+    MakeDir(dir_main);
+    MakeDir(dir_sub);
+  }
 
   void Add(PSolver& s) {
-    bool b = create_directories((s->UseSubDirectory() ? dir_sub : dir_main) /
-                                s->Name());
-    assert(b);
+    std::string dir_solutions =
+        (s->UseSubDirectory() ? dir_sub : dir_main) + "/" + s->Name();
+    MakeDir(dir_solutions);
     vsolvers.push_back(s->Clone());
   }
 
