@@ -49,6 +49,7 @@
         "algorithm": "cpp",
         "string": "cpp",
         "cstdarg": "cpp",
-        "cassert": "cpp"
+        "cassert": "cpp",
+        "filesystem": "cpp"
     }
 }
