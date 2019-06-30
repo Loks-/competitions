@@ -126,7 +126,8 @@ bool Map::Obstacle(const Point& p) const {
 }
 
 void Map::Wrap(const Point& p) {
-  if (Inside(p)) map[Index(p)] |= WRAPPED;
+  assert(Inside(p));
+  map[Index(p)] |= WRAPPED;
 }
 
 void Map::Drill(const Point& p) {
@@ -153,6 +154,6 @@ bool Map::Wrapped() const {
   for (unsigned x : map) {
     if ((x & (OBSTACLE | WRAPPED)) == 0) return false;
   }
-  return false;
+  return true;
 }
 }  // namespace base
