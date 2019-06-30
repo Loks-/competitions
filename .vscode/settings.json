@@ -50,6 +50,8 @@
         "string": "cpp",
         "cstdarg": "cpp",
         "cassert": "cpp",
-        "filesystem": "cpp"
+        "filesystem": "cpp",
+        "codecvt": "cpp",
+        "memory": "cpp"
     }
 }

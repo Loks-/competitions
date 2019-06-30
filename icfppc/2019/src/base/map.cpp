@@ -67,7 +67,7 @@ void Map::AddBooster(const Point& p, BoosterType type) {
 void Map::Init(const std::string& problem) {
   auto vs = Split(problem, '#');
   Assert(vs.size() == 4);
-  InitMap(vs[0] + ";" + vs[2]);
+  InitMap(vs[2].empty() ? vs[0] : vs[0] + ";" + vs[2]);
   boosters.clear();
   beacons.clear();
   codex.clear();

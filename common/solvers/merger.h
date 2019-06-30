@@ -16,7 +16,7 @@ class Merger {
   std::string dir_main, dir_sub, dir_best;
   std::vector<PSolver> vsolvers;
 
- protected:
+ public:
   static void MakeDir(const std::string& dir) { mkdir(dir.c_str(), S_IRWXU); }
 
   static std::string Read(const std::string& dir,
@@ -47,11 +47,11 @@ class Merger {
     MakeDir(dir_best);
   }
 
-  void Add(PSolver& s) {
+  void Add(Base& s) {
     std::string dir_solutions =
-        (s->UseSubDirectory() ? dir_sub : dir_main) + "/" + s->Name();
+        (s.UseSubDirectory() ? dir_sub : dir_main) + "/" + s.Name();
     MakeDir(dir_solutions);
-    vsolvers.push_back(s->Clone());
+    vsolvers.push_back(s.Clone());
   }
 
   template <class TEvaluator>
@@ -74,7 +74,7 @@ class Merger {
         if (!psolver->SkipCacheWrite())
           Write(solver_dir, solution_filename, solution);
       }
-      auto solver_result = evaluator(solution);
+      auto solver_result = evaluator(problem, solution);
       if (!psolver->SkipBest() &&
           evaluator.Compare(solver_result, best_results)) {
         best_results = solver_result;
