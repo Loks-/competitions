@@ -51,7 +51,7 @@ void Map::InitMap(const std::string& desc) {
     vy.push_back(ysize);
     int y = 0;
     for (unsigned i = 0; i < vy.size(); i += 2) {
-      for (; y < vy[i]; ++y) map[x * ysize + y] |= WRAPPED;
+      for (; y < vy[i]; ++y) map[x * ysize + y] |= OBSTACLE;
       y = vy[i + 1];
     }
   }
