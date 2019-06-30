@@ -18,7 +18,7 @@ void Map::InitMap(const std::string& desc) {
   std::vector<std::vector<int>> vvy;
   for (const std::string& scontour : Split(desc, ';')) {
     v.clear();
-    auto vst = Split(desc, ',');
+    auto vst = Split(scontour, ',');
     Assert((vst.size() % 2) == 0);
     std::vector<std::string> vs;
     for (unsigned i = 0; i < vst.size(); i += 2)
