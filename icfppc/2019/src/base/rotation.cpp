@@ -36,7 +36,7 @@ void Rotation::Set(ActionType _type) {
 }
 
 Point Rotation::operator()(const Point& p) const {
-  return (type == RotationType::CLOCKWISE) ? Point{-p.y, p.x}
-                                           : Point{p.y, -p.x};
+  return (type == RotationType::CLOCKWISE) ? Point{p.y, -p.x}
+                                           : Point{-p.y, p.x};
 }
 }  // namespace base
