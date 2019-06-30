@@ -9,15 +9,15 @@
             "type": "cppdbg",
             "request": "launch",
             // "program": "${workspaceFolder}/debug/build/google_code_jam",
-            "program": "${workspaceFolder}/debug/build/tester",
+            "program": "${workspaceFolder}/debug/build/icfppc_2019",
             "args": [
                 // "heap"
-                "minimum_spanning_tree"
+                // "minimum_spanning_tree"
                 // "p3",
                 // "tests/google/code_jam/2019/r2/p3.in"
             ],
             "stopAtEntry": false,
-            "cwd": "${workspaceFolder}",
+            "cwd": "${workspaceFolder}/debug/",
             "environment": [],
             "externalConsole": true,
             "MIMode": "gdb",
