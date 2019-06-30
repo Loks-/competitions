@@ -1,6 +1,7 @@
 #pragma once
 
 #include "common/base.h"
+#include <ostream>
 #include <string>
 
 namespace solvers {
@@ -23,3 +24,8 @@ class Evaluator {
   }
 };
 }  // namespace solvers
+
+std::ostream& operator<<(std::ostream& os,
+                         const solvers::Evaluator::Result& r) {
+  return os << (r.correct ? r.score : 0);
+}

@@ -2,6 +2,7 @@
 
 #include "common/solvers/base.h"
 #include "common/solvers/psolver.h"
+#include "common/timer.h"
 #include <cassert>
 #include <fstream>
 #include <iostream>
@@ -53,16 +54,14 @@ class Merger {
     vsolvers.push_back(s->Clone());
   }
 
-  // TODO:
-  //   1. Add timer
-  //   2. Add log
-  //   2.1 Different logs options?
   template <class TEvaluator>
   void Solve(const std::string& problem, const std::string& solution_filename,
              const TEvaluator& evaluator) {
+    Timer tproblem;
     auto best_results = evaluator(problem, Read(dir_best, solution_filename));
     std::string new_best_solution;
     for (PSolver psolver : vsolvers) {
+      Timer tsolver;
       std::string solver_dir =
           (psolver->UseSubDirectory() ? dir_sub : dir_main) + "/" +
           psolver->Name();
@@ -81,10 +80,15 @@ class Merger {
         best_results = solver_result;
         new_best_solution = solution;
       }
+      std::cout << solution_filename << "\t" << psolver->Name() << "\t"
+                << tsolver.GetMilliseconds() << "\t" << solver_result
+                << std::endl;
     }
     if (!new_best_solution.empty()) {
       Write(dir_best, solution_filename, new_best_solution);
     }
+    std::cout << solution_filename << "\ttotal\t" << tproblem.GetMilliseconds()
+              << "\t" << best_results << std::endl;
   }
 };
 }  // namespace solvers
