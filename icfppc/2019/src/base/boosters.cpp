@@ -6,7 +6,9 @@
 #include <cassert>
 
 namespace base {
-Boosters::Boosters() { std::fill(count.begin(), count.end(), 0); }
+Boosters::Boosters() { Clear(); }
+
+void Boosters::Clear() { std::fill(count.begin(), count.end(), 0); }
 
 bool Boosters::Available(BoosterType type) const {
   assert(type < BoosterType::END);

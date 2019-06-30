@@ -2,12 +2,29 @@
 
 #include "base/action.h"
 #include "base/action_type.h"
+#include "base/boosters.h"
+#include "base/decode.h"
 #include "base/map.h"
+#include "base/point.h"
 #include "base/solution.h"
 #include "common/assert_exception.h"
+#include "common/string/split.h"
 #include <cassert>
 
 namespace base {
+void World::Init(const std::string& problem) {
+  boosters.Clear();
+  map.Init(problem);
+  time = 0;
+  workers.clear();
+
+  auto vs = Split(problem, '#');
+  Assert(vs.size() == 4);
+  Point pworker = DecodePoint(vs[1]);
+  workers.push_back(Worker(DecodePoint(vs[1]), *this));
+  workers[0].Wrap();
+}
+
 Boosters& World::GetBoosters() { return boosters; }
 
 Map& World::GetMap() { return map; }

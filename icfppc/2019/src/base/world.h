@@ -3,6 +3,7 @@
 #include "base/boosters.h"
 #include "base/map.h"
 #include "base/worker.h"
+#include <string>
 #include <vector>
 
 namespace base {
@@ -17,6 +18,8 @@ class World {
   std::vector<Worker> workers;
 
  public:
+  void Init(const std::string& problem);
+
   Boosters& GetBoosters();
   Map& GetMap();
   int GetTime() const;

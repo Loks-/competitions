@@ -3,6 +3,7 @@
 #include "base/booster_type.h"
 #include "base/point.h"
 #include <cstdint>
+#include <string>
 #include <unordered_map>
 #include <unordered_set>
 #include <vector>
@@ -21,7 +22,13 @@ class Map {
   std::unordered_set<unsigned> beacons;
   std::unordered_set<unsigned> codex;
 
+ protected:
+  void InitMap(const std::string& desc);
+  void AddBooster(const Point& p, BoosterType type);
+
  public:
+  void Init(const std::string& problem);
+
   unsigned Index(const Point& p) const;
   Point GetPoint(unsigned index) const;
 

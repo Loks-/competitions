@@ -11,6 +11,7 @@ class Boosters {
  public:
   Boosters();
 
+  void Clear();
   bool Available(BoosterType type) const;
   unsigned Count(BoosterType type) const;
   void Add(BoosterType type);
