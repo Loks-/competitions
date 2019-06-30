@@ -15,8 +15,6 @@ int main() {
     std::string problem_filename = short_name + ".desc";
     std::string problem = merger.Read(problem_dir, problem_filename);
     std::string solution_filename = short_name + ".sol";
-    std::cout << problem_filename << std::endl;
-    // merger.Write(problem_dir, "temp.sol", "temp");
     merger.Solve(problem, solution_filename, evaluator);
   }
   return 0;
