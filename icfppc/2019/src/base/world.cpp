@@ -60,6 +60,7 @@ void World::Apply(const Solution& solution) {
       }
     }
   }
+  --time;  // Last iteration was empty.
 }
 
 bool World::Solved() const { return map.Wrapped(); }
