@@ -10,7 +10,8 @@ class Base {
   virtual ~Base() {}
 
   virtual PSolver Clone() const { return 0; }
-  virtual bool SkipCache() const { return false; }
+  virtual bool SkipCacheRead() const { return false; }
+  virtual bool SkipCacheWrite() const { return false; }
   virtual bool SkipBest() const { return false; }
   virtual bool UseSubDirectory() const { return true; }
 
