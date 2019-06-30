@@ -45,7 +45,10 @@ void Manipulator::Wrap(const Point& pworker, Map& map) const {
       break;
     }
   }
-  if (visible) map.Wrap(p);
+  if (visible) {
+    Point pf({pworker.x + p.x, pworker.y + p.y});
+    map.Wrap(pf);
+  }
 }
 
 bool Manipulator::operator==(const Point& _p) const { return p == _p; }
