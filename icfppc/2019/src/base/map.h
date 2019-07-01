@@ -1,12 +1,9 @@
 #pragma once
 
-#include "base/booster_type.h"
 #include "base/map_core.h"
 #include "base/point.h"
 #include <cstdint>
 #include <string>
-#include <unordered_map>
-#include <unordered_set>
 #include <vector>
 
 namespace base {
@@ -17,26 +14,16 @@ class Map : public MapCore {
 
  protected:
   std::vector<uint8_t> map;
-  std::unordered_map<unsigned, BoosterType> boosters;
-  std::unordered_set<unsigned> beacons;
-  std::unordered_set<unsigned> codex;
 
  protected:
   void InitMap(const std::string& desc);
-  void AddBooster(const Point& p, BoosterType type);
 
  public:
   void Init(const std::string& problem);
 
-  BoosterType PickupItem(const Point& p);
-
   bool Obstacle(const Point& p) const;
   void Wrap(const Point& p);
   void Drill(const Point& p);
-
-  void AddBeacon(const Point& p);
-  bool CheckBeacon(const Point& p) const;
-  bool CheckCodeX(const Point& p) const;
 
   bool Wrapped() const;
 };

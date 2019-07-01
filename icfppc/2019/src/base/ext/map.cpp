@@ -1,5 +1,7 @@
 #include "base/ext/map.h"
 
+#include "base/action.h"
+#include "base/action_type.h"
 #include "base/booster_type.h"
 #include "base/decode.h"
 #include "base/direction.h"
@@ -66,13 +68,6 @@ void Map::InitMap(const std::string& desc) {
   }
 }
 
-void Map::AddBooster(const Point& p, BoosterType type) {
-  Assert(Inside(p));
-  unsigned index = Index(p);
-  Assert(boosters.find(index) == boosters.end());
-  boosters[index] = type;
-}
-
 void Map::InitGraph() {
   unsigned size = Size();
   gmove.Clear();
@@ -126,15 +121,6 @@ void Map::Init(const std::string& problem) {
   }
 }
 
-BoosterType Map::PickupItem(const Point& p) {
-  assert(Inside(p));
-  auto it = boosters.find(Index(p));
-  if (it == boosters.end()) return BoosterType::NONE;
-  auto type = it->second;
-  boosters.erase(it);
-  return type;
-}
-
 bool Map::Obstacle(const Point& p) const {
   return !Inside(p) || obstacles[Index(p)];
 }
@@ -149,21 +135,23 @@ void Map::Drill(const Point& p) {
   obstacles[Index(p)] = false;
 }
 
-void Map::AddBeacon(const Point& p) {
-  assert(Inside(p));
-  beacons.insert(Index(p));
-}
-
-bool Map::CheckBeacon(const Point& p) const {
-  assert(Inside(p));
-  return beacons.find(Index(p)) != beacons.end();
-}
-
-bool Map::CheckCodeX(const Point& p) const {
-  assert(Inside(p));
-  return codex.find(Index(p)) != codex.end();
-}
-
 bool Map::Wrapped() const { return unwrapped.Empty(); }
+
+Action Map::Move(unsigned from, unsigned to) const {
+  return Move(GetPoint(from), GetPoint(to));
+}
+
+Action Map::Move(const Point& from, const Point& to) const {
+  if (to.x == from.x) {
+    if (to.y == from.y + 1) return ActionType::MOVE_UP;
+    if (to.y == from.y) return ActionType::DO_NOTHING;
+    if (to.y == from.y - 1) return ActionType::MOVE_DOWN;
+  } else if (to.y == from.y) {
+    if (to.x == from.x + 1) return ActionType::MOVE_RIGHT;
+    if (to.x == from.x - 1) return ActionType::MOVE_LEFT;
+  }
+  assert(CheckBeacon(to));
+  return Action(ActionType::SHIFT, to.x, to.y);
+}
 }  // namespace ext
 }  // namespace base

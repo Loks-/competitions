@@ -57,13 +57,6 @@ void Map::InitMap(const std::string& desc) {
   }
 }
 
-void Map::AddBooster(const Point& p, BoosterType type) {
-  Assert(Inside(p));
-  unsigned index = Index(p);
-  Assert(boosters.find(index) == boosters.end());
-  boosters[index] = type;
-}
-
 void Map::Init(const std::string& problem) {
   auto vs = Split(problem, '#');
   Assert(vs.size() == 4);
@@ -99,15 +92,6 @@ void Map::Init(const std::string& problem) {
   }
 }
 
-BoosterType Map::PickupItem(const Point& p) {
-  assert(Inside(p));
-  auto it = boosters.find(Index(p));
-  if (it == boosters.end()) return BoosterType::NONE;
-  auto type = it->second;
-  boosters.erase(it);
-  return type;
-}
-
 bool Map::Obstacle(const Point& p) const {
   return !Inside(p) || (map[Index(p)] & OBSTACLE);
 }
@@ -120,21 +104,6 @@ void Map::Wrap(const Point& p) {
 void Map::Drill(const Point& p) {
   assert(Inside(p));
   map[Index(p)] &= ~OBSTACLE;
-}
-
-void Map::AddBeacon(const Point& p) {
-  assert(Inside(p));
-  beacons.insert(Index(p));
-}
-
-bool Map::CheckBeacon(const Point& p) const {
-  assert(Inside(p));
-  return beacons.find(Index(p)) != beacons.end();
-}
-
-bool Map::CheckCodeX(const Point& p) const {
-  assert(Inside(p));
-  return codex.find(Index(p)) != codex.end();
 }
 
 bool Map::Wrapped() const {
