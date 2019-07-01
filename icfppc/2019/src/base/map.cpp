@@ -42,7 +42,7 @@ void Map::InitMap(const std::string& desc) {
       }
     }
   }
-  map.resize(xsize * ysize);
+  map.resize(Size());
   for (int x = 0; x < xsize; ++x) {
     auto& vy = vvy[x];
     std::sort(vy.begin(), vy.end());
@@ -51,7 +51,7 @@ void Map::InitMap(const std::string& desc) {
     vy.push_back(ysize);
     int y = 0;
     for (unsigned i = 0; i < vy.size(); i += 2) {
-      for (; y < vy[i]; ++y) map[x * ysize + y] |= OBSTACLE;
+      for (; y < vy[i]; ++y) map[Index(x, y)] |= OBSTACLE;
       y = vy[i + 1];
     }
   }

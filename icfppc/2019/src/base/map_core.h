@@ -13,8 +13,10 @@ class MapCore {
 
  public:
   unsigned Size() const;
+  unsigned Index(int x, int y) const;
   unsigned Index(const Point& p) const;
   Point GetPoint(unsigned index) const;
+  bool Inside(int x, int y) const;
   bool Inside(const Point& p) const;
 };
 }  // namespace base
