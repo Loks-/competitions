@@ -99,15 +99,6 @@ void Map::Init(const std::string& problem) {
   }
 }
 
-unsigned Map::Index(const Point& p) const {
-  assert(Inside(p));
-  return p.x * ysize + p.y;
-}
-
-Point Map::GetPoint(unsigned index) const {
-  return {int(index) / ysize, int(index) % ysize};
-}
-
 BoosterType Map::PickupItem(const Point& p) {
   assert(Inside(p));
   auto it = boosters.find(Index(p));
@@ -115,10 +106,6 @@ BoosterType Map::PickupItem(const Point& p) {
   auto type = it->second;
   boosters.erase(it);
   return type;
-}
-
-bool Map::Inside(const Point& p) const {
-  return (0 <= p.x) && (p.x < xsize) && (0 <= p.y) && (p.y < ysize);
 }
 
 bool Map::Obstacle(const Point& p) const {
