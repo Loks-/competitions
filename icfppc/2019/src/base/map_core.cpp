@@ -9,6 +9,8 @@ void MapCore::InitSize(int _xsize, int _ysize) {
   ysize = _ysize;
 }
 
+unsigned MapCore::Size() const { return unsigned(xsize * ysize); }
+
 unsigned MapCore::Index(const Point& p) const {
   assert(Inside(p));
   return p.x * ysize + p.y;

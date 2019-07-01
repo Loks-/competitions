@@ -1,6 +1,7 @@
 #pragma once
 
 #include "base/booster_type.h"
+#include "base/map_core.h"
 #include "base/point.h"
 #include "common/unsigned_set.h"
 #include <string>
@@ -10,10 +11,8 @@
 
 namespace base {
 namespace ext {
-class Map {
+class Map : public MapCore {
  protected:
-  int xsize;
-  int ysize;
   std::vector<bool> obstacles;
   UnsignedSet unwrapped;
 
@@ -22,18 +21,15 @@ class Map {
   std::unordered_set<unsigned> codex;
 
  protected:
+  void InitSize(int _xsize, int _ysize);
   void InitMap(const std::string& desc);
   void AddBooster(const Point& p, BoosterType type);
 
  public:
   void Init(const std::string& problem);
 
-  unsigned Index(const Point& p) const;
-  Point GetPoint(unsigned index) const;
-
   BoosterType PickupItem(const Point& p);
 
-  bool Inside(const Point& p) const;
   bool Obstacle(const Point& p) const;
   void Wrap(const Point& p);
   void Drill(const Point& p);

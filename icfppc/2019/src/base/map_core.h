@@ -12,6 +12,7 @@ class MapCore {
   void InitSize(int _xsize, int _ysize);
 
  public:
+  unsigned Size() const;
   unsigned Index(const Point& p) const;
   Point GetPoint(unsigned index) const;
   bool Inside(const Point& p) const;

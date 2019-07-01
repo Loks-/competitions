@@ -48,4 +48,10 @@ class UnsignedSet {
     for (unsigned u : vlist) vset[u] = 0;
     vlist.clear();
   }
+
+  void Resize(unsigned new_size) {
+    Clear();
+    vset.resize(new_size);
+    vlist.reserve(new_size);
+  }
 };
