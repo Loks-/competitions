@@ -1,4 +1,4 @@
-#include "base/world.h"
+#include "base/world_core.h"
 
 #include "base/action.h"
 #include "base/action_type.h"
@@ -7,12 +7,14 @@
 #include "base/map.h"
 #include "base/point.h"
 #include "base/solution.h"
+#include "base/worker.h"
 #include "common/assert_exception.h"
 #include "common/string/split.h"
 #include <cassert>
 
 namespace base {
-void World::Init(const std::string& problem) {
+template <class TMap>
+void WorldCore<TMap>::Init(const std::string& problem) {
   boosters.Clear();
   map.Init(problem);
   time = 0;
@@ -25,13 +27,23 @@ void World::Init(const std::string& problem) {
   workers[0].Wrap();
 }
 
-Boosters& World::GetBoosters() { return boosters; }
+template <class TMap>
+Boosters& WorldCore<TMap>::GetBoosters() {
+  return boosters;
+}
 
-Map& World::GetMap() { return map; }
+template <class TMap>
+TMap& WorldCore<TMap>::GetMap() {
+  return map;
+}
 
-int World::GetTime() const { return time; }
+template <class TMap>
+int WorldCore<TMap>::GetTime() const {
+  return time;
+}
 
-void World::Apply(unsigned worker_index, const Action& action) {
+template <class TMap>
+void WorldCore<TMap>::Apply(unsigned worker_index, const Action& action) {
   assert(worker_index < workers.size());
   Worker& w = workers[worker_index];
   if (action.type == ActionType::CLONE) {
@@ -46,7 +58,8 @@ void World::Apply(unsigned worker_index, const Action& action) {
   }
 }
 
-void World::Apply(const Solution& solution) {
+template <class TMap>
+void WorldCore<TMap>::Apply(const Solution& solution) {
   unsigned max_workers = solution.actions.size();
   std::vector<unsigned> vindex(max_workers, 0);
   for (bool last = false; !last;) {
@@ -63,5 +76,10 @@ void World::Apply(const Solution& solution) {
   --time;  // Last iteration was empty.
 }
 
-bool World::Solved() const { return map.Wrapped(); }
+template <class TMap>
+bool WorldCore<TMap>::Solved() const {
+  return map.Wrapped();
+}
+
+template class WorldCore<Map>;
 }  // namespace base

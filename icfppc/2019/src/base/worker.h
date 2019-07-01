@@ -6,7 +6,10 @@
 #include <vector>
 
 namespace base {
-class World;
+template <class TMap>
+class WorldCore;
+class Map;
+using World = WorldCore<Map>;
 
 class Worker {
  protected:
