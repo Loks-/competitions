@@ -2,6 +2,7 @@
 
 #include "base/booster_type.h"
 #include "base/decode.h"
+#include "base/direction.h"
 #include "base/point.h"
 #include "common/assert_exception.h"
 #include "common/string/split.h"
@@ -59,7 +60,7 @@ void Map::InitMap(const std::string& desc) {
     vy.push_back(ysize);
     int y = 0;
     for (unsigned i = 0; i < vy.size(); i += 2) {
-      for (; y < vy[i]; ++y) obstacles[x * ysize + y] = true;
+      for (; y < vy[i]; ++y) obstacles[Index(x, y)] = true;
       y = vy[i + 1];
     }
   }
@@ -72,10 +73,28 @@ void Map::AddBooster(const Point& p, BoosterType type) {
   boosters[index] = type;
 }
 
+void Map::InitGraph() {
+  unsigned size = Size();
+  gmove.Clear();
+  gmove.Resize(size);
+  for (int x = 0; x < xsize; ++x) {
+    for (int y = 0; y < ysize; ++y) {
+      unsigned index = Index(x, y);
+      Point p{x, y};
+      if (Obstacle(p)) continue;
+      for (unsigned d = 0; d < 4; ++d) {
+        Point pd = Direction(d)(p);
+        if (!Obstacle(pd)) gmove.AddEdge(index, Index(pd));
+      }
+    }
+  }
+}
+
 void Map::Init(const std::string& problem) {
   auto vs = Split(problem, '#');
   Assert(vs.size() == 4);
   InitMap(vs[2].empty() ? vs[0] : vs[0] + ";" + vs[2]);
+  InitGraph();
   boosters.clear();
   beacons.clear();
   codex.clear();
