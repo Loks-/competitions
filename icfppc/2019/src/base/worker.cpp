@@ -14,19 +14,25 @@
 #include <cassert>
 
 namespace base {
-Worker::Worker(const Point& _p, World& world) : p(_p), pworld(&world) {
+template <class TWorld>
+Worker<TWorld>::Worker(const Point& _p, TWorld& world) : p(_p), pworld(&world) {
   time_fast_wheels = -1;
   time_drill = -1;
 }
 
-const Point& Worker::Location() const { return p; }
+template <class TWorld>
+const Point& Worker<TWorld>::Location() const {
+  return p;
+}
 
-void Worker::Wrap() {
+template <class TWorld>
+void Worker<TWorld>::Wrap() {
   assert(pworld);
   manipulators.Wrap(p, pworld->GetMap());
 }
 
-void Worker::PickupItem() {
+template <class TWorld>
+void Worker<TWorld>::PickupItem() {
   assert(pworld);
   auto item = pworld->GetMap().PickupItem(p);
   if (item != BoosterType::NONE) {
@@ -34,7 +40,8 @@ void Worker::PickupItem() {
   }
 }
 
-void Worker::operator()(const Action& action) {
+template <class TWorld>
+void Worker<TWorld>::operator()(const Action& action) {
   assert(pworld);
   PickupItem();
   switch (action.type) {
@@ -115,4 +122,6 @@ void Worker::operator()(const Action& action) {
       Assert(false, "Unknown action.");
   }
 }
+
+template class Worker<World>;
 }  // namespace base

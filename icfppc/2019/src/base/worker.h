@@ -6,21 +6,21 @@
 #include <vector>
 
 namespace base {
-template <class TMap>
-class WorldCore;
-class Map;
-using World = WorldCore<Map>;
-
+template <class TTWorld>
 class Worker {
+ public:
+  using TWorld = TTWorld;
+  using TMap = typename TWorld::TMap;
+
  protected:
   Point p;
-  World* pworld;
+  TWorld* pworld;
   Manipulators manipulators;
   int time_fast_wheels;
   int time_drill;
 
  public:
-  Worker(const Point& _p, World& world);
+  Worker(const Point& _p, TWorld& world);
 
   const Point& Location() const;
   void Wrap();

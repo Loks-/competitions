@@ -13,12 +13,14 @@ template <class TTMap>
 class WorldCore {
  public:
   using TMap = TTMap;
+  using TSelf = WorldCore<TMap>;
+  using TWorker = Worker<TSelf>;
 
  protected:
   Boosters boosters;
   TMap map;
   int time;
-  std::vector<Worker> workers;
+  std::vector<TWorker> workers;
 
  public:
   void Init(const std::string& problem);

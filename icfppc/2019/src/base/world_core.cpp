@@ -23,7 +23,7 @@ void WorldCore<TMap>::Init(const std::string& problem) {
   auto vs = Split(problem, '#');
   Assert(vs.size() == 4);
   Point pworker = DecodePoint(vs[1]);
-  workers.push_back(Worker(DecodePoint(vs[1]), *this));
+  workers.push_back(TWorker(DecodePoint(vs[1]), *this));
   workers[0].Wrap();
 }
 
@@ -45,12 +45,12 @@ int WorldCore<TMap>::GetTime() const {
 template <class TMap>
 void WorldCore<TMap>::Apply(unsigned worker_index, const Action& action) {
   assert(worker_index < workers.size());
-  Worker& w = workers[worker_index];
+  TWorker& w = workers[worker_index];
   if (action.type == ActionType::CLONE) {
     w.PickupItem();
     Assert(map.CheckCodeX(w.Location()),
            "Worker should be on CodeX point for Clone action.");
-    Worker wnew(w.Location(), *this);
+    TWorker wnew(w.Location(), *this);
     wnew.Wrap();
     workers.push_back(wnew);
   } else {
