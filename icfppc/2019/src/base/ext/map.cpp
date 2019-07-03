@@ -15,51 +15,19 @@
 
 namespace base {
 namespace ext {
-void Map::InitSize(int _xsize, int _ysize) {
-  MapCore::InitSize(_xsize, ysize);
+void Map::ResetSize() {
   obstacles.clear();
   unsigned size = Size();
   obstacles.resize(size);
   unwrapped.Resize(size);
 }
 
-void Map::InitMap(const std::string& desc) {
-  int xs = 0, ys = 0;
-  std::vector<Point> v;
+void Map::InitMap(const std::string& map_encoded) {
   std::vector<std::vector<int>> vvy;
-  for (const std::string& scontour : Split(desc, ';')) {
-    v.clear();
-    auto vst = Split(scontour, ',');
-    Assert((vst.size() % 2) == 0);
-    std::vector<std::string> vs;
-    for (unsigned i = 0; i < vst.size(); i += 2)
-      vs.emplace_back(vst[i] + "," + vst[i + 1]);
-    for (const std::string& st : vs) {
-      Point p = DecodePoint(st);
-      xs = std::max(p.x, xs);
-      ys = std::max(p.y, ys);
-      v.emplace_back(p);
-    }
-    Assert(v.size() > 1);
-    v.push_back(v[0]);
-    if (vvy.size() < xsize) vvy.resize(xsize);
-    for (size_t i = 1; i < v.size(); ++i) {
-      if (v[i - 1].y == v[i].y) {
-        int x1 = std::min(v[i - 1].x, v[i].x);
-        int x2 = std::max(v[i - 1].x, v[i].x);
-        for (int x = x1; x < x2; ++x) vvy[x].push_back(v[i].y);
-      } else {
-        Assert(v[i - 1].x == v[i].x);
-      }
-    }
-  }
-  InitSize(xs, ys);
+  InitCore(map_encoded, vvy);
+  ResetSize();
   for (int x = 0; x < xsize; ++x) {
     auto& vy = vvy[x];
-    std::sort(vy.begin(), vy.end());
-    Assert((vy.size() % 2) == 0);
-    vy.push_back(ysize);
-    vy.push_back(ysize);
     int y = 0;
     for (unsigned i = 0; i < vy.size(); i += 2) {
       for (; y < vy[i]; ++y) obstacles[Index(x, y)] = true;

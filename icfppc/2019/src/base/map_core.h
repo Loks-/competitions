@@ -2,8 +2,10 @@
 
 #include "base/booster_type.h"
 #include "base/point.h"
+#include <string>
 #include <unordered_map>
 #include <unordered_set>
+#include <vector>
 
 namespace base {
 class MapCore {
@@ -17,6 +19,8 @@ class MapCore {
 
  protected:
   void InitSize(int _xsize, int _ysize);
+  void InitCore(const std::string& map_encoded,
+                std::vector<std::vector<int>>& output_vvy);
   void AddBooster(const Point& p, BoosterType type);
   void InitBoosters(const std::string& boosters_encoded);
 

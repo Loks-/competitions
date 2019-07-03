@@ -16,7 +16,8 @@ class Map : public MapCore {
   std::vector<uint8_t> map;
 
  protected:
-  void InitMap(const std::string& desc);
+  void ResetSize();
+  void InitMap(const std::string& map_encoded);
 
  public:
   void Init(const std::string& problem);

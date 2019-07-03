@@ -17,8 +17,8 @@ class Map : public MapCore {
   DirectedGraph gmove;
 
  protected:
-  void InitSize(int _xsize, int _ysize);
-  void InitMap(const std::string& desc);
+  void ResetSize();
+  void InitMap(const std::string& map_encoded);
   void InitGraph();
 
  public:
