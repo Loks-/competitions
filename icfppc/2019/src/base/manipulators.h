@@ -5,7 +5,6 @@
 #include <vector>
 
 namespace base {
-class Map;
 class Point;
 
 class Manipulators {
@@ -17,6 +16,8 @@ class Manipulators {
 
   void Add(const Point& p);
   void Rotate(RotationType type);
-  void Wrap(const Point& pworker, Map& map) const;
+
+  template <class TMap>
+  void Wrap(const Point& pworker, TMap& map) const;
 };
 }  // namespace base

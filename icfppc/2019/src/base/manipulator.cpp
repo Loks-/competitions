@@ -1,5 +1,6 @@
 #include "base/manipulator.h"
 
+#include "base/ext/map.h"
 #include "base/map.h"
 #include "base/point.h"
 #include "base/rotation.h"
@@ -36,7 +37,8 @@ void Manipulator::Rotate(RotationType type) {
   for (Point& pc : check_list) pc = r(pc);
 }
 
-void Manipulator::Wrap(const Point& pworker, Map& map) const {
+template <class TMap>
+void Manipulator::Wrap(const Point& pworker, TMap& map) const {
   bool visible = true;
   for (const Point& pc : check_list) {
     Point pf{pworker.x + pc.x, pworker.y + pc.y};
@@ -56,4 +58,8 @@ bool Manipulator::operator==(const Point& _p) const { return p == _p; }
 bool Manipulator::Neighbor(const Point& _p) const {
   return std::abs(p.x - _p.x) + std::abs(p.y - _p.y) == 1;
 }
+
+template void Manipulator::Wrap<Map>(const Point& pworker, Map& map) const;
+template void Manipulator::Wrap<ext::Map>(const Point& pworker,
+                                          ext::Map& map) const;
 }  // namespace base

@@ -4,6 +4,7 @@
 #include "base/action_type.h"
 #include "base/boosters.h"
 #include "base/decode.h"
+#include "base/ext/map.h"
 #include "base/map.h"
 #include "base/point.h"
 #include "base/solution.h"
@@ -82,4 +83,5 @@ bool WorldCore<TMap>::Solved() const {
 }
 
 template class WorldCore<Map>;
+template class WorldCore<ext::Map>;
 }  // namespace base

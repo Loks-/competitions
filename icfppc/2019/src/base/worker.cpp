@@ -5,6 +5,7 @@
 #include "base/booster_type.h"
 #include "base/boosters.h"
 #include "base/direction.h"
+#include "base/ext/world.h"
 #include "base/manipulator.h"
 #include "base/point.h"
 #include "base/rotation.h"
@@ -124,4 +125,5 @@ void Worker<TWorld>::operator()(const Action& action) {
 }
 
 template class Worker<World>;
+template class Worker<ext::World>;
 }  // namespace base

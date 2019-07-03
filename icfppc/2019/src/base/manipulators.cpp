@@ -30,8 +30,17 @@ void Manipulators::Rotate(RotationType type) {
   for (auto& m : v) m.Rotate(type);
 }
 
-void Manipulators::Wrap(const Point& pworker, Map& map) const {
+template <class TMap>
+void Manipulators::Wrap(const Point& pworker, TMap& map) const {
   for (auto& m : v) m.Wrap(pworker, map);
 }
 
+class Map;
+namespace ext {
+class Map;
+}  // namespace ext
+
+template void Manipulators::Wrap<Map>(const Point& pworker, Map& map) const;
+template void Manipulators::Wrap<ext::Map>(const Point& pworker,
+                                           ext::Map& map) const;
 }  // namespace base
