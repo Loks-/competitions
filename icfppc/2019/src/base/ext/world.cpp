@@ -4,6 +4,19 @@
 
 namespace base {
 namespace ext {
+World::TWorker& World::WGet() {
+  assert(WSize() == 1);
+  return GetWorker(0);
+}
+
+void World::WApply(const Action& action) {
+  assert(WSize() == 1);
+  ++time;
+  Apply(0, action);
+}
+
+unsigned World::WSize() const { return workers.size(); }
+
 World::TWorker& World::GetWorker(unsigned windex) {
   assert(windex < workers.size());
   return workers[windex];
