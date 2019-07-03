@@ -1,9 +1,12 @@
 #include "base/map_core.h"
 
 #include "base/booster_type.h"
+#include "base/decode.h"
 #include "base/point.h"
 #include "common/assert_exception.h"
+#include "common/string/split.h"
 #include <cassert>
+#include <string>
 
 namespace base {
 void MapCore::InitSize(int _xsize, int _ysize) {
@@ -16,6 +19,38 @@ void MapCore::AddBooster(const Point& p, BoosterType type) {
   unsigned index = Index(p);
   Assert(boosters.find(index) == boosters.end());
   boosters[index] = type;
+}
+
+void MapCore::InitBoosters(const std::string& boosters_encoded) {
+  boosters.clear();
+  beacons.clear();
+  codex.clear();
+  for (auto& boost_desc : Split(boosters_encoded, ';')) {
+    Assert(boost_desc.size() >= 2);
+    Point p = DecodePoint(boost_desc.substr(1));
+    switch (boost_desc[0]) {
+      case 'B':
+        AddBooster(p, BoosterType::EXTENSION);
+        break;
+      case 'F':
+        AddBooster(p, BoosterType::FAST_WHEELS);
+        break;
+      case 'L':
+        AddBooster(p, BoosterType::DRILL);
+        break;
+      case 'X':
+        codex.insert(Index(p));
+        break;
+      case 'R':
+        AddBooster(p, BoosterType::TELEPORT);
+        break;
+      case 'C':
+        AddBooster(p, BoosterType::CLONING);
+        break;
+      default:
+        Assert(false, "Unknown item the in problem description.");
+    }
+  }
 }
 
 unsigned MapCore::Size() const { return unsigned(xsize * ysize); }

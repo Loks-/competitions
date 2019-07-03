@@ -18,6 +18,7 @@ class MapCore {
  protected:
   void InitSize(int _xsize, int _ysize);
   void AddBooster(const Point& p, BoosterType type);
+  void InitBoosters(const std::string& boosters_encoded);
 
  public:
   unsigned Size() const;

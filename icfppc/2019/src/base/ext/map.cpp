@@ -90,35 +90,7 @@ void Map::Init(const std::string& problem) {
   Assert(vs.size() == 4);
   InitMap(vs[2].empty() ? vs[0] : vs[0] + ";" + vs[2]);
   InitGraph();
-  boosters.clear();
-  beacons.clear();
-  codex.clear();
-  for (auto& boost_desc : Split(vs[3], ';')) {
-    Assert(boost_desc.size() >= 2);
-    Point p = DecodePoint(boost_desc.substr(1));
-    switch (boost_desc[0]) {
-      case 'B':
-        AddBooster(p, BoosterType::EXTENSION);
-        break;
-      case 'F':
-        AddBooster(p, BoosterType::FAST_WHEELS);
-        break;
-      case 'L':
-        AddBooster(p, BoosterType::DRILL);
-        break;
-      case 'X':
-        codex.insert(Index(p));
-        break;
-      case 'R':
-        AddBooster(p, BoosterType::TELEPORT);
-        break;
-      case 'C':
-        AddBooster(p, BoosterType::CLONING);
-        break;
-      default:
-        Assert(false, "Unknown item the in problem description.");
-    }
-  }
+  InitBoosters(vs[3]);
 }
 
 bool Map::Obstacle(const Point& p) const {
