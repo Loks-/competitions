@@ -36,11 +36,11 @@ class Map {
   bool Inside(int x, int y) const;
   bool Inside(const Point& p) const;
 
-  BoosterType PickupItem(const Point& p);
   void AddBeacon(const Point& p);
   bool CheckBeacon(const Point& p) const;
   bool CheckCodeX(const Point& p) const;
 
+  void PickupItem(const Point& p);
   Boosters& GetBoosters();
 };
 }  // namespace core

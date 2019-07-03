@@ -118,15 +118,6 @@ bool Map::Inside(int x, int y) const {
 
 bool Map::Inside(const Point& p) const { return Inside(p.x, p.y); }
 
-BoosterType Map::PickupItem(const Point& p) {
-  assert(Inside(p));
-  auto it = items.find(Index(p));
-  if (it == items.end()) return BoosterType::NONE;
-  auto type = it->second;
-  items.erase(it);
-  return type;
-}
-
 void Map::AddBeacon(const Point& p) {
   assert(Inside(p));
   beacons.insert(Index(p));
@@ -140,6 +131,15 @@ bool Map::CheckBeacon(const Point& p) const {
 bool Map::CheckCodeX(const Point& p) const {
   assert(Inside(p));
   return codex.find(Index(p)) != codex.end();
+}
+
+void Map::PickupItem(const Point& p) {
+  assert(Inside(p));
+  auto it = items.find(Index(p));
+  if (it != items.end()) {
+    boosters.Add(it->second);
+    items.erase(it);
+  }
 }
 
 Boosters& Map::GetBoosters() { return boosters; }

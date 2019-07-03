@@ -32,10 +32,7 @@ void Worker<TMap>::Wrap() {
 
 template <class TMap>
 void Worker<TMap>::PickupItem() {
-  auto item = map.PickupItem(p);
-  if (item != BoosterType::NONE) {
-    map.GetBoosters().Add(item);
-  }
+  map.PickupItem(p);
 }
 
 template <class TMap>
