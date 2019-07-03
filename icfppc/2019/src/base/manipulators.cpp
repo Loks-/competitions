@@ -35,12 +35,15 @@ void Manipulators::Wrap(const Point& pworker, TMap& map) const {
   for (auto& m : v) m.Wrap(pworker, map);
 }
 
+namespace eval {
 class Map;
+}  // namespace eval
 namespace ext {
 class Map;
 }  // namespace ext
 
-template void Manipulators::Wrap<Map>(const Point& pworker, Map& map) const;
+template void Manipulators::Wrap<eval::Map>(const Point& pworker,
+                                            eval::Map& map) const;
 template void Manipulators::Wrap<ext::Map>(const Point& pworker,
                                            ext::Map& map) const;
 }  // namespace base

@@ -1,9 +1,10 @@
-#include "base/evaluator.h"
+#include "base/eval/evaluator.h"
 
 #include "base/decode.h"
-#include "base/world.h"
+#include "base/eval/world.h"
 
 namespace base {
+namespace eval {
 Evaluator::TResult Evaluator::operator()(const std::string& problem,
                                          const std::string& solution) const {
   if (solution.empty()) return {};
@@ -13,4 +14,5 @@ Evaluator::TResult Evaluator::operator()(const std::string& problem,
   world.Apply(s);
   return {world.Solved(), world.GetTime()};
 }
+}  // namespace eval
 }  // namespace base

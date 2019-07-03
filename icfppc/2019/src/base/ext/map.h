@@ -1,7 +1,7 @@
 #pragma once
 
 #include "base/action.h"
-#include "base/map_core.h"
+#include "base/core/map.h"
 #include "base/point.h"
 #include "common/graph/graph.h"
 #include "common/unsigned_set.h"
@@ -10,7 +10,7 @@
 
 namespace base {
 namespace ext {
-class Map : public MapCore {
+class Map : public core::Map {
  protected:
   std::vector<bool> obstacles;
   UnsignedSet unwrapped;
@@ -31,6 +31,9 @@ class Map : public MapCore {
 
   Action Move(unsigned from, unsigned to) const;
   Action Move(const Point& from, const Point& to) const;
+
+  const std::vector<unsigned>& GEdges(unsigned from) const;
+  const UnsignedSet& Unwrapped() const;
 };
 }  // namespace ext
 }  // namespace base

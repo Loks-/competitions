@@ -5,54 +5,49 @@
 #include "base/booster_type.h"
 #include "base/boosters.h"
 #include "base/direction.h"
-#include "base/ext/world.h"
+#include "base/eval/map.h"
+#include "base/ext/map.h"
 #include "base/manipulator.h"
 #include "base/point.h"
 #include "base/rotation.h"
-#include "base/world.h"
 #include "common/assert_exception.h"
 #include <algorithm>
-#include <cassert>
 
 namespace base {
-template <class TWorld>
-Worker<TWorld>::Worker(const Point& _p, TWorld& world) : p(_p), pworld(&world) {
+template <class TMap>
+Worker<TMap>::Worker(const Point& _p, TMap& _map) : p(_p), map(_map) {
   time_fast_wheels = -1;
   time_drill = -1;
 }
 
-template <class TWorld>
-const Point& Worker<TWorld>::Location() const {
+template <class TMap>
+const Point& Worker<TMap>::Location() const {
   return p;
 }
 
-template <class TWorld>
-void Worker<TWorld>::Wrap() {
-  assert(pworld);
-  manipulators.Wrap(p, pworld->GetMap());
+template <class TMap>
+void Worker<TMap>::Wrap() {
+  manipulators.Wrap(p, map);
 }
 
-template <class TWorld>
-void Worker<TWorld>::PickupItem() {
-  assert(pworld);
-  auto item = pworld->GetMap().PickupItem(p);
+template <class TMap>
+void Worker<TMap>::PickupItem() {
+  auto item = map.PickupItem(p);
   if (item != BoosterType::NONE) {
-    pworld->GetBoosters().Add(item);
+    map.GetBoosters().Add(item);
   }
 }
 
-template <class TWorld>
-void Worker<TWorld>::operator()(const Action& action) {
-  assert(pworld);
+template <class TMap>
+void Worker<TMap>::operator()(const Action& action, int time) {
   PickupItem();
   switch (action.type) {
     case ActionType::MOVE_UP:
     case ActionType::MOVE_DOWN:
     case ActionType::MOVE_LEFT:
     case ActionType::MOVE_RIGHT: {
-      auto& map = pworld->GetMap();
-      bool fast_wheels_enabled = time_fast_wheels > pworld->GetTime();
-      bool drill_enabled = time_drill > pworld->GetTime();
+      bool fast_wheels_enabled = time_fast_wheels > time;
+      bool drill_enabled = time_drill > time;
       Direction d(action.type);
       p = d(p);
       Assert(map.Inside(p), "Moving worker outside of map.");
@@ -87,35 +82,33 @@ void Worker<TWorld>::operator()(const Action& action) {
       Wrap();
     } break;
     case ActionType::ATTACH_MANIPULATOR:
-      Assert(pworld->GetBoosters().Available(BoosterType::EXTENSION),
-             "Booster EXTENSION not aviable for use.");
-      pworld->GetBoosters().Remove(BoosterType::EXTENSION);
+      Assert(map.GetBoosters().Available(BoosterType::EXTENSION),
+             "Booster EXTENSION not available for use.");
+      map.GetBoosters().Remove(BoosterType::EXTENSION);
       manipulators.Add(Point{action.x, action.y});
       Wrap();
       break;
     case ActionType::ATTACH_FAST_WHEELS:
-      Assert(pworld->GetBoosters().Available(BoosterType::FAST_WHEELS),
-             "Booster FAST_WHEELS not aviable for use.");
-      pworld->GetBoosters().Remove(BoosterType::FAST_WHEELS);
-      time_fast_wheels =
-          std::max(time_fast_wheels, pworld->GetTime()) + TIME_FAST_WHEELS;
+      Assert(map.GetBoosters().Available(BoosterType::FAST_WHEELS),
+             "Booster FAST_WHEELS not available for use.");
+      map.GetBoosters().Remove(BoosterType::FAST_WHEELS);
+      time_fast_wheels = std::max(time_fast_wheels, time) + TIME_FAST_WHEELS;
       break;
     case ActionType::USING_DRILL:
-      Assert(pworld->GetBoosters().Available(BoosterType::DRILL),
-             "Booster DRILL not aviable for use.");
-      pworld->GetBoosters().Remove(BoosterType::DRILL);
-      time_drill = std::max(time_drill, pworld->GetTime()) + TIME_DRILL;
+      Assert(map.GetBoosters().Available(BoosterType::DRILL),
+             "Booster DRILL not available for use.");
+      map.GetBoosters().Remove(BoosterType::DRILL);
+      time_drill = std::max(time_drill, time) + TIME_DRILL;
       break;
     case ActionType::SET_BEACON:
-      Assert(pworld->GetBoosters().Available(BoosterType::TELEPORT),
-             "Booster TELEPORT not aviable for use.");
-      pworld->GetBoosters().Remove(BoosterType::TELEPORT);
-      pworld->GetMap().AddBeacon(p);
+      Assert(map.GetBoosters().Available(BoosterType::TELEPORT),
+             "Booster TELEPORT not available for use.");
+      map.GetBoosters().Remove(BoosterType::TELEPORT);
+      map.AddBeacon(p);
       break;
     case ActionType::SHIFT: {
       Point pt{action.x, action.y};
-      Assert(pworld->GetMap().CheckBeacon(pt),
-             "Beacon is not exist on required location.");
+      Assert(map.CheckBeacon(pt), "Beacon is not exist on required location.");
       p = pt;
       Wrap();
     } break;
@@ -124,6 +117,6 @@ void Worker<TWorld>::operator()(const Action& action) {
   }
 }
 
-template class Worker<World>;
-template class Worker<ext::World>;
+template class Worker<eval::Map>;
+template class Worker<ext::Map>;
 }  // namespace base

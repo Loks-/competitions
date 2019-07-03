@@ -1,11 +1,11 @@
-#include "base/evaluator.h"
+#include "base/eval/evaluator.h"
 #include "solvers/lscm.h"
 #include "common/solvers/merger.h"
 #include <string>
 
 int main() {
   std::string path_to_root = "../icfppc/2019";
-  base::Evaluator evaluator;
+  base::eval::Evaluator evaluator;
   solvers::Merger merger(path_to_root + "/solutions", "all");
   solvers::LSCM solver_lscm;
   merger.Add(solver_lscm);

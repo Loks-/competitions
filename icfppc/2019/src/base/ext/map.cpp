@@ -2,14 +2,11 @@
 
 #include "base/action.h"
 #include "base/action_type.h"
-#include "base/booster_type.h"
-#include "base/decode.h"
 #include "base/direction.h"
 #include "base/point.h"
 #include "common/assert_exception.h"
 #include "common/string/split.h"
 #include "common/unsigned_set.h"
-#include <algorithm>
 #include <cassert>
 #include <string>
 
@@ -58,7 +55,7 @@ void Map::Init(const std::string& problem) {
   Assert(vs.size() == 4);
   InitMap(vs[2].empty() ? vs[0] : vs[0] + ";" + vs[2]);
   InitGraph();
-  InitBoosters(vs[3]);
+  InitItems(vs[3]);
 }
 
 bool Map::Obstacle(const Point& p) const {
@@ -93,5 +90,11 @@ Action Map::Move(const Point& from, const Point& to) const {
   assert(CheckBeacon(to));
   return Action(ActionType::SHIFT, to.x, to.y);
 }
+
+const std::vector<unsigned>& Map::GEdges(unsigned from) const {
+  return gmove.Edges(from);
+}
+
+const UnsignedSet& Map::Unwrapped() const { return unwrapped; }
 }  // namespace ext
 }  // namespace base

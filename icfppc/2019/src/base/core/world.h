@@ -1,6 +1,5 @@
 #pragma once
 
-#include "base/boosters.h"
 #include "base/worker.h"
 #include <string>
 #include <vector>
@@ -9,15 +8,13 @@ namespace base {
 class Action;
 class Solution;
 
-template <class TTMap>
-class WorldCore {
+namespace core {
+template <class TMap>
+class World {
  public:
-  using TMap = TTMap;
-  using TSelf = WorldCore<TMap>;
-  using TWorker = Worker<TSelf>;
+  using TWorker = Worker<TMap>;
 
  protected:
-  Boosters boosters;
   TMap map;
   int time;
   std::vector<TWorker> workers;
@@ -25,7 +22,6 @@ class WorldCore {
  public:
   void Init(const std::string& problem);
 
-  Boosters& GetBoosters();
   TMap& GetMap();
   int GetTime() const;
 
@@ -33,4 +29,5 @@ class WorldCore {
   void Apply(const Solution& solution);
   bool Solved() const;
 };
+}  // namespace core
 }  // namespace base

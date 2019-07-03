@@ -6,25 +6,21 @@
 #include <vector>
 
 namespace base {
-template <class TTWorld>
+template <class TMap>
 class Worker {
- public:
-  using TWorld = TTWorld;
-  using TMap = typename TWorld::TMap;
-
  protected:
   Point p;
-  TWorld* pworld;
+  TMap& map;
   Manipulators manipulators;
   int time_fast_wheels;
   int time_drill;
 
  public:
-  Worker(const Point& _p, TWorld& world);
+  Worker(const Point& _p, TMap& _map);
 
   const Point& Location() const;
   void Wrap();
   void PickupItem();
-  void operator()(const Action& action);
+  void operator()(const Action& action, int time);
 };
 }  // namespace base

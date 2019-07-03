@@ -1,15 +1,13 @@
-#include "base/map.h"
+#include "base/eval/map.h"
 
-#include "base/booster_type.h"
-#include "base/decode.h"
 #include "base/point.h"
 #include "common/assert_exception.h"
 #include "common/string/split.h"
-#include <algorithm>
 #include <cassert>
 #include <string>
 
 namespace base {
+namespace eval {
 void Map::ResetSize() {
   map.clear();
   map.resize(Size());
@@ -33,7 +31,7 @@ void Map::Init(const std::string& problem) {
   auto vs = Split(problem, '#');
   Assert(vs.size() == 4);
   InitMap(vs[2].empty() ? vs[0] : vs[0] + ";" + vs[2]);
-  InitBoosters(vs[3]);
+  InitItems(vs[3]);
 }
 
 bool Map::Obstacle(const Point& p) const {
@@ -56,4 +54,5 @@ bool Map::Wrapped() const {
   }
   return true;
 }
+}  // namespace eval
 }  // namespace base

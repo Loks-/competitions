@@ -1,10 +1,14 @@
 #pragma once
 
+#include "base/core/world.h"
 #include "base/ext/map.h"
-#include "base/world_core.h"
 
 namespace base {
 namespace ext {
-using World = WorldCore<Map>;
+class World : public core::World<Map> {
+ public:
+  TWorker& GetWorker(unsigned windex);
+  const TWorker& GetWorker(unsigned windex) const;
+};
 }  // namespace ext
 }  // namespace base

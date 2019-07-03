@@ -1,11 +1,10 @@
-#include "base/world_core.h"
+#include "base/core/world.h"
 
 #include "base/action.h"
 #include "base/action_type.h"
-#include "base/boosters.h"
 #include "base/decode.h"
+#include "base/eval/map.h"
 #include "base/ext/map.h"
-#include "base/map.h"
 #include "base/point.h"
 #include "base/solution.h"
 #include "base/worker.h"
@@ -14,9 +13,9 @@
 #include <cassert>
 
 namespace base {
+namespace core {
 template <class TMap>
-void WorldCore<TMap>::Init(const std::string& problem) {
-  boosters.Clear();
+void World<TMap>::Init(const std::string& problem) {
   map.Init(problem);
   time = 0;
   workers.clear();
@@ -24,43 +23,38 @@ void WorldCore<TMap>::Init(const std::string& problem) {
   auto vs = Split(problem, '#');
   Assert(vs.size() == 4);
   Point pworker = DecodePoint(vs[1]);
-  workers.push_back(TWorker(DecodePoint(vs[1]), *this));
+  workers.push_back(TWorker(DecodePoint(vs[1]), map));
   workers[0].Wrap();
 }
 
 template <class TMap>
-Boosters& WorldCore<TMap>::GetBoosters() {
-  return boosters;
-}
-
-template <class TMap>
-TMap& WorldCore<TMap>::GetMap() {
+TMap& World<TMap>::GetMap() {
   return map;
 }
 
 template <class TMap>
-int WorldCore<TMap>::GetTime() const {
+int World<TMap>::GetTime() const {
   return time;
 }
 
 template <class TMap>
-void WorldCore<TMap>::Apply(unsigned worker_index, const Action& action) {
+void World<TMap>::Apply(unsigned worker_index, const Action& action) {
   assert(worker_index < workers.size());
   TWorker& w = workers[worker_index];
   if (action.type == ActionType::CLONE) {
     w.PickupItem();
     Assert(map.CheckCodeX(w.Location()),
            "Worker should be on CodeX point for Clone action.");
-    TWorker wnew(w.Location(), *this);
+    TWorker wnew(w.Location(), map);
     wnew.Wrap();
     workers.push_back(wnew);
   } else {
-    w(action);
+    w(action, time);
   }
 }
 
 template <class TMap>
-void WorldCore<TMap>::Apply(const Solution& solution) {
+void World<TMap>::Apply(const Solution& solution) {
   unsigned max_workers = solution.actions.size();
   std::vector<unsigned> vindex(max_workers, 0);
   for (bool last = false; !last;) {
@@ -78,10 +72,11 @@ void WorldCore<TMap>::Apply(const Solution& solution) {
 }
 
 template <class TMap>
-bool WorldCore<TMap>::Solved() const {
+bool World<TMap>::Solved() const {
   return map.Wrapped();
 }
 
-template class WorldCore<Map>;
-template class WorldCore<ext::Map>;
+template class World<eval::Map>;
+template class World<ext::Map>;
+}  // namespace core
 }  // namespace base

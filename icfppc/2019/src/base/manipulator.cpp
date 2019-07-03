@@ -1,7 +1,7 @@
 #include "base/manipulator.h"
 
+#include "base/eval/map.h"
 #include "base/ext/map.h"
-#include "base/map.h"
 #include "base/point.h"
 #include "base/rotation.h"
 #include "base/rotation_type.h"
@@ -59,7 +59,8 @@ bool Manipulator::Neighbor(const Point& _p) const {
   return std::abs(p.x - _p.x) + std::abs(p.y - _p.y) == 1;
 }
 
-template void Manipulator::Wrap<Map>(const Point& pworker, Map& map) const;
+template void Manipulator::Wrap<eval::Map>(const Point& pworker,
+                                           eval::Map& map) const;
 template void Manipulator::Wrap<ext::Map>(const Point& pworker,
                                           ext::Map& map) const;
 }  // namespace base

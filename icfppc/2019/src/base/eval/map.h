@@ -1,13 +1,14 @@
 #pragma once
 
-#include "base/map_core.h"
+#include "base/core/map.h"
 #include "base/point.h"
 #include <cstdint>
 #include <string>
 #include <vector>
 
 namespace base {
-class Map : public MapCore {
+namespace eval {
+class Map : public core::Map {
  protected:
   static const uint8_t OBSTACLE = 1;
   static const uint8_t WRAPPED = 2;
@@ -28,4 +29,5 @@ class Map : public MapCore {
 
   bool Wrapped() const;
 };
+}  // namespace eval
 }  // namespace base

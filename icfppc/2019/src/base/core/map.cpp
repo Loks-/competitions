@@ -1,6 +1,7 @@
-#include "base/map_core.h"
+#include "base/core/map.h"
 
 #include "base/booster_type.h"
+#include "base/boosters.h"
 #include "base/decode.h"
 #include "base/point.h"
 #include "common/assert_exception.h"
@@ -11,13 +12,14 @@
 #include <vector>
 
 namespace base {
-void MapCore::InitSize(int _xsize, int _ysize) {
+namespace core {
+void Map::InitSize(int _xsize, int _ysize) {
   xsize = _xsize;
   ysize = _ysize;
 }
 
-void MapCore::InitCore(const std::string& map_encoded,
-                       std::vector<std::vector<int>>& output_vvy) {
+void Map::InitCore(const std::string& map_encoded,
+                   std::vector<std::vector<int>>& output_vvy) {
   output_vvy.clear();
   int xs = 0, ys = 0;
   std::vector<Point> v;
@@ -57,38 +59,39 @@ void MapCore::InitCore(const std::string& map_encoded,
   }
 }
 
-void MapCore::AddBooster(const Point& p, BoosterType type) {
+void Map::AddItem(const Point& p, BoosterType type) {
   Assert(Inside(p));
   unsigned index = Index(p);
-  Assert(boosters.find(index) == boosters.end());
-  boosters[index] = type;
+  Assert(items.find(index) == items.end());
+  items[index] = type;
 }
 
-void MapCore::InitBoosters(const std::string& boosters_encoded) {
-  boosters.clear();
+void Map::InitItems(const std::string& boosters_encoded) {
+  items.clear();
   beacons.clear();
   codex.clear();
+  boosters.Clear();
   for (auto& boost_desc : Split(boosters_encoded, ';')) {
     Assert(boost_desc.size() >= 2);
     Point p = DecodePoint(boost_desc.substr(1));
     switch (boost_desc[0]) {
       case 'B':
-        AddBooster(p, BoosterType::EXTENSION);
+        AddItem(p, BoosterType::EXTENSION);
         break;
       case 'F':
-        AddBooster(p, BoosterType::FAST_WHEELS);
+        AddItem(p, BoosterType::FAST_WHEELS);
         break;
       case 'L':
-        AddBooster(p, BoosterType::DRILL);
+        AddItem(p, BoosterType::DRILL);
         break;
       case 'X':
         codex.insert(Index(p));
         break;
       case 'R':
-        AddBooster(p, BoosterType::TELEPORT);
+        AddItem(p, BoosterType::TELEPORT);
         break;
       case 'C':
-        AddBooster(p, BoosterType::CLONING);
+        AddItem(p, BoosterType::CLONING);
         break;
       default:
         Assert(false, "Unknown item the in problem description.");
@@ -96,46 +99,49 @@ void MapCore::InitBoosters(const std::string& boosters_encoded) {
   }
 }
 
-unsigned MapCore::Size() const { return unsigned(xsize * ysize); }
+unsigned Map::Size() const { return unsigned(xsize * ysize); }
 
-unsigned MapCore::Index(int x, int y) const {
+unsigned Map::Index(int x, int y) const {
   assert(Inside(x, y));
   return x * ysize + y;
 }
 
-unsigned MapCore::Index(const Point& p) const { return Index(p.x, p.y); }
+unsigned Map::Index(const Point& p) const { return Index(p.x, p.y); }
 
-Point MapCore::GetPoint(unsigned index) const {
+Point Map::GetPoint(unsigned index) const {
   return {int(index) / ysize, int(index) % ysize};
 }
 
-bool MapCore::Inside(int x, int y) const {
+bool Map::Inside(int x, int y) const {
   return (0 <= x) && (x < xsize) && (0 <= y) && (y < ysize);
 }
 
-bool MapCore::Inside(const Point& p) const { return Inside(p.x, p.y); }
+bool Map::Inside(const Point& p) const { return Inside(p.x, p.y); }
 
-BoosterType MapCore::PickupItem(const Point& p) {
+BoosterType Map::PickupItem(const Point& p) {
   assert(Inside(p));
-  auto it = boosters.find(Index(p));
-  if (it == boosters.end()) return BoosterType::NONE;
+  auto it = items.find(Index(p));
+  if (it == items.end()) return BoosterType::NONE;
   auto type = it->second;
-  boosters.erase(it);
+  items.erase(it);
   return type;
 }
 
-void MapCore::AddBeacon(const Point& p) {
+void Map::AddBeacon(const Point& p) {
   assert(Inside(p));
   beacons.insert(Index(p));
 }
 
-bool MapCore::CheckBeacon(const Point& p) const {
+bool Map::CheckBeacon(const Point& p) const {
   assert(Inside(p));
   return beacons.find(Index(p)) != beacons.end();
 }
 
-bool MapCore::CheckCodeX(const Point& p) const {
+bool Map::CheckCodeX(const Point& p) const {
   assert(Inside(p));
   return codex.find(Index(p)) != codex.end();
 }
+
+Boosters& Map::GetBoosters() { return boosters; }
+}  // namespace core
 }  // namespace base
