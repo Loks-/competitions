@@ -4,6 +4,8 @@
 #include "base/solution.h"
 #include <cassert>
 #include <ostream>
+#include <sstream>
+#include <string>
 
 namespace base {
 std::ostream& operator<<(std::ostream& os, const Action& a) {
@@ -49,5 +51,23 @@ std::ostream& operator<<(std::ostream& os, const Solution& s) {
   os << s.actions[0];
   for (unsigned i = 1; i < s.actions.size(); ++i) os << "#" << s.actions[i];
   return os;
+}
+
+std::string Encode(const Action& a) {
+  std::ostringstream ss;
+  ss << a;
+  return ss.str();
+}
+
+std::string Encode(const ActionsList& a) {
+  std::ostringstream ss;
+  ss << a;
+  return ss.str();
+}
+
+std::string Encode(const Solution& a) {
+  std::ostringstream ss;
+  ss << a;
+  return ss.str();
 }
 }  // namespace base

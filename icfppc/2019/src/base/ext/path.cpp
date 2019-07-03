@@ -13,7 +13,7 @@ Action Path::PathToTarget(const Map& m, unsigned from, TTarget target) {
   // (current, first_move)
   thread_local std::queue<std::pair<unsigned, unsigned>> q;
   for (; !q.empty();) q.pop();
-  thread_local UnsignedSet s(0);
+  thread_local UnsignedSet s;
   if (s.Size() < m.Size()) s.Resize(m.Size());
   s.Clear();
 

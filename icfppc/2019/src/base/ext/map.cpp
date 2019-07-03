@@ -31,6 +31,9 @@ void Map::InitMap(const std::string& map_encoded) {
       y = vy[i + 1];
     }
   }
+  for (unsigned i = 0; i < Size(); ++i) {
+    if (!obstacles[i]) unwrapped.Insert(i);
+  }
 }
 
 void Map::InitGraph() {

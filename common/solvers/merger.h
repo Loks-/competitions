@@ -80,15 +80,18 @@ class Merger {
         best_results = solver_result;
         new_best_solution = solution;
       }
-      std::cout << solution_filename << "\t" << psolver->Name() << "\t"
+      std::string name_adjusted = psolver->Name();
+      if (name_adjusted.size() < 20) name_adjusted.resize(20, ' ');
+      std::cout << solution_filename << "\t" << name_adjusted << "\t"
                 << tsolver.GetMilliseconds() << "\t" << solver_result
                 << std::endl;
     }
     if (!new_best_solution.empty()) {
       Write(dir_best, solution_filename, new_best_solution);
     }
-    std::cout << solution_filename << "\ttotal\t" << tproblem.GetMilliseconds()
-              << "\t" << best_results << std::endl;
+    std::cout << solution_filename << "\ttotal               \t"
+              << tproblem.GetMilliseconds() << "\t" << best_results
+              << std::endl;
   }
 };
 }  // namespace solvers

@@ -1,8 +1,10 @@
 #include "solvers/worker/simple.h"
 
 #include "base/action.h"
+#include "base/action_type.h"
 #include "base/ext/path.h"
 #include "base/ext/world.h"
+#include <cassert>
 #include <string>
 
 namespace solvers {
@@ -21,8 +23,12 @@ base::ActionsList Simple::Solve(base::ext::World& world) {
   for (; !world.Solved();) {
     world.WGet().PickupItem();
     auto a = NextMove(world);
+    assert(a.type != base::ActionType::DO_NOTHING);
+    assert(a.type != base::ActionType::END);
     world.WApply(a);
+    al.push_back(a);
   }
+  return al;
 }
 }  // namespace worker
 }  // namespace solvers
