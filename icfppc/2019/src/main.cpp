@@ -3,6 +3,7 @@
 #include "solvers/single.h"
 #include "solvers/worker/simple.h"
 #include "common/solvers/merger.h"
+#include "common/thread_pool.h"
 #include <string>
 
 int main() {
