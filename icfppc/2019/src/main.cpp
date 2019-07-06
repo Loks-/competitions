@@ -1,12 +1,25 @@
 #include "base/eval/evaluator.h"
+#include "command_line.h"
 #include "solvers/lscm.h"
 #include "solvers/single.h"
 #include "solvers/worker/simple.h"
 #include "common/solvers/merger.h"
 #include "common/thread_pool.h"
+#include <algorithm>
 #include <string>
 
-int main() {
+void InitCommandLine() {
+  cmd.AddArg(
+      "threads",
+      std::max(1, static_cast<int>(std::thread::hardware_concurrency()) - 1));
+  cmd.AddArg("start", 1);
+  cmd.AddArg("stop", 300);
+}
+
+int main(int argc, char* argv[]) {
+  InitCommandLine();
+  cmd.Parse(argc, argv);
+
   std::string path_to_root = "../icfppc/2019";
   base::eval::Evaluator evaluator;
   solvers::worker::Simple worker_simple;
@@ -15,7 +28,7 @@ int main() {
   solvers::Single solver_single_simple(worker_simple);
   merger.Add(solver_lscm);
   merger.Add(solver_single_simple);
-  for (unsigned i = 1; i <= 300; ++i) {
+  for (unsigned i = cmd.GetInt("start"); i <= cmd.GetInt("stop"); ++i) {
     std::string short_name = "prob-" + std::to_string(i + 1000).substr(1);
     std::string problem_dir = path_to_root + "/problems/main";
     std::string problem_filename = short_name + ".desc";
