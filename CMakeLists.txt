@@ -4,6 +4,7 @@ string( TOLOWER ${CMAKE_BUILD_TYPE} BUILD_TYPE_LOWERCASE )
 set( CMAKE_CXX_STANDARD 14 )
 set( CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_HOME_DIRECTORY}/${BUILD_TYPE_LOWERCASE}/build" )
 include_directories( PRIVATE "${PROJECT_SOURCE_DIR}" )
+find_package( Threads )
 
 file( GLOB_RECURSE GOOGLE_DISTRIBUTED_CODE_JAM_SOURCES RELATIVE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/google/distributed_code_jam/*.cpp" )
 add_executable( google_distributed_code_jam ${GOOGLE_DISTRIBUTED_CODE_JAM_SOURCES} )
@@ -89,6 +90,7 @@ set_target_properties( hackerrank_c PROPERTIES COMPILE_FLAGS "-Wno-unused-result
 
 file( GLOB_RECURSE ICFPPC_2019_SOURCES RELATIVE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/icfppc/2019/*.cpp" )
 add_executable( icfppc_2019 ${ICFPPC_2019_SOURCES} )
+target_link_libraries( icfppc_2019 ${CMAKE_THREAD_LIBS_INIT} )
 target_include_directories(icfppc_2019 PRIVATE "${PROJECT_SOURCE_DIR}/icfppc/2019/src" )
 
 file( GLOB_RECURSE IPCS_SOURCES RELATIVE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/ipcs/*.cpp" )
