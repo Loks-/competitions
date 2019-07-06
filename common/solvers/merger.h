@@ -60,7 +60,8 @@ class Merger {
     Timer tproblem;
     auto best_results = evaluator(problem, Read(dir_best, solution_filename));
     std::string new_best_solution;
-    for (PSolver psolver : vsolvers) {
+    for (PSolver psolver_temp : vsolvers) {
+      PSolver psolver = psolver_temp->Clone();
       Timer tsolver;
       std::string solver_dir =
           (psolver->UseSubDirectory() ? dir_sub : dir_main) + "/" +
