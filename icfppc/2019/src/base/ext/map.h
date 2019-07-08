@@ -2,6 +2,7 @@
 
 #include "base/action.h"
 #include "base/core/map.h"
+#include "base/ext/event.h"
 #include "base/point.h"
 #include "common/graph/graph.h"
 #include "common/unsigned_set.h"
@@ -15,6 +16,7 @@ class Map : public core::Map {
   std::vector<bool> obstacles;
   UnsignedSet unwrapped;
   DirectedGraph gmove;
+  std::vector<Event> events;
 
  protected:
   void ResetSize();

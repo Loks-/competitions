@@ -3,6 +3,7 @@
 #include "base/action.h"
 #include "base/action_type.h"
 #include "base/direction.h"
+#include "base/ext/event_type.h"
 #include "base/point.h"
 #include "common/assert_exception.h"
 #include "common/string/split.h"
@@ -17,6 +18,7 @@ void Map::ResetSize() {
   unsigned size = Size();
   obstacles.resize(size);
   unwrapped.Resize(size);
+  events.clear();
 }
 
 void Map::InitMap(const std::string& map_encoded) {
@@ -67,12 +69,20 @@ bool Map::Obstacle(const Point& p) const {
 
 void Map::Wrap(const Point& p) {
   assert(Inside(p));
-  unwrapped.Remove(Index(p));
+  unsigned index = Index(p);
+  if (unwrapped.HasKey(index)) {
+    unwrapped.Remove(Index(p));
+    events.push_back({time, EventType::WRAP, index});
+  }
 }
 
 void Map::Drill(const Point& p) {
   assert(Inside(p));
-  obstacles[Index(p)] = false;
+  unsigned index = Index(p);
+  if (obstacles[index]) {
+    obstacles[Index(p)] = false;
+    events.push_back({time, EventType::DRILL, index});
+  }
 }
 
 bool Map::Wrapped() const { return unwrapped.Empty(); }
