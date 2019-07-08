@@ -12,6 +12,7 @@ namespace base {
 namespace core {
 class Map {
  protected:
+  int time;
   int xsize;
   int ysize;
 
@@ -29,6 +30,9 @@ class Map {
   void InitItems(const std::string& items_encoded);
 
  public:
+  int GetTime() const;
+  void AdjustTime(int dt);
+
   unsigned Size() const;
   unsigned Index(int x, int y) const;
   unsigned Index(const Point& p) const;

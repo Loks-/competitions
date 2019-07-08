@@ -16,7 +16,6 @@ class World {
 
  protected:
   TMap map;
-  int time;
   std::vector<TWorker> workers;
 
  public:
@@ -24,6 +23,8 @@ class World {
 
   TMap& GetMap();
   int GetTime() const;
+
+  void AdjustTime(int dt);
 
   void Apply(unsigned worker_index, const Action& action);
   void Apply(const Solution& solution);

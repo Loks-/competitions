@@ -36,7 +36,8 @@ void Worker<TMap>::PickupItem() {
 }
 
 template <class TMap>
-void Worker<TMap>::operator()(const Action& action, int time) {
+void Worker<TMap>::operator()(const Action& action) {
+  int time = map.GetTime();
   PickupItem();
   switch (action.type) {
     case ActionType::MOVE_UP:

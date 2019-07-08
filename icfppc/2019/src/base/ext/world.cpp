@@ -11,7 +11,7 @@ World::TWorker& World::WGet() {
 
 void World::WApply(const Action& action) {
   assert(WSize() == 1);
-  ++time;
+  AdjustTime(1);
   Apply(0, action);
 }
 

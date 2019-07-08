@@ -17,7 +17,6 @@ namespace core {
 template <class TMap>
 void World<TMap>::Init(const std::string& problem) {
   map.Init(problem);
-  time = 0;
   workers.clear();
 
   auto vs = Split(problem, '#');
@@ -34,7 +33,12 @@ TMap& World<TMap>::GetMap() {
 
 template <class TMap>
 int World<TMap>::GetTime() const {
-  return time;
+  return map.GetTime();
+}
+
+template <class TMap>
+void World<TMap>::AdjustTime(int dt) {
+  map.AdjustTime(dt);
 }
 
 template <class TMap>
@@ -49,7 +53,7 @@ void World<TMap>::Apply(unsigned worker_index, const Action& action) {
     wnew.Wrap();
     workers.push_back(wnew);
   } else {
-    w(action, time);
+    w(action);
   }
 }
 
@@ -58,7 +62,7 @@ void World<TMap>::Apply(const Solution& solution) {
   unsigned max_workers = solution.actions.size();
   std::vector<unsigned> vindex(max_workers, 0);
   for (bool last = false; !last;) {
-    ++time;
+    AdjustTime(1);
     last = true;
     unsigned l = workers.size();
     for (unsigned i = 0; i < l; ++i) {
@@ -68,7 +72,7 @@ void World<TMap>::Apply(const Solution& solution) {
       }
     }
   }
-  --time;  // Last iteration was empty.
+  AdjustTime(-1);  // Last iteration was empty.
 }
 
 template <class TMap>

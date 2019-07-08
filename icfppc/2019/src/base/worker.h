@@ -21,6 +21,6 @@ class Worker {
   const Point& Location() const;
   void Wrap();
   void PickupItem();
-  void operator()(const Action& action, int time);
+  void operator()(const Action& action);
 };
 }  // namespace base

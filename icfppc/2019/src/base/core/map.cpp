@@ -14,6 +14,7 @@
 namespace base {
 namespace core {
 void Map::InitSize(int _xsize, int _ysize) {
+  time = 0;
   xsize = _xsize;
   ysize = _ysize;
 }
@@ -98,6 +99,10 @@ void Map::InitItems(const std::string& boosters_encoded) {
     }
   }
 }
+
+int Map::GetTime() const { return time; }
+
+void Map::AdjustTime(int dt) { time += dt; }
 
 unsigned Map::Size() const { return unsigned(xsize * ysize); }
 
