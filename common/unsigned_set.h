@@ -19,6 +19,7 @@ class UnsignedSet {
   unsigned Size() const { return unsigned(vlist.size()); }
   unsigned HasKey(unsigned key) const { return vset[key]; }
   unsigned Last() const { return vlist.back(); }
+  const std::vector<unsigned>& List() const { return vlist; }
 
   void Insert(unsigned key) {
     if (!vset[key]) {

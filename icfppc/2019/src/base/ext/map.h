@@ -35,7 +35,11 @@ class Map : public core::Map {
   Action Move(const Point& from, const Point& to) const;
 
   const std::vector<unsigned>& GEdges(unsigned from) const;
+
+  bool Unwrapped(unsigned index) const;
   const UnsignedSet& Unwrapped() const;
+
+  const std::vector<Event>& Events() const;
 };
 }  // namespace ext
 }  // namespace base

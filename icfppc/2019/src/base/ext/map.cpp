@@ -108,6 +108,10 @@ const std::vector<unsigned>& Map::GEdges(unsigned from) const {
   return gmove.Edges(from);
 }
 
+bool Map::Unwrapped(unsigned index) const { return unwrapped.HasKey(index); }
+
 const UnsignedSet& Map::Unwrapped() const { return unwrapped; }
+
+const std::vector<Event>& Map::Events() const { return events; }
 }  // namespace ext
 }  // namespace base

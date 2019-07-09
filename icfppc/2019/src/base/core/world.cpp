@@ -32,6 +32,11 @@ TMap& World<TMap>::GetMap() {
 }
 
 template <class TMap>
+const TMap& World<TMap>::GetMap() const {
+  return map;
+}
+
+template <class TMap>
 int World<TMap>::GetTime() const {
   return map.GetTime();
 }

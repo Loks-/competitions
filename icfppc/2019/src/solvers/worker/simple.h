@@ -9,12 +9,16 @@
 namespace solvers {
 namespace worker {
 class Simple : public Base {
+ protected:
+  virtual void Init(base::ext::World& world);
+  virtual base::Action NextMove(base::ext::World& world);
+
  public:
   std::string Name() const override;
 
   static base::Action NextMove(base::ext::World& world,
                                const UnsignedSet& required);
-  virtual base::Action NextMove(base::ext::World& world);
+
   base::ActionsList Solve(base::ext::World& world) override;
 };
 }  // namespace worker

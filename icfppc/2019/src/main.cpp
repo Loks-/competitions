@@ -2,6 +2,7 @@
 #include "command_line.h"
 #include "solvers/lscm.h"
 #include "solvers/single.h"
+#include "solvers/worker/local.h"
 #include "solvers/worker/simple.h"
 #include "common/solvers/merger.h"
 #include "common/thread_pool.h"
@@ -22,12 +23,13 @@ int main(int argc, char* argv[]) {
 
   std::string path_to_root = "../icfppc/2019";
   base::eval::Evaluator evaluator;
-  solvers::worker::Simple worker_simple;
   solvers::Merger merger(path_to_root + "/solutions", "all");
   solvers::LSCM solver_lscm;
-  solvers::Single solver_single_simple(worker_simple);
+  solvers::Single<solvers::worker::Simple> solver_single_simple;
+  solvers::Single<solvers::worker::Local> solver_single_local;
   merger.Add(solver_lscm);
   merger.Add(solver_single_simple);
+  merger.Add(solver_single_local);
 
   ThreadPool p(cmd.GetInt("threads"));
   for (unsigned i = cmd.GetInt("start"); i <= cmd.GetInt("stop"); ++i) {

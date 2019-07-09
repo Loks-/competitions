@@ -22,6 +22,7 @@ class World {
   void Init(const std::string& problem);
 
   TMap& GetMap();
+  const TMap& GetMap() const;
   int GetTime() const;
 
   void AdjustTime(int dt);
