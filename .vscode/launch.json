@@ -15,6 +15,8 @@
                 // "minimum_spanning_tree"
                 // "p3",
                 // "tests/google/code_jam/2019/r2/p3.in"
+                "-threads",
+                "1"
             ],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}/debug/",
