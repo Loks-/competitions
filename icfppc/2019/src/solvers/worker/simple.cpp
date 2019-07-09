@@ -11,11 +11,16 @@ namespace solvers {
 namespace worker {
 std::string Simple::Name() const { return "simple"; }
 
-base::Action Simple::NextMove(base::ext::World& world) {
+base::Action Simple::NextMove(base::ext::World& world,
+                              const UnsignedSet& required) {
   const auto& map = world.GetMap();
   const auto& worker = world.WGet();
   return base::ext::Path::PathToTarget(map, map.Index(worker.Location()),
-                                       map.Unwrapped());
+                                       required);
+}
+
+base::Action Simple::NextMove(base::ext::World& world) {
+  return NextMove(world, world.GetMap().Unwrapped());
 }
 
 base::ActionsList Simple::Solve(base::ext::World& world) {
