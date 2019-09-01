@@ -52,7 +52,7 @@ int main_waffle_choppers() {
           }
         }
       }
-      b == b && (vRs.size() == H + 2) && (vCs.size() == V + 2);
+      b = b && (vRs.size() == H + 2) && (vCs.size() == V + 2);
       if (b) {
         unsigned tb = total / ((H + 1) * (V + 1));
         for (unsigned i = 0; i <= H; ++i) {
