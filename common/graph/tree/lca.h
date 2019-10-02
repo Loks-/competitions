@@ -106,7 +106,7 @@ class LCA {
   unsigned EnterIntoStrip(unsigned x, unsigned hz) const {
     if (vrbit[I[x]] == hz) return x;
     unsigned hw = vlbit[A[x] & (hz - 1)];
-    return parent[lead[I[x] & (~hw + 1) | hw]];
+    return parent[lead[(I[x] & (~hw + 1)) | hw]];
   }
 
  public:
