@@ -36,9 +36,10 @@ std::ostream& operator<<(std::ostream& os, const Action& a) {
       return os << "T(" << a.x << "," << a.y << ")";
     case ActionType::CLONE:
       return os << "C";
+    default:
+      assert(false);
+      return os;
   }
-  assert(false);
-  return os;
 }
 
 std::ostream& operator<<(std::ostream& os, const ActionsList& al) {

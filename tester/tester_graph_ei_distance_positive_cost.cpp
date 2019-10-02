@@ -44,7 +44,8 @@ TesterGraphEIDistancePositiveCost::TesterGraphEIDistancePositiveCost(
 
 size_t TesterGraphEIDistancePositiveCost::TestBellmanFord() const {
   Timer t;
-  size_t h = 0, max_cost = -1ull;
+  size_t h = 0;
+  uint64_t max_cost = -1ull;
   std::vector<uint64_t> v;
   for (unsigned i = 0; i < g.Size(); ++i) {
     v = graph::distance::BellmanFord(g, edge_proxy, i, max_cost);
@@ -57,7 +58,8 @@ size_t TesterGraphEIDistancePositiveCost::TestBellmanFord() const {
 
 size_t TesterGraphEIDistancePositiveCost::TestFloydWarshall() const {
   Timer t;
-  size_t h = 0, max_cost = -1ull;
+  size_t h = 0;
+  uint64_t max_cost = -1ull;
   auto vv = graph::distance::FloydWarshall(g, edge_proxy, max_cost);
   for (unsigned i = 0; i < vv.size(); ++i) {
     for (uint64_t d : vv[i]) h = hash_combine(h, d);
@@ -71,7 +73,8 @@ template <template <class TData> class THeap>
 size_t TesterGraphEIDistancePositiveCost::TestCBH(
     const std::string& name) const {
   Timer t;
-  size_t h = 0, max_cost = -1ull;
+  size_t h = 0;
+  uint64_t max_cost = -1ull;
   std::vector<uint64_t> v;
   for (unsigned i = 0; i < g.Size(); ++i) {
     v = DistanceFromSourcePositiveCost_CBH<THeap>(g, edge_proxy, i, max_cost);
@@ -86,7 +89,8 @@ template <class THeap>
 size_t TesterGraphEIDistancePositiveCost::TestKPM(
     const std::string& name) const {
   Timer t;
-  size_t h = 0, max_cost = -1ull;
+  size_t h = 0;
+  uint64_t max_cost = -1ull;
   std::vector<uint64_t> v;
   for (unsigned i = 0; i < g.Size(); ++i) {
     v = DistanceFromSourcePositiveCost_KPM<THeap>(g, edge_proxy, i, max_cost);
@@ -101,7 +105,8 @@ template <class THeap>
 size_t TesterGraphEIDistancePositiveCost::TestKVM(
     const std::string& name) const {
   Timer t;
-  size_t h = 0, max_cost = -1ull;
+  size_t h = 0;
+  uint64_t max_cost = -1ull;
   std::vector<uint64_t> v;
   for (unsigned i = 0; i < g.Size(); ++i) {
     v = DistanceFromSourcePositiveCost_KVM<THeap>(g, edge_proxy, i, max_cost);

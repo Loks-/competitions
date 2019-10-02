@@ -243,7 +243,7 @@ class Fibonacci {
     for (Node *p = head->r, *q, *pn; p != head; p = pn) {
       pn = p->r;
       d = Degree(p);
-      for (; q = VCGet(d); ++d) {
+      for (; (q = VCGet(d)); ++d) {
         if (Compare(p, q)) {
           Link(q, p);
         } else {
