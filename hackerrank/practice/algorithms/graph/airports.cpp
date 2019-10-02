@@ -42,7 +42,7 @@ int main_airports() {
     auto v = ReadVector<int64_t>(n);
     int64_t l = min(v[0], v[1]), r = max(v[0], v[1]);
     TTree tree(n);
-    cout << 0 << " " << max(d - (r - l), 0l);
+    cout << 0 << " " << max<int64_t>(d - (r - l), 0);
     TNode* head = nullptr;
     typename TNode::TInfo info;
     for (unsigned i = 2; i < n; ++i) {
@@ -57,7 +57,7 @@ int main_airports() {
       }
       info.size = 0;
       head = bst::SegmentInfoByKey<TTree>(head, r - d + 1, l + d, info);
-      int64_t lrd = max(d - (r - l), 0l);
+      int64_t lrd = max<int64_t>(d - (r - l), 0);
       if (info.size == 0) {
         cout << " " << lrd;
       } else {
