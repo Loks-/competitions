@@ -1,7 +1,7 @@
 // https://www.hackerrank.com/challenges/manasa-and-combinatorics
 
 #include "common/modular/static/binomial_coefficient_prime.h"
-#include "common/modular/static/modular_io.h"
+#include "common/modular_io.h"
 #include "common/stl/base.h"
 
 using TModular = TModular_P32<99991>;

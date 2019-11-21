@@ -10,18 +10,18 @@
 void TesterInterpolation::Init() {
   vp1.resize(n);
   vp2.resize(n);
-  vp1[0] = vp2[0] = TModular(0);
+  vp1[0] = vp2[0] = TModularD(0);
   for (unsigned i = 1; i < n; ++i) {
-    vp1[i] = vp1[i - 1] + TModular(i).PowU(power1);
-    vp2[i] = vp2[i - 1] + TModular(i).PowU(power2);
+    vp1[i] = vp1[i - 1] + TModularD(i).PowU(power1);
+    vp2[i] = vp2[i - 1] + TModularD(i).PowU(power2);
   }
 }
 
 TesterInterpolation::TesterInterpolation() { Init(); }
 
 bool TesterInterpolation::TestSumOfPowers(unsigned power,
-                                          const std::vector<TModular>& vp) {
-  ModularSumOfPowers<TModular> s;
+                                          const std::vector<TModularD>& vp) {
+  ModularSumOfPowers<TModularD> s;
   for (unsigned i = 0; i < n; ++i) {
     if (s.Sum(i, power) != vp[i]) {
       std::cout << "TestSumOfPowers failed:"
@@ -35,12 +35,12 @@ bool TesterInterpolation::TestSumOfPowers(unsigned power,
 }
 
 bool TesterInterpolation::TestBaseNewtonPolynomial(
-    unsigned power, const std::vector<TModular>& vp) {
-  std::vector<TModular> vtemp(vp.begin(), vp.begin() + power + 2);
-  polynomial::BaseNewton<TModular> p;
+    unsigned power, const std::vector<TModularD>& vp) {
+  std::vector<TModularD> vtemp(vp.begin(), vp.begin() + power + 2);
+  polynomial::BaseNewton<TModularD> p;
   p.Interpolate(vtemp);
   for (unsigned i = n - k; i < n; ++i) {
-    if (p(TModular(i)) != vp[i]) {
+    if (p(TModularD(i)) != vp[i]) {
       std::cout << "TestBaseNewtonPolynomial failed:\n"
                 << "\tpower = " << power << "\tindex = " << i << std::endl;
       return false;
@@ -50,7 +50,7 @@ bool TesterInterpolation::TestBaseNewtonPolynomial(
 }
 
 bool TesterInterpolation::TestAll(unsigned power,
-                                  const std::vector<TModular>& vp) {
+                                  const std::vector<TModularD>& vp) {
   bool b = true;
   b = TestSumOfPowers(power, vp) && b;
   b = TestBaseNewtonPolynomial(power, vp) && b;

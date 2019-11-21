@@ -1,11 +1,10 @@
 // https://www.hackerrank.com/challenges/volleyball-match
 
 #include "common/modular/static/factorial.h"
-#include "common/modular/static/modular_io.h"
+#include "common/modular_io.h"
 #include "common/stl/base.h"
 
-using TModular = Modular<>;
-using TFactorial = ModularFactorial<TModular>;
+using TFactorial = ModularFactorial<TModularD>;
 
 int main_volleyball_match() {
   TFactorial f;
@@ -17,6 +16,6 @@ int main_volleyball_match() {
   else if (n == 25)
     cout << f.BinomialCoefficient(n + m - 1, m) << endl;
   else
-    cout << f.BinomialCoefficient(48, 24) * TModular(2).PowU(n - 26) << endl;
+    cout << f.BinomialCoefficient(48, 24) * TModularD(2).PowU(n - 26) << endl;
   return 0;
 }

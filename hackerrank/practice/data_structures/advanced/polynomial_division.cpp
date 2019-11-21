@@ -1,19 +1,18 @@
 // https://www.hackerrank.com/challenges/polynomial-division
 
 #include "common/binary_indexed_tree/bit.h"
-#include "common/modular/static/modular.h"
+#include "common/modular.h"
 #include "common/stl/base.h"
 #include "common/vector/read.h"
 
-using TModular = Modular<>;
-using TBIT = BIT<TModular>;
+using TBIT = BIT<TModularD>;
 
 int main_polynomial_division() {
   unsigned n, a, b, q, c;
   cin >> n >> a >> b >> q;
-  TModular x = -TModular(b) / TModular(a);
+  TModularD x = -TModularD(b) / TModularD(a);
   if (x.Get()) {
-    vector<TModular> vx(n);
+    vector<TModularD> vx(n);
     vx[0] = 1;
     for (unsigned i = 1; i < n; ++i) vx[i] = vx[i - 1] * x;
     TBIT bit(n);
@@ -25,7 +24,7 @@ int main_polynomial_division() {
       unsigned t, l, r;
       cin >> t >> l >> r;
       if (t == 1)
-        bit.Add(l, vx[l] * TModular(r) - bit.Get(l));
+        bit.Add(l, vx[l] * TModularD(r) - bit.Get(l));
       else if (t == 2)
         cout << ((bit.Sum(l, r + 1) == 0) ? "Yes" : "No") << endl;
     }

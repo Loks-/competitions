@@ -1,10 +1,8 @@
 #include "common/binary_search_tree/info/size.h"
 #include "common/binary_search_tree/treap.h"
-#include "common/modular/static/modular_io.h"
+#include "common/modular_io.h"
 #include "common/stl/base.h"
 #include "common/vector/read.h"
-
-using TModular = Modular<>;
 
 namespace {
 class PInfo : public bst::info::Size {
@@ -13,7 +11,7 @@ class PInfo : public bst::info::Size {
   using TSelf = PInfo;
   static const bool use_data = true;
 
-  TModular s, sp, sl, sr;
+  TModularD s, sp, sl, sr;
 
   template <class TNode>
   void Update(TNode* node) {
@@ -28,7 +26,8 @@ class PInfo : public bst::info::Size {
       sp += node->l->info.sp;
       sl += node->l->info.sl;
       sr += node->l->info.sr;
-      sr += (TModular(node->height * size_l) - node->l->info.sp) * (size_r + 1);
+      sr +=
+          (TModularD(node->height * size_l) - node->l->info.sp) * (size_r + 1);
     }
     if (node->r) {
       s += node->r->info.s;
@@ -36,7 +35,8 @@ class PInfo : public bst::info::Size {
       sp += node->r->info.sp;
       sl += node->r->info.sl;
       sr += node->r->info.sr;
-      sl += (TModular(node->height * size_r) - node->r->info.sp) * (size_l + 1);
+      sl +=
+          (TModularD(node->height * size_r) - node->r->info.sp) * (size_l + 1);
     }
   }
 };

@@ -2,13 +2,12 @@
 
 #include "common/factorization/primes_list_extended/primes_powers.h"
 #include "common/linear_algebra/matrix_static_size.h"
-#include "common/modular/static/modular_io.h"
+#include "common/modular_io.h"
 #include "common/stl/base.h"
 
 #include <numeric>
 
-using TModular = Modular<>;
-using TMatrix = SquareMatrixStaticSize<TModular, 2>;
+using TMatrix = SquareMatrixStaticSize<TModularD, 2>;
 
 int main_number_of_m_coprime_arrays() {
   factorization::ple::PrimesPowers primes_list(1000000);
@@ -21,7 +20,7 @@ int main_number_of_m_coprime_arrays() {
     uint64_t N, M;
     cin >> N >> M;
     vector<unsigned> fp = primes_list.Get(M);
-    TModular r = 1;
+    TModularD r = 1;
     for (unsigned q : fp) {
       m(1, 0) = q;
       r *= m.PowU(N + 1)(0, 0);

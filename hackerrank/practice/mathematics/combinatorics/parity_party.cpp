@@ -1,7 +1,7 @@
 // https://www.hackerrank.com/challenges/parity-party
 
 #include "common/modular/static/fft.h"
-#include "common/modular/static/modular_io.h"
+#include "common/modular_io.h"
 #include "common/stl/base.h"
 
 using TModular = TModular_P32<7340033>;

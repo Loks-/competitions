@@ -1,13 +1,11 @@
 // https://www.hackerrank.com/challenges/colorful-polygon
 
-#include "common/modular/static/modular_io.h"
+#include "common/modular_io.h"
 #include "common/stl/base.h"
 #include "common/vector/read.h"
 
-using TModular = Modular<>;
-
 int main_colorful_polygon() {
-  TModular two = 2;
+  TModularD two = 2;
   unsigned n, i, j, u = -1u;
   cin >> n;
   vector<unsigned> v = ReadVector<unsigned>(n);
@@ -32,9 +30,9 @@ int main_colorful_polygon() {
     cout << two.PowU(n) - two.PowU(best_d - 1) - two.PowU(n - best_d - 1) - 1
          << endl;
   } else {
-    TModular s = 0;
+    TModularD s = 0;
     unsigned bis = best_i + n - vlast[best_i];
-    vector<TModular> vc(n), vcs(n);
+    vector<TModularD> vc(n), vcs(n);
     for (unsigned is = bis; is <= best_i + n; ++is) {
       unsigned l = is;
       fill(vc.begin(), vc.end(), 0);

@@ -4,6 +4,8 @@
 #include <istream>
 #include <ostream>
 
+namespace modular {
+namespace mstatic {
 template <uint64_t mod, bool is_prime, bool is_32bit>
 inline std::ostream& operator<<(std::ostream& s,
                                 const Modular<mod, is_prime, is_32bit>& m) {
@@ -18,3 +20,5 @@ inline std::istream& operator>>(std::istream& s,
   m.SetS(t);
   return s;
 }
+}  // namespace mstatic
+}  // namespace modular

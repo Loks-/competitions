@@ -1,8 +1,8 @@
 // https://www.hackerrank.com/challenges/gcd-mocktail
 
 #include "common/local.h"
-#include "common/modular/static/modular_io.h"
 #include "common/modular/static/sum_of_powers.h"
+#include "common/modular_io.h"
 #include "common/stl/base.h"
 
 using TModular = TModular_P32<30000001>;

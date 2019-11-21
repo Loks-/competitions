@@ -1,12 +1,10 @@
 #include "common/linear_algebra/matrix.h"
-#include "common/modular/static/modular.h"
-#include "common/modular/static/modular_io.h"
+#include "common/modular_io.h"
 #include "common/stl/base.h"
 
 #include <unordered_map>
 
-using TModular = Modular<>;
-using TMatrix = la::Matrix<TModular>;
+using TMatrix = la::Matrix<TModularD>;
 
 int main_name_preserving_network() {
   auto generate_random_graph = [](unsigned n) {

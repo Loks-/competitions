@@ -1,7 +1,7 @@
 // https://www.hackerrank.com/challenges/gcd-mocktail
 
 #include "common/local.h"
-#include "common/modular/static/modular_io.h"
+#include "common/modular_io.h"
 #include "common/polynomial/base_newton.h"
 #include "common/polynomial/utils/sum_of_powers.h"
 #include "common/stl/base.h"

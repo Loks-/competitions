@@ -1,9 +1,7 @@
 // https://www.hackerrank.com/challenges/a-chocolate-fiesta
 
-#include "common/modular/static/modular_io.h"
+#include "common/modular_io.h"
 #include "common/stl/base.h"
-
-using TModular = Modular<>;
 
 int main_a_chocolate_fiesta() {
   unsigned n, x, s = 0;
@@ -12,6 +10,6 @@ int main_a_chocolate_fiesta() {
     cin >> x;
     s += (x & 1);
   }
-  cout << TModular(2).PowU(s ? n - 1 : n) - 1 << endl;
+  cout << TModularD(2).PowU(s ? n - 1 : n) - 1 << endl;
   return 0;
 }

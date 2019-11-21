@@ -1,11 +1,10 @@
 // https://www.hackerrank.com/challenges/matrix-tracing
 
 #include "common/modular/static/factorial.h"
-#include "common/modular/static/modular_io.h"
+#include "common/modular_io.h"
 #include "common/stl/base.h"
 
-using TModular = Modular<>;
-using TFactorial = ModularFactorial<TModular, true>;
+using TFactorial = ModularFactorial<TModularD, true>;
 
 int main_matrix_tracing() {
   TFactorial f;

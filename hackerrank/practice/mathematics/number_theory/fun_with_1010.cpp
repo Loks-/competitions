@@ -2,10 +2,10 @@
 
 #include "common/modular/static/binomial_coefficient_prime.h"
 #include "common/modular/static/factorial.h"
-#include "common/modular/static/modular_io.h"
+#include "common/modular_io.h"
 #include "common/stl/base.h"
 
-using TModular = Modular<2000003>;
+using TModular = TModular_P32<2000003>;
 using TFactorial = ModularFactorial<TModular>;
 
 int main_fun_with_1010() {

@@ -1,12 +1,14 @@
 #pragma once
 
-#include "common/modular/static/modular_proxy.h"
+#include "common/modular/static/proxy.h"
 
-template <uint64_t mod = 1000000007, bool is_prime = true, bool is_32bit = true>
+namespace modular {
+namespace mstatic {
+template <uint64_t mod, bool is_prime, bool is_32bit>
 class Modular {
  public:
   using TValue = uint64_t;
-  using TBase = ModularStaticProxy<mod, is_prime, is_32bit>;
+  using TBase = Proxy<mod, is_prime, is_32bit>;
   using TArithmetic = typename TBase::TBase;
   using TSelf = Modular<mod, is_prime, is_32bit>;
 
@@ -78,8 +80,5 @@ class Modular {
   bool operator==(const TSelf& r) const { return value == r.value; }
   bool operator!=(const TSelf& r) const { return value != r.value; }
 };
-
-template <uint64_t mod>
-using TModular_P32 = Modular<mod, true, true>;
-template <uint64_t mod>
-using TModular_C32 = Modular<mod, false, true>;
+}  // namespace mstatic
+}  // namespace modular

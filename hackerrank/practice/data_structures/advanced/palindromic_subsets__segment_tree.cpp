@@ -1,7 +1,7 @@
 // https://www.hackerrank.com/challenges/palindromic-subsets
 
 #include "common/linear_algebra/vector_static_size.h"
-#include "common/modular/static/modular_io.h"
+#include "common/modular_io.h"
 #include "common/segment_tree/action/rotate_vector.h"
 #include "common/segment_tree/base/add_action_to_segment.h"
 #include "common/segment_tree/base/get_segment.h"
@@ -17,7 +17,6 @@ using TTree =
     st::SegmentTree<TVector, st::info::Sum<TVector, st::info::Segment<>>,
                     st::action::RotateVector, false>;
 using TNode = TTree::TNode;
-using TModular = Modular<>;
 
 int main_palindromic_subsets__segment_tree() {
   unsigned n, q;
@@ -44,8 +43,8 @@ int main_palindromic_subsets__segment_tree() {
           nnonzero += 1;
         }
       }
-      TModular two = 2;
-      cout << (TModular(nnonzero + 1) * two.PowU(nsum - nnonzero) - 1) << endl;
+      TModularD two = 2;
+      cout << (TModularD(nnonzero + 1) * two.PowU(nsum - nnonzero) - 1) << endl;
     }
   }
   return 0;

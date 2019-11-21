@@ -1,10 +1,8 @@
 #include "broken_memory.h"
 #include "message.h"
 
-#include "common/modular/static/modular.h"
+#include "common/modular.h"
 #include "common/stl/base.h"
-
-using TModular = Modular<>;
 
 int main_broken_memory() {
   int nodes = NumberOfNodes();
@@ -17,12 +15,12 @@ int main_broken_memory() {
     values[i] = uint64_t(GetValue(i));
   }
 
-  const TModular c = 195731;
+  const TModularD c = 195731;
   auto h = [&](int f, int l) {
-    TModular v = 0;
+    TModularD v = 0;
     for (int i = f; i < l; ++i) {
       v *= c;
-      v += TModular(values[i]);
+      v += TModularD(values[i]);
     }
     return int(v.Get());
   };

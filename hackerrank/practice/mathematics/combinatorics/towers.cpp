@@ -1,11 +1,10 @@
 // https://www.hackerrank.com/challenges/towers
 
 #include "common/linear_algebra/matrix_static_size.h"
-#include "common/modular/static/modular_io.h"
+#include "common/modular_io.h"
 #include "common/stl/base.h"
 
-using TModular = Modular<>;
-using TMatrix = SquareMatrixStaticSize<TModular, 15>;
+using TMatrix = SquareMatrixStaticSize<TModularD, 15>;
 
 int main_towers() {
   uint64_t n;

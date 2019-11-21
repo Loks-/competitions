@@ -3,10 +3,8 @@
 
 #include "common/factorization/utils/divisors.h"
 #include "common/factorization/utils/factorization_base.h"
-#include "common/modular/static/modular.h"
+#include "common/modular.h"
 #include "common/stl/base.h"
-
-using TModular = Modular<>;
 
 int main_kenneth() {
   int nodes = NumberOfNodes();
@@ -22,15 +20,15 @@ int main_kenneth() {
   for (int64_t i = first; i < last; ++i)
     vstr[i - first] = GetSignalCharacter(i);
 
-  vector<TModular> vh(ln + 1);
-  TModular one(1), mm = TModular(0x0e3779b9);
-  TModular mb = mm.PowU(first), mc = mb;
+  vector<TModularD> vh(ln + 1);
+  TModularD one(1), mm = TModularD(0x0e3779b9);
+  TModularD mb = mm.PowU(first), mc = mb;
   vh[0] = 0;
   for (int64_t i = 0; i < ln; ++i) {
-    vh[i + 1] = vh[i] + mc * TModular(vstr[i]);
+    vh[i + 1] = vh[i] + mc * TModularD(vstr[i]);
     mc *= mm;
   }
-  TModular mmsum = mm.PowU(l) - one;
+  TModularD mmsum = mm.PowU(l) - one;
   assert(mmsum.Get() != 0);
 
   if (node_id != 0) {
@@ -41,7 +39,7 @@ int main_kenneth() {
   Send((node_id + 1) % nodes);
   for (int64_t i = 1; i <= ln; ++i) vh[i] += vh[0];
 
-  TModular sum;
+  TModularD sum;
   if (node_id == 0) {
     Receive(nodes - 1);
     sum.SetS(GetInt(nodes - 1));
@@ -61,11 +59,11 @@ int main_kenneth() {
   vector<char> vok(vd.size(), 1);
   for (unsigned k = 0; k < vd.size(); ++k) {
     int64_t d = vd[k];
-    TModular mmpowd = mm.PowU(d);
-    TModular mmsumd = (mmpowd - one);
-    TModular target = sum * mmsumd / mmsum;
+    TModularD mmpowd = mm.PowU(d);
+    TModularD mmsumd = (mmpowd - one);
+    TModularD target = sum * mmsumd / mmsum;
     int64_t j = (first / d) + 1;
-    TModular mmsumjd = (mm.PowU(j * d) - one);
+    TModularD mmsumjd = (mm.PowU(j * d) - one);
     for (; j * d <= last; ++j) {
       if (vh[j * d - first] * mmsumd != target * mmsumjd) {
         vok[k] = 0;

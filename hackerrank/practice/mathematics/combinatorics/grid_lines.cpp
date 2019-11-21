@@ -1,12 +1,11 @@
 // https://www.hackerrank.com/challenges/grid-lines
 
 #include "common/modular/static/factorial.h"
-#include "common/modular/static/modular_io.h"
+#include "common/modular_io.h"
 #include "common/numeric/utils/gcd.h"
 #include "common/stl/base.h"
 
-using TModular = Modular<>;
-using TFactorial = ModularFactorial<TModular>;
+using TFactorial = ModularFactorial<TModularD>;
 
 int main_grid_lines() {
   TFactorial f;
@@ -21,7 +20,7 @@ int main_grid_lines() {
   };
 
   auto F = [&](uint64_t n, uint64_t m, uint64_t k) {
-    TModular s =
+    TModularD s =
         f.BinomialCoefficient(m, k) * n + f.BinomialCoefficient(n, k) * m;
     for (uint64_t dx = 1; dx * (k - 1) < n; ++dx) {
       for (uint64_t dy = 1; dy * (k - 1) < m; ++dy) {

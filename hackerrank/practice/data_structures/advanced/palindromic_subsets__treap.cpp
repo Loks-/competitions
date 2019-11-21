@@ -6,7 +6,7 @@
 #include "common/binary_search_tree/utils/add_action_to_segment.h"
 #include "common/binary_search_tree/utils/segment_info_by_index.h"
 #include "common/linear_algebra/vector_static_size.h"
-#include "common/modular/static/modular_io.h"
+#include "common/modular_io.h"
 #include "common/stl/base.h"
 
 #include <string>
@@ -16,7 +16,6 @@ using TTree =
     bst::Treap<false, false, TVector, bst::info::Sum<TVector, bst::info::Size>,
                bst::action::RotateVector>;
 using TNode = TTree::TNode;
-using TModular = Modular<>;
 
 int main_palindromic_subsets__treap() {
   unsigned n, q;
@@ -44,8 +43,8 @@ int main_palindromic_subsets__treap() {
           nnonzero += 1;
         }
       }
-      TModular two = 2;
-      cout << (TModular(nnonzero + 1) * two.PowU(nsum - nnonzero) - 1) << endl;
+      TModularD two = 2;
+      cout << (TModularD(nnonzero + 1) * two.PowU(nsum - nnonzero) - 1) << endl;
     }
   }
   return 0;

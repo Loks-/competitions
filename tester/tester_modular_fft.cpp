@@ -1,6 +1,6 @@
+#include "common/modular.h"
 #include "common/modular/static/factorial.h"
 #include "common/modular/static/fft.h"
-#include "common/modular/static/modular.h"
 
 #include <functional>
 #include <iostream>

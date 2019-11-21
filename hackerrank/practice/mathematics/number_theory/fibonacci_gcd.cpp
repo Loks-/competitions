@@ -1,11 +1,11 @@
 // https://www.hackerrank.com/challenges/fibonacci-gcd
 
 #include "common/modular/static/fibonacci_matrix.h"
-#include "common/modular/static/modular_io.h"
+#include "common/modular_io.h"
 #include "common/numeric/utils/gcd.h"
 #include "common/stl/base.h"
 
-using TFibonacci = ModularFibonacciMatrix<Modular<1000000007>>;
+using TFibonacci = ModularFibonacciMatrix<TModularD>;
 
 int main_fibonacci_gcd() {
   unsigned N;

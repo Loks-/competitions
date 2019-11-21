@@ -4,9 +4,9 @@
 #include "common/linear_algebra/bool/matrix.h"
 #include "common/linear_algebra/matrix.h"
 #include "common/linear_algebra/matrix_static_size.h"
-#include "common/modular/static/modular.h"
+#include "common/modular.h"
 #include "common/modular/static/modular_bool.h"
-#include "common/modular/static/modular_proxy.h"
+#include "common/modular/static/proxy.h"
 #include "common/timer.h"
 
 #include "tester/matrix_mult.h"
@@ -19,9 +19,8 @@ template <unsigned large_matrix_size, unsigned small_matrix_size,
           unsigned small_matrix_runs>
 class TesterMatrixMult {
  public:
-  using TModular = Modular<>;
-  using TModular2 = Modular<2>;
-  using TModularProxy = ModularStaticProxy<>;
+  using TModular2 = TModular_P32<2>;
+  using TModularProxy = modular::mstatic::TProxy_P32<1000000007>;
 
  public:
   static size_t MatrixHash(const la::Matrix<uint64_t>& m,
@@ -32,9 +31,9 @@ class TesterMatrixMult {
     return h;
   }
 
-  static size_t MatrixHash(const la::Matrix<TModular>& m) {
+  static size_t MatrixHash(const la::Matrix<TModularD>& m) {
     size_t h = 0;
-    for (TModular t : m.GetData()) h = HashCombine(h, t.Get());
+    for (TModularD t : m.GetData()) h = HashCombine(h, t.Get());
     return h;
   }
 
@@ -60,9 +59,9 @@ class TesterMatrixMult {
 
   template <unsigned matrix_size>
   static size_t MatrixHash(
-      const MatrixStaticSize<TModular, matrix_size, matrix_size>& m) {
+      const MatrixStaticSize<TModularD, matrix_size, matrix_size>& m) {
     size_t h = 0;
-    for (TModular t : m.GetData()) h = HashCombine(h, t.Get());
+    for (TModularD t : m.GetData()) h = HashCombine(h, t.Get());
     return h;
   }
 
@@ -79,7 +78,7 @@ class TesterMatrixMult {
     for (uint64_t& t : m) t = TModularProxy::ApplyU(t);
   }
 
-  static void ApplyMod(la::Matrix<TModular>& m) {}
+  static void ApplyMod(la::Matrix<TModularD>& m) {}
 
   template <unsigned matrix_size>
   static void ApplyMod(
@@ -89,19 +88,19 @@ class TesterMatrixMult {
 
   template <unsigned matrix_size>
   static void ApplyMod(
-      MatrixStaticSize<TModular, matrix_size, matrix_size>& m) {}
+      MatrixStaticSize<TModularD, matrix_size, matrix_size>& m) {}
 
  protected:
   std::unordered_set<size_t> results;
   la::Matrix<uint64_t> mluA, mluB, mluC, msuA, msuB, msuC;
-  la::Matrix<TModular> mlmA, mlmB, mlmC, msmA, msmB, msmC;
+  la::Matrix<TModularD> mlmA, mlmB, mlmC, msmA, msmB, msmC;
   la::Matrix<TModular2> mlm2A, mlm2B, mlm2C;
   la::Matrix<ModularBool> mlmbA, mlmbB, mlmbC;
   la::MatrixBool mlbA, mlbB, mlbC;
   MatrixStaticSize<uint64_t, small_matrix_size, small_matrix_size> mssuA, mssuB,
       mssuC;
-  MatrixStaticSize<TModular, small_matrix_size, small_matrix_size> mssmA, mssmB,
-      mssmC;
+  MatrixStaticSize<TModularD, small_matrix_size, small_matrix_size> mssmA,
+      mssmB, mssmC;
 
  public:
   TesterMatrixMult()
@@ -132,12 +131,12 @@ class TesterMatrixMult {
     for (unsigned i = 0; i < large_matrix_size; ++i) {
       for (unsigned j = 0; j < large_matrix_size; ++j) {
         mluA(i, j) = i * large_matrix_size + j;
-        mlmA(i, j) = TModular(mluA(i, j));
+        mlmA(i, j) = TModularD(mluA(i, j));
         mlm2A(i, j) = TModular2(mluA(i, j));
         mlmbA(i, j) = ModularBool(mluA(i, j));
         mlbA.Set(i, j, mlmbA(i, j));
         mluB(i, j) = (i + 2) * large_matrix_size + j;
-        mlmB(i, j) = TModular(mluB(i, j));
+        mlmB(i, j) = TModularD(mluB(i, j));
         mlm2B(i, j) = TModular2(mluB(i, j));
         mlmbB(i, j) = ModularBool(mluB(i, j));
         mlbB.Set(i, j, mlmbB(i, j));
@@ -146,7 +145,7 @@ class TesterMatrixMult {
     for (unsigned i = 0; i < small_matrix_size; ++i) {
       for (unsigned j = 0; j < small_matrix_size; ++j) {
         mssuA(i, j) = msuA(i, j) = i * small_matrix_size + j;
-        mssmA(i, j) = msmA(i, j) = TModular(msuA(i, j));
+        mssmA(i, j) = msmA(i, j) = TModularD(msuA(i, j));
       }
     }
   }

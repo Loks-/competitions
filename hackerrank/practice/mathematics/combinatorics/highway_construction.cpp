@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/highway-construction
 
-#include "common/modular/static/modular.h"
+#include "common/modular.h"
 #include "common/modular/static/sum_of_powers.h"
 #include "common/stl/base.h"
 

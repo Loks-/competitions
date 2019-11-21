@@ -1,11 +1,9 @@
 // https://www.hackerrank.com/challenges/hyperrectangle-gcd
 
 #include "common/factorization/primes_list_extended/eulers_totient.h"
-#include "common/modular/static/modular_io.h"
+#include "common/modular_io.h"
 #include "common/stl/base.h"
 #include "common/vector/read.h"
-
-using TModular = Modular<>;
 
 int main_hyperrectangle_gcd__totient() {
   factorization::ple::EulersTotient primes_list(100000);
@@ -16,10 +14,10 @@ int main_hyperrectangle_gcd__totient() {
     cin >> K;
     vector<unsigned> vnk = ReadVector<unsigned>(K);
     unsigned n0 = *min_element(vnk.begin(), vnk.end());
-    TModular s = 0;
+    TModularD s = 0;
     for (unsigned i = 1; i <= n0; ++i) {
-      TModular t = primes_list(i);
-      for (unsigned nk : vnk) t *= TModular(nk / i);
+      TModularD t = primes_list(i);
+      for (unsigned nk : vnk) t *= TModularD(nk / i);
       s += t;
     }
     cout << s << endl;

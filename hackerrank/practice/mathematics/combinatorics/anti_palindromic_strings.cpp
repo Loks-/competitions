@@ -1,9 +1,7 @@
 // https://www.hackerrank.com/challenges/antipalindromic-strings
 
-#include "common/modular/static/modular_io.h"
+#include "common/modular_io.h"
 #include "common/stl/base.h"
-
-using TModular = Modular<>;
 
 int main_anti_palindromic_strings() {
   unsigned T, N, M;
@@ -15,7 +13,7 @@ int main_anti_palindromic_strings() {
     else if (M == 1)
       cout << 0 << endl;
     else
-      cout << TModular(M - 2).PowU(N - 2) * (M - 1) * M << endl;
+      cout << TModularD(M - 2).PowU(N - 2) * (M - 1) * M << endl;
   }
   return 0;
 }

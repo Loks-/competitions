@@ -1,11 +1,10 @@
 // https://www.hackerrank.com/challenges/merge-list
 
 #include "common/modular/static/factorial.h"
-#include "common/modular/static/modular_io.h"
+#include "common/modular_io.h"
 #include "common/stl/base.h"
 
-using TModular = Modular<>;
-using TFactorial = ModularFactorial<TModular>;
+using TFactorial = ModularFactorial<TModularD>;
 
 int main_merge_list() {
   TFactorial f;

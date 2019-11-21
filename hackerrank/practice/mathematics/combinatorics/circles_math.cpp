@@ -1,21 +1,20 @@
 // https://www.hackerrank.com/challenges/circles-math
 
 #include "common/modular/static/factorial.h"
-#include "common/modular/static/modular_io.h"
+#include "common/modular_io.h"
 #include "common/stl/base.h"
 
-using TModular = Modular<>;
-using TFactorial = ModularFactorial<TModular>;
+using TFactorial = ModularFactorial<TModularD>;
 
 int main_circles_math() {
   TFactorial f;
   unsigned maxn = 1000001;
-  vector<TModular> ve(maxn);
-  TModular sone = 1;
+  vector<TModularD> ve(maxn);
+  TModularD sone = 1;
   ve[0] = 1;
   for (unsigned i = 1; i < maxn; ++i) {
     sone = -sone;
-    ve[i] = TModular(i) * ve[i - 1] + sone;
+    ve[i] = TModularD(i) * ve[i - 1] + sone;
   }
 
   unsigned T, N, K;
@@ -26,7 +25,7 @@ int main_circles_math() {
       cout << 0 << endl;
     } else {
       sone = 1;
-      TModular s = 0, r = 1, ki = TModular(K).Inverse();
+      TModularD s = 0, r = 1, ki = TModularD(K).Inverse();
       for (unsigned l = 1; l * K <= N; ++l) {
         r *= ki;
         s +=

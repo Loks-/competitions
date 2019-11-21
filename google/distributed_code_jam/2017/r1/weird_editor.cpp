@@ -1,10 +1,8 @@
 #include "weird_editor.h"
 #include "message.h"
 
-#include "common/modular/static/modular_io.h"
+#include "common/modular_io.h"
 #include "common/stl/base.h"
-
-using TModular = Modular<>;
 
 int main_weird_editor() {
   int nodes = NumberOfNodes();
@@ -45,11 +43,11 @@ int main_weird_editor() {
   }
 
   if (node_id == 0) {
-    TModular f, one(1), nine(9), ten(10);
+    TModularD f, one(1), nine(9), ten(10);
     for (int digit = 9; digit > 0; --digit) {
       length -= vc[digit];
       f += ten.PowU(length) * (ten.PowU(vc[digit]) - one) / nine *
-           TModular(digit);
+           TModularD(digit);
     }
     cout << f << endl;
   }

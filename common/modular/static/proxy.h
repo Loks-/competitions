@@ -2,12 +2,14 @@
 
 #include "common/modular/arithmetic.h"
 
+namespace modular {
+namespace mstatic {
 template <uint64_t mod = 1000000007, bool is_prime = true, bool is_32bit = true>
-class ModularStaticProxy {
+class Proxy {
  public:
   using TValue = uint64_t;
-  using TBase = modular::Arithmetic<is_prime, is_32bit, TValue>;
-  using TSelf = ModularStaticProxy<mod, is_prime, is_32bit>;
+  using TBase = Arithmetic<is_prime, is_32bit, TValue>;
+  using TSelf = Proxy<mod, is_prime, is_32bit>;
 
  public:
   static bool IsModPrime() { return is_prime; }
@@ -78,6 +80,8 @@ class ModularStaticProxy {
 };
 
 template <uint64_t mod>
-using TModularStaticProxy_P32 = ModularStaticProxy<mod, true, true>;
+using TProxy_P32 = Proxy<mod, true, true>;
 template <uint64_t mod>
-using TModularStaticProxy_C32 = ModularStaticProxy<mod, false, true>;
+using TProxy_C32 = Proxy<mod, false, true>;
+}  // namespace mstatic
+}  // namespace modular

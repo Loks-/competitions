@@ -1,14 +1,13 @@
 // https://www.hackerrank.com/challenges/coprime-power-sum
 
-#include "common/modular/static/modular.h"
+#include "common/modular.h"
 #include "common/polynomial/base_newton.h"
 #include "common/stl/base.h"
 #include "common/vector/read.h"
 
 #include <functional>
 
-using TModular = Modular<>;
-using TPolynom = polynomial::BaseNewton<TModular>;
+using TPolynom = polynomial::BaseNewton<TModularD>;
 
 int main_coprime_power_sum() {
   unsigned T, N, K, maxn = 50, max_cache_size = 1000;
@@ -20,8 +19,8 @@ int main_coprime_power_sum() {
     sort(vs.begin(), vs.end());
     reverse(vs.begin(), vs.end());
 
-    vector<TModular> vspk;
-    for (uint64_t s : vs) vspk.push_back(TModular(s).PowU(K));
+    vector<TModularD> vspk;
+    for (uint64_t s : vs) vspk.push_back(TModularD(s).PowU(K));
 
     uint64_t tail_cache_size = 1;
     unsigned l = unsigned(vs.size());
@@ -35,25 +34,25 @@ int main_coprime_power_sum() {
         vskipped[ss] = 1;
     }
     uint64_t full_cache_size = tail_cache_size * (K + 2);
-    vector<TModular> vcache(full_cache_size);
+    vector<TModularD> vcache(full_cache_size);
     for (uint64_t i = 1; i < full_cache_size; ++i)
-      vcache[i] =
-          (vskipped[i % tail_cache_size] ? vcache[i - 1]
-                                         : vcache[i - 1] + TModular(i).PowU(K));
+      vcache[i] = (vskipped[i % tail_cache_size]
+                       ? vcache[i - 1]
+                       : vcache[i - 1] + TModularD(i).PowU(K));
     vector<TPolynom> vpoly(tail_cache_size);
-    vector<TModular> vpolytemp(K + 2);
+    vector<TModularD> vpolytemp(K + 2);
     for (uint64_t i = 0; i < tail_cache_size; ++i) {
       for (unsigned j = 0; j < K + 2; ++j)
         vpolytemp[j] = vcache[i + j * tail_cache_size];
       vpoly[i].Interpolate(vpolytemp);
     }
 
-    std::function<TModular(uint64_t, unsigned)> SolveR =
-        [&](uint64_t rM, unsigned i) -> TModular {
+    std::function<TModularD(uint64_t, unsigned)> SolveR =
+        [&](uint64_t rM, unsigned i) -> TModularD {
       return (i >= l)
                  ? (rM < full_cache_size ? vcache[rM]
                                          : vpoly[rM % tail_cache_size].Apply(
-                                               TModular(rM / tail_cache_size)))
+                                               TModularD(rM / tail_cache_size)))
                  : rM < vs[i] ? SolveR(rM, i + 1)
                               : SolveR(rM, i + 1) -
                                     SolveR(rM / vs[i], i + 1) * vspk[i];

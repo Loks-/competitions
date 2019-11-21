@@ -1,13 +1,11 @@
 #include "common/graph/graph.h"
 #include "common/graph/graph/distance.h"
 #include "common/graph/graph/distance_to_sink.h"
-#include "common/modular/static/modular_io.h"
+#include "common/modular_io.h"
 #include "common/stl/base.h"
 #include "common/vector/read.h"
 
 #include <queue>
-
-using TModular = Modular<>;
 
 int main_contransmutation() {
   unsigned T;
@@ -22,7 +20,7 @@ int main_contransmutation() {
       g.AddEdge(i, r1 - 1);
       g.AddEdge(i, r2 - 1);
     }
-    vector<TModular> vc = ReadVector<TModular>(n);
+    vector<TModularD> vc = ReadVector<TModularD>(n);
     for (unsigned i = 0; i < n; ++i) {
       if (vc[i].Get()) g.AddEdge(n, i);
     }
@@ -51,7 +49,7 @@ int main_contransmutation() {
       }
     }
     bool unbounded = false;
-    TModular s = 0;
+    TModularD s = 0;
     for (unsigned i = 0; i < n; ++i) {
       if (i && !valid[i]) continue;
       s += vc[i];

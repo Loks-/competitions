@@ -1,7 +1,7 @@
 // https://www.hackerrank.com/challenges/mutual-recurrences
 
 #include "common/linear_algebra/matrix_static_size.h"
-#include "common/modular/static/modular_io.h"
+#include "common/modular_io.h"
 #include "common/stl/base.h"
 
 using TModular = TModular_C32<1000000000>;

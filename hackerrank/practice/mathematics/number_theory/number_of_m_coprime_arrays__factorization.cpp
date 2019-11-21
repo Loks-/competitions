@@ -2,13 +2,12 @@
 
 #include "common/factorization/factorization.h"
 #include "common/linear_algebra/matrix_static_size.h"
-#include "common/modular/static/modular.h"
+#include "common/modular.h"
 #include "common/stl/base.h"
 
 #include <numeric>
 
-using TModular = Modular<>;
-using TMatrix = SquareMatrixStaticSize<TModular, 2>;
+using TMatrix = SquareMatrixStaticSize<TModularD, 2>;
 
 int main_number_of_m_coprime_arrays__factorization() {
   TMatrix m;
@@ -20,7 +19,7 @@ int main_number_of_m_coprime_arrays__factorization() {
     uint64_t N, M;
     cin >> N >> M;
     TFactorization fp = Factorize(M);
-    TModular r = 1;
+    TModularD r = 1;
     for (auto q : fp) {
       m(1, 0) = q.power;
       r *= m.PowU(N + 1)(0, 0);
