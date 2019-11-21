@@ -1,42 +1,34 @@
 #pragma once
 
-#include "common/statistics/stat_m1.h"
-
+namespace stat {
 template <class TValue = double>
-class StatM2 : public StatM1<TValue> {
+class Moment1 {
  public:
-  using TBase = StatM1<TValue>;
-  using TSelf = StatM2<TValue>;
+  using TSelf = Moment1<TValue>;
 
  protected:
-  TValue s2;
+  TValue s0, s1;
 
  public:
-  StatM2() { Clear(); }
+  Moment1() { Clear(); }
 
-  void Clear() {
-    TBase::Clear();
-    s2 = TValue(0);
-  }
+  void Clear() { s0 = s1 = TValue(0); }
 
   void AddSample(const TValue& x, const TValue& w = 1) {
-    TBase::AddSample(x, w);
-    s2 += x * x * w;
+    s0 += w;
+    s1 += x * w;
   }
+
+  void AddValue(const TValue& x) { s1 += x * s0; }
 
   void MultWeight(const TValue& x) {
-    TBase::MultWeight(x);
-    s2 *= x;
-  }
-
-  void AddValue(const TValue& x) {
-    s2 += x * x * TBase::s0 + 2 * x * TBase::s1;
-    TBase::AddValue(x);
+    s0 *= x;
+    s1 *= x;
   }
 
   void AddStat(const TSelf& r) {
-    TBase::AddStat(r);
-    s2 += r.s2;
+    s0 += r.s0;
+    s1 += r.s1;
   }
 
   TSelf& operator+=(const TValue& x) {
@@ -83,12 +75,7 @@ class StatM2 : public StatM1<TValue> {
     return t;
   }
 
-  TValue RawMoment2() const { return s2 / TBase::s0; }
-
-  TValue CentralMoment2() const {
-    TValue m = TBase::RawMoment1();
-    return RawMoment2() - m * m;
-  }
-
-  TValue Variance() const { return CentralMoment2(); }
+  TValue RawMoment1() const { return s1 / s0; }
+  TValue Mean() const { return RawMoment1(); }
 };
+}  // namespace stat

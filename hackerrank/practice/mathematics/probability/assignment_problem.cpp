@@ -3,7 +3,7 @@
 #include "common/local.h"
 #include "common/numeric/log_double_factorial.h"
 #include "common/numeric/log_double_io.h"
-#include "common/statistics/stat_m1.h"
+#include "common/statistics/moment1.h"
 #include "common/stl/base.h"
 
 #include <iomanip>
@@ -34,7 +34,7 @@ int main_assignment_problem() {
   unsigned T, M, N;
   cin >> T;
   for (unsigned iT = 0; iT < T; ++iT) {
-    StatM1<LogDouble> s;
+    stat::Moment1<LogDouble> s;
     cin >> M >> N;
     LogDouble b = 1.0;
     for (unsigned l = 1; l <= min(M, N); ++l) {

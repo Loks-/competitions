@@ -1,12 +1,12 @@
 // https://www.hackerrank.com/challenges/dice-stats
 
-#include "common/statistics/stat_m2.h"
+#include "common/statistics/moment2.h"
 #include "common/stl/base.h"
 
 #include <iomanip>
 #include <numeric>
 
-using TStat = StatM2<>;
+using TStat = stat::Moment2<>;
 
 int main_dice_stats() {
   vector<double> vp(6), vi(6);
