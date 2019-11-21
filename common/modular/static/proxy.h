@@ -4,7 +4,7 @@
 
 namespace modular {
 namespace mstatic {
-template <uint64_t mod = 1000000007, bool is_prime = true, bool is_32bit = true>
+template <uint64_t mod, bool is_prime, bool is_32bit>
 class Proxy {
  public:
   using TValue = uint64_t;
