@@ -16,7 +16,7 @@
 //   O(P / m) time
 class PModularDiscreteLogSqrtMap {
  public:
-  using TModularA = TModularArithmetic_P32U;
+  using TModularA = modular::TArithmetic_P32U;
 
  protected:
   uint64_t p, primitive;
@@ -47,12 +47,12 @@ class PModularDiscreteLogSqrtMap {
   PModularDiscreteLogSqrtMap(uint64_t prime,
                              const TFactorization& p1_factorization)
       : PModularDiscreteLogSqrtMap(
-            prime, FindSmallestPrimitive(prime, p1_factorization)) {}
+            prime, FindSmallestPrimitiveRoot(prime, p1_factorization)) {}
   PModularDiscreteLogSqrtMap(uint64_t prime,
                              const TFactorization& p1_factorization,
                              uint64_t size)
       : PModularDiscreteLogSqrtMap(
-            prime, FindSmallestPrimitive(prime, p1_factorization), size) {}
+            prime, FindSmallestPrimitiveRoot(prime, p1_factorization), size) {}
 
   uint64_t Log(uint64_t x) const {
     x = TModularA::ApplyU(x, p);

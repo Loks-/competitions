@@ -97,7 +97,7 @@ class PModularBinomialCoefficient {
       uint64_t p = fp.GetProxy().GetMod();
       uint64_t pr =
           ((GetPPower(n, k, p) > 0) ? 0 : BinomialCoefficient(n, k, fp));
-      mr = MergeRemainders<TModularArithmetic_P32U>(m, mr, p, pr);
+      mr = MergeRemainders<modular::TArithmetic_P32U>(m, mr, p, pr);
       m *= p;
     }
     for (auto& t : factorial_proxies_composite) {
@@ -109,7 +109,7 @@ class PModularBinomialCoefficient {
       uint64_t ppower = GetPPower(n, k, p);
       uint64_t pqr = BinomialCoefficient(n, k, p, q, fp);
       if (ppower) pqr = mp.Mult(pqr, mp.PowU(p, ppower));
-      mr = MergeRemainders<TModularArithmetic_C32U>(m, mr, pq, pqr);
+      mr = MergeRemainders<modular::TArithmetic_C32U>(m, mr, pq, pqr);
       m *= pq;
     }
     return mr;

@@ -9,7 +9,7 @@ int main_primitive_problem() {
   uint64_t p;
   cin >> p;
   TFactorization p1f = FactorizeBase(p - 1);
-  uint64_t u = FindSmallestPrimitive(p, p1f);
+  uint64_t u = FindSmallestPrimitiveRoot(p, p1f);
   cout << u << " " << EulersTotient(p - 1, p1f) << endl;
   return 0;
 }

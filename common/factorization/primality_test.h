@@ -9,7 +9,7 @@ namespace factorization {
 // Miller Rabin Primality Test
 class PrimalityTest {
  protected:
-  using TModularA = ModularArithmetic<false, false, uint64_t>;
+  using TModularA = modular::Arithmetic<false, false, uint64_t>;
 
   enum Primality {
     COMPOSITE,

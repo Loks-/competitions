@@ -5,7 +5,7 @@
 #include "common/factorization/utils/eulers_totient.h"
 #include "common/modular/arithmetic.h"
 
-template <class TModularA = TModularArithmetic_C32U>
+template <class TModularA = modular::TArithmetic_C32U>
 inline uint64_t GetMultiplicativeOrder(uint64_t n, uint64_t u) {
   u %= n;
   if ((u == 0) || (u == 1)) return 1;

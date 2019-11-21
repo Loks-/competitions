@@ -8,7 +8,7 @@
 
 #include <array>
 
-using TModularA = TModularArithmetic_C32U;
+using TModularA = modular::TArithmetic_C32U;
 
 int main_the_bouncing_flying_ball() {
   const unsigned D = 3;

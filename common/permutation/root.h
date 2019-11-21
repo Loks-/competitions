@@ -22,7 +22,7 @@ inline Permutation Root(const Permutation& p, unsigned root_power) {
     for (; k != 1; k = GCD(i, pa)) pa /= k;
     unsigned l = root_power / pa;
     if ((cycles_by_length[i].size() % l) != 0) return Permutation();
-    unsigned pow = TModularArithmetic_C32U::Inverse(pa, i);
+    unsigned pow = modular::TArithmetic_C32U::Inverse(pa, i);
     for (auto& cycle : cycles_by_length[i]) SimpleCyclePow(cycle, pow);
     for (unsigned j = 0; j < cycles_by_length[i].size(); j += l) {
       TCycle cycle;

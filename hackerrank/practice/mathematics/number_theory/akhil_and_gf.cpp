@@ -4,7 +4,7 @@
 #include "common/modular/utils/merge_remainders.h"
 #include "common/stl/base.h"
 
-using TModularA = TModularArithmetic_C32U;
+using TModularA = modular::TArithmetic_C32U;
 
 int main_akhil_and_gf() {
   unsigned T;

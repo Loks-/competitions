@@ -5,7 +5,7 @@
 #include "common/numeric/utils/pow.h"
 #include "common/stl/base.h"
 
-using TModularA = TModularArithmetic_C32U;
+using TModularA = modular::TArithmetic_C32U;
 
 int main_devu_vs_police() {
   factorization::ple::EulersTotient primes_list(10000);

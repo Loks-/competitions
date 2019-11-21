@@ -10,7 +10,7 @@ int main_little_panda_power() {
     uint64_t A, X;
     int64_t B;
     cin >> A >> B >> X;
-    cout << TModularArithmetic_C32U::PowSSafe(A, B, X) << endl;
+    cout << modular::TArithmetic_C32U::PowSSafe(A, B, X) << endl;
   }
   return 0;
 }

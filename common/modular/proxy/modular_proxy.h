@@ -6,7 +6,7 @@ template <bool is_prime = true, bool is_32bit = true, class _TValue = uint64_t>
 class ModularProxy {
  public:
   using TValue = _TValue;
-  using TBase = ModularArithmetic<is_prime, is_32bit, TValue>;
+  using TBase = modular::Arithmetic<is_prime, is_32bit, TValue>;
   using TSelf = ModularProxy<is_prime, is_32bit, TValue>;
 
  protected:

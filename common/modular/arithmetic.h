@@ -4,14 +4,15 @@
 #include "common/template.h"
 #include <utility>
 
+namespace modular {
 // Most functions are O(1).
 // Division and Inverse are O(log (mod)).
 // Pow is O(log (pow)).
 template <bool is_prime = true, bool is_32bit = true, class _TValue = uint64_t>
-class ModularArithmetic {
+class Arithmetic {
  public:
   using TValue = _TValue;
-  using TSelf = ModularArithmetic<is_prime, is_32bit, TValue>;
+  using TSelf = Arithmetic<is_prime, is_32bit, TValue>;
 
   static bool IsModPrime() { return is_prime; }
   static bool IsMod32Bits() { return is_32bit; }
@@ -227,5 +228,6 @@ class ModularArithmetic {
   }
 };
 
-using TModularArithmetic_P32U = ModularArithmetic<true, true, uint64_t>;
-using TModularArithmetic_C32U = ModularArithmetic<false, true, uint64_t>;
+using TArithmetic_P32U = Arithmetic<true, true, uint64_t>;
+using TArithmetic_C32U = Arithmetic<false, true, uint64_t>;
+}  // namespace modular

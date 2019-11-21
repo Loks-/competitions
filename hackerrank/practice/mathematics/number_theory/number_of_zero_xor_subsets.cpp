@@ -10,9 +10,9 @@ int main_number_of_zero_xor_subsets() {
   for (unsigned it = 0; it < T; ++it) {
     uint64_t N;
     cin >> N;
-    uint64_t p = TModularArithmetic_C32U::PowUSafe(2, N, M2);
-    p = TModularArithmetic_C32U::SubSafe(p, N, M2);
-    cout << TModularArithmetic_P32U::PowU(2, p, M1) << endl;
+    uint64_t p = modular::TArithmetic_C32U::PowUSafe(2, N, M2);
+    p = modular::TArithmetic_C32U::SubSafe(p, N, M2);
+    cout << modular::TArithmetic_P32U::PowU(2, p, M1) << endl;
   }
   return 0;
 }

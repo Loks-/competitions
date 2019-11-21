@@ -22,7 +22,8 @@ class ModularFFT {
     uint64_t p = TModular::GetMod();
     TFactorization p1f = Factorize(p - 1);
     assert(p1f.size() > 0);
-    primitive = FindSmallestPrimitive<typename TModular::TArithmetic>(p, p1f);
+    primitive =
+        FindSmallestPrimitiveRoot<typename TModular::TArithmetic>(p, p1f);
     unsigned max2p;
     if (n) {
       maxn = GetFFTN(n);

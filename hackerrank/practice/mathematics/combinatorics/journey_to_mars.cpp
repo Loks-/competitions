@@ -4,7 +4,7 @@
 #include "common/numeric/utils/pow.h"
 #include "common/stl/base.h"
 
-using TModularA = TModularArithmetic_C32U;
+using TModularA = modular::TArithmetic_C32U;
 
 #include <cmath>
 

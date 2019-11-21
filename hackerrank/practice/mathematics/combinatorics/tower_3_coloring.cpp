@@ -7,8 +7,8 @@ int main_tower_3_coloring() {
   const uint64_t M = 1000000007;
   unsigned n;
   cin >> n;
-  cout << TModularArithmetic_P32U::PowU(
-              3, TModularArithmetic_C32U::PowU(3, n, M - 1), M)
+  cout << modular::TArithmetic_P32U::PowU(
+              3, modular::TArithmetic_C32U::PowU(3, n, M - 1), M)
        << endl;
   return 0;
 }

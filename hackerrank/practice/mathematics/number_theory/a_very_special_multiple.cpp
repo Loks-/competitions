@@ -7,7 +7,7 @@
 #include "common/numeric/utils/pow.h"
 #include "common/stl/base.h"
 
-using TModularA = ModularArithmetic<false, false, uint64_t>;
+using TModularA = modular::Arithmetic<false, false, uint64_t>;
 
 int main_a_very_special_multiple() {
   unsigned T;

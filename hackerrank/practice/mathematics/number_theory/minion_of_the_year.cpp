@@ -43,8 +43,8 @@ int main_minion_of_the_year() {
         cout << A + B << endl;
         continue;
       }
-      uint64_t c1 = TModularArithmetic_C32U::Div(c, d, m);
-      uint64_t d1 = TModularArithmetic_C32U::Div(d, c, m);
+      uint64_t c1 = modular::TArithmetic_C32U::Div(c, d, m);
+      uint64_t d1 = modular::TArithmetic_C32U::Div(d, c, m);
       if (A < B) {
         swap(A, B);
         swap(c1, d1);

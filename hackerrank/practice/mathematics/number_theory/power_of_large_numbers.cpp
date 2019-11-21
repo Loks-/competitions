@@ -15,7 +15,7 @@ int main_power_of_large_numbers() {
     uint64_t v1 = 0, v2 = 0;
     for (char c : s1) v1 = (v1 * 10 + (c - '0')) % M1;
     for (char c : s2) v2 = (v2 * 10 + (c - '0')) % M2;
-    cout << TModularArithmetic_P32U::PowU(v1, v2, M1) << endl;
+    cout << modular::TArithmetic_P32U::PowU(v1, v2, M1) << endl;
   }
   return 0;
 }
