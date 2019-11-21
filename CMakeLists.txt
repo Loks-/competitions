@@ -121,6 +121,31 @@ endforeach( problemsourcefile ${IPCS_SOURCES} )
 file ( APPEND ${IPCS_PROXY_CXX} "};\n" )
 add_executable( ipcs ${IPCS_SOURCES} ${IPCS_PROXY_CXX} )
 
+file( GLOB_RECURSE PROJECT_EULER_SOURCES RELATIVE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/project_euler/*.cpp" )
+list( SORT PROJECT_EULER_SOURCES )
+set( PROJECT_EULER_PROXY_H "${PROJECT_SOURCE_DIR}/project_euler/proxy_gen.h" )
+set( PROJECT_EULER_PROXY_CXX "${PROJECT_SOURCE_DIR}/project_euler/proxy_gen.cxx" )
+file ( WRITE ${PROJECT_EULER_PROXY_H}
+	"#pragma once\n\n" )
+file ( WRITE ${PROJECT_EULER_PROXY_CXX}
+	"#include \"common/proxy_run_base.h\"\n"
+    "#include \"proxy_gen.h\"\n"
+	"\n"
+	"TSolutionsMap solutions_map {\n")
+foreach( problemsourcefile ${PROJECT_EULER_SOURCES} )
+    string( REPLACE ".cpp" "" problemfullname ${problemsourcefile} )
+    get_filename_component( problembasename ${problemfullname} NAME )
+    if ( NOT ${problembasename} MATCHES "base|main")
+        file ( APPEND ${PROJECT_EULER_PROXY_H}
+			"int main_${problembasename}();\n" )
+        file ( APPEND ${PROJECT_EULER_PROXY_CXX}
+			"\t{ \"${problembasename}\", main_${problembasename} },\n")
+    endif ( NOT ${problembasename} MATCHES "base|main")
+endforeach( problemsourcefile ${PROJECT_EULER_SOURCES} )
+file ( APPEND ${PROJECT_EULER_PROXY_CXX} "};\n" )
+add_executable( project_euler ${PROJECT_EULER_SOURCES} ${PROJECT_EULER_PROXY_CXX} )
+target_link_libraries( project_euler ${CMAKE_THREAD_LIBS_INIT} )
+
 file( GLOB_RECURSE TIMUS_SOURCES RELATIVE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/timus/*.cpp" )
 list( SORT TIMUS_SOURCES )
 set( TIMUS_PROXY_H "${PROJECT_SOURCE_DIR}/timus/proxy_gen.h" )
