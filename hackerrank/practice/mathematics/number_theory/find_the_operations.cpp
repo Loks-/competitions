@@ -3,7 +3,7 @@
 #include "common/linear_algebra/field/solve.h"
 #include "common/linear_algebra/matrix.h"
 #include "common/linear_algebra/vector.h"
-#include "common/modular/static/modular_bool_io.h"
+#include "common/modular/static/bool_io.h"
 #include "common/stl/base.h"
 #include "common/vector/read.h"
 

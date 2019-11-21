@@ -5,7 +5,7 @@
 #include "common/linear_algebra/matrix.h"
 #include "common/linear_algebra/matrix_static_size.h"
 #include "common/modular.h"
-#include "common/modular/static/modular_bool.h"
+#include "common/modular/static/bool.h"
 #include "common/modular/static/proxy.h"
 #include "common/timer.h"
 

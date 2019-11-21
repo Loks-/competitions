@@ -2,10 +2,12 @@
 
 #include "common/base.h"
 
-class ModularBool {
+namespace modular {
+namespace mstatic {
+class Bool {
  public:
   using TValue = bool;
-  using TSelf = ModularBool;
+  using TSelf = Bool;
 
  public:
   static bool IsModPrime() { return true; }
@@ -21,9 +23,9 @@ class ModularBool {
   void SetS(int64_t _value) { value = (_value & 1); }
   void SetT(TValue _value) { value = _value; }
 
-  ModularBool() : value(false) {}
-  ModularBool(const TSelf& s) : value(s.value) {}
-  ModularBool(uint64_t _value) { SetU(_value); }
+  Bool() : value(false) {}
+  Bool(const TSelf& s) : value(s.value) {}
+  Bool(uint64_t _value) { SetU(_value); }
 
   TSelf operator+(TSelf rvalue) const { return TSelf(value ^ rvalue.value); }
 
@@ -74,3 +76,7 @@ class ModularBool {
   bool operator==(const TSelf& r) const { return value == r.value; }
   bool operator!=(const TSelf& r) const { return value != r.value; }
 };
+}  // namespace mstatic
+}  // namespace modular
+
+using ModularBool = modular::mstatic::Bool;

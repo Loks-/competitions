@@ -3,7 +3,7 @@
 #include "common/factorization/factorization.h"
 #include "common/linear_algebra/bool/matrix.h"
 #include "common/linear_algebra/bool/rank.h"
-#include "common/modular/static/modular_bool.h"
+#include "common/modular/static/bool.h"
 #include "common/numeric/utils/pow.h"
 #include "common/stl/base.h"
 #include "common/vector/read.h"

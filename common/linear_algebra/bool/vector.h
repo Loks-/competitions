@@ -1,7 +1,7 @@
 #pragma once
 
 #include "common/base.h"
-#include "common/modular/static/modular_bool.h"
+#include "common/modular/static/bool.h"
 #include <algorithm>
 #include <vector>
 
