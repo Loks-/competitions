@@ -28,25 +28,25 @@ class TesterMatrixMult {
                            bool use_bool_hash = false) {
     size_t h = 0;
     for (uint64_t t : m.GetData())
-      h = hash_combine(h, (use_bool_hash ? t & 1 : TModularProxy::ApplyU(t)));
+      h = HashCombine(h, (use_bool_hash ? t & 1 : TModularProxy::ApplyU(t)));
     return h;
   }
 
   static size_t MatrixHash(const la::Matrix<TModular>& m) {
     size_t h = 0;
-    for (TModular t : m.GetData()) h = hash_combine(h, t.Get());
+    for (TModular t : m.GetData()) h = HashCombine(h, t.Get());
     return h;
   }
 
   static size_t MatrixHash(const la::Matrix<TModular2>& m) {
     size_t h = 0;
-    for (TModular2 t : m.GetData()) h = hash_combine(h, t.Get());
+    for (TModular2 t : m.GetData()) h = HashCombine(h, t.Get());
     return h;
   }
 
   static size_t MatrixHash(const la::Matrix<ModularBool>& m) {
     size_t h = 0;
-    for (ModularBool t : m.GetData()) h = hash_combine(h, t.Get() ? 1 : 0);
+    for (ModularBool t : m.GetData()) h = HashCombine(h, t.Get() ? 1 : 0);
     return h;
   }
 
@@ -54,8 +54,7 @@ class TesterMatrixMult {
   static size_t MatrixHash(
       const MatrixStaticSize<uint64_t, matrix_size, matrix_size>& m) {
     size_t h = 0;
-    for (uint64_t t : m.GetData())
-      h = hash_combine(h, TModularProxy::ApplyU(t));
+    for (uint64_t t : m.GetData()) h = HashCombine(h, TModularProxy::ApplyU(t));
     return h;
   }
 
@@ -63,7 +62,7 @@ class TesterMatrixMult {
   static size_t MatrixHash(
       const MatrixStaticSize<TModular, matrix_size, matrix_size>& m) {
     size_t h = 0;
-    for (TModular t : m.GetData()) h = hash_combine(h, t.Get());
+    for (TModular t : m.GetData()) h = HashCombine(h, t.Get());
     return h;
   }
 
@@ -71,7 +70,7 @@ class TesterMatrixMult {
     size_t h = 0;
     for (unsigned i = 0; i < m.Rows(); ++i) {
       for (unsigned j = 0; j < m.Columns(); ++j)
-        h = hash_combine(h, m.Get(i, j).Get());
+        h = HashCombine(h, m.Get(i, j).Get());
     }
     return h;
   }

@@ -50,7 +50,7 @@ class TreeIsomorphicHash {
       v.push_back(HashR(tree, c, node));
     }
     std::sort(v.begin(), v.end());
-    for (size_t h : v) current = hash_combine(current, h);
+    for (size_t h : v) current = HashCombine(current, h);
     return current;
   }
 
@@ -60,7 +60,7 @@ class TreeIsomorphicHash {
     if (p.second == CNone) return HashR(tree, p.first, p.second);
     size_t h1 = HashR(tree, p.first, p.second);
     size_t h2 = HashR(tree, p.second, p.first);
-    return (h1 < h2) ? hash_combine(h1, h2) : hash_combine(h2, h1);
+    return (h1 < h2) ? HashCombine(h1, h2) : HashCombine(h2, h1);
   }
 };
 }  // namespace graph

@@ -22,12 +22,12 @@ TesterHeap::TesterHeap(unsigned size_init, unsigned size_loop) {
   size_t h = 0;
   vinit.resize(size_init);
   for (unsigned i = 0; i < size_init; ++i) {
-    h = hash_combine(h, i);
+    h = HashCombine(h, i);
     vinit[i] = h;
   }
   vloop.resize(size_loop);
   for (unsigned i = 0; i < size_loop; ++i) {
-    h = hash_combine(h, i);
+    h = HashCombine(h, i);
     vloop[i] = h;
   }
 }
@@ -38,11 +38,11 @@ size_t TesterHeap::TestPriorityQueue() {
   std::priority_queue<size_t, std::vector<size_t>, std::greater<size_t>> heap(
       vinit.begin(), vinit.end());
   for (unsigned i = 0; i < vloop.size(); ++i) {
-    h = hash_combine(h, heap.top());
+    h = HashCombine(h, heap.top());
     heap.pop();
     heap.push(vloop[i]);
   }
-  for (; !heap.empty(); heap.pop()) h = hash_combine(h, heap.top());
+  for (; !heap.empty(); heap.pop()) h = HashCombine(h, heap.top());
   std::cout << "Test results [  PQ]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
@@ -53,10 +53,10 @@ size_t TesterHeap::TestBinaryHeap() {
   size_t h = 0;
   heap::BinaryHeap<size_t> heap(vinit);
   for (unsigned i = 0; i < vloop.size(); ++i) {
-    h = hash_combine(h, heap.Extract());
+    h = HashCombine(h, heap.Extract());
     heap.Add(vloop[i]);
   }
-  for (; !heap.Empty(); heap.Pop()) h = hash_combine(h, heap.Top());
+  for (; !heap.Empty(); heap.Pop()) h = HashCombine(h, heap.Top());
   std::cout << "Test results [  BH]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
@@ -69,10 +69,10 @@ size_t TesterHeap::TestBinomialHeap() {
   heap::Binomial<size_t> heap(nodes_manager);
   for (size_t v : vinit) heap.Add(v);
   for (unsigned i = 0; i < vloop.size(); ++i) {
-    h = hash_combine(h, heap.Extract());
+    h = HashCombine(h, heap.Extract());
     heap.Add(vloop[i]);
   }
-  for (; !heap.Empty(); heap.Pop()) h = hash_combine(h, heap.Top());
+  for (; !heap.Empty(); heap.Pop()) h = HashCombine(h, heap.Top());
   std::cout << "Test results [BNML]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
@@ -84,10 +84,10 @@ size_t TesterHeap::TestBinomialUKeyValueMap() {
   heap::BinomialUKeyValueMap<size_t> heap(vinit.size() + vloop.size());
   for (unsigned i = 0; i < vinit.size(); ++i) heap.Set(i, vinit[i]);
   for (unsigned i = 0; i < vloop.size(); ++i) {
-    h = hash_combine(h, heap.ExtractValue());
+    h = HashCombine(h, heap.ExtractValue());
     heap.Set(vinit.size() + i, vloop[i]);
   }
-  for (; !heap.Empty(); heap.Pop()) h = hash_combine(h, heap.TopValue());
+  for (; !heap.Empty(); heap.Pop()) h = HashCombine(h, heap.TopValue());
   std::cout << "Test results [BKVM]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
@@ -100,10 +100,10 @@ size_t TesterHeap::TestFibonacciHeap() {
   heap::Fibonacci<size_t> heap(nodes_manager);
   for (size_t v : vinit) heap.Add(v);
   for (unsigned i = 0; i < vloop.size(); ++i) {
-    h = hash_combine(h, heap.Extract());
+    h = HashCombine(h, heap.Extract());
     heap.Add(vloop[i]);
   }
-  for (; !heap.Empty(); heap.Pop()) h = hash_combine(h, heap.Top());
+  for (; !heap.Empty(); heap.Pop()) h = HashCombine(h, heap.Top());
   std::cout << "Test results [FBNC]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
@@ -115,10 +115,10 @@ size_t TesterHeap::TestFibonacciUKeyValueMap() {
   heap::FibonacciUKeyValueMap<size_t> heap(vinit.size() + vloop.size());
   for (unsigned i = 0; i < vinit.size(); ++i) heap.Set(i, vinit[i]);
   for (unsigned i = 0; i < vloop.size(); ++i) {
-    h = hash_combine(h, heap.ExtractValue());
+    h = HashCombine(h, heap.ExtractValue());
     heap.Set(vinit.size() + i, vloop[i]);
   }
-  for (; !heap.Empty(); heap.Pop()) h = hash_combine(h, heap.TopValue());
+  for (; !heap.Empty(); heap.Pop()) h = HashCombine(h, heap.TopValue());
   std::cout << "Test results [FKVM]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
@@ -130,10 +130,10 @@ size_t TesterHeap::TestDHeap() {
   size_t h = 0;
   heap::DHeap<d, size_t> heap(vinit);
   for (unsigned i = 0; i < vloop.size(); ++i) {
-    h = hash_combine(h, heap.Extract());
+    h = HashCombine(h, heap.Extract());
     heap.Add(vloop[i]);
   }
-  for (; !heap.Empty(); heap.Pop()) h = hash_combine(h, heap.Top());
+  for (; !heap.Empty(); heap.Pop()) h = HashCombine(h, heap.Top());
   std::cout << "Test results [ D" << d << "H]: " << h << "\t"
             << t.GetMilliseconds() << std::endl;
   return h;
@@ -151,10 +151,10 @@ size_t TesterHeap::TestDHeapUKeyPosMap() {
   size_t h = 0;
   THeap heap(vinit.size() + vloop.size(), vinit_adj);
   for (unsigned i = 0; i < vloop.size(); ++i) {
-    h = hash_combine(h, heap.Extract().value);
+    h = HashCombine(h, heap.Extract().value);
     heap.Set(vinit.size() + i, vloop[i]);
   }
-  for (; !heap.Empty(); heap.Pop()) h = hash_combine(h, heap.Top().value);
+  for (; !heap.Empty(); heap.Pop()) h = HashCombine(h, heap.Top().value);
   std::cout << "Test results [DKP" << d << "]: " << h << "\t"
             << t.GetMilliseconds() << std::endl;
   return h;
@@ -169,10 +169,10 @@ size_t TesterHeap::TestDHeapUKeyValueMap() {
   THeap heap(vinit.size() + vloop.size());
   for (unsigned i = 0; i < vinit.size(); ++i) heap.Set(i, vinit[i]);
   for (unsigned i = 0; i < vloop.size(); ++i) {
-    h = hash_combine(h, heap.ExtractValue());
+    h = HashCombine(h, heap.ExtractValue());
     heap.Set(vinit.size() + i, vloop[i]);
   }
-  for (; !heap.Empty(); heap.Pop()) h = hash_combine(h, heap.TopValue());
+  for (; !heap.Empty(); heap.Pop()) h = HashCombine(h, heap.TopValue());
   std::cout << "Test results [DKV" << d << "]: " << h << "\t"
             << t.GetMilliseconds() << std::endl;
   return h;
@@ -188,10 +188,10 @@ size_t TesterHeap::TestPairingBaseHeap() {
   THeap heap(vinit.size());
   for (size_t v : vinit) heap.Add(v);
   for (unsigned i = 0; i < vloop.size(); ++i) {
-    h = hash_combine(h, heap.Extract());
+    h = HashCombine(h, heap.Extract());
     heap.Add(vloop[i]);
   }
-  for (; !heap.Empty(); heap.Pop()) h = hash_combine(h, heap.Top());
+  for (; !heap.Empty(); heap.Pop()) h = HashCombine(h, heap.Top());
   std::cout << "Test results [PB" << auxiliary << multipass << "]: " << h
             << "\t" << t.GetMilliseconds() << std::endl;
   return h;
@@ -208,10 +208,10 @@ size_t TesterHeap::TestPairingHeap() {
   THeap heap(nodes_manager);
   for (size_t v : vinit) heap.Add(v);
   for (unsigned i = 0; i < vloop.size(); ++i) {
-    h = hash_combine(h, heap.Extract());
+    h = HashCombine(h, heap.Extract());
     heap.Add(vloop[i]);
   }
-  for (; !heap.Empty(); heap.Pop()) h = hash_combine(h, heap.Top());
+  for (; !heap.Empty(); heap.Pop()) h = HashCombine(h, heap.Top());
   std::cout << "Test results [PR" << auxiliary << multipass << "]: " << h
             << "\t" << t.GetMilliseconds() << std::endl;
   return h;
@@ -226,10 +226,10 @@ size_t TesterHeap::TestPairingUKeyValueMap() {
   THeap heap(vinit.size() + vloop.size());
   for (unsigned i = 0; i < vinit.size(); ++i) heap.Set(i, vinit[i]);
   for (unsigned i = 0; i < vloop.size(); ++i) {
-    h = hash_combine(h, heap.ExtractValue());
+    h = HashCombine(h, heap.ExtractValue());
     heap.Set(vinit.size() + i, vloop[i]);
   }
-  for (; !heap.Empty(); heap.Pop()) h = hash_combine(h, heap.TopValue());
+  for (; !heap.Empty(); heap.Pop()) h = HashCombine(h, heap.TopValue());
   std::cout << "Test results [PM" << auxiliary << multipass << "]: " << h
             << "\t" << t.GetMilliseconds() << std::endl;
   return h;

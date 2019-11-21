@@ -13,7 +13,7 @@ graph::GraphEI<TEdgeInfo, directed_edges> CreateRandomGraph(
     for (unsigned j = 0;
          j < (directed_edges ? edges_per_node : (edges_per_node + (i % 2)) / 2);
          ++j) {
-      h = hash_combine(h, i + j);
+      h = HashCombine(h, i + j);
       g.AddEdge(i, h % size, h % max_edge_cost);
     }
   }

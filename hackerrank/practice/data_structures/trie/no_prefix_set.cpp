@@ -16,11 +16,11 @@ int main_no_prefix_set() {
     string s;
     cin >> s;
     size_t hvalue = 0;
-    for (char c : s) hvalue = hash_combine(hvalue, h(c));
+    for (char c : s) hvalue = HashCombine(hvalue, h(c));
     if (sprefix.find(hvalue) != sprefix.end()) found = true;
     hvalue = 0;
     for (char c : s) {
-      hvalue = hash_combine(hvalue, h(c));
+      hvalue = HashCombine(hvalue, h(c));
       if (sstring.find(hvalue) != sstring.end()) found = true;
       sprefix.insert(hvalue);
     }

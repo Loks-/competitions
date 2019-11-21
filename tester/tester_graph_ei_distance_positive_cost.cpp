@@ -49,7 +49,7 @@ size_t TesterGraphEIDistancePositiveCost::TestBellmanFord() const {
   std::vector<uint64_t> v;
   for (unsigned i = 0; i < g.Size(); ++i) {
     v = graph::distance::BellmanFord(g, edge_proxy, i, max_cost);
-    for (uint64_t d : v) h = hash_combine(h, d);
+    for (uint64_t d : v) h = HashCombine(h, d);
   }
   std::cout << "Test results  [BlFd]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
@@ -62,7 +62,7 @@ size_t TesterGraphEIDistancePositiveCost::TestFloydWarshall() const {
   uint64_t max_cost = -1ull;
   auto vv = graph::distance::FloydWarshall(g, edge_proxy, max_cost);
   for (unsigned i = 0; i < vv.size(); ++i) {
-    for (uint64_t d : vv[i]) h = hash_combine(h, d);
+    for (uint64_t d : vv[i]) h = HashCombine(h, d);
   }
   std::cout << "Test results  [FLYD]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
@@ -78,7 +78,7 @@ size_t TesterGraphEIDistancePositiveCost::TestCBH(
   std::vector<uint64_t> v;
   for (unsigned i = 0; i < g.Size(); ++i) {
     v = DistanceFromSourcePositiveCost_CBH<THeap>(g, edge_proxy, i, max_cost);
-    for (uint64_t d : v) h = hash_combine(h, d);
+    for (uint64_t d : v) h = HashCombine(h, d);
   }
   std::cout << "Test results  [" << name << "]: " << h << "\t"
             << t.GetMilliseconds() << std::endl;
@@ -94,7 +94,7 @@ size_t TesterGraphEIDistancePositiveCost::TestKPM(
   std::vector<uint64_t> v;
   for (unsigned i = 0; i < g.Size(); ++i) {
     v = DistanceFromSourcePositiveCost_KPM<THeap>(g, edge_proxy, i, max_cost);
-    for (uint64_t d : v) h = hash_combine(h, d);
+    for (uint64_t d : v) h = HashCombine(h, d);
   }
   std::cout << "Test results  [" << name << "]: " << h << "\t"
             << t.GetMilliseconds() << std::endl;
@@ -110,7 +110,7 @@ size_t TesterGraphEIDistancePositiveCost::TestKVM(
   std::vector<uint64_t> v;
   for (unsigned i = 0; i < g.Size(); ++i) {
     v = DistanceFromSourcePositiveCost_KVM<THeap>(g, edge_proxy, i, max_cost);
-    for (uint64_t d : v) h = hash_combine(h, d);
+    for (uint64_t d : v) h = HashCombine(h, d);
   }
   std::cout << "Test results  [" << name << "]: " << h << "\t"
             << t.GetMilliseconds() << std::endl;

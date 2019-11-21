@@ -7,7 +7,7 @@ namespace std {
 template <class T>
 struct hash<geometry::d2::Point<T>> {
   size_t operator()(const geometry::d2::Point<T>& value) const {
-    return hash_combine(hash<T>{}(value.x), hash<T>{}(value.y));
+    return HashCombine(hash<T>{}(value.x), hash<T>{}(value.y));
   }
 };
 }  // namespace std

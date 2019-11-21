@@ -23,7 +23,7 @@ class HamiltonianPathUndirectedGraph {
  protected:
   size_t Hash() const {
     thread_local std::hash<std::vector<unsigned>> h;
-    return hash_combine(h(visited), current_path.back());
+    return HashCombine(h(visited), current_path.back());
   }
 
   bool Connected(unsigned from) const {

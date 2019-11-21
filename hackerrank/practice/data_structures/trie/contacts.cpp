@@ -17,15 +17,15 @@ int main_contacts() {
     size_t hvalue1 = 0, hvalue2 = 1;
     if (s1 == "add") {
       for (char c : s2) {
-        hvalue1 = hash_combine(hvalue1, h(c));
-        hvalue2 = hash_combine(hvalue2, h(c));
+        hvalue1 = HashCombine(hvalue1, h(c));
+        hvalue2 = HashCombine(hvalue2, h(c));
         m1[hvalue1] += 1;
         m2[hvalue2] += 1;
       }
     } else if (s1 == "find") {
       for (char c : s2) {
-        hvalue1 = hash_combine(hvalue1, h(c));
-        hvalue2 = hash_combine(hvalue2, h(c));
+        hvalue1 = HashCombine(hvalue1, h(c));
+        hvalue2 = HashCombine(hvalue2, h(c));
       }
       cout << min(m1[hvalue1], m2[hvalue2]) << endl;
     }

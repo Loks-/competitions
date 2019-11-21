@@ -9,7 +9,7 @@ struct hash<vector<T>> {
   size_t operator()(const vector<T>& v) const {
     hash<T> ht;
     size_t h = v.size();
-    for (const T& t : v) hash_combine(h, ht(t));
+    for (const T& t : v) HashCombine(h, ht(t));
     return h;
   }
 };

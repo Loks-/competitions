@@ -29,7 +29,7 @@ class TesterDisjointSet {
     for (unsigned i = 0; i < unions; ++i) {
       if ((i > 0) && ((i % unions_per_block) == 0)) dsp.Init(size);
       dsp.Union(vunions[i].first, vunions[i].second);
-      h = hash_combine(h, dsp.GetUnions());
+      h = HashCombine(h, dsp.GetUnions());
     }
     std::cout << "Test results: " << int(pc) << "\t" << h << "\t"
               << t.GetMilliseconds() << std::endl;
