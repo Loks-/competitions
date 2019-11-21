@@ -4,13 +4,14 @@
 #include <algorithm>
 #include <vector>
 
+namespace polynomial {
 template <class TTValue, class TTMe>
-class BasePolynomial {
+class Base {
  public:
   using TValue = TTValue;
   using TData = std::vector<TValue>;
   using TMe = TTMe;
-  using TSelf = BasePolynomial<TValue, TMe>;
+  using TSelf = Base<TValue, TMe>;
 
   using iterator = TValue*;
   using const_iterator = const TValue*;
@@ -134,3 +135,4 @@ class BasePolynomial {
     return t;
   }
 };
+}  // namespace polynomial

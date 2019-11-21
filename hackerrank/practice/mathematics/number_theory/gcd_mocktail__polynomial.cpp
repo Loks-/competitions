@@ -2,12 +2,12 @@
 
 #include "common/local.h"
 #include "common/modular/static/modular_io.h"
-#include "common/polynomial/base_newton_polynomial.h"
+#include "common/polynomial/base_newton.h"
 #include "common/polynomial/utils/sum_of_powers.h"
 #include "common/stl/base.h"
 
 using TModular = TModular_P32<30000001>;
-using TPolynom = BaseNewtonPolynomial<TModular>;
+using TPolynom = polynomial::BaseNewton<TModular>;
 
 int main_gcd_mocktail__polynomial() {
   // Precalc polynoms.
@@ -15,7 +15,7 @@ int main_gcd_mocktail__polynomial() {
   unsigned maxl = local_run ? 10 : 100;
   vector<TPolynom> vpoly(maxl + 1);
   for (unsigned l = 0; l < vpoly.size(); ++l)
-    vpoly[l] = GetSumOfPowers<TModular>(l);
+    vpoly[l] = polynomial::GetSumOfPowers<TModular>(l);
 
   // Precalc sums
   // O(maxl * precalc_n) ~ 10^6

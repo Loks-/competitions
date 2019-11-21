@@ -1,17 +1,17 @@
 #pragma once
 
-#include "common/polynomial/base_polynomial.h"
+#include "common/polynomial/base.h"
 #include <vector>
 
+namespace polynomial {
 // Basis polynomials:
 //   f_k = x * (x - 1) * ... * (x - k + 1)
 template <class TTValue>
-class BaseNewtonPolynomial
-    : BasePolynomial<TTValue, BaseNewtonPolynomial<TTValue>> {
+class BaseNewton : Base<TTValue, BaseNewton<TTValue>> {
  public:
   using TValue = TTValue;
-  using TSelf = BaseNewtonPolynomial<TValue>;
-  using TBase = BasePolynomial<TValue, TSelf>;
+  using TSelf = BaseNewton<TValue>;
+  using TBase = Base<TValue, TSelf>;
 
   TValue Apply(TValue x) const {
     if (TBase::Size() <= 1) return TBase::GetCoefficient(0);
@@ -42,3 +42,4 @@ class BaseNewtonPolynomial
     return *this;
   }
 };
+}  // namespace polynomial

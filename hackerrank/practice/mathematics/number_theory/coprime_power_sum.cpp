@@ -1,14 +1,14 @@
 // https://www.hackerrank.com/challenges/coprime-power-sum
 
 #include "common/modular/static/modular.h"
-#include "common/polynomial/base_newton_polynomial.h"
+#include "common/polynomial/base_newton.h"
 #include "common/stl/base.h"
 #include "common/vector/read.h"
 
 #include <functional>
 
 using TModular = Modular<>;
-using TPolynom = BaseNewtonPolynomial<TModular>;
+using TPolynom = polynomial::BaseNewton<TModular>;
 
 int main_coprime_power_sum() {
   unsigned T, N, K, maxn = 50, max_cache_size = 1000;

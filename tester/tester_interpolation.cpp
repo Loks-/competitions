@@ -2,7 +2,7 @@
 
 #include "common/modular/static/modular.h"
 #include "common/modular/static/sum_of_powers.h"
-#include "common/polynomial/base_newton_polynomial.h"
+#include "common/polynomial/base_newton.h"
 
 #include <iostream>
 #include <vector>
@@ -37,7 +37,7 @@ bool TesterInterpolation::TestSumOfPowers(unsigned power,
 bool TesterInterpolation::TestBaseNewtonPolynomial(
     unsigned power, const std::vector<TModular>& vp) {
   std::vector<TModular> vtemp(vp.begin(), vp.begin() + power + 2);
-  BaseNewtonPolynomial<TModular> p;
+  polynomial::BaseNewton<TModular> p;
   p.Interpolate(vtemp);
   for (unsigned i = n - k; i < n; ++i) {
     if (p(TModular(i)) != vp[i]) {
