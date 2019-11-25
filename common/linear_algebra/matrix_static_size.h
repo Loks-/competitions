@@ -121,8 +121,6 @@ class MatrixStaticSize : public VectorStaticSize<TTValue, _rows * _columns> {
 };
 }  // namespace la
 
-template <class TValue, unsigned rows, unsigned columns>
-using MatrixStaticSize = la::MatrixStaticSize<TValue, rows, columns>;
 template <unsigned rows, unsigned columns>
 using DMatrixStaticSize = la::MatrixStaticSize<double, rows, columns>;
 template <class TValue, unsigned size>
