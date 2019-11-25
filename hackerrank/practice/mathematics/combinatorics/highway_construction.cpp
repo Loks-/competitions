@@ -7,7 +7,7 @@
 using TModular = TModular_P32<1000000009>;
 
 int main_highway_construction() {
-  ModularSumOfPowers<TModular> sum_of_powers;
+  modular::mstatic::SumOfPowers<TModular> sum_of_powers;
   unsigned T, K;
   cin >> T;
   for (unsigned i = 0; i < T; ++i) {

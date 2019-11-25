@@ -5,11 +5,13 @@
 
 // Based on Bernoulli numbers
 // ( https://en.wikipedia.org/wiki/Faulhaber's_formula ) .
+namespace modular {
+namespace mstatic {
 template <class TModular>
-class ModularSumOfPowers {
+class SumOfPowers {
  public:
   using TBernoulli = Bernoulli<TModular, true>;
-  using TFactorial = modular::mstatic::Factorial<TModular, true>;
+  using TFactorial = Factorial<TModular, true>;
 
  protected:
   TBernoulli b;
@@ -30,3 +32,5 @@ class ModularSumOfPowers {
     return s * b.GetInverted(power + 1);
   }
 };
+}  // namespace mstatic
+}  // namespace modular

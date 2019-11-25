@@ -21,7 +21,7 @@ int main_gcd_mocktail() {
     for (unsigned i = 1; i <= precalc_n; ++i) vcache[l][i] += vcache[l][i - 1];
   }
 
-  ModularSumOfPowers<TModular> sum_of_powers;
+  modular::mstatic::SumOfPowers<TModular> sum_of_powers;
   unsigned T, N, D, L, Q;
   cin >> T;
   for (unsigned iT = 0; iT < T; ++iT) {

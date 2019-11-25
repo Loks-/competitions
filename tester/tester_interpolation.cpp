@@ -21,7 +21,7 @@ TesterInterpolation::TesterInterpolation() { Init(); }
 
 bool TesterInterpolation::TestSumOfPowers(unsigned power,
                                           const std::vector<TModularD>& vp) {
-  ModularSumOfPowers<TModularD> s;
+  modular::mstatic::SumOfPowers<TModularD> s;
   for (unsigned i = 0; i < n; ++i) {
     if (s.Sum(i, power) != vp[i]) {
       std::cout << "TestSumOfPowers failed:"
