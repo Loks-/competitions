@@ -7,7 +7,7 @@
 #include "common/numeric/utils/lcm.h"
 #include "common/stl/base.h"
 
-using TDiscreteLog = PModularDiscreteLogSqrtMap;
+using TDiscreteLog = modular::proxy::DiscreteLogSqrtMap;
 
 int main_minion_of_the_year() {
   unsigned T, N, P;

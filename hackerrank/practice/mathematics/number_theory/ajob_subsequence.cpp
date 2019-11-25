@@ -9,7 +9,7 @@ int main_ajob_subsequence() {
   for (unsigned it = 0; it < T; ++it) {
     uint64_t N, K;
     cin >> N >> K >> P;
-    cout << PModularPrimeBinomialCoefficient(N + 1, K + 1, P) << endl;
+    cout << modular::proxy::BinomialCoefficientPrime(N + 1, K + 1, P) << endl;
   }
   return 0;
 }

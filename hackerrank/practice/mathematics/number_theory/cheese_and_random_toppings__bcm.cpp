@@ -8,8 +8,8 @@ int main_cheese_and_random_toppings__bcm() {
   cin >> T;
   for (unsigned it = 0; it < T; ++it) {
     cin >> N >> R >> M;
-    PModularBinomialCoefficient bcm(M);
-    cout << bcm.BinomialCoefficient(N, R) << endl;
+    modular::proxy::BinomialCoefficient bcm(M);
+    cout << bcm.Apply(N, R) << endl;
   }
   return 0;
 }

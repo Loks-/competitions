@@ -12,9 +12,11 @@
 //   O(P) time, O(P) memory
 // Log:
 //   O(1) time
-class PModularDiscreteLogFullMap {
+namespace modular {
+namespace proxy {
+class DiscreteLogFullMap {
  public:
-  using TModularA = TModularArithmetic_P32U;
+  using TModularA = TArithmetic_P32U;
 
  protected:
   uint64_t p, primitive;
@@ -30,17 +32,16 @@ class PModularDiscreteLogFullMap {
     }
   }
 
-  PModularDiscreteLogFullMap(unsigned prime, unsigned pprimitive)
+  DiscreteLogFullMap(unsigned prime, unsigned pprimitive)
       : p(prime), primitive(pprimitive) {
     Build();
   }
 
-  PModularDiscreteLogFullMap(unsigned prime,
-                             const TFactorization& p1_factorization)
-      : PModularDiscreteLogFullMap(
-            prime, FindSmallestPrimitive(prime, p1_factorization)) {}
-  PModularDiscreteLogFullMap(unsigned prime)
-      : PModularDiscreteLogFullMap(prime, FactorizeBase(prime - 1)) {}
+  DiscreteLogFullMap(unsigned prime, const TFactorization& p1_factorization)
+      : DiscreteLogFullMap(
+            prime, FindSmallestPrimitiveRoot(prime, p1_factorization)) {}
+  DiscreteLogFullMap(unsigned prime)
+      : DiscreteLogFullMap(prime, FactorizeBase(prime - 1)) {}
 
   unsigned Log(uint64_t x) const {
     x = TModularA::ApplyU(x, p);
@@ -48,3 +49,5 @@ class PModularDiscreteLogFullMap {
     return vmap[x];
   }
 };
+}  // namespace proxy
+}  // namespace modular

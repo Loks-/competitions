@@ -11,12 +11,12 @@
 
 // Calculation Binomial coefficients by any modular.
 // Based on Andrew Granville paper.
-class PModularBinomialCoefficient {
+namespace modular {
+namespace proxy {
+class BinomialCoefficient {
  public:
-  using TPrimeFactorialProxy =
-      PModularFactorial<TModularProxy_P32U, true, false>;
-  using TPrimePowerFactorialProxy =
-      PModularFactorial<TModularProxy_C32U, true, true>;
+  using TPrimeFactorialProxy = Factorial<TModularProxy_P32U, true, false>;
+  using TPrimePowerFactorialProxy = Factorial<TModularProxy_C32U, true, true>;
 
   static uint64_t GetPPower(uint64_t n, uint64_t p) {
     uint64_t s = 0;
@@ -34,8 +34,7 @@ class PModularBinomialCoefficient {
     return GetPPower(n, p) - GetPPower(k, p) - GetPPower(l, p);
   }
 
-  static uint64_t BinomialCoefficient(uint64_t n, uint64_t k,
-                                      TPrimeFactorialProxy& fp) {
+  static uint64_t Apply(uint64_t n, uint64_t k, TPrimeFactorialProxy& fp) {
     const auto& mp = fp.GetProxy();
     uint64_t p = mp.GetMod();
     uint64_t ppower = GetPPower(n, k, p);
@@ -52,9 +51,8 @@ class PModularBinomialCoefficient {
     return r;
   }
 
-  static uint64_t BinomialCoefficient(uint64_t n, uint64_t k, uint64_t p,
-                                      unsigned q,
-                                      TPrimePowerFactorialProxy& fp) {
+  static uint64_t Apply(uint64_t n, uint64_t k, uint64_t p, unsigned q,
+                        TPrimePowerFactorialProxy& fp) {
     const auto& mp = fp.GetProxy();
     uint64_t pq = mp.GetMod();
     uint64_t ppower_adj =
@@ -78,7 +76,7 @@ class PModularBinomialCoefficient {
       factorial_proxies_composite;
 
  public:
-  PModularBinomialCoefficient(uint64_t n) {
+  BinomialCoefficient(uint64_t n) {
     TFactorization nf(FactorizeBase(n));
     for (auto fp : nf) {
       if (fp.power == 1)
@@ -90,14 +88,13 @@ class PModularBinomialCoefficient {
     }
   }
 
-  uint64_t BinomialCoefficient(uint64_t n, uint64_t k) {
+  uint64_t Apply(uint64_t n, uint64_t k) {
     if (n < k) return 0;
     uint64_t m = 1, mr = 0;
     for (auto& fp : factorial_proxies_prime) {
       uint64_t p = fp.GetProxy().GetMod();
-      uint64_t pr =
-          ((GetPPower(n, k, p) > 0) ? 0 : BinomialCoefficient(n, k, fp));
-      mr = MergeRemainders<modular::TArithmetic_P32U>(m, mr, p, pr);
+      uint64_t pr = ((GetPPower(n, k, p) > 0) ? 0 : Apply(n, k, fp));
+      mr = MergeRemainders<TArithmetic_P32U>(m, mr, p, pr);
       m *= p;
     }
     for (auto& t : factorial_proxies_composite) {
@@ -107,11 +104,13 @@ class PModularBinomialCoefficient {
       const auto& mp = fp.GetProxy();
       uint64_t pq = mp.GetMod();
       uint64_t ppower = GetPPower(n, k, p);
-      uint64_t pqr = BinomialCoefficient(n, k, p, q, fp);
+      uint64_t pqr = Apply(n, k, p, q, fp);
       if (ppower) pqr = mp.Mult(pqr, mp.PowU(p, ppower));
-      mr = MergeRemainders<modular::TArithmetic_C32U>(m, mr, pq, pqr);
+      mr = MergeRemainders<TArithmetic_C32U>(m, mr, pq, pqr);
       m *= pq;
     }
     return mr;
   }
 };
+}  // namespace proxy
+}  // namespace modular

@@ -4,12 +4,12 @@
 #include "common/stl/base.h"
 
 int main_ncr() {
-  PModularBinomialCoefficient bcm(142857);
+  modular::proxy::BinomialCoefficient bcm(142857);
   unsigned T, n, r;
   cin >> T;
   for (unsigned it = 0; it < T; ++it) {
     cin >> n >> r;
-    cout << bcm.BinomialCoefficient(n, r) << endl;
+    cout << bcm.Apply(n, r) << endl;
   }
   return 0;
 }

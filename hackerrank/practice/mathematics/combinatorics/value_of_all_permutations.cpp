@@ -9,7 +9,7 @@ int main_value_of_all_permutations() {
   unsigned p, n, q, l = 1, m;
   cin >> p >> n;
   TModularProxy_P32U mp(p);
-  PModularFactorial<TModularProxy_P32U> f(p);
+  modular::proxy::Factorial<TModularProxy_P32U> f(p);
   vector<unsigned> v = ReadVector<unsigned>(n);
   sort(v.begin(), v.end());
   uint64_t total = f.Get(n);

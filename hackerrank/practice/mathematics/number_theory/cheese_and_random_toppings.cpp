@@ -14,7 +14,8 @@ int main_cheese_and_random_toppings() {
     uint64_t r = 0, m = 1;
     TFactorization vf = primes_list.Factorize(M);
     for (auto pf : vf) {
-      uint64_t rf = PModularPrimeBinomialCoefficient(N, R, unsigned(pf.prime));
+      uint64_t rf =
+          modular::proxy::BinomialCoefficientPrime(N, R, unsigned(pf.prime));
       r = MergeRemainders<modular::TArithmetic_P32U>(m, r, pf.prime, rf);
       m *= pf.prime;
     }

@@ -14,9 +14,11 @@
 //   O(m) time, O(m) memory
 // Log:
 //   O(P / m) time
-class PModularDiscreteLogSqrtMap {
+namespace modular {
+namespace proxy {
+class DiscreteLogSqrtMap {
  public:
-  using TModularA = modular::TArithmetic_P32U;
+  using TModularA = TArithmetic_P32U;
 
  protected:
   uint64_t p, primitive;
@@ -34,24 +36,22 @@ class PModularDiscreteLogSqrtMap {
     ippm = TModularA::Inverse(TModularA::PowU(primitive, m, p), p);
   }
 
-  PModularDiscreteLogSqrtMap(uint64_t prime, uint64_t pprimitive)
+  DiscreteLogSqrtMap(uint64_t prime, uint64_t pprimitive)
       : p(prime), primitive(pprimitive) {
     m = USqrt(p) + 1;
     Build();
   }
-  PModularDiscreteLogSqrtMap(uint64_t prime, uint64_t pprimitive, uint64_t size)
+  DiscreteLogSqrtMap(uint64_t prime, uint64_t pprimitive, uint64_t size)
       : p(prime), primitive(pprimitive) {
     m = std::min(size, p - 1);
     Build();
   }
-  PModularDiscreteLogSqrtMap(uint64_t prime,
-                             const TFactorization& p1_factorization)
-      : PModularDiscreteLogSqrtMap(
+  DiscreteLogSqrtMap(uint64_t prime, const TFactorization& p1_factorization)
+      : DiscreteLogSqrtMap(
             prime, FindSmallestPrimitiveRoot(prime, p1_factorization)) {}
-  PModularDiscreteLogSqrtMap(uint64_t prime,
-                             const TFactorization& p1_factorization,
-                             uint64_t size)
-      : PModularDiscreteLogSqrtMap(
+  DiscreteLogSqrtMap(uint64_t prime, const TFactorization& p1_factorization,
+                     uint64_t size)
+      : DiscreteLogSqrtMap(
             prime, FindSmallestPrimitiveRoot(prime, p1_factorization), size) {}
 
   uint64_t Log(uint64_t x) const {
@@ -66,3 +66,5 @@ class PModularDiscreteLogSqrtMap {
     return 0;
   }
 };
+}  // namespace proxy
+}  // namespace modular

@@ -4,22 +4,23 @@
 #include "common/numeric/utils/gcd.h"
 #include <vector>
 
-template <class TModularProxy, bool keep_inverted = true,
-          bool coprime_only = false>
-class PModularFactorial {
+namespace modular {
+namespace proxy {
+template <class TProxy, bool keep_inverted = true, bool coprime_only = false>
+class Factorial {
  public:
-  using TValue = typename TModularProxy::TValue;
+  using TValue = typename TProxy::TValue;
 
  protected:
-  TModularProxy proxy;
+  TProxy proxy;
   std::vector<TValue> vf, vfi;
 
  public:
-  PModularFactorial(TValue mod) : proxy(mod) {
+  Factorial(TValue mod) : proxy(mod) {
     vf.push_back(1);
     if (keep_inverted) vfi.push_back(1);
   }
-  const TModularProxy& GetProxy() const { return proxy; }
+  const TProxy& GetProxy() const { return proxy; }
 
   void Adjust(unsigned n) {
     for (; vf.size() <= n;) {
@@ -50,3 +51,5 @@ class PModularFactorial {
                           : proxy.Div(vf[n], proxy.Mult(vf[k], vf[n - k])));
   }
 };
+}  // namespace proxy
+}  // namespace modular
