@@ -5,9 +5,11 @@
 
 // Based on Lucas's theorem.
 
+namespace modular {
+namespace mstatic {
 template <class TModular>
-inline TModular ModularPrimeBinomialCoefficient(uint64_t n, uint64_t k,
-                                                modular::mstatic::Factorial<TModular>& f) {
+inline TModular BinomialCoefficientPrime(uint64_t n, uint64_t k,
+                                         Factorial<TModular>& f) {
   if (k > n) return 0;
   uint64_t p = TModular::GetMod();
   TModular r = 1;
@@ -20,7 +22,9 @@ inline TModular ModularPrimeBinomialCoefficient(uint64_t n, uint64_t k,
 }
 
 template <class TModular>
-inline TModular ModularPrimeBinomialCoefficient(uint64_t n, uint64_t k) {
-  thread_local modular::mstatic::Factorial<TModular> f;
-  return ModularPrimeBinomialCoefficient(n, k, f);
+inline TModular BinomialCoefficientPrime(uint64_t n, uint64_t k) {
+  thread_local Factorial<TModular> f;
+  return BinomialCoefficientPrime(n, k, f);
 }
+}  // namespace mstatic
+}  // namespace modular

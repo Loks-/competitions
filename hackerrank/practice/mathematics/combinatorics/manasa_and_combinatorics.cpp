@@ -13,9 +13,12 @@ int main_manasa_and_combinatorics() {
   for (unsigned iT = 0; iT < T; ++iT) {
     uint64_t n;
     cin >> n;
-    cout << ModularPrimeBinomialCoefficient<TModular>(3 * n, n) -
-                ModularPrimeBinomialCoefficient<TModular>(3 * n, n - 1) * 2 +
-                ModularPrimeBinomialCoefficient<TModular>(3 * n, n - 2)
+    cout << modular::mstatic::BinomialCoefficientPrime<TModular>(3 * n, n) -
+                modular::mstatic::BinomialCoefficientPrime<TModular>(3 * n,
+                                                                     n - 1) *
+                    2 +
+                modular::mstatic::BinomialCoefficientPrime<TModular>(3 * n,
+                                                                     n - 2)
          << endl;
   }
   return 0;
