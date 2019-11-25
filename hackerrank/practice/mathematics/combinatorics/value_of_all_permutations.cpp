@@ -1,7 +1,7 @@
 // https://www.hackerrank.com/challenges/value-of-all-permutations
 
 #include "common/modular/proxy/factorial.h"
-#include "common/modular/proxy/modular_proxy.h"
+#include "common/modular_proxy.h"
 #include "common/stl/base.h"
 #include "common/vector/read.h"
 

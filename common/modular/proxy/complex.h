@@ -1,24 +1,26 @@
 #pragma once
 
-#include "common/modular/proxy/modular_proxy.h"
+#include "common/modular/proxy/proxy.h"
 #include "common/numeric/complex.h"
 
+namespace modular {
+namespace proxy {
 template <bool is_modular_prime = true>
-class PModularComplex {
+class Complex {
  public:
   using TValue = int64_t;
-  using TComplex = Complex<TValue>;
-  using TModularProxy = ModularProxy<is_modular_prime, true, TValue>;
+  using TComplex = ::Complex<TValue>;
+  using TProxy = Proxy<is_modular_prime, true, TValue>;
 
  protected:
-  TModularProxy proxy;
+  TProxy proxy;
 
  public:
-  PModularComplex(TValue mod = 1000000007) : proxy(mod) {}
-  PModularComplex(const TModularProxy& _proxy) : proxy(_proxy) {}
+  Complex(TValue mod = 1000000007) : proxy(mod) {}
+  Complex(const TProxy& _proxy) : proxy(_proxy) {}
 
-  TModularProxy GetProxy() const { return proxy; }
-  void SetProxy(const TModularProxy& _proxy) { proxy = _proxy; }
+  TProxy GetProxy() const { return proxy; }
+  void SetProxy(const TProxy& _proxy) { proxy = _proxy; }
   TValue GetMod() const { return proxy.GetMod(); }
   void SetMod(TValue mod) { proxy.SetMod(mod); }
 
@@ -66,3 +68,5 @@ class PModularComplex {
     return (pow < 0) ? PowU(Inverse(x), -pow) : PowU(x, pow);
   }
 };
+}  // namespace proxy
+}  // namespace modular

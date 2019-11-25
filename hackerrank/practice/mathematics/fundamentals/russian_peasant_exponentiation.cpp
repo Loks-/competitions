@@ -3,7 +3,7 @@
 #include "common/modular/proxy/complex.h"
 #include "common/stl/base.h"
 
-using TComplexProxy = PModularComplex<false>;
+using TComplexProxy = modular::proxy::Complex<false>;
 using TComplex = TComplexProxy::TComplex;
 
 int main_russian_peasant_exponentiation() {

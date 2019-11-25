@@ -1,7 +1,7 @@
 // https://www.hackerrank.com/challenges/period
 
-#include "common/modular/proxy/modular_proxy.h"
 #include "common/modular/utils/multiplicative_order.h"
+#include "common/modular_proxy.h"
 #include "common/numeric/utils/gcd.h"
 #include "common/stl/base.h"
 

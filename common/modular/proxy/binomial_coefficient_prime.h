@@ -2,7 +2,7 @@
 
 #include "common/base.h"
 #include "common/modular/proxy/factorial.h"
-#include "common/modular/proxy/modular_proxy.h"
+#include "common/modular_proxy.h"
 
 // Based on Lucas's theorem.
 

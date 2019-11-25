@@ -1,9 +1,9 @@
 // https://www.hackerrank.com/challenges/eugene-and-big-number
 
-#include "common/modular/proxy/modular_proxy.h"
+#include "common/modular/proxy/proxy.h"
 #include "common/stl/base.h"
 
-using TModularProxy = ModularProxy<false, false, uint64_t>;
+using TModularProxy = modular::proxy::Proxy<false, false, uint64_t>;
 
 int main_eugene_and_big_number() {
   unsigned T;

@@ -2,7 +2,7 @@
 
 #include "common/factorization/base.h"
 #include "common/factorization/primality_test.h"
-#include "common/modular/proxy/modular_proxy.h"
+#include "common/modular/proxy/proxy.h"
 #include "common/numeric/utils/gcd.h"
 #include <algorithm>
 #include <vector>
@@ -16,7 +16,7 @@ class Factorization {
   PrimalityTest primality_test;
 
   uint64_t FindFactor32(uint64_t n, uint64_t start) {
-    ModularProxy<false, true> proxy(n);
+    modular::proxy::Proxy<false, true> proxy(n);
     auto next = [&](uint64_t k) { return proxy.Add(proxy.Mult(k, k), 1); };
     uint64_t x = start, y = start, d = 1;
     for (; d == 1;) {
@@ -28,7 +28,7 @@ class Factorization {
   }
 
   uint64_t FindFactor64(uint64_t n, uint64_t start) {
-    ModularProxy<false, false> proxy(n);
+    modular::proxy::Proxy<false, false> proxy(n);
     auto next = [&](uint64_t k) { return proxy.Add(proxy.Mult(k, k), 1); };
     uint64_t x = start, y = start, d = 1;
     for (; d == 1;) {

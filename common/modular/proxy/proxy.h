@@ -2,12 +2,14 @@
 
 #include "common/modular/arithmetic.h"
 
+namespace modular {
+namespace proxy {
 template <bool is_prime = true, bool is_32bit = true, class _TValue = uint64_t>
-class ModularProxy {
+class Proxy {
  public:
   using TValue = _TValue;
-  using TBase = modular::Arithmetic<is_prime, is_32bit, TValue>;
-  using TSelf = ModularProxy<is_prime, is_32bit, TValue>;
+  using TBase = Arithmetic<is_prime, is_32bit, TValue>;
+  using TSelf = Proxy<is_prime, is_32bit, TValue>;
 
  protected:
   TValue mod;
@@ -18,7 +20,7 @@ class ModularProxy {
   TValue GetMod() const { return mod; }
   void SetMod(TValue _mod) { mod = _mod; }
 
-  ModularProxy(TValue _mod = 1000000007) : mod(_mod) {}
+  Proxy(TValue _mod = 1000000007) : mod(_mod) {}
 
   TValue ApplyU(uint64_t value) const { return TBase::ApplyU(value, mod); }
   TValue ApplyS(int64_t value) const { return TBase::ApplyS(value, mod); }
@@ -80,6 +82,5 @@ class ModularProxy {
     return TBase::PowSSafe(x, pow, mod);
   }
 };
-
-using TModularProxy_P32U = ModularProxy<true, true, uint64_t>;
-using TModularProxy_C32U = ModularProxy<false, true, uint64_t>;
+}  // namespace proxy
+}  // namespace modular

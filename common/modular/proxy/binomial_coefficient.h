@@ -3,8 +3,8 @@
 #include "common/base.h"
 #include "common/factorization/utils/factorization_base.h"
 #include "common/modular/proxy/factorial.h"
-#include "common/modular/proxy/modular_proxy.h"
 #include "common/modular/utils/merge_remainders.h"
+#include "common/modular_proxy.h"
 #include "common/numeric/utils/pow.h"
 #include <tuple>
 #include <vector>
