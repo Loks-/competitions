@@ -9,7 +9,7 @@
 #include "common/stl/base.h"
 
 using TBIT = BIT<TModularD>;
-using TFibonacci = ModularFibonacciMatrix<TModularD>;
+using TFibonacci = modular::mstatic::FibonacciMatrix<TModularD>;
 
 int main_fibonacci_numbers_tree() {
   unsigned N, Q;

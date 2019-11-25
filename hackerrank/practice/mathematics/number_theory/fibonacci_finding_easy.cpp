@@ -4,7 +4,7 @@
 #include "common/modular_io.h"
 #include "common/stl/base.h"
 
-using TFibonacci = ModularFibonacciMatrix<TModularD>;
+using TFibonacci = modular::mstatic::FibonacciMatrix<TModularD>;
 
 int main_fibonacci_finding_easy() {
   unsigned T;

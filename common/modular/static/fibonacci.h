@@ -2,13 +2,15 @@
 
 #include <vector>
 
+namespace modular {
+namespace mstatic {
 template <class TModular>
-class ModularFibonacci {
+class Fibonacci {
  protected:
   std::vector<TModular> vf;
 
  public:
-  ModularFibonacci() : vf({0, 1}) {}
+  Fibonacci() : vf({0, 1}) {}
 
   void Adjust(unsigned n) {
     unsigned i = unsigned(vf.size());
@@ -22,3 +24,5 @@ class ModularFibonacci {
 
   TModular operator()(unsigned n) { return Get(n); }
 };
+}  // namespace mstatic
+}  // namespace modular

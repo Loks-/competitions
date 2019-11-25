@@ -4,8 +4,10 @@
 #include "common/linear_algebra/matrix_static_size.h"
 #include <utility>
 
+namespace modular {
+namespace mstatic {
 template <class TModular>
-class ModularFibonacciMatrix {
+class FibonacciMatrix {
  public:
   using TMatrix = SquareMatrixStaticSize<TModular, 2>;
 
@@ -41,3 +43,5 @@ class ModularFibonacciMatrix {
     return p.first * f0 + p.second * f1;
   }
 };
+}  // namespace mstatic
+}  // namespace modular

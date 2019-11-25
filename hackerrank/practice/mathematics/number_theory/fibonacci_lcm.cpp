@@ -8,7 +8,7 @@
 
 #include <unordered_map>
 
-using TFibonacci = ModularFibonacciMatrix<TModularD>;
+using TFibonacci = modular::mstatic::FibonacciMatrix<TModularD>;
 
 int main_fibonacci_lcm() {
   unsigned N;
