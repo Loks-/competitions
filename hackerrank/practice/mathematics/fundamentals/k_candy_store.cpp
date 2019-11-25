@@ -5,7 +5,8 @@
 #include "common/stl/base.h"
 
 using TModular = TModular_C32<1000000000>;
-using TBinomialCoefficient = ModularBinomialCoefficientTable<TModular>;
+using TBinomialCoefficient =
+    modular::mstatic::BinomialCoefficientTable<TModular>;
 
 int main_k_candy_store() {
   TBinomialCoefficient bc;

@@ -6,8 +6,10 @@
 // If n is big it's better to use other classes:
 //   binomial_coefficient_prime.h for prime modular.
 //   binomial_coeffient.h for general case.
+namespace modular {
+namespace mstatic {
 template <class TModular>
-class ModularBinomialCoefficientTable {
+class BinomialCoefficientTable {
  protected:
   std::vector<std::vector<TModular>> nCr_table;
 
@@ -27,3 +29,5 @@ class ModularBinomialCoefficientTable {
     return nCr_table[n][k];
   }
 };
+}  // namespace mstatic
+}  // namespace modular

@@ -7,7 +7,7 @@
 using TModular = TModular_C32<1000000000>;
 
 int main_ncr_table() {
-  ModularBinomialCoefficientTable<TModular> table;
+  modular::mstatic::BinomialCoefficientTable<TModular> table;
   unsigned T, n;
   cin >> T;
   for (unsigned iT = 0; iT < T; ++iT) {
