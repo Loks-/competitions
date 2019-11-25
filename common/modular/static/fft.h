@@ -6,8 +6,10 @@
 #include <algorithm>
 #include <vector>
 
+namespace modular {
+namespace mstatic {
 template <class TModular>
-class ModularFFT {
+class FFT {
  public:
   using TVector = std::vector<TModular>;
 
@@ -73,11 +75,11 @@ class ModularFFT {
     return n;
   }
 
-  ModularFFT(unsigned n = 0) { Init(n); }
+  FFT(unsigned n = 0) { Init(n); }
 
   unsigned GetMaxN() const { return maxn; }
 
-  TVector FFT(unsigned n, const TVector& vx) const {
+  TVector Apply(unsigned n, const TVector& vx) const {
     assert((n > 0) && (maxn % n == 0));
     unsigned k = 0;
     for (; (1u << k) < n;) ++k;
@@ -100,9 +102,11 @@ class ModularFFT {
     return output;
   }
 
-  TVector FFTI(unsigned n, const TVector& vx) const {
-    TVector output = FFT(n, vx);
+  TVector ApplyI(unsigned n, const TVector& vx) const {
+    TVector output = Apply(n, vx);
     FFTI_Adjust(output);
     return output;
   }
 };
+}  // namespace mstatic
+}  // namespace modular
