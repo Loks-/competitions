@@ -8,7 +8,7 @@
 int main_gcd_sequence() {
   factorization::ple::Mobius primes_list(100000);
   primes_list.Precalc();
-  ModularFactorial<TModularD> f;
+  modular::mstatic::Factorial<TModularD> f;
 
   unsigned T, N, K;
   cin >> T;

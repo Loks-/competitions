@@ -2,13 +2,15 @@
 
 #include <vector>
 
+namespace modular {
+namespace mstatic {
 template <class TModular, bool keep_inverted = true>
-class ModularFactorial {
+class Factorial {
  protected:
   std::vector<TModular> vf, vfi;
 
  public:
-  ModularFactorial() {
+  Factorial() {
     vf.push_back(TModular(1));
     if (keep_inverted) vfi.push_back(TModular(1));
   }
@@ -39,3 +41,5 @@ class ModularFactorial {
                           : vf[n] / (vf[k] * vf[n - k]));
   }
 };
+}  // namespace mstatic
+}  // namespace modular

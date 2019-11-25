@@ -6,7 +6,7 @@
 
 #include <string>
 
-using TFactorial = ModularFactorial<TModularD, false>;
+using TFactorial = modular::mstatic::Factorial<TModularD, false>;
 
 int main_game_of_thrones_ii() {
   TFactorial f;

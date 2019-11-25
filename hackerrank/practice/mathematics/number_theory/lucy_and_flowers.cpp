@@ -7,7 +7,7 @@
 using TModular = TModular_P32<1000000009>;
 
 int main_lucy_and_flowers() {
-  ModularFactorial<TModular, true> f;
+  modular::mstatic::Factorial<TModular, true> f;
   unsigned T, N;
   cin >> T;
   for (unsigned it = 0; it < T; ++it) {

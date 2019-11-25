@@ -5,7 +5,7 @@
 #include "common/modular_io.h"
 #include "common/stl/base.h"
 
-using TFactorial = ModularFactorial<TModularD, true>;
+using TFactorial = modular::mstatic::Factorial<TModularD, true>;
 
 int main_divisor_exploration_3() {
   TFactorial f;

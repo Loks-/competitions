@@ -8,7 +8,7 @@
 #include "common/stl/base.h"
 
 using TModular = TModular_P32<1000000009>;
-using TFactorial = ModularFactorial<TModular>;
+using TFactorial = modular::mstatic::Factorial<TModular>;
 using TTree = TreeGraphEI<TModular>;
 
 // We don't need LCA here, but with LCA code is simpler.

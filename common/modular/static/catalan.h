@@ -3,9 +3,9 @@
 #include "common/modular/static/factorial.h"
 
 template <class TModular>
-class ModularCatalan : public ModularFactorial<TModular, true> {
+class ModularCatalan : public modular::mstatic::Factorial<TModular, true> {
  public:
-  using TBase = ModularFactorial<TModular, true>;
+  using TBase = modular::mstatic::Factorial<TModular, true>;
 
   TModular Catalan(unsigned n) {
     TBase::Adjust(2 * n + 1);

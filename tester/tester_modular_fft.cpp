@@ -7,7 +7,7 @@
 #include <vector>
 
 using TModular = TModular_P32<7340033>;
-using TFactorial = ModularFactorial<TModular>;
+using TFactorial = modular::mstatic::Factorial<TModular>;
 using TFFT = ModularFFT<TModular>;
 
 bool TestModularFFT() {

@@ -5,7 +5,7 @@
 #include "common/modular_io.h"
 #include "common/stl/base.h"
 
-using TFactorial = ModularFactorial<TModularD>;
+using TFactorial = modular::mstatic::Factorial<TModularD>;
 
 int main_permutation_problem() {
   const uint64_t M = TModularD::GetMod();

@@ -5,7 +5,7 @@
 #include "common/numeric/utils/gcd.h"
 #include "common/stl/base.h"
 
-using TFactorial = ModularFactorial<TModularD>;
+using TFactorial = modular::mstatic::Factorial<TModularD>;
 
 int main_grid_lines() {
   TFactorial f;

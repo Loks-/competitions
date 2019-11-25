@@ -9,7 +9,7 @@ template <class TModular>
 class ModularSumOfPowers {
  public:
   using TBernoulli = Bernoulli<TModular, true>;
-  using TFactorial = ModularFactorial<TModular, true>;
+  using TFactorial = modular::mstatic::Factorial<TModular, true>;
 
  protected:
   TBernoulli b;

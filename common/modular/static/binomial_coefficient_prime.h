@@ -7,7 +7,7 @@
 
 template <class TModular>
 inline TModular ModularPrimeBinomialCoefficient(uint64_t n, uint64_t k,
-                                                ModularFactorial<TModular>& f) {
+                                                modular::mstatic::Factorial<TModular>& f) {
   if (k > n) return 0;
   uint64_t p = TModular::GetMod();
   TModular r = 1;
@@ -21,6 +21,6 @@ inline TModular ModularPrimeBinomialCoefficient(uint64_t n, uint64_t k,
 
 template <class TModular>
 inline TModular ModularPrimeBinomialCoefficient(uint64_t n, uint64_t k) {
-  thread_local ModularFactorial<TModular> f;
+  thread_local modular::mstatic::Factorial<TModular> f;
   return ModularPrimeBinomialCoefficient(n, k, f);
 }

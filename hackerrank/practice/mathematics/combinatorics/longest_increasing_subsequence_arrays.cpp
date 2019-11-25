@@ -4,7 +4,7 @@
 #include "common/modular_io.h"
 #include "common/stl/base.h"
 
-using TFactorial = ModularFactorial<TModularD>;
+using TFactorial = modular::mstatic::Factorial<TModularD>;
 
 int main_longest_increasing_subsequence_arrays() {
   TFactorial f;

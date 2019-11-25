@@ -5,7 +5,7 @@
 #include "common/stl/base.h"
 
 int main_computer_virus() {
-  ModularFactorial<TModularD> f;
+  modular::mstatic::Factorial<TModularD> f;
   unsigned T, K;
   cin >> T;
   for (unsigned it = 0; it < T; ++it) {

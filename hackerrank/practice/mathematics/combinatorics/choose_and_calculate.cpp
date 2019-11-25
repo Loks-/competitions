@@ -5,7 +5,7 @@
 #include "common/stl/base.h"
 #include "common/vector/read.h"
 
-using TFactorial = ModularFactorial<TModularD>;
+using TFactorial = modular::mstatic::Factorial<TModularD>;
 
 int main_choose_and_calculate() {
   TFactorial f;

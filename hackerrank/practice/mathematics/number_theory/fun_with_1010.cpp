@@ -6,7 +6,7 @@
 #include "common/stl/base.h"
 
 using TModular = TModular_P32<2000003>;
-using TFactorial = ModularFactorial<TModular>;
+using TFactorial = modular::mstatic::Factorial<TModular>;
 
 int main_fun_with_1010() {
   TModular h = TModular(2).Inverse();
