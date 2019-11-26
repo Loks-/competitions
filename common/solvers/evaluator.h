@@ -23,9 +23,8 @@ class Evaluator {
     return l.score < r.score;
   }
 };
-}  // namespace solvers
 
-inline std::ostream& operator<<(std::ostream& os,
-                                const solvers::Evaluator::Result& r) {
+inline std::ostream& operator<<(std::ostream& os, const Evaluator::Result& r) {
   return os << (r.correct ? r.score : 0);
 }
+}  // namespace solvers

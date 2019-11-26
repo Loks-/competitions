@@ -5,13 +5,16 @@
 #include <istream>
 #include <ostream>
 
+namespace geometry {
+namespace d2 {
 template <class T>
-inline std::ostream& operator<<(std::ostream& s,
-                                const geometry::d2::Ellipse<T>& p) {
+inline std::ostream& operator<<(std::ostream& s, const Ellipse<T>& p) {
   return s << p.f1 << " " << p.f2 << " " << p.a;
 }
 
 template <class T>
-inline std::istream& operator>>(std::istream& s, geometry::d2::Ellipse<T>& p) {
+inline std::istream& operator>>(std::istream& s, Ellipse<T>& p) {
   return s >> p.f1 >> p.f2 >> p.a;
 }
+}  // namespace d2
+}  // namespace geometry

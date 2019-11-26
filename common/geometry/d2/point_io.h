@@ -4,13 +4,16 @@
 #include <istream>
 #include <ostream>
 
+namespace geometry {
+namespace d2 {
 template <class T>
-inline std::ostream& operator<<(std::ostream& s,
-                                const geometry::d2::Point<T>& p) {
+inline std::ostream& operator<<(std::ostream& s, const Point<T>& p) {
   return s << p.x << " " << p.y;
 }
 
 template <class T>
-inline std::istream& operator>>(std::istream& s, geometry::d2::Point<T>& p) {
+inline std::istream& operator>>(std::istream& s, Point<T>& p) {
   return s >> p.x >> p.y;
 }
+}  // namespace d2
+}  // namespace geometry
