@@ -4,7 +4,7 @@
 #include "common/factorization/utils/coprime_count.h"
 #include "common/factorization/utils/coprime_sum.h"
 #include "common/factorization/utils/divisors.h"
-#include "common/numeric/long_unsigned_io.h"
+#include "common/numeric/long/unsigned_io.h"
 #include "common/numeric/utils/gcd.h"
 #include "common/stl/base.h"
 

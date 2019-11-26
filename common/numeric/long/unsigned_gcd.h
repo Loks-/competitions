@@ -1,6 +1,6 @@
 #pragma once
 
-#include "common/numeric/long_unsigned.h"
+#include "common/numeric/long/unsigned.h"
 #include <algorithm>
 
 LongUnsigned GCD(LongUnsigned a, LongUnsigned b) {

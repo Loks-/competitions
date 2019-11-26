@@ -4,7 +4,9 @@
 #include <algorithm>
 #include <vector>
 
-class LongUnsigned {
+namespace numeric {
+namespace nlong {
+class Unsigned {
  public:
   using TData = std::vector<uint32_t>;
 
@@ -15,19 +17,19 @@ class LongUnsigned {
   using iterator = uint32_t*;
   using const_iterator = const uint32_t*;
 
-  LongUnsigned() {}
+  Unsigned() {}
 
-  LongUnsigned(uint32_t u) {
+  Unsigned(uint32_t u) {
     if (u) data.push_back(u);
   }
 
-  LongUnsigned(uint64_t u) {
+  Unsigned(uint64_t u) {
     data.push_back(uint32_t(u));
     data.push_back(uint32_t(u >> 32));
     Normalize();
   }
 
-  LongUnsigned(const TData& _data) : data(_data) {}
+  Unsigned(const TData& _data) : data(_data) {}
 
   void Normalize() {
     for (; (data.size() > 0) && (data.back() == 0);) data.pop_back();
@@ -42,12 +44,12 @@ class LongUnsigned {
   const_iterator begin() const { return &data.front(); }
   iterator end() { return begin() + data.size(); }
   const_iterator end() const { return begin() + data.size(); }
-  void swap(LongUnsigned& lu) { data.swap(lu.data); }
+  void swap(Unsigned& lu) { data.swap(lu.data); }
 
-  bool operator==(const LongUnsigned& lu) const { return data == lu.data; }
-  bool operator!=(const LongUnsigned& lu) const { return data != lu.data; }
+  bool operator==(const Unsigned& lu) const { return data == lu.data; }
+  bool operator!=(const Unsigned& lu) const { return data != lu.data; }
 
-  bool operator<(const LongUnsigned& lu) const {
+  bool operator<(const Unsigned& lu) const {
     if (Size() < lu.Size()) return true;
     if (lu.Size() < Size()) return false;
     for (size_t i = Size(); i--;) {
@@ -57,7 +59,7 @@ class LongUnsigned {
     return false;
   }
 
-  bool operator<=(const LongUnsigned& lu) const {
+  bool operator<=(const Unsigned& lu) const {
     if (Size() < lu.Size()) return true;
     if (lu.Size() < Size()) return false;
     for (size_t i = Size(); i--;) {
@@ -67,12 +69,12 @@ class LongUnsigned {
     return true;
   }
 
-  bool operator>(const LongUnsigned& lu) const { return !(lu <= (*this)); }
-  bool operator>=(const LongUnsigned& lu) const { return !(lu < (*this)); }
+  bool operator>(const Unsigned& lu) const { return !(lu <= (*this)); }
+  bool operator>=(const Unsigned& lu) const { return !(lu < (*this)); }
 
-  LongUnsigned operator+(uint64_t u) const {
+  Unsigned operator+(uint64_t u) const {
     if (u == 0) return (*this);
-    LongUnsigned lu;
+    Unsigned lu;
     lu.data.reserve(data.size());
     uint64_t t64 = u;
     for (uint32_t ud : data) {
@@ -84,9 +86,9 @@ class LongUnsigned {
     return lu;
   }
 
-  LongUnsigned operator*(uint32_t u) const {
-    if (u == 0) return LongUnsigned();
-    LongUnsigned lu;
+  Unsigned operator*(uint32_t u) const {
+    if (u == 0) return Unsigned();
+    Unsigned lu;
     lu.data.reserve(data.size() + 1);
     uint64_t u64 = u, t64 = 0;
     for (uint32_t ud : data) {
@@ -98,20 +100,20 @@ class LongUnsigned {
     return lu;
   }
 
-  LongUnsigned operator*(uint64_t u) const {
-    if (u == 0) return LongUnsigned();
-    LongUnsigned lu1 = *this * uint32_t(u);
+  Unsigned operator*(uint64_t u) const {
+    if (u == 0) return Unsigned();
+    Unsigned lu1 = *this * uint32_t(u);
     u >>= 32;
     if (u == 0) return lu1;
-    LongUnsigned lu2 = *this * uint32_t(u);
+    Unsigned lu2 = *this * uint32_t(u);
     lu2.data.insert(lu2.data.begin(), 0);
     return lu1 + lu2;
   }
 
-  LongUnsigned operator/(uint32_t u) const {
+  Unsigned operator/(uint32_t u) const {
     assert(u);
-    if (data.empty()) return LongUnsigned();
-    LongUnsigned lu;
+    if (data.empty()) return Unsigned();
+    Unsigned lu;
     lu.data.reserve(data.size());
     uint64_t u64 = u, t64 = data.back();
     if (t64 >= u64) {
@@ -137,10 +139,10 @@ class LongUnsigned {
     return uint32_t(t64);
   }
 
-  LongUnsigned operator+(const LongUnsigned& r) const {
+  Unsigned operator+(const Unsigned& r) const {
     if (Empty()) return r;
     if (r.Empty()) return *this;
-    LongUnsigned lu;
+    Unsigned lu;
     size_t l = std::max(data.size(), r.data.size());
     lu.data.reserve(l);
     uint64_t t64 = 0;
@@ -154,10 +156,10 @@ class LongUnsigned {
     return lu;
   }
 
-  LongUnsigned operator-(const LongUnsigned& r) const {
+  Unsigned operator-(const Unsigned& r) const {
     if (r.Empty()) return *this;
     assert(r <= *this);
-    LongUnsigned lu;
+    Unsigned lu;
     size_t l = data.size();
     lu.data.reserve(l);
     int64_t i64 = 0;
@@ -172,53 +174,53 @@ class LongUnsigned {
     return lu;
   }
 
-  LongUnsigned& operator+=(uint64_t u) {
-    LongUnsigned t = (*this + u);
+  Unsigned& operator+=(uint64_t u) {
+    Unsigned t = (*this + u);
     swap(t);
     return *this;
   }
 
-  LongUnsigned& operator*=(uint32_t u) {
-    LongUnsigned t = (*this * u);
+  Unsigned& operator*=(uint32_t u) {
+    Unsigned t = (*this * u);
     swap(t);
     return *this;
   }
 
-  LongUnsigned& operator*=(uint64_t u) {
-    LongUnsigned t = (*this * u);
+  Unsigned& operator*=(uint64_t u) {
+    Unsigned t = (*this * u);
     swap(t);
     return *this;
   }
 
-  LongUnsigned& operator/=(uint32_t u) {
-    LongUnsigned t = (*this / u);
+  Unsigned& operator/=(uint32_t u) {
+    Unsigned t = (*this / u);
     swap(t);
     return *this;
   }
 
-  LongUnsigned& operator+=(const LongUnsigned& r) {
-    LongUnsigned t = (*this + r);
+  Unsigned& operator+=(const Unsigned& r) {
+    Unsigned t = (*this + r);
     swap(t);
     return *this;
   }
 
-  LongUnsigned& operator-=(const LongUnsigned& r) {
-    LongUnsigned t = (*this - r);
+  Unsigned& operator-=(const Unsigned& r) {
+    Unsigned t = (*this - r);
     swap(t);
     return *this;
   }
 
-  LongUnsigned& ShiftBlocksLeft(unsigned ublocks) {
+  Unsigned& ShiftBlocksLeft(unsigned ublocks) {
     if (ublocks) data.erase(data.begin(), data.begin() + ublocks);
     return *this;
   }
 
-  LongUnsigned& ShiftBlocksRight(unsigned ublocks) {
+  Unsigned& ShiftBlocksRight(unsigned ublocks) {
     if (ublocks && !Empty()) data.insert(data.begin(), ublocks, 0);
     return *this;
   }
 
-  LongUnsigned& ShiftBitsLeft(unsigned ubits) {
+  Unsigned& ShiftBitsLeft(unsigned ubits) {
     ShiftBlocksLeft(ubits / 32);
     ubits %= 32;
     if (ubits && !Empty()) {
@@ -231,7 +233,7 @@ class LongUnsigned {
     return *this;
   }
 
-  LongUnsigned& ShiftBitsRight(unsigned ubits) {
+  Unsigned& ShiftBitsRight(unsigned ubits) {
     ShiftBlocksRight(ubits / 32);
     ubits %= 32;
     if (ubits && !Empty()) {
@@ -245,25 +247,25 @@ class LongUnsigned {
     return *this;
   }
 
-  LongUnsigned& operator>>=(unsigned ubits) { return ShiftBitsLeft(ubits); }
-  LongUnsigned& operator<<=(unsigned ubits) { return ShiftBitsRight(ubits); }
+  Unsigned& operator>>=(unsigned ubits) { return ShiftBitsLeft(ubits); }
+  Unsigned& operator<<=(unsigned ubits) { return ShiftBitsRight(ubits); }
 
-  LongUnsigned operator<<(unsigned ubits) const {
-    LongUnsigned t(*this);
+  Unsigned operator<<(unsigned ubits) const {
+    Unsigned t(*this);
     t <<= ubits;
     return t;
   }
 
-  LongUnsigned operator>>(unsigned ubits) const {
-    LongUnsigned t(*this);
+  Unsigned operator>>(unsigned ubits) const {
+    Unsigned t(*this);
     t >>= ubits;
     return t;
   }
 
-  LongUnsigned operator/(const LongUnsigned& r) const {
+  Unsigned operator/(const Unsigned& r) const {
     assert(!r.Empty());
-    if (Empty()) return LongUnsigned();
-    LongUnsigned tl(*this), tr(r), lu;
+    if (Empty()) return Unsigned();
+    Unsigned tl(*this), tr(r), lu;
     unsigned total_shift = 1 + std::max(Size(), r.Size()) - r.Size();
     tr.ShiftBlocksRight(total_shift);
     for (unsigned i = 0; i < 32 * total_shift; ++i) {
@@ -277,10 +279,10 @@ class LongUnsigned {
     return lu;
   }
 
-  LongUnsigned operator%(const LongUnsigned& r) const {
+  Unsigned operator%(const Unsigned& r) const {
     assert(!r.Empty());
-    if (Empty()) return LongUnsigned();
-    LongUnsigned tl(*this), tr(r);
+    if (Empty()) return Unsigned();
+    Unsigned tl(*this), tr(r);
     unsigned total_shift = 1 + std::max(Size(), r.Size()) - r.Size();
     tr.ShiftBlocksRight(total_shift);
     for (unsigned i = 0; i < 32 * total_shift; ++i) {
@@ -292,22 +294,26 @@ class LongUnsigned {
     return tl;
   }
 
-  LongUnsigned& operator/=(const LongUnsigned& r) {
-    LongUnsigned t = (*this / r);
+  Unsigned& operator/=(const Unsigned& r) {
+    Unsigned t = (*this / r);
     swap(t);
     return *this;
   }
 
-  LongUnsigned& operator%=(const LongUnsigned& r) {
-    LongUnsigned t = (*this % r);
+  Unsigned& operator%=(const Unsigned& r) {
+    Unsigned t = (*this % r);
     swap(t);
     return *this;
   }
 
   std::vector<unsigned> ToVector(uint32_t base) const {
-    LongUnsigned t(*this);
+    Unsigned t(*this);
     std::vector<unsigned> v;
     for (; !t.Empty(); t /= base) v.push_back(unsigned(t % base));
     return v;
   }
 };
+}  // namespace nlong
+}  // namespace numeric
+
+using LongUnsigned = numeric::nlong::Unsigned;

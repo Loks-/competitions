@@ -1,8 +1,8 @@
 #include "common/coordinate_compression.h"
-#include "common/numeric/long_unsigned.h"
-#include "common/numeric/long_unsigned_hash.h"
-#include "common/numeric/long_unsigned_io.h"
-#include "common/numeric/utils/long_unsigned_gcd.h"
+#include "common/numeric/long/unsigned.h"
+#include "common/numeric/long/unsigned_gcd.h"
+#include "common/numeric/long/unsigned_hash.h"
+#include "common/numeric/long/unsigned_io.h"
 #include "common/stl/base.h"
 
 int main_cryptopangrams() {

@@ -3,7 +3,7 @@
 #include "common/numeric/continued_fraction/continued_fraction.h"
 #include "common/numeric/continued_fraction/convergent.h"
 #include "common/numeric/fraction.h"
-#include "common/numeric/long_unsigned.h"
+#include "common/numeric/long/unsigned.h"
 #include "common/stl/base.h"
 
 using numeric::cf::CFConvergent;

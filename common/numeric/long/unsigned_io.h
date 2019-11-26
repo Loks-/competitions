@@ -1,15 +1,16 @@
 #pragma once
 
-#include "common/numeric/long_unsigned.h"
+#include "common/numeric/long/unsigned.h"
 #include <iostream>
 #include <istream>
 #include <ostream>
 #include <string>
 
-inline LongUnsigned LongUnsignedParse(const std::string& s,
-                                      unsigned base = 10) {
+namespace numeric {
+namespace nlong {
+inline Unsigned UnsignedParse(const std::string& s, unsigned base = 10) {
   assert(base == 10);
-  LongUnsigned lu;
+  Unsigned lu;
   for (char c : s) {
     lu *= base;
     assert((c >= '0') && (c <= '9'));
@@ -18,20 +19,20 @@ inline LongUnsigned LongUnsignedParse(const std::string& s,
   return lu;
 }
 
-inline std::istream& operator>>(std::istream& s, LongUnsigned& lu) {
+inline std::istream& operator>>(std::istream& s, Unsigned& lu) {
   std::string str;
   s >> str;
-  lu = LongUnsignedParse(str);
+  lu = UnsignedParse(str);
   return s;
 }
 
-inline LongUnsigned LongUnsignedReadBase(unsigned base = 10) {
+inline Unsigned UnsignedReadBase(unsigned base = 10) {
   std::string s;
   std::cin >> s;
-  return LongUnsignedParse(s, base);
+  return UnsignedParse(s, base);
 }
 
-inline std::string ToString(const LongUnsigned& lu, unsigned base = 10) {
+inline std::string ToString(const Unsigned& lu, unsigned base = 10) {
   if (lu.Empty()) return "0";
   assert(base == 10);
   std::vector<unsigned> v = lu.ToVector(base);
@@ -42,13 +43,14 @@ inline std::string ToString(const LongUnsigned& lu, unsigned base = 10) {
   return s;
 }
 
-inline std::ostream& operator<<(std::ostream& s, const LongUnsigned& lu) {
+inline std::ostream& operator<<(std::ostream& s, const Unsigned& lu) {
   return s << ToString(lu);
 }
 
-inline void Write(const LongUnsigned& lu, bool add_eod = true,
-                  unsigned base = 10) {
+inline void Write(const Unsigned& lu, bool add_eod = true, unsigned base = 10) {
   std::string s = ToString(lu, base);
   std::cout << s;
   if (add_eod) std::cout << std::endl;
 }
+}  // namespace nlong
+}  // namespace numeric
