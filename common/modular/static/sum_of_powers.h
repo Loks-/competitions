@@ -10,7 +10,7 @@ namespace mstatic {
 template <class TModular>
 class SumOfPowers {
  public:
-  using TBernoulli = Bernoulli<TModular, true>;
+  using TBernoulli = numeric::Bernoulli<TModular, true>;
   using TFactorial = Factorial<TModular, true>;
 
  protected:

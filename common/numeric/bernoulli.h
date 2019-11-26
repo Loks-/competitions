@@ -3,6 +3,7 @@
 #include "common/base.h"
 #include <vector>
 
+namespace numeric {
 template <class TTValue, bool positive = false>
 class Bernoulli {
  public:
@@ -66,3 +67,4 @@ class Bernoulli {
     return inverted[n];
   }
 };
+}  // namespace numeric
