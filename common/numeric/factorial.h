@@ -3,6 +3,7 @@
 #include "common/base.h"
 #include <vector>
 
+namespace numeric {
 class Factorial {
  protected:
   std::vector<uint64_t> vf;
@@ -27,3 +28,4 @@ class Factorial {
     return vf[n] / (vf[k] * vf[n - k]);
   }
 };
+}  // namespace numeric

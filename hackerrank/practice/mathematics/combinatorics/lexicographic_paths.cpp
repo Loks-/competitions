@@ -6,7 +6,7 @@
 #include <string>
 
 int main_lexicographic_paths() {
-  Factorial f;
+  numeric::Factorial f;
   unsigned T, x, y;
   cin >> T;
   for (unsigned iT = 0; iT < T; ++iT) {

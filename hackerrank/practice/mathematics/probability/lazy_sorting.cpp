@@ -4,7 +4,7 @@
 #include "common/stl/base.h"
 
 int main_lazy_sorting() {
-  Factorial f;
+  numeric::Factorial f;
   unsigned N, x, lx = 0;
   cin >> N;
   vector<unsigned> v(101, 0);
