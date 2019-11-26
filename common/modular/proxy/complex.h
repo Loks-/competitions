@@ -9,7 +9,7 @@ template <bool is_modular_prime = true>
 class Complex {
  public:
   using TValue = int64_t;
-  using TComplex = ::Complex<TValue>;
+  using TComplex = numeric::Complex<TValue>;
   using TProxy = Proxy<is_modular_prime, true, TValue>;
 
  protected:

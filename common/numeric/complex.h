@@ -2,6 +2,7 @@
 
 #include "common/base.h"
 
+namespace numeric {
 template <class TTValue>
 class Complex {
  public:
@@ -69,3 +70,4 @@ class Complex {
       return PowU(pow);
   }
 };
+}  // namespace numeric
