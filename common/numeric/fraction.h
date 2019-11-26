@@ -3,6 +3,7 @@
 #include "common/base.h"
 #include "common/numeric/utils/gcd.h"
 
+namespace numeric {
 template <class TTValue>
 class Fraction {
  public:
@@ -42,5 +43,6 @@ class Fraction {
     return numerator * r.denominator < r.numerator * denominator;
   }
 };
+}  // namespace numeric
 
-using TIFraction = Fraction<int64_t>;
+using TIFraction = numeric::Fraction<int64_t>;
