@@ -11,7 +11,7 @@
 #include <utility>
 
 int main_assignment_problem() {
-  LogDoubleFactorial f;
+  numeric::LogDoubleFactorial f;
   unsigned maxm = local_run ? 65 : 251, maxm2 = maxm * maxm;
   vector<double> v(maxm * maxm * maxm);  // layers max_length m
   for (unsigned l = 1; l < maxm; ++l) v[1 * maxm2 + l * maxm + l] = 1.0;
@@ -34,9 +34,9 @@ int main_assignment_problem() {
   unsigned T, M, N;
   cin >> T;
   for (unsigned iT = 0; iT < T; ++iT) {
-    stat::Moment1<LogDouble> s;
+    stat::Moment1<numeric::LogDouble> s;
     cin >> M >> N;
-    LogDouble b = 1.0;
+    numeric::LogDouble b = 1.0;
     for (unsigned l = 1; l <= min(M, N); ++l) {
       b *= double(N - l + 1) / double(l);
       for (unsigned ml = 1; ml + l - 1 <= M; ++ml)

@@ -3,13 +3,15 @@
 #include "common/numeric/log_double_factorial.h"
 #include "common/stl/base.h"
 
+using numeric::LogDouble;
+
 int main_connect_the_country() {
   struct CS {
     vector<double> p, sp;
     double get(unsigned j) { return (j < sp.size()) ? sp[j] : 1.0; }
   };
 
-  LogDoubleFactorial f;
+  numeric::LogDoubleFactorial f;
   unsigned N;
   cin >> N;
   vector<CS> v;

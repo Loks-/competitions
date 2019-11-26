@@ -3,6 +3,7 @@
 #include "common/numeric/log_double.h"
 #include <vector>
 
+namespace numeric {
 class LogDoubleFactorial {
  protected:
   std::vector<LogDouble> vf;
@@ -27,3 +28,4 @@ class LogDoubleFactorial {
     return vf[n] / (vf[k] * vf[n - k]);
   }
 };
+}  // namespace numeric

@@ -5,6 +5,7 @@
 #include <cmath>
 #include <limits>
 
+namespace numeric {
 class LogDouble {
  protected:
   constexpr static double log0 = -std::numeric_limits<double>::infinity();
@@ -79,3 +80,4 @@ class LogDouble {
     return t;
   }
 };
+}  // namespace numeric
