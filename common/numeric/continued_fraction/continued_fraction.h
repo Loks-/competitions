@@ -5,6 +5,8 @@
 #include <algorithm>
 #include <vector>
 
+namespace numeric {
+namespace cf {
 class ContinuedFraction {
  public:
   using TCFVector = std::vector<int64_t>;
@@ -72,3 +74,5 @@ class ContinuedFraction {
     return ((s & 1) == 0) != (ls == s);
   }
 };
+}  // namespace cf
+}  // namespace numeric

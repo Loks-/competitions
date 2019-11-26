@@ -9,8 +9,8 @@
 inline TIFraction SmallestDenominatorInInterval(const TIFraction& l,
                                                 const TIFraction& r) {
   assert(l < r);
-  auto vl = ContinuedFraction(l).GetVector(),
-       vr = ContinuedFraction(r).GetVector();
+  auto vl = numeric::cf::ContinuedFraction(l).GetVector(),
+       vr = numeric::cf::ContinuedFraction(r).GetVector();
   unsigned i = 0, i_end = std::min(vl.size(), vr.size());
   std::vector<int64_t> vm;
   for (; (i < i_end) && (vl[i] == vr[i]); ++i) vm.push_back(vl[i]);
@@ -37,5 +37,5 @@ inline TIFraction SmallestDenominatorInInterval(const TIFraction& l,
       vm.push_back(vl[i] + 1);
     }
   }
-  return ContinuedFraction(vm).ToFraction();
+  return numeric::cf::ContinuedFraction(vm).ToFraction();
 }

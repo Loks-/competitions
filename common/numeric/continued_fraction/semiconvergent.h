@@ -4,6 +4,8 @@
 #include "common/numeric/continued_fraction/convergent.h"
 #include "common/numeric/fraction.h"
 
+namespace numeric {
+namespace cf {
 class CFSemiConvergent : public CFConvergent {
  public:
   using TBase = CFConvergent;
@@ -55,3 +57,5 @@ class CFSemiConvergent : public CFConvergent {
   TIFraction operator*() const { return Get(); }
   CFSemiConvergent& operator++() { return Next(); }
 };
+}  // namespace cf
+}  // namespace numeric

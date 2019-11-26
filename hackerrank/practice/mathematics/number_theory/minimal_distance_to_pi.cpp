@@ -6,6 +6,9 @@
 #include "common/numeric/long_unsigned.h"
 #include "common/stl/base.h"
 
+using numeric::cf::CFConvergent;
+using numeric::cf::ContinuedFraction;
+
 int main_minimal_distance_to_pi() {
   int64_t l, r;
   cin >> l >> r;

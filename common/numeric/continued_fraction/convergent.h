@@ -4,6 +4,8 @@
 #include "common/numeric/continued_fraction/continued_fraction.h"
 #include "common/numeric/fraction.h"
 
+namespace numeric {
+namespace cf {
 class CFConvergent {
  protected:
   ContinuedFraction cf;
@@ -48,3 +50,5 @@ class CFConvergent {
   TIFraction operator*() const { return Get(); }
   CFConvergent& operator++() { return Next(); }
 };
+}  // namespace cf
+}  // namespace numeric
