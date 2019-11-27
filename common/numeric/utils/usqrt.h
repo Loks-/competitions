@@ -3,6 +3,8 @@
 #include <cmath>
 #include <limits>
 
+namespace numeric {
+namespace hidden {
 template <class T>
 constexpr T CTUSqrtHelper(T x, T l, T h) {
   if (l == h) return l;
@@ -12,10 +14,12 @@ constexpr T CTUSqrtHelper(T x, T l, T h) {
   else
     return CTUSqrtHelper<T>(x, m, h);
 }
+}  // namespace hidden
+}  // namespace numeric
 
 template <class T>
 constexpr T CTUSqrt(T x) {
-  return CTUSqrtHelper<T>(x, 0, x / 2 + 1);
+  return numeric::hidden::CTUSqrtHelper<T>(x, 0, x / 2 + 1);
 }
 
 template <class T>
