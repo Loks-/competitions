@@ -10,3 +10,4 @@ bool TestMatrixMult();
 bool TestMertens();
 bool TestMinimumSpanningTree(bool time_test);
 bool TestModularFFT();
+bool TestPrimeGeneration(bool time_test);
