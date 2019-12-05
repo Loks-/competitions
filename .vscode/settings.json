@@ -52,6 +52,11 @@
         "cassert": "cpp",
         "filesystem": "cpp",
         "codecvt": "cpp",
-        "memory": "cpp"
+        "memory": "cpp",
+        "atomic": "cpp",
+        "condition_variable": "cpp",
+        "future": "cpp",
+        "mutex": "cpp",
+        "thread": "cpp"
     }
 }

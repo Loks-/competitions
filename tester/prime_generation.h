@@ -5,3 +5,8 @@
 
 std::vector<uint64_t> GetPrimes_PrimalityTest(uint64_t maxn);
 std::vector<uint64_t> GetPrimes_PrimesList(uint64_t maxn);
+std::vector<uint64_t> GetPrimes_EratosthenesBit(uint64_t maxn);
+std::vector<uint64_t> GetPrimes_EratosthenesByte(uint64_t maxn);
+std::vector<uint64_t> GetPrimes_EratosthenesInt(uint64_t maxn);
+std::vector<uint64_t> GetPrimes_EratosthenesOdd(uint64_t maxn);
+std::vector<uint64_t> GetPrimes_EratosthenesOddMemoryReduced(uint64_t maxn);
