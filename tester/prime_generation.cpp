@@ -145,3 +145,138 @@ std::vector<uint64_t> GetPrimes_EratosthenesSegmented(uint64_t maxn) {
   while (vp.back() > maxn) vp.pop_back();
   return vp;
 }
+
+std::vector<uint64_t> GetPrimes_AtkinBit(uint64_t maxn) {
+  std::vector<uint64_t> vp{2, 3, 5};
+  if (maxn < 7) {
+    while (!vp.empty() && (vp.back() > maxn)) vp.pop_back();
+    return vp;
+  }
+  std::vector<bool> vb(maxn + 1, false);
+  for (uint64_t x = 1;; ++x) {
+    uint64_t nx = 4 * x * x;
+    if (nx > maxn) break;
+    for (int64_t y = 1;; y += 2) {
+      uint64_t ny = nx + y * y;
+      if (ny > maxn) break;
+      vb[ny] = !vb[ny];
+    }
+  }
+  for (uint64_t x = 1;; x += 2) {
+    uint64_t nx = 3 * x * x;
+    if (nx > maxn) break;
+    for (int64_t y = 2;; y += 2) {
+      uint64_t ny = nx + y * y;
+      if (ny > maxn) break;
+      vb[ny] = !vb[ny];
+    }
+  }
+  for (uint64_t x = 2;; ++x) {
+    uint64_t nx = 3 * x * x;
+    if (nx > maxn + x * x) break;
+    for (int64_t y = x - 1;; y -= 2) {
+      uint64_t ny = nx - y * y;
+      if (ny > maxn) break;
+      vb[ny] = !vb[ny];
+      if (y < 3) break;
+    }
+  }
+  for (uint64_t i = 7; i <= maxn; i += 2) {
+    if (vb[i] && (i % 3) && (i % 5)) {
+      vp.push_back(i);
+      uint64_t x = i * i;
+      for (uint64_t j = x; j <= maxn; j += 2 * x) vb[j] = false;
+    }
+  }
+  return vp;
+}
+
+std::vector<uint64_t> GetPrimes_AtkinByte(uint64_t maxn) {
+  std::vector<uint64_t> vp{2, 3, 5};
+  if (maxn < 7) {
+    while (!vp.empty() && (vp.back() > maxn)) vp.pop_back();
+    return vp;
+  }
+  std::vector<uint8_t> vb(maxn + 1, 0);
+  for (uint64_t x = 1;; ++x) {
+    uint64_t nx = 4 * x * x;
+    if (nx > maxn) break;
+    for (int64_t y = 1;; y += 2) {
+      uint64_t ny = nx + y * y;
+      if (ny > maxn) break;
+      vb[ny] = !vb[ny];
+    }
+  }
+  for (uint64_t x = 1;; x += 2) {
+    uint64_t nx = 3 * x * x;
+    if (nx > maxn) break;
+    for (int64_t y = 2;; y += 2) {
+      uint64_t ny = nx + y * y;
+      if (ny > maxn) break;
+      vb[ny] = !vb[ny];
+    }
+  }
+  for (uint64_t x = 2;; ++x) {
+    uint64_t nx = 3 * x * x;
+    if (nx > maxn + x * x) break;
+    for (int64_t y = x - 1;; y -= 2) {
+      uint64_t ny = nx - y * y;
+      if (ny > maxn) break;
+      vb[ny] = !vb[ny];
+      if (y < 3) break;
+    }
+  }
+  for (uint64_t i = 7; i <= maxn; i += 2) {
+    if (vb[i] && (i % 3) && (i % 5)) {
+      vp.push_back(i);
+      uint64_t x = i * i;
+      for (uint64_t j = x; j <= maxn; j += 2 * x) vb[j] = 0;
+    }
+  }
+  return vp;
+}
+
+std::vector<uint64_t> GetPrimes_AtkinInt(uint64_t maxn) {
+  std::vector<uint64_t> vp{2, 3, 5};
+  if (maxn < 7) {
+    while (!vp.empty() && (vp.back() > maxn)) vp.pop_back();
+    return vp;
+  }
+  std::vector<int> vb(maxn + 1, 0);
+  for (uint64_t x = 1;; ++x) {
+    uint64_t nx = 4 * x * x;
+    if (nx > maxn) break;
+    for (int64_t y = 1;; y += 2) {
+      uint64_t ny = nx + y * y;
+      if (ny > maxn) break;
+      vb[ny] = !vb[ny];
+    }
+  }
+  for (uint64_t x = 1;; x += 2) {
+    uint64_t nx = 3 * x * x;
+    if (nx > maxn) break;
+    for (int64_t y = 2;; y += 2) {
+      uint64_t ny = nx + y * y;
+      if (ny > maxn) break;
+      vb[ny] = !vb[ny];
+    }
+  }
+  for (uint64_t x = 2;; ++x) {
+    uint64_t nx = 3 * x * x;
+    if (nx > maxn + x * x) break;
+    for (int64_t y = x - 1;; y -= 2) {
+      uint64_t ny = nx - y * y;
+      if (ny > maxn) break;
+      vb[ny] = !vb[ny];
+      if (y < 3) break;
+    }
+  }
+  for (uint64_t i = 7; i <= maxn; i += 2) {
+    if (vb[i] && (i % 3) && (i % 5)) {
+      vp.push_back(i);
+      uint64_t x = i * i;
+      for (uint64_t j = x; j <= maxn; j += 2 * x) vb[j] = 0;
+    }
+  }
+  return vp;
+}

@@ -39,6 +39,15 @@ size_t TesterPrimeGeneration::Test(const std::string& name, uint64_t maxn,
     case GenerationType::ERATOSTHENES_SS:
       vp = GetPrimes_EratosthenesSegmented(maxn);
       break;
+    case GenerationType::ATKIN_BIT:
+      vp = GetPrimes_AtkinBit(maxn);
+      break;
+    case GenerationType::ATKIN_BYTE:
+      vp = GetPrimes_AtkinByte(maxn);
+      break;
+    case GenerationType::ATKIN_INT:
+      vp = GetPrimes_AtkinInt(maxn);
+      break;
   }
   size_t h = std::hash<std::vector<uint64_t>>()(vp);
   std::cout << name << ": " << h << "\t" << t.GetMilliseconds() << std::endl;
@@ -59,6 +68,9 @@ bool TesterPrimeGeneration::TestAll(bool time_test) {
   hs.insert(Test("EratosthenesOdd ", maxn, GenerationType::ERATOSTHENES_ODD));
   hs.insert(Test("EratosthenesOMR ", maxn, GenerationType::ERATOSTHENES_OMR));
   hs.insert(Test("EratosthenesSS  ", maxn, GenerationType::ERATOSTHENES_SS));
+  hs.insert(Test("AtkinBit        ", maxn, GenerationType::ATKIN_BIT));
+  hs.insert(Test("AtkinByte       ", maxn, GenerationType::ATKIN_BYTE));
+  hs.insert(Test("AtkinInt        ", maxn, GenerationType::ATKIN_INT));
   return hs.size() == 1;
 }
 
