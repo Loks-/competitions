@@ -11,3 +11,4 @@ std::vector<uint64_t> GetPrimes_EratosthenesByte(uint64_t maxn);
 std::vector<uint64_t> GetPrimes_EratosthenesInt(uint64_t maxn);
 std::vector<uint64_t> GetPrimes_EratosthenesOdd(uint64_t maxn);
 std::vector<uint64_t> GetPrimes_EratosthenesOddMemoryReduced(uint64_t maxn);
+std::vector<uint64_t> GetPrimes_EratosthenesSegmented(uint64_t maxn);

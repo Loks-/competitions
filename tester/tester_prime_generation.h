@@ -13,7 +13,8 @@ class TesterPrimeGeneration {
     ERATOSTHENES_BYTE,
     ERATOSTHENES_INT,
     ERATOSTHENES_ODD,
-    ERATOSTHENES_OMR
+    ERATOSTHENES_OMR,
+    ERATOSTHENES_SS
   };
 
  public:

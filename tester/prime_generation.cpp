@@ -3,6 +3,7 @@
 #include "common/base.h"
 #include "common/factorization/primality_test.h"
 #include "common/factorization/primes_list.h"
+#include "common/numeric/utils/usqrt.h"
 #include <vector>
 
 std::vector<uint64_t> GetPrimes_TrialDivision(uint64_t maxn) {
@@ -106,5 +107,41 @@ std::vector<uint64_t> GetPrimes_EratosthenesOddMemoryReduced(uint64_t maxn) {
       }
     }
   }
+  return vp;
+}
+
+std::vector<uint64_t> GetPrimes_EratosthenesSegmented(uint64_t maxn) {
+  if (maxn < 2) return {};
+  std::vector<uint64_t> vp{2};
+  uint64_t block_size = 2 * (USqrt(maxn / 2) + 1);
+  uint64_t blocks = (maxn - 1) / block_size + 1;
+  uint64_t lbs = block_size / 2;
+  std::vector<bool> vb(lbs, true);
+  for (uint64_t hi = 1; hi < lbs; ++hi) {
+    if (vb[hi]) {
+      uint64_t i = 2 * hi + 1;
+      vp.push_back(i);
+      for (uint64_t hj = 2 * hi * (hi + 1); hj < lbs; hj += i) {
+        vb[hj] = false;
+      }
+    }
+  }
+  for (uint64_t ib = 1; ib < blocks; ++ib) {
+    uint64_t b = ib * block_size, e = b + block_size;
+    std::fill(vb.begin(), vb.end(), true);
+    for (unsigned ip = 1;; ++ip) {
+      uint64_t p = vp[ip];
+      if (p * p >= e) break;
+      uint64_t k = ((b - 1) / p + 1) | 1;
+      if (k < p) k = p;
+      for (uint64_t hj = (p * k - b) / 2; hj < lbs; hj += p) {
+        vb[hj] = false;
+      }
+    }
+    for (uint64_t hj = 0; hj < lbs; ++hj) {
+      if (vb[hj]) vp.push_back(2 * hj + 1 + b);
+    }
+  }
+  while (vp.back() > maxn) vp.pop_back();
   return vp;
 }
