@@ -5,6 +5,23 @@
 #include "common/factorization/primes_list.h"
 #include <vector>
 
+std::vector<uint64_t> GetPrimes_TrialDivision(uint64_t maxn) {
+  std::vector<uint64_t> vp;
+  if (maxn >= 2) vp.push_back(2);
+  for (uint64_t i = 3; i <= maxn; i += 2) {
+    bool prime = true;
+    for (uint64_t p : vp) {
+      if (p * p > i) break;
+      if ((i % p) == 0) {
+        prime = false;
+        break;
+      }
+    }
+    if (prime) vp.push_back(i);
+  }
+  return vp;
+}
+
 std::vector<uint64_t> GetPrimes_PrimalityTest(uint64_t maxn) {
   std::vector<uint64_t> vp;
   if (maxn >= 2) vp.push_back(2);

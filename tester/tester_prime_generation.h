@@ -6,6 +6,7 @@
 class TesterPrimeGeneration {
  public:
   enum class GenerationType {
+    TRIAL_DIVISION,
     PRIMALITY_TEST,
     PRIMES_LIST,
     ERATOSTHENES_BIT,

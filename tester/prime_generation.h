@@ -3,6 +3,7 @@
 #include "common/base.h"
 #include <vector>
 
+std::vector<uint64_t> GetPrimes_TrialDivision(uint64_t maxn);
 std::vector<uint64_t> GetPrimes_PrimalityTest(uint64_t maxn);
 std::vector<uint64_t> GetPrimes_PrimesList(uint64_t maxn);
 std::vector<uint64_t> GetPrimes_EratosthenesBit(uint64_t maxn);

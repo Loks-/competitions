@@ -12,6 +12,9 @@ size_t TesterPrimeGeneration::Test(const std::string& name, uint64_t maxn,
   Timer t;
   std::vector<uint64_t> vp;
   switch (type) {
+    case GenerationType::TRIAL_DIVISION:
+      vp = GetPrimes_TrialDivision(maxn);
+      break;
     case GenerationType::PRIMALITY_TEST:
       vp = GetPrimes_PrimalityTest(maxn);
       break;
@@ -42,6 +45,8 @@ size_t TesterPrimeGeneration::Test(const std::string& name, uint64_t maxn,
 bool TesterPrimeGeneration::TestAll(bool time_test) {
   uint64_t maxn = (time_test ? 100000000 : 1000000);
   std::unordered_set<size_t> hs;
+  if (!time_test)
+    hs.insert(Test("TrialDivision   ", maxn, GenerationType::TRIAL_DIVISION));
   if (!time_test)
     hs.insert(Test("PrimalityTest   ", maxn, GenerationType::PRIMALITY_TEST));
   hs.insert(Test("PrimesList      ", maxn, GenerationType::PRIMES_LIST));
