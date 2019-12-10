@@ -317,6 +317,8 @@ std::vector<uint64_t> GetPrimes_AtkinMemoryReduced(uint64_t maxn) {
     for (int64_t y = 2 * x; (hi <= hn) && (y > 2); hi += (y -= 4))
       vb[hi] = !vb[hi];
   }
+  // It's possible to speed up this loop with wheel, but it's take
+  // only 20-25% time.
   for (uint64_t hi = 3; hi <= hn; ++hi) {
     uint64_t i = 2 * hi + 1;
     if (vb[hi] && (i % 3) && (i % 5)) {
