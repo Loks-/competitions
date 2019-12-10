@@ -1,9 +1,11 @@
 #include "tester/tester_prime_generation.h"
 
 #include "tester/prime_generation.h"
+#include "common/factorization/primes.h"
 #include "common/stl/hash/vector.h"
 #include "common/timer.h"
 #include <iostream>
+#include <string>
 #include <unordered_set>
 #include <vector>
 
@@ -57,26 +59,41 @@ size_t TesterPrimeGeneration::Test(const std::string& name, uint64_t maxn,
   return h;
 }
 
+size_t TesterPrimeGeneration::TestPG(uint64_t maxn, uint64_t block_size) {
+  Timer t;
+  factorization::PrimesGenerator pg(block_size);
+  size_t h = std::hash<std::vector<uint64_t>>()(pg.GeneratePrimes(maxn));
+  std::string name_suffix = std::to_string(block_size);
+  std::cout << "PG" << std::string(14 - name_suffix.size(), ' ') << name_suffix
+            << ": " << h << "\t" << t.GetMilliseconds() << std::endl;
+  return h;
+}
+
 bool TesterPrimeGeneration::TestAll(bool time_test) {
-  uint64_t maxn = (time_test ? 3000000000ull : 1000000);
+  uint64_t maxn = (time_test ? 100000000ull : 1000000);
   std::unordered_set<size_t> hs;
   if (!time_test) {
     hs.insert(Test("TrialDivision   ", maxn, GenerationType::TRIAL_DIVISION));
     hs.insert(Test("PrimalityTest   ", maxn, GenerationType::PRIMALITY_TEST));
   }
-  //   hs.insert(Test("PrimesList      ", maxn, GenerationType::PRIMES_LIST));
+  hs.insert(Test("PrimesList      ", maxn, GenerationType::PRIMES_LIST));
   hs.insert(Test("EratosthenesBit ", maxn, GenerationType::ERATOSTHENES_BIT));
-  // hs.insert(Test("EratosthenesByte",
-  //   maxn, GenerationType::ERATOSTHENES_BYTE));
-  //   hs.insert(Test("EratosthenesInt ", maxn,
-  //   GenerationType::ERATOSTHENES_INT));
+  hs.insert(Test("EratosthenesByte", maxn, GenerationType::ERATOSTHENES_BYTE));
+  hs.insert(Test("EratosthenesInt ", maxn, GenerationType::ERATOSTHENES_INT));
   hs.insert(Test("EratosthenesOdd ", maxn, GenerationType::ERATOSTHENES_ODD));
   hs.insert(Test("EratosthenesOMR ", maxn, GenerationType::ERATOSTHENES_OMR));
   hs.insert(Test("EratosthenesSS  ", maxn, GenerationType::ERATOSTHENES_SS));
   hs.insert(Test("AtkinBit        ", maxn, GenerationType::ATKIN_BIT));
-  //   hs.insert(Test("AtkinByte       ", maxn, GenerationType::ATKIN_BYTE));
-  //   hs.insert(Test("AtkinInt        ", maxn, GenerationType::ATKIN_INT));
+  hs.insert(Test("AtkinByte       ", maxn, GenerationType::ATKIN_BYTE));
+  hs.insert(Test("AtkinInt        ", maxn, GenerationType::ATKIN_INT));
   hs.insert(Test("AtkinMR         ", maxn, GenerationType::ATKIN_MR));
+  {
+    unsigned block_size = 4096;
+    for (unsigned i = 0; i < (time_test ? 10 : 5); ++i) {
+      block_size *= 2;
+      TestPG(maxn, block_size);
+    }
+  }
   return hs.size() == 1;
 }
 
