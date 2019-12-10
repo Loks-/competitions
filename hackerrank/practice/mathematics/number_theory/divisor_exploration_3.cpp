@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/divisor-exploration-3
 
-#include "common/factorization/primes_list.h"
+#include "common/factorization/primes.h"
 #include "common/modular/static/factorial.h"
 #include "common/modular_io.h"
 #include "common/stl/base.h"
@@ -9,8 +9,7 @@ using TFactorial = modular::mstatic::Factorial<TModularD, true>;
 
 int main_divisor_exploration_3() {
   TFactorial f;
-  factorization::PrimesList primes_list(100000);
-  const vector<uint64_t>& primes = primes_list.GetPrimes();
+  vector<uint64_t> primes = GeneratePrimes(100000);
   unsigned T, m, a, d;
   cin >> T;
   for (unsigned it = 0; it < T; ++it) {

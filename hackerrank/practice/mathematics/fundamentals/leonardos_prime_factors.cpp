@@ -1,11 +1,10 @@
 // https://www.hackerrank.com/challenges/leonardo-and-prime
 
-#include "common/factorization/primes_list.h"
+#include "common/factorization/primes.h"
 #include "common/stl/base.h"
 
 int main_leonardos_prime_factors() {
-  factorization::PrimesList primes_list(100);
-  const vector<uint64_t>& primes = primes_list.GetPrimes();
+  vector<uint64_t> primes = GeneratePrimes(100);
   unsigned T;
   cin >> T;
   for (unsigned it = 0; it < T; ++it) {

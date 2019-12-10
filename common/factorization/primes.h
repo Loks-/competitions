@@ -7,6 +7,8 @@
 namespace factorization {
 // Segmented Sieve of Eratosthenes
 // https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes
+// TODO:
+//   Compact primes representation.
 class PrimesGenerator {
  protected:
   std::vector<uint64_t> vprimes;
@@ -72,6 +74,6 @@ class PrimesGenerator {
 };
 }  // namespace factorization
 
-std::vector<uint64_t> GeneratePrimes(uint64_t maxn) {
+static std::vector<uint64_t> GeneratePrimes(uint64_t maxn) {
   return factorization::PrimesGenerator().GeneratePrimes(maxn);
 }

@@ -1,12 +1,11 @@
 // https://www.hackerrank.com/challenges/divisor-exploration-2
 
-#include "common/factorization/primes_list.h"
+#include "common/factorization/primes.h"
 #include "common/modular_io.h"
 #include "common/stl/base.h"
 
 int main_divisor_exploration_ii() {
-  factorization::PrimesList primes_list(2000000);
-  const vector<uint64_t>& primes = primes_list.GetPrimes();
+  vector<uint64_t> primes = GeneratePrimes(2000000);
   unsigned T, m, a;
   cin >> T;
   for (unsigned it = 0; it < T; ++it) {

@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/waiter
 
-#include "common/factorization/primes_list.h"
+#include "common/factorization/primes.h"
 #include "common/stl/base.h"
 
 #include <stack>
@@ -13,8 +13,7 @@ int main_waiter() {
     cin >> x;
     sa.push(x);
   }
-  factorization::PrimesList primes_list(10000);
-  const vector<uint64_t>& primes = primes_list.GetPrimes();
+  vector<uint64_t> primes = GeneratePrimes(10000);
   for (unsigned iq = 0; iq < Q; ++iq) {
     unsigned p = unsigned(primes[iq]);
     for (; !sa.empty(); sa.pop()) {

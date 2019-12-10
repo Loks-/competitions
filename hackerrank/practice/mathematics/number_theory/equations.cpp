@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/equations
 
-#include "common/factorization/primes_list.h"
+#include "common/factorization/primes.h"
 #include "common/modular_io.h"
 #include "common/stl/base.h"
 
@@ -10,8 +10,7 @@ int main_equations() {
   uint64_t n;
   cin >> n;
   TModular r = 1;
-  factorization::PrimesList primes_list(n);
-  for (uint64_t p : primes_list.GetPrimes()) {
+  for (uint64_t p : GeneratePrimes(n)) {
     if (p > n) break;
     uint64_t c = 0;
     for (uint64_t t = n / p; t; t /= p) c += t;
