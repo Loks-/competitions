@@ -292,3 +292,38 @@ std::vector<uint64_t> GetPrimes_AtkinInt(uint64_t maxn) {
   }
   return vp;
 }
+
+std::vector<uint64_t> GetPrimes_AtkinMemoryReduced(uint64_t maxn) {
+  std::vector<uint64_t> vp{2, 3, 5};
+  if (maxn < 7) {
+    while (!vp.empty() && (vp.back() > maxn)) vp.pop_back();
+    return vp;
+  }
+  uint64_t hn = (maxn - 1) / 2;
+  std::vector<bool> vb(hn + 1, false);
+  for (uint64_t x = 1;; ++x) {
+    uint64_t hi = 2 * x * x;
+    if (hi > hn) break;
+    for (int64_t y = 0; hi <= hn; hi += 4 * ++y) vb[hi] = !vb[hi];
+  }
+  for (uint64_t x = 1;; x += 2) {
+    uint64_t hi = 3 * x * x / 2 + 2;
+    if (hi > hn) break;
+    for (int64_t y = 2; hi <= hn; hi += (y += 4)) vb[hi] = !vb[hi];
+  }
+  for (uint64_t x = 2;; ++x) {
+    uint64_t hi = x * (x + 1) - 1;
+    if (hi > hn) break;
+    for (int64_t y = 2 * x; (hi <= hn) && (y > 2); hi += (y -= 4))
+      vb[hi] = !vb[hi];
+  }
+  for (uint64_t hi = 3; hi <= hn; ++hi) {
+    uint64_t i = 2 * hi + 1;
+    if (vb[hi] && (i % 3) && (i % 5)) {
+      vp.push_back(i);
+      uint64_t x = i * i;
+      for (uint64_t hj = x / 2; hj <= hn; hj += x) vb[hj] = false;
+    }
+  }
+  return vp;
+}

@@ -18,6 +18,7 @@ class TesterPrimeGeneration {
     ATKIN_BIT,
     ATKIN_BYTE,
     ATKIN_INT,
+    ATKIN_MR
   };
 
  public:
