@@ -7,73 +7,88 @@
 namespace factorization {
 // Segmented Sieve of Eratosthenes
 // https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes
-// TODO:
-//   Compact primes representation.
 class PrimesGenerator {
  protected:
-  std::vector<uint64_t> vprimes;
-  std::vector<bool> vmask;
-  uint64_t block_size, half_block_size;
-  uint64_t current_block;
   const uint64_t default_block_size = 262144;
+  uint64_t block_size, half_block_size, current_block;
+  std::vector<bool> vmask;
+  std::vector<uint64_t> first_block_primes, current_block_primes;
+  uint64_t current_prime_index;
 
  protected:
-  void ResetBlockSize(uint64_t new_block_size) {
+  void SetBlockSize(uint64_t new_block_size) {
     assert(new_block_size > 0);
-    vprimes.clear();
-    vprimes.push_back(2);
     block_size = new_block_size + (new_block_size & 1);
     half_block_size = block_size / 2;
-    vmask.clear();
-    vmask.resize(half_block_size, false);
+    current_block = 0;
+    first_block_primes.clear();
+    current_block_primes.clear();
+    current_block_primes.push_back(2);
+    current_prime_index = 0;
   }
 
- public:
-  PrimesGenerator() : block_size(0) {}
-  PrimesGenerator(uint64_t _block_size) { FirstBlock(_block_size); }
-
-  const std::vector<uint64_t>& GetPrimes() const { return vprimes; }
-
-  void FirstBlock(uint64_t new_block_size) {
-    ResetBlockSize(new_block_size);
+  void FirstBlock() {
+    vmask.clear();
+    vmask.resize(half_block_size, false);
     for (uint64_t hi = 1; hi < half_block_size; ++hi) {
       if (!vmask[hi]) {
         uint64_t i = 2 * hi + 1;
-        vprimes.push_back(i);
+        first_block_primes.push_back(i);
         for (uint64_t hj = 2 * hi * (hi + 1); hj < half_block_size; hj += i)
           vmask[hj] = true;
       }
     }
+    current_block_primes = first_block_primes;
     current_block = 1;
   }
 
   void NextBlock() {
+    assert(current_block < block_size);
     uint64_t b = current_block * block_size, e = b + block_size;
     std::fill(vmask.begin(), vmask.end(), false);
-    for (unsigned ip = 1;; ++ip) {
-      uint64_t p = vprimes[ip];
+    for (uint64_t p : first_block_primes) {
       if (p * p >= e) break;
       uint64_t k = ((b - 1) / p + 1) | 1;
       if (k < p) k = p;
       for (uint64_t hj = (p * k - b) / 2; hj < half_block_size; hj += p)
         vmask[hj] = true;
     }
+    current_block_primes.clear();
     for (uint64_t hj = 0; hj < half_block_size; ++hj) {
-      if (!vmask[hj]) vprimes.push_back(2 * hj + 1 + b);
+      if (!vmask[hj]) current_block_primes.push_back(2 * hj + 1 + b);
     }
     ++current_block;
   }
 
-  std::vector<uint64_t> GeneratePrimes(uint64_t maxn) {
-    if (block_size == 0) FirstBlock(default_block_size);
-    for (; current_block * block_size < maxn;) NextBlock();
-    std::vector<uint64_t> vp = vprimes;
-    for (; !vp.empty() && (vp.back() > maxn);) vp.pop_back();
-    return vp;
+ public:
+  PrimesGenerator() { SetBlockSize(default_block_size); }
+  PrimesGenerator(uint64_t _block_size) { SetBlockSize(_block_size); }
+
+  uint64_t Get() const {
+    assert(current_prime_index < current_block_primes.size());
+    return current_block_primes[current_prime_index];
+  }
+
+  void Next() {
+    if (++current_prime_index == current_block_primes.size()) {
+      if (current_block == 0)
+        FirstBlock();
+      else
+        NextBlock();
+      current_prime_index = 0;
+    }
+  }
+
+  uint64_t GetNext() {
+    Next();
+    return Get();
   }
 };
 }  // namespace factorization
 
 static std::vector<uint64_t> GeneratePrimes(uint64_t maxn) {
-  return factorization::PrimesGenerator().GeneratePrimes(maxn);
+  factorization::PrimesGenerator pg;
+  std::vector<uint64_t> vprimes;
+  for (uint64_t p = pg.Get(); p <= maxn; p = pg.GetNext()) vprimes.push_back(p);
+  return vprimes;
 }

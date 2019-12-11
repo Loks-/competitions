@@ -62,7 +62,9 @@ size_t TesterPrimeGeneration::Test(const std::string& name, uint64_t maxn,
 size_t TesterPrimeGeneration::TestPG(uint64_t maxn, uint64_t block_size) {
   Timer t;
   factorization::PrimesGenerator pg(block_size);
-  size_t h = std::hash<std::vector<uint64_t>>()(pg.GeneratePrimes(maxn));
+  std::vector<uint64_t> vprimes;
+  for (uint64_t p = pg.Get(); p <= maxn; p = pg.GetNext()) vprimes.push_back(p);
+  size_t h = std::hash<std::vector<uint64_t>>()(vprimes);
   std::string name_suffix = std::to_string(block_size);
   std::cout << "PG" << std::string(14 - name_suffix.size(), ' ') << name_suffix
             << ": " << h << "\t" << t.GetMilliseconds() << std::endl;
