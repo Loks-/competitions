@@ -13,7 +13,7 @@ class PrimesGenerator {
   uint64_t block_size, half_block_size, current_block;
   std::vector<bool> vmask;
   std::vector<uint64_t> first_block_primes, current_block_primes;
-  uint64_t current_prime_index;
+  uint64_t current_prime_block_index, current_prime_global_index;
 
  protected:
   void SetBlockSize(uint64_t new_block_size) {
@@ -24,7 +24,8 @@ class PrimesGenerator {
     first_block_primes.clear();
     current_block_primes.clear();
     current_block_primes.push_back(2);
-    current_prime_index = 0;
+    current_prime_block_index = 0;
+    current_prime_global_index = 0;
   }
 
   void FirstBlock() {
@@ -65,18 +66,21 @@ class PrimesGenerator {
   PrimesGenerator(uint64_t _block_size) { SetBlockSize(_block_size); }
 
   uint64_t Get() const {
-    assert(current_prime_index < current_block_primes.size());
-    return current_block_primes[current_prime_index];
+    assert(current_prime_block_index < current_block_primes.size());
+    return current_block_primes[current_prime_block_index];
   }
 
+  uint64_t GetPrimeIndex() const { return current_prime_global_index; }
+
   void Next() {
-    if (++current_prime_index == current_block_primes.size()) {
+    if (++current_prime_block_index == current_block_primes.size()) {
       if (current_block == 0)
         FirstBlock();
       else
         NextBlock();
-      current_prime_index = 0;
+      current_prime_block_index = 0;
     }
+    ++current_prime_global_index;
   }
 
   uint64_t GetNext() {

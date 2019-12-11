@@ -17,7 +17,7 @@ class PrimesRange {
 
     uint64_t operator*() const { return p->Get(); }
     void operator++() { p->Next(); }
-    bool operator!=(const Iterator& e) const { return p->Get() < e.maxn; }
+    bool operator!=(const Iterator& e) const { return p->Get() <= e.maxn; }
   };
 
  protected:

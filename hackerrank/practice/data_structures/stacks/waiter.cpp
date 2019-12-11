@@ -13,9 +13,8 @@ int main_waiter() {
     cin >> x;
     sa.push(x);
   }
-  vector<uint64_t> primes = GeneratePrimes(10000);
-  for (unsigned iq = 0; iq < Q; ++iq) {
-    unsigned p = unsigned(primes[iq]);
+  for (factorization::PrimesGenerator pg; pg.GetPrimeIndex() < Q; pg.Next()) {
+    unsigned p = unsigned(pg.Get());
     for (; !sa.empty(); sa.pop()) {
       if (sa.top() % p)
         st.push(sa.top());
