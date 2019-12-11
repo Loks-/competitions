@@ -1,7 +1,7 @@
 #include "tester/tester_prime_generation.h"
 
 #include "tester/prime_generation.h"
-#include "common/factorization/primes.h"
+#include "common/factorization/primes_generator.h"
 #include "common/stl/hash/vector.h"
 #include "common/timer.h"
 #include <iostream>

@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/divisor-exploration-3
 
-#include "common/factorization/primes.h"
+#include "common/factorization/primes_generator.h"
 #include "common/modular/static/factorial.h"
 #include "common/modular_io.h"
 #include "common/stl/base.h"
