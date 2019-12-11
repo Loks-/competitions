@@ -88,8 +88,8 @@ bool TesterPrimeGeneration::TestAll(bool time_test) {
   hs.insert(Test("AtkinInt        ", maxn, GenerationType::ATKIN_INT));
   hs.insert(Test("AtkinMR         ", maxn, GenerationType::ATKIN_MR));
   {
-    unsigned block_size = 4096;
-    for (unsigned i = 0; i < (time_test ? 10 : 5); ++i) {
+    unsigned block_size = (time_test ? 65536 : 4096);
+    for (unsigned i = 0; i < 5; ++i) {
       block_size *= 2;
       hs.insert(TestPG(maxn, block_size));
     }
