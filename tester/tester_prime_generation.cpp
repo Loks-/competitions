@@ -91,7 +91,7 @@ bool TesterPrimeGeneration::TestAll(bool time_test) {
     unsigned block_size = 4096;
     for (unsigned i = 0; i < (time_test ? 10 : 5); ++i) {
       block_size *= 2;
-      TestPG(maxn, block_size);
+      hs.insert(TestPG(maxn, block_size));
     }
   }
   return hs.size() == 1;
