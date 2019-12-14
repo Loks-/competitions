@@ -4,6 +4,9 @@
 #include "common/generating_function/generating_function.h"
 #include "common/generating_function/operators/partition.h"
 
+// https://oeis.org/A000041
+// https://en.wikipedia.org/wiki/Partition_function_(number_theory)
+
 namespace gf {
 namespace functions {
 template <class TValue>
