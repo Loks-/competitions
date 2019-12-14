@@ -19,6 +19,8 @@ int main(int nargs, char **pargs) {
       Assert(TestBinarySearchTree(false));
     else if (tester_mode == "convergent")
       Assert(TestContinuedFractionConvergent());
+    else if (tester_mode == "generating_function")
+      Assert(TestGeneratingFunction());
     else if (tester_mode == "graph_distance_positive_cost")
       Assert(TestGraphEIDistancePositiveCost(false));
     else if (tester_mode == "heap")
