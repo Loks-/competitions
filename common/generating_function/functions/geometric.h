@@ -40,17 +40,17 @@ class Geometric : public GeneratingFunction<TValue> {
 };
 
 template <class TValue>
-static PGeneratingFunction<TValue> CreatePGeometric(const TValue& a) {
+inline PGeneratingFunction<TValue> CreatePGeometric(const TValue& a) {
   return std::make_shared<PGeometric<TValue>>(a);
 }
 
 template <class TValue>
-static PGeneratingFunction<TValue> CreatePGeometricOne() {
+inline PGeneratingFunction<TValue> CreatePGeometricOne() {
   return std::make_shared<PGeometricOne<TValue>>();
 }
 
 template <class TValue>
-static PGeneratingFunction<TValue> CreateGeometric(const TValue& a) {
+inline PGeneratingFunction<TValue> CreateGeometric(const TValue& a) {
   return std::make_shared<Geometric<TValue>>(a);
 }
 }  // namespace functions
