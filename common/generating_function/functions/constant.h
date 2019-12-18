@@ -15,7 +15,7 @@ class PConstant : public GeneratingFunction<TValue> {
 };
 
 template <class TValue>
-static PGeneratingFunction<TValue> CreatePConstant(const TValue& a0) {
+inline PGeneratingFunction<TValue> CreatePConstant(const TValue& a0) {
   return std::make_shared<PConstant<TValue>>(a0);
 }
 }  // namespace functions

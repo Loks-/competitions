@@ -44,7 +44,7 @@ inline TGraph Subgraph(const TGraph& graph, unsigned new_nvertices,
 }
 
 template <class TGraph>
-static TGraph Subgraph(const TGraph& graph, const std::vector<bool>& keep) {
+inline TGraph Subgraph(const TGraph& graph, const std::vector<bool>& keep) {
   assert(graph.Size() == keep.size());
   unsigned new_nvertices = 0;
   std::vector<unsigned> old_to_new(graph.Size(), CNone);

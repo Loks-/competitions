@@ -45,7 +45,7 @@ class Partition : public GeneratingFunction<TValue> {
 };
 
 template <class TValue>
-static PGeneratingFunction<TValue> CreatePartition(
+inline PGeneratingFunction<TValue> CreatePartition(
     PGeneratingFunction<TValue> f) {
   return std::make_shared<Partition<TValue>>(f);
 }

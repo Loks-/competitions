@@ -40,7 +40,7 @@ class Partition : public GeneratingFunction<TValue> {
 };
 
 template <class TValue>
-static PGeneratingFunction<TValue> CreatePartition() {
+inline PGeneratingFunction<TValue> CreatePartition() {
   return std::make_shared<Partition<TValue>>();
 }
 }  // namespace functions

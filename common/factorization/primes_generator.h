@@ -90,7 +90,7 @@ class PrimesGenerator {
 };
 }  // namespace factorization
 
-static std::vector<uint64_t> GeneratePrimes(uint64_t maxn) {
+inline std::vector<uint64_t> GeneratePrimes(uint64_t maxn) {
   factorization::PrimesGenerator pg;
   std::vector<uint64_t> vprimes;
   for (uint64_t p = pg.Get(); p <= maxn; p = pg.GetNext()) vprimes.push_back(p);
