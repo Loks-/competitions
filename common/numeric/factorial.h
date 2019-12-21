@@ -29,3 +29,8 @@ class Factorial {
   }
 };
 }  // namespace numeric
+
+inline uint64_t GetFactorial(unsigned n) {
+  thread_local numeric::Factorial f;
+  return f(n);
+}

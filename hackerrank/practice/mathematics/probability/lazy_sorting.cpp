@@ -4,7 +4,6 @@
 #include "common/stl/base.h"
 
 int main_lazy_sorting() {
-  numeric::Factorial f;
   unsigned N, x, lx = 0;
   cin >> N;
   vector<unsigned> v(101, 0);
@@ -19,8 +18,8 @@ int main_lazy_sorting() {
     cout << "0.000000" << endl;
     return 0;
   }
-  uint64_t s = f(N);
-  for (unsigned i : v) s /= f(i);
+  uint64_t s = GetFactorial(N);
+  for (unsigned i : v) s /= GetFactorial(i);
   cout << s << ".000000" << endl;
   return 0;
 }

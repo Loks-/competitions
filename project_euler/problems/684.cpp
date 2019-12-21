@@ -1,6 +1,6 @@
-#include "common/stl/base.h"
 #include "common/modular_io.h"
 #include "common/numeric/fibonacci.h"
+#include "common/stl/base.h"
 
 int main_684() {
   unsigned N = 90;
