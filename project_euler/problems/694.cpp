@@ -12,9 +12,9 @@ int main_694() {
                                                     unsigned i) -> void {
     s += k;
     for (; i < vp.size(); ++i) {
-      uint64_t p = vp[i], l = p * p * p;
-      if (k < l) break;
-      for (uint64_t kp = k / l; kp; kp /= p) Add(kp, i + 1);
+      uint64_t p = vp[i], kp = k / (p * p * p);
+      if (kp == 0) break;
+      for (; kp; kp /= p) Add(kp, i + 1);
     }
   };
 
