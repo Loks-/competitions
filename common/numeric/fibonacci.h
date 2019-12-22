@@ -21,14 +21,14 @@ class Fibonacci {
     for (; vf[i] < n; ++i) vf.push_back(vf[i - 1] + vf[i]);
   }
 
+  size_t Size() const { return vf.size(); }
+
   uint64_t Get(unsigned n) {
     Adjust(n);
     return vf[n];
   }
 
   uint64_t operator()(unsigned n) { return Get(n); }
-
-  const std::vector<uint64_t> GetVector() const { return vf; }
 };
 }  // namespace numeric
 
