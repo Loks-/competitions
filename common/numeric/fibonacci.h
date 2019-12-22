@@ -31,3 +31,8 @@ class Fibonacci {
   const std::vector<uint64_t> GetVector() const { return vf; }
 };
 }  // namespace numeric
+
+inline uint64_t GetFibonacci(unsigned n) {
+  thread_local numeric::Fibonacci f;
+  return f(n);
+}

@@ -11,10 +11,7 @@ int main_684() {
   };
 
   TModularD r;
-  numeric::Fibonacci f;
-  for (unsigned i = 2; i <= N; ++i) {
-    r += S(f(i));
-  }
+  for (unsigned i = 2; i <= N; ++i) r += S(GetFibonacci(i));
   std::cout << r << std::endl;
   return 0;
 }
