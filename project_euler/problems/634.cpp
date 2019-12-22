@@ -5,37 +5,44 @@
 
 int main_634() {
   // uint64_t N = 3000000, M = 9000000000000000000ull;
-  uint64_t N = 3000000, M = 900000000000000ull;
+  uint64_t N = 3000000000, M = 9000000000000000000ull;
   // uint64_t N = 2000, M = 3000000;
   auto vp = GeneratePrimes(N);
   cout << "Primes created. Size = " << vp.size() << endl;
   uint64_t s = 0;
 
-  std::function<void(uint64_t, unsigned, unsigned, uint64_t)> Add = [&](
-      uint64_t k, unsigned i, unsigned mask, uint64_t l) -> void {
+  std::function<void(uint64_t, unsigned, unsigned)> Add =
+      [&](uint64_t k, unsigned i, unsigned mask) -> void {
     if (k == 0) return;
-    if (mask == 0) {
-      // cout << l << "\t" << k << endl;
-      s += 1;
-    }
+    if (mask == 0) ++s;
     for (; i < vp.size(); ++i) {
       uint64_t p = vp[i], kp = k / (p * p);
-      uint64_t lp = l * p * p;
       if (kp == 0) break;
-      Add(kp, i + 1, mask & 2, lp);
+      Add(kp, i + 1, mask & 2);
       kp /= p;
-      lp *= p;
-      Add(kp, i + 1, mask & 1, lp);
+      Add(kp, i + 1, mask & 1);
       kp /= p;
-      lp *= p;
-      Add(kp, i + 1, mask & 2, lp);
+      if (kp == 0) {
+        if ((mask & 1) == 0) {
+          auto it = lower_bound(
+              vp.begin() + i + 1, vp.end(), k,
+              [](uint64_t _p, uint64_t _k) { return _p * _p <= _k / _p; });
+          s += (it - vp.begin()) - i - 1;
+        }
+        if ((mask & 2) == 0) {
+          auto it = lower_bound(
+              vp.begin() + i + 1, vp.end(), k,
+              [](uint64_t _p, uint64_t _k) { return _p * _p <= _k; });
+          s += (it - vp.begin()) - i - 1;
+        }
+        break;
+      }
+      Add(kp, i + 1, mask & 2);
       kp /= p;
-      lp *= p;
-      Add(kp, i + 1, 0, lp);
+      Add(kp, i + 1, 0);
       kp /= p;
-      lp *= p;
-      Add(kp, i + 1, (mask == 3) ? 4 : 0, lp);
-      for (kp /= p, l *= p; kp; kp /= p, l *= p) Add(kp, i + 1, 0, lp);
+      Add(kp, i + 1, (mask == 3) ? 4 : 0);
+      for (kp /= p; kp; kp /= p) Add(kp, i + 1, 0);
     }
   };
 
@@ -103,8 +110,8 @@ int main_634() {
     }
   };
 
-  Add00(M, 0);
-  // Add(M, 0, 3, 1);
+  // Add00(M, 0);
+  Add(M, 0, 3);
   cout << s << endl;
   return 0;
 }
