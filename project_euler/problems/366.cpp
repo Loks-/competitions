@@ -8,10 +8,12 @@
 
 using TModular = TModular_C32<100000000>;
 
+// Time: O(log(N))
+// Memory: O(log(N))
 int main_366() {
-  uint64_t n = 1000000000000000000ull;
+  uint64_t N = 1000000000000000000ull;
   numeric::Fibonacci fb;
-  fb.AdjustMaxValue(n);
+  fb.AdjustMaxValue(N);
 
   auto S = [](uint64_t k) {
     return (k & 1) ? TModular(k) * TModular((k + 1) / 2)
@@ -31,6 +33,6 @@ int main_366() {
       return me[n] = E(f - 1) + S(l) + E(n - f) - E(l);
   };
 
-  cout << E(n) << endl;
+  cout << E(N) << endl;
   return 0;
 }

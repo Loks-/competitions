@@ -1,6 +1,8 @@
 #include "common/numeric/utils/lcm.h"
 #include "common/stl/base.h"
 
+// Time: O(T * N * log(N))
+// Memory: O(1)
 int main_005() {
   unsigned T;
   cin >> T;

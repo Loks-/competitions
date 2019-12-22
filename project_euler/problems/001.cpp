@@ -1,5 +1,7 @@
 #include "common/stl/base.h"
 
+// Time: O(T)
+// Memory: O(1)
 int main_001() {
   vector<int64_t> vk{3, 5, 15}, vw{1, 1, -1};
   unsigned T;

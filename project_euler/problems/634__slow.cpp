@@ -3,9 +3,11 @@
 
 #include <functional>
 
+// Time: O(N^(1/2) * log(log(N)))
+// Memory: O(N^(1/2))
 int main_634__slow() {
-  uint64_t N = 3000000000, M = 9000000000000000000ull;
-  auto vp = GeneratePrimes(N);
+  uint64_t M = 3000000000, N = 9000000000000000000ull;
+  auto vp = GeneratePrimes(M);
   cout << "Primes created. Size = " << vp.size() << endl;
   uint64_t s = 0;
 
@@ -44,7 +46,7 @@ int main_634__slow() {
     }
   };
 
-  Add(M, 0, 3);
+  Add(N, 0, 3);
   cout << s << endl;
   return 0;
 }

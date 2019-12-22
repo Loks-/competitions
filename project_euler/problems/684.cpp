@@ -2,6 +2,8 @@
 #include "common/numeric/fibonacci.h"
 #include "common/stl/base.h"
 
+// Time: O(N)
+// Memory: O(N)
 int main_684() {
   unsigned N = 90;
 

@@ -1,6 +1,8 @@
 #include "common/factorization/primes_generator.h"
 #include "common/stl/base.h"
 
+// Time: O(T + N * log N * log log N)
+// Memory: O(N)
 int main_007() {
   vector<uint64_t> primes = GeneratePrimes(1000000);
   unsigned T;

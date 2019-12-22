@@ -3,9 +3,11 @@
 
 #include <functional>
 
+// Time: O(N^(1/3))
+// Memory: O(N^(1/3))
 int main_694() {
-  uint64_t N = 1000000, M = 1000000000000000000ull;
-  auto vp = GeneratePrimes(N);
+  uint64_t M = 1000000, N = 1000000000000000000ull;
+  auto vp = GeneratePrimes(M);
   uint64_t s = 0;
 
   std::function<void(uint64_t, unsigned)> Add = [&](uint64_t k,
@@ -18,7 +20,7 @@ int main_694() {
     }
   };
 
-  Add(M, 0);
+  Add(N, 0);
   cout << s << endl;
   return 0;
 }

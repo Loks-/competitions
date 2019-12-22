@@ -2,6 +2,8 @@
 
 #include <string>
 
+// Time: O(T * (N + K))
+// Memory: O(N + K)
 int main_008() {
   unsigned T, N, K;
   cin >> T;

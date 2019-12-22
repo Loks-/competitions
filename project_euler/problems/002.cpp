@@ -1,5 +1,7 @@
 #include "common/stl/base.h"
 
+// Time: O(T * log(N))
+// Memory: O(1)
 int main_002() {
   unsigned T;
   cin >> T;

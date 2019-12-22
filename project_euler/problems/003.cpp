@@ -1,6 +1,8 @@
 #include "common/factorization/factorization.h"
 #include "common/stl/base.h"
 
+// Time: O(T * N^(1/4))
+// Memory: O(1)
 int main_003() {
   unsigned T;
   cin >> T;
