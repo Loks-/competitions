@@ -1,50 +1,24 @@
-#include "common/factorization/primes_generator.h"
+#include "common/factorization/primes_list.h"
+#include "common/factorization/utils/cube_free_count.h"
+#include "common/factorization/utils/square_free.h"
+#include "common/numeric/utils/usqrt.h"
 #include "common/stl/base.h"
 
 #include <functional>
 
 int main_634() {
-  uint64_t N = 3000000000, M = 9000000000000000000ull;
-  auto vp = GeneratePrimes(N);
-  cout << "Primes created. Size = " << vp.size() << endl;
-  uint64_t s = 0;
-
-  std::function<void(uint64_t, unsigned, unsigned)> Add =
-      [&](uint64_t k, unsigned i, unsigned mask) -> void {
-    if (k == 0) return;
-    if (mask == 0) ++s;
-    for (; i < vp.size(); ++i) {
-      uint64_t p = vp[i], kp = k / (p * p);
-      if (kp == 0) break;
-      Add(kp, i + 1, mask & 2);
-      kp /= p;
-      Add(kp, i + 1, mask & 1);
-      kp /= p;
-      if (kp == 0) {
-        if ((mask & 1) == 0) {
-          auto it = lower_bound(
-              vp.begin() + i + 1, vp.end(), k,
-              [](uint64_t _p, uint64_t _k) { return _p * _p <= _k / _p; });
-          s += (it - vp.begin()) - i - 1;
-        }
-        if ((mask & 2) == 0) {
-          auto it = lower_bound(
-              vp.begin() + i + 1, vp.end(), k,
-              [](uint64_t _p, uint64_t _k) { return _p * _p <= _k; });
-          s += (it - vp.begin()) - i - 1;
-        }
-        break;
-      }
-      Add(kp, i + 1, mask & 2);
-      kp /= p;
-      Add(kp, i + 1, 0);
-      kp /= p;
-      Add(kp, i + 1, (mask == 3) ? 4 : 0);
-      for (kp /= p; kp; kp /= p) Add(kp, i + 1, 0);
+  uint64_t N = 2000000, M = 9000000000000000000ull;
+  factorization::PrimesList primes_list(N);
+  uint64_t SqrtM = USqrt(M), s = 0;
+  for (uint64_t b = 2; b * b * b <= M / 4; ++b) {
+    if (SquareFree(primes_list.FactorizeTable(b))) {
+      s += USqrt(M / (b * b * b)) - 1;
     }
-  };
-
-  Add(M, 0, 3);
+  }
+  for (uint64_t b = 2; b * b * b <= SqrtM; ++b) {
+    if (primes_list.IsPrime(b)) s -= 1;
+    s += CubeFreeCount(SqrtM / (b * b * b), primes_list.GetPrimes());
+  }
   cout << s << endl;
   return 0;
 }
