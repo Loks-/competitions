@@ -20,8 +20,8 @@ size_t TesterPrimeGeneration::Test(const std::string& name, uint64_t maxn,
     case GenerationType::PRIMALITY_TEST:
       vp = GetPrimes_PrimalityTest(maxn);
       break;
-    case GenerationType::PRIMES_LIST:
-      vp = GetPrimes_PrimesList(maxn);
+    case GenerationType::PRIMES_TABLE:
+      vp = GetPrimes_PrimesTable(maxn);
       break;
     case GenerationType::ERATOSTHENES_BIT:
       vp = GetPrimes_EratosthenesBit(maxn);
@@ -78,7 +78,7 @@ bool TesterPrimeGeneration::TestAll(bool time_test) {
     hs.insert(Test("TrialDivision   ", maxn, GenerationType::TRIAL_DIVISION));
     hs.insert(Test("PrimalityTest   ", maxn, GenerationType::PRIMALITY_TEST));
   }
-  hs.insert(Test("PrimesList      ", maxn, GenerationType::PRIMES_LIST));
+  hs.insert(Test("PrimesTable     ", maxn, GenerationType::PRIMES_TABLE));
   hs.insert(Test("EratosthenesBit ", maxn, GenerationType::ERATOSTHENES_BIT));
   hs.insert(Test("EratosthenesByte", maxn, GenerationType::ERATOSTHENES_BYTE));
   hs.insert(Test("EratosthenesInt ", maxn, GenerationType::ERATOSTHENES_INT));

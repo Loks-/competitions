@@ -1,21 +1,21 @@
 // https://www.hackerrank.com/challenges/bear-and-cryptography
 
 #include "common/factorization/primality_test.h"
-#include "common/factorization/primes_list.h"
+#include "common/factorization/table/primes.h"
 #include "common/stl/base.h"
 
 #include <functional>
 
 int main_bear_and_cryptography() {
-  factorization::PrimesList primes_list(1000000);
+  PrimesTable primes_table(1000000);
   uint64_t best_so_far;
 
   auto GetMaxPrimeLessOrEqualN = [&](uint64_t N, uint64_t minN) -> uint64_t {
     if (N <= 1) {
       return 0;
-    } else if (N <= primes_list.GetTableSize()) {
-      return *(upper_bound(primes_list.GetPrimes().begin(),
-                           primes_list.GetPrimes().end(), N) -
+    } else if (N <= primes_table.GetTableSize()) {
+      return *(upper_bound(primes_table.GetPrimes().begin(),
+                           primes_table.GetPrimes().end(), N) -
                1);
     } else {
       if ((N & 1) == 0) N -= 1;
@@ -36,10 +36,10 @@ int main_bear_and_cryptography() {
       if (N < 1) return false;
       best_so_far = max(best_so_far, M);
       return true;
-    } else if (N < primes_list.GetPrimes()[min_prime_index]) {
+    } else if (N < primes_table.GetPrimes()[min_prime_index]) {
       return false;
     } else if ((powers[power_index] >= 3) &&
-               (N < primes_list.GetSquaredPrimes()[min_prime_index])) {
+               (N < primes_table.GetSquaredPrimes()[min_prime_index])) {
       return false;
     } else if ((power_index == (powers.size() - 1)) &&
                powers[power_index] <= 3) {
@@ -48,8 +48,8 @@ int main_bear_and_cryptography() {
         best_so_far = max(best_so_far, M * p);
         return true;
       } else if (powers[power_index] == 3) {
-        uint64_t p2 = *(upper_bound(primes_list.GetSquaredPrimes().begin(),
-                                    primes_list.GetSquaredPrimes().end(), N) -
+        uint64_t p2 = *(upper_bound(primes_table.GetSquaredPrimes().begin(),
+                                    primes_table.GetSquaredPrimes().end(), N) -
                         1);
         best_so_far = max(best_so_far, M * p2);
         return true;
@@ -58,7 +58,7 @@ int main_bear_and_cryptography() {
     bool first = true;
     for (;; ++min_prime_index) {
       unsigned power = powers[power_index] - 1;
-      uint64_t prime = primes_list.GetPrimes()[min_prime_index];
+      uint64_t prime = primes_table.GetPrimes()[min_prime_index];
       uint64_t tx = 1, tn = N;
       for (unsigned i = 0; i < power; ++i) {
         tx *= prime;

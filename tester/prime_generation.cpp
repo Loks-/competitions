@@ -2,7 +2,7 @@
 
 #include "common/base.h"
 #include "common/factorization/primality_test.h"
-#include "common/factorization/primes_list.h"
+#include "common/factorization/table/primes.h"
 #include "common/numeric/utils/usqrt.h"
 #include <vector>
 
@@ -32,8 +32,8 @@ std::vector<uint64_t> GetPrimes_PrimalityTest(uint64_t maxn) {
   return vp;
 }
 
-std::vector<uint64_t> GetPrimes_PrimesList(uint64_t maxn) {
-  return factorization::PrimesList(maxn).GetPrimes();
+std::vector<uint64_t> GetPrimes_PrimesTable(uint64_t maxn) {
+  return PrimesTable(maxn).GetPrimes();
 }
 
 std::vector<uint64_t> GetPrimes_EratosthenesBit(uint64_t maxn) {

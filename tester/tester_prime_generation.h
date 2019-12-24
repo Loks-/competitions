@@ -8,7 +8,7 @@ class TesterPrimeGeneration {
   enum class GenerationType {
     TRIAL_DIVISION,
     PRIMALITY_TEST,
-    PRIMES_LIST,
+    PRIMES_TABLE,
     ERATOSTHENES_BIT,
     ERATOSTHENES_BYTE,
     ERATOSTHENES_INT,

@@ -1,6 +1,7 @@
 // https://www.hackerrank.com/challenges/hackerrank-number
 
-#include "common/factorization/primes_list.h"
+#include "common/factorization/table/primes.h"
+#include "common/factorization/table/utils/factorize_extended.h"
 #include "common/factorization/utils/coprime_count.h"
 #include "common/factorization/utils/coprime_sum.h"
 #include "common/factorization/utils/divisors.h"
@@ -13,11 +14,11 @@ int main_hackerrank_number() {
   cin >> a >> b;
   uint64_t raw_b = b;
   if (a > b) swap(a, b);
-  factorization::PrimesList primes_list(a);
+  PrimesTable primes_table(a);
   // L
   uint64_t cL = 0, sL = 0;
   TFactorization f;
-  for (uint64_t p : primes_list.GetPrimes()) {
+  for (uint64_t p : primes_table.GetPrimes()) {
     uint64_t t = a / p, c = 0;
     for (; t; t /= p) c += 1;
     f.push_back({p, unsigned(c)});
@@ -31,7 +32,7 @@ int main_hackerrank_number() {
       if ((c % ia) == 0) la = ia;
     }
     uint64_t cb = b / (c / la), fdc = fd / c;
-    TFactorization ff = primes_list.Factorize(fdc);
+    TFactorization ff = FactorizeExtended(primes_table, fdc);
     cL += CoprimeCount(ff, cb);
     sL += c * CoprimeSum(ff, cb);
   }

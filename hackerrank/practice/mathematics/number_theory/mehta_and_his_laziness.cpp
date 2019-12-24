@@ -1,16 +1,17 @@
 // https://www.hackerrank.com/challenges/mehta-and-his-laziness
 
-#include "common/factorization/primes_list.h"
+#include "common/factorization/table/primes.h"
+#include "common/factorization/table/utils/factorize_extended.h"
 #include "common/numeric/fraction_io.h"
 #include "common/stl/base.h"
 
 int main_mehta_and_his_laziness() {
-  factorization::PrimesList primes_list(1000);
+  PrimesTable primes_table(1000);
   unsigned T, N;
   cin >> T;
   for (unsigned it = 0; it < T; ++it) {
     cin >> N;
-    auto f = primes_list.Factorize(N);
+    auto f = FactorizeExtended(primes_table, N);
     if ((f.size() == 0) || (f[0].prime != 2) || (f[0].power < 2) || (N == 4)) {
       cout << 0 << endl;
     } else {
