@@ -42,14 +42,10 @@ class Primes {
   uint64_t GetSquaredTableSize() const { return squared_table_size; }
   const std::vector<unsigned>& GetTable() const { return table; }
 
-  // bool IsPrime(uint64_t n) {
-  //   assert(n <= squared_table_size);
-  //   if (n <= table_size) return (n > 1) && (table[n] == n);
-  //   for (size_t i = 0; squared_primes[i] <= n; ++i) {
-  //     if ((n % primes[i]) == 0) return false;
-  //   }
-  //   return true;
-  // }
+  unsigned Get(uint64_t n) const { return table[n]; }
+  unsigned operator()(uint64_t n) const { return Get(n); }
+
+  bool IsPrime(uint64_t n) const { return (n > 1) && (table[n] == n); }
 };
 }  // namespace table
 }  // namespace factorization
