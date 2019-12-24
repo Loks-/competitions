@@ -3,12 +3,17 @@
 #include "common/factorization/table/mertens.h"
 #include "common/numeric/utils/usqrt.h"
 
+// Memory: O(U)
+// Time: O(U + X / (U^1/2))
+// Optimal U ~ X^(2/3)
 namespace factorization {
 class Mertens {
  protected:
   uint64_t u;
   table::Mertens mertens;
 
+  // y <= U^2
+  // Time: O(sqrt(y))
   int S(uint64_t y) const {
     uint64_t v = USqrt(y), k = y / (v + 1);
     int r = 1 + int(k) * mertens(v);
@@ -20,8 +25,10 @@ class Mertens {
  public:
   Mertens(unsigned _u) : u(_u), mertens(u) {}
 
+  // x <= U
   int GetMobius(uint64_t x) const { return mertens.GetMobius(x); }
 
+  // x <= U^2
   int GetMertens(uint64_t x) const {
     if (x <= u) return mertens(x);
     int r = 0;
