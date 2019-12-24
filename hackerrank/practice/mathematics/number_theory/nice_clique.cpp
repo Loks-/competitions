@@ -1,17 +1,18 @@
 // https://www.hackerrank.com/challenges/niceclique
 
-#include "common/factorization/primes_list_extended/primes_powers.h"
+#include "common/factorization/table/primes.h"
+#include "common/factorization/table/utils/primes_powers.h"
 #include "common/stl/base.h"
 #include "common/vector/read.h"
 
 int main_nice_clique() {
-  factorization::ple::PrimesPowers primes_list(100000);
+  PrimesTable primes_table(100000);
   unsigned n;
   cin >> n;
   vector<uint64_t> v = ReadVector<uint64_t>(n);
   vector<unsigned> m1(2), m2(2);
   for (uint64_t x : v) {
-    auto f = primes_list.Get(x);
+    auto f = PrimesPowers(primes_table, x);
     m1[f.size() & 1] += 1;
     uint64_t i = (x & 1) ^ 1;
     bool square = true;
