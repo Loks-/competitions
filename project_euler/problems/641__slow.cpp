@@ -6,7 +6,7 @@
 
 // Time: O(N^(1/4) * log(log(N)))
 // Memory: O(N^(1/4))
-int main_641() {
+int main_641__slow() {
   uint64_t NSqrt = PowU<uint64_t>(10, 18), M = USqrt(NSqrt);
   uint64_t s = 0, l = UCbrt(NSqrt);
   factorization::table::Mobius mobius(M);
