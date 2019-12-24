@@ -6,6 +6,8 @@
 #include "common/numeric/utils/usqrt.h"
 #include <vector>
 
+// Works correctly for n <= pt.GetTableSize()^3.
+// Table size 10^6 is enough for uint64_t type.
 inline std::vector<unsigned> PrimesPowers(const PrimesTable& pt, uint64_t n) {
   thread_local factorization::PrimalityTest primality_test;
   if (n <= 1) return {};
@@ -15,6 +17,7 @@ inline std::vector<unsigned> PrimesPowers(const PrimesTable& pt, uint64_t n) {
   n = f.back().prime;
   if (n <= pt.GetSquaredTableSize()) return output;
   if (primality_test.IsPrime(n)) return output;
+  assert(pt.GetTableSize() / n / n / n == 0);
   uint64_t nsqrt = USqrt(n);
   if (nsqrt * nsqrt == n)
     output.back() = 2;
