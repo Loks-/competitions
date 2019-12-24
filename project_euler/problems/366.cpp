@@ -1,6 +1,7 @@
 #include "common/binary_search.h"
 #include "common/modular_io.h"
 #include "common/numeric/fibonacci.h"
+#include "common/numeric/utils/pow.h"
 #include "common/stl/base.h"
 
 #include <functional>
@@ -11,7 +12,7 @@ using TModular = TModular_C32<100000000>;
 // Time: O(log(N))
 // Memory: O(log(N))
 int main_366() {
-  uint64_t N = 1000000000000000000ull;
+  uint64_t N = PowU<uint64_t>(10, 18);
   numeric::Fibonacci fb;
   fb.AdjustMaxValue(N);
 

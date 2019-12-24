@@ -1,4 +1,6 @@
 #include "common/factorization/primes_generator.h"
+#include "common/numeric/utils/pow.h"
+#include "common/numeric/utils/usqrt.h"
 #include "common/stl/base.h"
 
 #include <functional>
@@ -6,7 +8,7 @@
 // Time: O(N^(1/2) * log(log(N)))
 // Memory: O(N^(1/2))
 int main_634__slow() {
-  uint64_t M = 3000000000, N = 9000000000000000000ull;
+  uint64_t N = 9 * PowU<uint64_t>(10, 18), M = USqrt(N);
   auto vp = GeneratePrimes(M);
   cout << "Primes created. Size = " << vp.size() << endl;
   uint64_t s = 0;
