@@ -1,0 +1,30 @@
+#pragma once
+
+#include "common/base.h"
+#include "common/factorization/table/mobius.h"
+#include <vector>
+
+namespace factorization {
+namespace table {
+class Mertens : public Mobius {
+ public:
+  using TBase = Mobius;
+
+ protected:
+  std::vector<int> mertens;
+
+ public:
+  Mertens(uint64_t size) : TBase(size) {
+    mertens.resize(TBase::table_size + 1);
+    mertens[0] = 0;
+    for (unsigned i = 1; i <= TBase::table_size; ++i)
+      mertens[i] = mertens[i - 1] + TBase::mobius[i];
+  }
+
+  int GetMobius(uint64_t n) const { return TBase::Get(n); }
+
+  int Get(uint64_t n) const { return mertens[n]; }
+  int operator()(uint64_t n) const { return Get(n); }
+};
+}  // namespace table
+}  // namespace factorization

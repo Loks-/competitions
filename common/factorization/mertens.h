@@ -1,13 +1,13 @@
 #pragma once
 
-#include "common/factorization/primes_list_extended/mertens.h"
+#include "common/factorization/table/mertens.h"
 #include "common/numeric/utils/usqrt.h"
 
 namespace factorization {
 class Mertens {
  protected:
   uint64_t u;
-  ple::Mertens mertens;
+  table::Mertens mertens;
 
   int S(uint64_t y) const {
     uint64_t v = USqrt(y), k = y / (v + 1);
