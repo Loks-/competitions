@@ -14,7 +14,7 @@ int main_634() {
   factorization::ple::Mobius primes_list(M);
   uint64_t SqrtN = USqrt(N), s = 0;
   for (uint64_t b = 2; b * b * b <= N / 4; ++b) {
-    if (primes_list.Get(b)) s += USqrt(N / (b * b * b)) - 1;
+    if (primes_list(b)) s += USqrt(N / (b * b * b)) - 1;
   }
   for (uint64_t b = 2; b * b * b <= SqrtN; ++b) {
     if (primes_list.IsPrime(b)) s -= 1;

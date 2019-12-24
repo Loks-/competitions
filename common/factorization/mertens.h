@@ -18,7 +18,7 @@ class Mertens {
   }
 
  public:
-  Mertens(unsigned _u) : u(_u), mertens(u) { mertens.Precalc(); }
+  Mertens(unsigned _u) : u(_u), mertens(u) {}
 
   int GetMobius(uint64_t x) const { return mertens.GetMobius(x); }
 

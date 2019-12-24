@@ -9,11 +9,6 @@ class Mobius : public PrimesList {
  protected:
   std::vector<int> mobius;
 
- public:
-  Mobius(uint64_t size, bool precalc = true) : PrimesList(size) {
-    if (precalc) Precalc();
-  }
-
   void Precalc() {
     mobius.resize(PrimesList::table_size + 1);
     mobius[0] = 0;
@@ -23,6 +18,9 @@ class Mobius : public PrimesList {
       mobius[i] = (PrimesList::table[i / p] == p ? 0 : -1 * mobius[i / p]);
     }
   }
+
+ public:
+  Mobius(uint64_t size) : PrimesList(size) { Precalc(); }
 
   int GetTable(uint64_t n) const {
     assert(n <= PrimesList::table_size);
