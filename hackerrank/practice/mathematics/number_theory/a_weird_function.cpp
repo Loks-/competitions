@@ -1,13 +1,13 @@
 // https://www.hackerrank.com/challenges/a-weird-function
 
-#include "common/factorization/primes_list_extended/eulers_totient.h"
+#include "common/factorization/table/eulers_totient.h"
 #include "common/local.h"
 #include "common/stl/base.h"
 
 int main_a_weird_function() {
   const uint64_t maxi = local_run ? 1000000ull : 1000000000000ull;
-  factorization::ple::EulersTotient primes_list(local_run ? 1500 : 1500000);
-  primes_list.Precalc();
+  factorization::table::EulersTotient eulers_totient(local_run ? 1500
+                                                               : 1500000);
   vector<uint64_t> vi, vs(1, 0);
   uint64_t phi1 = 1, phi2 = 1;
   for (uint64_t j = 2;; ++j) {
@@ -15,7 +15,7 @@ int main_a_weird_function() {
     if (i > maxi) break;
     vi.push_back(i);
     phi1 = phi2;
-    phi2 = primes_list(j & 1 ? j : j / 2);
+    phi2 = eulers_totient(j & 1 ? j : j / 2);
     vs.push_back(vs.back() + phi1 * phi2);
   }
   unsigned T;
