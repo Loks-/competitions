@@ -4,7 +4,7 @@
 #include "common/numeric/utils/usqrt.h"
 
 // Memory: O(U)
-// Time: O(U + X / (U^1/2))
+// Time: O(U * log(log(U)) + X / (U^1/2))
 // Optimal U ~ X^(2/3)
 namespace factorization {
 class Mertens {

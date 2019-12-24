@@ -2,7 +2,7 @@
 #include "common/factorization/utils/divisors.h"
 #include "common/stl/base.h"
 
-// Time: O(T * N^(1/4))
+// Time: O(T * N^(1/4) * log(N))
 // Memory: O(log(N))
 int main_009() {
   unsigned T;
