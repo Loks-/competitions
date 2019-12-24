@@ -69,8 +69,8 @@ class Unsigned {
     return true;
   }
 
-  bool operator>(const Unsigned& lu) const { return !(lu <= (*this)); }
-  bool operator>=(const Unsigned& lu) const { return !(lu < (*this)); }
+  bool operator>(const Unsigned& lu) const { return lu < *this; }
+  bool operator>=(const Unsigned& lu) const { return lu <= *this; }
 
   Unsigned operator+(uint64_t u) const {
     if (u == 0) return (*this);
