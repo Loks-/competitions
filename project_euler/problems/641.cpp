@@ -1,22 +1,20 @@
 #include "common/factorization/table/mobius.h"
-#include "common/numeric/long/pow.h"
-#include "common/numeric/long/unsigned_io.h"
 #include "common/numeric/utils/pow.h"
+#include "common/numeric/utils/ucbrt.h"
+#include "common/numeric/utils/usqrt.h"
 #include "common/stl/base.h"
 
 // Time: O(N^(1/4) * log(log(N)))
 // Memory: O(N^(1/4))
 int main_641() {
-  LongUnsigned N = numeric::nlong::PowU(10u, 36);
-  unsigned M = PowU(10, 9), l = PowU(10, 6);
+  uint64_t NSqrt = PowU<uint64_t>(10, 18), M = USqrt(NSqrt);
+  uint64_t s = 0, l = UCbrt(NSqrt);
   factorization::table::Mobius mobius(M);
   cout << "Mobius pregenerated" << endl;
-  uint64_t s = 0;
-  for (unsigned b = 1; numeric::nlong::PowU(b, 4) <= N; ++b) {
+  for (uint64_t b = 1; b * b <= NSqrt; ++b) {
     if (mobius(b) == 1) {
-      LongUnsigned t = N;
-      for (unsigned j = 0; j < 4; ++j) t /= b;
-      for (; t < numeric::nlong::PowU(l, 6);) --l;
+      uint64_t t = NSqrt / (b * b);
+      for (; t < l * l * l;) --l;
       s += l;
     }
   }
