@@ -10,7 +10,9 @@ class Mobius : public PrimesList {
   std::vector<int> mobius;
 
  public:
-  Mobius(uint64_t size) : PrimesList(size) {}
+  Mobius(uint64_t size, bool precalc = true) : PrimesList(size) {
+    if (precalc) Precalc();
+  }
 
   void Precalc() {
     mobius.resize(PrimesList::table_size + 1);

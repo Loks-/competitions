@@ -9,7 +9,7 @@
 int main_641() {
   LongUnsigned N = numeric::nlong::PowU(10u, 36);
   unsigned M = PowU(10, 9), l = PowU(10, 6);
-  auto plm = factorization::ple::Mobius(M);
+  auto plm = factorization::ple::Mobius(M, false);
   cout << "Mobius pregenerated" << endl;
   uint64_t s = 0;
   for (unsigned b = 1; numeric::nlong::PowU(b, 4) <= N; ++b) {
