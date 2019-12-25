@@ -5,7 +5,7 @@
 
 #include <functional>
 
-// Time: O(N^(1/3))
+// Time: O(N^(1/3) * log(log(N)))
 // Memory: O(N^(1/3))
 int main_694() {
   uint64_t N = PowU<uint64_t>(10, 18), M = UCbrt(N);
