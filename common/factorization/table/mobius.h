@@ -20,22 +20,6 @@ class Mobius : public Primes {
     }
   }
 
-  //   int Get(uint64_t n) const {
-  //     if (n < mobius.size()) return mobius[n];
-  //     if (n <= Primes::table_size) return GetTable(n);
-  //     unsigned primes_count = 0;
-  //     for (uint64_t p : Primes::primes) {
-  //       if (n < p * p) break;
-  //       if ((n % p) == 0) {
-  //         n /= p;
-  //         if ((n % p) == 0) return 0;
-  //       }
-  //     }
-  //     assert(Primes::squared_table_size > n);
-  //     if (n != 1) ++primes_count;
-  //     return (primes_count & 1) ? -1 : 1;
-  //   }
-
   int Get(uint64_t n) const { return mobius[n]; }
   int operator()(uint64_t n) const { return Get(n); }
 };
