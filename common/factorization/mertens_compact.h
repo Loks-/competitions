@@ -43,8 +43,7 @@ class MertensCompact {
     vmobius.resize(e);
     vmertens.resize(e);
     for (uint64_t i = 0; i < e; ++i) {
-      vmobius[i] = mobius(i);
-      last_mertens += int(vmobius[i]);
+      last_mertens += mobius(i);
       vmertens[i] = last_mertens;
     }
   }
@@ -62,14 +61,13 @@ class MertensCompact {
         vmobius[i - b] *= -int64_t(p);
     }
     for (uint64_t i = b; i < e; ++i) {
-      int64_t& m = vmobius[i - b];
+      int64_t m = vmobius[i - b];
       if (m == int64_t(i))
-        m = 1;
+        ++last_mertens;
       else if (m == -int64_t(i))
-        m = -1;
+        --last_mertens;
       else
-        m = -Sign(m);
-      last_mertens += int(m);
+        last_mertens -= Sign(m);
       vmertens[i - b] = last_mertens;
     }
   }
