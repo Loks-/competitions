@@ -25,8 +25,8 @@ constexpr T CTUCbrt(T x) {
 template <class T>
 inline T UCbrt(T x) {
   T r = T(cbrt(double(x)));
-  T sqrt_max = CTUCbrt<T>(std::numeric_limits<T>::max());
-  for (; (r < sqrt_max) && (r * r < x);) ++r;
-  for (; (r > sqrt_max) || (r * r > x);) --r;
+  T cbrt_max = CTUCbrt<T>(std::numeric_limits<T>::max());
+  for (; (r < cbrt_max) && (r * r * r < x);) ++r;
+  for (; (r > cbrt_max) || (r * r * r > x);) --r;
   return r;
 }
