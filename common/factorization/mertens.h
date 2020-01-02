@@ -34,7 +34,7 @@ class Mertens {
     if (x <= u) return mertens(x);
     int r = 0;
     for (uint64_t n = 1; n <= x / u; ++n) {
-      int m = mertens.GetMobius(n);
+      int m = GetMobius(n);
       if (m) r += m * S(x / n);
     }
     return r;
