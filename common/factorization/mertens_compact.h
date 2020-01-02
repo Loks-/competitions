@@ -2,16 +2,14 @@
 
 #include "common/factorization/table/mobius.h"
 #include "common/numeric/utils/sign.h"
+#include "common/numeric/utils/ucbrt.h"
 #include "common/numeric/utils/usqrt.h"
 #include <algorithm>
 #include <vector>
 
-#include <iostream>
-
 // Memory: O(U)
 // Time Build: O(U * log(log(U)))
-// Time Get: ??? O(X / (U^1/2))
-// Optimal U ~ X^(1/3)
+// Time Get: O(X^(2/3) * log(log(X)) + U)
 namespace factorization {
 class MertensCompact {
  protected:
@@ -22,11 +20,13 @@ class MertensCompact {
   std::vector<int64_t> bmobius;
   std::vector<int> bmertens;
 
-  int S(uint64_t x, uint64_t m) {
-    uint64_t y = x / m, v = std::min(USqrt(y), x / u - 1), k = y / (v + 1);
+  uint64_t rx, ru;
+
+  int S(uint64_t m) {
+    uint64_t y = rx / m, v = std::min(USqrt(y), rx / ru - 1), k = y / (v + 1);
     int s = 0;
     uint64_t ne1 = (b ? std::min(k, y / b) : k) + 1;
-    for (uint64_t n = std::max(u / m, y / e) + 1; n < ne1; ++n)
+    for (uint64_t n = std::max(ru / m, y / e) + 1; n < ne1; ++n)
       s -= bmertens[y / n - b];
     uint64_t ne2 = std::min(v + 1, e);
     for (uint64_t n = std::max(b, uint64_t(1)); n < ne2; ++n)
@@ -81,13 +81,16 @@ class MertensCompact {
       return s;
     } else {
       uint64_t xsqrt = USqrt(x);
+      rx = x;
+      ru = std::min(UCbrt(x), u);
       FirstBlock();
-      int s = bmertens[u];
-      for (FirstBlock(); (b <= x / u) || (b <= xsqrt); NextBlock()) {
-        for (uint64_t n = 1; n <= u; ++n) {
+      int s = bmertens[ru];
+      for (;; NextBlock()) {
+        for (uint64_t n = 1; n <= ru; ++n) {
           int m = mobius(n);
-          if (m) s += m * S(x, n);
+          if (m) s += m * S(n);
         }
+        if (e > x / ru) break;
       }
       return s;
     }
