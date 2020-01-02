@@ -23,22 +23,16 @@ class MertensCompact {
   std::vector<int> vmertens;
 
   bool Valid(uint64_t t) const { return (b <= t) && (t < e); }
-  int GetMobiusI(uint64_t t) const {
-    return Valid(t) ? int(vmobius[t - b]) : 0;
-  }
-  int GetMertensI(uint64_t t) const { return Valid(t) ? vmertens[t - b] : 0; }
 
   int S(uint64_t x, uint64_t m) {
     uint64_t y = x / m, v = std::min(USqrt(y), x / u - 1), k = y / (v + 1);
     int r = Valid(v) ? 1 : 0;
-    // int r = Valid(v) ? 1 + int(k) * GetMertensI(v) : 0;
     uint64_t ne1 = (b ? std::min(k, y / b) : k) + 1;
     for (uint64_t n = std::max(u / m, y / e) + 1; n < ne1; ++n)
-      r -= GetMertensI(y / n);
+      r -= vmertens[y / n - b];
     uint64_t ne2 = std::min(v + 1, e);
     for (uint64_t n = std::max(b, uint64_t(1)); n < ne2; ++n)
-      r -= (int(y / n) - int(y / (n + 1))) * GetMertensI(n);
-    // for (uint64_t n = 1; n <= v; ++n) r -= int(y / n) * GetMobiusI(n);
+      r -= (int(y / n) - int(y / (n + 1))) * vmertens[n - b];
     return r;
   }
 
