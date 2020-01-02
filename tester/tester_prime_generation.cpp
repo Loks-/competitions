@@ -10,47 +10,47 @@
 #include <vector>
 
 size_t TesterPrimeGeneration::Test(const std::string& name, uint64_t maxn,
-                                   GenerationType type) {
+                                   Algorithm type) {
   Timer t;
   std::vector<uint64_t> vp;
   switch (type) {
-    case GenerationType::TRIAL_DIVISION:
+    case Algorithm::TRIAL_DIVISION:
       vp = GetPrimes_TrialDivision(maxn);
       break;
-    case GenerationType::PRIMALITY_TEST:
+    case Algorithm::PRIMALITY_TEST:
       vp = GetPrimes_PrimalityTest(maxn);
       break;
-    case GenerationType::PRIMES_TABLE:
+    case Algorithm::PRIMES_TABLE:
       vp = GetPrimes_PrimesTable(maxn);
       break;
-    case GenerationType::ERATOSTHENES_BIT:
+    case Algorithm::ERATOSTHENES_BIT:
       vp = GetPrimes_EratosthenesBit(maxn);
       break;
-    case GenerationType::ERATOSTHENES_BYTE:
+    case Algorithm::ERATOSTHENES_BYTE:
       vp = GetPrimes_EratosthenesByte(maxn);
       break;
-    case GenerationType::ERATOSTHENES_INT:
+    case Algorithm::ERATOSTHENES_INT:
       vp = GetPrimes_EratosthenesInt(maxn);
       break;
-    case GenerationType::ERATOSTHENES_ODD:
+    case Algorithm::ERATOSTHENES_ODD:
       vp = GetPrimes_EratosthenesOdd(maxn);
       break;
-    case GenerationType::ERATOSTHENES_OMR:
+    case Algorithm::ERATOSTHENES_OMR:
       vp = GetPrimes_EratosthenesOddMemoryReduced(maxn);
       break;
-    case GenerationType::ERATOSTHENES_SS:
+    case Algorithm::ERATOSTHENES_SS:
       vp = GetPrimes_EratosthenesSegmented(maxn);
       break;
-    case GenerationType::ATKIN_BIT:
+    case Algorithm::ATKIN_BIT:
       vp = GetPrimes_AtkinBit(maxn);
       break;
-    case GenerationType::ATKIN_BYTE:
+    case Algorithm::ATKIN_BYTE:
       vp = GetPrimes_AtkinByte(maxn);
       break;
-    case GenerationType::ATKIN_INT:
+    case Algorithm::ATKIN_INT:
       vp = GetPrimes_AtkinInt(maxn);
       break;
-    case GenerationType::ATKIN_MR:
+    case Algorithm::ATKIN_MR:
       vp = GetPrimes_AtkinMemoryReduced(maxn);
       break;
   }
@@ -75,20 +75,20 @@ bool TesterPrimeGeneration::TestAll(bool time_test) {
   uint64_t maxn = (time_test ? 100000000ull : 1000000);
   std::unordered_set<size_t> hs;
   if (!time_test) {
-    hs.insert(Test("TrialDivision   ", maxn, GenerationType::TRIAL_DIVISION));
-    hs.insert(Test("PrimalityTest   ", maxn, GenerationType::PRIMALITY_TEST));
+    hs.insert(Test("TrialDivision   ", maxn, Algorithm::TRIAL_DIVISION));
+    hs.insert(Test("PrimalityTest   ", maxn, Algorithm::PRIMALITY_TEST));
   }
-  hs.insert(Test("PrimesTable     ", maxn, GenerationType::PRIMES_TABLE));
-  hs.insert(Test("EratosthenesBit ", maxn, GenerationType::ERATOSTHENES_BIT));
-  hs.insert(Test("EratosthenesByte", maxn, GenerationType::ERATOSTHENES_BYTE));
-  hs.insert(Test("EratosthenesInt ", maxn, GenerationType::ERATOSTHENES_INT));
-  hs.insert(Test("EratosthenesOdd ", maxn, GenerationType::ERATOSTHENES_ODD));
-  hs.insert(Test("EratosthenesOMR ", maxn, GenerationType::ERATOSTHENES_OMR));
-  hs.insert(Test("EratosthenesSS  ", maxn, GenerationType::ERATOSTHENES_SS));
-  hs.insert(Test("AtkinBit        ", maxn, GenerationType::ATKIN_BIT));
-  hs.insert(Test("AtkinByte       ", maxn, GenerationType::ATKIN_BYTE));
-  hs.insert(Test("AtkinInt        ", maxn, GenerationType::ATKIN_INT));
-  hs.insert(Test("AtkinMR         ", maxn, GenerationType::ATKIN_MR));
+  hs.insert(Test("PrimesTable     ", maxn, Algorithm::PRIMES_TABLE));
+  hs.insert(Test("EratosthenesBit ", maxn, Algorithm::ERATOSTHENES_BIT));
+  hs.insert(Test("EratosthenesByte", maxn, Algorithm::ERATOSTHENES_BYTE));
+  hs.insert(Test("EratosthenesInt ", maxn, Algorithm::ERATOSTHENES_INT));
+  hs.insert(Test("EratosthenesOdd ", maxn, Algorithm::ERATOSTHENES_ODD));
+  hs.insert(Test("EratosthenesOMR ", maxn, Algorithm::ERATOSTHENES_OMR));
+  hs.insert(Test("EratosthenesSS  ", maxn, Algorithm::ERATOSTHENES_SS));
+  hs.insert(Test("AtkinBit        ", maxn, Algorithm::ATKIN_BIT));
+  hs.insert(Test("AtkinByte       ", maxn, Algorithm::ATKIN_BYTE));
+  hs.insert(Test("AtkinInt        ", maxn, Algorithm::ATKIN_INT));
+  hs.insert(Test("AtkinMR         ", maxn, Algorithm::ATKIN_MR));
   {
     unsigned block_size = (time_test ? 65536 : 4096);
     for (unsigned i = 0; i < 5; ++i) {

@@ -5,7 +5,7 @@
 
 class TesterPrimeGeneration {
  public:
-  enum class GenerationType {
+  enum class Algorithm {
     TRIAL_DIVISION,
     PRIMALITY_TEST,
     PRIMES_TABLE,
@@ -22,8 +22,7 @@ class TesterPrimeGeneration {
   };
 
  public:
-  static size_t Test(const std::string& name, uint64_t maxn,
-                     GenerationType type);
+  static size_t Test(const std::string& name, uint64_t maxn, Algorithm type);
   static size_t TestPG(uint64_t maxn, uint64_t block_size);
   static bool TestAll(bool time_test);
 };
