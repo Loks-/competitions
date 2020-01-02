@@ -29,6 +29,8 @@ int main(int nargs, char **pargs) {
       Assert(TestInterpolation());
     else if (tester_mode == "mertens")
       Assert(TestMertens());
+    else if (tester_mode == "mertens_compact")
+      Assert(TestMertensCompact());
     else if (tester_mode == "minimum_spanning_tree")
       Assert(TestMinimumSpanningTree(false));
     else if (tester_mode == "modular_fft")
