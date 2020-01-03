@@ -35,8 +35,10 @@ int main(int nargs, char **pargs) {
       Assert(TestMinimumSpanningTree(false));
     else if (tester_mode == "modular_fft")
       Assert(TestModularFFT());
+    else if (tester_mode == "primes_count")
+      Assert(TestPrimesCount(false));
     else if (tester_mode == "primes_generation")
-      Assert(TestPrimeGeneration(false));
+      Assert(TestPrimesGeneration(false));
     else if (tester_mode == "time_binary_search_tree")
       Assert(TestBinarySearchTree(true));
     else if (tester_mode == "time_disjoint_set")
@@ -49,8 +51,10 @@ int main(int nargs, char **pargs) {
       Assert(TestMatrixMult());
     else if (tester_mode == "time_minimum_spanning_tree")
       Assert(TestMinimumSpanningTree(true));
+    else if (tester_mode == "time_primes_count")
+      Assert(TestPrimesCount(true));
     else if (tester_mode == "time_primes_generation")
-      Assert(TestPrimeGeneration(true));
+      Assert(TestPrimesGeneration(true));
     else
       Assert(false, "Unknown tester mode");
   } catch (AssertException) {

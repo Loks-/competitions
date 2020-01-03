@@ -12,4 +12,5 @@ bool TestMertens();
 bool TestMertensCompact();
 bool TestMinimumSpanningTree(bool time_test);
 bool TestModularFFT();
-bool TestPrimeGeneration(bool time_test);
+bool TestPrimesGeneration(bool time_test);
+bool TestPrimesCount(bool time_test);
