@@ -18,16 +18,20 @@ size_t TesterPrimesCount::Test(const std::string& name, uint64_t n,
     case Algorithm::PRIMES_GENERATION:
       r = PrimesCount_PrimesGeneration(n);
       break;
+    case Algorithm::LEGENDRE:
+      r = PrimesCount_Legendre(n);
+      break;
   }
   std::cout << name << ": " << r << "\t" << t.GetMilliseconds() << std::endl;
   return r;
 }
 
 bool TesterPrimesCount::TestAll(bool time_test) {
-  uint64_t n = (time_test ? 100000000ull : 1000000);
+  uint64_t n = (time_test ? 1000000000ull : 1000000);
   std::unordered_set<size_t> rs;
   rs.insert(Test("Table           ", n, Algorithm::TABLE));
   rs.insert(Test("PrimesGeneration", n, Algorithm::PRIMES_GENERATION));
+  rs.insert(Test("Legendre        ", n, Algorithm::LEGENDRE));
   return rs.size() == 1;
 }
 
