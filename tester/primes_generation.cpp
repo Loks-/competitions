@@ -1,4 +1,4 @@
-#include "tester/prime_generation.h"
+#include "tester/primes_generation.h"
 
 #include "common/base.h"
 #include "common/factorization/primality_test.h"

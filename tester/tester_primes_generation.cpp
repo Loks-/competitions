@@ -1,6 +1,6 @@
-#include "tester/tester_prime_generation.h"
+#include "tester/tester_primes_generation.h"
 
-#include "tester/prime_generation.h"
+#include "tester/primes_generation.h"
 #include "common/factorization/primes_generator.h"
 #include "common/stl/hash/vector.h"
 #include "common/timer.h"
@@ -99,6 +99,6 @@ bool TesterPrimeGeneration::TestAll(bool time_test) {
   return hs.size() == 1;
 }
 
-bool TestPrimeGeneration(bool time_test) {
+bool TestPrimesGeneration(bool time_test) {
   return TesterPrimeGeneration::TestAll(time_test);
 }
