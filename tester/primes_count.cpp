@@ -3,9 +3,13 @@
 #include "common/assert_exception.h"
 #include "common/factorization/primes_generator.h"
 #include "common/factorization/primes_range.h"
+#include "common/numeric/utils/ucbrt.h"
 #include "common/numeric/utils/usqrt.h"
+#include <algorithm>
 #include <functional>
 #include <vector>
+
+#include <iostream>
 
 uint64_t PrimesCount_Table(uint64_t n) {
   const std::vector<uint64_t> table{
@@ -42,4 +46,29 @@ uint64_t PrimesCount_Legendre(uint64_t n) {
   };
 
   return Count(n, 0) + primes.size() - 1;
+}
+
+uint64_t PrimesCount_Meissel(uint64_t n) {
+  if (n < 2) return 0;
+  uint64_t ncbrt = UCbrt(n), nsqrt = USqrt(n), ncbrt2 = n / ncbrt;
+  auto primes = GeneratePrimes(ncbrt2);
+  uint64_t k =
+      std::upper_bound(primes.begin(), primes.end(), ncbrt) - primes.begin();
+  uint64_t l =
+      std::upper_bound(primes.begin(), primes.end(), nsqrt) - primes.begin();
+
+  std::function<uint64_t(uint64_t, unsigned)> F = [&](uint64_t k,
+                                                      unsigned i) -> uint64_t {
+    uint64_t s = k;
+    for (unsigned j = 0; (j < i) && (primes[j] <= k); ++j) {
+      s -= F(k / primes[j], j);
+    }
+    return s;
+  };
+
+  uint64_t s = F(n, k) + (l * (l - 1)) / 2 - ((k - 1) * (k - 2)) / 2;
+  for (uint64_t i = k; i < l; ++i)
+    s -= std::upper_bound(primes.begin(), primes.end(), n / primes[i]) -
+         primes.begin();
+  return s;
 }

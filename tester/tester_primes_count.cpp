@@ -21,6 +21,9 @@ size_t TesterPrimesCount::Test(const std::string& name, uint64_t n,
     case Algorithm::LEGENDRE:
       r = PrimesCount_Legendre(n);
       break;
+    case Algorithm::MEISSEL:
+      r = PrimesCount_Meissel(n);
+      break;
   }
   std::cout << name << ": " << r << "\t" << t.GetMilliseconds() << std::endl;
   return r;
@@ -32,6 +35,7 @@ bool TesterPrimesCount::TestAll(bool time_test) {
   rs.insert(Test("Table           ", n, Algorithm::TABLE));
   rs.insert(Test("PrimesGeneration", n, Algorithm::PRIMES_GENERATION));
   rs.insert(Test("Legendre        ", n, Algorithm::LEGENDRE));
+  rs.insert(Test("Meissel         ", n, Algorithm::MEISSEL));
   return rs.size() == 1;
 }
 

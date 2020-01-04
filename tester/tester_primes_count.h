@@ -5,7 +5,7 @@
 
 class TesterPrimesCount {
  public:
-  enum class Algorithm { TABLE, PRIMES_GENERATION, LEGENDRE };
+  enum class Algorithm { TABLE, PRIMES_GENERATION, LEGENDRE, MEISSEL };
 
  public:
   static size_t Test(const std::string& name, uint64_t n, Algorithm type);
