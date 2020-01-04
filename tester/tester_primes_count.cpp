@@ -21,11 +21,11 @@ size_t TesterPrimesCount::Test(const std::string& name, uint64_t n,
     case Algorithm::LEGENDRE:
       r = PrimesCount_Legendre(n);
       break;
-    case Algorithm::LUCY_HEDGEHOG:
-      r = PrimesCount_LucyHedgehog(n);
-      break;
     case Algorithm::MEISSEL:
       r = PrimesCount_Meissel(n);
+      break;
+    case Algorithm::LUCY_HEDGEHOG:
+      r = PrimesCount_LucyHedgehog(n);
       break;
   }
   std::cout << name << ": " << r << "\t" << t.GetMilliseconds() << std::endl;
@@ -33,13 +33,15 @@ size_t TesterPrimesCount::Test(const std::string& name, uint64_t n,
 }
 
 bool TesterPrimesCount::TestAll(bool time_test) {
-  uint64_t n = (time_test ? 1000000000ull : 1000000);
+  uint64_t n = (time_test ? 10000000000ull : 1000000);
   std::unordered_set<size_t> rs;
   rs.insert(Test("Table           ", n, Algorithm::TABLE));
-  rs.insert(Test("PrimesGeneration", n, Algorithm::PRIMES_GENERATION));
-  rs.insert(Test("Legendre        ", n, Algorithm::LEGENDRE));
-  rs.insert(Test("LucyHedgehog    ", n, Algorithm::LUCY_HEDGEHOG));
+  if (!time_test) {
+    rs.insert(Test("PrimesGeneration", n, Algorithm::PRIMES_GENERATION));
+    rs.insert(Test("Legendre        ", n, Algorithm::LEGENDRE));
+  }
   rs.insert(Test("Meissel         ", n, Algorithm::MEISSEL));
+  rs.insert(Test("LucyHedgehog    ", n, Algorithm::LUCY_HEDGEHOG));
   return rs.size() == 1;
 }
 

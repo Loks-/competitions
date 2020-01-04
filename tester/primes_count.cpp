@@ -48,24 +48,6 @@ uint64_t PrimesCount_Legendre(uint64_t n) {
   return Count(n, 0) + primes.size() - 1;
 }
 
-uint64_t PrimesCount_LucyHedgehog(uint64_t n) {
-  uint64_t nsqrt = USqrt(n);
-  auto primes = GeneratePrimes(nsqrt);
-
-  std::function<uint64_t(uint64_t, unsigned)> Count =
-      [&](uint64_t k, unsigned i) -> uint64_t {
-    uint64_t s = k - 1;
-    for (unsigned j = 0; j < i; ++j) {
-      uint64_t p = primes[j], kp = k / p;
-      if (kp < p) break;
-      s -= Count(kp, j) - j;
-    }
-    return s;
-  };
-
-  return Count(n, primes.size());
-}
-
 uint64_t PrimesCount_Meissel(uint64_t n) {
   if (n < 2) return 0;
   uint64_t ncbrt = UCbrt(n), nsqrt = USqrt(n), ncbrt2 = n / ncbrt;
@@ -90,4 +72,22 @@ uint64_t PrimesCount_Meissel(uint64_t n) {
          primes.begin();
   }
   return s;
+}
+
+uint64_t PrimesCount_LucyHedgehog(uint64_t n) {
+  uint64_t nsqrt = USqrt(n);
+  auto primes = GeneratePrimes(nsqrt);
+
+  std::function<uint64_t(uint64_t, unsigned)> Count =
+      [&](uint64_t k, unsigned i) -> uint64_t {
+    uint64_t s = k - 1;
+    for (unsigned j = 0; j < i; ++j) {
+      uint64_t p = primes[j], kp = k / p;
+      if (kp < p) break;
+      s -= Count(kp, j) - j;
+    }
+    return s;
+  };
+
+  return Count(n, primes.size());
 }

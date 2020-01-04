@@ -9,8 +9,8 @@ class TesterPrimesCount {
     TABLE,
     PRIMES_GENERATION,
     LEGENDRE,
-    LUCY_HEDGEHOG,
-    MEISSEL
+    MEISSEL,
+    LUCY_HEDGEHOG
   };
 
  public:
