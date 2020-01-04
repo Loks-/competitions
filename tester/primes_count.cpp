@@ -67,8 +67,9 @@ uint64_t PrimesCount_Meissel(uint64_t n) {
   };
 
   uint64_t s = F(n, k) + (l * (l - 1)) / 2 - ((k - 1) * (k - 2)) / 2;
-  for (uint64_t i = k; i < l; ++i)
+  for (uint64_t i = k; i < l; ++i) {
     s -= std::upper_bound(primes.begin(), primes.end(), n / primes[i]) -
          primes.begin();
+  }
   return s;
 }
