@@ -24,11 +24,11 @@ size_t TesterPrimesCount::Test(const std::string& name, uint64_t n,
     case Algorithm::MEISSEL:
       r = PrimesCount_Meissel(n);
       break;
-    case Algorithm::LUCY_HEDGEHOG:
-      r = PrimesCount_LucyHedgehog(n);
+    case Algorithm::LUCY_HEDGEHOG_RECURSIVE:
+      r = PrimesCount_LucyHedgehogRecursive(n);
       break;
-    case Algorithm::LUCY_HEDGEHOG2:
-      r = PrimesCount_LucyHedgehog2(n);
+    case Algorithm::LUCY_HEDGEHOG_RECURSIVE2:
+      r = PrimesCount_LucyHedgehogRecursive2(n);
       break;
   }
   std::cout << name << ": " << r << "\t" << t.GetMilliseconds() << std::endl;
@@ -44,8 +44,8 @@ bool TesterPrimesCount::TestAll(bool time_test) {
     rs.insert(Test("Legendre        ", n, Algorithm::LEGENDRE));
   }
   rs.insert(Test("Meissel         ", n, Algorithm::MEISSEL));
-  rs.insert(Test("LucyHedgehog    ", n, Algorithm::LUCY_HEDGEHOG));
-  rs.insert(Test("LucyHedgehog2   ", n, Algorithm::LUCY_HEDGEHOG2));
+  rs.insert(Test("LucyHedgehogR   ", n, Algorithm::LUCY_HEDGEHOG_RECURSIVE));
+  rs.insert(Test("LucyHedgehogR2  ", n, Algorithm::LUCY_HEDGEHOG_RECURSIVE2));
   return rs.size() == 1;
 }
 
