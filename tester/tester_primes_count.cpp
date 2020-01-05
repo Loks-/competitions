@@ -27,6 +27,9 @@ size_t TesterPrimesCount::Test(const std::string& name, uint64_t n,
     case Algorithm::LUCY_HEDGEHOG:
       r = PrimesCount_LucyHedgehog(n);
       break;
+    case Algorithm::LUCY_HEDGEHOG2:
+      r = PrimesCount_LucyHedgehog2(n);
+      break;
   }
   std::cout << name << ": " << r << "\t" << t.GetMilliseconds() << std::endl;
   return r;
@@ -42,6 +45,7 @@ bool TesterPrimesCount::TestAll(bool time_test) {
   }
   rs.insert(Test("Meissel         ", n, Algorithm::MEISSEL));
   rs.insert(Test("LucyHedgehog    ", n, Algorithm::LUCY_HEDGEHOG));
+  rs.insert(Test("LucyHedgehog2   ", n, Algorithm::LUCY_HEDGEHOG2));
   return rs.size() == 1;
 }
 

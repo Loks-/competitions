@@ -10,7 +10,8 @@ class TesterPrimesCount {
     PRIMES_GENERATION,
     LEGENDRE,
     MEISSEL,
-    LUCY_HEDGEHOG
+    LUCY_HEDGEHOG,
+    LUCY_HEDGEHOG2
   };
 
  public:

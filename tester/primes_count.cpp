@@ -91,3 +91,32 @@ uint64_t PrimesCount_LucyHedgehog(uint64_t n) {
 
   return Count(n, primes.size());
 }
+
+uint64_t PrimesCount_LucyHedgehog2(uint64_t n) {
+  uint64_t nsqrt = USqrt(n);
+  auto primes = GeneratePrimes(nsqrt);
+  std::vector<uint64_t> vc(nsqrt + 1, 0);
+  uint64_t ii = 2;
+  for (uint64_t p : primes) {
+    for (; ii < p; ++ii) vc[ii] = vc[ii - 1];
+    vc[ii] = vc[ii - 1] + 1;
+    ++ii;
+  }
+  for (; ii <= nsqrt; ++ii) vc[ii] = vc[ii - 1];
+
+  std::function<uint64_t(uint64_t, unsigned)> Count =
+      [&](uint64_t k, unsigned i) -> uint64_t {
+    if (i == 0) return k - 1;
+    uint64_t pi = primes[i - 1];
+    if ((k <= nsqrt) && (k < pi * pi)) return vc[k];
+    uint64_t s = k - 1;
+    for (unsigned j = 0; j < i; ++j) {
+      uint64_t p = primes[j], kp = k / p;
+      if (kp < p) break;
+      s -= Count(kp, j) - j;
+    }
+    return s;
+  };
+
+  return Count(n, primes.size());
+}
