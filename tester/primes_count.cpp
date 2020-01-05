@@ -92,6 +92,7 @@ uint64_t PrimesCount_LucyHedgehog(uint64_t n) {
   return Count(n, primes.size());
 }
 
+// Add cache for Count(k, i) where p_i^2 > k.
 uint64_t PrimesCount_LucyHedgehog2(uint64_t n) {
   uint64_t nsqrt = USqrt(n);
   auto primes = GeneratePrimes(nsqrt);
