@@ -34,8 +34,8 @@ uint64_t PrimesCount_Legendre(uint64_t n) {
   uint64_t nsqrt = USqrt(n);
   auto primes = GeneratePrimes(nsqrt);
 
-  std::function<uint64_t(uint64_t, unsigned)> Count =
-      [&](uint64_t k, unsigned i) -> uint64_t {
+  std::function<uint64_t(uint64_t, unsigned)> Count = [&](
+      uint64_t k, unsigned i) -> uint64_t {
     uint64_t s = k;
     for (; i < primes.size(); ++i) {
       uint64_t p = primes[i], kp = k / p;
@@ -78,8 +78,8 @@ uint64_t PrimesCount_LucyHedgehogRecursive(uint64_t n) {
   uint64_t nsqrt = USqrt(n);
   auto primes = GeneratePrimes(nsqrt);
 
-  std::function<uint64_t(uint64_t, unsigned)> Count =
-      [&](uint64_t k, unsigned i) -> uint64_t {
+  std::function<uint64_t(uint64_t, unsigned)> Count = [&](
+      uint64_t k, unsigned i) -> uint64_t {
     uint64_t s = k - 1;
     for (unsigned j = 0; j < i; ++j) {
       uint64_t p = primes[j], kp = k / p;
@@ -105,8 +105,8 @@ uint64_t PrimesCount_LucyHedgehogRecursive2(uint64_t n) {
   }
   for (; ii <= nsqrt; ++ii) vc[ii] = vc[ii - 1];
 
-  std::function<uint64_t(uint64_t, unsigned)> Count =
-      [&](uint64_t k, unsigned i) -> uint64_t {
+  std::function<uint64_t(uint64_t, unsigned)> Count = [&](
+      uint64_t k, unsigned i) -> uint64_t {
     if (i == 0) return k - 1;
     uint64_t pi = primes[i - 1];
     if ((k <= nsqrt) && (k < pi * pi)) return vc[k];
@@ -120,4 +120,25 @@ uint64_t PrimesCount_LucyHedgehogRecursive2(uint64_t n) {
   };
 
   return Count(n, primes.size());
+}
+
+uint64_t PrimesCount_LucyHedgehogVector(uint64_t n) {
+  uint64_t nsqrt = USqrt(n), nsqrti = n / (nsqrt + 1);
+  std::vector<uint64_t> vs(nsqrt + 1), vl(nsqrti);
+  for (uint64_t i = 1; i <= nsqrt; ++i) vs[i] = i - 1;
+  for (uint64_t j = 0; j < nsqrti; ++j) vl[j] = n / (j + 1) - 1;
+  for (uint64_t p = 2; p <= nsqrt; ++p) {
+    if (vs[p] != vs[p - 1]) {
+      uint64_t vp = vs[p - 1], p2 = p * p;
+      for (uint64_t j = 0; j < nsqrti; ++j) {
+        if (n < (j + 1) * p2) break;
+        uint64_t l = (j + 1) * p;
+        vl[j] -= ((l <= nsqrti) ? vl[l - 1] : vs[n / l]) - vp;
+      }
+      for (uint64_t i = nsqrt; i >= p2; --i) {
+        vs[i] -= vs[i / p] - vp;
+      }
+    }
+  }
+  return vl[0];
 }
