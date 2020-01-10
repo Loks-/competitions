@@ -1,6 +1,7 @@
 #include "tester/primes_count.h"
 
 #include "common/assert_exception.h"
+#include "common/factorization/primes_count_quotients.h"
 #include "common/factorization/primes_generator.h"
 #include "common/factorization/primes_range.h"
 #include "common/numeric/utils/ucbrt.h"
@@ -141,4 +142,9 @@ uint64_t PrimesCount_LucyHedgehogVector(uint64_t n) {
     }
   }
   return vl[0];
+}
+
+uint64_t PrimesCount_PCQ(uint64_t n) {
+  factorization::PrimesCountQuotients pcq(n);
+  return pcq.GetQ(1);
 }
