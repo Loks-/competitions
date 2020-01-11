@@ -5,6 +5,8 @@
 #include "common/numeric/utils/usqrt.h"
 #include "common/stl/base.h"
 
+// Time: O(N^(1/2) * log(N))
+// Memory: O(N^(1/2))
 int main_632() {
   uint64_t N = PowU<uint64_t>(10, 16), NSqrt = USqrt(N);
   factorization::table::Mobius mobius(NSqrt);
