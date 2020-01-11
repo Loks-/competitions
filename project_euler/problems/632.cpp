@@ -14,11 +14,9 @@ int main_632() {
   for (uint64_t p : mobius.GetPrimes()) {
     for (uint64_t l = p; l <= NSqrt; l += p) ++vk[l];
   }
-  vector<uint64_t> vsk;
+  vector<uint64_t> vsk(*max_element(vk.begin(), vk.end()) + 1, 0);
   for (uint64_t a = 1; a <= NSqrt; ++a) {
-    size_t k = vk[a];
-    if (vsk.size() <= k) vsk.resize(k + 1);
-    vsk[k] += SquareFreeCount(mobius, N / (a * a));
+    vsk[vk[a]] += SquareFreeCount(mobius, N / (a * a));
   }
   TModularD m = 1;
   for (uint64_t sk : vsk) m *= TModularD(sk);
