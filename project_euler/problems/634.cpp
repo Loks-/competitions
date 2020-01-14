@@ -6,8 +6,6 @@
 #include "common/numeric/utils/usqrt.h"
 #include "common/stl/base.h"
 
-#include <functional>
-
 // Time: O(N^(1/3) * log(log(N)))
 // Memory: O(N^(1/3))
 int main_634() {

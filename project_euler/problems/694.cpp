@@ -2,6 +2,7 @@
 #include "common/numeric/utils/pow.h"
 #include "common/numeric/utils/ucbrt.h"
 #include "common/stl/base.h"
+
 #include <functional>
 
 // Time: O(N^(1/3) * log(log(N)))
