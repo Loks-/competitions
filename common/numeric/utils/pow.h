@@ -11,3 +11,8 @@ inline T PowU(T x, uint64_t pow) {
   }
   return ans;
 }
+
+template <class T>
+inline T PowS(T x, int64_t pow) {
+  return (pow < 0) ? PowU(T(1) / x, -pow) : PowU(x, pow);
+}
