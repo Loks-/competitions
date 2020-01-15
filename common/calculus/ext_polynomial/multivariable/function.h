@@ -40,6 +40,13 @@ class Function {
     return f;
   }
 
+  TFunctionSV ToTValue() const {
+    static_assert(dim == 0);
+    TValue s(0);
+    for (auto& t : v) s += v.a;
+    return s;
+  }
+
   void AddTerm(const TTerm& t) { v.emplace_back(t); }
 
   TValue Get(const TPoint& p) const {
