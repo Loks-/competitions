@@ -5,18 +5,18 @@
 
 bool TestGenetatingFunctionOperatorsPartition() {
   uint64_t n = 100, expected = 190569292;
-  auto f_uint64_t = gf::operators::CreatePartition(
-      gf::functions::CreatePGeometricOne<uint64_t>());
-  auto f_modular = gf::operators::CreatePartition(
-      gf::functions::CreatePGeometricOne<TModularD>());
+  auto f_uint64_t = gf::operators::MakePartition(
+      gf::functions::MakePGeometricOne<uint64_t>());
+  auto f_modular = gf::operators::MakePartition(
+      gf::functions::MakePGeometricOne<TModularD>());
   return (f_uint64_t->Get(n) == expected) &&
          (f_modular->Get(n) == TModularD(expected));
 }
 
 bool TestGenetatingFunctionFunctionsPartition() {
   uint64_t n = 100, expected = 190569292;
-  auto f_uint64_t = gf::functions::CreatePartition<uint64_t>();
-  auto f_modular = gf::functions::CreatePartition<TModularD>();
+  auto f_uint64_t = gf::functions::MakePartition<uint64_t>();
+  auto f_modular = gf::functions::MakePartition<TModularD>();
   return (f_uint64_t->Get(n) == expected) &&
          (f_modular->Get(n) == TModularD(expected));
 }
