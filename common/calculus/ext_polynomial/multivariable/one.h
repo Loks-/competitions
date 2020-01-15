@@ -7,9 +7,9 @@ namespace calculus {
 namespace ext_polynomial {
 namespace multivariable {
 template <class TValue, unsigned dim>
-inline TermMV<TValue, dim> CreateOne() {
+inline TermBase<TValue, dim> CreateOne() {
   auto p = calculus::ext_polynomial::term_bases::CreateOne<TValue>(0);
-  return TermMV<TValue, dim>(dim, p);
+  return TermBase<TValue, dim>(dim, p);
 }
 }  // namespace multivariable
 }  // namespace ext_polynomial

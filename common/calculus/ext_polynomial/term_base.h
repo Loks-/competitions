@@ -11,10 +11,22 @@ class TermBase {
   int power;
 
   TermBase(int _power) : power(_power) {}
+  virtual ~TermBase() {}
 
-  TValue GetTermBase(const TValue& x) const = 0;
-  TValue Get(const TValue& x) const { return GetTermBase(x) * PowS(x, power); }
-  bool operator<(const TermBase& r) const { return power < r.power; }
+  TValue TermBaseGet(const TValue& x) const = 0;
+  bool TermBaseLess(const TermBase& r) const { return false; }
+  bool TermBaseEqual(const TermBase& r) const = 0;
+
+  TValue Get(const TValue& x) const { return TermBaseGet(x) * PowS(x, power); }
+
+  bool operator<(const TermBase& r) const {
+    return (power < r.power) ? true : (power > r.power) ? false
+                                                        : TermBaseLess(r);
+  }
+
+  bool operator==(const TermBase& r) const {
+    return (power == r.power) ? TermBaseEqual(r) : false;
+  }
 };
 
 template <class TValue>

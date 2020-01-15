@@ -1,6 +1,7 @@
 #pragma once
 
 #include "common/calculus/ext_polynomial/term_base.h"
+#include <memory>
 
 namespace calculus {
 namespace ext_polynomial {
@@ -8,9 +9,21 @@ namespace term_bases {
 template <class TValue>
 class One : public TermBase<TValue> {
  public:
+  using TBase = TermBase<TValue>;
+
   One(int _power) : TermBase<TValue>(_power) {}
 
-  TValue GetTermBase(const TValue& x) const override { return TValue(1); }
+  TValue TermBaseGet(const TValue& x) const override { return TValue(1); }
+
+  bool TermBaseLess(const TBase& r) const override {
+    auto p = dynamic_cast<One*>(&r);
+    return (p == nullptr);
+  }
+
+  bool TermBaseEqual(const TBase& r) const override {
+    auto p = dynamic_cast<One*>(&r);
+    return (p != nullptr);
+  }
 };
 
 template <class TValue>

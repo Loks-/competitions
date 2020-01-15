@@ -33,6 +33,15 @@ class Function {
     for (auto& t : f.v) v.emplace_back(TTerm(t));
   }
 
+  TFunctionSV ToSVFunction() const {
+    static_assert((dim == 0) || (dim == 1));
+    TFunctionSV f;
+    for (auto& t : v) f.AddTerm(t.ToSVTerm);
+    return f;
+  }
+
+  void AddTerm(const TTerm& t) { v.emplace_back(t); }
+
   TValue Get(const TPoint& p) const {
     TValue s(0);
     for (const auto& t : v) s += t.Get(p);
@@ -47,9 +56,19 @@ class Function {
   }
 
   void SortTerms() {
-    if (!SortedTerms())
+    if (!SortedTerms()) {
       std::sort(v.begin(), v.end(),
                 [](auto& x, auto& y) { return x->b < y->b; });
+    }
+  }
+
+  void CompressSorted() {
+    // ...
+  }
+
+  void Compress() {
+    SortTerms();
+    CompressSorted();
   }
 };
 }  // namespace multivariable

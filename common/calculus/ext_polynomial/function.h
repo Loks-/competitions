@@ -20,6 +20,8 @@ class Function {
   }
   Function(const TTerm& t) { v.emplace_back(t); }
 
+  void AddTerm(const TTerm& t) { v.emplace_back(t); }
+
   TValue Get(const TValue& x) const {
     TValue s(0);
     for (const auto& t : v) s += t.Get(x);
@@ -34,9 +36,19 @@ class Function {
   }
 
   void SortTerms() {
-    if (!SortedTerms())
+    if (!SortedTerms()) {
       std::sort(v.begin(), v.end(),
-                [](auto& x, auto& y) { return x->b.operator()(y); });
+                [](auto& x, auto& y) { return x->b < y->b; });
+    }
+  }
+
+  void CompressSorted() {
+    // ...
+  }
+
+  void Compress() {
+    SortTerms();
+    CompressSorted();
   }
 };
 }  // namespace ext_polynomial
