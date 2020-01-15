@@ -35,7 +35,7 @@ class Term {
 
   TTermSV ToSVTerm() const {
     static_assert((dim == 0) || (dim == 1));
-    return TTermSV(a, (dim == 0) ? term_bases::CreateOne<TValue>(0) : b[0]);
+    return TTermSV(a, (dim == 0) ? term_bases::MakeOne<TValue>(0) : b[0]);
   }
 
   TValue Get(const TPoint& p) const {

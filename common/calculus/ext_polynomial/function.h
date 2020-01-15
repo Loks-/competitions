@@ -16,7 +16,7 @@ class Function {
 
   Function() {}
   Function(const TValue& x) {
-    v.emplace_back(TTerm(v, term_bases::CreateOne<TValue>(0)));
+    v.emplace_back(TTerm(v, term_bases::MakeOne<TValue>(0)));
   }
   Function(const TTerm& t) { v.emplace_back(t); }
 

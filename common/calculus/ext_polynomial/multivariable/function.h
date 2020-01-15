@@ -25,7 +25,7 @@ class Function {
 
   Function() {}
   Function(const TValue& x) {
-    v.emplace_back(TTerm(v, CreateOne<TValue, dim>()));
+    v.emplace_back(TTerm(v, MakeOne<TValue, dim>()));
   }
   Function(const TTerm& t) { v.emplace_back(t); }
   Function(const TFunctionSV& f) {
@@ -78,6 +78,9 @@ class Function {
     CompressSorted();
   }
 };
+
+template <unsigned dim>
+using DFunction = Function<double, dim>;
 }  // namespace multivariable
 }  // namespace ext_polynomial
 }  // namespace calculus

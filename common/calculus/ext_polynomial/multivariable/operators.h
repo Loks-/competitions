@@ -20,6 +20,37 @@ inline Function<TValue, dim1 + dim2> CartesianProduct(
   }
   return f;
 }
+
+template <class TValue, unsigned dim>
+inline Function<TValue, dim> operator+(const Function<TValue, dim>& f1,
+                                       const Function<TValue, dim>& f2) {
+  Function<TValue, dim> f;
+  size_t i = 0, j = 0;
+  bool compress_required = false;
+  for (; (i < f1.v.size()) && (j < f2.v.size());) {
+    auto& t1 = f1.v[i];
+    auto& t2 = f2.v[j];
+    if (t1.b < t2.b) {
+      f.AddTerm(t1);
+      ++i;
+    } else if (t2.b < t1.b) {
+      f.AddTerm(t2);
+      ++j;
+    } else if (t1.b == t2.b) {
+      f.AddTerm(Term<TValue, dim>(t1.a + t2.a, t1.b));
+      ++i;
+      ++j;
+    } else {
+      f.AddTerm(t1);
+      ++i;
+      compress_required = true;
+    }
+  }
+  for (; i < f1.v.size(); ++i) f.AddTerm(f1.v[i]);
+  for (; j < f2.v.size(); ++j) f.AddTerm(f2.v[j]);
+  if (compress_required) f.CompressSorted();
+  return f;
+}
 }  // namespace multivariable
 }  // namespace ext_polynomial
 }  // namespace calculus

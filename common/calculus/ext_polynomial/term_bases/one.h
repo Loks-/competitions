@@ -16,18 +16,18 @@ class One : public TermBase<TValue> {
   TValue TermBaseGet(const TValue& x) const override { return TValue(1); }
 
   bool TermBaseLess(const TBase& r) const override {
-    auto p = dynamic_cast<One*>(&r);
+    auto p = dynamic_cast<const One*>(&r);
     return (p == nullptr);
   }
 
   bool TermBaseEqual(const TBase& r) const override {
-    auto p = dynamic_cast<One*>(&r);
+    auto p = dynamic_cast<const One*>(&r);
     return (p != nullptr);
   }
 };
 
 template <class TValue>
-inline PTermBase<TValue> CreateOne(int power = 0) {
+inline PTermBase<TValue> MakeOne(int power = 0) {
   return std::make_shared<One<TValue>>(power);
 }
 }  // namespace term_bases
