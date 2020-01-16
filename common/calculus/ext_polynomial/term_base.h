@@ -1,34 +1,24 @@
 #pragma once
 
-#include "common/numeric/utils/pow.h"
+#include "common/calculus/ext_polynomial/term_bases/type.h"
 #include <memory>
+#include <string>
 
 namespace calculus {
 namespace ext_polynomial {
 template <class TValue>
 class TermBase {
  public:
-  int power;
-
-  TermBase(int _power) : power(_power) {}
+  TermBase() {}
   virtual ~TermBase() {}
 
-  virtual TValue TermBaseGet(const TValue& x) const = 0;
-  virtual bool TermBaseLess(const TermBase& r) const { return false; }
-  virtual bool TermBaseEqual(const TermBase& r) const = 0;
+  virtual term_bases::Type GetType() const = 0;
+  virtual TValue Get(const TValue& x) const = 0;
+  virtual bool operator<(const TermBase& r) const { return false; }
+  virtual bool operator==(const TermBase& r) const = 0;
 
-  virtual TValue Get(const TValue& x) const {
-    return TermBaseGet(x) * PowS(x, power);
-  }
-
-  virtual bool operator<(const TermBase& r) const {
-    return (power < r.power) ? true : (power > r.power) ? false
-                                                        : TermBaseLess(r);
-  }
-
-  virtual bool operator==(const TermBase& r) const {
-    return (power == r.power) ? TermBaseEqual(r) : false;
-  }
+  virtual bool IsOne() const { return GetType() == term_bases::Type::ONE; }
+  virtual std::string ToString(const std::string& variable_name) const = 0;
 };
 
 template <class TValue>

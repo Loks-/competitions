@@ -1,17 +1,13 @@
 #pragma once
 
+#include "common/calculus/ext_polynomial/multivariable/term_power.h"
 #include "common/calculus/ext_polynomial/term.h"
-#include "common/calculus/ext_polynomial/term_base.h"
-#include "common/calculus/ext_polynomial/term_bases/one.h"
 #include "common/calculus/multivariable/point.h"
 #include <array>
 
 namespace calculus {
 namespace ext_polynomial {
 namespace multivariable {
-template <class TValue, unsigned _dim>
-using TermBase = std::array<PTermBase<TValue>, _dim>;
-
 template <class TValue>
 using SVTerm = calculus::ext_polynomial::Term<TValue>;
 
@@ -19,30 +15,36 @@ template <class TValue, unsigned _dim>
 class Term {
  public:
   using TPoint = calculus::multivariable::Point<TValue, _dim>;
-  using TTermBase = TermBase<TValue, _dim>;
+  using TTermPower = TermPower<TValue, _dim>;
   using TTermSV = SVTerm<TValue>;
+  using TSelf = Term<TValue, _dim>;
   static const unsigned dim = _dim;
 
   TValue a;
-  TTermBase b;
+  TTermPower tp;
 
-  Term(const TValue& _a, const TTermBase& _b) : a(_a), b(_b) {}
-  Term(const TTermSV& t) {
+  Term(const TValue& _a) : a(_a) {}
+  Term(const TValue& _a, const TTermPower& _tp) : a(_a), tp(_tp) {}
+  Term(const TTermSV& svt) {
     static_assert(dim == 1);
-    a = t.a;
-    b[0] = t.b;
+    a = svt.a;
+    tp.terms[0] = svt.tp;
   }
 
   TTermSV ToSVTerm() const {
     static_assert((dim == 0) || (dim == 1));
-    return TTermSV(a, (dim == 0) ? term_bases::MakeOne<TValue>(0) : b[0]);
+    return TTermSV(a, (dim == 0) ? SVTermPower<TValue>() : tp(0));
   }
 
   TValue Get(const TPoint& p) const {
     TValue r = a;
-    for (unsigned i = 0; i < dim; ++i) r *= b[i]->Get(p(i));
+    for (unsigned i = 0; i < dim; ++i) r *= tp(i)->Get(p(i));
     return r;
   }
+
+  TSelf operator-() const { return TSelf(-a, tp); }
+
+  bool UnusedVariable(unsigned index) const { return tp.UnusedVariable(); }
 };
 }  // namespace multivariable
 }  // namespace ext_polynomial

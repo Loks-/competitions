@@ -1,7 +1,6 @@
 #pragma once
 
 #include "common/calculus/ext_polynomial/function.h"
-#include "common/calculus/ext_polynomial/multivariable/one.h"
 #include "common/calculus/ext_polynomial/multivariable/term.h"
 #include "common/calculus/multivariable/point.h"
 #include <algorithm>
@@ -24,9 +23,7 @@ class Function {
   std::vector<TTerm> v;
 
   Function() {}
-  Function(const TValue& x) {
-    v.emplace_back(TTerm(v, MakeOne<TValue, dim>()));
-  }
+  Function(const TValue& x) { v.emplace_back(TTerm(x)); }
   Function(const TTerm& t) { v.emplace_back(t); }
   Function(const TFunctionSV& f) {
     static_assert(dim == 1);
@@ -36,7 +33,7 @@ class Function {
   TFunctionSV ToSVFunction() const {
     static_assert((dim == 0) || (dim == 1));
     TFunctionSV f;
-    for (auto& t : v) f.AddTerm(t.ToSVTerm);
+    for (auto& t : v) f.AddTerm(t.ToSVTerm());
     return f;
   }
 
@@ -47,12 +44,21 @@ class Function {
     return s;
   }
 
+  bool Empty() const { return v.empty(); }
+
   void AddTerm(const TTerm& t) { v.emplace_back(t); }
 
   TValue Get(const TPoint& p) const {
     TValue s(0);
     for (const auto& t : v) s += t.Get(p);
     return s;
+  }
+
+  bool UnusedVariable(unsigned index) const {
+    for (auto& t : v) {
+      if (!UnusedVariable(index)) return false;
+    }
+    return true;
   }
 
   bool SortedTerms() const {

@@ -1,20 +1,21 @@
 #pragma once
 
-#include "common/calculus/ext_polynomial/term_base.h"
+#include "common/calculus/ext_polynomial/term_power.h"
 
 namespace calculus {
 namespace ext_polynomial {
 template <class TValue>
 class Term {
  public:
-  using TTermBase = PTermBase<TValue>;
+  using TTermPower = TermPower<TValue>;
 
   TValue a;
-  TTermBase b;
+  TTermPower tp;
 
-  Term(const TValue& _a, TTermBase _b) : a(_a), b(_b) {}
+  Term(const TValue& _a) : a(_a) {}
+  Term(const TValue& _a, TTermPower _tp) : a(_a), tp(_tp) {}
 
-  TValue Get(const TValue& x) const { return a * b->Get(x); }
+  TValue Get(const TValue& x) const { return a * tp.Get(x); }
 };
 }  // namespace ext_polynomial
 }  // namespace calculus

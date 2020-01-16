@@ -2,8 +2,8 @@
 
 #include "common/base.h"
 #include "common/calculus/ext_polynomial/multivariable/function.h"
-#include "common/calculus/ext_polynomial/multivariable/one.h"
 #include "common/calculus/ext_polynomial/multivariable/term.h"
+#include "common/calculus/ext_polynomial/multivariable/term_power.h"
 
 namespace calculus {
 namespace ext_polynomial {
@@ -16,9 +16,9 @@ inline Function<TValue, dim> MakeConstant(TValue a = TValue(0)) {
 template <class TValue, unsigned dim>
 inline Function<TValue, dim> MakeXi(unsigned i, TValue a = TValue(1)) {
   assert(i < dim);
-  auto b = MakeOne<TValue, dim>();
-  b[i]->power = 1;
-  return Function<TValue, dim>(Term<TValue, dim>(a, b));
+  TermPower<TValue, dim> tp;
+  tp(i).power = 1;
+  return Function<TValue, dim>(Term<TValue, dim>(a, tp));
 }
 
 template <unsigned dim>

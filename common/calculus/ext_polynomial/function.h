@@ -1,7 +1,6 @@
 #pragma once
 
 #include "common/calculus/ext_polynomial/term.h"
-#include "common/calculus/ext_polynomial/term_bases/one.h"
 #include <algorithm>
 #include <vector>
 
@@ -15,9 +14,7 @@ class Function {
   std::vector<TTerm> v;
 
   Function() {}
-  Function(const TValue& x) {
-    v.emplace_back(TTerm(v, term_bases::MakeOne<TValue>(0)));
-  }
+  Function(const TValue& x) { v.emplace_back(TTerm(x)); }
   Function(const TTerm& t) { v.emplace_back(t); }
 
   void AddTerm(const TTerm& t) { v.emplace_back(t); }
