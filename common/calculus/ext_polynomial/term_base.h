@@ -14,8 +14,13 @@ class TermBase {
 
   virtual term_bases::Type GetType() const = 0;
   virtual TValue Get(const TValue& x) const = 0;
-  virtual bool operator<(const TermBase& r) const { return false; }
-  virtual bool operator==(const TermBase& r) const = 0;
+
+  virtual bool operator<(const TermBase& r) const {
+    return GetType() < r.GetType();
+  }
+  virtual bool operator==(const TermBase& r) const {
+    return GetType() == r.GetType();
+  }
 
   virtual bool IsOne() const { return GetType() == term_bases::Type::ONE; }
   virtual std::string ToString(const std::string& variable_name) const = 0;

@@ -3,6 +3,7 @@
 #include "common/assert_exception.h"
 #include "common/calculus/ext_polynomial/function.h"
 #include "common/calculus/ext_polynomial/term.h"
+#include "common/calculus/ext_polynomial/term_bases/ln_abs.h"
 #include "common/calculus/ext_polynomial/term_bases/type.h"
 
 namespace calculus {
@@ -18,8 +19,8 @@ inline Function<TValue> Integration(const Term<TValue>& t) {
         tp_new.power += 1;
         return Term<TValue>(t.a / tp_new.power, tp_new);
       } else {
-        Assert(false);
-        return {};
+        return Term<TValue>(
+            t.a, calculus::ext_polynomial::term_bases::MakeLnAbs<TValue>());
       }
     default:
       Assert(false);

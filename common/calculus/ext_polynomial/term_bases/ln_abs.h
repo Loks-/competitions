@@ -2,6 +2,7 @@
 
 #include "common/calculus/ext_polynomial/term_base.h"
 #include "common/calculus/ext_polynomial/term_bases/type.h"
+#include <cmath>
 #include <memory>
 #include <string>
 
@@ -9,22 +10,22 @@ namespace calculus {
 namespace ext_polynomial {
 namespace term_bases {
 template <class TValue>
-class One : public TermBase<TValue> {
+class LnAbs : public TermBase<TValue> {
  public:
   using TBase = TermBase<TValue>;
 
-  One() {}
-  Type GetType() const override { return Type::ONE; }
-  TValue Get(const TValue& x) const override { return TValue(1); }
+  LnAbs() {}
+  Type GetType() const override { return Type::LN_ABS; }
+  TValue Get(const TValue& x) const override { return log(fabs(x)); }
 
   std::string ToString(const std::string& variable_name) const override {
-    return "";
+    return "ln(abs(" + variable_name + "))";
   }
 };
 
 template <class TValue>
-inline PTermBase<TValue> MakeOne() {
-  return std::make_shared<One<TValue>>();
+inline PTermBase<TValue> MakeLnAbs() {
+  return std::make_shared<LnAbs<TValue>>();
 }
 }  // namespace term_bases
 }  // namespace ext_polynomial

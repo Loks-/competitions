@@ -31,7 +31,8 @@ int main_695() {
   //     Region 2.1.2: x0 + y0 <= 1
   auto f4_212 = s2ps;
   auto f3_212c = Integration(f4_212, 3, x0 * y0 / x1, one - y0);
-  cout << f3_212c << endl;
+  auto f3_212c_ii = Integration(f3_212c, 2);
+  cout << f3_212c_ii << endl;
   // Segment 3: x0 <= x1 <= 1, 0 <= y1 <= y0
   auto s3p = fc * (1. - x1) * (1. - y0);
   // Segment 4: x0 <= x1 <= 1, y0 - 1 <= y1 <= 0
