@@ -63,7 +63,7 @@ class Function {
 
   bool SortedTerms() const {
     for (size_t i = 1; i < v.size(); ++i) {
-      if (v[i] < v[i - 1]) return false;
+      if (v[i].tp < v[i - 1].tp) return false;
     }
     return true;
   }
@@ -71,7 +71,7 @@ class Function {
   void SortTerms() {
     if (!SortedTerms()) {
       std::sort(v.begin(), v.end(),
-                [](auto& x, auto& y) { return x->b < y->b; });
+                [](auto& x, auto& y) { return x.tp < y.tp; });
     }
   }
 

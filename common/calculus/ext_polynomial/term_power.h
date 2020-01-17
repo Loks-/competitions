@@ -27,8 +27,8 @@ class TermPower {
   TValue Get(const TValue& x) const { return base->Get(x) * PowS(x, power); }
 
   bool operator<(const TSelf& r) const {
-    return (power < r.power) ? true : (power > r.power) ? false
-                                                        : (base < r.base);
+    return (power < r.power) ? true : (r.power < power) ? false
+                                                        : (*base < *r.base);
   }
 
   bool operator==(const TSelf& r) const {
