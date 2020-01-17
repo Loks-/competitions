@@ -17,7 +17,7 @@ inline bool IsSimpleDivision(const PTermBase<TValue>& p1,
 template <class TValue>
 inline PTermBase<TValue> SimpleDivision(const PTermBase<TValue>& p1,
                                         const PTermBase<TValue>& p2) {
-  Assert(p2->IsOne());
+  Assert(p2->IsOne(), "Simple Division is enabled only for type ONE.");
   return p1;
 }
 

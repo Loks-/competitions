@@ -23,7 +23,7 @@ inline Function<TValue> Integration(const Term<TValue>& t) {
             t.a, calculus::ext_polynomial::term_bases::MakeLnAbs<TValue>());
       }
     default:
-      Assert(false);
+      Assert(false, "Function is not supported for integration.");
       return {};
   }
 }

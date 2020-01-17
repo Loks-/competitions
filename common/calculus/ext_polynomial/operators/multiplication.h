@@ -19,7 +19,7 @@ inline PTermBase<TValue> SimpleMultiplication(const PTermBase<TValue>& p1,
                                               const PTermBase<TValue>& p2) {
   if (p1->IsOne()) return p2;
   if (p2->IsOne()) return p1;
-  Assert(false);
+  Assert(false, "SimpleMultiplication is not supported.");
   return {};
 }
 

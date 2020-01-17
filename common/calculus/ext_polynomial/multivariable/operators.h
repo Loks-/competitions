@@ -237,7 +237,7 @@ inline Function<TValue, dim> operator/(const Function<TValue, dim>& f1,
 template <class TValue, unsigned dim>
 inline Function<TValue, dim>& operator/=(Function<TValue, dim>& f1,
                                          const TermPower<TValue, dim>& tp2) {
-  Assert(tp2.IsTypeOne());
+  Assert(tp2.IsTypeOne(), "Only simple division is supported.");
   for (auto& t1 : f1.terms) t1.tp = operators::SimpleDivision(t1.tp, tp2);
   return f1;
 }
@@ -253,7 +253,7 @@ inline Function<TValue, dim> operator/(const Function<TValue, dim>& f1,
 template <class TValue, unsigned dim>
 inline Function<TValue, dim>& operator/=(Function<TValue, dim>& f1,
                                          const Term<TValue, dim>& t2) {
-  Assert(t2.tp.IsTypeOne());
+  Assert(t2.tp.IsTypeOne(), "Only simple division is supported.");
   for (auto& t1 : f1.terms) t1 = operators::SimpleDivision(t1, t2);
   return f1;
 }
@@ -269,7 +269,7 @@ inline Function<TValue, dim> operator/(const Function<TValue, dim>& f1,
 template <class TValue, unsigned dim>
 inline Function<TValue, dim>& operator/=(Function<TValue, dim>& f1,
                                          const Function<TValue, dim>& f2) {
-  Assert(f2.Size() == 1);
+  Assert(f2.Size() == 1, "Function should have exactly one term.");
   return f1 /= f2(0);
 }
 
