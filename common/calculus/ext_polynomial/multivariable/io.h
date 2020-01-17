@@ -48,7 +48,7 @@ inline std::ostream& operator<<(std::ostream& s,
   if (f.Empty()) {
     s << 0;
   } else {
-    for (auto& t : f.v) s << t;
+    for (auto& t : f.terms) s << t;
   }
   return s;
 }

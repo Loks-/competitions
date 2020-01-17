@@ -12,9 +12,9 @@ inline Function<TValue, dim1 + dim2> CartesianProduct(
     const Function<TValue, dim1>& f1, const Function<TValue, dim2>& f2) {
   Function<TValue, dim1 + dim2> f;
   TermPower<TValue, dim1 + dim2> tp;
-  for (auto& t1 : f1.v) {
+  for (auto& t1 : f1.terms) {
     for (unsigned i = 0; i < dim1; ++i) tp(i) = t1.tp(i);
-    for (auto& t2 : f2.v) {
+    for (auto& t2 : f2.terms) {
       for (unsigned i = 0; i < dim2; ++i) tp(i + dim1) = t2.tp(i);
       f.AddTerm({t1.a * t2.a, tp});
     }
@@ -28,9 +28,9 @@ inline Function<TValue, dim> operator+(const Function<TValue, dim>& f1,
   Function<TValue, dim> f;
   size_t i = 0, j = 0;
   bool compress_required = false;
-  for (; (i < f1.v.size()) && (j < f2.v.size());) {
-    auto& t1 = f1.v[i];
-    auto& t2 = f2.v[j];
+  for (; (i < f1.Size()) && (j < f2.Size());) {
+    auto& t1 = f1(i);
+    auto& t2 = f2(j);
     if (t1.tp < t2.tp) {
       f.AddTerm(t1);
       ++i;
@@ -48,8 +48,8 @@ inline Function<TValue, dim> operator+(const Function<TValue, dim>& f1,
       compress_required = true;
     }
   }
-  for (; i < f1.v.size(); ++i) f.AddTerm(f1.v[i]);
-  for (; j < f2.v.size(); ++j) f.AddTerm(f2.v[j]);
+  for (; i < f1.Size(); ++i) f.AddTerm(f1(i));
+  for (; j < f2.Size(); ++j) f.AddTerm(f2(j));
   if (compress_required) f.CompressSorted();
   return f;
 }
@@ -84,9 +84,9 @@ inline Function<TValue, dim> operator-(const Function<TValue, dim>& f1,
   Function<TValue, dim> f;
   size_t i = 0, j = 0;
   bool compress_required = false;
-  for (; (i < f1.v.size()) && (j < f2.v.size());) {
-    auto& t1 = f1.v[i];
-    auto& t2 = f2.v[j];
+  for (; (i < f1.Size()) && (j < f2.Size());) {
+    auto& t1 = f1(i);
+    auto& t2 = f2(j);
     if (t1.tp < t2.tp) {
       f.AddTerm(t1);
       ++i;
@@ -104,8 +104,8 @@ inline Function<TValue, dim> operator-(const Function<TValue, dim>& f1,
       compress_required = true;
     }
   }
-  for (; i < f1.v.size(); ++i) f.AddTerm(f1.v[i]);
-  for (; j < f2.v.size(); ++j) f.AddTerm(-f2.v[j]);
+  for (; i < f1.Size(); ++i) f.AddTerm(f1(i));
+  for (; j < f2.Size(); ++j) f.AddTerm(-f2(j));
   if (compress_required) f.CompressSorted();
   return f;
 }
@@ -162,8 +162,8 @@ inline Function<TValue, dim> operator*(const Function<TValue, dim>& f1,
                                        const Function<TValue, dim>& f2) {
   // Current version assume that all products are simple.
   Function<TValue, dim> f;
-  for (auto& t1 : f1.v) {
-    for (auto& t2 : f2.v) {
+  for (auto& t1 : f1.terms) {
+    for (auto& t2 : f2.terms) {
       f.AddTerm(operators::SimpleProduct(t1, t2));
     }
   }
