@@ -35,7 +35,8 @@ class TermPower {
     return (power == r.power) && (*base == *r.base);
   }
 
-  bool IsOne() const { return (power == 0) && base->IsOne(); }
+  bool IsTypeOne() const { return base->IsOne(); }
+  bool IsOne() const { return (power == 0) && IsTypeOne(); }
 
   std::string ToString(const std::string& variable_name) const {
     std::string xpk;

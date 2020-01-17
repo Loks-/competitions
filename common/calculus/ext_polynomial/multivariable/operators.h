@@ -1,14 +1,17 @@
 #pragma once
 
+#include "common/assert_exception.h"
 #include "common/calculus/ext_polynomial/multivariable/function.h"
-#include "common/calculus/ext_polynomial/multivariable/operators/product.h"
+#include "common/calculus/ext_polynomial/multivariable/operators/division.h"
+#include "common/calculus/ext_polynomial/multivariable/operators/multiplication.h"
+#include "common/calculus/ext_polynomial/multivariable/term.h"
 #include "common/calculus/ext_polynomial/multivariable/term_power.h"
 
 namespace calculus {
 namespace ext_polynomial {
 namespace multivariable {
 template <class TValue, unsigned dim1, unsigned dim2>
-inline Function<TValue, dim1 + dim2> CartesianProduct(
+inline Function<TValue, dim1 + dim2> CartesianMultiplication(
     const Function<TValue, dim1>& f1, const Function<TValue, dim2>& f2) {
   Function<TValue, dim1 + dim2> f;
   TermPower<TValue, dim1 + dim2> tp;
@@ -160,11 +163,11 @@ inline Function<TValue, dim> operator*(const TValue& v1,
 template <class TValue, unsigned dim>
 inline Function<TValue, dim> operator*(const Function<TValue, dim>& f1,
                                        const Function<TValue, dim>& f2) {
-  // Current version assume that all products are simple.
+  // Current version assume that all Multiplications are simple.
   Function<TValue, dim> f;
   for (auto& t1 : f1.terms) {
     for (auto& t2 : f2.terms) {
-      f.AddTerm(operators::SimpleProduct(t1, t2));
+      f.AddTerm(operators::SimpleMultiplication(t1, t2));
     }
   }
   f.Compress();
@@ -175,6 +178,45 @@ template <class TValue, unsigned dim>
 inline Function<TValue, dim>& operator*=(Function<TValue, dim>& f1,
                                          const Function<TValue, dim>& f2) {
   return f1 = (f1 * f2);
+}
+
+template <class TValue, unsigned dim>
+inline Function<TValue, dim>& operator*=(Function<TValue, dim>& f1,
+                                         const TermPower<TValue, dim>& tp2) {
+  if (tp2.IsTypeOne()) {
+    for (auto& t1 : f1.terms)
+      t1.tp = operators::SimpleMultiplication(t1.tp, tp2);
+  } else {
+    f1 *= Function<TValue, dim>(tp2);
+  }
+  return f1;
+}
+
+template <class TValue, unsigned dim>
+inline Function<TValue, dim> operator*(const Function<TValue, dim>& f1,
+                                       const TermPower<TValue, dim>& tp2) {
+  Function<TValue, dim> f(f1);
+  f *= tp2;
+  return f;
+}
+
+template <class TValue, unsigned dim>
+inline Function<TValue, dim>& operator*=(Function<TValue, dim>& f1,
+                                         const Term<TValue, dim>& t2) {
+  if (t2.tp.IsTypeOne()) {
+    for (auto& t1 : f1.terms) t1 = operators::SimpleMultiplication(t1, t2);
+  } else {
+    f1 *= Function<TValue, dim>(t2);
+  }
+  return f1;
+}
+
+template <class TValue, unsigned dim>
+inline Function<TValue, dim> operator*(const Function<TValue, dim>& f1,
+                                       const Term<TValue, dim>& t2) {
+  Function<TValue, dim> f(f1);
+  f *= t2;
+  return f;
 }
 
 template <class TValue, unsigned dim>
@@ -189,6 +231,53 @@ inline Function<TValue, dim> operator/(const Function<TValue, dim>& f1,
                                        const TValue& v2) {
   Function<TValue, dim> f(f1);
   f /= v2;
+  return f;
+}
+
+template <class TValue, unsigned dim>
+inline Function<TValue, dim>& operator/=(Function<TValue, dim>& f1,
+                                         const TermPower<TValue, dim>& tp2) {
+  Assert(tp2.IsTypeOne());
+  for (auto& t1 : f1.terms) t1.tp = operators::SimpleDivision(t1.tp, tp2);
+  return f1;
+}
+
+template <class TValue, unsigned dim>
+inline Function<TValue, dim> operator/(const Function<TValue, dim>& f1,
+                                       const TermPower<TValue, dim>& tp2) {
+  Function<TValue, dim> f(f1);
+  f /= tp2;
+  return f;
+}
+
+template <class TValue, unsigned dim>
+inline Function<TValue, dim>& operator/=(Function<TValue, dim>& f1,
+                                         const Term<TValue, dim>& t2) {
+  Assert(t2.tp.IsTypeOne());
+  for (auto& t1 : f1.terms) t1 = operators::SimpleDivision(t1, t2);
+  return f1;
+}
+
+template <class TValue, unsigned dim>
+inline Function<TValue, dim> operator/(const Function<TValue, dim>& f1,
+                                       const Term<TValue, dim>& t2) {
+  Function<TValue, dim> f(f1);
+  f /= t2;
+  return f;
+}
+
+template <class TValue, unsigned dim>
+inline Function<TValue, dim>& operator/=(Function<TValue, dim>& f1,
+                                         const Function<TValue, dim>& f2) {
+  Assert(f2.Size() == 1);
+  return f1 /= f2(0);
+}
+
+template <class TValue, unsigned dim>
+inline Function<TValue, dim> operator/(const Function<TValue, dim>& f1,
+                                       const Function<TValue, dim>& f2) {
+  Function<TValue, dim> f(f1);
+  f /= f2;
   return f;
 }
 }  // namespace multivariable

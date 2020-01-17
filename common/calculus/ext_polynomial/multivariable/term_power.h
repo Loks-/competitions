@@ -22,6 +22,13 @@ class TermPower {
   TermPower() : terms(MakeArray<TTermPowerSV, dim>(TTermPowerSV())) {}
   TermPower(const std::array<TTermPowerSV, _dim>& _terms) : terms(_terms) {}
 
+  bool IsTypeOne() const {
+    for (auto& t : terms) {
+      if (!t.IsTypeOne()) return false;
+    }
+    return true;
+  }
+
   bool IsOne() const {
     for (auto& t : terms) {
       if (!t.IsOne()) return false;
