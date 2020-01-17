@@ -1,6 +1,6 @@
 #include "common/calculus/ext_polynomial/multivariable/function.h"
-#include "common/calculus/ext_polynomial/multivariable/functions.h"
 #include "common/calculus/ext_polynomial/multivariable/io.h"
+#include "common/calculus/ext_polynomial/multivariable/make.h"
 #include "common/calculus/ext_polynomial/multivariable/operators.h"
 #include "common/calculus/ext_polynomial/multivariable/operators/integration.h"
 #include "common/stl/base.h"
