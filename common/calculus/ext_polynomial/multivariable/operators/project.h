@@ -24,7 +24,6 @@ inline Function<TValue, dim> Project(const Function<TValue, dim>& f,
   fnew.Compress();
   return fnew;
 }
-
 }  // namespace operators
 }  // namespace multivariable
 }  // namespace ext_polynomial

@@ -2,6 +2,7 @@
 
 #include "common/calculus/ext_polynomial/multivariable/function.h"
 #include "common/calculus/ext_polynomial/multivariable/operators/project.h"
+#include "common/calculus/ext_polynomial/multivariable/operators/substitution.h"
 #include "common/calculus/ext_polynomial/multivariable/term.h"
 #include "common/calculus/ext_polynomial/multivariable/term_power.h"
 #include "common/calculus/ext_polynomial/operators/intergration.h"
@@ -43,6 +44,15 @@ inline Function<TValue, dim> Integration(const Function<TValue, dim>& f,
                                          const TValue& b) {
   auto fnew = Integration(f, index);
   return Project(fnew, index, b) - Project(fnew, index, a);
+}
+
+template <class TValue, unsigned dim>
+inline Function<TValue, dim> Integration(const Function<TValue, dim>& f,
+                                         unsigned index,
+                                         const Function<TValue, dim>& sa,
+                                         const Function<TValue, dim>& sb) {
+  auto fnew = Integration(f, index);
+  return Substitution(fnew, index, sb) - Substitution(fnew, index, sa);
 }
 }  // namespace operators
 }  // namespace multivariable
