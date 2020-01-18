@@ -6,11 +6,9 @@
 
 namespace calculus {
 namespace ext_polynomial {
-template <class TValue>
+template <class TValue, class TTerm = Term<TValue>>
 class Function {
  public:
-  using TTerm = Term<TValue>;
-
   std::vector<TTerm> terms;
 
   Function() {}
