@@ -24,7 +24,7 @@ class TermPower {
   TermPower(TTermBase _base, int _power = 0) : base(_base), power(_power) {}
 
   term_bases::Type GetType() const { return base->GetType(); }
-  bool IsOne() const { return (power == 0) && base->IsOne(); }
+  bool IsConstant() const { return (power == 0) && base->IsOne(); }
   bool IsPolynomial() const { return base->IsOne(); }
 
   TValue Get(const TValue& x) const { return base->Get(x) * PowS(x, power); }

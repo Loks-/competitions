@@ -29,14 +29,16 @@ class TermPower {
     return true;
   }
 
-  bool IsOne() const {
+  bool IsConstant() const {
     for (auto& t : terms) {
-      if (!t.IsOne()) return false;
+      if (!t.IsConstant()) return false;
     }
     return true;
   }
 
-  bool UnusedVariable(unsigned index) const { return terms[index].IsOne(); }
+  bool UnusedVariable(unsigned index) const {
+    return terms[index].IsConstant();
+  }
 
   TTermPowerSV& operator()(unsigned index) { return terms[index]; }
   const TTermPowerSV& operator()(unsigned index) const { return terms[index]; }

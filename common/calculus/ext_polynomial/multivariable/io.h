@@ -24,7 +24,7 @@ inline std::ostream& operator<<(std::ostream& s,
 
 template <class TValue, unsigned dim>
 inline std::ostream& operator<<(std::ostream& s, const Term<TValue, dim>& t) {
-  if (t.tp.IsOne()) {
+  if (t.tp.IsConstant()) {
     if (t.a < TValue(0))
       std::cout << "-" << (-t.a);
     else
