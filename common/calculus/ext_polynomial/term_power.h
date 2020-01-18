@@ -4,7 +4,6 @@
 #include "common/calculus/ext_polynomial/term_bases/one.h"
 #include "common/calculus/ext_polynomial/term_bases/type.h"
 #include "common/numeric/utils/pow.h"
-#include <memory>
 #include <string>
 
 namespace calculus {
@@ -38,8 +37,8 @@ class TermPower {
     return (power == r.power) && (*base == *r.base);
   }
 
-  bool ValidMultiplication(const TSelf& r) const {
-    return base->ValidMultiplication(*r.base);
+  bool IsMultiplicable(const TSelf& r) const {
+    return base->IsMultiplicable(*r.base);
   }
 
   TSelf& operator*=(const TSelf& r) {
@@ -54,9 +53,7 @@ class TermPower {
     return t;
   }
 
-  bool ValidDivision(const TSelf& r) const {
-    return base->ValidDivision(*r.base);
-  }
+  bool IsDivisible(const TSelf& r) const { return base->IsDivisible(*r.base); }
 
   TSelf& operator/=(const TSelf& r) {
     base = base->Division(base, r.base);

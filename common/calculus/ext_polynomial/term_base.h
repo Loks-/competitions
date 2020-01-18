@@ -47,7 +47,7 @@ class TermBase {
     return SameType(r) && SameTypeEqual(r);
   }
 
-  virtual bool ValidMultiplication(const TSelf& r) const {
+  virtual bool IsMultiplicable(const TSelf& r) const {
     return IsOne() || r.IsOne();
   }
 
@@ -59,7 +59,7 @@ class TermBase {
     return nullptr;
   }
 
-  virtual bool ValidDivision(const TSelf& r) const {
+  virtual bool IsDivisible(const TSelf& r) const {
     return r.IsOne() || (*this == r);
   }
 
