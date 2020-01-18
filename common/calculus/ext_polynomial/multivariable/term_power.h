@@ -22,9 +22,9 @@ class TermPower {
   TermPower() : terms(MakeArray<TTermPowerSV, dim>(TTermPowerSV())) {}
   TermPower(const std::array<TTermPowerSV, _dim>& _terms) : terms(_terms) {}
 
-  bool IsTypeOne() const {
+  bool IsPolynomial() const {
     for (auto& t : terms) {
-      if (!t.IsTypeOne()) return false;
+      if (!t.IsPolynomial()) return false;
     }
     return true;
   }

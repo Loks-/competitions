@@ -44,8 +44,8 @@ inline Function<TValue, dim> SubstitutionLinear(const Function<TValue, dim>& f,
           f1.AddTerm({t.a * la, t.tp});
         }
         for (auto& l : sf.vn) {
-          Assert(t.tp(l.index).IsTypeOne(),
-                 "Only type One is supported for substituion.");
+          Assert(t.tp(l.index).IsPolynomial(),
+                 "Only polynomial is supported for substituion.");
           if (l.c != TValue(0)) {
             t.tp(l.index) =
                 calculus::ext_polynomial::term_bases::MakeLnAbsC<TValue>(l.c);
@@ -59,8 +59,8 @@ inline Function<TValue, dim> SubstitutionLinear(const Function<TValue, dim>& f,
           }
         }
         for (auto& l : sf.vd) {
-          Assert(t.tp(l.index).IsTypeOne(),
-                 "Only type One is supported for substituion.");
+          Assert(t.tp(l.index).IsPolynomial(),
+                 "Only polynomial is supported for substituion.");
           if (l.c != TValue(0)) {
             t.tp(l.index) =
                 calculus::ext_polynomial::term_bases::MakeLnAbsC<TValue>(l.c);

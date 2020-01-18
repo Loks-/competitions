@@ -24,19 +24,51 @@ class TermPower {
   TermPower(TTermBase _base, int _power = 0) : base(_base), power(_power) {}
 
   term_bases::Type GetType() const { return base->GetType(); }
+  bool IsOne() const { return (power == 0) && base->IsOne(); }
+  bool IsPolynomial() const { return base->IsOne(); }
+
   TValue Get(const TValue& x) const { return base->Get(x) * PowS(x, power); }
 
   bool operator<(const TSelf& r) const {
-    return (power < r.power) ? true
-                             : (r.power < power) ? false : (*base < *r.base);
+    return (power < r.power) ? true : (r.power < power) ? false
+                                                        : (*base < *r.base);
   }
 
   bool operator==(const TSelf& r) const {
     return (power == r.power) && (*base == *r.base);
   }
 
-  bool IsTypeOne() const { return base->IsOne(); }
-  bool IsOne() const { return (power == 0) && IsTypeOne(); }
+  bool ValidMultiplication(const TSelf& r) const {
+    return base->ValidMultiplication(*r.base);
+  }
+
+  TSelf& operator*=(const TSelf& r) {
+    base = base->Multiplication(base, r.base);
+    power += r.power;
+    return *this;
+  }
+
+  TSelf operator*(const TSelf& r) const {
+    TSelf t(*this);
+    t *= r;
+    return t;
+  }
+
+  bool ValidDivision(const TSelf& r) const {
+    return base->ValidDivision(*r.base);
+  }
+
+  TSelf& operator/=(const TSelf& r) {
+    base = base->Division(base, r.base);
+    power -= r.power;
+    return *this;
+  }
+
+  TSelf operator/(const TSelf& r) const {
+    TSelf t(*this);
+    t /= r;
+    return t;
+  }
 
   std::string ToString(const std::string& variable_name) const {
     std::string xpk;
