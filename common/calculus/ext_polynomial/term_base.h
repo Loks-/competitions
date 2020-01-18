@@ -9,24 +9,26 @@ namespace ext_polynomial {
 template <class TValue>
 class TermBase {
  public:
+  using TSelf = TermBase<TValue>;
+
   TermBase() {}
   virtual ~TermBase() {}
 
   virtual term_bases::Type GetType() const = 0;
   virtual TValue Get(const TValue& x) const = 0;
 
-  virtual bool SameType(const TermBase& r) const {
+  virtual bool SameType(const TSelf& r) const {
     return GetType() == r.GetType();
   }
 
-  virtual bool SameTypeLess(const TermBase& r) const { return false; }
-  virtual bool SameTypeEqual(const TermBase& r) const { return true; }
+  virtual bool SameTypeLess(const TSelf& r) const { return false; }
+  virtual bool SameTypeEqual(const TSelf& r) const { return true; }
 
-  virtual bool operator<(const TermBase& r) const {
+  virtual bool operator<(const TSelf& r) const {
     return SameType(r) ? SameTypeLess(r) : (GetType() < r.GetType());
   }
 
-  virtual bool operator==(const TermBase& r) const {
+  virtual bool operator==(const TSelf& r) const {
     return SameType(r) && SameTypeEqual(r);
   }
 

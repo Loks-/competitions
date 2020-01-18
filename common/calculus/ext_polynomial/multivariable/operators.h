@@ -140,7 +140,7 @@ inline Function<TValue, dim>& operator-=(Function<TValue, dim>& f1,
 template <class TValue, unsigned dim>
 inline Function<TValue, dim>& operator*=(Function<TValue, dim>& f1,
                                          const TValue& v2) {
-  for (auto& t : f1) t.a *= v2;
+  for (auto& t : f1.terms) t.a *= v2;
   return f1;
 }
 

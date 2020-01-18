@@ -21,16 +21,16 @@ class LnAbsC : public TermBase<TValue> {
   Type GetType() const override { return Type::LN_ABS_C; }
   TValue Get(const TValue& x) const override { return log(fabs(x - c)); }
 
-  bool SameTypeLess(const TermBase& r) const override {
-    auto p = dynamic_cast<const LnAbsC*>(*r);
+  bool SameTypeLess(const TBase& r) const override {
+    auto p = dynamic_cast<const LnAbsC*>(&r);
     assert(p);
-    return c < p.c;
+    return c < p->c;
   }
 
-  bool SameTypeEqual(const TermBase& r) const override {
-    auto p = dynamic_cast<const LnAbsC*>(*r);
+  bool SameTypeEqual(const TBase& r) const override {
+    auto p = dynamic_cast<const LnAbsC*>(&r);
     assert(p);
-    return c == p.c;
+    return c == p->c;
   }
 
   std::string ToString(const std::string& variable_name) const override {

@@ -1,8 +1,10 @@
 #include "common/calculus/ext_polynomial/multivariable/function.h"
 #include "common/calculus/ext_polynomial/multivariable/io.h"
+#include "common/calculus/ext_polynomial/multivariable/linear.h"
 #include "common/calculus/ext_polynomial/multivariable/make.h"
 #include "common/calculus/ext_polynomial/multivariable/operators.h"
 #include "common/calculus/ext_polynomial/multivariable/operators/integration.h"
+#include "common/calculus/ext_polynomial/multivariable/operators/substitution_linear.h"
 #include "common/stl/base.h"
 
 using namespace calculus::ext_polynomial::multivariable;
@@ -13,6 +15,7 @@ int main_695() {
        y0 = DMakeXi<4>(1), x1 = DMakeXi<4>(2), y1 = DMakeXi<4>(3);
   auto fc = one;
   // auto fc = x0 * y0;
+  // auto fc = 8. * x0 * y0 * (1. - x0) * (1. - y0);
   // 0 <= x0 <= 1, 0 <= y0 <= 1
   // Segment 1: 0 <= x1 <= x0, y0 <= y1 <= 1
   auto s1p = fc * (one - x0) * (one - y1);
@@ -46,8 +49,8 @@ int main_695() {
   cout << "f3_212c_ii = " << f3_212c_ii << endl;
   auto f2_212c_b = SubstitutionIndex(f3_212c_ii, 2, 0);
   cout << "f2_212c_b = " << f2_212c_b << endl;
-  // Temporary, incorrect substitution
-  auto f2_212c_a = SubstitutionIndex(f3_212c_ii, 2, 1);
+  auto a_212c_f = DMakeFXi(0, 1.) * DMakeFXi(1, 1.) / DMakeFXi(1);
+  auto f2_212c_a = SubstitutionLinear(f3_212c_ii, 2, a_212c_f);
   cout << "f2_212c_a = " << f2_212c_a << endl;
   auto f2_212c = f2_212c_b - f2_212c_a;
   auto f2_212 = f2_211 - f2_212c;

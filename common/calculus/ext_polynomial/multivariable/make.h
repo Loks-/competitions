@@ -9,12 +9,12 @@ namespace calculus {
 namespace ext_polynomial {
 namespace multivariable {
 template <class TValue, unsigned dim>
-inline Function<TValue, dim> MakeConstant(TValue a = TValue(0)) {
+inline Function<TValue, dim> MakeConstant(const TValue& a = TValue(0)) {
   return Function<TValue, dim>(a);
 }
 
 template <class TValue, unsigned dim>
-inline Function<TValue, dim> MakeXi(unsigned i, TValue a = TValue(1)) {
+inline Function<TValue, dim> MakeXi(unsigned i, const TValue& a = TValue(1)) {
   assert(i < dim);
   TermPower<TValue, dim> tp;
   tp(i).power = 1;
