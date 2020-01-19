@@ -52,7 +52,7 @@ class TermBase {
   }
 
   virtual PSelf Multiplication(const PSelf& pl, const PSelf& pr) const {
-    assert(pl.get() == this);
+    // assert(pl.get() == this);
     if (pl->IsOne()) return pr;
     if (pr->IsOne()) return pl;
     assert(false);
@@ -64,7 +64,7 @@ class TermBase {
   }
 
   virtual PSelf Division(const PSelf& pl, const PSelf& pr) const {
-    assert(pl.get() == this);
+    // assert(pl.get() == this);
     if (pr->IsOne()) return pl;
     if (*pl == *pr) return term_bases::MakeOne<TValue>();
     assert(false);

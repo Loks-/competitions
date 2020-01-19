@@ -45,7 +45,7 @@ class Function {
   // After these functions terms became unsorted
   void AddTermUnsafe(const TTerm& t) { terms.emplace_back(t); }
   void AddTermsUnsafe(const TSelf& f) {
-    for (auto& t : f) AddTermsUnsafe(t);
+    for (auto& t : f.terms) AddTermUnsafe(t);
   }
 
   bool AreTermsSorted() const {
@@ -104,10 +104,10 @@ class Function {
       auto& t1 = terms[i];
       auto& t2 = r(j);
       if (t1.tp < t2.tp) {
-        f.AddTerm(t1);
+        f.AddTermUnsafe(t1);
         ++i;
       } else if (t2.tp < t1.tp) {
-        f.AddTerm(t2);
+        f.AddTermUnsafe(t2);
         ++j;
       } else if (t1.tp == t2.tp) {
         TValueF a = t1.a + t2.a;
@@ -126,9 +126,9 @@ class Function {
   TSelf operator+(const TValueF& r) const { return (*this) + TSelf(r); }
   TSelf operator+(const TTerm& r) const { return (*this) + TSelf(r); }
 
-  TSelf& operator+=(const TValueF& r) const { return *this = (*this + r); }
-  TSelf& operator+=(const TTerm& r) const { return *this = (*this + r); }
-  TSelf& operator+=(const TSelf& r) const { return *this = (*this + r); }
+  TSelf& operator+=(const TValueF& r) { return *this = (*this + r); }
+  TSelf& operator+=(const TTerm& r) { return *this = (*this + r); }
+  TSelf& operator+=(const TSelf& r) { return *this = (*this + r); }
 
   TSelf operator-(const TSelf& r) const {
     TSelf f;
@@ -137,10 +137,10 @@ class Function {
       auto& t1 = terms[i];
       auto& t2 = r(j);
       if (t1.tp < t2.tp) {
-        f.AddTerm(t1);
+        f.AddTermUnsafe(t1);
         ++i;
       } else if (t2.tp < t1.tp) {
-        f.AddTerm(-t2);
+        f.AddTermUnsafe(-t2);
         ++j;
       } else if (t1.tp == t2.tp) {
         TValueF a = t1.a - t2.a;
@@ -159,9 +159,9 @@ class Function {
   TSelf operator-(const TValueF& r) const { return (*this) - TSelf(r); }
   TSelf operator-(const TTerm& r) const { return (*this) - TSelf(r); }
 
-  TSelf& operator-=(const TValueF& r) const { return *this = (*this - r); }
-  TSelf& operator-=(const TTerm& r) const { return *this = (*this - r); }
-  TSelf& operator-=(const TSelf& r) const { return *this = (*this - r); }
+  TSelf& operator-=(const TValueF& r) { return *this = (*this - r); }
+  TSelf& operator-=(const TTerm& r) { return *this = (*this - r); }
+  TSelf& operator-=(const TSelf& r) { return *this = (*this - r); }
 
   TSelf& operator*=(const TValueF& r) {
     for (auto& t : terms) t *= r;

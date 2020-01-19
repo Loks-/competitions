@@ -11,9 +11,9 @@
 namespace calculus {
 namespace ext_polynomial {
 template <class TValue, unsigned dim>
-inline MVFunction<TValue, dim> Substitution(const MVTerm<TValue, dim>& t,
-                                            unsigned index,
-                                            const MVFunction<TValue, dim>& sf) {
+inline MVFunction<TValue, dim> SubstitutionFunction(
+    const MVTerm<TValue, dim>& t, unsigned index,
+    const MVFunction<TValue, dim>& sf) {
   TermPower<TValue> sv_term_i = t.tp(index);
   MVTerm<TValue, dim> tnew = t;
   tnew.tp(index) = TermPower<TValue>();
@@ -23,9 +23,9 @@ inline MVFunction<TValue, dim> Substitution(const MVTerm<TValue, dim>& t,
       if (sv_term_i.power == 0) {
         return tnew;
       } else if (sv_term_i.power > 0) {
-        return tnew * PowU(sf, sv_term_i.power);
+        return MVFunction<TValue, dim>(tnew) * PowU(sf, sv_term_i.power);
       } else {
-        return tnew / PowU(sf, -sv_term_i.power);
+        return MVFunction<TValue, dim>(tnew) / PowU(sf, -sv_term_i.power);
       }
     default:
       assert(false);
@@ -34,11 +34,12 @@ inline MVFunction<TValue, dim> Substitution(const MVTerm<TValue, dim>& t,
 }
 
 template <class TValue, unsigned dim>
-inline MVFunction<TValue, dim> Substitution(const MVFunction<TValue, dim>& f,
-                                            unsigned index,
-                                            const MVFunction<TValue, dim>& sf) {
+inline MVFunction<TValue, dim> SubstitutionFunction(
+    const MVFunction<TValue, dim>& f, unsigned index,
+    const MVFunction<TValue, dim>& sf) {
   MVFunction<TValue, dim> fnew;
-  for (auto& t : f.terms) fnew.AddTermsUnsafe(Substitution(t, index, sf));
+  for (auto& t : f.terms)
+    fnew.AddTermsUnsafe(SubstitutionFunction(t, index, sf));
   fnew.Compress();
   return fnew;
 }

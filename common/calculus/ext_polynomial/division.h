@@ -24,7 +24,7 @@ inline Function<TValueF, TValueTerm, TTerm> operator/(
     if (t1.IsDivisible(t2)) {
       f.AddTermUnsafe(t1 / t2);
     } else {
-      f.AddTermsUnsafe(DivisionTerms(t1, t2));
+      f.AddTermsUnsafe(DivisionTerms<TValueF, TValueTerm, TTerm>(t1, t2));
     }
   }
   f.Compress();

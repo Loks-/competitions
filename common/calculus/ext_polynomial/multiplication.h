@@ -7,7 +7,7 @@
 namespace calculus {
 namespace ext_polynomial {
 template <class TValueF, class TValueTerm, class TTerm>
-inline Function<TValueF, TValueTerm, TTerm> MultiplilcationTerms(
+inline Function<TValueF, TValueTerm, TTerm> MultiplicationTerms(
     const TTerm& l, const TTerm& r) {
   if (l.IsMultiplicable(r)) {
     return l * r;
@@ -26,7 +26,8 @@ inline Function<TValueF, TValueTerm, TTerm> operator*(
       if (t1.IsMultiplicable(t2)) {
         f.AddTermUnsafe(t1 * t2);
       } else {
-        f.AddTermsUnsafe(MultiplicationTerms(t1, t2));
+        f.AddTermsUnsafe(
+            MultiplicationTerms<TValueF, TValueTerm, TTerm>(t1, t2));
       }
     }
   }

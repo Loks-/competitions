@@ -35,7 +35,7 @@ inline MVFunction<TValue, dim> MVView(
   using TMVF = MVFunction<TValue, dim>;
   MVTermPower<TValue, dim> mtp;
   mtp(index) = t.tp;
-  return t.a * mtp;
+  return t.a * MVTerm<TValue, dim>(TValue(1), mtp);
 }
 
 template <class TValue, unsigned dim>

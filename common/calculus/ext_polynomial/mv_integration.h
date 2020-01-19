@@ -30,8 +30,8 @@ inline MVFunction<TValue, dim> Integration(
     const MVFunction<TValue, dim>& limit_a,
     const MVFunction<TValue, dim>& limit_b) {
   auto fnew = Integration(f, index);
-  return Substitution(fnew, index, limit_b) -
-         Substitution(fnew, index, limit_a);
+  return SubstitutionFunction(fnew, index, limit_b) -
+         SubstitutionFunction(fnew, index, limit_a);
 }
 }  // namespace ext_polynomial
 }  // namespace calculus
