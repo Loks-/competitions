@@ -1,18 +1,21 @@
-#include "common/calculus/ext_polynomial/multivariable/function.h"
-#include "common/calculus/ext_polynomial/multivariable/io.h"
-#include "common/calculus/ext_polynomial/multivariable/linear.h"
-#include "common/calculus/ext_polynomial/multivariable/make.h"
-#include "common/calculus/ext_polynomial/multivariable/operators.h"
-#include "common/calculus/ext_polynomial/multivariable/operators/integration.h"
-#include "common/calculus/ext_polynomial/multivariable/operators/substitution_linear.h"
+#include "common/calculus/ext_polynomial/division.h"
+#include "common/calculus/ext_polynomial/factorized.h"
+#include "common/calculus/ext_polynomial/io.h"
+#include "common/calculus/ext_polynomial/multiplication.h"
+#include "common/calculus/ext_polynomial/mv_function.h"
+#include "common/calculus/ext_polynomial/mv_integration.h"
+#include "common/calculus/ext_polynomial/mv_make.h"
+#include "common/calculus/ext_polynomial/mv_substitution_function.h"
+#include "common/calculus/ext_polynomial/mv_substitution_index.h"
 #include "common/stl/base.h"
 
-using namespace calculus::ext_polynomial::multivariable;
-using namespace calculus::ext_polynomial::multivariable::operators;
+using namespace calculus::ext_polynomial;
+
+using DF4 = DMVFunction<4>;
 
 int main_695() {
-  auto zero = DFunction<4>(), one = DFunction<4>(1.), x0 = DMakeXi<4>(0),
-       y0 = DMakeXi<4>(1), x1 = DMakeXi<4>(2), y1 = DMakeXi<4>(3);
+  auto zero = DF4(), one = DF4(1.), x0 = DMakeXi<4>(0), y0 = DMakeXi<4>(1),
+       x1 = DMakeXi<4>(2), y1 = DMakeXi<4>(3);
   auto fc = one;
   // auto fc = x0 * y0;
   // auto fc = 8. * x0 * y0 * (1. - x0) * (1. - y0);
@@ -23,10 +26,12 @@ int main_695() {
   auto s2p = fc * (one - x1) * (one - y1);
   //   Substitute1 x1 = x0 + x1s, y1 = y0 + y1s
   //   After S1: 0 <= x1s <= 1 - x0, 0 <= y1s <= 1 - y0
-  auto s2ps1 = Substitution(Substitution(s2p, 2, x0 + x1), 3, y0 + y1);
+  auto s2ps1 =
+      SubstitutionFunction(SubstitutionFunction(s2p, 2, x0 + x1), 3, y0 + y1);
   //   Substitute2 x0 = 1 - x0s, y0 = 1 - y0s
   //   After S2: 0 <= x1s <= x0s, 0 <= y1s <= y0s
-  auto s2ps2 = Substitution(Substitution(s2ps1, 0, one - x0), 1, one - y0);
+  auto s2ps2 = SubstitutionFunction(SubstitutionFunction(s2ps1, 0, one - x0), 1,
+                                    one - y0);
   cout << "s2ps2 = " << s2ps2 << endl;
   //   Region 2.1: (x1 - x0) * (y1 - y0) <= x0 * y0
   //     After S1: x1s * y1s <= x0 * y0
@@ -50,7 +55,7 @@ int main_695() {
   auto f2_212c_b = SubstitutionIndex(f3_212c_ii, 2, 0);
   cout << "f2_212c_b = " << f2_212c_b << endl;
   auto a_212c_f = DMakeFXi(0, 1.) * DMakeFXi(1, 1.) / DMakeFXi(1);
-  auto f2_212c_a = SubstitutionLinear(f3_212c_ii, 2, a_212c_f);
+  auto f2_212c_a = f3_212c_ii;  // SubstitutionLinear(f3_212c_ii, 2, a_212c_f);
   cout << "f2_212c_a = " << f2_212c_a << endl;
   auto f2_212c = f2_212c_b - f2_212c_a;
   auto f2_212 = f2_211 - f2_212c;
