@@ -18,8 +18,8 @@ class MVTermPower {
 
   std::array<TSVTermPower, _dim> terms;
 
-  TermPower() : terms(MakeArray<TSVTermPower, dim>(TSVTermPower())) {}
-  TermPower(const std::array<TSVTermPower, _dim>& _terms) : terms(_terms) {}
+  MVTermPower() : terms(MakeArray<TSVTermPower, dim>(TSVTermPower())) {}
+  MVTermPower(const std::array<TSVTermPower, _dim>& _terms) : terms(_terms) {}
 
   bool IsConstant() const {
     for (auto& t : terms) {
@@ -43,8 +43,8 @@ class MVTermPower {
     return r;
   }
 
-  TTermPowerSV& operator()(unsigned index) { return terms[index]; }
-  const TTermPowerSV& operator()(unsigned index) const { return terms[index]; }
+  TSVTermPower& operator()(unsigned index) { return terms[index]; }
+  const TSVTermPower& operator()(unsigned index) const { return terms[index]; }
   bool operator<(const TSelf& r) const { return terms < r.terms; }
   bool operator==(const TSelf& r) const { return terms == r.terms; }
 
@@ -88,7 +88,7 @@ class MVTermPower {
     std::string s;
     bool first = true;
     for (unsigned i = 0; i < dim; ++i) {
-      std::string sname = tp(i).ToString(variable_name + std::to_string(i));
+      std::string sname = terms[i].ToString(variable_name + std::to_string(i));
       if (!sname.empty()) {
         s = s + (first ? "" : "*") + sname;
         first = false;
@@ -97,5 +97,8 @@ class MVTermPower {
     return s;
   }
 };
+
+template <unsigned dim>
+using DMVTermPower = MVTermPower<double, dim>;
 }  // namespace ext_polynomial
 }  // namespace calculus

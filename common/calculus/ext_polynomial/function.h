@@ -36,8 +36,11 @@ class Function {
     return true;
   }
 
-  // After this function terms became unsorted
+  // After these functions terms became unsorted
   void AddTermUnsafe(const TTerm& t) { terms.emplace_back(t); }
+  void AddTermsUnsafe(const TSelf& f) {
+    for (auto& t : f) AddTermsUnsafe(t);
+  }
 
   bool AreTermsSorted() const {
     for (size_t i = 1; i < terms.size(); ++i) {
@@ -150,6 +153,28 @@ class Function {
   TSelf& operator-=(const TValue& r) const { return *this = (*this - r); }
   TSelf& operator-=(const TTerm& r) const { return *this = (*this - r); }
   TSelf& operator-=(const TSelf& r) const { return *this = (*this - r); }
+
+  TSelf& operator*=(const TValue& r) {
+    for (auto& t : terms) t *= r;
+    return *this;
+  }
+
+  TSelf operator*(const TValue& r) const {
+    TSelf t(*this);
+    t *= r;
+    return t;
+  }
+
+  TSelf& operator/=(const TValue& r) {
+    for (auto& t : terms) t /= r;
+    return *this;
+  }
+
+  TSelf operator/(const TValue& r) const {
+    TSelf t(*this);
+    t /= r;
+    return t;
+  }
 };
 
 template <class TValue, class TTerm>
@@ -175,5 +200,13 @@ inline Function<TValue, TTerm> operator-(const TTerm& l,
                                          const Function<TValue, TTerm>& r) {
   return Function<TValue, TTerm>(l) - r;
 }
+
+template <class TValue, class TTerm>
+inline Function<TValue, TTerm> operator*(const TValue& l,
+                                         const Function<TValue, TTerm>& r) {
+  return r * l;
+}
+
+using DFunction = Function<double, DTerm>;
 }  // namespace ext_polynomial
 }  // namespace calculus

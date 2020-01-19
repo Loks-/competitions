@@ -7,5 +7,8 @@ namespace calculus {
 namespace ext_polynomial {
 template <class TValue, unsigned dim>
 using MVTerm = Term<TValue, MVTermPower<TValue, dim>>;
+
+template <unsigned dim>
+using DMVTerm = MVTerm<double, dim>;
 }  // namespace ext_polynomial
 }  // namespace calculus

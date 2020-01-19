@@ -78,5 +78,7 @@ inline Term<TValue, TTermPower> operator/(const TValue& l,
                                           const Term<TValue, TTermPower>& r) {
   return Term<TValue, TTermPower>(l) / r;
 }
+
+using DTerm = Term<double, DTermPower>;
 }  // namespace ext_polynomial
 }  // namespace calculus
