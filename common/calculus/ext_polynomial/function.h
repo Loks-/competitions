@@ -9,32 +9,44 @@ namespace ext_polynomial {
 template <class TValue, class TTerm = Term<TValue>>
 class Function {
  public:
+  using TSelf = Function<TValue, TTerm>;
+
   std::vector<TTerm> terms;
 
   Function() {}
   Function(const TValue& x) { terms.emplace_back(TTerm(x)); }
   Function(const TTerm& t) { terms.emplace_back(t); }
 
-  void AddTerm(const TTerm& t) { terms.emplace_back(t); }
-
-  TValue Get(const TValue& x) const {
-    TValue s(0);
-    for (const auto& t : terms) s += t.Get(x);
-    return s;
-  }
-
   size_t Size() const { return terms.size(); }
   TTerm& operator()(size_t index) { return terms[index]; }
   const TTerm& operator()(size_t index) const { return terms[index]; }
+  void swap(TSelf& r) { terms.swap(r.terms); }
 
-  bool Sorted() const {
+  bool IsConstant() const {
+    for (auto& t : terms) {
+      if (!t.IsConstant()) return false;
+    }
+    return true;
+  }
+
+  bool IsPolynomial() const {
+    for (auto& t : terms) {
+      if (!t.IsPolynomial()) return false;
+    }
+    return true;
+  }
+
+  // After this function terms became unsorted
+  void AddTermUnsafe(const TTerm& t) { terms.emplace_back(t); }
+
+  bool AreTermsSorted() const {
     for (size_t i = 1; i < terms.size(); ++i) {
       if (terms[i].tp < terms[i - 1].tp) return false;
     }
     return true;
   }
 
-  bool StrictlySorted() const {
+  bool AreTermsCompressed() const {
     for (size_t i = 1; i < terms.size(); ++i) {
       if (!(terms[i - 1].tp < terms[i].tp)) return false;
     }
@@ -42,33 +54,29 @@ class Function {
   }
 
   void SortTerms() {
-    if (!Sorted()) {
+    if (!AreTermsSorted()) {
       std::sort(terms.begin(), terms.end(),
                 [](auto& x, auto& y) { return x.tp < y.tp; });
     }
   }
 
-  void CompressSorted() {
-    if (StrictlySorted()) return;
-    std::vector<TTerm> vt;
-    TValue zero = TValue(0);
-    for (unsigned i = 0; i < terms.size(); ++i) {
-      if (terms[i].a == zero) continue;
-      for (unsigned j = i + 1; j < terms.size(); ++j) {
-        if (terms[i].tp < terms[j].tp) break;
-        if (terms[i].tp == terms[j].tp) {
+  void Compress() {
+    if (!AreTermsCompressed()) {
+      SortTerms();
+      TSelf f;
+      for (size_t i = 0, j = 0; i < terms.size(); i = j) {
+        for (j = i + 1; (j < terms.size()) && (terms[i].tp == terms[j].tp); ++j)
           terms[i].a += terms[j].a;
-          terms[j].a = zero;
-        }
+        if (terms[i].a != TValue(0)) f.AddTermUnsafe(terms[i]);
       }
-      if (terms[i].a != zero) vt.emplace_back(terms[i]);
+      swap(f);
     }
-    terms.swap(vt);
   }
 
-  void Compress() {
-    SortTerms();
-    CompressSorted();
+  TValue Get(const TValue& x) const {
+    TValue s(0);
+    for (const auto& t : terms) s += t.Get(x);
+    return s;
   }
 };
 }  // namespace ext_polynomial
