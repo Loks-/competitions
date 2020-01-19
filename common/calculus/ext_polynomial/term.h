@@ -5,36 +5,39 @@
 
 namespace calculus {
 namespace ext_polynomial {
-template <class TValue, class TTermPower = TermPower<TValue>>
+template <class TValueF, class TValueTerm = TValueF,
+          class TTermPower = TermPower<TValueTerm>>
 class Term {
  public:
-  using TSelf = Term<TValue, TTermPower>;
+  using TSelf = Term<TValueF, TValueTerm, TTermPower>;
 
-  TValue a;
+  TValueF a;
   TTermPower tp;
 
-  Term(const TValue& _a) : a(_a) {}
-  Term(const TValue& _a, const TTermPower& _tp) : a(_a), tp(_tp) {}
+  Term(const TValueF& _a) : a(_a) {}
+  Term(const TValueF& _a, const TTermPower& _tp) : a(_a), tp(_tp) {}
 
   bool IsConstant() const { return tp.IsConstant(); }
   bool IsPolynomial() const { return tp.IsPolynomial(); }
 
-  TValue Get(const TValue& x) const { return a * tp.Get(x); }
+  TValueF Get(const TValueTerm& x) const { return a * TValueF(tp.Get(x)); }
+
+  bool operator==(const TSelf& r) const { return (a == r.a) && (tp == r.tp); }
 
   std::string ToString(const std::string& variable_name) const {
-    if (a == TValue(0)) return "";
+    if (a == TValueF(0)) return "";
     std::string stp = tp.ToString(variable_name);
     if (stp.empty()) {
-      if (a < TValue(0)) {
+      if (a < TValueF(0)) {
         return "-" + std::to_string(-a);
       } else {
         return "+" + std::to_string(a);
       }
-    } else if (a == TValue(1)) {
+    } else if (a == TValueF(1)) {
       return "+" + stp;
-    } else if (a == -TValue(1)) {
+    } else if (a == -TValueF(1)) {
       return "-" + stp;
-    } else if (a < TValue(0)) {
+    } else if (a < TValueF(0)) {
       return "-" + std::to_string(-a) + "*" + stp;
     } else {
       return "+" + std::to_string(a) + "*" + stp;
@@ -43,12 +46,12 @@ class Term {
 
   TSelf operator-() const { return TSelf(-a, tp); }
 
-  TSelf& operator*=(const TValue& r) {
+  TSelf& operator*=(const TValueF& r) {
     a *= r;
     return *this;
   }
 
-  TSelf operator*(const TValue& r) const { return TSelf(a * r, tp); }
+  TSelf operator*(const TValueF& r) const { return TSelf(a * r, tp); }
 
   bool IsMultiplicable(const TSelf& r) const {
     return tp.IsMultiplicable(r.tp);
@@ -66,12 +69,12 @@ class Term {
     return t;
   }
 
-  TSelf& operator/=(const TValue& r) {
+  TSelf& operator/=(const TValueF& r) {
     a /= r;
     return *this;
   }
 
-  TSelf operator/(const TValue& r) const { return TSelf(a / r, tp); }
+  TSelf operator/(const TValueF& r) const { return TSelf(a / r, tp); }
 
   bool IsDivisible(const TSelf& r) const { return tp.IsDivisible(r.tp); }
 
@@ -88,18 +91,18 @@ class Term {
   }
 };
 
-template <class TValue, class TTermPower>
-inline Term<TValue, TTermPower> operator*(const TValue& l,
-                                          const Term<TValue, TTermPower>& r) {
+template <class TValueF, class TValueTerm, class TTermPower>
+inline Term<TValueF, TValueTerm, TTermPower> operator*(
+    const TValueF& l, const Term<TValueF, TValueTerm, TTermPower>& r) {
   return r * l;
 }
 
-template <class TValue, class TTermPower>
-inline Term<TValue, TTermPower> operator/(const TValue& l,
-                                          const Term<TValue, TTermPower>& r) {
-  return Term<TValue, TTermPower>(l) / r;
+template <class TValueF, class TValueTerm, class TTermPower>
+inline Term<TValueF, TValueTerm, TTermPower> operator/(
+    const TValueF& l, const Term<TValueF, TValueTerm, TTermPower>& r) {
+  return Term<TValueF, TValueTerm, TTermPower>(l) / r;
 }
 
-using DTerm = Term<double, DTermPower>;
+using DTerm = Term<double, double, DTermPower>;
 }  // namespace ext_polynomial
 }  // namespace calculus

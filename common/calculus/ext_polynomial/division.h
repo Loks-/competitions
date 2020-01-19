@@ -6,8 +6,9 @@
 
 namespace calculus {
 namespace ext_polynomial {
-template <class TValue, class TTerm>
-inline Function<TValue, TTerm> DivisionTerms(const TTerm& l, const TTerm& r) {
+template <class TValueF, class TValueTerm, class TTerm>
+inline Function<TValueF, TValueTerm, TTerm> DivisionTerms(const TTerm& l,
+                                                          const TTerm& r) {
   if (l.IsDivisible(r)) {
     return l / r;
   }
@@ -15,10 +16,10 @@ inline Function<TValue, TTerm> DivisionTerms(const TTerm& l, const TTerm& r) {
   return {};
 }
 
-template <class TValue, class TTerm>
-inline Function<TValue, TTerm> operator/(const Function<TValue, TTerm>& f1,
-                                         const TTerm& t2) {
-  Function<TValue, TTerm> f;
+template <class TValueF, class TValueTerm, class TTerm>
+inline Function<TValueF, TValueTerm, TTerm> operator/(
+    const Function<TValueF, TValueTerm, TTerm>& f1, const TTerm& t2) {
+  Function<TValueF, TValueTerm, TTerm> f;
   for (auto& t1 : f1.terms) {
     if (t1.IsDivisible(t2)) {
       f.AddTermUnsafe(t1 / t2);
@@ -30,22 +31,24 @@ inline Function<TValue, TTerm> operator/(const Function<TValue, TTerm>& f1,
   return f;
 }
 
-template <class TValue, class TTerm>
-inline Function<TValue, TTerm> operator/(const Function<TValue, TTerm>& f1,
-                                         const Function<TValue, TTerm>& f2) {
+template <class TValueF, class TValueTerm, class TTerm>
+inline Function<TValueF, TValueTerm, TTerm> operator/(
+    const Function<TValueF, TValueTerm, TTerm>& f1,
+    const Function<TValueF, TValueTerm, TTerm>& f2) {
   assert(f2.Size() == 1);
   return f1 / f2(0);
 }
 
-template <class TValue, class TTerm>
-inline Function<TValue, TTerm>& operator/=(Function<TValue, TTerm>& f1,
-                                           const TTerm& t2) {
+template <class TValueF, class TValueTerm, class TTerm>
+inline Function<TValueF, TValueTerm, TTerm>& operator/=(
+    Function<TValueF, TValueTerm, TTerm>& f1, const TTerm& t2) {
   return f1 = (f1 / t2);
 }
 
-template <class TValue, class TTerm>
-inline Function<TValue, TTerm>& operator/=(Function<TValue, TTerm>& f1,
-                                           const Function<TValue, TTerm>& f2) {
+template <class TValueF, class TValueTerm, class TTerm>
+inline Function<TValueF, TValueTerm, TTerm>& operator/=(
+    Function<TValueF, TValueTerm, TTerm>& f1,
+    const Function<TValueF, TValueTerm, TTerm>& f2) {
   return f1 = (f1 / f2);
 }
 }  // namespace ext_polynomial

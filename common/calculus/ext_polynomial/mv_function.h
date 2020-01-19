@@ -6,7 +6,7 @@
 namespace calculus {
 namespace ext_polynomial {
 template <class TValue, unsigned dim>
-using MVFunction = Function<TValue, MVTerm<TValue, dim>>;
+using MVFunction = Function<TValue, TValue, MVTerm<TValue, dim>>;
 
 template <unsigned dim>
 using DMVFunction = MVFunction<double, dim>;

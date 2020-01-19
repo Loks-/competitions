@@ -6,9 +6,9 @@
 
 namespace calculus {
 namespace ext_polynomial {
-template <class TValue, class TTerm>
+template <class TValueF, class TValueTerm, class TTerm>
 inline std::ostream& operator<<(std::ostream& s,
-                                const Function<TValue, TTerm>& f) {
+                                const Function<TValueF, TValueTerm, TTerm>& f) {
   if (f.Empty()) {
     s << 0;
   } else {

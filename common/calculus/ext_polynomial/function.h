@@ -6,16 +6,21 @@
 
 namespace calculus {
 namespace ext_polynomial {
-template <class TValue, class TTerm = Term<TValue>>
+template <class TValueF, class TValueTerm = TValueF,
+          class TTerm = Term<TValueF, TValueTerm>>
 class Function {
  public:
-  using TSelf = Function<TValue, TTerm>;
+  using TSelf = Function<TValueF, TValueTerm, TTerm>;
 
   std::vector<TTerm> terms;
 
   Function() {}
-  Function(const TValue& x) { terms.emplace_back(TTerm(x)); }
-  Function(const TTerm& t) { terms.emplace_back(t); }
+  Function(const TValueF& x) {
+    if (x != TValueF(0)) terms.emplace_back(TTerm(x));
+  }
+  Function(const TTerm& t) {
+    if (t.a != TValueF(0)) terms.emplace_back(t);
+  }
 
   bool Empty() const { return terms.empty(); }
   size_t Size() const { return terms.size(); }
@@ -71,17 +76,20 @@ class Function {
       for (size_t i = 0, j = 0; i < terms.size(); i = j) {
         for (j = i + 1; (j < terms.size()) && (terms[i].tp == terms[j].tp); ++j)
           terms[i].a += terms[j].a;
-        if (terms[i].a != TValue(0)) f.AddTermUnsafe(terms[i]);
+        if (terms[i].a != TValueF(0)) f.AddTermUnsafe(terms[i]);
       }
       swap(f);
     }
   }
 
-  TValue Get(const TValue& x) const {
-    TValue s(0);
+  TValueF Get(const TValueTerm& x) const {
+    TValueF s(0);
     for (const auto& t : terms) s += t.Get(x);
     return s;
   }
+
+  bool operator==(const TSelf& r) const { return terms == r.terms; }
+  bool operator!=(const TSelf& r) const { return !(terms == r.terms); }
 
   TSelf operator-() const {
     TSelf f;
@@ -102,8 +110,8 @@ class Function {
         f.AddTerm(t2);
         ++j;
       } else if (t1.tp == t2.tp) {
-        TValue a = t1.a + t2.a;
-        if (a != TValue(0)) f.AddTermUnsafe(TTerm(a, t1.tp));
+        TValueF a = t1.a + t2.a;
+        if (a != TValueF(0)) f.AddTermUnsafe(TTerm(a, t1.tp));
         ++i;
         ++j;
       } else {
@@ -115,10 +123,10 @@ class Function {
     return f;
   }
 
-  TSelf operator+(const TValue& r) const { return (*this) + TSelf(r); }
+  TSelf operator+(const TValueF& r) const { return (*this) + TSelf(r); }
   TSelf operator+(const TTerm& r) const { return (*this) + TSelf(r); }
 
-  TSelf& operator+=(const TValue& r) const { return *this = (*this + r); }
+  TSelf& operator+=(const TValueF& r) const { return *this = (*this + r); }
   TSelf& operator+=(const TTerm& r) const { return *this = (*this + r); }
   TSelf& operator+=(const TSelf& r) const { return *this = (*this + r); }
 
@@ -135,8 +143,8 @@ class Function {
         f.AddTerm(-t2);
         ++j;
       } else if (t1.tp == t2.tp) {
-        TValue a = t1.a - t2.a;
-        if (a != TValue(0)) f.AddTermUnsafe(TTerm(a, t1.tp));
+        TValueF a = t1.a - t2.a;
+        if (a != TValueF(0)) f.AddTermUnsafe(TTerm(a, t1.tp));
         ++i;
         ++j;
       } else {
@@ -148,66 +156,66 @@ class Function {
     return f;
   }
 
-  TSelf operator-(const TValue& r) const { return (*this) - TSelf(r); }
+  TSelf operator-(const TValueF& r) const { return (*this) - TSelf(r); }
   TSelf operator-(const TTerm& r) const { return (*this) - TSelf(r); }
 
-  TSelf& operator-=(const TValue& r) const { return *this = (*this - r); }
+  TSelf& operator-=(const TValueF& r) const { return *this = (*this - r); }
   TSelf& operator-=(const TTerm& r) const { return *this = (*this - r); }
   TSelf& operator-=(const TSelf& r) const { return *this = (*this - r); }
 
-  TSelf& operator*=(const TValue& r) {
+  TSelf& operator*=(const TValueF& r) {
     for (auto& t : terms) t *= r;
     return *this;
   }
 
-  TSelf operator*(const TValue& r) const {
+  TSelf operator*(const TValueF& r) const {
     TSelf t(*this);
     t *= r;
     return t;
   }
 
-  TSelf& operator/=(const TValue& r) {
+  TSelf& operator/=(const TValueF& r) {
     for (auto& t : terms) t /= r;
     return *this;
   }
 
-  TSelf operator/(const TValue& r) const {
+  TSelf operator/(const TValueF& r) const {
     TSelf t(*this);
     t /= r;
     return t;
   }
 };
 
-template <class TValue, class TTerm>
-inline Function<TValue, TTerm> operator+(const TValue& l,
-                                         const Function<TValue, TTerm>& r) {
+template <class TValueF, class TValueTerm, class TTerm>
+inline Function<TValueF, TValueTerm, TTerm> operator+(
+    const TValueF& l, const Function<TValueF, TValueTerm, TTerm>& r) {
   return r + l;
 }
 
-template <class TValue, class TTerm>
-inline Function<TValue, TTerm> operator+(const TTerm& l,
-                                         const Function<TValue, TTerm>& r) {
+template <class TValueF, class TValueTerm, class TTerm>
+inline Function<TValueF, TValueTerm, TTerm> operator+(
+    const TTerm& l, const Function<TValueF, TValueTerm, TTerm>& r) {
   return r + l;
 }
 
-template <class TValue, class TTerm>
-inline Function<TValue, TTerm> operator-(const TValue& l,
-                                         const Function<TValue, TTerm>& r) {
-  return Function<TValue, TTerm>(l) - r;
+template <class TValueF, class TValueTerm, class TTerm>
+inline Function<TValueF, TValueTerm, TTerm> operator-(
+    const TValueF& l, const Function<TValueF, TValueTerm, TTerm>& r) {
+  return Function<TValueF, TValueTerm, TTerm>(l) - r;
 }
 
-template <class TValue, class TTerm>
-inline Function<TValue, TTerm> operator-(const TTerm& l,
-                                         const Function<TValue, TTerm>& r) {
-  return Function<TValue, TTerm>(l) - r;
+template <class TValueF, class TValueTerm, class TTerm>
+inline Function<TValueF, TValueTerm, TTerm> operator-(
+    const TTerm& l, const Function<TValueF, TValueTerm, TTerm>& r) {
+  return Function<TValueF, TValueTerm, TTerm>(l) - r;
 }
 
-template <class TValue, class TTerm>
-inline Function<TValue, TTerm> operator*(const TValue& l,
-                                         const Function<TValue, TTerm>& r) {
+template <class TValueF, class TValueTerm, class TTerm>
+inline Function<TValueF, TValueTerm, TTerm> operator*(
+    const TValueF& l, const Function<TValueF, TValueTerm, TTerm>& r) {
   return r * l;
 }
 
-using DFunction = Function<double, DTerm>;
+using DFunction = Function<double, double, DTerm>;
 }  // namespace ext_polynomial
 }  // namespace calculus

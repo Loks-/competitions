@@ -4,6 +4,7 @@
 #include "common/calculus/ext_polynomial/term_bases/one.h"
 #include "common/calculus/ext_polynomial/term_bases/type.h"
 #include "common/numeric/utils/pow.h"
+#include "common/base.h"
 #include <string>
 
 namespace calculus {
@@ -20,7 +21,9 @@ class TermPower {
 
  public:
   TermPower() : base(term_bases::MakeOne<TValue>()), power(0) {}
-  TermPower(TTermBase _base, int _power = 0) : base(_base), power(_power) {}
+  TermPower(TTermBase _base, int _power = 0) : base(_base), power(_power) {
+    assert(base);
+  }
 
   term_bases::Type GetType() const { return base->GetType(); }
   bool IsConstant() const { return (power == 0) && base->IsOne(); }
