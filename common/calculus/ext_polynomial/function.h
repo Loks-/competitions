@@ -78,6 +78,102 @@ class Function {
     for (const auto& t : terms) s += t.Get(x);
     return s;
   }
+
+  TSelf operator-() const {
+    TSelf f;
+    for (auto& t : terms) f.AddTermUnsafe(-t);
+    return f;
+  }
+
+  TSelf operator+(const TSelf& r) const {
+    TSelf f;
+    size_t i = 0, j = 0;
+    for (; (i < Size()) && (j < r.Size());) {
+      auto& t1 = terms[i];
+      auto& t2 = r(j);
+      if (t1.tp < t2.tp) {
+        f.AddTerm(t1);
+        ++i;
+      } else if (t2.tp < t1.tp) {
+        f.AddTerm(t2);
+        ++j;
+      } else if (t1.tp == t2.tp) {
+        TValue a = t1.a + t2.a;
+        if (a != TValue(0)) f.AddTermUnsafe(TTerm(a, t1.tp));
+        ++i;
+        ++j;
+      } else {
+        assert(false);
+      }
+    }
+    for (; i < Size(); ++i) f.AddTermUnsafe(terms[i]);
+    for (; j < r.Size(); ++j) f.AddTermUnsafe(r(j));
+    return f;
+  }
+
+  TSelf operator+(const TValue& r) const { return (*this) + TSelf(r); }
+  TSelf operator+(const TTerm& r) const { return (*this) + TSelf(r); }
+
+  TSelf& operator+=(const TValue& r) const { return *this = (*this + r); }
+  TSelf& operator+=(const TTerm& r) const { return *this = (*this + r); }
+  TSelf& operator+=(const TSelf& r) const { return *this = (*this + r); }
+
+  TSelf operator-(const TSelf& r) const {
+    TSelf f;
+    size_t i = 0, j = 0;
+    for (; (i < Size()) && (j < r.Size());) {
+      auto& t1 = terms[i];
+      auto& t2 = r(j);
+      if (t1.tp < t2.tp) {
+        f.AddTerm(t1);
+        ++i;
+      } else if (t2.tp < t1.tp) {
+        f.AddTerm(-t2);
+        ++j;
+      } else if (t1.tp == t2.tp) {
+        TValue a = t1.a - t2.a;
+        if (a != TValue(0)) f.AddTermUnsafe(TTerm(a, t1.tp));
+        ++i;
+        ++j;
+      } else {
+        assert(false);
+      }
+    }
+    for (; i < Size(); ++i) f.AddTermUnsafe(terms[i]);
+    for (; j < r.Size(); ++j) f.AddTermUnsafe(-r(j));
+    return f;
+  }
+
+  TSelf operator-(const TValue& r) const { return (*this) - TSelf(r); }
+  TSelf operator-(const TTerm& r) const { return (*this) - TSelf(r); }
+
+  TSelf& operator-=(const TValue& r) const { return *this = (*this - r); }
+  TSelf& operator-=(const TTerm& r) const { return *this = (*this - r); }
+  TSelf& operator-=(const TSelf& r) const { return *this = (*this - r); }
 };
+
+template <class TValue, class TTerm>
+inline Function<TValue, TTerm> operator+(const TValue& l,
+                                         const Function<TValue, TTerm>& r) {
+  return r + l;
+}
+
+template <class TValue, class TTerm>
+inline Function<TValue, TTerm> operator+(const TTerm& l,
+                                         const Function<TValue, TTerm>& r) {
+  return r + l;
+}
+
+template <class TValue, class TTerm>
+inline Function<TValue, TTerm> operator-(const TValue& l,
+                                         const Function<TValue, TTerm>& r) {
+  return Function<TValue, TTerm>(l) - r;
+}
+
+template <class TValue, class TTerm>
+inline Function<TValue, TTerm> operator-(const TTerm& l,
+                                         const Function<TValue, TTerm>& r) {
+  return Function<TValue, TTerm>(l) - r;
+}
 }  // namespace ext_polynomial
 }  // namespace calculus
