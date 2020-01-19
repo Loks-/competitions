@@ -17,6 +17,7 @@ class Function {
   Function(const TValue& x) { terms.emplace_back(TTerm(x)); }
   Function(const TTerm& t) { terms.emplace_back(t); }
 
+  bool Empty() const { return terms.empty(); }
   size_t Size() const { return terms.size(); }
   TTerm& operator()(size_t index) { return terms[index]; }
   const TTerm& operator()(size_t index) const { return terms[index]; }

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "common/calculus/ext_polynomial/term_power.h"
+#include <string>
 
 namespace calculus {
 namespace ext_polynomial {
@@ -19,6 +20,26 @@ class Term {
   bool IsPolynomial() const { return tp.IsPolynomial(); }
 
   TValue Get(const TValue& x) const { return a * tp.Get(x); }
+
+  std::string ToString(const std::string& variable_name) const {
+    if (a == TValue(0)) return "";
+    std::string stp = tp.ToString(variable_name);
+    if (stp.empty()) {
+      if (a < TValue(0)) {
+        return "-" + std::to_string(-a);
+      } else {
+        return "+" + std::to_string(a);
+      }
+    } else if (a == TValue(1)) {
+      return "+" + stp;
+    } else if (a == -TValue(1)) {
+      return "-" + stp;
+    } else if (a < TValue(0)) {
+      return "-" + std::to_string(-a) + "*" + stp;
+    } else {
+      return "+" + std::to_string(a) + "*" + stp;
+    }
+  }
 
   TSelf operator-() const { return TSelf(-a, tp); }
 
