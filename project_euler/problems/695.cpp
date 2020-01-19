@@ -5,6 +5,7 @@
 #include "common/calculus/ext_polynomial/mv_function.h"
 #include "common/calculus/ext_polynomial/mv_integration.h"
 #include "common/calculus/ext_polynomial/mv_make.h"
+#include "common/calculus/ext_polynomial/mv_substitution_factorized.h"
 #include "common/calculus/ext_polynomial/mv_substitution_function.h"
 #include "common/calculus/ext_polynomial/mv_substitution_index.h"
 #include "common/stl/base.h"
@@ -55,7 +56,7 @@ int main_695() {
   auto f2_212c_b = SubstitutionIndex(f3_212c_ii, 2, 0);
   cout << "f2_212c_b = " << f2_212c_b << endl;
   auto a_212c_f = DMakeFXi(0, 1.) * DMakeFXi(1, 1.) / DMakeFXi(1);
-  auto f2_212c_a = f3_212c_ii;  // SubstitutionLinear(f3_212c_ii, 2, a_212c_f);
+  auto f2_212c_a = SubstitutionFactorized(f3_212c_ii, 2, a_212c_f);
   cout << "f2_212c_a = " << f2_212c_a << endl;
   auto f2_212c = f2_212c_b - f2_212c_a;
   auto f2_212 = f2_211 - f2_212c;
