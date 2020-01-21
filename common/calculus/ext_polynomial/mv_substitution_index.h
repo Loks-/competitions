@@ -8,10 +8,12 @@ template <class TValue, unsigned dim>
 inline MVFunction<TValue, dim> SubstitutionIndex(const MVTerm<TValue, dim>& t,
                                                  unsigned old_index,
                                                  unsigned new_index) {
+  if (old_index == new_index) return t;
   auto sv_term_i = t.tp(old_index);
   auto sv_term_j = t.tp(new_index);
   auto tnew = t;
   if (sv_term_i.IsMultiplicable(sv_term_j)) {
+    tnew.tp(old_index) = TermPower<TValue>();
     tnew.tp(new_index) = sv_term_i * sv_term_j;
     return tnew;
   } else {
