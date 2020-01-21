@@ -1,6 +1,7 @@
 #pragma once
 
 #include "common/calculus/ext_polynomial/term.h"
+#include "common/vector/sorted.h"
 #include <algorithm>
 #include <vector>
 
@@ -49,17 +50,13 @@ class Function {
   }
 
   bool AreTermsSorted() const {
-    for (size_t i = 1; i < terms.size(); ++i) {
-      if (terms[i].tp < terms[i - 1].tp) return false;
-    }
-    return true;
+    return IsWeakSorted(
+        terms, [](const TTerm& x, const TTerm& y) { return x.tp < y.tp; });
   }
 
   bool AreTermsCompressed() const {
-    for (size_t i = 1; i < terms.size(); ++i) {
-      if (!(terms[i - 1].tp < terms[i].tp)) return false;
-    }
-    return true;
+    return IsStrongSorted(
+        terms, [](const TTerm& x, const TTerm& y) { return x.tp < y.tp; });
   }
 
   void SortTerms() {
