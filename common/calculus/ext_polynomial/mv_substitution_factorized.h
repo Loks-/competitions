@@ -5,7 +5,7 @@
 #include "common/calculus/ext_polynomial/factorized_conversion.h"
 #include "common/calculus/ext_polynomial/factorized_function.h"
 #include "common/calculus/ext_polynomial/mv_function.h"
-#include "common/calculus/ext_polynomial/mv_substitution_function.h"
+#include "common/calculus/ext_polynomial/mv_substitution_value.h"
 #include "common/calculus/ext_polynomial/term_bases/ln_abs.h"
 #include "common/calculus/ext_polynomial/term_bases/ln_abs_c.h"
 #include "common/calculus/ext_polynomial/term_bases/one.h"
@@ -19,10 +19,7 @@ template <class TValue, unsigned dim>
 inline MVFunction<TValue, dim> SubstitutionFactorized(
     const MVFunction<TValue, dim>& f, unsigned index,
     const Factorized<TValue>& sf) {
-  if (sf.a == TValue(0)) {
-    // ...
-    assert(false);
-  }
+  if (sf.a == TValue(0)) return SubstitutionValue(f, index, sf.a);
   auto pone = term_bases::MakeOne<TValue>();
 
   // Replace ln and calc minp and maxp.
