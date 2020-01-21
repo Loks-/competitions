@@ -8,6 +8,7 @@
 #include "common/calculus/ext_polynomial/mv_substitution_factorized.h"
 #include "common/calculus/ext_polynomial/mv_substitution_function.h"
 #include "common/calculus/ext_polynomial/mv_substitution_index.h"
+#include "common/calculus/ext_polynomial/mv_substitution_value.h"
 #include "common/stl/base.h"
 
 using namespace calculus::ext_polynomial;
@@ -63,7 +64,13 @@ int main_695() {
   cout << "f2_212 = " << f2_212 << endl;
   auto f2_212_ii = Integration(f2_212, 1);
   cout << "f2_212_ii = " << f2_212_ii << endl;
-  auto f1_212 = Integration(f2_212, 1, one - x0, one);
+  auto f1_212_b = SubstitutionValue(f2_212_ii, 1, 1.);
+  cout << "f1_212_b = " << f1_212_b << endl;
+  auto a_212_f = -DMakeFXi(0, 1);
+  auto f1_212_a = SubstitutionFactorized(f2_212_ii, 1, a_212_f);
+  cout << "f1_212_a = " << f1_212_a << endl;
+  auto f1_212 = f1_212_b - f1_212_a;
+  cout << "f1_212 = " << f1_212 << endl;
   auto f1_2 = f1_211 + f1_212;
   auto f0_2 = Integration(f1_2, 0, zero, one);
   cout << "f0_2 = " << f0_2 << endl;
