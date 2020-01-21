@@ -1,5 +1,7 @@
 #pragma once
 
+#include "common/base.h"
+#include <algorithm>
 #include <vector>
 
 namespace calculus {
@@ -43,7 +45,21 @@ class Factorized {
   bool IsZero() const { return a == TValue(0); }
   bool IsOne() const { return IsConstant() && (a == TValue(1)); }
 
-  void Compress() {}
+  void Compress() {
+    std::sort(vn.begin(), vn.end());
+    std::sort(vd.begin(), vd.end());
+    for (size_t i = 0, j = 0; (i < vn.size()) && (j < vd.size());) {
+      if (vn[i] < vd[j]) {
+        ++i;
+      } else if (vd[j] < vn[i]) {
+        ++j;
+      } else {
+        assert(vn[i] == vd[j]);
+        vn.erase(vn.begin() + i);
+        vd.erase(vd.begin() + j);
+      }
+    }
+  }
 
   bool SimpleD() const {
     for (auto& l : vd) {
