@@ -2,7 +2,7 @@
 
 #include "common/calculus/ext_polynomial/factorized.h"
 #include "common/calculus/ext_polynomial/factorized_conversion.h"
-#include "common/calculus/ext_polynomial/factorized_division.h"
+#include "common/calculus/ext_polynomial/mv_division_linear.h"
 #include "common/calculus/ext_polynomial/mv_function.h"
 #include <vector>
 
@@ -35,7 +35,7 @@ class FactorizedFunction {
     if (f2.Empty()) f1.vd.clear();
     std::vector<typename TFactorized::TLinear> vdt;
     for (auto& l : f1.vd) {
-      auto ft = Division(f2, l, force_compression);
+      auto ft = DivisionLinearV(f2, l.index, l.c, force_compression);
       if (!ft.Empty()) {
         f2 = ft;
       } else {

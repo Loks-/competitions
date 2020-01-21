@@ -35,7 +35,7 @@ class MVTermPower {
     return true;
   }
 
-  bool IsUnused(unsigned index) const { return terms[index].IsConstant(); }
+  bool IsIndexUnused(unsigned index) const { return terms[index].IsConstant(); }
 
   TValue Get(const TPoint& p) const {
     TValue r = TValue(1);
