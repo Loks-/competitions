@@ -13,6 +13,14 @@ class FactorizedLinear {
 
   FactorizedLinear(unsigned _index, const TValue& _c = TValue(0))
       : index(_index), c(_c) {}
+
+  bool operator==(const FactorizedLinear& r) const {
+    return (index == r.index) && (c == r.c);
+  }
+
+  bool operator<(const FactorizedLinear& r) const {
+    return (index == r.index) ? (c < r.c) : (index < r.index);
+  }
 };
 
 template <class TValue>
@@ -27,6 +35,15 @@ class Factorized {
   Factorized() : a(1) {}
   Factorized(const TLinear& l, const TValue& _a = TValue(1))
       : a(_a), vn(1, l) {}
+  Factorized(const TValue& _a, const std::vector<TLinear>& _vn = {},
+             const std::vector<TLinear>& _vd = {})
+      : a(_a), vn(_vn), vd(_vd) {}
+
+  bool IsConstant() const { return vn.empty() && vd.empty(); }
+  bool IsZero() const { return a == TValue(0); }
+  bool IsOne() const { return IsConstant() && (a == TValue(1)); }
+
+  void Compress() {}
 
   bool SimpleD() const {
     for (auto& l : vd) {
@@ -83,7 +100,7 @@ class Factorized {
     return t;
   }
 
-  TSelf operator-() const { return *this * (-TValue(1)); }
+  TSelf operator-() const { return TSelf(-a, vn, vd); }
 };
 
 using DFactorized = Factorized<double>;
