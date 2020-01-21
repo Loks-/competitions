@@ -2,13 +2,19 @@
 
 #include "common/base.h"
 #include "common/calculus/ext_polynomial/function.h"
+#include "common/calculus/ext_polynomial/substitution_shift.h"
 #include "common/calculus/ext_polynomial/term.h"
 #include "common/calculus/ext_polynomial/term_bases/ln_abs.h"
+#include "common/calculus/ext_polynomial/term_bases/ln_abs_c.h"
 #include "common/calculus/ext_polynomial/term_bases/one.h"
 #include "common/calculus/ext_polynomial/term_bases/type.h"
 
 namespace calculus {
 namespace ext_polynomial {
+template <class TValueF, class TValueTerm>
+inline Function<TValueF, TValueTerm> Integration(
+    const Function<TValueF, TValueTerm>& f);
+
 template <class TValueF, class TValueTerm>
 inline Function<TValueF, TValueTerm> Integration(
     const Term<TValueF, TValueTerm>& t) {
@@ -39,6 +45,13 @@ inline Function<TValueF, TValueTerm> Integration(
         return {};
       }
       break;
+    case term_bases::Type::LN_ABS_C: {
+      auto p =
+          dynamic_cast<const term_bases::LnAbsC<TValueTerm>*>(tp.base.get());
+      auto f = SubstitutionShift(t, p->c);
+      auto i = Integration(f);
+      return SubstitutionShift(i, -p->c);
+    }
     default:
       assert(false);
   }

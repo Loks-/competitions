@@ -77,6 +77,7 @@ inline MVFunction<TValue, dim> SubstitutionFactorized(
   for (auto t : f1.terms) {
     int p = t.tp(index).power;
     t *= PowS(sf.a, p);
+    t.tp(index) = TermPower<TValue>();
     f2 +=
         MVFunction<TValue, dim>(t) * PowU(sfn, p - minp) * PowU(sfd, maxp - p);
   }

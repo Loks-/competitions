@@ -2,6 +2,7 @@
 
 #include "common/calculus/ext_polynomial/function.h"
 #include "common/calculus/ext_polynomial/io.h"
+#include "common/calculus/ext_polynomial/make.h"
 #include "common/calculus/ext_polynomial/term.h"
 #include "common/calculus/ext_polynomial/term_bases/one.h"
 #include "common/calculus/ext_polynomial/term_power.h"
@@ -25,10 +26,7 @@ DivisionLinearQR(
   } else {
     auto ft = f;
     TFunction q;
-    auto fl = TFunction(Term<TValueF, TValueTerm>(
-                  TValueF(1), TermPower<TValueTerm>(
-                                  term_bases::MakeOne<TValueTerm>(), 1))) -
-              c;
+    auto fl = MakeLinear<TValueF, TValueTerm>(c);
     while ((ft.Size() > 1) && (ft(0).tp.power < ft.terms.back().tp.power)) {
       auto t = ft.terms.back();
       t.tp.power -= 1;

@@ -61,6 +61,8 @@ int main_695() {
   auto f2_212c = f2_212c_b - f2_212c_a;
   auto f2_212 = f2_211 - f2_212c;
   cout << "f2_212 = " << f2_212 << endl;
+  auto f2_212_ii = Integration(f2_212, 1);
+  cout << "f2_212_ii = " << f2_212_ii << endl;
   auto f1_212 = Integration(f2_212, 1, one - x0, one);
   auto f1_2 = f1_211 + f1_212;
   auto f0_2 = Integration(f1_2, 0, zero, one);

@@ -5,6 +5,7 @@
 #include "common/calculus/ext_polynomial/multiplication.h"
 #include "common/calculus/ext_polynomial/mv_function.h"
 #include "common/calculus/ext_polynomial/mv_term.h"
+#include "common/calculus/ext_polynomial/term_bases/type.h"
 #include "common/calculus/ext_polynomial/term_power.h"
 #include "common/numeric/utils/pow.h"
 
