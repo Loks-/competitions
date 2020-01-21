@@ -7,6 +7,14 @@
 namespace calculus {
 namespace ext_polynomial {
 template <class TValue, unsigned dim>
+MVFunction<TValue, dim> Division(const MVFunction<TValue, dim>& f,
+                                 const FactorizedLinear<TValue>& l,
+                                 bool force_division) {
+  // ...
+  return f;
+}
+
+template <class TValue, unsigned dim>
 MVFunction<TValue, dim> operator/(const MVFunction<TValue, dim>& f,
                                   const FactorizedLinear<TValue>& l) {
   // ...

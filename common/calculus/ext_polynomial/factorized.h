@@ -44,6 +44,7 @@ class Factorized {
   bool IsConstant() const { return vn.empty() && vd.empty(); }
   bool IsZero() const { return a == TValue(0); }
   bool IsOne() const { return IsConstant() && (a == TValue(1)); }
+  bool IsLinear() const { return (vn.size() <= 1) && vd.empty(); }
 
   void Compress() {
     std::sort(vn.begin(), vn.end());
