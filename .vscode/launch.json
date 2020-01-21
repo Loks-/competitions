@@ -9,14 +9,16 @@
             "type": "cppdbg",
             "request": "launch",
             // "program": "${workspaceFolder}/debug/build/google_code_jam",
-            "program": "${workspaceFolder}/debug/build/icfppc_2019",
+            // "program": "${workspaceFolder}/debug/build/icfppc_2019",
+            "program": "${workspaceFolder}/debug/build/project_euler",
             "args": [
                 // "heap"
                 // "minimum_spanning_tree"
                 // "p3",
                 // "tests/google/code_jam/2019/r2/p3.in"
-                "-threads",
-                "1"
+                // "-threads",
+                // "1"
+                "695"
             ],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}/debug/",

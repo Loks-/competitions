@@ -3,7 +3,6 @@
 #include "common/base.h"
 #include "common/calculus/ext_polynomial/factorized.h"
 #include "common/calculus/ext_polynomial/factorized_conversion.h"
-#include "common/calculus/ext_polynomial/factorized_division.h"
 #include "common/calculus/ext_polynomial/factorized_function.h"
 #include "common/calculus/ext_polynomial/mv_function.h"
 #include "common/calculus/ext_polynomial/mv_substitution_function.h"
@@ -11,6 +10,7 @@
 #include "common/calculus/ext_polynomial/term_bases/ln_abs_c.h"
 #include "common/calculus/ext_polynomial/term_bases/one.h"
 #include "common/calculus/ext_polynomial/term_bases/type.h"
+#include "common/numeric/utils/pow.h"
 #include <algorithm>
 
 namespace calculus {
@@ -19,6 +19,10 @@ template <class TValue, unsigned dim>
 inline MVFunction<TValue, dim> SubstitutionFactorized(
     const MVFunction<TValue, dim>& f, unsigned index,
     const Factorized<TValue>& sf) {
+  if (sf.a == TValue(0)) {
+    // ...
+    assert(false);
+  }
   auto pone = term_bases::MakeOne<TValue>();
 
   // Replace ln and calc minp and maxp.
@@ -34,7 +38,7 @@ inline MVFunction<TValue, dim> SubstitutionFactorized(
         f1.AddTermUnsafe(t);
         break;
       case term_bases::Type::LN_ABS:
-        t.tp(index) = pone;
+        t.tp(index).base = pone;
         if (sf.a != TValue(1)) {
           TValue la = log(fabs(sf.a));
           f1.AddTermUnsafe({t.a * la, t.tp});
@@ -42,25 +46,25 @@ inline MVFunction<TValue, dim> SubstitutionFactorized(
         for (auto& l : sf.vn) {
           assert(t.tp(l.index).IsPolynomial());
           if (l.c != TValue(0)) {
-            t.tp(l.index) = term_bases::MakeLnAbsC<TValue>(l.c);
+            t.tp(l.index).base = term_bases::MakeLnAbsC<TValue>(l.c);
             f1.AddTermUnsafe(t);
-            t.tp(l.index) = pone;
+            t.tp(l.index).base = pone;
           } else {
-            t.tp(l.index) = term_bases::MakeLnAbs<TValue>();
+            t.tp(l.index).base = term_bases::MakeLnAbs<TValue>();
             f1.AddTermUnsafe(t);
-            t.tp(l.index) = pone;
+            t.tp(l.index).base = pone;
           }
         }
         for (auto& l : sf.vd) {
           assert(t.tp(l.index).IsPolynomial());
           if (l.c != TValue(0)) {
-            t.tp(l.index) = term_bases::MakeLnAbsC<TValue>(l.c);
+            t.tp(l.index).base = term_bases::MakeLnAbsC<TValue>(l.c);
             f1.AddTermUnsafe(-t);
-            t.tp(l.index) = pone;
+            t.tp(l.index).base = pone;
           } else {
-            t.tp(l.index) = term_bases::MakeLnAbs<TValue>();
+            t.tp(l.index).base = term_bases::MakeLnAbs<TValue>();
             f1.AddTermUnsafe(-t);
-            t.tp(l.index) = pone;
+            t.tp(l.index).base = pone;
           }
         }
         break;
@@ -71,34 +75,19 @@ inline MVFunction<TValue, dim> SubstitutionFactorized(
   f1.Compress();
 
   // Adjust power in all terms to avoid unsupported substitution
-  MVFunction<TValue, dim> f2;
-  int adjusted_up = 0;
-  if (sf.SimpleD()) {
-    MVFunction<TValue, dim> ft;
-    if (minp < 0) {
-      adjusted_up = -minp;
-      for (auto t : f1.terms) {
-        t.tp(index).power += adjusted_up;
-        ft.AddTermUnsafe(t);
-      }
-    } else {
-      ft = f1;
-    }
-    f2 = SubstitutionFunction(ft, index, ToFunction<TValue, dim>(sf));
-  } else {
-    assert(false);
+  MVFunction<TValue, dim> f2, sfn = ToFunction<TValue, dim>(sf.vn),
+                              sfd = ToFunction<TValue, dim>(sf.vd);
+  for (auto t : f1.terms) {
+    int p = t.tp(index).power;
+    t *= PowS(sf.a, p);
+    f2 +=
+        MVFunction<TValue, dim>(t) * PowU(sfn, p - minp) * PowU(sfd, maxp - p);
   }
-
-  if (adjusted_up) {
-    MVFunction<TValue, dim> fa(TValue(1) / sf.a);
-    for (auto& l : sf.vd) fa *= ToFunction<TValue, dim>(l);
-    f2 *= PowU(fa, adjusted_up);
-    for (auto& l : sf.vn) {
-      for (int i = 0; i < adjusted_up; ++i) f2 = f2 / l;
-    }
-  }
-
-  return f2;
+  auto fd = PowU(Factorized<TValue>(TValue(1), {}, sf.vn), -minp) *
+            PowU(Factorized<TValue>(TValue(1), {}, sf.vd), maxp);
+  auto ff = FactorizedFunction<TValue, dim>(fd, f2);
+  ff.Compress(true);
+  return ff.f2;
 }
 }  // namespace ext_polynomial
 }  // namespace calculus

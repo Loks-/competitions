@@ -30,6 +30,26 @@ inline Function<MVFunction<TValue, dim>, TValue> SVView(
 }
 
 template <class TValue, unsigned dim>
+inline Term<MVFunction<TValue, dim>, TValue> SVPolynomialView(
+    const MVTerm<TValue, dim>& t, unsigned index) {
+  using TMVF = MVFunction<TValue, dim>;
+  TermPower<TValue> tp;
+  tp.power = t.tp(index).power;
+  MVTerm<TValue, dim> tnew(t);
+  tnew.tp(index).power = 0;
+  return Term<TMVF, TValue>(TMVF(tnew), tp);
+}
+
+template <class TValue, unsigned dim>
+inline Function<MVFunction<TValue, dim>, TValue> SVPolynomialView(
+    const MVFunction<TValue, dim>& f, unsigned index) {
+  Function<MVFunction<TValue, dim>, TValue> svf;
+  for (auto& t : f.terms) svf.AddTermUnsafe(SVPolynomialView(t, index));
+  svf.Compress();
+  return svf;
+}
+
+template <class TValue, unsigned dim>
 inline MVFunction<TValue, dim> MVView(
     const Term<MVFunction<TValue, dim>, TValue>& t, unsigned index) {
   using TMVF = MVFunction<TValue, dim>;
