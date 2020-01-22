@@ -3,6 +3,7 @@
 #include "common/base.h"
 #include "common/calculus/ext_polynomial/function.h"
 #include "common/calculus/ext_polynomial/substitution_shift.h"
+#include "common/calculus/ext_polynomial/substitution_value.h"
 #include "common/calculus/ext_polynomial/term.h"
 #include "common/calculus/ext_polynomial/term_bases/ln_abs.h"
 #include "common/calculus/ext_polynomial/term_bases/ln_abs_c.h"
@@ -78,11 +79,11 @@ inline Function<TValueF, TValueTerm> Integration(
 
 template <class TValueF, class TValueTerm>
 inline TValueF Integration(const Function<TValueF, TValueTerm>& f,
-                           const TValueTerm& limit_a,
-                           const TValueTerm& limit_b) {
-  TValueF s(0);
-  for (auto& t : f.terms) s += Integration(t, limit_a, limit_b);
-  return s;
+                           const TValueTerm& limit_a, const TValueTerm& limit_b,
+                           bool skip_non_finite) {
+  auto fi = Integration(f);
+  return SubstitutionValue(fi, limit_b, skip_non_finite) -
+         SubstitutionValue(fi, limit_a, skip_non_finite);
 }
 }  // namespace ext_polynomial
 }  // namespace calculus

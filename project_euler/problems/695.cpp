@@ -72,7 +72,7 @@ int main_695() {
   auto f1_212 = f1_212_b - f1_212_a;
   cout << "\tf1_212 = " << f1_212 << endl;
   auto f1_2 = f1_211 + f1_212;
-  auto f0_2 = Integration(f1_2, 0, zero, one);
+  auto f0_2 = Integration(f1_2, 0, 0., 1., true);
   cout << "\tf0_2 = " << f0_2 << endl;
   // cout << Project(f3_212c_ii, 0, 1.) << endl;
   // Segment 3: x0 <= x1 <= 1, 0 <= y1 <= y0

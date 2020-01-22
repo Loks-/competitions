@@ -3,6 +3,7 @@
 #include "common/calculus/ext_polynomial/integration.h"
 #include "common/calculus/ext_polynomial/mv_function.h"
 #include "common/calculus/ext_polynomial/mv_substitution_function.h"
+#include "common/calculus/ext_polynomial/mv_substitution_value.h"
 #include "common/calculus/ext_polynomial/mv_view.h"
 
 namespace calculus {
@@ -19,9 +20,11 @@ template <class TValue, unsigned dim>
 inline MVFunction<TValue, dim> Integration(const MVFunction<TValue, dim>& f,
                                            unsigned index,
                                            const TValue& limit_a,
-                                           const TValue& limit_b) {
-  auto svf = SVView(f, index);
-  return Integration(svf, limit_a, limit_b);
+                                           const TValue& limit_b,
+                                           bool skip_non_finite) {
+  auto fnew = Integration(f, index);
+  return SubstitutionValue(fnew, index, limit_b, skip_non_finite) -
+         SubstitutionValue(fnew, index, limit_a, skip_non_finite);
 }
 
 template <class TValue, unsigned dim>
