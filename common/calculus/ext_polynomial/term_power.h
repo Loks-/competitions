@@ -29,7 +29,7 @@ class TermPower {
   bool IsPolynomial() const { return base->IsOne(); }
 
   TValue Get(const TValue& x) const { return base->Get(x, power); }
-  bool IsFinite(const TValue& x) const { return base->Get(x, power); }
+  bool IsFinite(const TValue& x) const { return base->IsFinite(x, power); }
 
   bool operator<(const TSelf& r) const {
     return (power < r.power) ? true : (r.power < power) ? false

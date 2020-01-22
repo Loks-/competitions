@@ -19,7 +19,7 @@ template <class TValue, unsigned dim>
 inline MVFunction<TValue, dim> SubstitutionFactorized(
     const MVFunction<TValue, dim>& f, unsigned index,
     const Factorized<TValue>& sf) {
-  if (sf.a == TValue(0)) return SubstitutionValue(f, index, sf.a);
+  if (sf.a == TValue(0)) return SubstitutionValue(f, index, sf.a, true);
   auto pone = term_bases::MakeOne<TValue>();
 
   // Replace ln and calc minp and maxp.

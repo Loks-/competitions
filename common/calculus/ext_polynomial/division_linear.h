@@ -44,7 +44,7 @@ Function<TValueF, TValueTerm, Term<TValueF, TValueTerm>> DivisionLinear(
   auto p = DivisionLinearQR(f, c);
   if (p.second == TValueF(0)) return p.first;
   if (force_division) {
-    std::cout << "Dropping remainder: " << p.second << std::endl;
+    std::cout << "[Warning] Dropping remainder: " << p.second << std::endl;
     return p.first;
   } else {
     return {};
