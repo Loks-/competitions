@@ -12,6 +12,7 @@
 #include "common/calculus/ext_polynomial/term_bases/type.h"
 #include "common/numeric/utils/pow.h"
 #include <algorithm>
+#include <cmath>
 
 namespace calculus {
 namespace ext_polynomial {
@@ -19,7 +20,8 @@ template <class TValue, unsigned dim>
 inline MVFunction<TValue, dim> SubstitutionFactorized(
     const MVFunction<TValue, dim>& f, unsigned index,
     const Factorized<TValue>& sf) {
-  if (sf.a == TValue(0)) return SubstitutionValue(f, index, sf.a, true);
+  if ((sf.a == TValue(0)) || sf.IsConstant())
+    return SubstitutionValue(f, index, sf.a, true);
   auto pone = term_bases::MakeOne<TValue>();
 
   // Replace ln and calc minp and maxp.
@@ -65,6 +67,29 @@ inline MVFunction<TValue, dim> SubstitutionFactorized(
           }
         }
         break;
+      case term_bases::Type::LN_ABS_C:
+        if (sf.IsLinear()) {
+          assert((sf.vn.size() == 1) && (sf.vd.size() == 0));
+          auto p =
+              dynamic_cast<const term_bases::LnAbsC<TValue>*>(svtp.base.get());
+          assert(p);
+          TValue c = p->c;
+          t.tp(index).base = pone;
+          if (sf.a != TValue(1)) {
+            TValue la = log(fabs(sf.a));
+            f1.AddTermUnsafe({t.a * la, t.tp});
+          }
+          auto& l = sf.vn[0];
+          assert(t.tp(l.index).IsPolynomial());
+          if (c + sf.a * l.c == TValue(0)) {
+            t.tp(l.index).base = term_bases::MakeLnAbs<TValue>();
+            f1.AddTermUnsafe(t);
+          } else {
+            t.tp(l.index).base = term_bases::MakeLnAbsC<TValue>(l.c + c / sf.a);
+            f1.AddTermUnsafe(t);
+          }
+          break;
+        }
       default:
         assert(false);
     }
