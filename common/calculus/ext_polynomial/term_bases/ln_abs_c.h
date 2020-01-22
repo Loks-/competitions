@@ -19,7 +19,8 @@ class LnAbsC : public TermBase<TValue> {
 
   LnAbsC(const TValue& _c) : c(_c) {}
   Type GetType() const override { return Type::LN_ABS_C; }
-  TValue Get(const TValue& x) const override { return log(fabs(x - c)); }
+  TValue BaseGet(const TValue& x) const override { return log(fabs(x - c)); }
+  bool IsBaseFinite(const TValue& x) const override { return (x != c); }
 
   bool SameTypeLess(const TBase& r) const override {
     auto p = dynamic_cast<const LnAbsC*>(&r);

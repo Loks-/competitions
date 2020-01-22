@@ -16,7 +16,19 @@ class LnAbs : public TermBase<TValue> {
 
   LnAbs() {}
   Type GetType() const override { return Type::LN_ABS; }
-  TValue Get(const TValue& x) const override { return log(fabs(x)); }
+
+  TValue BaseGet(const TValue& x) const override { return log(fabs(x)); }
+
+  TValue Get(const TValue& x, int power) const override {
+    if (x == TValue(0) && (power > 0)) return TValue(0);
+    return TBase::GetXPower(x, power) * BaseGet(x);
+  }
+
+  bool IsBaseFinite(const TValue& x) const override { return x != TValue(0); }
+
+  bool IsFinite(const TValue& x, int power) const {
+    return (x != TValue(0)) || (power > 0);
+  }
 
   std::string ToString(const std::string& variable_name) const override {
     return "ln(abs(" + variable_name + "))";

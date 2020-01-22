@@ -15,7 +15,7 @@ class One : public TermBase<TValue> {
 
   One() {}
   Type GetType() const override { return Type::ONE; }
-  TValue Get(const TValue& x) const override { return TValue(1); }
+  TValue BaseGet(const TValue& x) const override { return TValue(1); }
 
   std::string ToString(const std::string& variable_name) const override {
     return "";

@@ -43,6 +43,13 @@ class MVTermPower {
     return r;
   }
 
+  bool IsFinite(const TPoint& p) const {
+    for (unsigned i = 0; i < dim; ++i) {
+      if (!IsFinite(p(i))) return false;
+    }
+    return true;
+  }
+
   TSVTermPower& operator()(unsigned index) { return terms[index]; }
   const TSVTermPower& operator()(unsigned index) const { return terms[index]; }
   bool operator<(const TSelf& r) const { return terms < r.terms; }

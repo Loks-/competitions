@@ -20,7 +20,13 @@ class Term {
   bool IsConstant() const { return tp.IsConstant(); }
   bool IsPolynomial() const { return tp.IsPolynomial(); }
 
-  TValueF Get(const TValueTerm& x) const { return a * TValueF(tp.Get(x)); }
+  TValueF Get(const TValueTerm& x) const {
+    return (a != TValueF(0)) ? a * TValueF(tp.Get(x)) : TValueF(0);
+  }
+
+  bool IsFinite(const TValueTerm& x) const {
+    return (a == TValueF(0)) || tp.IsFinite(x);
+  }
 
   bool operator==(const TSelf& r) const { return (a == r.a) && (tp == r.tp); }
 

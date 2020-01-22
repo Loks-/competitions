@@ -1,10 +1,9 @@
 #pragma once
 
+#include "common/base.h"
 #include "common/calculus/ext_polynomial/term_base.h"
 #include "common/calculus/ext_polynomial/term_bases/one.h"
 #include "common/calculus/ext_polynomial/term_bases/type.h"
-#include "common/numeric/utils/pow.h"
-#include "common/base.h"
 #include <string>
 
 namespace calculus {
@@ -29,11 +28,12 @@ class TermPower {
   bool IsConstant() const { return (power == 0) && base->IsOne(); }
   bool IsPolynomial() const { return base->IsOne(); }
 
-  TValue Get(const TValue& x) const { return base->Get(x) * PowS(x, power); }
+  TValue Get(const TValue& x) const { return base->Get(x, power); }
+  bool IsFinite(const TValue& x) const { return base->Get(x, power); }
 
   bool operator<(const TSelf& r) const {
-    return (power < r.power) ? true
-                             : (r.power < power) ? false : (*base < *r.base);
+    return (power < r.power) ? true : (r.power < power) ? false
+                                                        : (*base < *r.base);
   }
 
   bool operator==(const TSelf& r) const {
