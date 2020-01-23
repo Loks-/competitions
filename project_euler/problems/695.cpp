@@ -67,6 +67,42 @@ int main_695() {
   cout << "\tf1_112 = " << f1_112 << endl;
   //     Region 1.1.3: yc_1 < 1
   //       y0 < (1.0 - phi)
+  //       Region 1.1.3.1: y1 <= yc1
+  //         Using same substitute1 as region 1.1.2
+  //         y1s <= yc_1 - y0 = (1 + phi) * y0
+  auto f4_1131 = s1ps1;
+  cout << "\tf4_1131 = " << f4_1131 << endl;
+  auto f3_1131 = Integration(f4_1131, 2, zero, x0 - x0 * y0 / y1);
+  cout << "\tf3_1131 = " << f3_1131 << endl;
+  auto f3_1131_ii = Integration(f3_1131, 3);
+  cout << "\tf3_1131_ii = " << f3_1131_ii << endl;
+  auto b_1131_f3 = DMakeFXi(1) * (1.0 + phi);
+  auto f2_1131_b = SubstitutionFactorized(f3_1131_ii, 3, b_1131_f3);
+  cout << "\tf2_1131_b = " << f2_1131_b << endl;
+  auto f2_1131_a = SubstitutionIndex(f3_1131_ii, 3, 1);
+  cout << "\tf2_1131_a = " << f2_1131_a << endl;
+  auto f2_1131 = f2_1131_b - f2_1131_a;
+  cout << "\tf2_1131 = " << f2_1131 << endl;
+  //       Region 1.1.3.2: yc1 <= y1 <= 1
+  auto f4_1132 = s1p;
+  cout << "\tf4_1132 = " << f4_1132 << endl;
+  auto f3_1132 = Integration(f4_1132, 2, zero, x0 * y0 / y1);
+  cout << "\tf3_1132 = " << f3_1132 << endl;
+  auto f3_1132_ii = Integration(f3_1132, 3);
+  cout << "\tf3_1132_ii = " << f3_1132_ii << endl;
+  auto f2_1132_b = SubstitutionValue(f3_1132_ii, 3, 1., true);
+  cout << "\tf2_1132_b = " << f2_1132_b << endl;
+  auto a_1132_f3 = DMakeFXi(1) * (2.0 + phi);
+  auto f2_1132_a = SubstitutionFactorized(f3_1132_ii, 3, a_1132_f3);
+  cout << "\tf2_1132_a = " << f2_1132_a << endl;
+  auto f2_1132 = f2_1132_b - f2_1132_a;
+  cout << "\tf2_1132 = " << f2_1132 << endl;
+  auto f2_113 = f2_1131 + f2_1132;
+  cout << "\tf2_113 = " << f2_113 << endl;
+  auto f1_113 = Integration(f2_113, 1, 0., 1. - phi, true);
+  cout << "\tf1_113 = " << f1_113 << endl;
+  auto f1_11 = f1_111 + f1_112 + f1_113;
+  cout << "\tf1_11 = " << f1_11 << endl;
   // Segment 2: x0 <= x1 <= 1, y0 <= y1 <= 1
   auto s2p = fc * (one - x1) * (one - y1);
   //   Substitute1 x1 = x0 + x1s, y1 = y0 + y1s
