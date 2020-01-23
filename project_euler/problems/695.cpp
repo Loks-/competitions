@@ -21,20 +21,20 @@ int main_695() {
   auto zero = DF4(), one = DF4(1.), x0 = DMakeXi<4>(0), y0 = DMakeXi<4>(1),
        x1 = DMakeXi<4>(2), y1 = DMakeXi<4>(3);
   auto fc = one;
+  // auto fc = 16. * one;
   // auto fc = x0 * y0;
+  // auto fc = 16. * x0 * y0;
   // auto fc = 8. * x0 * y0 * (1. - x0) * (1. - y0);
   // 0 <= x0 <= 1, 0 <= y0 <= 1
 
   // Segment 1: 0 <= x1 <= x0, y0 <= y1 <= 1
   auto s1p = fc * (one - x0) * (one - y1);
   //   xc_1 = (1 - phi) * x0, yc_1 = (2 + phi) * y0
-  auto xc_1 = (1 - phi) * x0, yc_1 = (2 + phi) * y0;
   //   Region 1.1:
   //     0 <= x1 <= xc_1
   //     x1 * y1 <= x0 * y0
   //     (x1 - x0) * (y1 - y0) <= -x0 * y0
   //     yc_11 = 2 * y0
-  auto yc_11 = 2.0 * y0;
   //     Region 1.1.1: 1 <= yc_11
   //       0.5 <= y0
   auto f1_111 = zero;
@@ -192,6 +192,24 @@ int main_695() {
 
   // Segment 4: x0 <= x1 <= 1, y0 - 1 <= y1 <= 0
   auto s4p = fc * (1. - x1) * (1. + y1 - y0);
+  //   xc_4 = (1 + phi) * x0, yc_4 = -phi * y0
+  //   Region 4.1:
+  //     xc_4 <= x1 <= 1
+  //     -x0 * y0 <= x1 * y1
+  //     (x1 - x0) * (y1 - y0) <= -x0 * y0
+  //     Region 4.1.1 (c):
+  //       x1 * y1 <= -x0 * y0
+  //       Region 4.1.1.1: x1 < 1 <= 2*x0
+  //         0.5 <= x0 < phi
+  //       Region 4.1.1.2: 2*x0 < 1
+  //         x0 <= 0.5
+  //     Region 4.1.2:
+  //       (x1 - x0) * (y1 - y0) <= -x0 * y0
+  //   Region 4.2:
+  //     x0 <= x1 <= xc_4
+  //     x1 * y1 <= -x0 * y0
+  //     -x0 * y0 <= (x1 - x0) * (y1 - y0)
+  //     Similar to Region 4.1 under (x0 <-> y0) and (x1 <-> y1) swap
 
   auto f0 = f0_1 + f0_2 + f0_3;
   cout << "\tf0 = " << f0 << endl;
