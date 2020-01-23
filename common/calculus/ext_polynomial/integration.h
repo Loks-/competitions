@@ -61,14 +61,6 @@ inline Function<TValueF, TValueTerm> Integration(
 }
 
 template <class TValueF, class TValueTerm>
-inline TValueF Integration(const Term<TValueF, TValueTerm>& t,
-                           const TValueTerm& limit_a,
-                           const TValueTerm& limit_b) {
-  auto f = Integration(t);
-  return f.Get(limit_b) - f.Get(limit_a);
-}
-
-template <class TValueF, class TValueTerm>
 inline Function<TValueF, TValueTerm> Integration(
     const Function<TValueF, TValueTerm>& f) {
   Function<TValueF, TValueTerm> fnew;

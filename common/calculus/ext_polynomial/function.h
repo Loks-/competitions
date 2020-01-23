@@ -1,5 +1,6 @@
 #pragma once
 
+#include "common/base.h"
 #include "common/calculus/ext_polynomial/term.h"
 #include "common/vector/sorted.h"
 #include <algorithm>
@@ -41,6 +42,11 @@ class Function {
       if (!t.IsPolynomial()) return false;
     }
     return true;
+  }
+
+  TValueF ToValue() const {
+    assert(IsConstant());
+    return Empty() ? TValueF(0) : terms[0].a;
   }
 
   // After these functions terms became unsorted
