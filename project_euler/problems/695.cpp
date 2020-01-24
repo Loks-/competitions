@@ -154,112 +154,90 @@ int main_695() {
   cout << "\tf3_0 = " << f3_0 << endl;
 
   // Region 4: x0 <= x1 <= 1, y0 - 1 <= y1 <= 0
-  auto s4p = fc * (1. - x1) * (1. + y1 - y0);
+  auto f4_4 = fc * (1. - x1) * (1. + y1 - y0);
   //   xc_4 = (1 + phi) * x0, yc_4 = -phi * y0
   //   Region 4.1:
   //   xc_4 <= x1 <= 1
   //   -x0 * y0 <= x1 * y1
   //   (x1 - x0) * (y1 - y0) <= -x0 * y0
-  //     Region 4.1.1 (c): (x1 - x0) * (y1 - y0) <= -x0 * y0
-  //       Region 4.1.1.1: x1 < 1 <= 2*x0
-  //         0.5 <= x0 < phi
-  //       Region 4.1.1.2: 2*x0 < 1
-  //         x0 <= 0.5
-  auto f0_411 = zero;  // TODO.
-  //     Region 4.1.2: x1 * y1 <= -x0 * y0
-  //       yc_412 = -x0 * y0
-  //       Region 4.1.2.1 (y0 - 1) <= yc_4
-  //         (1+phi) y0 <= 1
-  //         y0 <= phi
-  auto f4_4121 = s4p;
-  cout << "\tf4_4121 = " << f4_4121 << endl;
-  auto f3_4121 = IntegrationAB(s4p, 3, -x0 * y0 / x1, zero);
-  cout << "\tf3_4121 = " << f3_4121 << endl;
-  auto f3_4121_ii = Integration(f3_4121, 2);
-  cout << "\tf3_4121_ii = " << f3_4121_ii << endl;
-  auto f2_4121_b = SubstitutionValue(f3_4121_ii, 2, 1., true);
-  auto a_4121_f3 = DMakeFXi(0) * (1 + phi);
-  auto f2_4121_a = SubstitutionFactorized(f3_4121_ii, 2, a_4121_f3);
-  auto f2_4121 = f2_4121_b - f2_4121_a;
-  cout << "\tf2_4121 = " << f2_4121 << endl;
-  auto f1_4121 = Integration(f2_4121, 1, 0., phi, true);
-  cout << "\tf1_4121 = " << f1_4121 << endl;
-  auto f0_4121 = Integration(f1_4121, 0, 0., phi, true);
-  cout << "\tf0_4121 = " << f0_4121 << endl;
-  //       Region 4.1.2.2 yc4 < (y0 - 1) <= yc_412
-  //         1 < (1+phi) y0
-  //           phi < y0
-  //         y0 * (1 + x0) <= 1
-  //           y0 <= 1 / (1 + x0)
-  //         Region 4.1.2.2.1
-  //           xc_4 <= x1 <= 1
-  //           -x0 * y0 / x1 <= y1 <= 0
-  auto f2_41221 = f2_4121;
-  cout << "\tf2_41221 = " << f2_41221 << endl;
-  // auto f1_41221 = Integration(f2_41221, 0, (one - y0) / y0, phi * one);
-  //   auto f2_41221_ii = Integration(f2_41221, 0);
-  //   cout << "\tf2_41221_ii = " << f2_41221_ii << endl;
-  //   auto f1_41221_b = SubstitutionValue(f2_41221_ii, 0, phi, true);
-  //   auto a_41221_f2 = -DMakeFXi(1, 1) / DMakeFXi(1);
-  //   auto f1_41221_a = SubstitutionFactorized(f2_41221_ii, 0, a_41221_f2);
-  //   auto f1_41221 = f1_41221_b - f1_41221_a;
-  //   cout << "\tf1_41221 = " << f1_41221 << endl;
-  //   // auto f0_41221 = Integration(f1_41221, 1, phi, 1., true);
-  //   auto f0_41221 = zero;  // TODO: Support integration
-  //   cout << "\tf0_41221 = " << f0_41221 << endl;
-  //         Region 4.1.2.2.2 (c)
-  //           xc_4 <= x1 <= x0 * y0 / (1 - y0)
-  //           -x0 * y0 / x1 <= y1 <= y0 - 1
-  auto f4_41222 = s4p;
-  cout << "\tf4_41222 = " << f4_41222 << endl;
-  auto f3_41222 = IntegrationAB(f4_41222, 2, (1.0 + phi) * x0, -x0 * y0 / y1);
-  cout << "\tf3_41222 = " << f3_41222 << endl;
-  auto f3_41222_ii = Integration(f3_41222, 3);
-  cout << "\tf3_41222_ii = " << f3_41222_ii << endl;
-  auto b_f3_41222 = -DMakeFXi(1, 1);
-  auto f2_41222_b = SubstitutionFactorized(f3_41222_ii, 3, b_f3_41222);
-  auto a_f3_41222 = -DMakeFXi(1, 0) * phi;
-  auto f2_41222_a = SubstitutionFactorized(f3_41222_ii, 3, a_f3_41222);
-  auto f2_41222 = f2_41222_b - f2_41222_a;
-  cout << "\tf2_41222 = " << f2_41222 << endl;
-  auto f2_4122 = f2_41221 - f2_41222;
-  cout << "\tf2_4122 = " << f2_4122 << endl;
-  auto f2_4122_ii = Integration(f2_4122, 0);
-  cout << "\tf2_4122_ii = " << f2_4122_ii << endl;
-  auto f1_4122_b = SubstitutionValue(f2_4122_ii, 0, phi, true);
-  auto a_4122_f2 = -DMakeFXi(1, 1) / DMakeFXi(1);
-  auto f1_4122_a = SubstitutionFactorized(f2_4122_ii, 0, a_4122_f2);
-  auto f1_4122 = f1_4122_b - f1_4122_a;
-  cout << "\tf1_4122 = " << f1_4122 << endl;
-  auto f0_4122 = Integration(f1_4122, 1, phi, 1., true);
-  cout << "\tf0_4122 = " << f0_4122 << endl;
-  //       Region 4.1.2.3 yc412 < (y0 - 1)
-  //         1 < y0 * (1 + x0)
-  //           1 / (1 + x0) < y0
-  auto f4_4123 = s4p;
-  cout << "\tf4_4123 = " << f4_4123 << endl;
-  auto f3_4123 = IntegrationAB(f4_4123, 3, y0 - one, zero);
-  cout << "\tf3_4123 = " << f3_4123 << endl;
-  auto f2_4123 = IntegrationAB(f3_4123, 2, (1 + phi) * x0, one);
-  cout << "\tf2_4123 = " << f2_4123 << endl;
-  auto f1_4123 = IntegrationAB(f2_4123, 0, (one - y0) / y0, phi * one);
-  cout << "\tf1_4123 = " << f1_4123 << endl;
-  auto f0_4123 = Integration(f1_4123, 1, phi, 1., true);
-  cout << "\tf0_4123 = " << f0_4123 << endl;
-  auto f0_412 = f0_4121 + f0_4122 + f0_4123;
-  cout << "\tf0_412 = " << f0_412 << endl;
-  auto f0_41 = f0_412 - f0_411;
-  cout << "\tf0_41 = " << f0_41 << endl;
+  //     xc_4 = (1 + phi) * x0 <= 1
+  //     x0 <= phi
+  //     Region 4.1.1: -x0 * y0 <= x1 * y1
+  //       yc_411 = -x0 * y0
+  //       Region 4.1.1.1: yc_411 <= y0 - 1
+  //         -x0 * y0 <= y0 - 1
+  //         (1 - y0) / y0 <= x0
+  //         phi = 1 / (1 + phi) <= 1 / (1 + x0) <= y0
+  auto f4111_3 = IntegrationAB(f4_4, 3, y0 - one, 0.);
+  cout << "\tf4111_3 = " << f4111_3 << endl;
+  auto f4111_2 = IntegrationAB(f4111_3, 2, (1 + phi) * x0, 1.);
+  cout << "\tf4111_2 = " << f4111_2 << endl;
+  // auto f4111_1 =
+  //     IntegrationAB(f4111_2, 0, 0., DMakeFXi(1, 1., -1) / DMakeFXi(1));
+  auto f4111_1 =
+      IntegrationAB(f4111_2, 0, DMakeFXi(1, 1., -1) / DMakeFXi(1), phi);
+  cout << "\tf4111_1 = " << f4111_1 << endl;
+  auto f4111_0 = IntegrationAB(f4111_1, 1, phi, 1.0);
+  cout << "\tf4111_0 = " << f4111_0 << endl;
+  //       Region 4.1.1.2: y0 - 1 <= yc_411
+  //         y0 - 1 <= -x0 * y0
+  //         x0 <= (1 - y0) / y0
+  //         y0 <= 1 / (1 + x0)
+  //         Region 4.1.1.2.1: Ignore y0 - 1 <= y1
+  auto f41121_3 = IntegrationAB(f4_4, 3, -x0 * y0 / x1, 0.);
+  cout << "\tf41121_3 = " << f41121_3 << endl;
+  auto f41121_2 = IntegrationAB(f41121_3, 2, DMakeFXi(0, 0., 1 + phi), 1.);
+  cout << "\tf41121_2 = " << f41121_2 << endl;
+  auto f41121_1 =
+      IntegrationAB(f41121_2, 0, 0., DMakeFXi(1, 1., -1) / DMakeFXi(1));
+  cout << "\tf41121_1 = " << f41121_1 << endl;
+  //           Substitute1: x0s = 1 + x0, x0 = x0s - 1
+  // auto f41121_2s = SubstitutionShift(f41121_2, 0, -1.);
+  // cout << "\tf41121_2s = " << f41121_2s << endl;
+  // auto f41121_1s =
+  //     IntegrationAB(f41121_2s, 1, 0., DFactorized(1.) / DMakeFXi(0));
+  // cout << "\tf41121_1s = " << f41121_1s << endl;
+  auto f41121_0 = IntegrationAB(f41121_1, 1, 0., 1.);
+  cout << "\tf41121_0 = " << f41121_0 << endl;
+  //         Region 4.1.1.2.2 (c): y1 <= y0 - 1
+  //           -phi y0 <= y1 <= y0 - 1
+  //           1 <= (1 + phi) y0
+  //           phi <= y0
+  auto f41122_3 = IntegrationAB(f4_4, 3, -x0 * y0 / x1, y0 - one);
+  cout << "\tf41122_3 = " << f41122_3 << endl;
+  auto f41122_2 =
+      IntegrationAB(f41122_3, 2, DMakeFXi(0, 0., 1 + phi),
+                    DMakeFXi(0) * DMakeFXi(1) / DMakeFXi(1, 1., -1));
+  cout << "\tf41122_2 = " << f41122_2 << endl;
+  // auto f41122_2s = SubstitutionShift(f41122_2, 0, -1.);
+  // cout << "\tf41122_2s = " << f41122_2s << endl;
+  // auto f41122_1s =
+  //     IntegrationAB(f41122_2s, 1, phi, DFactorized(1.) / DMakeFXi(0));
+  // cout << "\tf41121_1s = " << f41122_1s << endl;
+  auto f41122_1 =
+      IntegrationAB(f41122_2, 0, 0., DMakeFXi(1, 1., -1) / DMakeFXi(1));
+  cout << "\tf41122_1 = " << f41122_1 << endl;
+  auto f41122_0 = IntegrationAB(f41122_1, 1, 0., 1.);
+  cout << "\tf41122_0 = " << f41122_0 << endl;
+  auto f4112_0 = f41121_0 - f41122_0;
+  cout << "\tf4112_0 = " << f4112_0 << endl;
+  auto f411_0 = f4111_0 + f4112_0;
+  cout << "\tf411_0 = " << f411_0 << endl;
+  //...
+  auto f412_0 = zero;  // TODO
+  cout << "\tf412_0 = " << f412_0 << endl;
+  auto f41_0 = f411_0 - f412_0;
+  cout << "\tf41_0 = " << f41_0 << endl;
   //   Region 4.2:
   //   x0 <= x1 <= xc_4
   //   x1 * y1 <= -x0 * y0
   //   -x0 * y0 <= (x1 - x0) * (y1 - y0)
   //     Similar to Region 4.1 under (x0 <-> y0) and (x1 <-> y1) swap
-  auto f0_42 = f0_41;
-  auto f0_4 = f0_41 + f0_42;
-  cout << "\tf0_4 = " << f0_4 << endl;
+  auto f42_0 = f41_0;
+  auto f4_0 = f41_0 + f42_0;
+  cout << "\tf4_0 = " << f4_0 << endl;
 
-  auto f0 = f1_0 + f2_0 + f3_0 + f0_4;
+  auto f0 = f1_0 + f2_0 + f3_0 + f4_0;
   cout << "\tf0 = " << f0 << endl;
   return 0;
 }
