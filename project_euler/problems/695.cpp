@@ -172,56 +172,43 @@ int main_695() {
   cout << "\tf4111_3 = " << f4111_3 << endl;
   auto f4111_2 = IntegrationAB(f4111_3, 2, (1 + phi) * x0, 1.);
   cout << "\tf4111_2 = " << f4111_2 << endl;
-  // auto f4111_1 =
-  //     IntegrationAB(f4111_2, 0, 0., DMakeFXi(1, 1., -1) / DMakeFXi(1));
   auto f4111_1 =
       IntegrationAB(f4111_2, 0, DMakeFXi(1, 1., -1) / DMakeFXi(1), phi);
   cout << "\tf4111_1 = " << f4111_1 << endl;
   auto f4111_0 = IntegrationAB(f4111_1, 1, phi, 1.0);
   cout << "\tf4111_0 = " << f4111_0 << endl;
-  //       Region 4.1.1.2: y0 - 1 <= yc_411
+  //       Region 4.1.1.2: y0 - 1 <= yc_4
+  //         y0 - 1 <= -phi * y0
+  //         y0 <= phi
+  auto f4112_3 = IntegrationAB(f4_4, 3, -x0 * y0 / x1, 0.);
+  cout << "\tf4112_3 = " << f4112_3 << endl;
+  auto f4112_2 = IntegrationAB(f4112_3, 2, DMakeFXi(0, 0., 1 + phi), 1.);
+  cout << "\tf4112_2 = " << f4112_2 << endl;
+  auto f4112_1 = IntegrationAB(f4112_2, 1, 0., phi);
+  cout << "\tf4112_1 = " << f4112_1 << endl;
+  auto f4112_0 = IntegrationAB(f4112_1, 0, 0., phi);
+  cout << "\tf4112_0 = " << f4112_0 << endl;
+  //       Region 4.1.1.3: yc_4 <= y0 - 1 <= yc_411
+  //         -phi * y0 <= y0 - 1
+  //         phi <= y0
   //         y0 - 1 <= -x0 * y0
   //         x0 <= (1 - y0) / y0
-  //         y0 <= 1 / (1 + x0)
-  //         Region 4.1.1.2.1: Ignore y0 - 1 <= y1
-  auto f41121_3 = IntegrationAB(f4_4, 3, -x0 * y0 / x1, 0.);
-  cout << "\tf41121_3 = " << f41121_3 << endl;
-  auto f41121_2 = IntegrationAB(f41121_3, 2, DMakeFXi(0, 0., 1 + phi), 1.);
-  cout << "\tf41121_2 = " << f41121_2 << endl;
-  auto f41121_1 =
-      IntegrationAB(f41121_2, 0, 0., DMakeFXi(1, 1., -1) / DMakeFXi(1));
-  cout << "\tf41121_1 = " << f41121_1 << endl;
-  //           Substitute1: x0s = 1 + x0, x0 = x0s - 1
-  // auto f41121_2s = SubstitutionShift(f41121_2, 0, -1.);
-  // cout << "\tf41121_2s = " << f41121_2s << endl;
-  // auto f41121_1s =
-  //     IntegrationAB(f41121_2s, 1, 0., DFactorized(1.) / DMakeFXi(0));
-  // cout << "\tf41121_1s = " << f41121_1s << endl;
-  auto f41121_0 = IntegrationAB(f41121_1, 1, 0., 1.);
-  cout << "\tf41121_0 = " << f41121_0 << endl;
-  //         Region 4.1.1.2.2 (c): y1 <= y0 - 1
-  //           -phi y0 <= y1 <= y0 - 1
-  //           1 <= (1 + phi) y0
-  //           phi <= y0
-  auto f41122_3 = IntegrationAB(f4_4, 3, -x0 * y0 / x1, y0 - one);
-  cout << "\tf41122_3 = " << f41122_3 << endl;
-  auto f41122_2 =
-      IntegrationAB(f41122_3, 2, DMakeFXi(0, 0., 1 + phi),
-                    DMakeFXi(0) * DMakeFXi(1) / DMakeFXi(1, 1., -1));
-  cout << "\tf41122_2 = " << f41122_2 << endl;
-  // auto f41122_2s = SubstitutionShift(f41122_2, 0, -1.);
-  // cout << "\tf41122_2s = " << f41122_2s << endl;
-  // auto f41122_1s =
-  //     IntegrationAB(f41122_2s, 1, phi, DFactorized(1.) / DMakeFXi(0));
-  // cout << "\tf41121_1s = " << f41122_1s << endl;
-  auto f41122_1 =
-      IntegrationAB(f41122_2, 0, 0., DMakeFXi(1, 1., -1) / DMakeFXi(1));
-  cout << "\tf41122_1 = " << f41122_1 << endl;
-  auto f41122_0 = IntegrationAB(f41122_1, 1, 0., 1.);
-  cout << "\tf41122_0 = " << f41122_0 << endl;
-  auto f4112_0 = f41121_0 - f41122_0;
-  cout << "\tf4112_0 = " << f4112_0 << endl;
-  auto f411_0 = f4111_0 + f4112_0;
+  //         xc_4113 = x0 * y0 / (1-y0)
+  auto f41131_2 =
+      IntegrationAB(f4111_3, 2, (1 + phi) * x0,
+                    DMakeFXi(0) * DMakeFXi(1) / DMakeFXi(1, 1.0, -1.0));
+  cout << "\tf41131_2 = " << f41131_2 << endl;
+  auto f41132_2 = IntegrationAB(
+      f4112_3, 2, DMakeFXi(0) * DMakeFXi(1) / DMakeFXi(1, 1.0, -1.0), 1.0);
+  cout << "\tf41132_2 = " << f41132_2 << endl;
+  auto f4113_2 = f41131_2 + f41132_2;
+  cout << "\tf4113_2 = " << f4113_2 << endl;
+  auto f4113_1 =
+      IntegrationAB(f4113_2, 0, 0., DMakeFXi(1, 1., -1) / DMakeFXi(1));
+  cout << "\tf4113_1 = " << f4113_1 << endl;
+  auto f4113_0 = IntegrationAB(f4113_1, 1, phi, 1.0);
+  cout << "\tf4113_0 = " << f4113_0 << endl;
+  auto f411_0 = f4111_0 + f4112_0 + f4113_0;
   cout << "\tf411_0 = " << f411_0 << endl;
   //...
   auto f412_0 = zero;  // TODO
