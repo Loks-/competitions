@@ -8,6 +8,7 @@
 #include "common/calculus/ext_polynomial/mv_substitution_function.h"
 #include "common/stl/base.h"
 #include <cmath>
+#include <iomanip>
 
 using namespace calculus::ext_polynomial;
 
@@ -17,10 +18,10 @@ int main_695() {
   double phi = (sqrt(5.) - 1.) / 2;
   auto zero = DF4(), one = DF4(1.), x0 = DMakeXi<4>(0), y0 = DMakeXi<4>(1),
        x1 = DMakeXi<4>(2), y1 = DMakeXi<4>(3);
-  auto fc = one;
+  // auto fc = one;
   // auto fc = 24. * one;
   // auto fc = x0 * y0;
-  // auto fc = 24. * x0 * y0;
+  auto fc = 24. * x0 * y0;
   // auto fc = 8. * x0 * y0 * (1. - x0) * (1. - y0);
 
   // 0 <= x0 <= 1, 0 <= y0 <= 1
@@ -278,8 +279,36 @@ int main_695() {
   cout << "\tf412212_0 = " << f412212_0 << endl;
   auto f41221_0 = f412211_0 + f412212_0;
   cout << "\tf41221_0 = " << f41221_0 << endl;
-  // ...
-  auto f41222_0 = zero;  // TODO
+  //         Region 4.1.2.2.2: xc_4122 <= x1
+  //           -x0 * y0 <= (x1 - x0) * (y1 - y0)
+  //           Substitute: x1 = x0 + x1s
+  //             x1s = x1 - x0 <= 1 - x0
+  //             -x0 * y0 <= x1s * (y1 - y0)
+  //             x0 * (y0 + 1) <= x1s + x0
+  //             x0 * y0 <= x1s
+  auto f41222_3 = f4121_3;
+  cout << "\tf41222_3 = " << f41222_3 << endl;
+  //           Region 4.1.2.2.2.1: 2*x0 <= 1
+  //             x0 * y0 <= x1s <= x0
+  auto f412221_2 = IntegrationAB(f41222_3, 2, DMakeFXi(0) * DMakeFXi(1), x0);
+  cout << "\tf412221_2 = " << f412221_2 << endl;
+  auto f412221_1 = IntegrationAB(f412221_2, 1, phi, 1.0);
+  cout << "\tf412221_1 = " << f412221_1 << endl;
+  auto f412221_0 = IntegrationAB(f412221_1, 0, 0., 0.5);
+  cout << "\tf412221_0 = " << f412221_0 << endl;
+  //           Region 4.1.2.2.2.2: 1 <= 2*x0
+  //             x0 * y0 <= x1s <= 1 - x0
+  //             x0 * (y0 + 1) <= x1 <= 1
+  //             y0 <= (1 - x0) / x0
+  auto f412222_2 = IntegrationAB(f41222_3, 2, DMakeFXi(0) * DMakeFXi(1),
+                                 DMakeFXi(0, 1., -1.));
+  cout << "\tf412222_2 = " << f412222_2 << endl;
+  auto f412222_1 =
+      IntegrationAB(f412222_2, 1, phi, DMakeFXi(0, 1., -1.) / DMakeFXi(0));
+  cout << "\tf412222_1 = " << f412222_1 << endl;
+  auto f412222_0 = IntegrationAB(f412222_1, 0, 0.5, phi);
+  cout << "\tf412222_0 = " << f412222_0 << endl;
+  auto f41222_0 = f412221_0 + f412222_0;
   cout << "\tf41222_0 = " << f41222_0 << endl;
   auto f4122_0 = f41221_0 + f41222_0;
   cout << "\tf4122_0 = " << f4122_0 << endl;
@@ -298,5 +327,7 @@ int main_695() {
 
   auto f0 = f1_0 + f2_0 + f3_0 + f4_0;
   cout << "\tf0 = " << f0 << endl;
+
+  cout << setprecision(10) << fixed << f0.ToValue() << endl;
   return 0;
 }
