@@ -49,7 +49,7 @@ int main_695() {
   cout << "\tf1111_2 = " << f1111_2 << endl;
   auto f1111_1 = IntegrationAB(f1111_2, 1, 1 - phi, 0.5);
   cout << "\tf1111_1 = " << f1111_1 << endl;
-  //       Region 1.1.1.2: yc1 < 1
+  //       Region 1.1.1.2: yc_1 < 1
   //         y0 < 1 - phi
   auto f1112_2 = IntegrationAB(f111_3, 3, y0, DMakeFXi(1, 0., 1 + phi));
   cout << "\tf1112_2 = " << f1112_2 << endl;
@@ -57,7 +57,7 @@ int main_695() {
   cout << "\tf1112_1 = " << f1112_1 << endl;
   auto f111_1 = f1111_1 + f1112_1;
   cout << "\tf111_1 = " << f111_1 << endl;
-  //     Region 1.1.2: yc1 < y1
+  //     Region 1.1.2: yc_1 < y1
   //       x1 * y1 <= x0 * y0
   //       (2 + phi) * y0 < y1 <= 1
   //       y0 < 1 - phi
@@ -69,73 +69,53 @@ int main_695() {
   cout << "\tf112_1 = " << f112_1 << endl;
   auto f11_1 = f111_1 + f112_1;
   cout << "\tf11_1 = " << f11_1 << endl;
-
-  cout << endl << "Old version" << endl;
-  // 0 <= x0 <= 1, 0 <= y0 <= 1
-  // Segment 1: 0 <= x1 <= x0, y0 <= y1 <= 1
-  auto s1p = fc * (one - x0) * (one - y1);
-  auto s1ps1 = SubstitutionFunction(s1p, 3, y0 + y1);
   //   Region 1.2:
   //   xc_1 <= x1 <= x0
   //   x0 * y0 <= x1 * y1
   //   -x0 * y0 <= (x1 - x0) * (y1 - y0)
-  //     Region 1.2.1: 1 <= yc_1
-  //       (1 - phi) <= y0
-  auto f4_121 = s1p;
-  cout << "\tf4_121 = " << f4_121 << endl;
-  auto f3_121 = IntegrationAB(f4_121, 2, x0 * y0 / y1, x0);
-  cout << "\tf3_121 = " << f3_121 << endl;
-  auto f3_121_ii = Integration(f3_121, 3);
-  cout << "\tf3_121_ii = " << f3_121_ii << endl;
-  auto f2_121_b = SubstitutionValue(f3_121_ii, 3, 1., true);
-  cout << "\tf2_121_b = " << f2_121_b << endl;
-  auto f2_121_a = SubstitutionIndex(f3_121_ii, 3, 1);
-  cout << "\tf2_121_a = " << f2_121_a << endl;
-  auto f2_121 = f2_121_b - f2_121_a;
-  cout << "\tf2_121 = " << f2_121 << endl;
-  auto f1_121 = Integration(f2_121, 1, 1. - phi, 1., true);
-  cout << "\tf1_121 = " << f1_121 << endl;
-  //     Region 1.2.2: yc1 < 1
-  //       y0 < (1 - phi)
-  //       Region 1.2.2.1: y1 <= yc1
-  auto f3_1221_ii = f3_121_ii;
-  cout << "\tf3_1221_ii = " << f3_1221_ii << endl;
-  auto b_1221_f3 = DMakeFXi(1) * (2 + phi);
-  auto f2_1221_b = SubstitutionFactorized(f3_1221_ii, 3, b_1221_f3);
-  cout << "\tf2_1221_b = " << f2_1221_b << endl;
-  auto f2_1221_a = SubstitutionIndex(f3_1221_ii, 3, 1);
-  cout << "\tf2_1221_a = " << f2_1221_a << endl;
-  auto f2_1221 = f2_1221_b - f2_1221_a;
-  cout << "\tf2_1221 = " << f2_1221 << endl;
-  //       Region 1.2.2.2: yc1 < y1
-  //       Substitute1 y1 = y0 + y1s
-  //       After S1:
-  //         y1s - y0 <= y1s <= 1 - y0
+  //     Region 1.2.1: y1 <= yc_1
+  //       x0 * y0 <= x1 * y1
+  //       x1 <= 1
+  auto f121_3 = IntegrationAB(f1_4, 2, x0 * y0 / y1, x0);
+  cout << "\tf121_3 = " << f121_3 << endl;
+  //       Region 1.2.1.1: 1 <= yc_1
+  //         1 <= (2 + phi) * y0
+  //         1 - phi <= y0
+  auto f1211_2 = IntegrationAB(f121_3, 3, y0, 1.);
+  cout << "\tf1211_2 = " << f1211_2 << endl;
+  auto f1211_1 = IntegrationAB(f1211_2, 1, 1 - phi, 1.0);
+  cout << "\tf1211_1 = " << f1211_1 << endl;
+  //       Region 1.2.1.2: yc_1 < 1
+  //         y0 < 1 - phi
+  auto f1212_2 = IntegrationAB(f121_3, 3, y0, DMakeFXi(1, 0., 2 + phi));
+  cout << "\tf1212_2 = " << f1212_2 << endl;
+  auto f1212_1 = IntegrationAB(f1212_2, 1, 0., 1 - phi);
+  cout << "\tf1212_1 = " << f1212_1 << endl;
+  auto f121_1 = f1211_1 + f1212_1;
+  cout << "\tf121_1 = " << f121_1 << endl;
+  //     Region 1.2.2: yc_1 < y1
+  //       -x0 * y0 <= (x1 - x0) * (y1 - y0)
+  //       (2 + phi) * y0 < y1 <= 1
+  //       y0 < 1 - phi
+  //       Substitute1: y1 = y0 + y1s
+  //         y1s = y1 - y0
+  //         (1 + phi) * y0 <= y1s <= 1 - y0
   //         -x0 * y0 <= (x1 - x0) * y1s
-  auto f4_1222 = s1ps1;
-  cout << "\tf4_1222 = " << f4_1222 << endl;
-  auto f3_1222 = IntegrationAB(f4_1222, 2, x0 - x0 * y0 / y1, x0);
-  cout << "\tf3_1222 = " << f3_1222 << endl;
-  auto f3_1222_ii = Integration(f3_1222, 3);
-  cout << "\tf3_1222_ii = " << f3_1222_ii << endl;
-  auto b_1222_f3 = -DMakeFXi(1, 1);
-  auto f2_1222_b = SubstitutionFactorized(f3_1222_ii, 3, b_1222_f3);
-  cout << "\tf2_1222_b = " << f2_1222_b << endl;
-  auto a_1222_f3 = DMakeFXi(1) * (1 + phi);
-  auto f2_1222_a = SubstitutionFactorized(f3_1222_ii, 3, a_1222_f3);
-  cout << "\tf2_1222_a = " << f2_1222_a << endl;
-  auto f2_1222 = f2_1222_b - f2_1222_a;
-  cout << "\tf2_1222 = " << f2_1222 << endl;
-  auto f2_122 = f2_1221 + f2_1222;
-  cout << "\tf2_122 = " << f2_122 << endl;
-  auto f1_122 = Integration(f2_122, 1, 0., 1.0 - phi, true);
-  cout << "\tf1_122 = " << f1_122 << endl;
-  auto f1_12 = f1_121 + f1_122;
-  cout << "\tf1_12 = " << f1_12 << endl;
-  auto f1_1 = f11_1 + f1_12;
+  auto f122_4 = SubstitutionFunction(f1_4, 3, y0 + y1);
+  cout << "\tf122_4 = " << f122_4 << endl;
+  auto f122_3 = IntegrationAB(f122_4, 2, x0 - x0 * y0 / y1, x0);
+  cout << "\tf122_3 = " << f122_3 << endl;
+  auto f122_2 =
+      IntegrationAB(f122_3, 3, DMakeFXi(1, 0, 1 + phi), DMakeFXi(1, 1., -1));
+  cout << "\tf122_2 = " << f122_2 << endl;
+  auto f122_1 = IntegrationAB(f122_2, 1, 0., 1 - phi);
+  cout << "\tf122_1 = " << f122_1 << endl;
+  auto f12_1 = f121_1 + f122_1;
+  cout << "\tf12_1 = " << f12_1 << endl;
+  auto f1_1 = f11_1 + f12_1;
   cout << "\tf1_1 = " << f1_1 << endl;
-  auto f0_1 = Integration(f1_1, 0, 0., 1., true);
-  cout << "\tf0_1 = " << f0_1 << endl;
+  auto f1_0 = IntegrationAB(f1_1, 0, 0., 1.);
+  cout << "\tf1_0 = " << f1_0 << endl;
 
   // Segment 2: x0 <= x1 <= 1, y0 <= y1 <= 1
   auto s2p = fc * (one - x1) * (one - y1);
@@ -177,8 +157,8 @@ int main_695() {
 
   // Segment 3: x0 <= x1 <= 1, 0 <= y1 <= y0
   //   Similar to Segment 1 under (x0 <-> y0) and (x1 <-> y1) swap
-  auto f0_3 = f0_1;
-  cout << "\tf0_3 = " << f0_3 << endl;
+  auto f3_0 = f1_0;
+  cout << "\tf3_0 = " << f3_0 << endl;
 
   // Segment 4: x0 <= x1 <= 1, y0 - 1 <= y1 <= 0
   auto s4p = fc * (1. - x1) * (1. + y1 - y0);
@@ -286,7 +266,7 @@ int main_695() {
   auto f0_4 = f0_41 + f0_42;
   cout << "\tf0_4 = " << f0_4 << endl;
 
-  auto f0 = f0_1 + f0_2 + f0_3 + f0_4;
+  auto f0 = f1_0 + f0_2 + f3_0 + f0_4;
   cout << "\tf0 = " << f0 << endl;
   return 0;
 }
