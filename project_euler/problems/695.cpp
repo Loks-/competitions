@@ -148,12 +148,12 @@ int main_695() {
   auto f2_0 = IntegrationAB(f2_1, 0, 0., 1.);
   cout << "\tf2_0 = " << f2_0 << endl;
 
-  // Segment 3: x0 <= x1 <= 1, 0 <= y1 <= y0
-  //   Similar to Segment 1 under (x0 <-> y0) and (x1 <-> y1) swap
+  // Region 3: x0 <= x1 <= 1, 0 <= y1 <= y0
+  //   Similar to Region 1 under (x0 <-> y0) and (x1 <-> y1) swap
   auto f3_0 = f1_0;
   cout << "\tf3_0 = " << f3_0 << endl;
 
-  // Segment 4: x0 <= x1 <= 1, y0 - 1 <= y1 <= 0
+  // Region 4: x0 <= x1 <= 1, y0 - 1 <= y1 <= 0
   auto s4p = fc * (1. - x1) * (1. + y1 - y0);
   //   xc_4 = (1 + phi) * x0, yc_4 = -phi * y0
   //   Region 4.1:
