@@ -8,6 +8,7 @@
 #include "common/calculus/ext_polynomial/term_bases/ln_abs.h"
 #include "common/calculus/ext_polynomial/term_bases/ln_abs_c.h"
 #include "common/calculus/ext_polynomial/term_bases/one.h"
+#include "common/calculus/ext_polynomial/term_bases/square_ln_abs.h"
 #include "common/calculus/ext_polynomial/term_bases/type.h"
 
 namespace calculus {
@@ -41,9 +42,9 @@ inline Function<TValueF, TValueTerm> Integration(
         t_new.a /= (-t_new.tp.power);
         output.AddTermsUnsafe(t_new);
       } else {
-        // I = 1/2*ln(|x|)^2 * sign(x)
-        assert(false);
-        return {};
+        std::cout << "." << std::endl;
+        return Term<TValueF, TValueTerm>(
+            t.a / 2, term_bases::MakeSquareLnAbs<TValueTerm>());
       }
       break;
     case term_bases::Type::LN_ABS_C: {
