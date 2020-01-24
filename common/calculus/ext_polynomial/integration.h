@@ -42,7 +42,7 @@ inline Function<TValueF, TValueTerm> Integration(
         t_new.a /= (-t_new.tp.power);
         output.AddTermsUnsafe(t_new);
       } else {
-        std::cout << "." << std::endl;
+        assert(false);  // Untested block
         return Term<TValueF, TValueTerm>(
             t.a / 2, term_bases::MakeSquareLnAbs<TValueTerm>());
       }

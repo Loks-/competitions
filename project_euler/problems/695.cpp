@@ -240,9 +240,48 @@ int main_695() {
   cout << "\tf41212_0 = " << f41212_0 << endl;
   auto f4121_0 = f41211_0 + f41212_0;
   cout << "\tf4121_0 = " << f4121_0 << endl;
+  //       Region 4.1.2.2: yc_4 <= y0 - 1
+  //         phi <= y0
+  //         xc_4122 = x0 * (y0 + 1)
+  //         Region 4.1.2.2.1: x1 <= xc_4122
+  auto f41221_3 = IntegrationAB(f4_4, 3, y0 - one, 0.);
+  cout << "\tf41221_3 = " << f41221_3 << endl;
+  //         Region 4.1.2.2.1.1: xc_4122 <= 1
+  //           (1 + phi) * x0 <= x1 <= xc_4122
+  //           x0 * (y0 + 1) <= 1
+  //           y0 <= (1 - x0) / x0
+  auto f412211_2 = IntegrationAB(f41221_3, 2, (1 + phi) * x0, x0 * (y0 + 1.));
+  cout << "\tf412211_2 = " << f412211_2 << endl;
+  //         Region 4.1.2.2.1.1.1: x0 <= 0.5
+  //           y0 <= 1
+  auto f4122111_1 = IntegrationAB(f412211_2, 1, phi, 1.0);
+  cout << "\tf4122111_1 = " << f4122111_1 << endl;
+  auto f4122111_0 = IntegrationAB(f4122111_1, 0, 0., 0.5);
+  cout << "\tf4122111_0 = " << f4122111_0 << endl;
+  //         Region 4.1.2.2.1.1.2: 0.5 <= x0 <= phi
+  //           y0 <= (1 - x0) / x0
+  auto f4122112_1 = IntegrationAB(f412211_2, 1, phi, (one - x0) / x0);
+  cout << "\tf4122112_1 = " << f4122112_1 << endl;
+  auto f4122112_0 = IntegrationAB(f4122112_1, 0, 0.5, phi);
+  cout << "\tf4122112_0 = " << f4122112_0 << endl;
+  auto f412211_0 = f4122111_0 + f4122112_0;
+  cout << "\tf412211_0 = " << f412211_0 << endl;
+  //         Region 4.1.2.2.1.2: 1 <= xc_4122
+  //           (1 + phi) x0 <= x1 <= 1
+  //           1 <= x0 * (y0 + 1)
+  //           (1 - x0) / x0 <= y0 <= 1
+  auto f412212_2 = IntegrationAB(f41221_3, 2, (1 + phi) * x0, 1.);
+  cout << "\tf412212_2 = " << f412212_2 << endl;
+  auto f412212_1 = IntegrationAB(f412212_2, 1, (one - x0) / x0, 1.);
+  cout << "\tf412212_1 = " << f412212_1 << endl;
+  auto f412212_0 = IntegrationAB(f412212_1, 0, 0.5, phi);
+  cout << "\tf412212_0 = " << f412212_0 << endl;
+  auto f41221_0 = f412211_0 + f412212_0;
+  cout << "\tf41221_0 = " << f41221_0 << endl;
   // ...
-
-  auto f4122_0 = zero;  // TODO
+  auto f41222_0 = zero;  // TODO
+  cout << "\tf41222_0 = " << f41222_0 << endl;
+  auto f4122_0 = f41221_0 + f41222_0;
   cout << "\tf4122_0 = " << f4122_0 << endl;
   auto f412_0 = f4121_0 + f4122_0;
   cout << "\tf412_0 = " << f412_0 << endl;
