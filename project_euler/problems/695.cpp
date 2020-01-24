@@ -5,6 +5,7 @@
 #include "common/calculus/ext_polynomial/mv_function.h"
 #include "common/calculus/ext_polynomial/mv_integration_ext.h"
 #include "common/calculus/ext_polynomial/mv_make.h"
+#include "common/calculus/ext_polynomial/mv_substitution_function.h"
 #include "common/stl/base.h"
 #include <cmath>
 
@@ -23,62 +24,57 @@ int main_695() {
   // auto fc = 8. * x0 * y0 * (1. - x0) * (1. - y0);
 
   // 0 <= x0 <= 1, 0 <= y0 <= 1
-  // Segment 1: 0 <= x1 <= x0, y0 <= y1 <= 1
-  auto s1p = fc * (one - x0) * (one - y1);
+  // Region 1: 0 <= x1 <= x0, y0 <= y1 <= 1
+  auto f1_4 = fc * (one - x0) * (one - y1);
   //   xc_1 = (1 - phi) * x0, yc_1 = (2 + phi) * y0
   //   Region 1.1:
   //   0 <= x1 <= xc_1
   //   x1 * y1 <= x0 * y0
   //   (x1 - x0) * (y1 - y0) <= -x0 * y0
-  //     yc_11 = 2 * y0
-  //     Region 1.1.1: 1 <= yc_11
-  //       0.5 <= y0
-  auto f1_111 = zero;
-  //     Region 1.1.2: yc_11 < 1 <= yc_1
-  //       (1 - phi) <= y0 <= 0.5
+  //     2 * y0 <= y1 <= 1
+  //     Region 1.1.1: y1 <= yc_1
+  //       (x1 - x0) * (y1 - y0) <= -x0 * y0
   //       Substitute1: y1 = y0 + y1s
-  //       After S1:
-  //         0 <= y1s <= 1 - y0
+  //         y1s = y1 - y0
+  //         y0 <= y1s <= 1 - y0
   //         (x1 - x0) * y1s <= -x0 * y0
+  auto f111_4 = SubstitutionFunction(f1_4, 3, y0 + y1);
+  cout << "\tf111_4 = " << f111_4 << endl;
+  auto f111_3 = IntegrationAB(f111_4, 2, 0., x0 - x0 * y0 / y1);
+  cout << "\tf111_3 = " << f111_3 << endl;
+  //       Region 1.1.1.1: 1 <= yc_1
+  //         1 <= (2 + phi) * y0
+  //         1 - phi <= y0
+  auto f1111_2 = IntegrationAB(f111_3, 3, y0, DMakeFXi(1, 1., -1.));
+  cout << "\tf1111_2 = " << f1111_2 << endl;
+  auto f1111_1 = IntegrationAB(f1111_2, 1, 1 - phi, 0.5);
+  cout << "\tf1111_1 = " << f1111_1 << endl;
+  //       Region 1.1.1.2: yc1 < 1
+  //         y0 < 1 - phi
+  auto f1112_2 = IntegrationAB(f111_3, 3, y0, DMakeFXi(1, 0., 1 + phi));
+  cout << "\tf1112_2 = " << f1112_2 << endl;
+  auto f1112_1 = IntegrationAB(f1112_2, 1, 0., 1 - phi);
+  cout << "\tf1112_1 = " << f1112_1 << endl;
+  auto f111_1 = f1111_1 + f1112_1;
+  cout << "\tf111_1 = " << f111_1 << endl;
+  //     Region 1.1.2: yc1 < y1
+  //       x1 * y1 <= x0 * y0
+  //       (2 + phi) * y0 < y1 <= 1
+  //       y0 < 1 - phi
+  auto f112_3 = IntegrationAB(f1_4, 2, 0., x0 * y0 / y1);
+  cout << "\tf112_3 = " << f112_3 << endl;
+  auto f112_2 = IntegrationAB(f112_3, 3, DMakeFXi(1, 0, 2 + phi), 1.);
+  cout << "\tf112_2 = " << f112_2 << endl;
+  auto f112_1 = IntegrationAB(f112_2, 1, 0., 1 - phi);
+  cout << "\tf112_1 = " << f112_1 << endl;
+  auto f11_1 = f111_1 + f112_1;
+  cout << "\tf11_1 = " << f11_1 << endl;
+
+  cout << endl << "Old version" << endl;
+  // 0 <= x0 <= 1, 0 <= y0 <= 1
+  // Segment 1: 0 <= x1 <= x0, y0 <= y1 <= 1
+  auto s1p = fc * (one - x0) * (one - y1);
   auto s1ps1 = SubstitutionFunction(s1p, 3, y0 + y1);
-  //       Substitute2: y0 = 1 - y0s
-  //       After S2:
-  //         0.5 <= y0s <= phi
-  //         0 <= y1s <= y0s
-  //         (x1 - x0) * y1s <= -x0 * (1 - y0s)
-  auto s1ps2 = SubstitutionFunction(s1ps1, 1, one - y0);
-  auto f4_112 = s1ps2;
-  auto f3_112 = IntegrationAB(f4_112, 2, zero, x0 - x0 * (one - y0) / y1);
-  auto f3_112_ii = Integration(f3_112, 3);
-  auto f2_112_b = SubstitutionIndex(f3_112_ii, 3, 1);
-  auto a_112_f3 = -DMakeFXi(1, 1);
-  auto f2_112_a = SubstitutionFactorized(f3_112_ii, 3, a_112_f3);
-  auto f2_112 = f2_112_b - f2_112_a;
-  auto f1_112 = Integration(f2_112, 1, 0.5, phi, true);
-  //     Region 1.1.3: yc_1 < 1
-  //       y0 < (1.0 - phi)
-  //       Region 1.1.3.1: y1 <= yc1
-  //         Using same substitute1 as region 1.1.2
-  //         y1s <= yc_1 - y0 = (1 + phi) * y0
-  auto f4_1131 = s1ps1;
-  auto f3_1131 = IntegrationAB(f4_1131, 2, zero, x0 - x0 * y0 / y1);
-  auto f3_1131_ii = Integration(f3_1131, 3);
-  auto b_1131_f3 = DMakeFXi(1) * (1.0 + phi);
-  auto f2_1131_b = SubstitutionFactorized(f3_1131_ii, 3, b_1131_f3);
-  auto f2_1131_a = SubstitutionIndex(f3_1131_ii, 3, 1);
-  auto f2_1131 = f2_1131_b - f2_1131_a;
-  //       Region 1.1.3.2: yc1 <= y1 <= 1
-  auto f4_1132 = s1p;
-  auto f3_1132 = IntegrationAB(f4_1132, 2, zero, x0 * y0 / y1);
-  auto f3_1132_ii = Integration(f3_1132, 3);
-  auto f2_1132_b = SubstitutionValue(f3_1132_ii, 3, 1., true);
-  auto a_1132_f3 = DMakeFXi(1) * (2.0 + phi);
-  auto f2_1132_a = SubstitutionFactorized(f3_1132_ii, 3, a_1132_f3);
-  auto f2_1132 = f2_1132_b - f2_1132_a;
-  auto f2_113 = f2_1131 + f2_1132;
-  auto f1_113 = Integration(f2_113, 1, 0., 1. - phi, true);
-  auto f1_11 = f1_111 + f1_112 + f1_113;
-  cout << "\tf1_11 = " << f1_11 << endl;
   //   Region 1.2:
   //   xc_1 <= x1 <= x0
   //   x0 * y0 <= x1 * y1
@@ -136,7 +132,7 @@ int main_695() {
   cout << "\tf1_122 = " << f1_122 << endl;
   auto f1_12 = f1_121 + f1_122;
   cout << "\tf1_12 = " << f1_12 << endl;
-  auto f1_1 = f1_11 + f1_12;
+  auto f1_1 = f11_1 + f1_12;
   cout << "\tf1_1 = " << f1_1 << endl;
   auto f0_1 = Integration(f1_1, 0, 0., 1., true);
   cout << "\tf0_1 = " << f0_1 << endl;
