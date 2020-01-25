@@ -34,7 +34,7 @@ MVFunction<TValue, dim> DivisionLinearF(const MVFunction<TValue, dim>& f,
   auto p = DivisionLinearFQR(f, index, fc);
   if (p.second.Empty()) return p.first;
   if (force_division) {
-    std::cout << "Dropping remainder: " << p.second << std::endl;
+    std::cerr << "Dropping remainder: " << p.second << std::endl;
     return p.first;
   } else {
     return {};

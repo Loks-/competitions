@@ -27,7 +27,7 @@ inline TValueF SubstitutionValue(const Function<TValueF, TValueTerm>& f,
         s += t.Get(zero);
       } else {
         if (skip_non_finite) {
-          std::cout << "[Warning] Skipping non-finite term: " << t.ToString("x")
+          std::cerr << "[Warning] Skipping non-finite term: " << t.ToString("x")
                     << std::endl;
         } else {
           s += t.Get(zero);

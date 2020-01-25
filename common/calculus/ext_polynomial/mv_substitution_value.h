@@ -44,7 +44,7 @@ inline MVFunction<TValue, dim> SubstitutionValue(
         fnew.AddTermsUnsafe(SubstitutionValue(t, index, zero));
       } else {
         if (skip_non_finite) {
-          std::cout << "[Warning] Skipping non-finite term: " << t.ToString("x")
+          std::cerr << "[Warning] Skipping non-finite term: " << t.ToString("x")
                     << std::endl;
         } else {
           fnew.AddTermsUnsafe(SubstitutionValue(t, index, zero));

@@ -11,7 +11,7 @@ inline void Assert(bool b) {
 
 inline void Assert(bool b, const std::string& message) {
   if (!b) {
-    std::cout << "Exception: " << message << std::endl;
+    std::cerr << "Exception: " << message << std::endl;
     throw AssertException();
   }
 }
