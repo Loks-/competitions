@@ -14,7 +14,7 @@ using namespace calculus::ext_polynomial;
 
 using DF4 = DMVFunction<4>;
 
-int main_695() {
+int main_695__long() {
   double phi = (sqrt(5.) - 1.) / 2;
   auto zero = DF4(), one = DF4(1.), x0 = DMakeXi<4>(0), y0 = DMakeXi<4>(1),
        x1 = DMakeXi<4>(2), y1 = DMakeXi<4>(3);
