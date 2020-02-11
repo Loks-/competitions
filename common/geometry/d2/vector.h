@@ -1,6 +1,7 @@
 #pragma once
 
 #include "common/base.h"
+#include "common/geometry/d2/point.h"
 #include <cmath>
 
 namespace geometry {
@@ -14,7 +15,9 @@ class Vector {
 
   Vector() : dx(), dy() {}
   Vector(const T& _dx, const T& _dy) : dx(_dx), dy(_dy) {}
+  Vector(const Point<T>& p) : dx(p.x), dy(p.y) {}
 
+  Point<T> ToPoint() const { return Point<T>(dx, dy); }
   bool Empty() const { return (dx == 0) && (dy == 0); }
   T LengthSquared() const { return dx * dx + dy * dy; }
   T Length() const { return sqrt(LengthSquared()); }
@@ -34,6 +37,21 @@ class Vector {
   TSelf operator*(const T& r) const { return TSelf(dx * r, dy * r); }
   TSelf operator/(const T& r) const { return TSelf(dx / r, dy / r); }
   TSelf operator-() const { return TSelf(-dx, -dy); }
+
+  TSelf& operator+=(const TSelf& r) {
+    dx += r.dx;
+    dy += r.dy;
+    return *this;
+  }
+
+  TSelf& operator-=(const TSelf& r) {
+    dx -= r.dx;
+    dy -= r.dy;
+    return *this;
+  }
+
+  TSelf operator+(const TSelf& r) const { return TSelf(dx + r.dx, dy + r.dy); }
+  TSelf operator-(const TSelf& r) const { return TSelf(dx - r.dx, dy - r.dy); }
   T operator*(const TSelf& r) const { return dx * r.dx + dy * r.dy; }
   T operator%(const TSelf& r) const { return dx * r.dy - dy * r.dx; }
 
