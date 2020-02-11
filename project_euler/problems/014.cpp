@@ -11,7 +11,7 @@ int main_014() {
   unsigned N = *max_element(vt.begin(), vt.end());
   unsigned l = 0, r = 0;
   vector<unsigned> vr(1, 0);
-  numeric::Collatz c;
+  numeric::Collatz c(2 * N);
   for (unsigned i = 1; i <= N; ++i) {
     unsigned il = c(i);
     if (l <= il) {
