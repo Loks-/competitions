@@ -23,7 +23,7 @@ class MatrixStaticSize : public VectorStaticSize<TTValue, _rows * _columns> {
   unsigned Columns() const { return columns; }
 
   MatrixStaticSize() {}
-  MatrixStaticSize(const TValue& v) { TBase::Fill(v); }
+  explicit MatrixStaticSize(const TValue& v) { TBase::Fill(v); }
   TSelf& operator=(const TValue& v) {
     TBase::Fill(v);
     return *this;

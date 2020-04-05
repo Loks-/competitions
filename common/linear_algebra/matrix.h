@@ -22,7 +22,8 @@ class Matrix : public Vector<TTValue> {
   unsigned Rows() const { return rows; }
   unsigned Columns() const { return columns; }
 
-  Matrix(unsigned size) : TBase(size * size), rows(size), columns(size) {}
+  explicit Matrix(unsigned size)
+      : TBase(size * size), rows(size), columns(size) {}
 
   Matrix(unsigned _rows, unsigned _columns)
       : TBase(_rows * _columns), rows(_rows), columns(_columns) {}

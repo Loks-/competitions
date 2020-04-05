@@ -25,7 +25,7 @@ class VectorStaticSize {
   const TData& GetData() const { return data; }
 
   VectorStaticSize() { Clear(); }
-  VectorStaticSize(const TValue& v) { Fill(v); }
+  explicit VectorStaticSize(const TValue& v) { Fill(v); }
   TSelf& operator=(const TValue& v) {
     Fill(v);
     return *this;

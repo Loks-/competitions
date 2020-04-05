@@ -24,7 +24,7 @@ class Vector {
   unsigned Size() const { return unsigned(data.size()); }
   const TData& GetData() const { return data; }
 
-  Vector(unsigned size) : data(size) {}
+  explicit Vector(unsigned size) : data(size) {}
   Vector(unsigned size, const TValue& v) : data(size, v) {}
   Vector(const TData& v) : data(v) {}
   TSelf& operator=(const TValue& v) {
