@@ -7,13 +7,13 @@ inline uint64_t CoprimeCount(const TFactorization& k_factorization,
                              uint64_t n) {
   if (n <= 1) return n;
   if (k_factorization.size() == 0) return n;
-  unsigned fs = unsigned(k_factorization.size()), p2 = 1u << fs;
+  uint64_t fs = k_factorization.size(), p2 = 1ull << fs;
   uint64_t total = 0;
-  for (unsigned i = 0; i < p2; ++i) {
+  for (uint64_t i = 0; i < p2; ++i) {
     uint64_t t = n;
     unsigned bits = 0;
-    for (unsigned j = 0; j < fs; ++j) {
-      if ((1u << j) & i) {
+    for (uint64_t j = 0; j < fs; ++j) {
+      if ((1ull << j) & i) {
         ++bits;
         t /= k_factorization[j].prime;
       }

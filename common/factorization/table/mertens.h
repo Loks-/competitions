@@ -2,6 +2,7 @@
 
 #include "common/base.h"
 #include "common/factorization/table/mobius.h"
+
 #include <vector>
 
 namespace factorization {
@@ -17,7 +18,7 @@ class Mertens : public Mobius {
   Mertens(uint64_t size) : TBase(size) {
     mertens.resize(TBase::table_size + 1);
     mertens[0] = 0;
-    for (unsigned i = 1; i <= TBase::table_size; ++i)
+    for (uint64_t i = 1; i <= TBase::table_size; ++i)
       mertens[i] = mertens[i - 1] + TBase::mobius[i];
   }
 

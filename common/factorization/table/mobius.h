@@ -1,6 +1,8 @@
 #pragma once
 
+#include "common/base.h"
 #include "common/factorization/table/primes.h"
+
 #include <vector>
 
 namespace factorization {
@@ -14,7 +16,7 @@ class Mobius : public Primes {
     mobius.resize(Primes::table_size + 1);
     mobius[0] = 0;
     mobius[1] = 1;
-    for (unsigned i = 2; i <= Primes::table_size; ++i) {
+    for (uint64_t i = 2; i <= Primes::table_size; ++i) {
       unsigned p = Primes::table[i];
       mobius[i] = (Primes::table[i / p] == p ? 0 : -1 * mobius[i / p]);
     }

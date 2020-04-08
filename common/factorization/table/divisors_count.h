@@ -1,6 +1,8 @@
 #pragma once
 
+#include "common/base.h"
 #include "common/factorization/table/primes.h"
+
 #include <vector>
 
 namespace factorization {
@@ -23,8 +25,8 @@ class DivisorsCount : public Primes {
     }
   }
 
-  int Get(uint64_t n) const { return dc[n]; }
-  int operator()(uint64_t n) const { return Get(n); }
+  unsigned Get(uint64_t n) const { return dc[n]; }
+  unsigned operator()(uint64_t n) const { return Get(n); }
 };
 }  // namespace table
 }  // namespace factorization

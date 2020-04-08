@@ -1,9 +1,11 @@
 #pragma once
 
+#include "common/base.h"
 #include "common/factorization/table/mobius.h"
 #include "common/numeric/utils/sign.h"
 #include "common/numeric/utils/ucbrt.h"
 #include "common/numeric/utils/usqrt.h"
+
 #include <algorithm>
 #include <vector>
 
@@ -16,21 +18,22 @@ class MertensCompact {
   uint64_t u;
   table::Mobius mobius;
 
-  uint64_t b, e, last_mertens;
+  uint64_t b, e;
+  int64_t last_mertens;
   std::vector<int64_t> bmobius;
-  std::vector<int> bmertens;
+  std::vector<int64_t> bmertens;
 
   uint64_t rx, ru;
 
-  int S(uint64_t m) {
+  int64_t S(uint64_t m) {
     uint64_t y = rx / m, v = std::min(USqrt(y), rx / ru - 1), k = y / (v + 1);
-    int s = 0;
+    int64_t s = 0;
     uint64_t ne1 = (b ? std::min(k, y / b) : k) + 1;
     for (uint64_t n = std::max(ru / m, y / e) + 1; n < ne1; ++n)
       s -= bmertens[y / n - b];
     uint64_t ne2 = std::min(v + 1, e);
-    for (uint64_t n = std::max(b, uint64_t(1)); n < ne2; ++n)
-      s -= (int(y / n) - int(y / (n + 1))) * bmertens[n - b];
+    for (uint64_t n = std::max<uint64_t>(b, 1); n < ne2; ++n)
+      s -= (int64_t(y / n) - int64_t(y / (n + 1))) * bmertens[n - b];
     return s;
   }
 
@@ -71,12 +74,12 @@ class MertensCompact {
   }
 
  public:
-  MertensCompact(unsigned _u) : u(_u), mobius(u) {}
+  MertensCompact(uint64_t _u) : u(_u), mobius(u) {}
 
   // x <= U^3
-  int GetMertens(uint64_t x) {
+  int64_t GetMertens(uint64_t x) {
     if (x <= u) {
-      int s = 0;
+      int64_t s = 0;
       for (uint64_t i = 1; i <= x; ++i) s += mobius(i);
       return s;
     } else {
@@ -84,7 +87,7 @@ class MertensCompact {
       rx = x;
       ru = std::min(UCbrt(x), u);
       FirstBlock();
-      int s = bmertens[ru];
+      int64_t s = bmertens[ru];
       for (;; NextBlock()) {
         for (uint64_t n = 1; n <= ru; ++n) {
           int m = mobius(n);
@@ -96,6 +99,6 @@ class MertensCompact {
     }
   }
 
-  int operator()(uint64_t x) { return GetMertens(x); }
+  int64_t operator()(uint64_t x) { return GetMertens(x); }
 };
 }  // namespace factorization
