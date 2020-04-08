@@ -14,8 +14,8 @@ template <bool _use_key, class TTData, class TTInfo = info::Size,
           class TTAction = action::None, class TTKey = int64_t,
           template <class> class TTNodesManager = NodesManagerFixedSize>
 class SplayTree
-    : public Tree<Node<TTData, TTInfo, TTAction, _use_key, true, false, TTKey>,
-                  TTNodesManager,
+    : public Tree<
+                  TTNodesManager<Node<TTData, TTInfo, TTAction, _use_key, true, false, TTKey>>,
                   SplayTree<_use_key, TTData, TTInfo, TTAction, TTKey,
                             TTNodesManager>> {
  public:
@@ -30,7 +30,7 @@ class SplayTree
   using TNode =
       Node<TData, TInfo, TAction, use_key, use_parent, use_height, TKey>;
   using TSelf = SplayTree<use_key, TData, TInfo, TAction, TKey, TTNodesManager>;
-  using TTree = Tree<TNode, TTNodesManager, TSelf>;
+  using TTree = Tree<TTNodesManager<TNode>, TSelf>;
 
  public:
   SplayTree(unsigned max_nodes) : TTree(max_nodes) {}

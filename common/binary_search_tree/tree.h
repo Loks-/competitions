@@ -4,18 +4,19 @@
 #include "common/binary_search_tree/base/find_by_key.h"
 #include "common/binary_search_tree/base/find_by_order.h"
 #include "common/template.h"
+
 #include <algorithm>
 #include <utility>
 #include <vector>
 
 namespace bst {
-template <class TTNode, template <class> class TTNodesManager, class TTMe>
-class Tree : public TTNodesManager<TTNode> {
+template <class TTNodesManager, class TTMe>
+class Tree : public TTNodesManager {
  public:
-  using TNode = TTNode;
+  using TNodesManager = TTNodesManager;
+  using TNode = typename TNodesManager::TNode;
   using TData = typename TNode::TData;
   using TKey = typename TNode::TKey;
-  using TNodesManager = TTNodesManager<TNode>;
   using TMe = TTMe;
 
   static const bool use_key = TNode::use_key;

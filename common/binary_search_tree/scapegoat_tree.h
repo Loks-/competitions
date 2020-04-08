@@ -8,6 +8,7 @@
 #include "common/binary_search_tree/node.h"
 #include "common/binary_search_tree/tree.h"
 #include "common/nodes_manager_fixed_size.h"
+
 #include <stack>
 #include <vector>
 
@@ -19,11 +20,10 @@ template <bool _use_parent, class TTData, class TTInfo = info::Size,
           class TTAction = action::None, class TTKey = int64_t,
           template <class> class TTNodesManager = NodesManagerFixedSize>
 class ScapegoatTree
-    : public Tree<
-          Node<TTData, TTInfo, TTAction, true, _use_parent, false, TTKey>,
-          TTNodesManager,
-          ScapegoatTree<_use_parent, TTData, TTInfo, TTAction, TTKey,
-                        TTNodesManager>> {
+    : public Tree<TTNodesManager<Node<TTData, TTInfo, TTAction, true,
+                                      _use_parent, false, TTKey>>,
+                  ScapegoatTree<_use_parent, TTData, TTInfo, TTAction, TTKey,
+                                TTNodesManager>> {
  public:
   static const bool use_key = true;
   static const bool use_parent = _use_parent;
@@ -39,8 +39,8 @@ class ScapegoatTree
       Node<TData, TInfo, TAction, use_key, use_parent, use_height, TKey>;
   using TSelf =
       ScapegoatTree<use_parent, TData, TInfo, TAction, TKey, TTNodesManager>;
-  using TTree = Tree<TNode, TTNodesManager, TSelf>;
-  friend class Tree<TNode, TTNodesManager, TSelf>;
+  using TTree = Tree<TTNodesManager<TNode>, TSelf>;
+  friend class Tree<TTNodesManager<TNode>, TSelf>;
 
  public:
   ScapegoatTree(unsigned max_nodes) : TTree(max_nodes) {}

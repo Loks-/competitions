@@ -16,9 +16,9 @@ template <bool _use_key, bool _use_parent, class TTData,
           class TTInfo = info::Size, class TTAction = action::None,
           class TTKey = int64_t,
           template <class> class TTNodesManager = NodesManagerFixedSize>
-class Treap : public Tree<Node<TTData, TTInfo, TTAction, _use_key, _use_parent,
-                               true, TTKey, unsigned>,
-                          TTNodesManager,
+class Treap : public Tree<
+                          TTNodesManager<Node<TTData, TTInfo, TTAction, _use_key, _use_parent,
+                               true, TTKey, unsigned>>,
                           Treap<_use_key, _use_parent, TTData, TTInfo, TTAction,
                                 TTKey, TTNodesManager>> {
  public:
@@ -34,8 +34,8 @@ class Treap : public Tree<Node<TTData, TTInfo, TTAction, _use_key, _use_parent,
                      TKey, unsigned>;
   using TSelf =
       Treap<use_key, use_parent, TData, TInfo, TAction, TKey, TTNodesManager>;
-  using TTree = Tree<TNode, TTNodesManager, TSelf>;
-  friend class Tree<TNode, TTNodesManager, TSelf>;
+  using TTree = Tree<TTNodesManager<TNode>, TSelf>;
+  friend class Tree<TTNodesManager<TNode>, TSelf>;
 
  public:
   Treap(unsigned max_nodes) : TTree(max_nodes) {}

@@ -14,11 +14,11 @@ namespace bst {
 template <bool _use_parent, class TTData, class TTInfo = info::Size,
           class TTAction = action::None, class TTKey = int64_t,
           template <class> class TTNodesManager = NodesManagerFixedSize>
-class AVLTree : public Tree<Node<TTData, info::Height<TTInfo>, TTAction, true,
-                                 _use_parent, false, TTKey>,
-                            TTNodesManager,
-                            AVLTree<_use_parent, TTData, TTInfo, TTAction,
-                                    TTKey, TTNodesManager>> {
+class AVLTree
+    : public Tree<TTNodesManager<Node<TTData, info::Height<TTInfo>, TTAction,
+                                      true, _use_parent, false, TTKey>>,
+                  AVLTree<_use_parent, TTData, TTInfo, TTAction, TTKey,
+                          TTNodesManager>> {
  public:
   static const bool use_key = true;
   static const bool use_parent = _use_parent;
@@ -32,8 +32,8 @@ class AVLTree : public Tree<Node<TTData, info::Height<TTInfo>, TTAction, true,
       Node<TData, TInfo, TAction, use_key, use_parent, use_height, TKey>;
   using TSelf =
       AVLTree<use_parent, TData, TTInfo, TAction, TKey, TTNodesManager>;
-  using TTree = Tree<TNode, TTNodesManager, TSelf>;
-  friend class Tree<TNode, TTNodesManager, TSelf>;
+  using TTree = Tree<TTNodesManager<TNode>, TSelf>;
+  friend class Tree<TTNodesManager<TNode>, TSelf>;
 
  public:
   AVLTree(unsigned max_nodes) : TTree(max_nodes) {}

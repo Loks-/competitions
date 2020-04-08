@@ -14,6 +14,7 @@
 #include "common/binary_search_tree/node.h"
 #include "common/binary_search_tree/tree.h"
 #include "common/nodes_manager_fixed_size.h"
+
 #include <algorithm>
 #include <utility>
 #include <vector>
@@ -23,9 +24,8 @@ template <bool _use_parent, class TTData, class TTInfo = info::Size,
           class TTAction = action::None, class TTKey = int64_t,
           template <class> class TTNodesManager = NodesManagerFixedSize>
 class RedBlackTree
-    : public Tree<Node<TTData, info::RBTColor<TTInfo>, TTAction, true,
-                       _use_parent, false, TTKey>,
-                  TTNodesManager,
+    : public Tree<TTNodesManager<Node<TTData, info::RBTColor<TTInfo>, TTAction,
+                                      true, _use_parent, false, TTKey>>,
                   RedBlackTree<_use_parent, TTData, TTInfo, TTAction, TTKey,
                                TTNodesManager>> {
  public:
@@ -41,8 +41,8 @@ class RedBlackTree
       Node<TData, TInfo, TAction, use_key, use_parent, use_height, TKey>;
   using TSelf =
       RedBlackTree<use_parent, TData, TTInfo, TAction, TKey, TTNodesManager>;
-  using TTree = Tree<TNode, TTNodesManager, TSelf>;
-  friend class Tree<TNode, TTNodesManager, TSelf>;
+  using TTree = Tree<TTNodesManager<TNode>, TSelf>;
+  friend class Tree<TTNodesManager<TNode>, TSelf>;
 
  public:
   RedBlackTree(unsigned max_nodes) : TTree(max_nodes) {}

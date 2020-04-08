@@ -6,6 +6,7 @@
 #include "common/binary_search_tree/node.h"
 #include "common/binary_search_tree/tree.h"
 #include "common/nodes_manager_fixed_size.h"
+
 #include <algorithm>
 #include <utility>
 #include <vector>
@@ -14,10 +15,9 @@ namespace bst {
 template <bool _use_parent, class TTData, class TTInfo = info::Size,
           class TTAction = action::None, class TTKey = int64_t>
 class FixedTree
-    : protected Tree<
-          Node<TTData, TTInfo, TTAction, true, _use_parent, false, TTKey>,
-          NodesManagerFixedSize,
-          FixedTree<_use_parent, TTData, TTInfo, TTAction, TTKey>> {
+    : protected Tree<NodesManagerFixedSize<Node<TTData, TTInfo, TTAction, true,
+                                                _use_parent, false, TTKey>>,
+                     FixedTree<_use_parent, TTData, TTInfo, TTAction, TTKey>> {
  public:
   static const bool use_key = true;
   static const bool use_parent = _use_parent;
@@ -30,8 +30,8 @@ class FixedTree
   using TNode =
       Node<TData, TInfo, TAction, use_key, use_parent, use_height, TKey>;
   using TSelf = FixedTree<use_parent, TData, TTInfo, TAction, TKey>;
-  using TTree = Tree<TNode, NodesManagerFixedSize, TSelf>;
-  friend class Tree<TNode, NodesManagerFixedSize, TSelf>;
+  using TTree = Tree<NodesManagerFixedSize<TNode>, TSelf>;
+  friend class Tree<NodesManagerFixedSize<TNode>, TSelf>;
 
  public:
   FixedTree(unsigned max_nodes) : TTree(max_nodes) {}
