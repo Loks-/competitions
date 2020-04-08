@@ -1,9 +1,11 @@
 #pragma once
 
+#include "common/base.h"
+
 namespace bst {
 template <class TTree, class TActionValue>
 inline typename TTree::TNode* AddActionToSegment(
-    typename TTree::TNode* root, unsigned begin, unsigned end,
+    typename TTree::TNode* root, size_t begin, size_t end,
     const TActionValue& action_value) {
   using TNode = typename TTree::TNode;
   TNode *l, *m, *r;

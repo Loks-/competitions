@@ -8,6 +8,7 @@
 #include "common/binary_search_tree/node.h"
 #include "common/binary_search_tree/tree.h"
 #include "common/nodes_manager_fixed_size.h"
+
 #include <stack>
 #include <vector>
 
@@ -16,11 +17,11 @@ template <bool _use_key, bool _use_parent, class TTData,
           class TTInfo = info::Size, class TTAction = action::None,
           class TTKey = int64_t,
           template <class> class TTNodesManager = NodesManagerFixedSize>
-class Treap : public Tree<
-                          TTNodesManager<Node<TTData, TTInfo, TTAction, _use_key, _use_parent,
-                               true, TTKey, unsigned>>,
-                          Treap<_use_key, _use_parent, TTData, TTInfo, TTAction,
-                                TTKey, TTNodesManager>> {
+class Treap
+    : public Tree<TTNodesManager<Node<TTData, TTInfo, TTAction, _use_key,
+                                      _use_parent, true, TTKey, unsigned>>,
+                  Treap<_use_key, _use_parent, TTData, TTInfo, TTAction, TTKey,
+                        TTNodesManager>> {
  public:
   static const bool use_key = _use_key;
   static const bool use_parent = _use_parent;
@@ -38,7 +39,7 @@ class Treap : public Tree<
   friend class Tree<TTNodesManager<TNode>, TSelf>;
 
  public:
-  Treap(unsigned max_nodes) : TTree(max_nodes) {}
+  Treap(size_t max_nodes) : TTree(max_nodes) {}
 
  public:
   static TNode* BuildTree(const std::vector<TNode*>& nodes) {
@@ -47,7 +48,7 @@ class Treap : public Tree<
     TNode* plast = proot;
     std::stack<TNode*> s;
     s.push(proot);
-    for (unsigned j = 1; j < nodes.size(); ++j) {
+    for (size_t j = 1; j < nodes.size(); ++j) {
       TNode* pj = nodes[j];
       if (pj->height < plast->height) {
         plast->SetR(pj);
@@ -140,10 +141,10 @@ class Treap : public Tree<
   }
 
  protected:
-  static void SplitBySizeI(TNode* p, unsigned lsize, TNode*& output_l,
+  static void SplitBySizeI(TNode* p, size_t lsize, TNode*& output_l,
                            TNode*& output_r) {
     p->ApplyAction();
-    unsigned hlsize = (p->l ? p->l->info.size : 0);
+    size_t hlsize = (p->l ? p->l->info.size : 0);
     if (lsize < hlsize) {
       output_r = p;
       SplitBySizeI(p->l, lsize, output_l, p->l);
@@ -165,7 +166,7 @@ class Treap : public Tree<
   }
 
  public:
-  static void SplitBySize(TNode* root, unsigned lsize, TNode*& output_l,
+  static void SplitBySize(TNode* root, size_t lsize, TNode*& output_l,
                           TNode*& output_r) {
     static_assert(TInfo::has_size, "info should contain size");
     if (!root) {

@@ -23,7 +23,7 @@ class Tree : public TTNodesManager {
   static const bool use_parent = TNode::use_parent;
 
  public:
-  Tree(unsigned max_nodes) : TNodesManager(max_nodes) {}
+  Tree(size_t max_nodes) : TNodesManager(max_nodes) {}
   TMe* Me() { return static_cast<TMe*>(this); }
   const TMe* Me() const { return static_cast<const TMe*>(this); }
 
@@ -46,14 +46,14 @@ class Tree : public TTNodesManager {
   }
 
   static TNode* BuildTree(const std::vector<TNode*>& vnodes) {
-    return BuildTreeI(vnodes, 0, unsigned(vnodes.size()));
+    return BuildTreeI(vnodes, 0, vnodes.size());
   }
 
   TNode* Build(const std::vector<TData>& data) {
     TNodesManager::ReserveAdditional(data.size());
     if (data.size() == 0) return nullptr;
     std::vector<TNode*> v(data.size());
-    for (unsigned i = 0; i < data.size(); ++i) v[i] = New(data[i]);
+    for (size_t i = 0; i < data.size(); ++i) v[i] = New(data[i]);
     return TMe::BuildTree(v);
   }
 
@@ -63,11 +63,11 @@ class Tree : public TTNodesManager {
     TNodesManager::ReserveAdditional(data.size());
     if (data.size() == 0) return nullptr;
     std::vector<std::pair<TKey, TNode*>> vp(data.size());
-    for (unsigned i = 0; i < data.size(); ++i)
+    for (size_t i = 0; i < data.size(); ++i)
       vp[i] = std::make_pair(keys[i], New(data[i], keys[i]));
     std::sort(vp.begin(), vp.end());
     std::vector<TNode*> v(vp.size());
-    for (unsigned i = 0; i < vp.size(); ++i) v[i] = vp[i].second;
+    for (size_t i = 0; i < vp.size(); ++i) v[i] = vp[i].second;
     return TMe::BuildTree(v);
   }
 
@@ -75,7 +75,7 @@ class Tree : public TTNodesManager {
     return bst::FindByKey(root, key);
   }
 
-  static TNode* FindByOrder(TNode* root, unsigned order_index) {
+  static TNode* FindByOrder(TNode* root, size_t order_index) {
     return bst::FindByOrder(root, order_index);
   }
 
@@ -95,7 +95,7 @@ class Tree : public TTNodesManager {
     return TMe::RemoveByKeyI(root, key, removed_node, TFakeBool<use_parent>());
   }
 
-  static TNode* RemoveByOrder(TNode* root, unsigned order_index,
+  static TNode* RemoveByOrder(TNode* root, size_t order_index,
                               TNode*& removed_node) {
     return TMe::RemoveByOrderI(root, order_index, removed_node,
                                TFakeBool<use_parent>());
@@ -114,7 +114,7 @@ class Tree : public TTNodesManager {
     return new_root;
   }
 
-  TNode* RemoveAndReleaseByOrder(TNode* root, unsigned order_index) {
+  TNode* RemoveAndReleaseByOrder(TNode* root, size_t order_index) {
     TNode *removed_node = nullptr,
           *new_root = TMe::RemoveByOrder(root, order_index, removed_node);
     if (removed_node) TNodesManager::Release(removed_node);
@@ -130,10 +130,10 @@ class Tree : public TTNodesManager {
   }
 
  protected:
-  static TNode* BuildTreeI(const std::vector<TNode*>& vnodes, unsigned first,
-                           unsigned last) {
+  static TNode* BuildTreeI(const std::vector<TNode*>& vnodes, size_t first,
+                           size_t last) {
     if (first >= last) return nullptr;
-    unsigned m = (first + last) / 2;
+    size_t m = (first + last) / 2;
     TNode* root = vnodes[m];
     root->SetL(BuildTreeI(vnodes, first, m));
     root->SetR(BuildTreeI(vnodes, m + 1, last));
@@ -147,7 +147,7 @@ class Tree : public TTNodesManager {
     return (removed_node ? TMe::RemoveByNode(removed_node) : root);
   }
 
-  static TNode* RemoveByOrderI(TNode* root, unsigned order_index,
+  static TNode* RemoveByOrderI(TNode* root, size_t order_index,
                                TNode*& removed_node, TFakeTrue) {
     removed_node = TMe::FindByOrder(root, order_index);
     return (removed_node ? TMe::RemoveByNode(removed_node) : root);

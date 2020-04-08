@@ -5,8 +5,8 @@
 namespace bst {
 // Swap intervals [first, middle) and [middle, last)
 template <class TTree>
-inline void SwapIntervals(typename TTree::TNode*& root, unsigned first,
-                          unsigned middle, unsigned last) {
+inline void SwapIntervals(typename TTree::TNode*& root, size_t first,
+                          size_t middle, size_t last) {
   static_assert(!TTree::use_key, "use_key should be false");
   if ((middle <= first) || (middle >= last)) return;
   typename TTree::TNode *p1, *p2, *p3, *p4;
@@ -18,8 +18,8 @@ inline void SwapIntervals(typename TTree::TNode*& root, unsigned first,
 
 // Rotate elements in interval [first, last) to right by shift
 template <class TTree>
-inline void IntervalRotateRight(typename TTree::TNode*& root, unsigned first,
-                                unsigned last, unsigned shift) {
+inline void IntervalRotateRight(typename TTree::TNode*& root, size_t first,
+                                size_t last, size_t shift) {
   assert(last > first);
   shift %= (last - first);
   if (shift == 0) return;
@@ -28,8 +28,8 @@ inline void IntervalRotateRight(typename TTree::TNode*& root, unsigned first,
 
 // Rotate elements in interval [first, last) to right by shift
 template <class TTree>
-inline void IntervalRotateLeft(typename TTree::TNode*& root, unsigned first,
-                               unsigned last, unsigned shift) {
+inline void IntervalRotateLeft(typename TTree::TNode*& root, size_t first,
+                               size_t last, size_t shift) {
   assert(last > first);
   shift %= (last - first);
   if (shift == 0) return;

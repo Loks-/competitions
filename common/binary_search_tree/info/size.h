@@ -1,5 +1,6 @@
 #pragma once
 
+#include "common/base.h"
 #include "common/binary_search_tree/info/none.h"
 
 namespace bst {
@@ -10,7 +11,7 @@ class Size : public None {
   static const bool is_none = false;
   static const bool has_size = true;
 
-  unsigned size = 0;
+  size_t size = 0;
 
   template <class TNode>
   void Update(TNode* node) {

@@ -45,10 +45,10 @@ class RedBlackTree
   friend class Tree<TTNodesManager<TNode>, TSelf>;
 
  public:
-  RedBlackTree(unsigned max_nodes) : TTree(max_nodes) {}
+  RedBlackTree(size_t max_nodes) : TTree(max_nodes) {}
 
  protected:
-  static void BuildTreeIFixColorsR(TNode* root, unsigned height) {
+  static void BuildTreeIFixColorsR(TNode* root, size_t height) {
     assert(root || !height);
     if (!root) return;
     if (height) {
@@ -64,8 +64,8 @@ class RedBlackTree
  public:
   static TNode* BuildTree(const std::vector<TNode*>& nodes) {
     if (nodes.size() == 0) return nullptr;
-    unsigned h = 0;
-    for (; unsigned(nodes.size()) >= (1u << h);) ++h;
+    size_t h = 0;
+    for (; nodes.size() >= (1ull << h);) ++h;
     TNode* root = TTree::BuildTree(nodes);
     BuildTreeIFixColorsR(root, h - 1);
     root->info.black = true;
@@ -104,7 +104,7 @@ class RedBlackTree
     UpdateInfoNodeToRootWithPath(node_to_root_path, 1);
     node_to_root_path.push_back(nullptr);
     node->info.black = false;
-    for (unsigned node_index = 1;;) {
+    for (size_t node_index = 1;;) {
       TNode* parent = node_to_root_path[node_index++];
       if (!parent) {
         node->info.black = true;
@@ -196,7 +196,7 @@ class RedBlackTree
 
     // Optional swap
     if (node->l && node->r) {
-      unsigned node_index = unsigned(node_to_root_path.size() - 1);
+      size_t node_index = node_to_root_path.size() - 1;
       TNode* temp = node->l;
       for (temp->ApplyAction(); temp->r;) {
         node_to_root_path.push_back(temp);
@@ -230,7 +230,7 @@ class RedBlackTree
 
     // Fix colors
     node_to_root_path.push_back(nullptr);
-    unsigned current_index = 2;
+    size_t current_index = 2;
     if (!node->info.black) return (parent ? root : child);
     for (;;) {
       if (child && !child->info.black) {

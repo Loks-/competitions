@@ -43,7 +43,7 @@ class ScapegoatTree
   friend class Tree<TTNodesManager<TNode>, TSelf>;
 
  public:
-  ScapegoatTree(unsigned max_nodes) : TTree(max_nodes) {}
+  ScapegoatTree(size_t max_nodes) : TTree(max_nodes) {}
 
  protected:
   static void TraverseInorder(TNode* node, std::vector<TNode*>& output) {

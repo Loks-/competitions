@@ -14,8 +14,8 @@ template <bool _use_key, class TTData, class TTInfo = info::Size,
           class TTAction = action::None, class TTKey = int64_t,
           template <class> class TTNodesManager = NodesManagerFixedSize>
 class SplayTree
-    : public Tree<
-                  TTNodesManager<Node<TTData, TTInfo, TTAction, _use_key, true, false, TTKey>>,
+    : public Tree<TTNodesManager<Node<TTData, TTInfo, TTAction, _use_key, true,
+                                      false, TTKey>>,
                   SplayTree<_use_key, TTData, TTInfo, TTAction, TTKey,
                             TTNodesManager>> {
  public:
@@ -33,7 +33,7 @@ class SplayTree
   using TTree = Tree<TTNodesManager<TNode>, TSelf>;
 
  public:
-  SplayTree(unsigned max_nodes) : TTree(max_nodes) {}
+  SplayTree(size_t max_nodes) : TTree(max_nodes) {}
 
   // Splay assumes that actions are already applied from root to node.
   static void Splay(TNode* node) {
@@ -136,13 +136,13 @@ class SplayTree
     output_r = (p ? Split(p) : root);
   }
 
-  static TNode* FindByOrder(TNode*& root, unsigned order_index) {
+  static TNode* FindByOrder(TNode*& root, size_t order_index) {
     static_assert(TInfo::has_size, "info should contain size");
     if (!root) return nullptr;
     if (order_index >= root->info.size) return nullptr;
     for (TNode* node = root; node;) {
       node->ApplyAction();
-      unsigned ls = (node->l ? node->l->info.size : 0);
+      size_t ls = (node->l ? node->l->info.size : 0);
       if (order_index < ls) {
         node = node->l;
       } else if (order_index == ls) {
@@ -158,7 +158,7 @@ class SplayTree
     return nullptr;
   }
 
-  static void SplitBySize(TNode* root, unsigned lsize, TNode*& output_l,
+  static void SplitBySize(TNode* root, size_t lsize, TNode*& output_l,
                           TNode*& output_r) {
     static_assert(TInfo::has_size, "info should contain size");
     if (!root) {

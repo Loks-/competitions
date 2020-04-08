@@ -1,5 +1,6 @@
 #pragma once
 
+#include "common/base.h"
 #include "common/binary_search_tree/action/none.h"
 
 namespace bst {
@@ -8,11 +9,11 @@ namespace action {
 class RotateVector : public None {
  protected:
   template <class TVector>
-  static void Rotate(TVector& v, unsigned r) {
+  static void Rotate(TVector& v, size_t r) {
     if (r == 0) return;
     thread_local TVector vt;
-    unsigned size = v.Size();
-    for (unsigned i = 0; i < size; ++i) vt((i + r) % size) = v(i);
+    size_t size = v.Size();
+    for (size_t i = 0; i < size; ++i) vt((i + r) % size) = v(i);
     v.swap(vt);
   }
 
@@ -21,13 +22,13 @@ class RotateVector : public None {
   using TSelf = RotateVector;
   static const bool is_none = false;
 
-  unsigned r = 0;
+  size_t r = 0;
 
   bool IsEmpty() const { return r == 0; }
   void Clear() { r = 0; };
 
   template <class TNode>
-  void Add(TNode* node, unsigned _r) {
+  void Add(TNode* node, size_t _r) {
     Rotate(node->info.sum, _r);
     r = (r + _r) % node->info.sum.Size();
   }

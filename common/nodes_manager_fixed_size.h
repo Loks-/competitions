@@ -1,6 +1,7 @@
 #pragma once
 
 #include "common/base.h"
+
 #include <stack>
 #include <vector>
 
@@ -11,21 +12,17 @@ class NodesManagerFixedSize {
 
  protected:
   std::vector<TNode> nodes;
-  unsigned used_nodes;
+  size_t used_nodes;
   std::stack<TNode*> released_nodes;
   TNode* first;
 
  public:
-  NodesManagerFixedSize(unsigned max_nodes)
+  NodesManagerFixedSize(size_t max_nodes)
       : nodes(max_nodes), used_nodes(0), first(&nodes[0]) {}
 
-  void Reserve(unsigned new_max_nodes) {
-    assert(new_max_nodes <= nodes.size());
-  }
+  void Reserve(size_t new_max_nodes) { assert(new_max_nodes <= nodes.size()); }
 
-  void ReserveAdditional(unsigned new_nodes) {
-    assert(new_nodes <= Reserved());
-  }
+  void ReserveAdditional(size_t new_nodes) { assert(new_nodes <= Reserved()); }
 
   TNode* New() {
     if (!released_nodes.empty()) {
@@ -46,15 +43,13 @@ class NodesManagerFixedSize {
     released_nodes.push(p);
   }
 
-  unsigned Size() const { return unsigned(nodes.size()); }
+  size_t Size() const { return nodes.size(); }
+  size_t Used() const { return used_nodes - released_nodes.size(); }
+  size_t Reserved() const { return Size() - Used(); }
 
-  unsigned Used() const { return used_nodes - unsigned(released_nodes.size()); }
-
-  unsigned Reserved() const { return Size() - Used(); }
-
-  TNode* NodeByRawIndex(unsigned index) { return first + index; }
-  const TNode* NodeByRawIndex(unsigned index) const { return first + index; }
-  unsigned RawIndex(const TNode* node) const { return node - first; }
+  TNode* NodeByRawIndex(size_t index) { return first + index; }
+  const TNode* NodeByRawIndex(size_t index) const { return first + index; }
+  size_t RawIndex(const TNode* node) const { return node - first; }
 
   void ResetNodes() {
     std::stack<TNode*>().swap(released_nodes);
