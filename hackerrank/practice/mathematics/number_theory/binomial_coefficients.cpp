@@ -13,7 +13,7 @@ int main_binomial_coefficients() {
       unsigned k = t % P;
       r *= (1 + k);
     }
-    cout << (n + 1 - r) << endl;
+    cout << (n + 1u - r) << endl;
   }
   return 0;
 }

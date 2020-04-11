@@ -19,11 +19,11 @@ class Unsigned {
 
   Unsigned() {}
 
-  Unsigned(uint32_t u) {
+  explicit Unsigned(uint32_t u) {
     if (u) data.push_back(u);
   }
 
-  Unsigned(uint64_t u) {
+  explicit Unsigned(uint64_t u) {
     data.push_back(uint32_t(u));
     data.push_back(uint32_t(u >> 32));
     Normalize();
@@ -63,7 +63,19 @@ class Unsigned {
   bool operator<=(const Unsigned& lu) const { return !(lu < *this); }
   bool operator>=(const Unsigned& lu) const { return !(*this < lu); }
 
-  Unsigned operator+(uint64_t u) const {
+  uint32_t ToUint32() const {
+    assert(data.size() <= 1);
+    return (data.size() > 0) ? data[0] : 0;
+  }
+
+  uint64_t ToUint64() const {
+    assert(data.size() <= 2);
+    uint64_t r = (data.size() > 1) ? data[1] : 0;
+    r <<= 32;
+    return r + ((data.size() > 0) ? data[0] : 0);
+  }
+
+  Unsigned operator+(uint32_t u) const {
     if (u == 0) return (*this);
     Unsigned lu;
     lu.data.reserve(data.size());
@@ -76,6 +88,8 @@ class Unsigned {
     if (t64) lu.data.push_back(uint32_t(t64));
     return lu;
   }
+
+  Unsigned operator+(uint64_t u) const { return *this + Unsigned(u); }
 
   Unsigned operator*(uint32_t u) const {
     if (u == 0) return Unsigned();
