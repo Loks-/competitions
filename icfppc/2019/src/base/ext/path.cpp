@@ -3,7 +3,7 @@
 #include "base/action.h"
 #include "base/action_type.h"
 #include "base/ext/map.h"
-#include "common/unsigned_set.h"
+#include "common/data_structures/unsigned_set.h"
 #include <queue>
 #include <utility>
 
@@ -13,7 +13,7 @@ Action Path::PathToTarget(const Map& m, unsigned from, TTarget target) {
   // (current, first_move)
   thread_local std::queue<std::pair<unsigned, unsigned>> q;
   for (; !q.empty();) q.pop();
-  thread_local UnsignedSet s;
+  thread_local ds::UnsignedSet s;
   if (s.Size() < m.Size()) s.Resize(m.Size());
   s.Clear();
 
@@ -39,7 +39,7 @@ Action Path::PathToTarget(const Map& m, unsigned from, TTarget target) {
 }
 
 Action Path::PathToTarget(const Map& m, unsigned from,
-                          const UnsignedSet& target) {
+                          const ds::UnsignedSet& target) {
   auto f = [target](unsigned u) { return target.HasKey(u); };
   return PathToTarget(m, from, f);
 }

@@ -1,7 +1,7 @@
+#include "common/data_structures/unsigned_set.h"
 #include "common/linear_algebra/matrix.h"
 #include "common/linear_algebra/utils/read.h"
 #include "common/stl/base.h"
-#include "common/unsigned_set.h"
 
 int main_vestigium() {
   unsigned T, N;
@@ -10,7 +10,7 @@ int main_vestigium() {
     cin >> N;
     auto M = ReadMatrix<unsigned>(N);
     unsigned t = 0, r = 0, c = 0;
-    UnsignedSet sr(N + 1), sc(N + 1);
+    ds::UnsignedSet sr(N + 1), sc(N + 1);
     for (unsigned i = 0; i < N; ++i) {
       t += M(i, i);
       for (unsigned j = 0; j < N; ++j) {

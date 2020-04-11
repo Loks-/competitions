@@ -1,10 +1,10 @@
+#include "common/data_structures/unsigned_set.h"
 #include "common/numeric/utils/pow.h"
 #include "common/stl/base.h"
-#include "common/unsigned_set.h"
 
 int main_zilionim() {
   uint64_t B = PowU<uint64_t>(10, 10), N = PowU<uint64_t>(10, 12);
-  UnsignedSet us(100);
+  ds::UnsignedSet us(100);
   vector<pair<uint64_t, unsigned>> vp;
   vp.push_back({0, 0});
   vp.push_back({B - 1, 0});

@@ -3,6 +3,7 @@
 #include "common/base.h"
 #include <vector>
 
+namespace ds {
 class UnsignedMultiSet {
  protected:
   std::vector<unsigned> vcount;
@@ -32,3 +33,4 @@ class UnsignedMultiSet {
     vlist.clear();
   }
 };
+}  // namespace ds

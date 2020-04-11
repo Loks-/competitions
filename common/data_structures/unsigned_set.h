@@ -3,6 +3,7 @@
 #include "common/base.h"
 #include <vector>
 
+namespace ds {
 class UnsignedSet {
  protected:
   std::vector<unsigned> vset;
@@ -63,3 +64,4 @@ class UnsignedSet {
     vlist.swap(s.vlist);
   }
 };
+}  // namespace ds

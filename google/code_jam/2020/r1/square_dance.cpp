@@ -1,6 +1,6 @@
 #include "common/cover/dlvmatrix.h"
+#include "common/data_structures/unsigned_set.h"
 #include "common/stl/base.h"
-#include "common/unsigned_set.h"
 
 using DLMatrix = cover::DLVMatrix<unsigned>;
 using Node = DLMatrix::Node;
@@ -20,7 +20,7 @@ int main_square_dance() {
         score_round += s;
       }
     }
-    UnsignedSet this_round(nodes.size()), next_round(nodes.size());
+    ds::UnsignedSet this_round(nodes.size()), next_round(nodes.size());
     for (unsigned i = 0; i < nodes.size(); ++i) next_round.Insert(i);
 
     std::vector<Node*> neighbors;

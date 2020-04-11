@@ -1,6 +1,7 @@
 #pragma once
 
 #include "base/action.h"
+#include "common/data_structures/unsigned_set.h"
 #include <functional>
 
 class UnsignedSet;
@@ -15,7 +16,7 @@ class Path {
 
   static Action PathToTarget(const Map& m, unsigned from, TTarget target);
   static Action PathToTarget(const Map& m, unsigned from,
-                             const UnsignedSet& target);
+                             const ds::UnsignedSet& target);
 };
 }  // namespace ext
 }  // namespace base

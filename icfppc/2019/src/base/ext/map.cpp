@@ -6,8 +6,8 @@
 #include "base/ext/event_type.h"
 #include "base/point.h"
 #include "common/assert_exception.h"
+#include "common/data_structures/unsigned_set.h"
 #include "common/string/split.h"
-#include "common/unsigned_set.h"
 #include <cassert>
 #include <string>
 
@@ -110,7 +110,7 @@ const std::vector<unsigned>& Map::GEdges(unsigned from) const {
 
 bool Map::Unwrapped(unsigned index) const { return unwrapped.HasKey(index); }
 
-const UnsignedSet& Map::Unwrapped() const { return unwrapped; }
+const ds::UnsignedSet& Map::Unwrapped() const { return unwrapped; }
 
 const std::vector<Event>& Map::Events() const { return events; }
 }  // namespace ext

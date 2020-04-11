@@ -1,9 +1,9 @@
 // https://www.hackerrank.com/challenges/toll-cost-digits
 
+#include "common/data_structures/unsigned_set.h"
 #include "common/graph/graph.h"
 #include "common/graph/graph/connected_components.h"
 #include "common/stl/base.h"
-#include "common/unsigned_set.h"
 
 int main_toll_cost_digits() {
   unsigned n, m;
@@ -16,7 +16,7 @@ int main_toll_cost_digits() {
       g.AddEdge(10 * (x - 1) + d, 10 * (y - 1) + ((d + p) % 10));
     }
   }
-  UnsignedSet us(n);
+  ds::UnsignedSet us(n);
   vector<uint64_t> vd(10), vdc(10);
   auto gcc = ConnectedComponents(g);
   for (const auto& gc : gcc) {

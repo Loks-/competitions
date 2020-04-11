@@ -3,7 +3,7 @@
 #include "base/action.h"
 #include "base/ext/world.h"
 #include "solvers/worker/base.h"
-#include "common/unsigned_set.h"
+#include "common/data_structures/unsigned_set.h"
 #include <string>
 
 namespace solvers {
@@ -17,7 +17,7 @@ class Simple : public Base {
   std::string Name() const override;
 
   static base::Action NextMove(base::ext::World& world,
-                               const UnsignedSet& required);
+                               const ds::UnsignedSet& required);
 
   base::ActionsList Solve(base::ext::World& world) override;
 };

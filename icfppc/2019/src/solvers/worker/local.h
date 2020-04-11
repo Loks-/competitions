@@ -4,7 +4,7 @@
 #include "base/ext/world.h"
 #include "solvers/worker/simple.h"
 #include "common/data_structures/disjoint_set.h"
-#include "common/unsigned_set.h"
+#include "common/data_structures/unsigned_set.h"
 #include <string>
 
 namespace solvers {
@@ -12,7 +12,7 @@ namespace worker {
 class Local : public Simple {
  protected:
   ds::DisjointSet unwrapped_ds;
-  UnsignedSet target;
+  ds::UnsignedSet target;
   unsigned events_index;
 
  protected:
