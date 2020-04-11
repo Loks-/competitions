@@ -57,4 +57,9 @@ class UnsignedSet {
     vset.resize(new_size);
     vlist.reserve(new_size);
   }
+
+  void Swap(UnsignedSet& s) {
+    vset.swap(s.vset);
+    vlist.swap(s.vlist);
+  }
 };

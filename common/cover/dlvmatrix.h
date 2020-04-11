@@ -5,15 +5,20 @@
 #include <vector>
 
 namespace cover {
-class DLMatrix {
+template <class TTValue>
+class DLVMatrix {
  public:
+  using TValue = TTValue;
+
   class Node {
    public:
     Node *l, *r, *u, *d;
     size_t row;
     size_t column;
+    TValue value;
 
-    Node(size_t row_, size_t column_) : row(row_), column(column_) {}
+    Node(size_t row_, size_t column_, const TValue& value_)
+        : row(row_), column(column_), value(value_) {}
 
     void ResetLinks() { l = r = u = d = this; }
   };
@@ -29,8 +34,8 @@ class DLMatrix {
   Node* header;
 
  protected:
-  Node* NewNode(size_t row, size_t column) {
-    nodes.push_back(Node(row, column));
+  Node* NewNode(size_t row, size_t column, const TValue& value) {
+    nodes.push_back(Node(row, column, value));
     nodes.back().ResetLinks();
     return &(nodes.back());
   }
@@ -47,13 +52,13 @@ class DLMatrix {
     header = nullptr;
   }
 
-  void Init(size_t rows, size_t columns) {
+  void Init(size_t rows, size_t columns, const TValue& headers_value) {
     Clear();
     nrows = rows;
     ncolumns = columns;
-    header = NewNode(nrows, ncolumns);
+    header = NewNode(nrows, ncolumns, headers_value);
     for (size_t i = 0; i < nrows; ++i)
-      headers_rows.push_back(NewNode(i, ncolumns));
+      headers_rows.push_back(NewNode(i, ncolumns, headers_value));
     headers_rows.push_back(header);
     for (size_t i = 0; i <= nrows; ++i) {
       size_t j = (i + 1) % (nrows + 1);
@@ -61,7 +66,7 @@ class DLMatrix {
       headers_rows[j]->u = headers_rows[i];
     }
     for (size_t i = 0; i < ncolumns; ++i)
-      headers_columns.push_back(NewNode(nrows, i));
+      headers_columns.push_back(NewNode(nrows, i, headers_value));
     headers_columns.push_back(header);
     for (size_t i = 0; i <= ncolumns; ++i) {
       size_t j = (i + 1) % (ncolumns + 1);
@@ -74,8 +79,10 @@ class DLMatrix {
     count_columns.back() = nrows + 1;
   }
 
-  DLMatrix() { Clear(); }
-  DLMatrix(size_t rows, size_t columns) { Init(rows, columns); }
+  DLVMatrix() { Clear(); }
+  DLVMatrix(size_t rows, size_t columns, const TValue& headers_value) {
+    Init(rows, columns, headers_value);
+  }
 
   bool IsHeader(const Node* node) const {
     return (node->row == nrows) || (node->column == ncolumns);
@@ -103,9 +110,9 @@ class DLMatrix {
     return (node->r->l == node) && (node->u->d == node);
   }
 
-  Node* Add(size_t row, size_t column) {
+  Node* Add(size_t row, size_t column, const TValue& value) {
     assert((row < nrows) && (column < ncolumns));
-    auto node = NewNode(row, column);
+    auto node = NewNode(row, column, value);
     auto hrow = headers_rows[row], hcolumn = headers_columns[column];
     node->r = hrow;
     node->l = hrow->l;
