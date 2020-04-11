@@ -1,5 +1,5 @@
 #include "common/cover/dlvmatrix.h"
-#include "common/stl/full.h"
+#include "common/stl/base.h"
 #include "common/unsigned_set.h"
 
 using DLMatrix = cover::DLVMatrix<unsigned>;
