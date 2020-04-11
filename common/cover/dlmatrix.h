@@ -4,8 +4,6 @@
 #include <deque>
 #include <vector>
 
-// #include <iostream>
-
 namespace cover {
 class DLMatrix {
  public:
@@ -33,8 +31,6 @@ class DLMatrix {
  protected:
   Node* NewNode(size_t row, size_t column) {
     nodes.push_back(Node(row, column));
-    // std::cout << "New node created: " << &nodes.back() << " "
-    //           << nodes.back().row << " " << nodes.back().column << std::endl;
     nodes.back().ResetLinks();
     return &(nodes.back());
   }
