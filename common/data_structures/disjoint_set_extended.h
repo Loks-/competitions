@@ -3,6 +3,7 @@
 #include <unordered_map>
 #include <vector>
 
+namespace ds {
 template <class TTData>
 class DisjointSetExtended {
  public:
@@ -73,3 +74,4 @@ class DisjointSetExtended {
     }
   }
 };
+}  // namespace ds

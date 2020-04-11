@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <vector>
 
+namespace ds {
 class DisjointSet {
  protected:
   unsigned n;
@@ -63,3 +64,4 @@ class DisjointSet {
     }
   }
 };
+}  // namespace ds

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "common/disjoint_set.h"
+#include "common/data_structures/disjoint_set.h"
 
 #include <stack>
 
@@ -15,7 +15,7 @@ enum EPathCompression {
 };
 
 template <EPathCompression pc>
-class DisjointSetProxy : public DisjointSet {
+class DisjointSetProxy : public ds::DisjointSet {
  protected:
   std::stack<unsigned> ts;
 

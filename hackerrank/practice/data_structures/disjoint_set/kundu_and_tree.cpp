@@ -1,21 +1,21 @@
 // https://www.hackerrank.com/challenges/kundu-and-tree
 
-#include "common/disjoint_set.h"
+#include "common/data_structures/disjoint_set.h"
 #include "common/stl/base.h"
 
 int main_kundu_and_tree() {
   unsigned N, i, j;
   char c;
   cin >> N;
-  DisjointSet ds(N);
+  ds::DisjointSet djs(N);
   for (unsigned k = 1; k < N; ++k) {
     cin >> i >> j >> c;
-    if (c == 'b') ds.Union(i - 1, j - 1);
+    if (c == 'b') djs.Union(i - 1, j - 1);
   }
-  vector<unsigned> vr = ds.GetRepresentatives();
+  vector<unsigned> vr = djs.GetRepresentatives();
   uint64_t S1 = 0, S2 = 0, S3 = 0;
   for (unsigned i = 0; i < vr.size(); ++i) {
-    uint64_t s = ds.GetSize(vr[i]);
+    uint64_t s = djs.GetSize(vr[i]);
     S1 += s;
     S2 += s * s;
     S3 += s * s * s;

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "common/disjoint_set.h"
+#include "common/data_structures/disjoint_set.h"
 #include <algorithm>
 #include <utility>
 #include <vector>
@@ -27,7 +27,7 @@ std::pair<unsigned, typename TEdgeCostFunction::TEdgeCost> Kruskal(
     for (auto e : graph.EdgesEI(u)) edges.push_back({u, e.to, f(e.info)});
   }
   std::sort(edges.begin(), edges.end());
-  DisjointSet ds(graph.Size());
+  ds::DisjointSet ds(graph.Size());
   unsigned edges_added = 0;
   TEdgeCost total_cost = TEdgeCost();
   for (const auto& e : edges) {
