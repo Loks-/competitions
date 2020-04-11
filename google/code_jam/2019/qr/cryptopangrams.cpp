@@ -1,4 +1,4 @@
-#include "common/coordinate_compression.h"
+#include "common/data_structures/coordinate_compression.h"
 #include "common/numeric/long/unsigned.h"
 #include "common/numeric/long/unsigned_gcd.h"
 #include "common/numeric/long/unsigned_hash.h"
@@ -22,7 +22,7 @@ int main_cryptopangrams() {
         break;
       }
     }
-    CoordinateCompression<LongUnsigned> cc(v2);
+    ds::CoordinateCompression<LongUnsigned> cc(v2);
     string s2(l + 1, ' ');
     for (unsigned i = 0; i <= l; ++i) s2[i] = 'A' + char(cc.GetNew(v2[i]));
     cout << "Case #" << it + 1 << ": " << s2 << endl;

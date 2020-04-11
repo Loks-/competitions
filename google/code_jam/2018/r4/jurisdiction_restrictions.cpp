@@ -1,5 +1,5 @@
 #include "common/binary_search.h"
-#include "common/coordinate_compression.h"
+#include "common/data_structures/coordinate_compression.h"
 #include "common/graph/flow/edge.h"
 #include "common/graph/flow/graph.h"
 #include "common/graph/flow/max_flow.h"
@@ -26,7 +26,7 @@ int main_jurisdiction_restrictions() {
       vc.push_back(max<int64_t>(0, c - d - 1));
       vc.push_back(min<int64_t>(C, c + d));
     }
-    CoordinateCompression<int64_t> ccr(vr), ccc(vc);
+    ds::CoordinateCompression<int64_t> ccr(vr), ccc(vc);
     unsigned sr = ccr.Size() - 1, sc = ccc.Size() - 1,
              sg = 2 + stations.size() + sr * sc;
     FlowGraph<FlowGraphEdge> g(sg, 0, sg - 1);

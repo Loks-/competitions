@@ -7,6 +7,7 @@
 #include <unordered_map>
 #include <vector>
 
+namespace ds {
 template <class TValue>
 class CoordinateCompression {
  protected:
@@ -63,3 +64,4 @@ class CoordinateCompression {
     return it - new_to_old.begin();
   }
 };
+}  // namespace ds
