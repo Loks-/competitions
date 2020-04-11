@@ -59,18 +59,9 @@ class Unsigned {
     return false;
   }
 
-  bool operator<=(const Unsigned& lu) const {
-    if (Size() < lu.Size()) return true;
-    if (lu.Size() < Size()) return false;
-    for (size_t i = Size(); i--;) {
-      if (data[i] < lu.data[i]) return true;
-      if (data[i] > lu.data[i]) return false;
-    }
-    return true;
-  }
-
   bool operator>(const Unsigned& lu) const { return lu < *this; }
-  bool operator>=(const Unsigned& lu) const { return lu <= *this; }
+  bool operator<=(const Unsigned& lu) const { return !(lu < *this); }
+  bool operator>=(const Unsigned& lu) const { return !(*this < lu); }
 
   Unsigned operator+(uint64_t u) const {
     if (u == 0) return (*this);
