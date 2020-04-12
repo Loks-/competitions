@@ -59,7 +59,7 @@ class IntervalsBasedSet {
       : my_tree(0), tree(tree_to_use), root(nullptr) {}
 
   bool Empty() const { return root == nullptr; }
-  size_t Size() const { return Empty() ? 0 : root->info.set_size; }
+  TValue Size() const { return Empty() ? 0 : root->info.set_size; }
   size_t TreeSize() const { return Empty() ? 0 : root->info.size; }
 
   std::vector<Interval> ToVector() const {
