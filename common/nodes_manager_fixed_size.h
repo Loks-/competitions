@@ -17,8 +17,14 @@ class NodesManagerFixedSize {
   TNode* first;
 
  public:
-  NodesManagerFixedSize(size_t max_nodes)
-      : nodes(max_nodes), used_nodes(0), first(&nodes[0]) {}
+  void Reset(size_t max_nodes) {
+    nodes.clear();
+    nodes.resize(max_nodes);
+    used_nodes = 0;
+    first = &(nodes[0]);
+  }
+
+  NodesManagerFixedSize(size_t max_nodes) { Reset(max_nodes); }
 
   void Reserve(size_t new_max_nodes) { assert(new_max_nodes <= nodes.size()); }
 
