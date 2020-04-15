@@ -4,7 +4,7 @@
 #include "common/binary_search_tree/action/apply_action.h"
 #include "common/binary_search_tree/action/none.h"
 #include "common/binary_search_tree/info/size.h"
-#include "common/binary_search_tree/info/update_info.h"
+#include "common/binary_search_tree/info/update_node_to_root.h"
 #include "common/binary_search_tree/node.h"
 #include "common/binary_search_tree/tree.h"
 #include "common/nodes_manager_fixed_size.h"
@@ -242,7 +242,7 @@ class Treap
       p->SetL(m);
     else
       p->SetR(m);
-    UpdateInfoNodeToRoot(p);
+    info::UpdateNodeToRoot(p);
     return Root(p);
   }
 };

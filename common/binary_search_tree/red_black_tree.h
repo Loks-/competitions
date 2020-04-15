@@ -9,8 +9,8 @@
 #include "common/binary_search_tree/base/swap.h"
 #include "common/binary_search_tree/info/rbt_color.h"
 #include "common/binary_search_tree/info/size.h"
-#include "common/binary_search_tree/info/update_info.h"
-#include "common/binary_search_tree/info/update_info_with_path.h"
+#include "common/binary_search_tree/info/update_node_to_root.h"
+#include "common/binary_search_tree/info/update_node_to_root_with_path.h"
 #include "common/binary_search_tree/node.h"
 #include "common/binary_search_tree/tree.h"
 #include "common/nodes_manager_fixed_size.h"
@@ -101,7 +101,7 @@ class RedBlackTree
     }
     node_to_root_path.push_back(node);
     std::reverse(node_to_root_path.begin(), node_to_root_path.end());
-    UpdateInfoNodeToRootWithPath(node_to_root_path, 1);
+    info::UpdateNodeToRootWithPath(node_to_root_path, 1);
     node_to_root_path.push_back(nullptr);
     node->info.black = false;
     for (size_t node_index = 1;;) {
@@ -226,7 +226,7 @@ class RedBlackTree
       child->SetP(nullptr);
     }
     node->ResetLinksAndUpdateInfo();
-    UpdateInfoNodeToRootWithPath(node_to_root_path, 1);
+    info::UpdateNodeToRootWithPath(node_to_root_path, 1);
 
     // Fix colors
     node_to_root_path.push_back(nullptr);
@@ -328,7 +328,7 @@ class RedBlackTree
     }
     if (child) child->p = parent;
     node->ResetLinksAndUpdateInfo();
-    UpdateInfoNodeToRoot(parent);
+    info::UpdateNodeToRoot(parent);
 
     // Fix colors
     if (!node->info.black) return (parent ? Root(parent) : child);

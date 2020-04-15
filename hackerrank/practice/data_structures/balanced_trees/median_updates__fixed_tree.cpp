@@ -4,7 +4,7 @@
 #include "common/binary_search_tree/fixed_tree.h"
 #include "common/binary_search_tree/info/size.h"
 #include "common/binary_search_tree/info/sum.h"
-#include "common/binary_search_tree/info/update_info.h"
+#include "common/binary_search_tree/info/update_node_to_root.h"
 #include "common/binary_search_tree/utils/upper_bound.h"
 #include "common/stl/base.h"
 
@@ -45,7 +45,7 @@ int main_median_updates__fixed_tree() {
       }
       node->data -= 1;
     }
-    bst::UpdateInfoNodeToRoot(node);
+    bst::info::UpdateNodeToRoot(node);
     if (root->info.sum == 0) {
       cout << "Wrong!" << endl;
       continue;
