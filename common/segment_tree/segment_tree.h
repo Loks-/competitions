@@ -2,14 +2,14 @@
 
 #include "common/base.h"
 #include "common/segment_tree/action/none.h"
-#include "common/segment_tree/info/segment.h"
+#include "common/segment_tree/info/position.h"
 #include "common/segment_tree/node.h"
 #include "common/vector/enumerate.h"
 
 #include <vector>
 
 namespace st {
-template <class TTData, class TTInfo = info::Segment<>,
+template <class TTData, class TTInfo = info::Position<>,
           class TTAction = action::None, bool _use_parent = true>
 class SegmentTree {
  public:

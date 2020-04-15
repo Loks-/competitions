@@ -5,7 +5,7 @@
 #include "common/segment_tree/action/rotate_vector.h"
 #include "common/segment_tree/base/add_action_to_segment.h"
 #include "common/segment_tree/base/get_segment_info.h"
-#include "common/segment_tree/info/segment.h"
+#include "common/segment_tree/info/position.h"
 #include "common/segment_tree/info/sum.h"
 #include "common/segment_tree/segment_tree.h"
 #include "common/stl/base.h"
@@ -14,7 +14,7 @@
 
 using TVector = la::VectorStaticSize<unsigned, 26>;
 using TTree =
-    st::SegmentTree<TVector, st::info::Sum<TVector, st::info::Segment<>>,
+    st::SegmentTree<TVector, st::info::Sum<TVector, st::info::Position<>>,
                     st::action::RotateVector, false>;
 using TNode = TTree::TNode;
 

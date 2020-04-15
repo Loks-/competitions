@@ -5,11 +5,11 @@
 namespace st {
 namespace info {
 template <class TTCoordinate = unsigned>
-class Segment : public None {
+class Position : public None {
  public:
   using TCoordinate = TTCoordinate;
   using TBase = None;
-  using TSelf = Segment<TCoordinate>;
+  using TSelf = Position<TCoordinate>;
 
   static const bool is_none = false;
   static const bool has_coordinate = true;
