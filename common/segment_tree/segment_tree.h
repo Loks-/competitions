@@ -36,15 +36,18 @@ class SegmentTree {
     used_data = used_nodes = 0;
   }
 
+  void ResetNodes(unsigned data_size) { ResetNodes(data_size, 2 * data_size); }
   void ResetNodes() {
     ResetNodes(unsigned(data.size()), unsigned(nodes.size()));
   }
 
+  SegmentTree() { ResetNodes(0); }
+
+  SegmentTree(unsigned data_size) { ResetNodes(data_size); }
+
   SegmentTree(unsigned data_size, unsigned max_nodes) {
     ResetNodes(data_size, max_nodes);
   }
-
-  SegmentTree(unsigned data_size) { ResetNodes(data_size, 2 * data_size); }
 
   unsigned DataUsed() const { return used_data; }
   unsigned UsedNodes() const { return used_nodes; }
@@ -53,17 +56,29 @@ class SegmentTree {
     return unsigned(nodes.size()) - used_nodes;
   }
 
-  TNode* GetNewNode() {
+  TNode* NewNode() {
     assert(used_nodes < nodes.size());
     return &(nodes[used_nodes++]);
+  }
+
+  TNode* NewLeaf(const TData& d = TData(),
+                 const TCoordinate& x = TCoordinate()) {
+    TNode* node = NewNode();
+    assert(used_data < data.size());
+    node->SetPData(&(data[used_data]));
+    data[used_data++] = d;
+    node->info.SetCoordinate(x);
+    node->UpdateInfo();
+    return node;
   }
 
  protected:
   TNode* BuildTreeI(const std::vector<TData>& vdata,
                     const std::vector<TCoordinate>& vx, unsigned first,
                     unsigned last) {
-    TNode* root = GetNewNode();
+    TNode* root = NewNode();
     if (first == last) {
+      assert(used_data < data.size());
       root->SetPData(&(data[used_data]));
       data[used_data++] = vdata[first];
       root->info.SetCoordinate(vx[first]);
@@ -72,6 +87,17 @@ class SegmentTree {
       root->SetL(BuildTreeI(vdata, vx, first, m));
       root->SetR(BuildTreeI(vdata, vx, m + 1, last));
     }
+    root->UpdateInfo();
+    return root;
+  }
+
+  TNode* BuildTreeI(const std::vector<TNode*>& vnodes, unsigned first,
+                    unsigned last) {
+    if (first == last) return vnodes[first];
+    TNode* root = NewNode();
+    unsigned m = (first + last) / 2;
+    root->SetL(BuildTreeI(vnodes, first, m));
+    root->SetR(BuildTreeI(vnodes, m + 1, last));
     root->UpdateInfo();
     return root;
   }
@@ -89,6 +115,11 @@ class SegmentTree {
     assert(vdata.size() == vx.size());
     if (vdata.size() == 0) return 0;
     return BuildTreeI(vdata, vx, 0, unsigned(vdata.size()) - 1);
+  }
+
+  TNode* BuildTree(const std::vector<TNode*>& vnodes) {
+    return vnodes.empty() ? nullptr
+                          : BuildTreeI(vnodes, 0, unsigned(vnodes.size()) - 1);
   }
 };
 }  // namespace st
