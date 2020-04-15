@@ -1,7 +1,6 @@
 #pragma once
 
 #include "common/graph/tree.h"
-#include "common/graph/tree/lca.h"
 #include "common/graph/tree/nodes_info.h"
 #include "common/segment_tree/action/apply_root_to_node.h"
 #include "common/segment_tree/base/get_segment.h"
@@ -30,6 +29,7 @@ class HLD {
   class Chain {
    public:
     unsigned parent;
+    unsigned deep;
     TNode* node;
   };
 
@@ -40,7 +40,6 @@ class HLD {
   };
 
   TSTree stree;
-  LCA lca;
   TreeNodesInfo tni;
   std::vector<Chain> chains;
   std::vector<Vertex> vertexes;
@@ -72,7 +71,8 @@ class HLD {
       vertexes[x].node = stree.NewLeaf(TData(), tni.deep[x]);
       nodes.push_back(vertexes[x].node);
     }
-    chains.push_back({tni.parent[cv[0]], stree.BuildTree(nodes)});
+    chains.push_back(
+        {tni.parent[cv[0]], tni.deep[cv[0]], stree.BuildTree(nodes)});
   }
 
  public:
@@ -81,26 +81,36 @@ class HLD {
 
   void Build(const TreeGraph& tree) {
     stree.ResetNodes(tree.Size());
-    lca.Build(tree);
     tni.Init(tree);
     chains.clear();
     vertexes.resize(tree.Size());
     AddNewChain(tree, tree.GetRoot());
   }
 
-  unsigned Deep(unsigned x) const { return lca.deep[x]; }
+  unsigned Deep(unsigned x) const { return tni.deep[x]; }
   unsigned Chain(unsigned x) const { return vertexes[x].chain; }
   TNode* Node(unsigned x) { return vertexes[x].node; }
   const TNode* Node(unsigned x) const { return vertexes[x].node; }
 
-  unsigned GetLCA(unsigned x, unsigned y) const { return lca.GetLCA(x, y); }
+  unsigned LCA(unsigned x, unsigned y) const {
+    for (unsigned xc = vertexes[x].chain, yc = vertexes[y].chain; xc != yc;) {
+      if (chains[xc].deep < chains[yc].deep) {
+        y = chains[yc].parent;
+        yc = vertexes[y].chain;
+      } else {
+        x = chains[xc].parent;
+        xc = vertexes[x].chain;
+      }
+    }
+    return (tni.deep[x] < tni.deep[y]) ? x : y;
+  }
 
   unsigned DistanceFromAncestor(unsigned a, unsigned x) const {
     return Deep(x) - Deep(a);
   }
 
   unsigned Distance(unsigned x, unsigned y) const {
-    unsigned a = GetLCA(x, y);
+    unsigned a = LCA(x, y);
     return DistanceFromAncestor(a, x) + DistanceFromAncestor(a, y);
   }
 
@@ -118,7 +128,7 @@ class HLD {
   }
 
   TSegment Path(unsigned x, unsigned y) {
-    unsigned a = GetLCA(x, y);
+    unsigned a = LCA(x, y);
     return TSegment(PathFromAncestor(a, x, false).Reversed(),
                     PathFromAncestor(a, y, true));
   }
