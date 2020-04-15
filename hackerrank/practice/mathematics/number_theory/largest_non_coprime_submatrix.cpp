@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/largest-coprime-submatrix
 
-#include "common/segment_tree/base/get_segment.h"
+#include "common/segment_tree/base/get_segment_info.h"
 #include "common/segment_tree/info/gcd.h"
 #include "common/segment_tree/segment_tree.h"
 #include "common/stl/base.h"
@@ -25,7 +25,7 @@ int main_largest_non_coprime_submatrix() {
       for (unsigned j = 0; j < m; ++j) vrow[j] = GCD(matrix[i2][j], vrow[j]);
       TNode* root = st.BuildTree(vrow);
       for (unsigned j1 = 0, j2 = 1; j1 < m;) {
-        unsigned gcd = st::GetSegment(root, j1, j2 - 1).segment_gcd;
+        unsigned gcd = st::GetSegmentInfo(root, j1, j2 - 1).segment_gcd;
         if (gcd > 1) {
           best = max(best, (i2 - i1 + 1) * (j2 - j1));
           if (j2 < m)

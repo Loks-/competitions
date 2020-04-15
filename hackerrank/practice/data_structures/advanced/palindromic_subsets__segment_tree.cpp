@@ -4,7 +4,7 @@
 #include "common/modular_io.h"
 #include "common/segment_tree/action/rotate_vector.h"
 #include "common/segment_tree/base/add_action_to_segment.h"
-#include "common/segment_tree/base/get_segment.h"
+#include "common/segment_tree/base/get_segment_info.h"
 #include "common/segment_tree/info/segment.h"
 #include "common/segment_tree/info/sum.h"
 #include "common/segment_tree/segment_tree.h"
@@ -35,7 +35,7 @@ int main_palindromic_subsets__segment_tree() {
       st::AddActionToSegment<TNode>(root, a, b, c);
     } else if (t == 2) {
       cin >> a >> b;
-      TTree::TInfo info = st::GetSegment<TNode>(root, a, b);
+      TTree::TInfo info = st::GetSegmentInfo<TNode>(root, a, b);
       unsigned nsum = 0, nnonzero = 0;
       for (unsigned j = 0; j < 26; ++j) {
         if (info.segment_sum(j)) {

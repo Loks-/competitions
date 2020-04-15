@@ -1,7 +1,7 @@
 // https://www.hackerrank.com/challenges/subsequence-weighting
 
 #include "common/segment_tree/base/find_leaf.h"
-#include "common/segment_tree/base/get_segment.h"
+#include "common/segment_tree/base/get_segment_info.h"
 #include "common/segment_tree/info/max.h"
 #include "common/segment_tree/info/update_info.h"
 #include "common/segment_tree/segment_tree.h"
@@ -28,7 +28,7 @@ int main_subsequence_weighting__segment_tree() {
     vector<uint64_t> vaus(s.begin(), s.end());
     TNode* root = tree.BuildTree(vector<uint64_t>(vaus.size(), 0), vaus);
     for (unsigned i = 0; i < N; ++i) {
-      TInfo info = st::GetSegment<TNode>(root, 0, va[i] - 1);
+      TInfo info = st::GetSegmentInfo<TNode>(root, 0, va[i] - 1);
       TNode* node = st::FindLeaf(root, va[i]);
       assert(node && node->IsLeaf());
       node->GetData() = std::max(node->GetData(), info.segment_max + vw[i]);
