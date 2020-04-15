@@ -1,7 +1,7 @@
 #pragma once
 
 #include "common/base.h"
-#include "common/binary_search_tree/action/apply_action.h"
+#include "common/binary_search_tree/action/apply_root_to_node.h"
 #include "common/binary_search_tree/action/none.h"
 #include "common/binary_search_tree/base/insert_by_key.h"
 #include "common/binary_search_tree/base/rotate.h"
@@ -304,7 +304,7 @@ class RedBlackTree
   static TNode* RemoveByNode(TNode* node) {
     static_assert(use_parent, "use_parent should be true");
     assert(node);
-    ApplyActionRootToNode(node);
+    action::ApplyRootToNode(node);
 
     // Optional swap
     if (node->l && node->r) {

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "common/base.h"
-#include "common/binary_search_tree/action/apply_action.h"
+#include "common/binary_search_tree/action/apply_root_to_node.h"
 #include "common/binary_search_tree/action/none.h"
 #include "common/binary_search_tree/info/size.h"
 #include "common/binary_search_tree/info/update_node_to_root.h"
@@ -229,7 +229,7 @@ class Treap
   static TNode* RemoveByNode(TNode* node) {
     static_assert(use_parent, "use_parent should be true");
     assert(node);
-    ApplyActionRootToNode(node);
+    action::ApplyRootToNode(node);
     TNode* l = node->l;
     if (l) l->SetP(nullptr);
     TNode* r = node->r;
