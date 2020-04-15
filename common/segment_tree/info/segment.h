@@ -1,16 +1,15 @@
 #pragma once
 
 #include "common/segment_tree/info/none.h"
-#include "common/segment_tree/info/proxy.h"
 
 namespace st {
 namespace info {
 template <class TTCoordinate = unsigned>
-class TSegment : public TNone {
+class Segment : public None {
  public:
   using TCoordinate = TTCoordinate;
-  using TBase = TNone;
-  using TSelf = TSegment<TCoordinate>;
+  using TBase = None;
+  using TSelf = Segment<TCoordinate>;
 
   static const bool is_none = false;
   static const bool has_coordinate = true;
@@ -25,8 +24,5 @@ class TSegment : public TNone {
     right = r.right;
   }
 };
-
-template <class TCoordinate = unsigned>
-using Segment = Proxy<TSegment<TCoordinate>>;
 }  // namespace info
 }  // namespace st

@@ -1,16 +1,15 @@
 #pragma once
 
-#include "common/segment_tree/info/proxy.h"
 #include <algorithm>
 
 namespace st {
 namespace info {
 template <class TMaxValue, class TInfo>
-class TMax : public TInfo {
+class Max : public TInfo {
  public:
   using TValue = TMaxValue;
   using TBase = TInfo;
-  using TSelf = TMax<TValue, TBase>;
+  using TSelf = Max<TValue, TBase>;
 
   static const bool is_none = false;
   static const bool use_data = true;
@@ -28,8 +27,5 @@ class TMax : public TInfo {
     segment_max = std::max(l.segment_max, r.segment_max);
   }
 };
-
-template <class TMaxValue, class TInfo>
-using Max = Proxy<TMax<TMaxValue, TInfo>>;
 }  // namespace info
 }  // namespace st

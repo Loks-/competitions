@@ -2,6 +2,7 @@
 
 #include "common/base.h"
 #include "common/node.h"
+#include "common/segment_tree/info/update.h"
 
 namespace st {
 template <bool use_parent, class TSelf>
@@ -71,7 +72,7 @@ class Node
   }
 
   void ClearAction() { action.Clear(); }
-  void UpdateInfo() { info.Update(this); }
+  void UpdateInfo() { info::Update(this); }
 
   template <class TActionValue>
   void AddAction(const TActionValue& value) {

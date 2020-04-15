@@ -1,6 +1,7 @@
 #pragma once
 
 #include "common/base.h"
+#include "common/segment_tree/info/merge.h"
 
 namespace st {
 namespace hidden {
@@ -17,8 +18,8 @@ inline typename TNode::TInfo GetSegmentInfoI(
   else if (l > root->l->info.right)
     return GetSegmentInfoI(root->r, l, r);
   else
-    return TInfo::MergeLR(GetSegmentInfoI(root->l, l, r),
-                          GetSegmentInfoI(root->r, l, r));
+    return info::MergeLR(GetSegmentInfoI(root->l, l, r),
+                         GetSegmentInfoI(root->r, l, r));
 }
 }  // namespace hidden
 

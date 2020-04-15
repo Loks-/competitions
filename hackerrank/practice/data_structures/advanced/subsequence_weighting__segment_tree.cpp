@@ -3,7 +3,7 @@
 #include "common/segment_tree/base/find_leaf.h"
 #include "common/segment_tree/base/get_segment_info.h"
 #include "common/segment_tree/info/max.h"
-#include "common/segment_tree/info/update_info.h"
+#include "common/segment_tree/info/update_node_to_root.h"
 #include "common/segment_tree/segment_tree.h"
 #include "common/stl/base.h"
 #include "common/vector/read.h"
@@ -32,7 +32,7 @@ int main_subsequence_weighting__segment_tree() {
       TNode* node = st::FindLeaf(root, va[i]);
       assert(node && node->IsLeaf());
       node->GetData() = std::max(node->GetData(), info.segment_max + vw[i]);
-      st::UpdateInfoNodeToRoot<TNode>(node);
+      st::info::UpdateNodeToRoot<TNode>(node);
     }
     cout << root->info.segment_max << endl;
   }

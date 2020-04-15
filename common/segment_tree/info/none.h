@@ -1,13 +1,11 @@
 #pragma once
 
-#include "common/segment_tree/info/proxy.h"
-
 namespace st {
 namespace info {
-class TNone {
+class None {
  public:
   using TCoordinate = unsigned;
-  using TSelf = TNone;
+  using TSelf = None;
 
   static const bool is_none = true;
   static const bool use_data = false;
@@ -20,7 +18,5 @@ class TNone {
 
   void UpdateLR(const TSelf& l, const TSelf& r) {}
 };
-
-using None = Proxy<TNone>;
 }  // namespace info
 }  // namespace st

@@ -1,15 +1,13 @@
 #pragma once
 
-#include "common/segment_tree/info/proxy.h"
-
 namespace st {
 namespace info {
 template <class TSumValue, class TInfo>
-class TSum : public TInfo {
+class Sum : public TInfo {
  public:
   using TValue = TSumValue;
   using TBase = TInfo;
-  using TSelf = TSum<TValue, TBase>;
+  using TSelf = Sum<TValue, TBase>;
 
   static const bool is_none = false;
   static const bool use_data = true;
@@ -27,8 +25,5 @@ class TSum : public TInfo {
     segment_sum = l.segment_sum + r.segment_sum;
   }
 };
-
-template <class TSumValue, class TInfo>
-using Sum = Proxy<TSum<TSumValue, TInfo>>;
 }  // namespace info
 }  // namespace st
