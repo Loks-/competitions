@@ -5,7 +5,7 @@
 namespace st {
 namespace action {
 // Support only VectorStaticSize from LinearAlgebra.
-class RotateVector : public None {
+class RotateVectorSum : public None {
  protected:
   template <class TVector>
   static void Rotate(TVector& v, unsigned r) {
@@ -18,7 +18,7 @@ class RotateVector : public None {
 
  public:
   using TBase = None;
-  using TSelf = RotateVector;
+  using TSelf = RotateVectorSum;
   static const bool is_none = false;
 
   unsigned r = 0;
