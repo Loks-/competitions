@@ -22,7 +22,6 @@ class HLD {
   using TAction = TTAction;
   using TSTree = st::SegmentTree<TData, TInfo, TAction, true>;
   using TNode = typename TSTree::TNode;
-  using TPath = std::vector<TNode*>;
   using TSegment = st::Segment<TNode>;
 
  protected:
