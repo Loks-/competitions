@@ -38,5 +38,10 @@ class Segment {
       t = info::MergeLR(t, nodes[i]->info);
     return t;
   }
+
+  template <class TActionValue>
+  void AddAction(const TActionValue& value) {
+    for (auto node : nodes) node->AddAction(value);
+  }
 };
 }  // namespace st

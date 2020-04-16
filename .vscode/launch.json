@@ -9,16 +9,18 @@
             "type": "cppdbg",
             "request": "launch",
             // "program": "${workspaceFolder}/debug/build/google_code_jam",
+            "program": "${workspaceFolder}/debug/build/hackerrank",
             // "program": "${workspaceFolder}/debug/build/icfppc_2019",
-            "program": "${workspaceFolder}/debug/build/project_euler",
+            // "program": "${workspaceFolder}/debug/build/project_euler",
             "args": [
                 // "heap"
                 // "minimum_spanning_tree"
-                // "p3",
+                "lazy_white_falcon__sto",
                 // "tests/google/code_jam/2019/r2/p3.in"
+                "../tests/hackerrank/practice/data_structures/advanced/lazy_white_falcon.2.in"
                 // "-threads",
                 // "1"
-                "695"
+                // "695"
             ],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}/debug/",
