@@ -1,11 +1,11 @@
+#include "tester/tester_binary_search_tree.h"
+
 #include "common/binary_search_tree/avl_tree.h"
 #include "common/binary_search_tree/red_black_tree.h"
 #include "common/binary_search_tree/scapegoat_tree.h"
 #include "common/binary_search_tree/splay_tree.h"
 #include "common/binary_search_tree/treap.h"
 #include "common/timer.h"
-
-#include "tester/tester_binary_search_tree.h"
 
 #include <algorithm>
 #include <iostream>
@@ -121,23 +121,23 @@ bool TesterBinarySearchTree::TestAllTrees() {
   std::cout << "Testing full trees:" << std::endl;
   current_job = "full";
   TestAll<bst::AVLTree<false, TKey, bst::info::Sum<TKey, bst::info::Size>,
-                       bst::action::AddEach<TKey>, TKey>>("avltree_upf");
+                       bst::action::AddEachSum<TKey>, TKey>>("avltree_upf");
   TestAll<bst::AVLTree<true, TKey, bst::info::Sum<TKey, bst::info::Size>,
-                       bst::action::AddEach<TKey>, TKey>>("avltree_upt");
+                       bst::action::AddEachSum<TKey>, TKey>>("avltree_upt");
   TestAll<bst::RedBlackTree<false, TKey, bst::info::Sum<TKey, bst::info::Size>,
-                            bst::action::AddEach<TKey>, TKey>>("rbtree_upf");
+                            bst::action::AddEachSum<TKey>, TKey>>("rbtree_upf");
   TestAll<bst::RedBlackTree<true, TKey, bst::info::Sum<TKey, bst::info::Size>,
-                            bst::action::AddEach<TKey>, TKey>>("rbtree_upt");
+                            bst::action::AddEachSum<TKey>, TKey>>("rbtree_upt");
   TestAll<bst::ScapegoatTree<false, TKey, bst::info::Sum<TKey, bst::info::Size>,
-                             bst::action::AddEach<TKey>, TKey>>("scape_upf");
+                             bst::action::AddEachSum<TKey>, TKey>>("scape_upf");
   TestAll<bst::ScapegoatTree<true, TKey, bst::info::Sum<TKey, bst::info::Size>,
-                             bst::action::AddEach<TKey>, TKey>>("scape_upt");
+                             bst::action::AddEachSum<TKey>, TKey>>("scape_upt");
   TestAll<bst::SplayTree<true, TKey, bst::info::Sum<TKey, bst::info::Size>,
-                         bst::action::AddEach<TKey>, TKey>>("splay_upt");
+                         bst::action::AddEachSum<TKey>, TKey>>("splay_upt");
   TestAll<bst::Treap<true, false, TKey, bst::info::Sum<TKey, bst::info::Size>,
-                     bst::action::AddEach<TKey>, TKey>>("treap_upf");
+                     bst::action::AddEachSum<TKey>, TKey>>("treap_upf");
   TestAll<bst::Treap<true, true, TKey, bst::info::Sum<TKey, bst::info::Size>,
-                     bst::action::AddEach<TKey>, TKey>>("treap_upt");
+                     bst::action::AddEachSum<TKey>, TKey>>("treap_upt");
 
   bool output = TestHash();
   if ((mode == time_test) && output) {
