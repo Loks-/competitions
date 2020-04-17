@@ -32,7 +32,7 @@ class AddEach : public None {
       node->l->AddAction(add_value);
       node->r->AddAction(add_value);
     }
-    add_value = 0;
+    add_value = TData();
   }
 };
 }  // namespace action

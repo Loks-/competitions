@@ -47,6 +47,7 @@ class STO {
   }
 
   unsigned Parent(unsigned x) const { return tni.parent[x]; }
+  unsigned Deep(unsigned x) const { return tni.deep[x]; }
   TNode* Node(unsigned x) { return nodes[x]; }
   const TNode* Node(unsigned x) const { return nodes[x]; }
 
