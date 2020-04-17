@@ -11,6 +11,7 @@ inline Segment<TNode> GetSegmentI(TNode* root,
                                   const typename TNode::TInfo::TCoordinate& r) {
   using TSegment = Segment<TNode>;
   if ((l <= root->info.left) && (r >= root->info.right)) return TSegment(root);
+  if ((l > root->info.right) || (r < root->info.left)) return TSegment();
   assert(!root->IsLeaf());
   root->ApplyAction();
   if (r < root->r->info.left)

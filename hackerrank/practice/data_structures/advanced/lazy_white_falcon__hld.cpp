@@ -10,7 +10,7 @@ int main_lazy_white_falcon__hld() {
   cin >> N >> Q;
   TreeGraph tree(N);
   tree.ReadEdges(true);
-  graph::HLD<unsigned, st::info::Sum<unsigned, st::info::Position<>>> hld(tree);
+  graph::HLD<unsigned, st::info::Sum<unsigned, graph::HLDInfo>> hld(tree);
 
   for (unsigned iQ = 0; iQ < Q; ++iQ) {
     unsigned t, u, x;

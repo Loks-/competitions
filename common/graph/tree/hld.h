@@ -1,19 +1,24 @@
 #pragma once
 
+#include "common/base.h"
 #include "common/graph/tree.h"
 #include "common/graph/tree/nodes_info.h"
 #include "common/segment_tree/action/apply_root_to_node.h"
 #include "common/segment_tree/base/get_segment.h"
+#include "common/segment_tree/info/position.h"
 #include "common/segment_tree/info/update_node_to_root.h"
 #include "common/segment_tree/node.h"
 #include "common/segment_tree/segment.h"
 #include "common/segment_tree/segment_tree.h"
 
+#include <algorithm>
 #include <utility>
 #include <vector>
 
 namespace graph {
-template <class TTData, class TTInfo = st::info::Position<unsigned>,
+using HLDInfo = st::info::Position<uint64_t>;
+
+template <class TTData, class TTInfo = HLDInfo,
           class TTAction = st::action::None>
 class HLD {
  public:
@@ -29,6 +34,7 @@ class HLD {
    public:
     unsigned parent;
     unsigned deep;
+    unsigned order;
     TNode* node;
   };
 
@@ -38,13 +44,18 @@ class HLD {
     TNode* node;
   };
 
+  static const uint64_t mask = (uint64_t(1) << 32) - 1;
   TSTree stree;
   TreeNodesInfo tni;
   std::vector<Chain> chains;
   std::vector<Vertex> vertexes;
+  TNode* stroot;
 
  protected:
   void AddNewChain(const TreeGraph& g, unsigned x) {
+    unsigned chain_index = unsigned(chains.size());
+    chains.push_back({tni.parent[x], tni.deep[x], tni.preorder[x], nullptr});
+    uint64_t cp = uint64_t(tni.preorder[x]) << 32;
     std::vector<unsigned> cv;
     for (; x != CNone;) {
       cv.push_back(x);
@@ -63,15 +74,13 @@ class HLD {
       }
       x = max_size_child;
     }
-    unsigned chain_index = unsigned(chains.size());
     std::vector<TNode*> nodes;
     for (auto x : cv) {
       vertexes[x].chain = chain_index;
-      vertexes[x].node = stree.NewLeaf(TData(), tni.deep[x]);
+      vertexes[x].node = stree.NewLeaf(TData(), cp + tni.deep[x]);
       nodes.push_back(vertexes[x].node);
     }
-    chains.push_back(
-        {tni.parent[cv[0]], tni.deep[cv[0]], stree.BuildTree(nodes)});
+    chains[chain_index].node = stree.BuildTree(nodes);
   }
 
  public:
@@ -84,12 +93,22 @@ class HLD {
     chains.clear();
     vertexes.resize(tree.Size());
     AddNewChain(tree, tree.GetRoot());
+    std::vector<TNode*> v;
+    for (auto& c : chains) v.push_back(c.node);
+    std::sort(v.begin(), v.end(),
+              [](auto& n1, auto& n2) { return n1->info.left < n2->info.left; });
+    stroot = stree.BuildTree(v);
   }
 
   unsigned Deep(unsigned x) const { return tni.deep[x]; }
   unsigned Chain(unsigned x) const { return vertexes[x].chain; }
   TNode* Node(unsigned x) { return vertexes[x].node; }
   const TNode* Node(unsigned x) const { return vertexes[x].node; }
+
+  uint64_t STX(unsigned x) const {
+    unsigned c = vertexes[x].chain;
+    return (uint64_t(chains[c].order) << 32) + Deep(x);
+  }
 
   unsigned LCA(unsigned x, unsigned y) const {
     for (unsigned xc = vertexes[x].chain, yc = vertexes[y].chain; xc != yc;) {
@@ -117,11 +136,13 @@ class HLD {
     TSegment s;
     unsigned ac = Chain(a), xc = Chain(x);
     for (; xc != ac; xc = Chain(x)) {
-      s.AddBack(st::GetSegment(chains[xc].node, 0, Deep(x)));
+      st::action::ApplyRootToNode(chains[xc].node);
+      s.AddBack(st::GetSegment(chains[xc].node, STX(x) & ~mask, STX(x)));
       x = chains[xc].parent;
     }
-    s.AddBack(st::GetSegment(chains[ac].node, Deep(a) + (skip_ancestor ? 1 : 0),
-                             Deep(x)));
+    st::action::ApplyRootToNode(chains[ac].node);
+    s.AddBack(st::GetSegment(chains[ac].node, STX(a) + (skip_ancestor ? 1 : 0),
+                             STX(x)));
     s.Reverse();
     return s;
   }
@@ -137,6 +158,14 @@ class HLD {
     st::action::ApplyRootToNode(node);
     node->GetData() = data;
     st::info::UpdateNodeToRoot(node);
+  }
+
+  TSegment Subtree(unsigned x) {
+    uint64_t l0 = tni.preorder[x], l1 = l0 + tni.subtree_size[x];
+    auto node = chains[vertexes[x].chain].node;
+    st::action::ApplyRootToNode(node);
+    return TSegment(st::GetSegment(node, STX(x), STX(x) | mask),
+                    st::GetSegment(stroot, (l0 + 1) << 32, (l1 << 32) - 1));
   }
 };
 }  // namespace graph

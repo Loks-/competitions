@@ -15,9 +15,9 @@
             "args": [
                 // "heap"
                 // "minimum_spanning_tree"
-                "lazy_white_falcon__sto",
+                "subtrees_and_paths",
                 // "tests/google/code_jam/2019/r2/p3.in"
-                "../tests/hackerrank/practice/data_structures/advanced/lazy_white_falcon.2.in"
+                "../tests/hackerrank/practice/data_structures/advanced/subtrees_and_paths.3.in"
                 // "-threads",
                 // "1"
                 // "695"

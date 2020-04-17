@@ -1,6 +1,7 @@
 #pragma once
 
 #include "common/segment_tree/info/merge.h"
+#include "common/segment_tree/info/update_node_to_root.h"
 
 #include <algorithm>
 #include <vector>
@@ -41,7 +42,10 @@ class Segment {
 
   template <class TActionValue>
   void AddAction(const TActionValue& value) {
-    for (auto node : nodes) node->AddAction(value);
+    for (auto node : nodes) {
+      node->AddAction(value);
+      info::UpdateNodeToRoot(node);
+    }
   }
 };
 }  // namespace st
