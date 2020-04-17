@@ -3,19 +3,16 @@
 #include "common/graph/tree.h"
 #include "common/graph/tree/lca.h"
 #include "common/graph/tree/sto.h"
-#include "common/segment_tree/action/add_each__sum.h"
-#include "common/segment_tree/info/sum.h"
+#include "common/segment_tree/action/add_each.h"
 #include "common/stl/base.h"
-
-using TAction = st::action::AddEachSum<int64_t>;
-using TInfo = st::info::Sum<int64_t, st::info::Position<>>;
 
 int main_lazy_white_falcon__sto() {
   unsigned N, Q;
   cin >> N >> Q;
   TreeGraph tree(N);
   tree.ReadEdges(true);
-  graph::STO<int64_t, TInfo, TAction> sto(tree);
+  graph::STO<int64_t, st::info::Position<>, st::action::AddEach<int64_t>> sto(
+      tree);
   graph::LCA lca(tree);
   vector<int64_t> current_values(N, 0);
 
