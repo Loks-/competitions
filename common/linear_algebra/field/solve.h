@@ -3,6 +3,7 @@
 #include "common/base.h"
 #include "common/linear_algebra/rows/sub_m.h"
 #include "common/linear_algebra/rows/swap.h"
+
 #include <algorithm>
 #include <vector>
 
@@ -19,7 +20,7 @@ inline bool Solve(const TMatrix& A, const TVector& b, TVector& output_x) {
   std::vector<unsigned> vj(m.Rows());
   for (unsigned j = 0; (r < m.Rows()) && (j < m.Columns()); ++j) {
     for (unsigned i = r; i < m.Rows(); ++i) {
-      if (m(i, j) != 0) {
+      if (m(i, j)) {
         if (i != r) {
           rows::Swap(m, r, i, j);
           std::swap(v(r), v(i));
@@ -27,9 +28,9 @@ inline bool Solve(const TMatrix& A, const TVector& b, TVector& output_x) {
         break;
       }
     }
-    if (m(r, j) == 0) continue;
+    if (!m(r, j)) continue;
     for (unsigned i = r + 1; i < m.Rows(); ++i) {
-      if (m(i, j) == 0) continue;
+      if (!m(i, j)) continue;
       TValue rm = m(r, j) / m(i, j);
       rows::SubM(m, i, r, rm, j);
       v(i) -= rm * v(r);
@@ -37,12 +38,12 @@ inline bool Solve(const TMatrix& A, const TVector& b, TVector& output_x) {
     vj[r++] = j;
   }
   for (unsigned i = r; i < m.Rows(); ++i) {
-    if (v(i) != 0) return false;
+    if (v(i)) return false;
   }
   output_x.Fill(TValue(0));
   for (; r--;) {
     unsigned j = vj[r];
-    if (v(r) == 0) continue;
+    if (!v(r)) continue;
     TValue rm = v(r) / m(r, j);
     for (unsigned i = 0; i < r; ++i) v(i) -= rm * m(i, j);
     output_x(j) = rm;

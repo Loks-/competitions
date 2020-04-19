@@ -74,7 +74,7 @@ class MertensCompact {
   }
 
  public:
-  MertensCompact(uint64_t _u) : u(_u), mobius(u) {}
+  explicit MertensCompact(uint64_t _u) : u(_u), mobius(u) {}
 
   // x <= U^3
   int64_t GetMertens(uint64_t x) {

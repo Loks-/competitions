@@ -31,7 +31,7 @@ class Graph {
     if (directed_edges) inverted_edges.resize(nvertices);
   }
 
-  Graph(unsigned _nvertices = 0) { Resize(_nvertices); }
+  explicit Graph(unsigned _nvertices = 0) { Resize(_nvertices); }
   unsigned Size() const { return nvertices; }
   std::vector<std::vector<unsigned>>& Edges() { return edges; }
   const std::vector<std::vector<unsigned>>& Edges() const { return edges; }

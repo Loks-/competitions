@@ -2,6 +2,7 @@
 
 #include "common/base.h"
 #include "common/node.h"
+
 #include <random>
 
 namespace bst {
@@ -100,7 +101,7 @@ class Node
   TAction action;
 
   Node() {}
-  Node(const TData& _data) : data(_data) {}
+  explicit Node(const TData& _data) : data(_data) {}
 
   void ClearAction() { action.Clear(); }
   void UpdateInfo() { info.Update(this); }

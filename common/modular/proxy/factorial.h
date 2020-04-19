@@ -2,6 +2,7 @@
 
 #include "common/base.h"
 #include "common/numeric/utils/gcd.h"
+
 #include <vector>
 
 namespace modular {
@@ -16,7 +17,7 @@ class Factorial {
   std::vector<TValue> vf, vfi;
 
  public:
-  Factorial(TValue mod) : proxy(mod) {
+  explicit Factorial(TValue mod) : proxy(mod) {
     vf.push_back(1);
     if (keep_inverted) vfi.push_back(1);
   }

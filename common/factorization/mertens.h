@@ -26,7 +26,7 @@ class Mertens {
   }
 
  public:
-  Mertens(uint64_t _u) : u(_u), mertens(u) {}
+  explicit Mertens(uint64_t _u) : u(_u), mertens(u) {}
 
   // x <= U
   int GetMobius(uint64_t x) const { return mertens.GetMobius(x); }

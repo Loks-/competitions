@@ -5,6 +5,7 @@
 #include "common/graph/graph/distance.h"
 #include "common/hash.h"
 #include "common/stl/hash/vector.h"
+
 #include <algorithm>
 #include <functional>
 #include <unordered_set>
@@ -84,7 +85,7 @@ class HamiltonianPathUndirectedGraph {
     return false;
   }
 
-  HamiltonianPathUndirectedGraph(const UndirectedGraph& g)
+  explicit HamiltonianPathUndirectedGraph(const UndirectedGraph& g)
       : graph(g), size(graph.Size()) {
     current_path.reserve(size);
     visited.resize(size, 0);
@@ -92,7 +93,7 @@ class HamiltonianPathUndirectedGraph {
 };
 }  // namespace graph
 
-std::vector<unsigned> HamiltonianPath(const UndirectedGraph& graph) {
+inline std::vector<unsigned> HamiltonianPath(const UndirectedGraph& graph) {
   graph::HamiltonianPathUndirectedGraph hp(graph);
   return hp.Find() ? hp.GetPath() : std::vector<unsigned>();
 }

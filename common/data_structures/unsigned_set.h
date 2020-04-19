@@ -1,6 +1,7 @@
 #pragma once
 
 #include "common/base.h"
+
 #include <vector>
 
 namespace ds {
@@ -12,7 +13,7 @@ class UnsignedSet {
  public:
   UnsignedSet() {}
 
-  UnsignedSet(unsigned total_size) : vset(total_size, 0) {
+  explicit UnsignedSet(unsigned total_size) : vset(total_size, 0) {
     vlist.reserve(total_size);
   };
 

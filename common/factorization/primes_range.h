@@ -25,7 +25,7 @@ class PrimesRange {
   PrimesGenerator pg;
 
  public:
-  PrimesRange(uint64_t _maxn) : maxn(_maxn) {}
+  explicit PrimesRange(uint64_t _maxn) : maxn(_maxn) {}
   Iterator begin() { return Iterator(&pg); }
   Iterator end() { return Iterator(maxn); }
 };

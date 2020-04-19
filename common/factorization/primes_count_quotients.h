@@ -2,6 +2,7 @@
 
 #include "common/base.h"
 #include "common/numeric/utils/usqrt.h"
+
 #include <vector>
 
 namespace factorization {
@@ -10,7 +11,7 @@ class PrimesCountQuotients {
   uint64_t n, nsqrt, nsqrt2;
   std::vector<uint64_t> vcr, vcq;
 
-  PrimesCountQuotients(uint64_t _n) { Init(_n); }
+  explicit PrimesCountQuotients(uint64_t _n) { Init(_n); }
 
   void Init(uint64_t _n) {
     n = _n;

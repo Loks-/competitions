@@ -1,6 +1,7 @@
 #pragma once
 
 #include "common/base.h"
+
 #include <vector>
 
 namespace ds {
@@ -10,7 +11,7 @@ class UnsignedMultiSet {
   std::vector<unsigned> vlist;
 
  public:
-  UnsignedMultiSet(unsigned total_size) : vcount(total_size, 0) {
+  explicit UnsignedMultiSet(unsigned total_size) : vcount(total_size, 0) {
     vlist.reserve(total_size);
   };
 

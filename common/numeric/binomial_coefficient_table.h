@@ -10,7 +10,7 @@ class BinomialCoefficientTable {
   std::vector<std::vector<uint64_t>> nCr_table;
 
  public:
-  BinomialCoefficientTable(uint64_t _max_value = (1ull << 62))
+  explicit BinomialCoefficientTable(uint64_t _max_value = (1ull << 62))
       : max_value(_max_value) {}
 
   uint64_t MaxValue() const { return max_value; }

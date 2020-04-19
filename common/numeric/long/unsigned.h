@@ -1,6 +1,7 @@
 #pragma once
 
 #include "common/base.h"
+
 #include <algorithm>
 #include <vector>
 
@@ -29,7 +30,7 @@ class Unsigned {
     Normalize();
   }
 
-  Unsigned(const TData& _data) : data(_data) {}
+  explicit Unsigned(const TData& _data) : data(_data) {}
 
   void Normalize() {
     for (; (data.size() > 0) && (data.back() == 0);) data.pop_back();

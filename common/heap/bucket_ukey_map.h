@@ -1,6 +1,7 @@
 #pragma once
 
 #include "common/base.h"
+
 #include <algorithm>
 #include <vector>
 
@@ -34,7 +35,7 @@ class BucketUKeyMap {
   }
 
  public:
-  BucketUKeyMap(unsigned ukey_size) { ResetHeapPosition(ukey_size); }
+  explicit BucketUKeyMap(unsigned ukey_size) { ResetHeapPosition(ukey_size); }
 
   BucketUKeyMap(const std::vector<unsigned>& v, bool skip_heap) {
     ResetHeapPosition(v.size());

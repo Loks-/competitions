@@ -34,7 +34,7 @@ class CFSemiConvergent : public CFConvergent {
     its = ItsLast();
   }
 
-  CFSemiConvergent(const ContinuedFraction& continued_fraction)
+  explicit CFSemiConvergent(const ContinuedFraction& continued_fraction)
       : TBase(continued_fraction) {
     ResetIterator();
   }

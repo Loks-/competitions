@@ -24,7 +24,7 @@ class NodesManagerFixedSize {
     first = &(nodes[0]);
   }
 
-  NodesManagerFixedSize(size_t max_nodes) { Reset(max_nodes); }
+  explicit NodesManagerFixedSize(size_t max_nodes) { Reset(max_nodes); }
 
   void Reserve(size_t new_max_nodes) { assert(new_max_nodes <= nodes.size()); }
 

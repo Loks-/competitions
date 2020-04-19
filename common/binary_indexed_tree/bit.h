@@ -13,7 +13,7 @@ class BIT {
   std::vector<TValue> values;
 
  public:
-  BIT(size_t _size) : size(_size) { values.resize(size, TValue()); }
+  explicit BIT(size_t _size) : size(_size) { values.resize(size, TValue()); }
 
   void Reset(size_t new_size) {
     size = new_size;

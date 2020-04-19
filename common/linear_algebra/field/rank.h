@@ -12,14 +12,14 @@ inline unsigned Rank(const TMatrix& matrix) {
   unsigned r = 0;
   for (unsigned j = 0; (r < m.Rows()) && (j < m.Columns()); ++j) {
     for (unsigned i = r; i < m.Rows(); ++i) {
-      if (m(i, j) != 0) {
+      if (m(i, j)) {
         rows::Swap(m, r, i, j);
         break;
       }
     }
-    if (m(r, j) == 0) continue;
+    if (!m(r, j)) continue;
     for (unsigned i = r + 1; i < m.Rows(); ++i) {
-      if (m(i, j) == 0) continue;
+      if (!m(i, j)) continue;
       TValue rm = m(r, j) / m(i, j);
       rows::SubM(m, i, r, rm, j);
     }

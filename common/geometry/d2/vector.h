@@ -2,6 +2,7 @@
 
 #include "common/base.h"
 #include "common/geometry/d2/point.h"
+
 #include <cmath>
 
 namespace geometry {
@@ -15,7 +16,7 @@ class Vector {
 
   Vector() : dx(), dy() {}
   Vector(const T& _dx, const T& _dy) : dx(_dx), dy(_dy) {}
-  Vector(const Point<T>& p) : dx(p.x), dy(p.y) {}
+  explicit Vector(const Point<T>& p) : dx(p.x), dy(p.y) {}
 
   Point<T> ToPoint() const { return Point<T>(dx, dy); }
   bool Empty() const { return (dx == 0) && (dy == 0); }

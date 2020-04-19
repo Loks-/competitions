@@ -3,6 +3,7 @@
 #include "common/base.h"
 #include "common/calculus/ext_polynomial/term.h"
 #include "common/vector/sorted.h"
+
 #include <algorithm>
 #include <vector>
 

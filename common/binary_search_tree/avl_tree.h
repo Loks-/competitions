@@ -36,7 +36,7 @@ class AVLTree
   friend class Tree<TTNodesManager<TNode>, TSelf>;
 
  public:
-  AVLTree(size_t max_nodes) : TTree(max_nodes) {}
+  explicit AVLTree(size_t max_nodes) : TTree(max_nodes) {}
 
   static int Height(TNode* node) { return node ? int(node->info.height) : 0; }
 

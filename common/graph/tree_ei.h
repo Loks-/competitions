@@ -2,6 +2,7 @@
 
 #include "common/graph/graph_ei.h"
 #include "common/graph/tree.h"
+
 #include <iostream>
 #include <vector>
 
@@ -16,7 +17,7 @@ class TreeEI : public Tree<UndirectedGraphEI<TTEdgeInfo>> {
   using TSelf = TreeEI<TTEdgeInfo>;
 
  public:
-  TreeEI(unsigned _nvertices = 0, unsigned _root = 0)
+  explicit TreeEI(unsigned _nvertices = 0, unsigned _root = 0)
       : TTree(_nvertices, _root) {}
 
   void ReadEdges(bool zero_based_indexes = false) {

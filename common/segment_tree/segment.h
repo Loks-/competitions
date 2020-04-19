@@ -17,7 +17,7 @@ class Segment {
   std::vector<TNode*> nodes;
 
   Segment() {}
-  Segment(TNode* node) : nodes(1, node) {}
+  explicit Segment(TNode* node) : nodes(1, node) {}
   Segment(const TSelf& l, const TSelf& r) : nodes(l.nodes) { AddBack(r); }
 
   void AddBack(TNode* node) { nodes.push_back(node); }

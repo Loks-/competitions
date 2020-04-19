@@ -2,6 +2,7 @@
 
 #include "common/base.h"
 #include "common/graph/graph.h"
+
 #include <algorithm>
 #include <vector>
 
@@ -46,7 +47,9 @@ class Bipartite : public TGraph {
   Bipartite(unsigned _nvertices0, unsigned _nvertices1) {
     Resize(_nvertices0, _nvertices1);
   }
-  Bipartite(const std::vector<bool>& _partition) { Resize(_partition); }
+  explicit Bipartite(const std::vector<bool>& _partition) {
+    Resize(_partition);
+  }
 
   bool Partition(unsigned node) const { return partition[node]; }
   const std::vector<bool>& Partition() const { return partition; };

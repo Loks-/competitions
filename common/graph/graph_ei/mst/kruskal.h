@@ -1,6 +1,7 @@
 #pragma once
 
 #include "common/data_structures/disjoint_set.h"
+
 #include <algorithm>
 #include <utility>
 #include <vector>
@@ -11,7 +12,7 @@ namespace mst {
 // https://en.wikipedia.org/wiki/Kruskal%27s_algorithm
 // Time: O(V + E log E)
 template <class TGraph, class TEdgeCostFunction>
-std::pair<unsigned, typename TEdgeCostFunction::TEdgeCost> Kruskal(
+inline std::pair<unsigned, typename TEdgeCostFunction::TEdgeCost> Kruskal(
     const TGraph& graph, const TEdgeCostFunction& f) {
   using TEdgeCost = typename TEdgeCostFunction::TEdgeCost;
   struct Edge {

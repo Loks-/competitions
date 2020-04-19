@@ -1,6 +1,7 @@
 #pragma once
 
 #include "common/graph/graph.h"
+
 #include <iostream>
 #include <vector>
 
@@ -15,7 +16,7 @@ class Tree : public TGraph {
   unsigned root;
 
  public:
-  Tree(unsigned _nvertices = 0, unsigned _root = 0)
+  explicit Tree(unsigned _nvertices = 0, unsigned _root = 0)
       : TBase(_nvertices), root(_root) {}
   unsigned GetRoot() const { return root; }
   void SetRoot(unsigned new_root) { root = new_root; }

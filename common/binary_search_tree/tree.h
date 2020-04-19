@@ -23,7 +23,7 @@ class Tree : public TTNodesManager {
   static const bool use_parent = TNode::use_parent;
 
  public:
-  Tree(size_t max_nodes) : TNodesManager(max_nodes) {}
+  explicit Tree(size_t max_nodes) : TNodesManager(max_nodes) {}
   TMe* Me() { return static_cast<TMe*>(this); }
   const TMe* Me() const { return static_cast<const TMe*>(this); }
 

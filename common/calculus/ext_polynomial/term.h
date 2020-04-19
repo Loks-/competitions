@@ -1,6 +1,7 @@
 #pragma once
 
 #include "common/calculus/ext_polynomial/term_power.h"
+
 #include <string>
 
 namespace calculus {
@@ -14,7 +15,7 @@ class Term {
   TValueF a;
   TTermPower tp;
 
-  Term(const TValueF& _a) : a(_a) {}
+  explicit Term(const TValueF& _a) : a(_a) {}
   Term(const TValueF& _a, const TTermPower& _tp) : a(_a), tp(_tp) {}
 
   bool IsConstant() const { return tp.IsConstant(); }

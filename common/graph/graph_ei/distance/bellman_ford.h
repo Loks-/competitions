@@ -1,6 +1,7 @@
 #pragma once
 
 #include "common/graph/graph_ei.h"
+
 #include <vector>
 
 namespace graph {
@@ -9,9 +10,10 @@ namespace distance {
 // https://en.wikipedia.org/wiki/Bellman%E2%80%93Ford_algorithm
 // Time: O(VE)
 template <class TGraph, class TEdgeCostFunction, class TEdgeCost>
-std::vector<TEdgeCost> BellmanFord(const TGraph& graph,
-                                   const TEdgeCostFunction& f, unsigned source,
-                                   const TEdgeCost& max_cost) {
+inline std::vector<TEdgeCost> BellmanFord(const TGraph& graph,
+                                          const TEdgeCostFunction& f,
+                                          unsigned source,
+                                          const TEdgeCost& max_cost) {
   unsigned gsize = graph.Size();
   std::vector<TEdgeCost> v(gsize, max_cost);
   v[source] = TEdgeCost();

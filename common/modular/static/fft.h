@@ -3,6 +3,7 @@
 #include "common/base.h"
 #include "common/factorization/factorization.h"
 #include "common/modular/utils/primitive_root.h"
+
 #include <algorithm>
 #include <vector>
 
@@ -75,7 +76,7 @@ class FFT {
     return n;
   }
 
-  FFT(unsigned n = 0) { Init(n); }
+  explicit FFT(unsigned n = 0) { Init(n); }
 
   unsigned GetMaxN() const { return maxn; }
 

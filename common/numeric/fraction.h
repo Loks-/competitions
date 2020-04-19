@@ -26,7 +26,7 @@ class Fraction {
   }
 
   Fraction() : numerator(0), denominator(1) {}
-  Fraction(const TValue& value) : numerator(value), denominator(1) {}
+  explicit Fraction(const TValue& value) : numerator(value), denominator(1) {}
   Fraction(const TValue& _numerator, const TValue& _denominator)
       : numerator(_numerator), denominator(_denominator) {
     Simplify();

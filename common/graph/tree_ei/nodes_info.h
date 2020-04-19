@@ -1,6 +1,7 @@
 #pragma once
 
 #include "common/graph/tree_ei.h"
+
 #include <algorithm>
 #include <stack>
 #include <vector>
@@ -53,8 +54,9 @@ class TreeEINodesInfo {
   }
 
   void Init(const TreeEI<TEdgeInfo>& tree) { Init(tree, tree.GetRoot()); }
+
   TreeEINodesInfo() : root(CNone) {}
-  TreeEINodesInfo(const TreeEI<TEdgeInfo>& tree) { Init(tree); }
+  explicit TreeEINodesInfo(const TreeEI<TEdgeInfo>& tree) { Init(tree); }
   TreeEINodesInfo(const TreeEI<TEdgeInfo>& tree, unsigned _root) {
     Init(tree, _root);
   }

@@ -34,7 +34,7 @@ class FixedTree
   friend class Tree<NodesManagerFixedSize<TNode>, TSelf>;
 
  public:
-  FixedTree(size_t max_nodes) : TTree(max_nodes) {}
+  explicit FixedTree(size_t max_nodes) : TTree(max_nodes) {}
 
   TNode* Build(const std::vector<TData>& data) { return TTree::Build(data); }
 

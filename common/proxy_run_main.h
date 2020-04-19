@@ -1,6 +1,7 @@
 #pragma once
 
 #include "common/proxy_run_base.h"
+
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -81,8 +82,9 @@ inline int ProxyTestAll(const std::string& problem,
   return 0;
 }
 
-int ProxyAuto(const std::string& solution, const std::string& input_file_name,
-              const std::string& test_file_name) {
+inline int ProxyAuto(const std::string& solution,
+                     const std::string& input_file_name,
+                     const std::string& test_file_name) {
   return test_file_name.empty()
              ? ProxyRun(solution, input_file_name)
              : ProxyTestAll(solution, input_file_name, test_file_name);

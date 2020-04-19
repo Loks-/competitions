@@ -3,6 +3,7 @@
 #include "common/base.h"
 #include "common/node.h"
 #include "common/nodes_manager.h"
+
 #include <functional>
 
 namespace heap {
@@ -43,7 +44,7 @@ class Binomial {
   bool Compare(Node* l, Node* r) const { return compare(l->value, r->value); }
 
  public:
-  Binomial(TNodesManager& _nodes_manager)
+  explicit Binomial(TNodesManager& _nodes_manager)
       : nodes_manager(_nodes_manager), head(nullptr), top(nullptr), size(0) {}
 
   TSelf Make() const { return TSelf(nodes_manager); }

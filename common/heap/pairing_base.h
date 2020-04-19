@@ -4,6 +4,7 @@
 #include "common/node.h"
 #include "common/nodes_manager.h"
 #include "common/template.h"
+
 #include <functional>
 
 namespace heap {
@@ -42,7 +43,7 @@ class PairingBase {
   bool Compare(Node* l, Node* r) const { return compare(l->value, r->value); }
 
  public:
-  PairingBase(unsigned expected_size)
+  explicit PairingBase(unsigned expected_size)
       : nodes_manager(expected_size), head(nullptr), size(0) {}
 
   bool Empty() const { return !head; }

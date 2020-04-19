@@ -26,7 +26,7 @@ class CFConvergent {
     Next();
   }
 
-  CFConvergent(const ContinuedFraction& continued_fraction)
+  explicit CFConvergent(const ContinuedFraction& continued_fraction)
       : cf(continued_fraction) {
     ResetIterator();
   }

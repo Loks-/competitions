@@ -4,6 +4,7 @@
 #include "common/calculus/ext_polynomial/factorized_conversion.h"
 #include "common/calculus/ext_polynomial/mv_division_linear.h"
 #include "common/calculus/ext_polynomial/mv_function.h"
+
 #include <vector>
 
 namespace calculus {
@@ -19,8 +20,9 @@ class FactorizedFunction {
   TFunction f2;
 
   FactorizedFunction() {}
-  FactorizedFunction(const TFactorized& _f1) : f1(_f1), f2(TValue(1)) {}
-  FactorizedFunction(const TFunction& _f2) : f2(_f2) {}
+  explicit FactorizedFunction(const TFactorized& _f1)
+      : f1(_f1), f2(TValue(1)) {}
+  explicit FactorizedFunction(const TFunction& _f2) : f2(_f2) {}
   FactorizedFunction(const TFactorized& _f1, const TFunction& _f2)
       : f1(_f1), f2(_f2) {}
 

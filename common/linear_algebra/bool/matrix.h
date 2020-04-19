@@ -34,7 +34,7 @@ class MatrixBool : public VectorBool {
     TBase::Resize(rows * bits_per_row);
   }
 
-  MatrixBool(unsigned size) : MatrixBool(size, size) {}
+  explicit MatrixBool(unsigned size) : MatrixBool(size, size) {}
 
   MatrixBool(unsigned _rows, unsigned _columns, const TValue& v)
       : MatrixBool(_rows, _columns) {
@@ -154,7 +154,7 @@ class MatrixBool : public VectorBool {
   TSelf PowU(uint64_t pow) const {
     assert(rows == columns);
     TSelf ans(rows, columns);
-    ans.SetDiagonal(TValue(1));
+    ans.SetDiagonal(TValue::True());
     TSelf x = *this;
     for (; pow; pow >>= 1) {
       if (pow & 1) ans *= x;

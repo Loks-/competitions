@@ -15,7 +15,7 @@ class Mertens : public Mobius {
   std::vector<int> mertens;
 
  public:
-  Mertens(uint64_t size) : TBase(size) {
+  explicit Mertens(uint64_t size) : TBase(size) {
     mertens.resize(TBase::table_size + 1);
     mertens[0] = 0;
     for (uint64_t i = 1; i <= TBase::table_size; ++i)

@@ -4,25 +4,26 @@
 #include "common/geometry/d2/line_pv.h"
 #include "common/geometry/d2/segment.h"
 #include "common/geometry/d2/utils/segment_point.h"
+
 #include <algorithm>
 
 template <class T, template <class TT> class TObject>
-bool SegmentIntersect(const geometry::d2::Segment<T, false>& s,
-                      const TObject<T>& o) {
+inline bool SegmentIntersect(const geometry::d2::Segment<T, false>& s,
+                             const TObject<T>& o) {
   T v1 = o(s.p1), v2 = o(s.p2);
   return ((v1 < 0) && (0 < v2)) || ((v2 < 0) && (0 < v1));
 }
 
 template <class T, template <class TT> class TObject>
-bool SegmentIntersect(const geometry::d2::Segment<T, true>& s,
-                      const TObject<T>& o) {
+inline bool SegmentIntersect(const geometry::d2::Segment<T, true>& s,
+                             const TObject<T>& o) {
   T v1 = o(s.p1), v2 = o(s.p2);
   return ((v1 <= 0) && (0 <= v2)) || ((v2 <= 0) && (0 <= v1));
 }
 
 template <class T, bool closed1, bool closed2>
-bool Intersect(const geometry::d2::Segment<T, closed1>& s1,
-               const geometry::d2::Segment<T, closed2>& s2) {
+inline bool Intersect(const geometry::d2::Segment<T, closed1>& s1,
+                      const geometry::d2::Segment<T, closed2>& s2) {
   if (s1.Empty()) return closed1 && HasPoint(s2, s1.p1);
   if (s2.Empty()) return closed2 && HasPoint(s1, s2.p1);
   geometry::d2::LinePV<T> l1(s1.p1, s1.p2), l2(s2.p1, s2.p2);

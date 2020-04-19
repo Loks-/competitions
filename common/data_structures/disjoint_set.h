@@ -13,7 +13,7 @@ class DisjointSet {
   unsigned unions;
 
  public:
-  DisjointSet(unsigned n = 0) { Init(n); }
+  explicit DisjointSet(unsigned n = 0) { Init(n); }
   unsigned Size() const { return n; }
   unsigned GetUnions() const { return unions; }
   unsigned GetSetsCount() const { return n - unions; }

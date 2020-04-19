@@ -3,6 +3,7 @@
 #include "common/base.h"
 #include "common/graph/tree.h"
 #include "common/graph/tree/nodes_info.h"
+
 #include <algorithm>
 #include <stack>
 #include <vector>
@@ -21,7 +22,7 @@ class CentroidDecomposition {
   const std::vector<unsigned>& GetGroupMap() const { return group; }
 
  protected:
-  CentroidDecomposition(const TreeGraph& _tree) : tree(_tree) {
+  explicit CentroidDecomposition(const TreeGraph& _tree) : tree(_tree) {
     unsigned n = tree.Size();
     group.resize(n, 0);
     group_root.reserve(n);

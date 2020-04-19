@@ -12,7 +12,7 @@ class EulersTotient : public Primes {
   std::vector<unsigned> eulers_totient;
 
  public:
-  EulersTotient(uint64_t size) : Primes(size) {
+  explicit EulersTotient(uint64_t size) : Primes(size) {
     eulers_totient.resize(Primes::table_size + 1);
     eulers_totient[0] = 0;
     eulers_totient[1] = 1;

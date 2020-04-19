@@ -3,6 +3,7 @@
 #include "common/calculus/ext_polynomial/term_power.h"
 #include "common/calculus/multivariable/point.h"
 #include "common/stl/array.h"
+
 #include <array>
 #include <string>
 
@@ -19,7 +20,8 @@ class MVTermPower {
   std::array<TSVTermPower, _dim> terms;
 
   MVTermPower() : terms(MakeArray<TSVTermPower, dim>(TSVTermPower())) {}
-  MVTermPower(const std::array<TSVTermPower, _dim>& _terms) : terms(_terms) {}
+  explicit MVTermPower(const std::array<TSVTermPower, _dim>& _terms)
+      : terms(_terms) {}
 
   bool IsConstant() const {
     for (auto& t : terms) {

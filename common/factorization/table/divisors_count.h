@@ -12,7 +12,7 @@ class DivisorsCount : public Primes {
   std::vector<unsigned> dc;
 
  public:
-  DivisorsCount(uint64_t size) : Primes(size) {
+  explicit DivisorsCount(uint64_t size) : Primes(size) {
     dc.resize(Primes::table_size + 1, 1);
     for (uint64_t i = 1; i <= Primes::table_size; ++i) {
       if (!Primes::IsPrime(i)) continue;

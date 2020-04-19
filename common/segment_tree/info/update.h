@@ -5,7 +5,7 @@
 namespace st {
 namespace info {
 template <class TNode>
-void Update(TNode* node) {
+inline void Update(TNode* node) {
   assert(node);
   node->ApplyAction();
   if (node->IsLeaf())

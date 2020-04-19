@@ -1,6 +1,7 @@
 #pragma once
 
 #include "common/base.h"
+
 #include <vector>
 
 // Time to reach 1 in Collatz sequence
@@ -10,7 +11,9 @@ class Collatz {
   std::vector<unsigned> vt;
 
  public:
-  Collatz(unsigned cache_size) : vt(cache_size, 0) { vt[0] = vt[1] = 1; }
+  explicit Collatz(unsigned cache_size) : vt(cache_size, 0) {
+    vt[0] = vt[1] = 1;
+  }
 
   static uint64_t Next(uint64_t n) { return (n & 1) ? (3 * n + 1) : n / 2; }
 

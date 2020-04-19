@@ -12,7 +12,7 @@ class Mobius : public Primes {
   std::vector<int> mobius;
 
  public:
-  Mobius(uint64_t size) : Primes(size) {
+  explicit Mobius(uint64_t size) : Primes(size) {
     mobius.resize(Primes::table_size + 1);
     mobius[0] = 0;
     mobius[1] = 1;

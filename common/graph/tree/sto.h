@@ -30,7 +30,7 @@ class STO {
 
  public:
   STO() {}
-  STO(const TreeGraph& tree) { Build(tree); }
+  explicit STO(const TreeGraph& tree) { Build(tree); }
 
   void Build(const TreeGraph& tree) {
     unsigned n = tree.Size();

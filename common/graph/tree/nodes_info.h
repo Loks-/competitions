@@ -1,6 +1,7 @@
 #pragma once
 
 #include "common/graph/tree.h"
+
 #include <algorithm>
 #include <stack>
 #include <vector>
@@ -51,7 +52,7 @@ class TreeNodesInfo {
   TreeNodesInfo() : root(CNone) {}
 
   template <class TGraph>
-  TreeNodesInfo(const Tree<TGraph>& tree) {
+  explicit TreeNodesInfo(const Tree<TGraph>& tree) {
     Init(tree);
   }
 

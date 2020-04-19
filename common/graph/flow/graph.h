@@ -29,7 +29,7 @@ class Graph {
     edges.resize(nvertices);
   }
 
-  Graph(unsigned _nvertices = 0) { Resize(_nvertices); }
+  explicit Graph(unsigned _nvertices = 0) { Resize(_nvertices); }
   Graph(unsigned _nvertices, unsigned _source, unsigned _sink)
       : source(_source), sink(_sink) {
     Resize(_nvertices);

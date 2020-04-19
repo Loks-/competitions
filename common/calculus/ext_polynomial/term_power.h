@@ -4,6 +4,7 @@
 #include "common/calculus/ext_polynomial/term_base.h"
 #include "common/calculus/ext_polynomial/term_bases/one.h"
 #include "common/calculus/ext_polynomial/term_bases/type.h"
+
 #include <string>
 
 namespace calculus {
@@ -32,8 +33,8 @@ class TermPower {
   bool IsFinite(const TValue& x) const { return base->IsFinite(x, power); }
 
   bool operator<(const TSelf& r) const {
-    return (power < r.power) ? true : (r.power < power) ? false
-                                                        : (*base < *r.base);
+    return (power < r.power) ? true
+                             : (r.power < power) ? false : (*base < *r.base);
   }
 
   bool operator==(const TSelf& r) const {

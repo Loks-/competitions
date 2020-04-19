@@ -5,6 +5,7 @@
 #include "common/geometry/d2/compare/vector_angle.h"
 #include "common/geometry/d2/point.h"
 #include "common/vector/rotate.h"
+
 #include <algorithm>
 #include <array>
 #include <vector>
@@ -18,9 +19,12 @@ class PolygonStaticSize {
   using TPoint = Point<T>;
   std::array<TPoint, size> v;
 
-  PolygonStaticSize(const std::array<TPoint, size>& vp) : v(vp) { Normalize(); }
+  explicit PolygonStaticSize(const std::array<TPoint, size>& vp) : v(vp) {
+    Normalize();
+  }
 
-  PolygonStaticSize(const std::vector<TPoint>& vp) : v(vp.begin(), vp.end()) {
+  explicit PolygonStaticSize(const std::vector<TPoint>& vp)
+      : v(vp.begin(), vp.end()) {
     Normalize();
   }
 

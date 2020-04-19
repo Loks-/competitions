@@ -3,7 +3,7 @@
 #include <vector>
 
 template <class T>
-bool IsStrongSorted(const std::vector<T>& v) {
+inline bool IsStrongSorted(const std::vector<T>& v) {
   for (size_t i = 1; i < v.size(); ++i) {
     if (!(v[i - 1] < v[i])) return false;
   }
@@ -11,7 +11,7 @@ bool IsStrongSorted(const std::vector<T>& v) {
 }
 
 template <class T, class TCompare>
-bool IsStrongSorted(const std::vector<T>& v, const TCompare& cmp_less) {
+inline bool IsStrongSorted(const std::vector<T>& v, const TCompare& cmp_less) {
   for (size_t i = 1; i < v.size(); ++i) {
     if (!cmp_less(v[i - 1], v[i])) return false;
   }
@@ -19,7 +19,7 @@ bool IsStrongSorted(const std::vector<T>& v, const TCompare& cmp_less) {
 }
 
 template <class T>
-bool IsWeakSorted(const std::vector<T>& v) {
+inline bool IsWeakSorted(const std::vector<T>& v) {
   for (size_t i = 1; i < v.size(); ++i) {
     if (v[i] < v[i - 1]) return false;
   }
@@ -27,7 +27,7 @@ bool IsWeakSorted(const std::vector<T>& v) {
 }
 
 template <class T, class TCompare>
-bool IsWeakSorted(const std::vector<T>& v, const TCompare& cmp_less) {
+inline bool IsWeakSorted(const std::vector<T>& v, const TCompare& cmp_less) {
   for (size_t i = 1; i < v.size(); ++i) {
     if (cmp_less(v[i], v[i - 1])) return false;
   }

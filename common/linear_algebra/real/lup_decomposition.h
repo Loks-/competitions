@@ -3,6 +3,7 @@
 #include "common/base.h"
 #include "common/linear_algebra/rows/sub_m.h"
 #include "common/linear_algebra/rows/swap.h"
+
 #include <algorithm>
 #include <cmath>
 #include <vector>
@@ -24,7 +25,7 @@ class LUPDecomposition {
   double det_sign;
 
  public:
-  LUPDecomposition(double _eps_build = 1e-10, double _eps_solve = 1e-5)
+  explicit LUPDecomposition(double _eps_build = 1e-10, double _eps_solve = 1e-5)
       : eps_build(_eps_build), eps_solve(_eps_solve), lu(0), det_sign(1.0) {}
 
   bool Build(const TMatrix& m) {

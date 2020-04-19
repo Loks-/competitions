@@ -33,7 +33,7 @@ class SplayTree
   using TTree = Tree<TTNodesManager<TNode>, TSelf>;
 
  public:
-  SplayTree(size_t max_nodes) : TTree(max_nodes) {}
+  explicit SplayTree(size_t max_nodes) : TTree(max_nodes) {}
 
   // Splay assumes that actions are already applied from root to node.
   static void Splay(TNode* node) {

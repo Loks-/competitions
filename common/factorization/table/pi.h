@@ -12,7 +12,7 @@ class Pi : public Primes {
   std::vector<unsigned> pi;
 
  public:
-  Pi(uint64_t size) : Primes(size) {
+  explicit Pi(uint64_t size) : Primes(size) {
     pi.resize(Primes::table_size + 1);
     pi[0] = 0;
     for (uint64_t i = 1; i <= Primes::table_size; ++i)

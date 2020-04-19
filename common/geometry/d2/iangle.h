@@ -3,6 +3,7 @@
 #include "common/base.h"
 #include "common/geometry/d2/vector.h"
 #include "common/numeric/utils/gcd.h"
+
 #include <cmath>
 
 namespace geometry {
@@ -17,7 +18,7 @@ class IAngle {
 
   IAngle() : dx(1), dy(0) {}
   IAngle(const T& _dx, const T& _dy) : dx(_dx), dy(_dy) { Normalize(); }
-  IAngle(const Vector<T>& v) : dx(v.dx), dy(v.dy) { Normalize(); }
+  explicit IAngle(const Vector<T>& v) : dx(v.dx), dy(v.dy) { Normalize(); }
 
   bool Valid() const { return (dx != 0) || (dy != 0); }
 

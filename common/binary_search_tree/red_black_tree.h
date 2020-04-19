@@ -45,7 +45,7 @@ class RedBlackTree
   friend class Tree<TTNodesManager<TNode>, TSelf>;
 
  public:
-  RedBlackTree(size_t max_nodes) : TTree(max_nodes) {}
+  explicit RedBlackTree(size_t max_nodes) : TTree(max_nodes) {}
 
  protected:
   static void BuildTreeIFixColorsR(TNode* root, size_t height) {

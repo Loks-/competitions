@@ -1,8 +1,9 @@
 #pragma once
 
+#include "common/data_structures/unsigned_set.h"
 #include "common/graph/graph.h"
 #include "common/graph/graph/adjacency_matrix.h"
-#include "common/vector/unsigned_set.h"
+
 #include <stack>
 #include <vector>
 
@@ -20,11 +21,11 @@ class MaximalCliquesList {
   unsigned n;
 
  protected:
-  UnsignedSet r, p, x;
+  ds::UnsignedSet r, p, x;
   std::stack<unsigned> sr, sp, sx;
 
  public:
-  MaximalCliquesList(const UndirectedGraph& _g)
+  explicit MaximalCliquesList(const UndirectedGraph& _g)
       : g(_g), n(g.Size()), r(n), p(n), x(n) {
     gam = AdjacencyMatrix(g);
   }

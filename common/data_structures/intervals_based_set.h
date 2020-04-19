@@ -6,6 +6,7 @@
 #include "common/binary_search_tree/info/size.h"
 #include "common/binary_search_tree/treap.h"
 #include "common/nodes_manager.h"
+
 #include <algorithm>
 #include <vector>
 
@@ -55,7 +56,7 @@ class IntervalsBasedSet {
 
  public:
   IntervalsBasedSet() : my_tree(0), tree(my_tree), root(nullptr) {}
-  IntervalsBasedSet(TTree& tree_to_use)
+  explicit IntervalsBasedSet(TTree& tree_to_use)
       : my_tree(0), tree(tree_to_use), root(nullptr) {}
 
   bool Empty() const { return root == nullptr; }

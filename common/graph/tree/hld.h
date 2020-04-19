@@ -85,7 +85,7 @@ class HLD {
 
  public:
   HLD() {}
-  HLD(const TreeGraph& tree) { Build(tree); }
+  explicit HLD(const TreeGraph& tree) { Build(tree); }
 
   void Build(const TreeGraph& tree) {
     stree.ResetNodes(tree.Size());
