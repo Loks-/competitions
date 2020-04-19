@@ -17,11 +17,9 @@
 	* https://www.hackerrank.com/challenges/lazy-white-falcon
 * Link/Cut Tree
 	* https://www.hackerrank.com/challenges/subtrees-and-paths
+	* https://www.hackerrank.com/challenges/dynamic-summation
 * Persistent Binary Search Trees
 * SegmentTree
 	* Compact SegmentTree
 	* Persistent SegmentTree
-* STO (Tree with subtree operations)
-	* https://www.hackerrank.com/challenges/fibonacci-numbers-tree
-	* https://www.hackerrank.com/challenges/lazy-white-falcon
 * [Optional] Tango trees
