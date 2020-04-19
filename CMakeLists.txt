@@ -200,9 +200,9 @@ add_test( NAME draupnir COMMAND python3 google/code_jam/2019/interactive_runner.
 add_test( NAME power_arrangers COMMAND python3 google/code_jam/2019/interactive_runner.py python3 tests/google/code_jam/2019/r1c/power_arrangers.py 1 -- ./release/build/google_code_jam power_arrangers WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} )
 add_test( NAME pottery_lottery COMMAND python3 google/code_jam/2019/interactive_runner.py python3 tests/google/code_jam/2019/r2/pottery_lottery.py -- ./release/build/google_code_jam pottery_lottery WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} )
 add_test( NAME zilionim COMMAND python3 google/code_jam/2019/interactive_runner.py python3 tests/google/code_jam/2019/r3/zilionim.py 2 -- ./release/build/google_code_jam zilionim WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} )
-add_test( NAME esab_atad.0 COMMAND python3 google/code_jam/2020/interactive_runner.py python3 tests/google/code_jam/2020/qr/esab_atad.py 0 -- ./release/build/google_code_jam esab_atad WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} )
-add_test( NAME esab_atad.1 COMMAND python3 google/code_jam/2020/interactive_runner.py python3 tests/google/code_jam/2020/qr/esab_atad.py 1 -- ./release/build/google_code_jam esab_atad WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} )
-add_test( NAME esab_atad.2 COMMAND python3 google/code_jam/2020/interactive_runner.py python3 tests/google/code_jam/2020/qr/esab_atad.py 2 -- ./release/build/google_code_jam esab_atad WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} )
+add_test( NAME esab_atad.0 COMMAND python3 google/code_jam/2020/qr/interactive_runner.py python3 tests/google/code_jam/2020/qr/esab_atad.py 0 -- ./release/build/google_code_jam esab_atad WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} )
+add_test( NAME esab_atad.1 COMMAND python3 google/code_jam/2020/qr/interactive_runner.py python3 tests/google/code_jam/2020/qr/esab_atad.py 1 -- ./release/build/google_code_jam esab_atad WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} )
+add_test( NAME esab_atad.2 COMMAND python3 google/code_jam/2020/qr/interactive_runner.py python3 tests/google/code_jam/2020/qr/esab_atad.py 2 -- ./release/build/google_code_jam esab_atad WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} )
 
 file( GLOB_RECURSE HACKERRANK_TESTS RELATIVE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/tests/hackerrank/*.in" )
 list( SORT HACKERRANK_TESTS )
