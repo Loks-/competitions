@@ -15,9 +15,9 @@
             "args": [
                 // "heap"
                 // "minimum_spanning_tree"
-                "subtrees_and_paths",
+                "fibonacci_numbers_tree__hld",
                 // "tests/google/code_jam/2019/r2/p3.in"
-                "../tests/hackerrank/practice/data_structures/advanced/subtrees_and_paths.3.in"
+                "../tests/hackerrank/practice/data_structures/advanced/fibonacci_numbers_tree.in"
                 // "-threads",
                 // "1"
                 // "695"
