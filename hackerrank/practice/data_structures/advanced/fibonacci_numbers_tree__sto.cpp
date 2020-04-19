@@ -10,6 +10,7 @@
 
 using TFibonacci = modular::mstatic::FibonacciMatrix<TModularD>;
 
+namespace {
 class FData {
  public:
   TModularD c, f0, f1;
@@ -29,6 +30,7 @@ class FData {
     return TFibonacci::GetU(deep + 2, f0, f1) - f1 + c;
   }
 };
+}  // namespace
 
 int main_fibonacci_numbers_tree__sto() {
   unsigned N, Q;
