@@ -59,7 +59,7 @@ int main_recalling_early_days_gp_with_trees() {
   tree.ReadEdges();
   graph::HLD<FData, st::info::Sum<FData, graph::HLDInfo>, ActionAdd> hld(tree);
 
-  TModular r(R), ri = (r != 0) ? r.Inverse() : 0;
+  TModular r(R), ri = (r ? r.Inverse() : 0);
   for (unsigned i = 0; i < N; ++i) {
     auto d = hld.Deep(i);
     hld.SetData(i, FData{r.PowU(d), ri.PowU(d), 0});
@@ -72,7 +72,7 @@ int main_recalling_early_days_gp_with_trees() {
     cin >> a >> b >> x;
     a -= 1;
     b -= 1;
-    if (r != 0) {
+    if (r) {
       unsigned c = hld.LCA(a, b), d = hld.Deep(c);
       auto y = x * r.PowU(hld.DistanceFromAncestor(c, a));
       hld.PathFromAncestor(c, a, false)
