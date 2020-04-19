@@ -2,19 +2,18 @@
 
 #include "common/graph/tree.h"
 #include "common/graph/tree/hld.h"
-#include "common/modular/static/fibonacci_matrix.h"
 #include "common/modular_io.h"
 #include "common/segment_tree/action/none.h"
 #include "common/segment_tree/info/sum.h"
 #include "common/stl/base.h"
 #include "common/stl/pair.h"
 
-using TFibonacci = modular::mstatic::FibonacciMatrix<TModularD>;
+using TModular = TModular_P32<100711433>;
 
 namespace {
 class FData {
  public:
-  TModularD f0, f1, v;
+  TModular f0, f1, v;
 
   FData operator+(const FData& r) const {
     return FData{f0 + r.f0, f1 + r.f1, v + r.v};
@@ -23,7 +22,7 @@ class FData {
 
 class ActionAdd : public st::action::None {
  public:
-  using TData = std::pair<TModularD, TModularD>;
+  using TData = std::pair<TModular, TModular>;
   static const bool is_none = false;
 
   TData x;
@@ -53,33 +52,41 @@ class ActionAdd : public st::action::None {
 };
 }  // namespace
 
-int main_fibonacci_numbers_tree__hld() {
-  unsigned N, Q;
-  cin >> N >> Q;
+int main_recalling_early_days_gp_with_trees() {
+  unsigned N, R, U, Q;
+  cin >> N >> R;
   TreeGraph tree(N);
-  tree.ReadTreeEdges();
+  tree.ReadEdges();
   graph::HLD<FData, st::info::Sum<FData, graph::HLDInfo>, ActionAdd> hld(tree);
 
+  TModular r(R), ri = (r != 0) ? r.Inverse() : 0;
   for (unsigned i = 0; i < N; ++i) {
-    auto p = TFibonacci::GetPU(hld.Deep(i));
-    hld.SetData(i, FData{p.first, p.second, 0});
+    auto d = hld.Deep(i);
+    hld.SetData(i, FData{r.PowU(d), ri.PowU(d), 0});
   }
 
-  for (unsigned iQ = 0; iQ < Q; ++iQ) {
-    char c;
-    cin >> c;
-    if (c == 'Q') {
-      unsigned x, y;
-      cin >> x >> y;
-      cout << hld.Path(x - 1, y - 1).GetInfo().segment_sum.v << endl;
-    } else if (c == 'U') {
-      unsigned x;
-      int64_t kx;
-      cin >> x >> kx;
-      x -= 1;
-      auto p0 = TFibonacci::GetPS(kx - hld.Deep(x) + 1);
-      hld.Subtree(x).AddAction(p0);
+  cin >> U >> Q;
+  unsigned a, b;
+  TModular x;
+  for (unsigned iU = 0; iU < U; ++iU) {
+    cin >> a >> b >> x;
+    a -= 1;
+    b -= 1;
+    if (r != 0) {
+      unsigned c = hld.LCA(a, b), d = hld.Deep(c);
+      auto y = x * r.PowU(hld.DistanceFromAncestor(c, a));
+      hld.PathFromAncestor(c, a, false)
+          .AddAction(ActionAdd::TData{0, y * r.PowU(d)});
+      if (b != c)
+        hld.PathFromAncestor(c, b, true)
+            .AddAction(ActionAdd::TData{y * ri.PowU(d), 0});
+    } else {
+      hld.SetData(a, hld.Node(a)->GetData() + FData{0, 0, x});
     }
+  }
+  for (unsigned iQ = 0; iQ < Q; ++iQ) {
+    cin >> a >> b;
+    cout << hld.Path(a - 1, b - 1).GetInfo().segment_sum.v << endl;
   }
   return 0;
 }
