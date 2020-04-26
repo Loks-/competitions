@@ -203,9 +203,9 @@ add_test( NAME zilionim COMMAND python3 tests/google/code_jam/2019/interactive_r
 add_test( NAME esab_atad.0 COMMAND python3 tests/google/code_jam/2020/qr/interactive_runner.py python3 tests/google/code_jam/2020/qr/esab_atad.py 0 -- ./release/build/google_code_jam esab_atad WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} )
 add_test( NAME esab_atad.1 COMMAND python3 tests/google/code_jam/2020/qr/interactive_runner.py python3 tests/google/code_jam/2020/qr/esab_atad.py 1 -- ./release/build/google_code_jam esab_atad WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} )
 add_test( NAME esab_atad.2 COMMAND python3 tests/google/code_jam/2020/qr/interactive_runner.py python3 tests/google/code_jam/2020/qr/esab_atad.py 2 -- ./release/build/google_code_jam esab_atad WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} )
-add_test( NAME blindfolded_bullseye.0 COMMAND python3 tests/google/code_jam/2020/interactive_runner.py python3 tests/google/code_jam/2020/r2/blindfolded_bullseye.py 0 -- ./release/build/google_code_jam blindfolded_bullseye WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} )
-add_test( NAME blindfolded_bullseye.1 COMMAND python3 tests/google/code_jam/2020/interactive_runner.py python3 tests/google/code_jam/2020/r2/blindfolded_bullseye.py 1 -- ./release/build/google_code_jam blindfolded_bullseye WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} )
-add_test( NAME blindfolded_bullseye.2 COMMAND python3 tests/google/code_jam/2020/interactive_runner.py python3 tests/google/code_jam/2020/r2/blindfolded_bullseye.py 2 -- ./release/build/google_code_jam blindfolded_bullseye WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} )
+add_test( NAME blindfolded_bullseye.0 COMMAND python3 tests/google/code_jam/2020/interactive_runner.py python3 tests/google/code_jam/2020/r1b/blindfolded_bullseye.py 0 -- ./release/build/google_code_jam blindfolded_bullseye WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} )
+add_test( NAME blindfolded_bullseye.1 COMMAND python3 tests/google/code_jam/2020/interactive_runner.py python3 tests/google/code_jam/2020/r1b/blindfolded_bullseye.py 1 -- ./release/build/google_code_jam blindfolded_bullseye WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} )
+add_test( NAME blindfolded_bullseye.2 COMMAND python3 tests/google/code_jam/2020/interactive_runner.py python3 tests/google/code_jam/2020/r1b/blindfolded_bullseye.py 2 -- ./release/build/google_code_jam blindfolded_bullseye WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} )
 
 file( GLOB_RECURSE HACKERRANK_TESTS RELATIVE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/tests/hackerrank/*.in" )
 list( SORT HACKERRANK_TESTS )
