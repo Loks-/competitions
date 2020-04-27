@@ -1,4 +1,4 @@
-// https://www.hackerrank.com/challenges/fibonacci-numbers-tree
+// https://www.hackerrank.com/challenges/recalling-early-days-gp-with-trees
 
 #include "common/graph/tree.h"
 #include "common/graph/tree/hld.h"
