@@ -27,7 +27,6 @@ class Modular {
   void SetT(TValue _value) { value = TBase::ApplyT(_value); }
 
   Modular() : value(0) {}
-  Modular(const TSelf& s) : value(s.value) {}
   Modular(TValue _value) : value(TBase::ApplyT(_value)) {}
 
   explicit operator bool() const { return value != 0; }

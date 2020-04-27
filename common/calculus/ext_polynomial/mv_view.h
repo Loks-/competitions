@@ -52,7 +52,6 @@ inline Function<MVFunction<TValue, dim>, TValue> SVPolynomialView(
 template <class TValue, unsigned dim>
 inline MVFunction<TValue, dim> MVView(
     const Term<MVFunction<TValue, dim>, TValue>& t, unsigned index) {
-  using TMVF = MVFunction<TValue, dim>;
   MVTermPower<TValue, dim> mtp;
   mtp(index) = t.tp;
   return t.a * MVTerm<TValue, dim>(TValue(1), mtp);

@@ -7,7 +7,7 @@ namespace opt {
 template <class TFunction>
 inline D2Point TernarySearch2D(TFunction& f, double xl, double xr, double yl,
                                double yr, double eps) {
-  double cx, cy;
+  double cy;
   auto fx = [&](double x) { return f(x, cy); };
   auto fy = [&](double y) {
     cy = y;

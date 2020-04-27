@@ -10,7 +10,7 @@ int main_akhil_and_gf() {
   unsigned T;
   cin >> T;
   for (unsigned it = 0; it < T; ++it) {
-    uint64_t N, M, M3 = 1, ten = 10;
+    uint64_t N, M, M3 = 1;
     cin >> N >> M;
     for (; (M % 3) == 0; M /= 3) M3 *= 3;
     uint64_t r = TModularA::DivSafe(

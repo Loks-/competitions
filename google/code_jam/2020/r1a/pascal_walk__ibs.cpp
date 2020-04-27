@@ -20,7 +20,6 @@ int main_pascal_walk__ibs() {
       cout << "Case #" << it << ":" << endl << "1 1" << endl;
       continue;
     }
-    uint64_t N2 = N;
     vector<VIBS> v;
     v.reserve(35);
     IBS empty;

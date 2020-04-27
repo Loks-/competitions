@@ -19,7 +19,7 @@ class AddEach : public None {
   void Clear() { add_value = TData(); };
 
   template <class TNode>
-  void Add(TNode* node, const TData& value) {
+  void Add(TNode*, const TData& value) {
     add_value += value;
   }
 

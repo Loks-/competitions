@@ -10,7 +10,7 @@ class None {
   static const bool has_size = false;
 
   template <class TNode>
-  void Update(const TNode* node) {}
+  void Update(const TNode*) {}
 };
 }  // namespace info
 }  // namespace bst

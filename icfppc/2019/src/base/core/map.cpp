@@ -4,8 +4,10 @@
 #include "base/boosters.h"
 #include "base/decode.h"
 #include "base/point.h"
+
 #include "common/assert_exception.h"
 #include "common/string/split.h"
+
 #include <algorithm>
 #include <cassert>
 #include <string>
@@ -39,7 +41,7 @@ void Map::InitCore(const std::string& map_encoded,
     }
     Assert(v.size() > 1);
     v.push_back(v[0]);
-    if (output_vvy.size() < xs) output_vvy.resize(xs);
+    if (int(output_vvy.size()) < xs) output_vvy.resize(xs);
     for (size_t i = 1; i < v.size(); ++i) {
       if (v[i - 1].y == v[i].y) {
         int x1 = std::min(v[i - 1].x, v[i].x);

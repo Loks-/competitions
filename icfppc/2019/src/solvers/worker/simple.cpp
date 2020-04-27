@@ -4,13 +4,15 @@
 #include "base/action_type.h"
 #include "base/ext/path.h"
 #include "base/ext/world.h"
+
 #include "common/data_structures/unsigned_set.h"
+
 #include <cassert>
 #include <string>
 
 namespace solvers {
 namespace worker {
-void Simple::Init(base::ext::World& world) {}
+void Simple::Init(base::ext::World&) {}
 
 base::Action Simple::NextMove(base::ext::World& world) {
   return NextMove(world, world.GetMap().Unwrapped());

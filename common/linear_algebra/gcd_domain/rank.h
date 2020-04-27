@@ -11,7 +11,6 @@ template <class TMatrix>
 inline unsigned Rank(const TMatrix& matrix) {
   using TValue = typename TMatrix::TValue;
   TMatrix m(matrix);
-  unsigned n = m.Rows();
   unsigned r = 0;
   for (unsigned j = 0; (r < m.Rows()) && (j < m.Columns()); ++j) {
     unsigned best_row = r, non_zero = 0;

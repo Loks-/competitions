@@ -83,7 +83,6 @@ class MertensCompact {
       for (uint64_t i = 1; i <= x; ++i) s += mobius(i);
       return s;
     } else {
-      uint64_t xsqrt = USqrt(x);
       rx = x;
       ru = std::min(UCbrt(x), u);
       FirstBlock();

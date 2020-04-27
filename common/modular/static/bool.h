@@ -1,6 +1,7 @@
 #pragma once
 
 #include "common/base.h"
+#include "common/template.h"
 
 namespace modular {
 namespace mstatic {
@@ -24,7 +25,6 @@ class Bool {
   void SetT(TValue _value) { value = _value; }
 
   Bool() : value(false) {}
-  Bool(const TSelf& s) : value(s.value) {}
   Bool(bool b) : value(b) {}
   explicit Bool(uint32_t _value) { SetU(_value); }
   explicit Bool(uint64_t _value) { SetU(_value); }
@@ -60,11 +60,13 @@ class Bool {
   }
 
   TSelf operator/(TSelf rvalue) const {
+    FakeUse(rvalue);
     assert(rvalue.value);
     return *this;
   }
 
   TSelf& operator/=(TSelf rvalue) {
+    FakeUse(rvalue);
     assert(rvalue.value);
     return *this;
   }

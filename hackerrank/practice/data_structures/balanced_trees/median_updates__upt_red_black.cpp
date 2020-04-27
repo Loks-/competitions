@@ -33,7 +33,6 @@ int main_median_updates__upt_red_black() {
     if (root == 0) {
       cout << "Wrong!" << endl;
     } else {
-      unsigned size = root->info.size;
       int64_t s = bst::Median<TNode, int64_t>(root);
       if (s & 1)
         cout << s / 2.0 << endl;

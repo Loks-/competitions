@@ -1,8 +1,7 @@
+#include "common/assert_exception.h"
 #include "common/data_structures/compact_intervals_based_set.h"
 #include "common/numeric/binomial_coefficient_table.h"
 #include "common/stl/base.h"
-
-#include "common/assert_exception.h"
 
 using IBS = ds::CompactIntervalsBasedSet<unsigned>;
 using VIBS = vector<IBS>;
@@ -18,7 +17,6 @@ int main_pascal_walk() {
       cout << "Case #" << it << ":" << endl << "1 1" << endl;
       continue;
     }
-    uint64_t N2 = N;
     vector<VIBS> v;
     IBS empty;
     v.push_back(VIBS(1));

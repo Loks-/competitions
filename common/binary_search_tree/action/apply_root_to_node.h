@@ -7,7 +7,7 @@
 namespace bst {
 namespace action {
 template <class TNode>
-inline void ApplyRootToNode(TNode* node, TFakeFalse) {}
+inline void ApplyRootToNode(TNode*, TFakeFalse) {}
 
 template <class TNode>
 inline void ApplyRootToNode(TNode* node, TFakeTrue) {

@@ -39,7 +39,7 @@ int main_zilionim() {
 
     auto Move = [&]() {
       for (unsigned i = 0; i < v.size(); ++i) {
-        if ((v[i].first <= M) && (v[i].second >= M + B)) {
+        if ((v[i].first <= uint64_t(M)) && (v[i].second >= M + B)) {
           v.push_back({M + B, v[i].second});
           v[i].second = M;
           break;

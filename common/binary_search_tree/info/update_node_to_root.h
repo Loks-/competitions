@@ -5,7 +5,7 @@
 namespace bst {
 namespace info {
 template <class TNode>
-inline void UpdateNodeToRoot(TNode* node, TFakeFalse) {}
+inline void UpdateNodeToRoot(TNode*, TFakeFalse) {}
 
 template <class TNode>
 inline void UpdateNodeToRoot(TNode* node, TFakeTrue) {

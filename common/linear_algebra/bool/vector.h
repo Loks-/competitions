@@ -2,6 +2,7 @@
 
 #include "common/base.h"
 #include "common/modular/static/bool.h"
+#include "common/template.h"
 
 #include <algorithm>
 #include <vector>
@@ -115,6 +116,7 @@ class VectorBool {
   }
 
   TSelf& operator/=(const TValue& v) {
+    FakeUse(v);
     assert(v.Get());
     return *this;
   }
@@ -142,6 +144,7 @@ class VectorBool {
   }
 
   TSelf operator/(const TValue& v) const {
+    FakeUse(v);
     assert(v.Get());
     return *this;
   }

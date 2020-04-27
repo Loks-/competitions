@@ -19,7 +19,7 @@ class PGeometric : public GeneratingFunction<TValue> {
 template <class TValue>
 class PGeometricOne : public GeneratingFunction<TValue> {
  public:
-  TValue Get(uint64_t n) override { return TValue(1); }
+  TValue Get(uint64_t) override { return TValue(1); }
 };
 
 template <class TValue>

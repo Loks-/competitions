@@ -52,7 +52,6 @@ int main_cyclic_quadruples() {
   for (unsigned iT = 0; iT < T; ++iT) {
     v = ReadVector<unsigned>(8);
     v.insert(v.end(), v.begin(), v.end());
-    TModularD r = 0;
     cout << ABCD() - AACD() + AACC() + AAAD() - AAAA() * 3 << endl;
   }
   return 0;

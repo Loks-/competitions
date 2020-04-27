@@ -58,7 +58,7 @@ int main_jurisdiction_restrictions() {
     auto f1 = [&](int64_t f) {
       set_source_flow(f);
       auto gf = MaxFlow(g);
-      return gf < f * stations.size();
+      return gf < f * int64_t(stations.size());
     };
     auto f2 = [&](int64_t f) {
       set_source_flow(f);

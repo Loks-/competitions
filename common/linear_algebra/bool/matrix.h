@@ -104,7 +104,6 @@ class MatrixBool : public VectorBool {
   void Mult(const TSelf& v, TSelf& output) const {
     assert((v.rows == columns) && (output.rows == rows) &&
            (output.columns == v.columns));
-    unsigned columns2 = output.columns;
     output.Clear();
     for (unsigned i = 0; i < rows; ++i) {
       for (unsigned j = 0; j < columns; ++j) {

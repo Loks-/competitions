@@ -45,7 +45,7 @@ class Binomial {
 
  public:
   explicit Binomial(TNodesManager& _nodes_manager)
-      : nodes_manager(_nodes_manager), head(nullptr), top(nullptr), size(0) {}
+      : nodes_manager(_nodes_manager), head(nullptr), size(0), top(nullptr) {}
 
   TSelf Make() const { return TSelf(nodes_manager); }
   bool Empty() const { return !head; }

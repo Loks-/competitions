@@ -49,7 +49,7 @@ class TNodeProxyParent<use_key, false, use_height, TKey, THeight, TSelf>
 
   void SetL(TSelf* node) { l = node; }
   void SetR(TSelf* node) { r = node; }
-  void SetP(TSelf* node) {}
+  void SetP(TSelf*) {}
   void ResetLinks() { l = r = nullptr; }
 };
 

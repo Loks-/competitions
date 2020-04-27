@@ -18,7 +18,7 @@ int main_a_very_special_multiple() {
     uint64_t p2 = 0, p5 = 0;
     for (; (x % 2) == 0; x /= 2) ++p2;
     for (; (x % 5) == 0; x /= 5) ++p5;
-    uint64_t b = max<uint64_t>(p5, max<uint64_t>(p2, 2) - 2), a;
+    uint64_t b = max<uint64_t>(p5, max<uint64_t>(p2, 2) - 2), a = 0;
     x *= 9;
     uint64_t phi = EulersTotient(x, Factorize(x));
     vector<uint64_t> vd = GetDivisors(Factorize(phi));

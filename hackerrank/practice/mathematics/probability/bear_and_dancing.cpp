@@ -83,7 +83,6 @@ int main_bear_and_dancing() {
     sfpd += vcurrent[0][0].ed;
     vlast.swap(vcurrent);
   }
-  double fp = sfp / (1.0 - sbp);
   double fpd = sfpd / (1.0 - sbp) + sbpd / (1.0 - sbp);
   cout << fpd << endl;
   return 0;

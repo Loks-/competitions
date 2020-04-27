@@ -9,7 +9,6 @@ template <class TNode>
 inline typename TNode::TInfo GetSegmentInfoI(
     TNode* root, const typename TNode::TCoordinate& l,
     const typename TNode::TCoordinate& r) {
-  using TInfo = typename TNode::TInfo;
   if ((l <= root->sinfo.left) && (r >= root->sinfo.right)) return root->info;
   assert(!root->IsLeaf());
   root->ApplyAction();

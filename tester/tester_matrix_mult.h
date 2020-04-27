@@ -1,5 +1,7 @@
 #pragma once
 
+#include "tester/matrix_mult.h"
+
 #include "common/hash.h"
 #include "common/linear_algebra/bool/matrix.h"
 #include "common/linear_algebra/matrix.h"
@@ -8,8 +10,6 @@
 #include "common/modular/static/bool.h"
 #include "common/modular/static/proxy.h"
 #include "common/timer.h"
-
-#include "tester/matrix_mult.h"
 
 #include <iostream>
 #include <string>
@@ -78,7 +78,7 @@ class TesterMatrixMult {
     for (uint64_t& t : m) t = TModularProxy::ApplyU(t);
   }
 
-  static void ApplyMod(la::Matrix<TModularD>& m) {}
+  static void ApplyMod(la::Matrix<TModularD>&) {}
 
   template <unsigned matrix_size>
   static void ApplyMod(
@@ -88,7 +88,7 @@ class TesterMatrixMult {
 
   template <unsigned matrix_size>
   static void ApplyMod(
-      la::MatrixStaticSize<TModularD, matrix_size, matrix_size>& m) {}
+      la::MatrixStaticSize<TModularD, matrix_size, matrix_size>&) {}
 
  protected:
   std::unordered_set<size_t> results;
@@ -113,6 +113,9 @@ class TesterMatrixMult {
         mlmA(large_matrix_size),
         mlmB(large_matrix_size),
         mlmC(large_matrix_size),
+        msmA(small_matrix_size),
+        msmB(small_matrix_size),
+        msmC(small_matrix_size),
         mlm2A(large_matrix_size),
         mlm2B(large_matrix_size),
         mlm2C(large_matrix_size),
@@ -121,10 +124,7 @@ class TesterMatrixMult {
         mlmbC(large_matrix_size),
         mlbA(large_matrix_size),
         mlbB(large_matrix_size),
-        mlbC(large_matrix_size),
-        msmA(small_matrix_size),
-        msmB(small_matrix_size),
-        msmC(small_matrix_size) {}
+        mlbC(large_matrix_size) {}
 
   void Init() {
     results.clear();

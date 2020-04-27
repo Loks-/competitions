@@ -19,15 +19,6 @@ int main_the_bouncing_flying_ball() {
     vector<uint64_t> vp1, vp2;
   };
 
-  auto Hash = [](const array<int, D>& vdx) {
-    int64_t t = 0;
-    for (int x : vdx) {
-      t *= 102;
-      t += x;
-    }
-    return t;
-  };
-
   auto Add1 = [](uint64_t L, uint64_t dL, uint64_t g, uint64_t p, int xp,
                  int xs, vector<uint64_t>& v) {
     uint64_t dx = TModularA::ApplyS(xp - xs, L);

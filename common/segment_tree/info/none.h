@@ -10,9 +10,9 @@ class None {
   static const bool use_data = false;
 
   template <class TData>
-  void UpdateData(const TData& data) {}
+  void UpdateData(const TData&) {}
 
-  void UpdateLR(const TSelf& l, const TSelf& r) {}
+  void UpdateLR(const TSelf&, const TSelf&) {}
 };
 }  // namespace info
 }  // namespace st

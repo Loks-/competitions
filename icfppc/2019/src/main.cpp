@@ -4,8 +4,10 @@
 #include "solvers/single.h"
 #include "solvers/worker/local.h"
 #include "solvers/worker/simple.h"
+
 #include "common/solvers/merger.h"
 #include "common/thread_pool.h"
+
 #include <algorithm>
 #include <string>
 
@@ -32,7 +34,7 @@ int main(int argc, char* argv[]) {
   merger.Add(solver_single_local);
 
   ThreadPool p(cmd.GetInt("threads"));
-  for (unsigned i = cmd.GetInt("start"); i <= cmd.GetInt("stop"); ++i) {
+  for (int i = cmd.GetInt("start"); i <= cmd.GetInt("stop"); ++i) {
     auto t = std::make_shared<std::packaged_task<void()>>([&, i]() {
       std::string short_name = "prob-" + std::to_string(i + 1000).substr(1);
       std::string problem_dir = path_to_root + "/problems/main";

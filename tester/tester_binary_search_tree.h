@@ -1,12 +1,12 @@
 #pragma once
 
+#include "tester/binary_search_tree_action.h"
+#include "tester/binary_search_tree_info.h"
+
 #include "common/assert_exception.h"
 #include "common/base.h"
 #include "common/hash.h"
 #include "common/timer.h"
-
-#include "tester/binary_search_tree_action.h"
-#include "tester/binary_search_tree_info.h"
 
 #include <iostream>
 #include <stack>
@@ -74,10 +74,10 @@ class TesterBinarySearchTree {
   }
 
   template <class TNode>
-  void VerifyParentLinksI(TNode* root, TFakeFalse) {}
+  void VerifyParentLinksI(TNode*, TFakeFalse) {}
 
   template <class TNode>
-  void VerifyParentLinksI(TNode* root, TFakeTrue f) {
+  void VerifyParentLinksI(TNode* root, TFakeTrue) {
     std::stack<TNode*> s;
     for (s.push(root); !s.empty();) {
       root = s.top();
@@ -199,7 +199,7 @@ class TesterBinarySearchTree {
   template <class TTree>
   typename TTree::TNode* TestDeleteByNodeI(TTree& tree,
                                            typename TTree::TNode* root,
-                                           TBSTKeysType type, TFakeFalse) {
+                                           TBSTKeysType, TFakeFalse) {
     tree.ReleaseTree(root);
     return 0;
   }

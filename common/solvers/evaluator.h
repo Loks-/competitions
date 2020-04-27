@@ -1,6 +1,7 @@
 #pragma once
 
 #include "common/base.h"
+
 #include <ostream>
 #include <string>
 
@@ -12,8 +13,7 @@ class Evaluator {
     int64_t score;
   };
 
-  Result operator()(const std::string& problem,
-                    const std::string& solution) const {
+  Result operator()(const std::string&, const std::string&) const {
     return {false, 0};
   }
 

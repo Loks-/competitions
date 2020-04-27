@@ -5,7 +5,7 @@
 #include "common/template.h"
 
 template <class TNode>
-inline void AddAction(TNode* root, TFakeType<bst::action::None>) {}
+inline void AddAction(TNode*, TFakeType<bst::action::None>) {}
 
 template <class TNode, class TData>
 inline void AddAction(TNode* root, TFakeType<bst::action::AddEachSum<TData>>) {

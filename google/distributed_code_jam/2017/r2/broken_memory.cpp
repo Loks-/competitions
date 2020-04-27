@@ -1,8 +1,10 @@
 #include "broken_memory.h"
+
 #include "message.h"
 
 #include "common/modular.h"
 #include "common/stl/base.h"
+#include "common/template.h"
 
 int main_broken_memory() {
   int nodes = NumberOfNodes();
@@ -79,6 +81,7 @@ int main_broken_memory() {
     Receive(node_id2);
     uint64_t x1 = uint64_t(GetLL(node_id2));
     uint64_t x2 = uint64_t(GetLL(node_id2));
+    FakeUse(x2);
     assert((x1 == values[f1]) != (x2 == values[f2]));
     if (x1 != values[f1]) swap(f1, f2);
     PutInt(0, f1);

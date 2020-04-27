@@ -1,13 +1,14 @@
 #pragma once
 
 #include "common/base.h"
+
 #include <memory>
 
 namespace gf {
 template <class TValue>
 class GeneratingFunction {
  public:
-  virtual void Adjust(uint64_t n) {}
+  virtual void Adjust(uint64_t) {}
   virtual TValue Get(uint64_t n) = 0;
 };
 

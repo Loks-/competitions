@@ -4,7 +4,7 @@ int main_go_gopher() {
   unsigned T;
   cin >> T;
   for (unsigned it = 0; it < T; ++it) {
-    int A, dx, dy, lx, ly;
+    int A, dx = 0, dy = 0, lx, ly;
     cin >> A;
     if (A == 20) {
       dx = 5;

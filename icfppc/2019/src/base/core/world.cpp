@@ -8,8 +8,10 @@
 #include "base/point.h"
 #include "base/solution.h"
 #include "base/worker.h"
+
 #include "common/assert_exception.h"
 #include "common/string/split.h"
+
 #include <cassert>
 
 namespace base {
@@ -21,7 +23,6 @@ void World<TMap>::Init(const std::string& problem) {
 
   auto vs = Split(problem, '#');
   Assert(vs.size() == 4);
-  Point pworker = DecodePoint(vs[1]);
   workers.push_back(TWorker(DecodePoint(vs[1]), map));
   workers[0].Wrap();
 }
