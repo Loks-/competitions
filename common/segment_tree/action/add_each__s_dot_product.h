@@ -4,26 +4,26 @@
 
 namespace st {
 namespace action {
+// Support info::SumFirst<T> and sinfo::SumSecond<Vector<T>>
 template <class TData>
-class AddEach : public None {
+class AddEachSDotProduct : public None {
  public:
   using TBase = None;
-  using TSelf = AddEach<TData>;
+  using TSelf = AddEachSDotProduct<TData>;
   static const bool is_none = false;
 
   TData add_value;
 
-  AddEach() : add_value() {}
-
-  bool IsEmpty() const { return add_value == TData(); }
+  bool IsEmpty() const { return add_value.IsZero(); }
 
   void Clear() {
     TBase::Clear();
-    add_value = TData();
+    add_value.Clear();
   };
 
   template <class TNode>
-  void Add(TNode*, const TData& value) {
+  void Add(TNode* node, const TData& value) {
+    node->info.segment_sum += node->sinfo.segment_sum.DotProduct(value);
     add_value += value;
   }
 
@@ -31,7 +31,7 @@ class AddEach : public None {
   void Apply(TNode* node) {
     if (IsEmpty()) return;
     if (node->IsLeaf()) {
-      node->GetData() += add_value;
+      node->GetData().first += node->sinfo.segment_sum.DotProduct(add_value);
     } else {
       node->l->AddAction(add_value);
       node->r->AddAction(add_value);

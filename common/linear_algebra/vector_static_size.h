@@ -1,6 +1,9 @@
 #pragma once
 
+#include "common/base.h"
+
 #include <array>
+#include <initializer_list>
 
 namespace la {
 template <class TTValue, unsigned _size>
@@ -20,12 +23,18 @@ class VectorStaticSize {
 
  public:
   void Fill(const TValue& v) { data.fill(v); }
-  void Clear() { Fill(TValue(0)); }
+  void Clear() { Fill(TValue()); }
   unsigned Size() const { return size; }
   const TData& GetData() const { return data; }
 
   VectorStaticSize() { Clear(); }
   explicit VectorStaticSize(const TValue& v) { Fill(v); }
+  VectorStaticSize(std::initializer_list<TValue> l) {
+    assert(l.size() <= Size());
+    iterator p = begin();
+    for (auto v : l) *p++ = v;
+  }
+
   TSelf& operator=(const TValue& v) {
     Fill(v);
     return *this;
@@ -40,6 +49,14 @@ class VectorStaticSize {
   iterator GetP(unsigned i) { return begin() + i; }
   const_iterator GetP(unsigned i) const { return begin() + i; }
   void swap(TSelf& r) { data.swap(r.data); }
+
+  bool IsZero() const {
+    TValue z = TValue();
+    for (const_iterator p = begin(), pend = end(); p < pend;) {
+      if (*p++ != z) return false;
+    }
+    return true;
+  }
 
   TSelf& operator+=(const TValue& v) {
     for (iterator p = begin(), pend = end(); p < pend;) *p++ += v;
@@ -113,6 +130,13 @@ class VectorStaticSize {
     TSelf t(*this);
     t -= v;
     return t;
+  }
+
+  TValue DotProduct(const TSelf& v) const {
+    TValue s = TValue();
+    for (const_iterator p1 = begin(), p2 = v.begin(), pend = end(); p1 != pend;)
+      s += *p1++ * *p2++;
+    return s;
   }
 };
 }  // namespace la

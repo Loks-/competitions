@@ -102,6 +102,7 @@ class HLD {
     stroot = stree.BuildTree(v);
   }
 
+  unsigned Size() const { return unsigned(vertexes.size()); }
   unsigned Deep(unsigned x) const { return tni.deep[x]; }
   unsigned Chain(unsigned x) const { return vertexes[x].chain; }
   TNode* Node(unsigned x) { return vertexes[x].node; }
