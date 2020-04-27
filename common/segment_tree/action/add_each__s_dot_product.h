@@ -23,7 +23,7 @@ class AddEachSDotProduct : public None {
 
   template <class TNode>
   void Add(TNode* node, const TData& value) {
-    node->info.segment_sum += node->sinfo.segment_sum.DotProduct(value);
+    node->info.sum += node->sinfo.sum.DotProduct(value);
     add_value += value;
   }
 
@@ -31,7 +31,7 @@ class AddEachSDotProduct : public None {
   void Apply(TNode* node) {
     if (IsEmpty()) return;
     if (node->IsLeaf()) {
-      node->GetData().first += node->sinfo.segment_sum.DotProduct(add_value);
+      node->GetData().first += node->sinfo.sum.DotProduct(add_value);
     } else {
       node->l->AddAction(add_value);
       node->r->AddAction(add_value);

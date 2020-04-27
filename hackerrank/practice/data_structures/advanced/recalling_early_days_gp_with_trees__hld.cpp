@@ -32,7 +32,7 @@ class ActionAdd : public st::action::None {
 
   template <class TNode>
   void Add(TNode* node, const TData& value) {
-    auto& i = node->info.segment_sum;
+    auto& i = node->info.sum;
     i.v += i.f0 * value.first + i.f1 * value.second;
     x += value;
   }
@@ -86,7 +86,7 @@ int main_recalling_early_days_gp_with_trees__hld() {
   }
   for (unsigned iQ = 0; iQ < Q; ++iQ) {
     cin >> a >> b;
-    cout << hld.Path(a - 1, b - 1).GetInfo().segment_sum.v << endl;
+    cout << hld.Path(a - 1, b - 1).GetInfo().sum.v << endl;
   }
   return 0;
 }

@@ -20,10 +20,10 @@ int main_subsequence_weighting__treap() {
     TNode *root = 0, *l, *r;
     for (unsigned i = 0; i < N; ++i) {
       tree.SplitByKey(root, va[i], l, r);
-      TNode* m = tree.New(vw[i] + (l ? l->info.subtree_max : 0), va[i]);
+      TNode* m = tree.New(vw[i] + (l ? l->info.max : 0), va[i]);
       root = tree.Join(tree.Join(l, m), r);
     }
-    cout << root->info.subtree_max << endl;
+    cout << root->info.max << endl;
     tree.ReleaseTree(root);
   }
   return 0;

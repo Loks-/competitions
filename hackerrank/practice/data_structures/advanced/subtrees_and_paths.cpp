@@ -24,7 +24,7 @@ int main_subtrees_and_paths() {
     if (s == "add")
       hld.Subtree(u - 1).AddAction(x);
     else if (s == "max")
-      cout << hld.Path(u - 1, x - 1).GetInfo().segment_max << endl;
+      cout << hld.Path(u - 1, x - 1).GetInfo().max << endl;
   }
   return 0;
 }

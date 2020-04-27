@@ -18,7 +18,7 @@ int main_heavy_light_white_falcon() {
     if (t == 1)
       hld.SetData(u, x);
     else if (t == 2)
-      cout << hld.Path(u, x).GetInfo().segment_max << endl;
+      cout << hld.Path(u, x).GetInfo().max << endl;
   }
   return 0;
 }

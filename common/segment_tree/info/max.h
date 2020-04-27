@@ -16,17 +16,17 @@ class Max : public TInfo {
   static const bool is_none = false;
   static const bool use_data = true;
 
-  TValue segment_max;
+  TValue max;
 
   template <class TData>
   void UpdateData(const TData& data) {
     TBase::UpdateData(data);
-    segment_max = data;
+    max = data;
   }
 
   void UpdateLR(const TSelf& l, const TSelf& r) {
     TBase::UpdateLR(l, r);
-    segment_max = std::max(l.segment_max, r.segment_max);
+    max = std::max(l.max, r.max);
   }
 };
 }  // namespace info

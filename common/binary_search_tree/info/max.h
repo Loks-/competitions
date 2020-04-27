@@ -12,14 +12,14 @@ class Max : public TInfo {
   static const bool is_none = false;
   static const bool use_data = true;
 
-  TMaxType subtree_max;
+  TMaxType max;
 
   template <class TNode>
   void Update(TNode* node) {
     TBase::Update(node);
-    subtree_max = node->data;
-    if (node->l) subtree_max = std::max(subtree_max, node->l->info.subtree_max);
-    if (node->r) subtree_max = std::max(subtree_max, node->r->info.subtree_max);
+    max = node->data;
+    if (node->l) max = std::max(max, node->l->info.max);
+    if (node->r) max = std::max(max, node->r->info.max);
   }
 };
 }  // namespace info

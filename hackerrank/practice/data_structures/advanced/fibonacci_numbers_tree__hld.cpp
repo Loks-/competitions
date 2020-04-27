@@ -33,7 +33,7 @@ class ActionAdd : public st::action::None {
 
   template <class TNode>
   void Add(TNode* node, const TData& value) {
-    auto& i = node->info.segment_sum;
+    auto& i = node->info.sum;
     i.v += i.f0 * value.first + i.f1 * value.second;
     x += value;
   }
@@ -71,7 +71,7 @@ int main_fibonacci_numbers_tree__hld() {
     if (c == 'Q') {
       unsigned x, y;
       cin >> x >> y;
-      cout << hld.Path(x - 1, y - 1).GetInfo().segment_sum.v << endl;
+      cout << hld.Path(x - 1, y - 1).GetInfo().sum.v << endl;
     } else if (c == 'U') {
       unsigned x;
       int64_t kx;

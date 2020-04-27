@@ -37,8 +37,8 @@ int main_palindromic_subsets__segment_tree() {
       TTree::TInfo info = st::GetSegmentInfo<TNode>(root, a, b);
       unsigned nsum = 0, nnonzero = 0;
       for (unsigned j = 0; j < 26; ++j) {
-        if (info.segment_sum(j)) {
-          nsum += info.segment_sum(j);
+        if (info.sum(j)) {
+          nsum += info.sum(j);
           nnonzero += 1;
         }
       }

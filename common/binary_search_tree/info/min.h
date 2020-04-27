@@ -12,14 +12,14 @@ class Min : public TInfo {
   static const bool is_none = false;
   static const bool use_data = true;
 
-  TMinType subtree_min;
+  TMinType min;
 
   template <class TNode>
   void Update(TNode* node) {
     TBase::Update(node);
-    subtree_min = node->data;
-    if (node->l) subtree_min = std::min(subtree_min, node->l->info.subtree_min);
-    if (node->r) subtree_min = std::min(subtree_min, node->r->info.subtree_min);
+    min = node->data;
+    if (node->l) min = std::min(min, node->l->info.min);
+    if (node->r) min = std::min(min, node->r->info.min);
   }
 };
 }  // namespace info

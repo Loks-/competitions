@@ -13,7 +13,7 @@ class AddEachMax : public AddEach<TData> {
 
   template <class TNode>
   void Add(TNode* node, const TData& value) {
-    node->info.segment_max += value;
+    node->info.max += value;
     TBase::Add(node, value);
   }
 };

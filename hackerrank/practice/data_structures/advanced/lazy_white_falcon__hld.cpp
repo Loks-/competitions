@@ -18,7 +18,7 @@ int main_lazy_white_falcon__hld() {
     if (t == 1)
       hld.SetData(u, x);
     else if (t == 2)
-      cout << hld.Path(u, x).GetInfo().segment_sum << endl;
+      cout << hld.Path(u, x).GetInfo().sum << endl;
   }
   return 0;
 }

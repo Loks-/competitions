@@ -13,7 +13,7 @@ class AddEachSum : public AddEach<TData> {
 
   template <class TNode>
   void Add(TNode* node, const TData& value) {
-    node->info.segment_sum += node->info.Size() * value;
+    node->info.sum += node->info.Size() * value;
     TBase::Add(node, value);
   }
 };

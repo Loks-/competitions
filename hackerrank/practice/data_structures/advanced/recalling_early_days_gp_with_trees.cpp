@@ -40,7 +40,7 @@ int main_recalling_early_days_gp_with_trees() {
   }
   for (unsigned iQ = 0; iQ < Q; ++iQ) {
     cin >> a >> b;
-    cout << hld.Path(a - 1, b - 1).GetInfo().segment_sum << endl;
+    cout << hld.Path(a - 1, b - 1).GetInfo().sum << endl;
   }
   return 0;
 }

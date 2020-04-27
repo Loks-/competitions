@@ -15,17 +15,17 @@ class GCD : public TInfo {
   static const bool is_none = false;
   static const bool use_data = true;
 
-  TValue segment_gcd;
+  TValue gcd;
 
   template <class TData>
   void UpdateData(const TData& data) {
     TBase::UpdateData(data);
-    segment_gcd = data;
+    gcd = data;
   }
 
   void UpdateLR(const TSelf& l, const TSelf& r) {
     TBase::UpdateLR(l, r);
-    segment_gcd = ::GCD<TValue>(l.segment_gcd, r.segment_gcd);
+    gcd = ::GCD<TValue>(l.gcd, r.gcd);
   }
 };
 }  // namespace info
