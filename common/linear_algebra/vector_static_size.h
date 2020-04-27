@@ -31,6 +31,7 @@ class VectorStaticSize {
   explicit VectorStaticSize(const TValue& v) { Fill(v); }
   VectorStaticSize(std::initializer_list<TValue> l) {
     assert(l.size() <= Size());
+    Clear();
     iterator p = begin();
     for (auto v : l) *p++ = v;
   }
