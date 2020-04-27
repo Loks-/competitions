@@ -11,8 +11,7 @@ int main_lazy_white_falcon__sto() {
   cin >> N >> Q;
   TreeGraph tree(N);
   tree.ReadEdges(true);
-  graph::STO<int64_t, st::info::Position<>, st::action::AddEach<int64_t>> sto(
-      tree);
+  graph::STO<int64_t, st::info::None, st::action::AddEach<int64_t>> sto(tree);
   graph::LCA lca(tree);
   vector<int64_t> current_values(N, 0);
 

@@ -1,8 +1,10 @@
 #pragma once
 
+#include "common/segment_tree/info/none.h"
+
 namespace st {
 namespace info {
-template <class TSumValue, class TInfo>
+template <class TSumValue, class TInfo = None>
 class Sum : public TInfo {
  public:
   using TValue = TSumValue;

@@ -1,9 +1,9 @@
 #pragma once
 
-#include "common/segment_tree/info/none.h"
+#include "common/segment_tree/sinfo/none.h"
 
 namespace st {
-namespace info {
+namespace sinfo {
 template <class TTCoordinate = unsigned>
 class Position : public None {
  public:
@@ -25,5 +25,5 @@ class Position : public None {
     right = r.right;
   }
 };
-}  // namespace info
+}  // namespace sinfo
 }  // namespace st

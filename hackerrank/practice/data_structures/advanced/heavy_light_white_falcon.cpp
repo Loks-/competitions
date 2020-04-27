@@ -10,7 +10,7 @@ int main_heavy_light_white_falcon() {
   cin >> N >> Q;
   TreeGraph tree(N);
   tree.ReadEdges(true);
-  graph::HLD<unsigned, st::info::Max<unsigned, graph::HLDInfo>> hld(tree);
+  graph::HLD<unsigned, st::info::Max<unsigned>> hld(tree);
 
   for (unsigned iQ = 0; iQ < Q; ++iQ) {
     unsigned t, u, x;

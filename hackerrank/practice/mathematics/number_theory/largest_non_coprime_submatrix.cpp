@@ -6,9 +6,8 @@
 #include "common/stl/base.h"
 #include "common/vector/read.h"
 
-using TTree =
-    st::SegmentTree<unsigned, st::info::GCD<unsigned, st::info::Position<>>,
-                    st::action::None, false>;
+using TTree = st::SegmentTree<unsigned, st::info::GCD<unsigned>,
+                              st::action::None, st::sinfo::Position<>, false>;
 using TNode = TTree::TNode;
 using TInfo = TNode::TInfo;
 

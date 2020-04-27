@@ -12,13 +12,15 @@
 
 namespace graph {
 // Subtree Operations
-template <class TTData, class TTInfo = st::info::Position<unsigned>,
-          class TTAction = st::action::None>
+template <class TTData, class TTInfo = st::info::None,
+          class TTAction = st::action::None,
+          class TTSInfo = st::sinfo::Position<unsigned>>
 class STO {
   using TData = TTData;
   using TInfo = TTInfo;
   using TAction = TTAction;
-  using TSTree = st::SegmentTree<TData, TInfo, TAction, true>;
+  using TSInfo = TTSInfo;
+  using TSTree = st::SegmentTree<TData, TInfo, TAction, TSInfo, true>;
   using TNode = typename TSTree::TNode;
   using TSegment = st::Segment<TNode>;
 

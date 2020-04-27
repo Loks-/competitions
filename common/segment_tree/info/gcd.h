@@ -1,10 +1,11 @@
 #pragma once
 
 #include "common/numeric/utils/gcd.h"
+#include "common/segment_tree/info/none.h"
 
 namespace st {
 namespace info {
-template <class TGCDValue, class TInfo>
+template <class TGCDValue, class TInfo = None>
 class GCD : public TInfo {
  public:
   using TValue = TGCDValue;

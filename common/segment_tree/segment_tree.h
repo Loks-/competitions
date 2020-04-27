@@ -2,15 +2,17 @@
 
 #include "common/base.h"
 #include "common/segment_tree/action/none.h"
-#include "common/segment_tree/info/position.h"
+#include "common/segment_tree/info/none.h"
 #include "common/segment_tree/node.h"
+#include "common/segment_tree/sinfo/position.h"
 #include "common/vector/enumerate.h"
 
 #include <vector>
 
 namespace st {
-template <class TTData, class TTInfo = info::Position<>,
-          class TTAction = action::None, bool _use_parent = true>
+template <class TTData, class TTInfo = info::None,
+          class TTAction = action::None, class TTSInfo = sinfo::Position<>,
+          bool _use_parent = true>
 class SegmentTree {
  public:
   static const bool use_parent = _use_parent;
@@ -18,9 +20,10 @@ class SegmentTree {
   using TData = TTData;
   using TInfo = TTInfo;
   using TAction = TTAction;
-  using TSelf = SegmentTree<TData, TInfo, TAction, use_parent>;
-  using TNode = Node<TData, TInfo, TAction, use_parent>;
-  using TCoordinate = typename TInfo::TCoordinate;
+  using TSInfo = TTSInfo;
+  using TSelf = SegmentTree<TData, TInfo, TAction, TSInfo, use_parent>;
+  using TNode = Node<TData, TInfo, TAction, TSInfo, use_parent>;
+  using TCoordinate = typename TNode::TCoordinate;
 
  protected:
   std::vector<TData> data;
@@ -67,7 +70,8 @@ class SegmentTree {
     assert(used_data < data.size());
     node->SetPData(&(data[used_data]));
     data[used_data++] = d;
-    node->info.SetCoordinate(x);
+    node->sinfo.SetCoordinate(x);
+    node->UpdateSInfo();
     node->UpdateInfo();
     return node;
   }
@@ -81,12 +85,13 @@ class SegmentTree {
       assert(used_data < data.size());
       root->SetPData(&(data[used_data]));
       data[used_data++] = vdata[first];
-      root->info.SetCoordinate(vx[first]);
+      root->sinfo.SetCoordinate(vx[first]);
     } else {
       unsigned m = (first + last) / 2;
       root->SetL(BuildTreeI(vdata, vx, first, m));
       root->SetR(BuildTreeI(vdata, vx, m + 1, last));
     }
+    root->UpdateSInfo();
     root->UpdateInfo();
     return root;
   }
@@ -98,6 +103,7 @@ class SegmentTree {
     unsigned m = (first + last) / 2;
     root->SetL(BuildTreeI(vnodes, first, m));
     root->SetR(BuildTreeI(vnodes, m + 1, last));
+    root->UpdateSInfo();
     root->UpdateInfo();
     return root;
   }

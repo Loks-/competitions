@@ -13,8 +13,7 @@ int main_subtrees_and_paths() {
   cin >> N;
   TreeGraph tree(N);
   tree.ReadEdges();
-  graph::HLD<int64_t, st::info::Max<int64_t, graph::HLDInfo>,
-             st::action::AddEachMax<int64_t>>
+  graph::HLD<int64_t, st::info::Max<int64_t>, st::action::AddEachMax<int64_t>>
       hld(tree);
 
   cin >> Q;

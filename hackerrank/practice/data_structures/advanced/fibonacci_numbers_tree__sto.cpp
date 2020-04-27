@@ -37,7 +37,7 @@ int main_fibonacci_numbers_tree__sto() {
   cin >> N >> Q;
   TreeGraph tree(N);
   tree.ReadTreeEdges();
-  graph::STO<FData, st::info::Position<>, st::action::AddEach<FData>> sto(tree);
+  graph::STO<FData, st::info::None, st::action::AddEach<FData>> sto(tree);
   graph::LCA lca(tree);
 
   auto Calc = [&](unsigned from) {

@@ -57,7 +57,7 @@ int main_recalling_early_days_gp_with_trees() {
   cin >> N >> R;
   TreeGraph tree(N);
   tree.ReadEdges();
-  graph::HLD<FData, st::info::Sum<FData, graph::HLDInfo>, ActionAdd> hld(tree);
+  graph::HLD<FData, st::info::Sum<FData>, ActionAdd> hld(tree);
 
   TModular r(R), ri = (r ? r.Inverse() : 0);
   for (unsigned i = 0; i < N; ++i) {

@@ -1,10 +1,12 @@
 #pragma once
 
+#include "common/segment_tree/info/none.h"
+
 #include <algorithm>
 
 namespace st {
 namespace info {
-template <class TMaxValue, class TInfo>
+template <class TMaxValue, class TInfo = None>
 class Max : public TInfo {
  public:
   using TValue = TMaxValue;

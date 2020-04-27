@@ -58,7 +58,7 @@ int main_fibonacci_numbers_tree__hld() {
   cin >> N >> Q;
   TreeGraph tree(N);
   tree.ReadTreeEdges();
-  graph::HLD<FData, st::info::Sum<FData, graph::HLDInfo>, ActionAdd> hld(tree);
+  graph::HLD<FData, st::info::Sum<FData>, ActionAdd> hld(tree);
 
   for (unsigned i = 0; i < N; ++i) {
     auto p = TFibonacci::GetPU(hld.Deep(i));

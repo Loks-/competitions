@@ -7,15 +7,15 @@ namespace st {
 namespace hidden {
 template <class TNode>
 inline typename TNode::TInfo GetSegmentInfoI(
-    TNode* root, const typename TNode::TInfo::TCoordinate& l,
-    const typename TNode::TInfo::TCoordinate& r) {
+    TNode* root, const typename TNode::TCoordinate& l,
+    const typename TNode::TCoordinate& r) {
   using TInfo = typename TNode::TInfo;
-  if ((l <= root->info.left) && (r >= root->info.right)) return root->info;
+  if ((l <= root->sinfo.left) && (r >= root->sinfo.right)) return root->info;
   assert(!root->IsLeaf());
   root->ApplyAction();
-  if (r < root->r->info.left)
+  if (r < root->r->sinfo.left)
     return GetSegmentInfoI(root->l, l, r);
-  else if (l > root->l->info.right)
+  else if (l > root->l->sinfo.right)
     return GetSegmentInfoI(root->r, l, r);
   else
     return info::MergeLR(GetSegmentInfoI(root->l, l, r),
@@ -25,12 +25,12 @@ inline typename TNode::TInfo GetSegmentInfoI(
 
 template <class TNode>
 inline typename TNode::TInfo GetSegmentInfo(
-    TNode* root, const typename TNode::TInfo::TCoordinate& l,
-    const typename TNode::TInfo::TCoordinate& r) {
+    TNode* root, const typename TNode::TCoordinate& l,
+    const typename TNode::TCoordinate& r) {
   using TInfo = typename TNode::TInfo;
-  static_assert(TInfo::has_coordinate, "has_coordinate should be true");
+  static_assert(TNode::TSInfo::has_coordinate, "has_coordinate should be true");
   if (!root || (r < l)) return TInfo();
-  if ((r < root->info.left) || (l > root->info.right)) return TInfo();
+  if ((r < root->sinfo.left) || (l > root->sinfo.right)) return TInfo();
   return hidden::GetSegmentInfoI(root, l, r);
 }
 }  // namespace st

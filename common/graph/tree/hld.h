@@ -5,27 +5,28 @@
 #include "common/graph/tree/nodes_info.h"
 #include "common/segment_tree/action/apply_root_to_node.h"
 #include "common/segment_tree/base/get_segment.h"
-#include "common/segment_tree/info/position.h"
 #include "common/segment_tree/info/update_node_to_root.h"
 #include "common/segment_tree/node.h"
 #include "common/segment_tree/segment.h"
 #include "common/segment_tree/segment_tree.h"
+#include "common/segment_tree/sinfo/position.h"
 
 #include <algorithm>
 #include <utility>
 #include <vector>
 
 namespace graph {
-using HLDInfo = st::info::Position<uint64_t>;
+using HLDSInfo = st::sinfo::Position<uint64_t>;
 
-template <class TTData, class TTInfo = HLDInfo,
-          class TTAction = st::action::None>
+template <class TTData, class TTInfo, class TTAction = st::action::None,
+          class TTSInfo = HLDSInfo>
 class HLD {
  public:
   using TData = TTData;
   using TInfo = TTInfo;
   using TAction = TTAction;
-  using TSTree = st::SegmentTree<TData, TInfo, TAction, true>;
+  using TSInfo = TTSInfo;
+  using TSTree = st::SegmentTree<TData, TInfo, TAction, TSInfo, true>;
   using TNode = typename TSTree::TNode;
   using TSegment = st::Segment<TNode>;
 
@@ -95,8 +96,9 @@ class HLD {
     AddNewChain(tree, tree.GetRoot());
     std::vector<TNode*> v;
     for (auto& c : chains) v.push_back(c.node);
-    std::sort(v.begin(), v.end(),
-              [](auto& n1, auto& n2) { return n1->info.left < n2->info.left; });
+    std::sort(v.begin(), v.end(), [](auto& n1, auto& n2) {
+      return n1->sinfo.left < n2->sinfo.left;
+    });
     stroot = stree.BuildTree(v);
   }
 
