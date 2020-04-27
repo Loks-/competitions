@@ -52,7 +52,7 @@ class ActionAdd : public st::action::None {
 };
 }  // namespace
 
-int main_recalling_early_days_gp_with_trees() {
+int main_recalling_early_days_gp_with_trees__hld() {
   unsigned N, R, U, Q;
   cin >> N >> R;
   TreeGraph tree(N);
