@@ -21,8 +21,13 @@ class Segment {
   Segment(const TSelf& l, const TSelf& r) : nodes(l.nodes) { AddBack(r); }
 
   void AddBack(TNode* node) { nodes.push_back(node); }
+
   void AddBack(const TSelf& r) {
     nodes.insert(nodes.end(), r.nodes.begin(), r.nodes.end());
+  }
+
+  void AddBackReversed(const TSelf& r) {
+    nodes.insert(nodes.end(), r.nodes.rbegin(), r.nodes.rend());
   }
 
   void Reverse() { std::reverse(nodes.begin(), nodes.end()); }

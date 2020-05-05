@@ -6,6 +6,7 @@
 #include "common/segment_tree/action/apply_root_to_node.h"
 #include "common/segment_tree/base/get_segment.h"
 #include "common/segment_tree/info/update_node_to_root.h"
+#include "common/segment_tree/info/update_tree.h"
 #include "common/segment_tree/node.h"
 #include "common/segment_tree/segment.h"
 #include "common/segment_tree/segment_tree.h"
@@ -87,6 +88,9 @@ class HLD {
  public:
   HLD() {}
   explicit HLD(const TreeGraph& tree) { Build(tree); }
+  HLD(const TreeGraph& tree, const std::vector<TData>& data) {
+    Build(tree, data);
+  }
 
   void Build(const TreeGraph& tree) {
     stree.ResetNodes(tree.Size());
@@ -100,6 +104,15 @@ class HLD {
       return n1->sinfo.left < n2->sinfo.left;
     });
     stroot = stree.BuildTree(v);
+  }
+
+  void Build(const TreeGraph& tree, const std::vector<TData>& data) {
+    assert(tree.Size() == data.size());
+    Build(tree);
+    for (unsigned i = 0; i < tree.Size(); ++i) {
+      Node(i)->GetData() = data[i];
+    }
+    st::info::UpdateTree(stroot);
   }
 
   unsigned Size() const { return unsigned(vertexes.size()); }
@@ -140,12 +153,13 @@ class HLD {
     unsigned ac = Chain(a), xc = Chain(x);
     for (; xc != ac; xc = Chain(x)) {
       st::action::ApplyRootToNode(chains[xc].node);
-      s.AddBack(st::GetSegment(chains[xc].node, STX(x) & ~mask, STX(x)));
+      s.AddBackReversed(
+          st::GetSegment(chains[xc].node, STX(x) & ~mask, STX(x)));
       x = chains[xc].parent;
     }
     st::action::ApplyRootToNode(chains[ac].node);
-    s.AddBack(st::GetSegment(chains[ac].node, STX(a) + (skip_ancestor ? 1 : 0),
-                             STX(x)));
+    s.AddBackReversed(st::GetSegment(chains[ac].node,
+                                     STX(a) + (skip_ancestor ? 1 : 0), STX(x)));
     s.Reverse();
     return s;
   }
