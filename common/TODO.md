@@ -12,12 +12,8 @@
 	* Johnson's - Dijkstra
 * Heap
 	* Van Emde Boas tree
-* HLD
-	* https://www.hackerrank.com/challenges/fibonacci-numbers-tree
-	* https://www.hackerrank.com/challenges/lazy-white-falcon
 * Link/Cut Tree
 	* https://www.hackerrank.com/challenges/subtrees-and-paths
-	* https://www.hackerrank.com/challenges/dynamic-summation
 * Persistent Binary Search Trees
 * SegmentTree
 	* Compact SegmentTree
