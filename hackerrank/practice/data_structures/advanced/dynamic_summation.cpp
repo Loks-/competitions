@@ -19,6 +19,41 @@ using TBSTree =
                bst::action::AddEachSum<TData>>;
 using TInfo = TBSTree::TInfo;
 
+namespace {
+class CashedPower {
+ protected:
+  vector<vector<vector<uint64_t>>> chains;
+
+ public:
+  CashedPower(uint64_t size) {
+    chains.resize(size + 1);
+    for (uint64_t m = 1; m <= size; ++m) {
+      chains[m].resize(m);
+      for (uint64_t a = 0; a < m; ++a) {
+        auto& v = chains[m][a];
+        v.push_back(0);
+        v.push_back(1);
+        for (uint64_t i = 0; i <= m; ++i) v.push_back((v.back() * a) % m);
+        for (uint64_t i = v.size() - 2;; --i) {
+          if (v[i] == v.back()) {
+            v[0] = v.size() - 1 - i;
+            break;
+          }
+        }
+      }
+    }
+  }
+
+  uint64_t Pow(uint64_t a, uint64_t b, uint64_t m) {
+    auto& v = chains[m][a % m];
+    ++b;
+    if (b < v.size()) return v[b];
+    uint64_t l = v[0];
+    return v[v.size() + ((b - v.size()) % l) - l];
+  }
+};
+}  // namespace
+
 int main_dynamic_summation() {
   unsigned N, Q;
   cin >> N;
@@ -29,6 +64,7 @@ int main_dynamic_summation() {
   auto root = bstree.Build(vector<TData>(N));
   TInfo info;
   TData d;
+  CashedPower cp(M);
 
   auto ChildWithNode = [&](unsigned r, unsigned n) {
     if (nodes_info.parent[n] == r) return n;
@@ -75,10 +111,8 @@ int main_dynamic_summation() {
     } else if (c == 'U') {
       cin >> a >> b;
       for (unsigned i = 0; i < M; ++i) {
-        d(i) = (modular::TArithmetic_C32U::PowUSafe(a, b, i + 1) +
-                modular::TArithmetic_C32U::PowUSafe(a + 1, b, i + 1) +
-                modular::TArithmetic_C32U::PowUSafe(b + 1, a, i + 1)) %
-               (i + 1);
+        d(i) = cp.Pow(a, b, i + 1) + cp.Pow(a + 1, b, i + 1) +
+               cp.Pow(b + 1, a, i + 1);
         // d(i) = a * b % (i + 1);
       }
       if (r == t) {
