@@ -1,23 +1,20 @@
 // https://www.hackerrank.com/challenges/dynamic-summation
 
-#include "common/binary_search_tree/action/add_each__sum.h"
-#include "common/binary_search_tree/info/size.h"
-#include "common/binary_search_tree/info/sum.h"
-#include "common/binary_search_tree/treap.h"
-#include "common/binary_search_tree/utils/add_action_to_segment.h"
-#include "common/binary_search_tree/utils/segment_info_by_index.h"
 #include "common/graph/tree.h"
 #include "common/graph/tree/nodes_info.h"
 #include "common/linear_algebra/vector_static_size.h"
 #include "common/modular/arithmetic.h"
+#include "common/segment_tree/action/add_each__sum.h"
+#include "common/segment_tree/base/add_action_to_segment.h"
+#include "common/segment_tree/base/get_segment_info.h"
+#include "common/segment_tree/info/sum.h"
+#include "common/segment_tree/segment_tree.h"
 #include "common/stl/base.h"
 
 static const unsigned M = 101;
 using TData = la::VectorStaticSize<uint64_t, M>;
-using TBSTree =
-    bst::Treap<false, false, TData, bst::info::Sum<TData, bst::info::Size>,
-               bst::action::AddEachSum<TData>>;
-using TInfo = TBSTree::TInfo;
+using TSTTree = st::SegmentTree<TData, st::info::Sum<TData, st::info::None>,
+                                st::action::AddEachSum<TData>>;
 
 namespace {
 class CashedPower {
@@ -60,9 +57,8 @@ int main_dynamic_summation() {
   TreeGraph tree(N);
   tree.ReadEdges();
   graph::TreeNodesInfo nodes_info(tree);
-  TBSTree bstree(N);
-  auto root = bstree.Build(vector<TData>(N));
-  TInfo info;
+  TSTTree sttree(N);
+  auto root = sttree.BuildTree(vector<TData>(N));
   TData d;
   CashedPower cp(M);
 
@@ -89,23 +85,17 @@ int main_dynamic_summation() {
       if (r == t) {
         d = root->info.sum;
       } else if (!nodes_info.InsideSubtree(t, r)) {
-        // bst::action::ApplyRootToNode(TBSTree::FindByOrder(root, t));
-        root = bst::SegmentInfoByIndex<TBSTree>(
-            root, nodes_info.preorder[t],
-            nodes_info.preorder[t] + nodes_info.subtree_size[t], info);
-        d = info.sum;
+        d = st::GetSegmentInfo(
+                root, nodes_info.preorder[t],
+                nodes_info.preorder[t] + nodes_info.subtree_size[t] - 1)
+                .sum;
       } else {
         auto c = ChildWithNode(t, r);
-        // bst::action::ApplyRootToNode(TBSTree::FindByOrder(c));
-        root = bst::SegmentInfoByIndex<TBSTree>(root, 0, nodes_info.preorder[c],
-                                                info);
-        d = info.sum;
-        if (nodes_info.preorder[c] + nodes_info.subtree_size[c] < N) {
-          root = bst::SegmentInfoByIndex<TBSTree>(
-              root, nodes_info.preorder[c] + nodes_info.subtree_size[c], N,
-              info);
-          d += info.sum;
-        }
+        d = st::GetSegmentInfo(root, 0, nodes_info.preorder[c] - 1).sum +
+            st::GetSegmentInfo(
+                root, nodes_info.preorder[c] + nodes_info.subtree_size[c],
+                N - 1)
+                .sum;
       }
       cout << d(m - 1) % m << endl;
     } else if (c == 'U') {
@@ -118,20 +108,15 @@ int main_dynamic_summation() {
       if (r == t) {
         root->AddAction(d);
       } else if (!nodes_info.InsideSubtree(t, r)) {
-        root = bst::AddActionToSegment<TBSTree>(
+        st::AddActionToSegment(
             root, nodes_info.preorder[t],
-            nodes_info.preorder[t] + nodes_info.subtree_size[t], d);
+            nodes_info.preorder[t] + nodes_info.subtree_size[t] - 1, d);
       } else {
         auto c = ChildWithNode(t, r);
-        root = bst::AddActionToSegment<TBSTree>(root, 0, nodes_info.preorder[c],
-                                                d);
-        root = bst::AddActionToSegment<TBSTree>(
-            root, nodes_info.preorder[c] + nodes_info.subtree_size[c], N, d);
-        // root->AddAction(d);
-        // for (unsigned i = 0; i < M; ++i) d(i) = i + 1 - d(i);
-        // root = bst::AddActionToSegment<TBSTree>(
-        //     root, nodes_info.preorder[t] + 1,
-        //     nodes_info.preorder[t] + nodes_info.subtree_size[t], d);
+        st::AddActionToSegment(root, 0, nodes_info.preorder[c] - 1, d);
+        st::AddActionToSegment(
+            root, nodes_info.preorder[c] + nodes_info.subtree_size[c], N - 1,
+            d);
       }
     }
   }

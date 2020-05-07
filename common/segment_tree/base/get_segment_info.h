@@ -10,6 +10,7 @@ inline typename TNode::TInfo GetSegmentInfoI(
     TNode* root, const typename TNode::TCoordinate& l,
     const typename TNode::TCoordinate& r) {
   if ((l <= root->sinfo.left) && (r >= root->sinfo.right)) return root->info;
+  if ((l > root->sinfo.right) || (r < root->sinfo.left)) return TNode::TInfo();
   assert(!root->IsLeaf());
   root->ApplyAction();
   if (r < root->r->sinfo.left)
