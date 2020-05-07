@@ -59,6 +59,9 @@ class VectorStaticSize {
     return true;
   }
 
+  bool operator==(const TSelf& r) const { return data == r.data; }
+  bool operator!=(const TSelf& r) const { return data != r.data; }
+
   TSelf& operator+=(const TValue& v) {
     for (iterator p = begin(), pend = end(); p < pend;) *p++ += v;
     return *this;

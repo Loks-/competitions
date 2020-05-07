@@ -11,7 +11,7 @@ inline typename TTree::TNode* AddActionToSegment(
   TNode *l, *m, *r;
   TTree::SplitBySize(root, end, m, r);
   TTree::SplitBySize(m, begin, l, m);
-  m->AddAction(action_value);
+  if (m) m->AddAction(action_value);
   return TTree::Join(TTree::Join(l, m), r);
 }
 }  // namespace bst
