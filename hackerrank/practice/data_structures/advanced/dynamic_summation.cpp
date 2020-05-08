@@ -1,8 +1,11 @@
 // https://www.hackerrank.com/challenges/dynamic-summation
 
+#include "common/factorization/base.h"
 #include "common/factorization/primes_list.h"
+#include "common/factorization/utils/eulers_totient.h"
 #include "common/graph/tree.h"
 #include "common/graph/tree/nodes_info.h"
+#include "common/modular/utils/merge_remainders.h"
 #include "common/numeric/long/modular.h"
 #include "common/numeric/long/unsigned.h"
 #include "common/segment_tree/action/add_each__sum.h"
@@ -63,12 +66,25 @@ int main_dynamic_summation() {
   auto root = sttree.BuildTree(vector<TData>(N));
   TData d;
   CashedPower cp(M);
+
   factorization::PrimesList pl(M);
-  vector<uint64_t> vpk;
+  vector<unsigned> vpk, vq, vqe;
+  TFactorization modf;
   for (auto p : pl.GetPrimes()) {
-    unsigned pk = p;
-    for (; pk * p <= M;) pk *= p;
+    unsigned pk = p, k = 1;
+    for (; pk * p <= M; ++k) pk *= p;
+    modf.push_back({p, k});
     vpk.push_back(pk);
+  }
+  for (size_t i = 0, j = 0; i < modf.size(); i = j) {
+    uint64_t q = 1;
+    for (; (j < modf.size()); ++j) {
+      if (q * vpk[j] > (1ull << 31)) break;
+      q *= vpk[j];
+    }
+    vq.push_back(q);
+    vqe.push_back(
+        EulersTotient(q, TFactorization(modf.begin() + i, modf.begin() + j)));
   }
 
   auto ChildWithNode = [&](unsigned r, unsigned n) {
@@ -83,9 +99,12 @@ int main_dynamic_summation() {
 
   auto FastPow = [&](uint64_t a, uint64_t b) {
     LongUnsigned pr(0u), p(1u);
-    for (auto pk : vpk) {
-      pr = TModular::MergeRemainders(p, pr, pk, cp.Pow(a, b, pk));
-      p *= pk;
+    for (size_t i = 0; i < vq.size(); ++i) {
+      pr = TModular::MergeRemainders(
+          p, pr, vq[i],
+          modular::TArithmetic_C32U::PowUSafe(
+              a, (b > vqe[i]) ? vqe[i] + (b % vqe[i]) : b, vq[i]));
+      p *= vq[i];
     }
     return pr;
   };
