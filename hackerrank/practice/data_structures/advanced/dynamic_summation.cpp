@@ -102,8 +102,13 @@ int main_dynamic_summation() {
     for (size_t i = 0; i < vq.size(); ++i) {
       pr = TModular::MergeRemainders(
           p, pr, vq[i],
-          modular::TArithmetic_C32U::PowUSafe(
-              a, (b > vqe[i]) ? vqe[i] + (b % vqe[i]) : b, vq[i]));
+          (modular::TArithmetic_C32U::PowUSafe(
+               a, (b > vqe[i]) ? vqe[i] + (b % vqe[i]) : b, vq[i]) +
+           modular::TArithmetic_C32U::PowUSafe(
+               a + 1, (b > vqe[i]) ? vqe[i] + (b % vqe[i]) : b, vq[i]) +
+           modular::TArithmetic_C32U::PowUSafe(
+               b + 1, (a > vqe[i]) ? vqe[i] + (a % vqe[i]) : a, vq[i])) %
+              vq[i]);
       p *= vq[i];
     }
     return pr;
@@ -137,9 +142,7 @@ int main_dynamic_summation() {
       cout << d % m << endl;
     } else if (c == 'U') {
       cin >> a >> b;
-      d = FastPow(a, b) + FastPow(a + 1, b) + FastPow(b + 1, a);
-      // d = LongUnsigned(a) * LongUnsigned(b);
-      // d = LongUnsigned(0u);
+      d = FastPow(a, b);
       if (r == t) {
         root->AddAction(d);
       } else if (!nodes_info.InsideSubtree(t, r)) {
