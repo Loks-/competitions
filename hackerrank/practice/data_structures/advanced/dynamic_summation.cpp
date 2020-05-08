@@ -1,9 +1,10 @@
 // https://www.hackerrank.com/challenges/dynamic-summation
 
+#include "common/factorization/primes_list.h"
 #include "common/graph/tree.h"
 #include "common/graph/tree/nodes_info.h"
-#include "common/linear_algebra/vector_static_size.h"
-#include "common/modular/arithmetic.h"
+#include "common/numeric/long/modular.h"
+#include "common/numeric/long/unsigned.h"
 #include "common/segment_tree/action/add_each__sum.h"
 #include "common/segment_tree/base/add_action_to_segment.h"
 #include "common/segment_tree/base/get_segment_info.h"
@@ -12,7 +13,8 @@
 #include "common/stl/base.h"
 
 static const unsigned M = 101;
-using TData = la::VectorStaticSize<uint64_t, M>;
+using TData = LongUnsigned;
+using TModular = numeric::nlong::Modular<false>;
 using TSTTree = st::SegmentTree<TData, st::info::Sum<TData, st::info::None>,
                                 st::action::AddEachSum<TData>>;
 
@@ -61,6 +63,13 @@ int main_dynamic_summation() {
   auto root = sttree.BuildTree(vector<TData>(N));
   TData d;
   CashedPower cp(M);
+  factorization::PrimesList pl(M);
+  vector<uint64_t> vpk;
+  for (auto p : pl.GetPrimes()) {
+    unsigned pk = p;
+    for (; pk * p <= M;) pk *= p;
+    vpk.push_back(pk);
+  }
 
   auto ChildWithNode = [&](unsigned r, unsigned n) {
     if (nodes_info.parent[n] == r) return n;
@@ -70,6 +79,15 @@ int main_dynamic_summation() {
     }
     assert(false);
     return n;
+  };
+
+  auto FastPow = [&](uint64_t a, uint64_t b) {
+    LongUnsigned pr(0u), p(1u);
+    for (auto pk : vpk) {
+      pr = TModular::MergeRemainders(p, pr, pk, cp.Pow(a, b, pk));
+      p *= pk;
+    }
+    return pr;
   };
 
   cin >> Q;
@@ -97,14 +115,12 @@ int main_dynamic_summation() {
                 N - 1)
                 .sum;
       }
-      cout << d(m - 1) % m << endl;
+      cout << d % m << endl;
     } else if (c == 'U') {
       cin >> a >> b;
-      for (unsigned i = 0; i < M; ++i) {
-        d(i) = cp.Pow(a, b, i + 1) + cp.Pow(a + 1, b, i + 1) +
-               cp.Pow(b + 1, a, i + 1);
-        // d(i) = a * b % (i + 1);
-      }
+      d = FastPow(a, b) + FastPow(a + 1, b) + FastPow(b + 1, a);
+      // d = LongUnsigned(a) * LongUnsigned(b);
+      // d = LongUnsigned(0u);
       if (r == t) {
         root->AddAction(d);
       } else if (!nodes_info.InsideSubtree(t, r)) {
