@@ -22,6 +22,8 @@ class IAngle {
 
   bool Valid() const { return (dx != 0) || (dy != 0); }
 
+  Vector<T> ToVector() const { return Vector<T>(dx, dy); }
+
   void Normalize() {
     assert(Valid());
     T g = GCD<T>(dx < 0 ? -dx : dx, dy < 0 ? -dy : dy);
