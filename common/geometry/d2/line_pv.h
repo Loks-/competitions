@@ -7,7 +7,7 @@
 
 namespace geometry {
 namespace d2 {
-// Similar to Plane class but in point-vector form.
+// Similar to Line class but in point-vector form.
 template <class T>
 class LinePV {
  public:
