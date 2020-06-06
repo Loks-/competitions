@@ -207,6 +207,7 @@ add_test( NAME esab_atad.2 COMMAND python3 tests/google/code_jam/2020/qr/interac
 add_test( NAME blindfolded_bullseye.0 COMMAND python3 tests/google/code_jam/2020/interactive_runner.py python3 tests/google/code_jam/2020/r1b/blindfolded_bullseye.py 0 -- ./release/build/google_code_jam blindfolded_bullseye WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} )
 add_test( NAME blindfolded_bullseye.1 COMMAND python3 tests/google/code_jam/2020/interactive_runner.py python3 tests/google/code_jam/2020/r1b/blindfolded_bullseye.py 1 -- ./release/build/google_code_jam blindfolded_bullseye WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} )
 add_test( NAME blindfolded_bullseye.2 COMMAND python3 tests/google/code_jam/2020/interactive_runner.py python3 tests/google/code_jam/2020/r1b/blindfolded_bullseye.py 2 -- ./release/build/google_code_jam blindfolded_bullseye WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} )
+# add_test( NAME pen_testing COMMAND python3 tests/google/code_jam/2020/interactive_runner.py python3 tests/google/code_jam/2020/r3/pen_testing.py 2 -- ./release/build/google_code_jam pen_testing WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} )
 
 file( GLOB_RECURSE HACKERRANK_TESTS RELATIVE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/tests/hackerrank/*.in" )
 list( SORT HACKERRANK_TESTS )
