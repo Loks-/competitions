@@ -26,6 +26,7 @@ class NodesManagerFixedSize {
   }
 
   explicit NodesManagerFixedSize(size_t max_nodes) { Reset(max_nodes); }
+  NodesManagerFixedSize() : NodesManagerFixedSize(0) {}
 
   void Reserve(size_t new_max_nodes) {
     FakeUse(new_max_nodes);

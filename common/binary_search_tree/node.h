@@ -100,7 +100,7 @@ class Node
   TInfo info;
   TAction action;
 
-  Node() {}
+  Node() : data() {}
   explicit Node(const TData& _data) : data(_data) {}
 
   void ClearAction() { action.Clear(); }

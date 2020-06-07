@@ -34,6 +34,7 @@ class SplayTree
 
  public:
   explicit SplayTree(size_t max_nodes) : TTree(max_nodes) {}
+  SplayTree() : SplayTree(0) {}
 
   // Splay assumes that actions are already applied from root to node.
   static void Splay(TNode* node) {
@@ -43,16 +44,16 @@ class SplayTree
       if (!parent) break;
       TNode* gparent = parent->p;
       if (!gparent) {
-        RotateUp<TNode, true, false>(node);
+        Rotate<TNode, false, false>(node, parent, gparent);
         break;
       }
       bool zigzig = ((gparent->l == parent) == (parent->l == node));
       if (zigzig) {
         RotateUp<TNode, false, false>(parent);
-        RotateUp<TNode, true, false>(node);
+        RotateUp<TNode, false, false>(node);
       } else {
         RotateUp<TNode, false, false>(node);
-        RotateUp<TNode, true, false>(node);
+        RotateUp<TNode, false, false>(node);
       }
     }
     node->UpdateInfo();

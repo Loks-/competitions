@@ -24,6 +24,8 @@ class Tree : public TTNodesManager {
 
  public:
   explicit Tree(size_t max_nodes) : TNodesManager(max_nodes) {}
+  Tree() : Tree(0) {}
+
   TMe* Me() { return static_cast<TMe*>(this); }
   const TMe* Me() const { return static_cast<const TMe*>(this); }
 

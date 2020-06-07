@@ -18,6 +18,7 @@ class NodesManager {
  public:
   explicit NodesManager(size_t reserve_nodes)
       : nodes(reserve_nodes), used_nodes(0) {}
+  NodesManager() : NodesManager(0) {}
 
   void Reserve(size_t new_max_nodes) {
     if (new_max_nodes > nodes.size()) {
