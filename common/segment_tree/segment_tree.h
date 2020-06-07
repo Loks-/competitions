@@ -44,9 +44,8 @@ class SegmentTree {
     ResetNodes(unsigned(data.size()), unsigned(nodes.size()));
   }
 
-  SegmentTree() { ResetNodes(0); }
-
   explicit SegmentTree(unsigned data_size) { ResetNodes(data_size); }
+  SegmentTree() : SegmentTree(0) {}
 
   SegmentTree(unsigned data_size, unsigned max_nodes) {
     ResetNodes(data_size, max_nodes);
