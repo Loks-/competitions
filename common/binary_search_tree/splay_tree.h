@@ -48,13 +48,8 @@ class SplayTree
         break;
       }
       bool zigzig = ((gparent->l == parent) == (parent->l == node));
-      if (zigzig) {
-        RotateUp<TNode, false, false>(parent);
-        RotateUp<TNode, false, false>(node);
-      } else {
-        RotateUp<TNode, false, false>(node);
-        RotateUp<TNode, false, false>(node);
-      }
+      RotateUp<TNode, false, false>(zigzig ? parent : node);
+      RotateUp<TNode, false, false>(node);
     }
     node->UpdateInfo();
   }
