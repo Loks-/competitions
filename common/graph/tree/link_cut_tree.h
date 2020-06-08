@@ -6,6 +6,7 @@
 #include "common/binary_search_tree/base/rotate.h"
 #include "common/binary_search_tree/info/update_node_to_root.h"
 #include "common/binary_search_tree/splay_tree.h"
+#include "common/graph/tree.h"
 
 namespace graph {
 template <class TTData, class TTInfo, class TTAction = bst::action::Reverse>
