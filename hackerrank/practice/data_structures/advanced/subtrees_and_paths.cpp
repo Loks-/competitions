@@ -1,4 +1,4 @@
-// https://www.hackerrank.com/challenges/heavy-light-white-falcon
+// https://www.hackerrank.com/challenges/subtrees-and-paths
 
 #include "common/graph/tree.h"
 #include "common/graph/tree/hld.h"
