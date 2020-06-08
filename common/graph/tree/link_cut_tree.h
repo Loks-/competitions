@@ -102,7 +102,7 @@ class LinkCutTree {
   void SetRoot(TNode* node) {
     assert(node);
     Access(node);
-    node->action.ReverseSubtree();
+    node->action.ReverseSubtree(node);
   }
 
  protected:
@@ -152,6 +152,14 @@ class LinkCutTree {
     SetRoot(Node(x));
     Access(Node(y));
     return Node(y)->info;
+  }
+
+  // Reset tree root
+  template <class TActionValue>
+  void AddActionOnPath(unsigned x, unsigned y, const TActionValue& value) {
+    SetRoot(Node(x));
+    Access(Node(y));
+    Node(y)->AddAction(value);
   }
 };
 }  // namespace graph

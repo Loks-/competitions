@@ -18,19 +18,22 @@ class Reverse : public None {
   bool IsEmpty() const { return !reverse; }
   void Clear() { reverse = false; };
 
-  void ReverseSubtree() { reverse = !reverse; }
+  template <class TNode>
+  void ReverseSubtree(TNode*) {
+    reverse = !reverse;
+  }
 
   template <class TNode>
-  void Add(TNode*, bool value) {
-    if (value) ReverseSubtree();
+  void Add(TNode* node, bool value) {
+    if (value) ReverseSubtree(node);
   }
 
   template <class TNode>
   void Apply(TNode* node) {
     if (reverse) {
       std::swap(node->l, node->r);
-      if (node->l) node->l->action.ReverseSubtree();
-      if (node->r) node->r->action.ReverseSubtree();
+      if (node->l) node->l->action.ReverseSubtree(node->l);
+      if (node->r) node->r->action.ReverseSubtree(node->r);
       reverse = false;
     }
   }
