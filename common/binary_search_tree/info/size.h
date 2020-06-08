@@ -15,7 +15,6 @@ class Size : public None {
 
   template <class TNode>
   void Update(TNode* node) {
-    node->ApplyAction();
     size = 1 + (node->l ? node->l->info.size : 0) +
            (node->r ? node->r->info.size : 0);
   }
