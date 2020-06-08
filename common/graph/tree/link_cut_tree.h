@@ -4,7 +4,6 @@
 #include "common/binary_search_tree/action/apply_root_to_node.h"
 #include "common/binary_search_tree/action/reverse.h"
 #include "common/binary_search_tree/base/rotate.h"
-#include "common/binary_search_tree/info/update_node_to_root.h"
 #include "common/binary_search_tree/splay_tree.h"
 #include "common/graph/tree.h"
 
@@ -143,9 +142,9 @@ class LinkCutTree {
 
   void SetData(unsigned x, const TData& data) {
     auto node = Node(x);
-    bst::action::ApplyRootToNode(node);
+    Access(node);
     node->data = data;
-    bst::info::UpdateNodeToRoot(node);
+    node->UpdateInfo();
   }
 
   // Reset tree root
