@@ -1,4 +1,4 @@
-// https://www.hackerrank.com/challenges/rheavy-light-2-white-falcon
+// https://www.hackerrank.com/challenges/heavy-light-2-white-falcon
 
 #include "common/graph/tree.h"
 #include "common/graph/tree/hld_sdp.h"
