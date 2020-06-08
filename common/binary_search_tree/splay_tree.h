@@ -74,6 +74,7 @@ class SplayTree
   // everything right will go to right tree.
   static TNode* Split(TNode* p) {
     if (!p) return nullptr;
+    action::ApplyRootToNode(p);
     Splay(p);
     TNode* r = p->r;
     if (r) {
