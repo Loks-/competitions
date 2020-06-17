@@ -5,9 +5,11 @@
 #include "base/direction.h"
 #include "base/ext/event_type.h"
 #include "base/point.h"
+
 #include "common/assert_exception.h"
 #include "common/data_structures/unsigned_set.h"
-#include "common/string/split.h"
+#include "common/string/utils/split.h"
+
 #include <cassert>
 #include <string>
 

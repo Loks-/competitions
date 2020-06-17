@@ -10,7 +10,7 @@
 #include "base/worker.h"
 
 #include "common/assert_exception.h"
-#include "common/string/split.h"
+#include "common/string/utils/split.h"
 
 #include <cassert>
 

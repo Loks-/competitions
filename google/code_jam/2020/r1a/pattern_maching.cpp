@@ -1,7 +1,7 @@
 #include "common/stl/base.h"
-#include "common/string/end_with.h"
-#include "common/string/erase_all.h"
-#include "common/string/start_with.h"
+#include "common/string/utils/end_with.h"
+#include "common/string/utils/erase_all.h"
+#include "common/string/utils/start_with.h"
 
 #include <string>
 
