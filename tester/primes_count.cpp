@@ -1,9 +1,11 @@
 #include "tester/primes_count.h"
 
 #include "common/assert_exception.h"
+#include "common/binary_indexed_tree/bit.h"
 #include "common/factorization/primes_count_quotients.h"
 #include "common/factorization/primes_generator.h"
 #include "common/factorization/primes_range.h"
+#include "common/factorization/table/mobius.h"
 #include "common/numeric/utils/ucbrt.h"
 #include "common/numeric/utils/usqrt.h"
 #include "common/template.h"
@@ -144,6 +146,46 @@ uint64_t PrimesCount_MeisselLehmerB(uint64_t n, unsigned b) {
   for (uint64_t i = k; i < l; ++i) {
     s -= std::upper_bound(primes.begin(), primes.end(), n / primes[i]) -
          primes.begin();
+  }
+  return s;
+}
+
+// Based on Lagarias, Miller and Odlyzko paper
+// https://www.ams.org/journals/mcom/1985-44-170/S0025-5718-1985-0777285-5/S0025-5718-1985-0777285-5.pdf
+// Simplified version with O(n^(2/3)) memory.
+uint64_t PrimesCount_ExtendedMeisselLehmer(uint64_t n) {
+  if (n < 2) return 0;
+  uint64_t ncbrt = UCbrt(n), nsqrt = USqrt(n), ncbrt2 = n / ncbrt;
+  factorization::table::Mobius mobius(ncbrt);
+  auto primes = GeneratePrimes(ncbrt2);
+  uint64_t k =
+      std::upper_bound(primes.begin(), primes.end(), ncbrt) - primes.begin();
+  uint64_t l =
+      std::upper_bound(primes.begin(), primes.end(), nsqrt) - primes.begin();
+
+  int64_t s = (l * (l - 1)) / 2 - ((k - 1) * (k - 2)) / 2;
+  for (uint64_t i = k; i < l; ++i) {
+    s -= std::upper_bound(primes.begin(), primes.end(), n / primes[i]) -
+         primes.begin();
+  }
+  for (uint64_t i = 1; i <= ncbrt; ++i) s += mobius(i) * (n / i);
+
+  std::vector<unsigned> vs(ncbrt2 + 1, 1);
+  BIT<int64_t> bit(ncbrt2 + 1);
+  for (uint64_t b = 0; b < k; ++b) {
+    uint64_t p = primes[b], np = n / p;
+    for (uint64_t ns = ncbrt / p + 1; ns <= ncbrt; ++ns) {
+      if (vs[ns] && (ns % p))
+        s -= mobius(ns) * (np / ns - bit.Sum(np / ns + 1));
+    }
+    vs[p] = 0;
+    bit.Add(p);
+    for (uint64_t m = p * p; m <= ncbrt2; m += p) {
+      if (vs[m]) {
+        vs[m] = 0;
+        bit.Add(m);
+      }
+    }
   }
   return s;
 }
