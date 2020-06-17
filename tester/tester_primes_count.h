@@ -1,6 +1,7 @@
 #pragma once
 
 #include "common/base.h"
+
 #include <string>
 
 class TesterPrimesCount {
@@ -10,6 +11,7 @@ class TesterPrimesCount {
     PRIMES_GENERATION,
     LEGENDRE,
     MEISSEL,
+    MEISSEL_LEHMER,
     LUCY_HEDGEHOG_RECURSIVE,
     LUCY_HEDGEHOG_RECURSIVE2,
     LUCY_HEDGEHOG_VECTOR,
@@ -17,6 +19,7 @@ class TesterPrimesCount {
   };
 
  public:
-  static size_t Test(const std::string& name, uint64_t n, Algorithm type);
+  static size_t Test(const std::string& name, uint64_t n, Algorithm type,
+                     unsigned extra = 0);
   static bool TestAll(bool time_test);
 };

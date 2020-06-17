@@ -79,6 +79,75 @@ uint64_t PrimesCount_Meissel(uint64_t n) {
   return s;
 }
 
+uint64_t PrimesCount_MeisselLehmer1(uint64_t n) {
+  if (n < 2) return 0;
+  uint64_t ncbrt = UCbrt(n), nsqrt = USqrt(n), ncbrt2 = n / ncbrt;
+  auto primes = GeneratePrimes(ncbrt2);
+  uint64_t k =
+      std::upper_bound(primes.begin(), primes.end(), ncbrt) - primes.begin();
+  uint64_t l =
+      std::upper_bound(primes.begin(), primes.end(), nsqrt) - primes.begin();
+
+  std::function<uint64_t(uint64_t, unsigned)> F = [&](uint64_t k,
+                                                      unsigned i) -> uint64_t {
+    if (k < primes[i]) return 1;
+    uint64_t s = k - (k / 2);
+    for (unsigned j = 1; (j < i) && (primes[j] <= k); ++j) {
+      s -= F(k / primes[j], j);
+    }
+    return s;
+  };
+
+  uint64_t s = (k ? F(n, k) : n) + (l * (l - 1)) / 2 - ((k - 1) * (k - 2)) / 2;
+  for (uint64_t i = k; i < l; ++i) {
+    s -= std::upper_bound(primes.begin(), primes.end(), n / primes[i]) -
+         primes.begin();
+  }
+  return s;
+}
+
+uint64_t PrimesCount_MeisselLehmerB(uint64_t n, unsigned b) {
+  if (n < 2) return 0;
+  uint64_t ncbrt = UCbrt(n), nsqrt = USqrt(n), ncbrt2 = n / ncbrt;
+  auto primes = GeneratePrimes(ncbrt2);
+  uint64_t k =
+      std::upper_bound(primes.begin(), primes.end(), ncbrt) - primes.begin();
+  uint64_t l =
+      std::upper_bound(primes.begin(), primes.end(), nsqrt) - primes.begin();
+
+  b = std::min(b, unsigned(k));
+  uint64_t m = 1;
+  for (unsigned i = 0; i < b; ++i) m *= primes[i];
+  std::vector<std::vector<uint64_t>> vc(b + 1, std::vector<uint64_t>(m + 1, 0));
+  for (uint64_t j = 1; j <= m; ++j) {
+    vc[0][j] = j;
+  }
+  for (unsigned i = 1; i <= b; ++i) {
+    uint64_t p = primes[i - 1];
+    for (uint64_t j = 1; j <= m; ++j) {
+      vc[i][j] = vc[i][j - 1] + ((j % p) && (vc[i - 1][j - 1] != vc[i - 1][j]));
+    }
+  }
+
+  std::function<uint64_t(uint64_t, unsigned)> F = [&](uint64_t k,
+                                                      unsigned i) -> uint64_t {
+    if (k < primes[i]) return 1;
+    if (i <= b) return (k / m) * vc[i].back() + vc[i][k % m];
+    uint64_t s = k;
+    for (unsigned j = 0; (j < i) && (primes[j] <= k); ++j) {
+      s -= F(k / primes[j], j);
+    }
+    return s;
+  };
+
+  uint64_t s = F(n, k) + (l * (l - 1)) / 2 - ((k - 1) * (k - 2)) / 2;
+  for (uint64_t i = k; i < l; ++i) {
+    s -= std::upper_bound(primes.begin(), primes.end(), n / primes[i]) -
+         primes.begin();
+  }
+  return s;
+}
+
 uint64_t PrimesCount_LucyHedgehogRecursive(uint64_t n) {
   uint64_t nsqrt = USqrt(n);
   auto primes = GeneratePrimes(nsqrt);
