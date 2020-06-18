@@ -255,13 +255,11 @@ uint64_t PrimesCount_DelegliseRivat(uint64_t n) {
   if (n < 2) return 0;
   uint64_t n2 = USqrt(n), n3 = UCbrt(n), n4 = USqrt(n2), nl = ULog2(n),
            yr = n3 * PowU(nl, 3), y = std::max(n3, std::min(yr, n2)),
-           ny = n / y, ny2 = USqrt(n / y), nyy = ny / y;
+           ny = n / y, ny2 = USqrt(n / y);
   factorization::table::Mobius mobius(y);
   factorization::table::Pi pi(n2);
   auto primes = pi.GetPrimes();
-  uint64_t py = pi(y), pn2 = pi(n2), pn3 = pi(n3), pn4 = pi(n4), pny2 = pi(ny2),
-           pnyy = pi(nyy);
-  FakeUse(pnyy);
+  uint64_t py = pi(y), pn2 = pi(n2), pn3 = pi(n3), pn4 = pi(n4), pny2 = pi(ny2);
 
   int64_t s = ((pn2 - py + 1) * (pn2 + py - 2)) / 2;  // P2
   for (uint64_t i = py; i < pn2; ++i) s -= pi(n / primes[i]);
