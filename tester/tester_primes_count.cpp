@@ -36,6 +36,9 @@ size_t TesterPrimesCount::Test(const std::string& name, uint64_t n,
     case Algorithm::LAGARIAS_MILLER_ODLYZKO_Y:
       r = PrimesCount_LagariasMillerOdlyzkoY(n);
       break;
+    case Algorithm::DELEGLISE_RIVAT:
+      r = PrimesCount_DelegliseRivat(n);
+      break;
     case Algorithm::LUCY_HEDGEHOG_RECURSIVE:
       r = PrimesCount_LucyHedgehogRecursive(n);
       break;
@@ -70,6 +73,7 @@ bool TesterPrimesCount::TestAll(bool time_test) {
   }
   rs.insert(Test("LMO             ", n, Algorithm::LAGARIAS_MILLER_ODLYZKO));
   rs.insert(Test("LMO Y           ", n, Algorithm::LAGARIAS_MILLER_ODLYZKO_Y));
+  rs.insert(Test("DelegliseRivat  ", n, Algorithm::DELEGLISE_RIVAT));
   if (!time_test) {
     rs.insert(Test("LucyHedgehogR   ", n, Algorithm::LUCY_HEDGEHOG_RECURSIVE));
     rs.insert(Test("LucyHedgehogR2  ", n, Algorithm::LUCY_HEDGEHOG_RECURSIVE2));
