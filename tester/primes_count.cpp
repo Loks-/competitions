@@ -279,31 +279,6 @@ uint64_t PrimesCount_DelegliseRivat(uint64_t n) {
       s += pi(n / primes[i] / primes[j]);
   }
 
-  // for (uint64_t i = pn4; i < pnyy; ++i) {  // S2 W1
-  //   for (uint64_t j = i + 1, je = py; j < je; ++j)
-  //     s += pi(n / primes[i] / primes[j]);
-  // }
-  // std::cout << "S2 W1 done:  " << t.GetMilliseconds() << std::endl;
-  // for (uint64_t i = std::max(pn4, pnyy); i < pny2; ++i) {  // S2 W2
-  //   for (uint64_t j = i + 1, je = pi(USqrt(n / primes[i])); j < je; ++j)
-  //     s += pi(n / primes[i] / primes[j]);
-  // }
-  // std::cout << "S2 W2 done:  " << t.GetMilliseconds() << std::endl;
-  // for (uint64_t i = std::max(pn4, pnyy); i < pny2; ++i) {  // S2 W3
-  //   for (uint64_t j = std::max<uint64_t>(pi(USqrt(n / primes[i])), i + 1),
-  //                 je = py;
-  //        j < je; ++j)
-  //     s += pi(n / primes[i] / primes[j]);
-  // }
-  // std::cout << "S2 W3 done:  " << t.GetMilliseconds() << std::endl;
-  // for (uint64_t i = pny2; i < pn3; ++i) {  // S2 W4 W5
-  //   for (uint64_t j = i + 1,
-  //                 je = std::min<uint64_t>(pi(n / primes[i] / primes[i]), py);
-  //        j < je; ++j)
-  //     s += pi(n / primes[i] / primes[j]);
-  // }
-  // std::cout << "S2 W5 done:  " << t.GetMilliseconds() << std::endl;
-
   // S3
   uint64_t vs_size = std::max(y, ny) + 1;
   std::vector<unsigned> vs(vs_size, 1);
