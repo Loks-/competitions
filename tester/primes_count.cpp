@@ -206,6 +206,45 @@ uint64_t PrimesCount_LagariasMillerOdlyzko(uint64_t n) {
   return s;
 }
 
+uint64_t PrimesCount_LagariasMillerOdlyzkoY(uint64_t n) {
+  if (n < 2) return 0;
+  uint64_t ncbrt = UCbrt(n), nsqrt = USqrt(n), yr = 4 * ncbrt,
+           y = std::max(ncbrt, std::min(yr, nsqrt)), y2 = n / y;
+  factorization::table::Mobius mobius(y);
+  auto primes = GeneratePrimes(std::max(nsqrt, y2));
+  uint64_t k =
+      std::upper_bound(primes.begin(), primes.end(), y) - primes.begin();
+  uint64_t l =
+      std::upper_bound(primes.begin(), primes.end(), nsqrt) - primes.begin();
+
+  int64_t s = (l * (l - 1)) / 2 - ((k - 1) * (k - 2)) / 2;
+  for (uint64_t i = k; i < l; ++i) {
+    s -= std::upper_bound(primes.begin(), primes.end(), n / primes[i]) -
+         primes.begin();
+  }
+  for (uint64_t i = 1; i <= y; ++i) s += mobius(i) * (n / i);
+
+  uint64_t vs_size = std::max(y, y2) + 1;
+  std::vector<unsigned> vs(vs_size, 1);
+  BIT<int64_t> bit(vs_size);
+  for (uint64_t b = 0; b < k; ++b) {
+    uint64_t p = primes[b], np = n / p;
+    for (uint64_t ns = y / p + 1; ns <= y; ++ns) {
+      if (vs[ns] && (ns % p))
+        s -= mobius(ns) * (np / ns - bit.Sum(np / ns + 1));
+    }
+    vs[p] = 0;
+    bit.Add(p);
+    for (uint64_t m = p * p; m <= y2; m += p) {
+      if (vs[m]) {
+        vs[m] = 0;
+        bit.Add(m);
+      }
+    }
+  }
+  return s;
+}
+
 uint64_t PrimesCount_LucyHedgehogRecursive(uint64_t n) {
   uint64_t nsqrt = USqrt(n);
   auto primes = GeneratePrimes(nsqrt);

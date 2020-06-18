@@ -33,6 +33,9 @@ size_t TesterPrimesCount::Test(const std::string& name, uint64_t n,
     case Algorithm::LAGARIAS_MILLER_ODLYZKO:
       r = PrimesCount_LagariasMillerOdlyzko(n);
       break;
+    case Algorithm::LAGARIAS_MILLER_ODLYZKO_Y:
+      r = PrimesCount_LagariasMillerOdlyzkoY(n);
+      break;
     case Algorithm::LUCY_HEDGEHOG_RECURSIVE:
       r = PrimesCount_LucyHedgehogRecursive(n);
       break;
@@ -58,14 +61,15 @@ bool TesterPrimesCount::TestAll(bool time_test) {
     rs.insert(Test("PrimesGeneration", n, Algorithm::PRIMES_GENERATION));
     rs.insert(Test("Legendre        ", n, Algorithm::LEGENDRE));
     rs.insert(Test("Meissel         ", n, Algorithm::MEISSEL));
+    rs.insert(Test("MeisselLehmer 0 ", n, Algorithm::MEISSEL_LEHMER, 0));
+    rs.insert(Test("MeisselLehmer 1 ", n, Algorithm::MEISSEL_LEHMER, 1));
+    rs.insert(Test("MeisselLehmer 2 ", n, Algorithm::MEISSEL_LEHMER, 2));
+    rs.insert(Test("MeisselLehmer 3 ", n, Algorithm::MEISSEL_LEHMER, 3));
+    rs.insert(Test("MeisselLehmer 4 ", n, Algorithm::MEISSEL_LEHMER, 4));
+    rs.insert(Test("MeisselLehmer 5 ", n, Algorithm::MEISSEL_LEHMER, 5));
   }
-  rs.insert(Test("MeisselLehmer 0 ", n, Algorithm::MEISSEL_LEHMER, 0));
-  rs.insert(Test("MeisselLehmer 1 ", n, Algorithm::MEISSEL_LEHMER, 1));
-  rs.insert(Test("MeisselLehmer 2 ", n, Algorithm::MEISSEL_LEHMER, 2));
-  rs.insert(Test("MeisselLehmer 3 ", n, Algorithm::MEISSEL_LEHMER, 3));
-  rs.insert(Test("MeisselLehmer 4 ", n, Algorithm::MEISSEL_LEHMER, 4));
-  rs.insert(Test("MeisselLehmer 5 ", n, Algorithm::MEISSEL_LEHMER, 5));
   rs.insert(Test("LMO             ", n, Algorithm::LAGARIAS_MILLER_ODLYZKO));
+  rs.insert(Test("LMO Y           ", n, Algorithm::LAGARIAS_MILLER_ODLYZKO_Y));
   if (!time_test) {
     rs.insert(Test("LucyHedgehogR   ", n, Algorithm::LUCY_HEDGEHOG_RECURSIVE));
     rs.insert(Test("LucyHedgehogR2  ", n, Algorithm::LUCY_HEDGEHOG_RECURSIVE2));
