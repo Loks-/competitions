@@ -12,8 +12,6 @@
 	* Johnson's - Dijkstra
 * Heap
 	* Van Emde Boas tree
-* Link/Cut Tree
-	* https://www.hackerrank.com/challenges/subtrees-and-paths
 * Persistent Binary Search Trees
 * SegmentTree
 	* Compact SegmentTree
