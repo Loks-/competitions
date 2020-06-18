@@ -169,7 +169,7 @@ uint64_t PrimesCount_MeisselLehmerB(uint64_t n, unsigned b) {
 // Based on Lagarias, Miller and Odlyzko paper
 // https://www.ams.org/journals/mcom/1985-44-170/S0025-5718-1985-0777285-5/S0025-5718-1985-0777285-5.pdf
 // Simplified version with O(n^(2/3)) memory.
-uint64_t PrimesCount_ExtendedMeisselLehmer(uint64_t n) {
+uint64_t PrimesCount_LagariasMillerOdlyzko(uint64_t n) {
   if (n < 2) return 0;
   uint64_t ncbrt = UCbrt(n), nsqrt = USqrt(n), ncbrt2 = n / ncbrt;
   factorization::table::Mobius mobius(ncbrt);

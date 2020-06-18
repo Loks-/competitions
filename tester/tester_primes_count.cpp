@@ -30,8 +30,8 @@ size_t TesterPrimesCount::Test(const std::string& name, uint64_t n,
       r = extra ? PrimesCount_MeisselLehmerB(n, extra)
                 : PrimesCount_MeisselLehmer1(n);
       break;
-    case Algorithm::EXTENDED_MEISSEL_LEHMER:
-      r = PrimesCount_ExtendedMeisselLehmer(n);
+    case Algorithm::LAGARIAS_MILLER_ODLYZKO:
+      r = PrimesCount_LagariasMillerOdlyzko(n);
       break;
     case Algorithm::LUCY_HEDGEHOG_RECURSIVE:
       r = PrimesCount_LucyHedgehogRecursive(n);
@@ -65,11 +65,11 @@ bool TesterPrimesCount::TestAll(bool time_test) {
   rs.insert(Test("MeisselLehmer 3 ", n, Algorithm::MEISSEL_LEHMER, 3));
   rs.insert(Test("MeisselLehmer 4 ", n, Algorithm::MEISSEL_LEHMER, 4));
   rs.insert(Test("MeisselLehmer 5 ", n, Algorithm::MEISSEL_LEHMER, 5));
-  rs.insert(Test("ExtMeisselLehmer", n, Algorithm::EXTENDED_MEISSEL_LEHMER));
+  rs.insert(Test("LMO             ", n, Algorithm::LAGARIAS_MILLER_ODLYZKO));
   if (!time_test) {
     rs.insert(Test("LucyHedgehogR   ", n, Algorithm::LUCY_HEDGEHOG_RECURSIVE));
+    rs.insert(Test("LucyHedgehogR2  ", n, Algorithm::LUCY_HEDGEHOG_RECURSIVE2));
   }
-  rs.insert(Test("LucyHedgehogR2  ", n, Algorithm::LUCY_HEDGEHOG_RECURSIVE2));
   rs.insert(Test("LucyHedgehogV   ", n, Algorithm::LUCY_HEDGEHOG_VECTOR));
   rs.insert(Test("PCQ             ", n, Algorithm::PRIMES_COUNT_QUOTIENTS));
   return rs.size() == 1;
