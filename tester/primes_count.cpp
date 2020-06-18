@@ -16,9 +16,25 @@
 #include <vector>
 
 uint64_t PrimesCount_Table(uint64_t n) {
-  const std::vector<uint64_t> table{
-      0,      4,       25,       168,       1229,          9592,          78498,
-      664579, 5761455, 50847534, 455052511, 4118054813ull, 37607912018ull};
+  const std::vector<uint64_t> table{0,
+                                    4,
+                                    25,
+                                    168,
+                                    1229,
+                                    9592,
+                                    78498,
+                                    664579,
+                                    5761455,
+                                    50847534,
+                                    455052511,
+                                    4118054813ull,
+                                    37607912018ull,
+                                    346065536839ull,
+                                    3204941750802ull,
+                                    29844570422669ull,
+                                    279238341033925ull,
+                                    2623557157654233ull,
+                                    24739954287740860ull};
   uint64_t n10 = 1;
   for (unsigned i = 0; i < table.size(); ++i) {
     if (n == n10) return table[i];
