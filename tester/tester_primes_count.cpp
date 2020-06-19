@@ -2,7 +2,7 @@
 
 #include "tester/primes_count.h"
 
-#include "common/factorization/primes_generator.h"
+#include "common/factorization/utils/primes_count.h"
 #include "common/timer.h"
 
 #include <iostream>
@@ -48,6 +48,9 @@ size_t TesterPrimesCount::Test(const std::string& name, uint64_t n,
     case Algorithm::LUCY_HEDGEHOG_VECTOR:
       r = PrimesCount_LucyHedgehogVector(n);
       break;
+    case Algorithm::PRIMES_COUNT:
+      r = PrimesCount(n);
+      break;
     case Algorithm::PRIMES_COUNT_QUOTIENTS:
       r = PrimesCount_PCQ(n);
       break;
@@ -79,7 +82,8 @@ bool TesterPrimesCount::TestAll(bool time_test) {
     rs.insert(Test("LucyHedgehogR2  ", n, Algorithm::LUCY_HEDGEHOG_RECURSIVE2));
   }
   rs.insert(Test("LucyHedgehogV   ", n, Algorithm::LUCY_HEDGEHOG_VECTOR));
-  rs.insert(Test("PCQ             ", n, Algorithm::PRIMES_COUNT_QUOTIENTS));
+  rs.insert(Test("Common PC       ", n, Algorithm::PRIMES_COUNT));
+  rs.insert(Test("Common PCQ      ", n, Algorithm::PRIMES_COUNT_QUOTIENTS));
   return rs.size() == 1;
 }
 
