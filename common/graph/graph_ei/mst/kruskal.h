@@ -25,7 +25,9 @@ inline std::pair<unsigned, typename TEdgeCostFunction::TEdgeCost> Kruskal(
 
   std::vector<Edge> edges;
   for (unsigned u = 0; u < graph.Size(); ++u) {
-    for (auto e : graph.EdgesEI(u)) edges.push_back({u, e.to, f(e.info)});
+    for (auto e : graph.EdgesEI(u)) {
+      if (u < e.to) edges.push_back({u, e.to, f(e.info)});
+    }
   }
   std::sort(edges.begin(), edges.end());
   ds::DisjointSet ds(graph.Size());
