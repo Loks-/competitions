@@ -1,10 +1,10 @@
 #pragma once
 
+#include "tester/graph_type.h"
+
 #include "common/base.h"
 #include "common/graph/graph_ei.h"
 #include "common/graph/graph_ei/edge_cost_proxy.h"
-
-#include "tester/graph_type.h"
 
 #include <string>
 #include <vector>
@@ -24,6 +24,7 @@ class TesterMinimumSpanningTree {
                             unsigned edges_per_node);
 
  protected:
+  uint64_t TestBoruvka() const;
   uint64_t TestKruskal() const;
   uint64_t TestPrimBaseBinaryHeap() const;
 

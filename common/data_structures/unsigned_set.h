@@ -2,6 +2,7 @@
 
 #include "common/base.h"
 
+#include <algorithm>
 #include <vector>
 
 namespace ds {
@@ -19,6 +20,7 @@ class UnsignedSet {
 
   bool Empty() const { return vlist.empty(); }
   unsigned Size() const { return unsigned(vlist.size()); }
+  unsigned SetSize() const { return unsigned(vset.size()); }
   unsigned HasKey(unsigned key) const { return vset[key]; }
   unsigned Last() const { return vlist.back(); }
   const std::vector<unsigned>& List() const { return vlist; }
@@ -27,6 +29,15 @@ class UnsignedSet {
     if (!vset[key]) {
       vlist.push_back(key);
       vset[key] = vlist.size();
+    }
+  }
+
+  void InsertAll() {
+    unsigned size = SetSize();
+    vlist.resize(size);
+    for (unsigned i = 0; i < size; ++i) {
+      vset[i] = i + 1;
+      vlist[i] = i;
     }
   }
 
