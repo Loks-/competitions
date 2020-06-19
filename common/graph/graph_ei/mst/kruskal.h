@@ -8,7 +8,7 @@
 
 namespace graph {
 namespace mst {
-// Kruskal algorithm
+// Kruskal's algorithm
 // https://en.wikipedia.org/wiki/Kruskal%27s_algorithm
 // Time: O(V + E log E)
 template <class TGraph, class TEdgeCostFunction>
