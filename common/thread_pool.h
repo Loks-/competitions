@@ -37,18 +37,18 @@ class ThreadPool {
 
   // add new work item to the pool
   template <class F, class... Args>
-  auto enqueue(F&& f, Args&&... args)
+  auto Enqueue(F&& f, Args&&... args)
       -> std::future<typename std::result_of<F(Args...)>::type> {
     using return_type = typename std::result_of<F(Args...)>::type;
 
     auto task = std::make_shared<std::packaged_task<return_type()>>(
         std::bind(std::forward<F>(f), std::forward<Args>(args)...));
-    return enqueueTask(std::move(task));
+    return EnqueueTask(std::move(task));
   }
 
   // add new work item to the pool
   template <class T>
-  auto enqueueTask(std::shared_ptr<std::packaged_task<T()>>&& task)
+  auto EnqueueTask(std::shared_ptr<std::packaged_task<T()>>&& task)
       -> std::future<T> {
     std::future<T> res = task->get_future();
     {
@@ -56,7 +56,7 @@ class ThreadPool {
 
       // don't allow enqueueing after stopping the pool
       if (stop) {
-        throw std::runtime_error("enqueue on stopped ThreadPool");
+        throw std::runtime_error("Enqueue on stopped ThreadPool");
       }
 
       tasks.emplace([task]() { (*task)(); });

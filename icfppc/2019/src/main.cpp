@@ -43,7 +43,7 @@ int main(int argc, char* argv[]) {
       std::string solution_filename = short_name + ".sol";
       merger.Solve(problem, solution_filename, evaluator);
     });
-    p.enqueueTask(std::move(t));
+    p.EnqueueTask(std::move(t));
   }
   return 0;
 }
