@@ -9,13 +9,15 @@ bool TestLongMult() {
   LongUnsigned a(1u), b(1u);
   for (; k < l;) a *= ++k;
   for (; k < n;) b *= ++k;
-  LongUnsigned r = GetFactorialL(n), r1 = numeric::nlong::MultBase(a, b);
-  if (r1 != r) {
+  LongUnsigned r = GetFactorialL(n), r1 = numeric::nlong::MultBase(a, b),
+               r2 = numeric::nlong::MultFFT(a, b);
+  if ((r1 != r) || (r2 != r)) {
     std::cout << n << "\n"
               << a << "\n"
               << b << "\n"
               << r << "\n"
-              << r1 << std::endl;
+              << r1 << "\n"
+              << r2 << std::endl;
     return false;
   }
   return true;

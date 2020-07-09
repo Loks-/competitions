@@ -30,7 +30,7 @@ class Unsigned {
     Normalize();
   }
 
-  explicit Unsigned(const TData& _data) : data(_data) {}
+  explicit Unsigned(const TData& _data) : data(_data) { Normalize(); }
 
   void Normalize() {
     for (; (data.size() > 0) && (data.back() == 0);) data.pop_back();
