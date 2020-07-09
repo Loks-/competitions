@@ -8,7 +8,7 @@ void FindPrimesForModularFFT(unsigned count) {
   unsigned found = 0;
   for (unsigned k = 30; (found < count) && (k > 0); --k) {
     uint64_t p2k = (1u << k);
-    for (uint64_t n = p2k + 1; n < max_value; n += p2k) {
+    for (uint64_t n = p2k + 1; n < max_value; n += 2 * p2k) {
       if (IsPrime(n)) {
         std::cout << k << "\t" << n << std::endl;
         if (++found == count) break;
