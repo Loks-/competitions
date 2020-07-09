@@ -1,5 +1,7 @@
 #pragma once
 
+void FindPrimesForModularFFT(unsigned count);
+
 bool TestBinarySearchTree(bool time_test);
 bool TestContinuedFractionConvergent();
 bool TestDisjointSet();
