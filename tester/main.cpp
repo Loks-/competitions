@@ -29,6 +29,8 @@ int main(int nargs, char **pargs) {
       Assert(TestHeap(false));
     else if (tester_mode == "interpolation")
       Assert(TestInterpolation());
+    else if (tester_mode == "long_mult")
+      Assert(TestLongMult());
     else if (tester_mode == "mertens")
       Assert(TestMertens());
     else if (tester_mode == "mertens_compact")

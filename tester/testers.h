@@ -9,6 +9,7 @@ bool TestGeneratingFunction();
 bool TestGraphEIDistancePositiveCost(bool time_test);
 bool TestHeap(bool time_test);
 bool TestInterpolation();
+bool TestLongMult();
 bool TestMatrixMult();
 bool TestMertens();
 bool TestMertensCompact();
