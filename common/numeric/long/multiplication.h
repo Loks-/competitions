@@ -5,6 +5,7 @@
 #include "common/modular/utils/merge_remainders.h"
 #include "common/numeric/long/unsigned.h"
 
+#include <algorithm>
 #include <vector>
 
 namespace numeric {
@@ -60,5 +61,18 @@ Unsigned MultFFT(const Unsigned& a, const Unsigned& b) {
   for (; t64; t64 >>= 32) v.push_back(uint32_t(t64));
   return Unsigned(v);
 }
+
+Unsigned MultAuto(const Unsigned& a, const Unsigned& b) {
+  return (std::min(a.Size(), b.Size()) < 100) ? MultBase(a, b) : MultFFT(a, b);
+}
 }  // namespace nlong
 }  // namespace numeric
+
+LongUnsigned operator*(const LongUnsigned& l, const LongUnsigned& r) {
+  return numeric::nlong::MultAuto(l, r);
+}
+
+LongUnsigned& operator*=(LongUnsigned& l, const LongUnsigned& r) {
+  l = numeric::nlong::MultAuto(l, r);
+  return l;
+}
