@@ -69,6 +69,13 @@ class SplayTree
     return p;
   }
 
+  static TNode* Join(TNode* l, TNode* m1, TNode* r) {
+    assert(m1 && !m1->l && !m1->r);
+    m1->SetL(l);
+    m1->SetR(r);
+    return m1;
+  }
+
   // Split tree to 2 trees.
   // p and everything left will go to left tree (and p is root).
   // everything right will go to right tree.
