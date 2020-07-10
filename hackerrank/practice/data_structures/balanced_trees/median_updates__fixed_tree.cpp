@@ -1,10 +1,10 @@
 // https://www.hackerrank.com/challenges/median
 
 #include "common/binary_search_tree/base/find_by_key.h"
-#include "common/binary_search_tree/fixed_tree.h"
 #include "common/binary_search_tree/info/size.h"
 #include "common/binary_search_tree/info/sum.h"
 #include "common/binary_search_tree/info/update_node_to_root.h"
+#include "common/binary_search_tree/perfect_tree.h"
 #include "common/binary_search_tree/utils/upper_bound.h"
 #include "common/stl/base.h"
 
@@ -12,7 +12,7 @@
 #include <unordered_set>
 
 using TTree =
-    bst::FixedTree<true, unsigned, bst::info::Sum<unsigned, bst::info::Size>>;
+    bst::PerfectTree<true, unsigned, bst::info::Sum<unsigned, bst::info::Size>>;
 using TNode = TTree::TNode;
 
 int main_median_updates__fixed_tree() {

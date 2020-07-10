@@ -12,12 +12,14 @@
 #include <vector>
 
 namespace bst {
+// Doesn't support add and delete operations.
 template <bool _use_parent, class TTData, class TTInfo = info::Size,
           class TTAction = action::None, class TTKey = int64_t>
-class FixedTree
-    : protected Tree<NodesManagerFixedSize<Node<TTData, TTInfo, TTAction, true,
-                                                _use_parent, false, TTKey>>,
-                     FixedTree<_use_parent, TTData, TTInfo, TTAction, TTKey>> {
+class PerfectTree
+    : protected Tree<
+          NodesManagerFixedSize<
+              Node<TTData, TTInfo, TTAction, true, _use_parent, false, TTKey>>,
+          PerfectTree<_use_parent, TTData, TTInfo, TTAction, TTKey>> {
  public:
   static const bool use_key = true;
   static const bool use_parent = _use_parent;
@@ -29,12 +31,12 @@ class FixedTree
   using TKey = TTKey;
   using TNode =
       Node<TData, TInfo, TAction, use_key, use_parent, use_height, TKey>;
-  using TSelf = FixedTree<use_parent, TData, TTInfo, TAction, TKey>;
+  using TSelf = PerfectTree<use_parent, TData, TTInfo, TAction, TKey>;
   using TTree = Tree<NodesManagerFixedSize<TNode>, TSelf>;
   friend class Tree<NodesManagerFixedSize<TNode>, TSelf>;
 
  public:
-  explicit FixedTree(size_t max_nodes) : TTree(max_nodes) {}
+  explicit PerfectTree(size_t max_nodes) : TTree(max_nodes) {}
 
   TNode* Build(const std::vector<TData>& data) { return TTree::Build(data); }
 
