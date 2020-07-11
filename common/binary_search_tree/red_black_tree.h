@@ -231,7 +231,10 @@ class RedBlackTree
     // Fix colors
     node_to_root_path.push_back(nullptr);
     size_t current_index = 2;
-    if (!node->info.black) return (parent ? root : child);
+    if (!node->info.black) {
+      node->info.black = true;
+      return (parent ? root : child);
+    }
     for (;;) {
       if (child && !child->info.black) {
         child->info.black = true;
@@ -331,7 +334,10 @@ class RedBlackTree
     info::UpdateNodeToRoot(parent);
 
     // Fix colors
-    if (!node->info.black) return (parent ? Root(parent) : child);
+    if (!node->info.black) {
+      node->info.black = true;
+      return (parent ? Root(parent) : child);
+    }
     for (;;) {
       if (child && !child->info.black) {
         child->info.black = true;
