@@ -14,7 +14,7 @@
             // "program": "${workspaceFolder}/debug/build/project_euler",
             "program": "${workspaceFolder}/debug/build/tester",
             "args": [
-                "minimum_spanning_tree"
+                "binary_search_tree"
                 // "minimum_spanning_tree"
                 // "subtrees_and_paths__lcte",
                 // "pen_testing"

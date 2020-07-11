@@ -5,6 +5,7 @@
 #include "common/binary_search_tree/scapegoat_tree.h"
 #include "common/binary_search_tree/splay_tree.h"
 #include "common/binary_search_tree/treap.h"
+#include "common/binary_search_tree/wavl_tree.h"
 #include "common/timer.h"
 
 #include <algorithm>
@@ -117,6 +118,11 @@ bool TesterBinarySearchTree::TestAllTrees() {
   TestAll<
       bst::Treap<true, true, TKey, bst::info::Size, bst::action::None, TKey>>(
       "treap_upt");
+  // TestAll<bst::AVLTree<false, TKey, bst::info::Size, bst::action::None,
+  // TKey>>(
+  //     "avltree_upf");
+  TestAll<bst::WAVLTree<true, TKey, bst::info::Size, bst::action::None, TKey>>(
+      "wavltree_upt");
 
   std::cout << "Testing full trees:" << std::endl;
   current_job = "full";
@@ -138,6 +144,11 @@ bool TesterBinarySearchTree::TestAllTrees() {
                      bst::action::AddEachSum<TKey>, TKey>>("treap_upf");
   TestAll<bst::Treap<true, true, TKey, bst::info::Sum<TKey, bst::info::Size>,
                      bst::action::AddEachSum<TKey>, TKey>>("treap_upt");
+  // TestAll<bst::WAVLTree<false, TKey, bst::info::Sum<TKey, bst::info::Size>,
+  //                       bst::action::AddEachSum<TKey>,
+  //                       TKey>>("wavltree_upf");
+  TestAll<bst::WAVLTree<true, TKey, bst::info::Sum<TKey, bst::info::Size>,
+                        bst::action::AddEachSum<TKey>, TKey>>("wavltree_upt");
 
   bool output = TestHash();
   if ((mode == time_test) && output) {
