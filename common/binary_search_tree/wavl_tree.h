@@ -63,6 +63,22 @@ class WAVLTree
   }
 
  protected:
+  static TNode* InsertRotate1(TNode* child, TNode* parent, TNode* gparent) {
+    --parent->info.rank;
+    Rotate<TNode, false, false>(child, parent, gparent);
+    return child;
+  }
+
+  static TNode* InsertRotate2(TNode* gchild, TNode* child, TNode* parent,
+                              TNode* gparent) {
+    --parent->info.rank;
+    --child->info.rank;
+    ++gchild->info.rank;
+    Rotate<TNode, false, false>(gchild, child, parent);
+    Rotate<TNode, false, false>(gchild, parent, gparent);
+    return gchild;
+  }
+
   static TNode* InsertByKeyIR(TNode* root, TNode* proot, TNode* node) {
     if (!root) return node;
     root->ApplyAction();
@@ -74,18 +90,11 @@ class WAVLTree
           ++root->info.rank;
         } else if (RankDiff(root->r, root->r->r) == 1) {
           assert(RankDiff(root->r, root->r->l) == 2);
-          new_root = root->r;
-          --root->info.rank;
-          Rotate<TNode, false, false>(new_root, root, proot);
+          new_root = InsertRotate1(root->r, root, proot);
         } else {
           assert(RankDiff(root->r, root->r->r) == 2);
           assert(RankDiff(root->r, root->r->l) == 1);
-          new_root = root->r->l;
-          --root->info.rank;
-          --root->r->info.rank;
-          ++new_root->info.rank;
-          Rotate<TNode, false, false>(new_root, root->r, root);
-          Rotate<TNode, false, false>(new_root, root, proot);
+          new_root = InsertRotate2(root->r->l, root->r, root, proot);
         }
       }
     } else {
@@ -95,18 +104,11 @@ class WAVLTree
           ++root->info.rank;
         } else if (RankDiff(root->l, root->l->l) == 1) {
           assert(RankDiff(root->l, root->l->r) == 2);
-          new_root = root->l;
-          --root->info.rank;
-          Rotate<TNode, false, false>(new_root, root, proot);
+          new_root = InsertRotate1(root->l, root, proot);
         } else {
           assert(RankDiff(root->l, root->l->l) == 2);
           assert(RankDiff(root->l, root->l->r) == 1);
-          new_root = root->l->r;
-          --root->info.rank;
-          --root->l->info.rank;
-          ++new_root->info.rank;
-          Rotate<TNode, false, false>(new_root, root->l, root);
-          Rotate<TNode, false, false>(new_root, root, proot);
+          new_root = InsertRotate2(root->l->r, root->l, root, proot);
         }
       }
     }
