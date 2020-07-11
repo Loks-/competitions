@@ -63,50 +63,49 @@ class WAVLTree
   }
 
  protected:
-  static TNode* InsertRotate1(TNode* child, TNode* parent, TNode* gparent) {
+  static TNode* InsertRotate1(TNode* child, TNode* parent) {
     --parent->info.rank;
-    Rotate<TNode, false, false>(child, parent, gparent);
+    Rotate<TNode, false, false>(child, parent, nullptr);
     return child;
   }
 
-  static TNode* InsertRotate2(TNode* gchild, TNode* child, TNode* parent,
-                              TNode* gparent) {
+  static TNode* InsertRotate2(TNode* gchild, TNode* child, TNode* parent) {
     assert(RankDiff(child, gchild) == 1);
     assert(RankDiff(child, Sibling(gchild, child)) == 2);
     --parent->info.rank;
     --child->info.rank;
     ++gchild->info.rank;
     Rotate<TNode, false, false>(gchild, child, parent);
-    Rotate<TNode, false, false>(gchild, parent, gparent);
+    Rotate<TNode, false, false>(gchild, parent, nullptr);
     return gchild;
   }
 
-  static TNode* InsertByKeyIR(TNode* root, TNode* proot, TNode* node) {
+  static TNode* InsertByKeyIR(TNode* root, TNode* node) {
     if (!root) return node;
     root->ApplyAction();
     TNode* new_root = root;
     if (root->key < node->key) {
-      root->SetR(InsertByKeyIR(root->r, root, node));
+      root->SetR(InsertByKeyIR(root->r, node));
       if (RankDiff(root, root->r) == 0) {
         if (RankDiff(root, root->l) == 1) {
           ++root->info.rank;
         } else if (RankDiff(root->r, root->r->r) == 1) {
           assert(RankDiff(root->r, root->r->l) == 2);
-          new_root = InsertRotate1(root->r, root, proot);
+          new_root = InsertRotate1(root->r, root);
         } else {
-          new_root = InsertRotate2(root->r->l, root->r, root, proot);
+          new_root = InsertRotate2(root->r->l, root->r, root);
         }
       }
     } else {
-      root->SetL(InsertByKeyIR(root->l, root, node));
+      root->SetL(InsertByKeyIR(root->l, node));
       if (RankDiff(root, root->l) == 0) {
         if (RankDiff(root, root->r) == 1) {
           ++root->info.rank;
         } else if (RankDiff(root->l, root->l->l) == 1) {
           assert(RankDiff(root->l, root->l->r) == 2);
-          new_root = InsertRotate1(root->l, root, proot);
+          new_root = InsertRotate1(root->l, root);
         } else {
-          new_root = InsertRotate2(root->l->r, root->l, root, proot);
+          new_root = InsertRotate2(root->l->r, root->l, root);
         }
       }
     }
@@ -115,11 +114,11 @@ class WAVLTree
   }
 
   static TNode* InsertByKeyI(TNode* root, TNode* node, TFakeFalse) {
-    return InsertByKeyIR(root, nullptr, node);
+    return InsertByKeyIR(root, node);
   }
 
   static TNode* InsertByKeyI(TNode* root, TNode* node, TFakeTrue) {
-    return InsertByKeyIR(root, nullptr, node);
+    return InsertByKeyIR(root, node);
   }
 
  public:
