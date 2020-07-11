@@ -78,6 +78,7 @@ class TesterBinarySearchTree {
 
   template <class TNode>
   void VerifyParentLinksI(TNode* root, TFakeTrue) {
+    if (!root) return;
     std::stack<TNode*> s;
     for (s.push(root); !s.empty();) {
       root = s.top();
@@ -221,6 +222,35 @@ class TesterBinarySearchTree {
   }
 
   template <class TTree>
+  typename TTree::TNode* TestInsertDelete(TTree& tree, TBSTKeysType type) {
+    if (type > 2) return nullptr;
+    const std::vector<TKey>& vkeys = GetKeys(type);
+    size_t s = vkeys.size() / 3;
+    Timer t;
+    typename TTree::TNode* root = 0;
+    size_t h = 0;
+    for (size_t i = 0; i < s; ++i) {
+      AddAction(root);
+      VerifyParentLinksLazy(root);
+      root = tree.InsertNewNode(root, vkeys[2 * i], vkeys[2 * i]);
+      root = tree.InsertNewNode(root, vkeys[2 * i + 1], vkeys[2 * i + 1]);
+      root = tree.RemoveAndReleaseByKey(root, vkeys[i]);
+      h = HashCombine(h, GetInfoValue(root));
+    }
+    for (size_t i = 0; i < s; ++i) {
+      AddAction(root);
+      VerifyParentLinksLazy(root);
+      root = tree.InsertNewNode(root, vkeys[2 * s + i], vkeys[2 * s + i]);
+      root = tree.RemoveAndReleaseByKey(root, vkeys[s + 2 * i]);
+      root = tree.RemoveAndReleaseByKey(root, vkeys[s + 2 * i + 1]);
+      h = HashCombine(h, GetInfoValue(root));
+    }
+    AddResult("InsDel", type, h, t.GetMilliseconds());
+    VerifyParentLinks(root);
+    return root;
+  }
+
+  template <class TTree>
   typename TTree::TNode* TestDeleteByNode(TTree& tree,
                                           typename TTree::TNode* root,
                                           TBSTKeysType type) {
@@ -245,6 +275,8 @@ class TesterBinarySearchTree {
       root = TestFindByKey1<TTree>(tree, root, ktype);
       root = TestDeleteByKey<TTree>(tree, root, ktype);
       // tree.ReleaseTree(root); root = 0;
+      Assert(!root);
+      root = TestInsertDelete<TTree>(tree, ktype);
       Assert(!root);
       tree.ResetNodes();
     }
