@@ -84,8 +84,7 @@ class Tree : public TTNodesManager {
   static TNode* InsertByKey(TNode* root, TNode* node) {
     static_assert(use_key, "use_key should be true");
     assert(node);
-    if (!root) return node;
-    return TMe::InsertByKeyI(root, node, TFakeBool<use_parent>());
+    return root ? TMe::InsertByKeyI(root, node, TFakeBool<use_parent>()) : node;
   }
 
   TNode* InsertNewNode(TNode* root, const TData& data, const TKey& key) {
