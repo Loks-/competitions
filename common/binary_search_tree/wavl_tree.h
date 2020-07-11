@@ -213,58 +213,54 @@ class WAVLTree
       parent = parent->p;
     }
 
-    for (; RankDiff(parent, child) > 2;) {
+    for (; RankDiff(parent, child) > 2; parent = (child = parent)->p) {
       assert(RankDiff(parent, child) == 3);
       TNode* sibling = Sibling(child, parent);
       if (RankDiff(parent, sibling) == 2) {
         --parent->info.rank;
-      } else {
-        assert((RankDiff(parent, sibling) == 1));
-        if ((RankDiff(sibling, sibling->l) == 2) &&
-            (RankDiff(sibling, sibling->r) == 2)) {
-          --sibling->info.rank;
+        continue;
+      }
+      assert((RankDiff(parent, sibling) == 1));
+      if ((RankDiff(sibling, sibling->l) == 2) &&
+          (RankDiff(sibling, sibling->r) == 2)) {
+        --sibling->info.rank;
+        --parent->info.rank;
+        continue;
+      } else if (child == parent->l) {
+        if (RankDiff(sibling, sibling->r) == 1) {
           --parent->info.rank;
-        } else if (child == parent->l) {
-          if (RankDiff(sibling, sibling->r) == 1) {
-            --parent->info.rank;
-            ++sibling->info.rank;
-            RotateUp<TNode, true, true>(sibling);
-            if (!parent->l && !parent->r) {
-              parent->info.rank = 0;
-            }
-            break;
-          } else {
-            assert(sibling->l);
-            parent->info.rank -= 2;
-            --sibling->info.rank;
-            sibling->l->info.rank += 2;
-            RotateUp<TNode, false, true>(sibling->l);
-            RotateUp<TNode, true, false>(parent->r);
-            break;
+          ++sibling->info.rank;
+          RotateUp<TNode, true, true>(sibling);
+          if (!parent->l && !parent->r) {
+            parent->info.rank = 0;
           }
         } else {
-          assert(child == parent->r);
-          if (RankDiff(sibling, sibling->l) == 1) {
-            --parent->info.rank;
-            ++sibling->info.rank;
-            RotateUp<TNode, true, true>(sibling);
-            if (!parent->l && !parent->r) {
-              parent->info.rank = 0;
-            }
-            break;
-          } else {
-            assert(sibling->r);
-            parent->info.rank -= 2;
-            --sibling->info.rank;
-            sibling->r->info.rank += 2;
-            RotateUp<TNode, false, true>(sibling->r);
-            RotateUp<TNode, true, false>(parent->l);
-            break;
+          assert(sibling->l);
+          parent->info.rank -= 2;
+          --sibling->info.rank;
+          sibling->l->info.rank += 2;
+          RotateUp<TNode, false, true>(sibling->l);
+          RotateUp<TNode, true, false>(parent->r);
+        }
+      } else {
+        assert(child == parent->r);
+        if (RankDiff(sibling, sibling->l) == 1) {
+          --parent->info.rank;
+          ++sibling->info.rank;
+          RotateUp<TNode, true, true>(sibling);
+          if (!parent->l && !parent->r) {
+            parent->info.rank = 0;
           }
+        } else {
+          assert(sibling->r);
+          parent->info.rank -= 2;
+          --sibling->info.rank;
+          sibling->r->info.rank += 2;
+          RotateUp<TNode, false, true>(sibling->r);
+          RotateUp<TNode, true, false>(parent->l);
         }
       }
-      child = parent;
-      parent = parent->p;
+      break;
     }
     return parent ? Root(parent) : child;
   }
