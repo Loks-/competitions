@@ -1,9 +1,9 @@
 #pragma once
 
 #include "common/base.h"
-#include "common/binary_search_tree/action/apply_action.h"
+#include "common/binary_search_tree/action/apply_root_to_node.h"
 #include "common/binary_search_tree/base/swap.h"
-#include "common/binary_search_tree/info/update_info.h"
+#include "common/binary_search_tree/info/update_node_to_root.h"
 
 namespace bst {
 template <class TNode, bool update_info, bool apply_action>
