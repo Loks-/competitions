@@ -71,6 +71,8 @@ class WAVLTree
 
   static TNode* InsertRotate2(TNode* gchild, TNode* child, TNode* parent,
                               TNode* gparent) {
+    assert(RankDiff(child, gchild) == 1);
+    assert(RankDiff(child, Sibling(gchild, child)) == 2);
     --parent->info.rank;
     --child->info.rank;
     ++gchild->info.rank;
@@ -92,8 +94,6 @@ class WAVLTree
           assert(RankDiff(root->r, root->r->l) == 2);
           new_root = InsertRotate1(root->r, root, proot);
         } else {
-          assert(RankDiff(root->r, root->r->r) == 2);
-          assert(RankDiff(root->r, root->r->l) == 1);
           new_root = InsertRotate2(root->r->l, root->r, root, proot);
         }
       }
@@ -106,8 +106,6 @@ class WAVLTree
           assert(RankDiff(root->l, root->l->r) == 2);
           new_root = InsertRotate1(root->l, root, proot);
         } else {
-          assert(RankDiff(root->l, root->l->l) == 2);
-          assert(RankDiff(root->l, root->l->r) == 1);
           new_root = InsertRotate2(root->l->r, root->l, root, proot);
         }
       }
