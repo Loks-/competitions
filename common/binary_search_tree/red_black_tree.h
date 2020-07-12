@@ -298,8 +298,7 @@ class RedBlackTree
 
   static TNode* RemoveByKeyI(TNode* root, const TKey& key, TNode*& removed_node,
                              TFakeTrue) {
-    removed_node = TTree::FindByKey(root, key);
-    return (removed_node ? RemoveByNodeI(removed_node) : root);
+    return TTree::RemoveByKeyI(root, key, removed_node, TFakeTrue{});
   }
 
   static TNode* RemoveByNodeI(TNode* node) {
