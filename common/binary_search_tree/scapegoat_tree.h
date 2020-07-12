@@ -1,7 +1,6 @@
 #pragma once
 
 #include "common/base.h"
-#include "common/binary_search_tree/action/apply_root_to_node.h"
 #include "common/binary_search_tree/action/none.h"
 #include "common/binary_search_tree/base/swap.h"
 #include "common/binary_search_tree/info/size.h"

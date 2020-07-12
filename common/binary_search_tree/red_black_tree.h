@@ -1,7 +1,6 @@
 #pragma once
 
 #include "common/base.h"
-#include "common/binary_search_tree/action/apply_root_to_node.h"
 #include "common/binary_search_tree/action/none.h"
 #include "common/binary_search_tree/base/insert_by_key.h"
 #include "common/binary_search_tree/base/rotate.h"
@@ -300,7 +299,7 @@ class RedBlackTree
   static TNode* RemoveByKeyI(TNode* root, const TKey& key, TNode*& removed_node,
                              TFakeTrue) {
     removed_node = TTree::FindByKey(root, key);
-    return (removed_node ? TTree::RemoveByNode(removed_node) : root);
+    return (removed_node ? RemoveByNodeI(removed_node) : root);
   }
 
   static TNode* RemoveByNodeI(TNode* node) {
