@@ -184,15 +184,14 @@ class Treap
         root->SetR(InsertByKey(root->r, node));
       else
         root->SetL(InsertByKey(root->l, node));
-      root->UpdateInfo();
-      return root;
     } else {
       SplitByKeyI(root, node->key, node->l, node->r);
       if (node->l) node->l->SetP(node);
       if (node->r) node->r->SetP(node);
-      node->UpdateInfo();
-      return node;
+      root = node;
     }
+    root->UpdateInfo();
+    return root;
   }
 
   static TNode* RemoveByKey(TNode* root, const TKey& key,
