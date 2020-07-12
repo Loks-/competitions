@@ -153,13 +153,13 @@ class Tree : public TTNodesManager {
   static TNode* RemoveByKeyI(TNode* root, const TKey& key, TNode*& removed_node,
                              TFakeTrue) {
     removed_node = TMe::FindByKey(root, key);
-    return (removed_node ? TMe::RemoveByNode(removed_node) : root);
+    return (removed_node ? TMe::RemoveByNodeI(removed_node) : root);
   }
 
   static TNode* RemoveByOrderI(TNode* root, size_t order_index,
                                TNode*& removed_node, TFakeTrue) {
     removed_node = TMe::FindByOrder(root, order_index);
-    return (removed_node ? TMe::RemoveByNode(removed_node) : root);
+    return (removed_node ? TMe::RemoveByNodeI(removed_node) : root);
   }
 };
 }  // namespace bst
