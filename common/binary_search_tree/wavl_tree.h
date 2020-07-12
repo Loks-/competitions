@@ -177,6 +177,26 @@ class WAVLTree
   //     return FixBalance<true>(root);
   //   }
 
+ protected:
+  static void RemoveRotate1(TNode* child, TNode* parent) {
+    --parent->info.rank;
+    ++child->info.rank;
+    Rotate<TNode, true, true>(child, parent, parent->p);
+    if (!parent->l && !parent->r) {
+      parent->info.rank = 0;
+    }
+  }
+
+  static void RemoveRotate2(TNode* gchild, TNode* child, TNode* parent) {
+    assert(gchild);
+    parent->info.rank -= 2;
+    child->info.rank -= 1;
+    gchild->info.rank += 2;
+    Rotate<TNode, false, true>(gchild, child, parent);
+    Rotate<TNode, true, false>(gchild, parent, parent->p);
+  }
+
+ public:
   static TNode* RemoveByNode(TNode* node) {
     static_assert(use_parent, "use_parent should be true");
     assert(node);
@@ -228,41 +248,20 @@ class WAVLTree
         continue;
       } else if (child == parent->l) {
         if (RankDiff(sibling, sibling->r) == 1) {
-          --parent->info.rank;
-          ++sibling->info.rank;
-          RotateUp<TNode, true, true>(sibling);
-          if (!parent->l && !parent->r) {
-            parent->info.rank = 0;
-          }
+          RemoveRotate1(sibling, parent);
         } else {
-          assert(sibling->l);
-          parent->info.rank -= 2;
-          --sibling->info.rank;
-          sibling->l->info.rank += 2;
-          RotateUp<TNode, false, true>(sibling->l);
-          RotateUp<TNode, true, false>(parent->r);
+          RemoveRotate2(sibling->l, sibling, parent);
         }
       } else {
-        assert(child == parent->r);
         if (RankDiff(sibling, sibling->l) == 1) {
-          --parent->info.rank;
-          ++sibling->info.rank;
-          RotateUp<TNode, true, true>(sibling);
-          if (!parent->l && !parent->r) {
-            parent->info.rank = 0;
-          }
+          RemoveRotate1(sibling, parent);
         } else {
-          assert(sibling->r);
-          parent->info.rank -= 2;
-          --sibling->info.rank;
-          sibling->r->info.rank += 2;
-          RotateUp<TNode, false, true>(sibling->r);
-          RotateUp<TNode, true, false>(parent->l);
+          RemoveRotate2(sibling->r, sibling, parent);
         }
       }
       break;
     }
     return parent ? Root(parent) : child;
   }
-};
+};  // namespace bst
 }  // namespace bst
