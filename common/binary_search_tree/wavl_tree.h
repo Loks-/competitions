@@ -108,19 +108,20 @@ class WAVLTree
     return new_root;
   }
 
-  static TNode* InsertByKeyI(TNode* root, TNode* node, TFakeFalse) {
-    return InsertByKeyIR(root, node);
-  }
+  //   static TNode* InsertByKeyI(TNode* root, TNode* node, TFakeFalse) {
+  //     return InsertByKeyIR(root, node);
+  //   }
 
-  static TNode* InsertByKeyI(TNode* root, TNode* node, TFakeTrue) {
-    return InsertByKeyIR(root, node);
-  }
+  //   static TNode* InsertByKeyI(TNode* root, TNode* node, TFakeTrue) {
+  //     return InsertByKeyIR(root, node);
+  //   }
 
  public:
   static TNode* InsertByKey(TNode* root, TNode* node) {
     assert(node);
     node->info.rank = 0;
-    return root ? InsertByKeyI(root, node, TFakeBool<use_parent>()) : node;
+    // return root ? InsertByKeyI(root, node, TFakeBool<use_parent>()) : node;
+    return root ? InsertByKeyIR(root, node) : node;
   }
 
  protected:
@@ -189,6 +190,50 @@ class WAVLTree
     gchild->info.rank += 2;
     Rotate<TNode, false, true>(gchild, child, parent);
     Rotate<TNode, true, false>(gchild, parent, parent->p);
+  }
+
+  //   static TNode* RemoveByKeyIR(TNode* root, const TKey& key,
+  //                               TNode*& removed_node) {
+  //     if (!root) return root;
+  //     root->ApplyAction();
+  //     if (root->key < key) {
+  //       root->SetR(child = RemoveByKey(root->r, key, removed_node));
+  //       TNode* child = root->r;
+  //     } else if (root->key > key) {
+  //       root->SetL(child = RemoveByKey(root->l, key, removed_node));
+  //     } else {
+  //       //   removed_node = root;
+  //       //   if (root->l && root->r) {
+  //       //     TNode* child = root->l;
+  //       //     child->ApplyAction();
+  //       //     if (child->r) {
+  //       //       TNode* temp = SwapAndRemove(child, root);
+  //       //       child = root->l;
+  //       //       root->ResetLinksAndUpdateInfo();
+  //       //       child->SetL(temp);
+  //       //       return FixBalance<true>(child);
+  //       //     } else {
+  //       //       child->SetR(root->r);
+  //       //       root->ResetLinksAndUpdateInfo();
+  //       //       return FixBalance<true>(child);
+  //       //     }
+  //       //   } else {
+  //       //     TNode* child = root->l ? root->l : root->r;
+  //       //     root->ResetLinksAndUpdateInfo();
+  //       //     return child;
+  //       //   }
+  //     }
+  //     return FixBalance<true>(root);
+  //   }
+
+  static TNode* RemoveByKeyI(TNode* root, const TKey& key, TNode*& removed_node,
+                             TFakeFalse) {
+    return TTree::RemoveByKeyIR(root, key);
+  }
+
+  static TNode* RemoveByKeyI(TNode* root, const TKey& key, TNode*& removed_node,
+                             TFakeTrue) {
+    return TTree::RemoveByKeyI(root, key, removed_node, TFakeTrue{});
   }
 
   static TNode* RemoveByNodeI(TNode* node) {
