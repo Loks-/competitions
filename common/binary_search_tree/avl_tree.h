@@ -124,11 +124,8 @@ class AVLTree
     return FixBalance<true>(root);
   }
 
-  static TNode* RemoveByNode(TNode* node) {
-    static_assert(use_parent, "use_parent should be true");
-    assert(node);
-    action::ApplyRootToNode(node);
-
+ protected:
+  static TNode* RemoveByNodeI(TNode* node) {
     TNode *parent = node->p, *child;
     if (node->l && node->r) {
       child = node->l;

@@ -31,6 +31,7 @@ class SplayTree
       Node<TData, TInfo, TAction, use_key, use_parent, use_height, TKey>;
   using TSelf = SplayTree<use_key, TData, TInfo, TAction, TKey, TTNodesManager>;
   using TTree = Tree<TTNodesManager<TNode>, TSelf>;
+  friend class Tree<TTNodesManager<TNode>, TSelf>;
 
  public:
   explicit SplayTree(size_t max_nodes) : TTree(max_nodes) {}
@@ -191,9 +192,8 @@ class SplayTree
     return node;
   }
 
-  static TNode* RemoveByNode(TNode* node) {
-    assert(node);
-    action::ApplyRootToNode(node);
+ protected:
+  static TNode* RemoveByNodeI(TNode* node) {
     TNode* l = node->l;
     if (l) l->SetP(nullptr);
     TNode* r = node->r;

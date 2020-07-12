@@ -300,15 +300,10 @@ class RedBlackTree
   static TNode* RemoveByKeyI(TNode* root, const TKey& key, TNode*& removed_node,
                              TFakeTrue) {
     removed_node = TTree::FindByKey(root, key);
-    return (removed_node ? RemoveByNode(removed_node) : root);
+    return (removed_node ? TTree::RemoveByNode(removed_node) : root);
   }
 
- public:
-  static TNode* RemoveByNode(TNode* node) {
-    static_assert(use_parent, "use_parent should be true");
-    assert(node);
-    action::ApplyRootToNode(node);
-
+  static TNode* RemoveByNodeI(TNode* node) {
     // Optional swap
     if (node->l && node->r) {
       TNode* temp = node->l;

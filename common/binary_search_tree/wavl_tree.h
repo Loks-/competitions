@@ -192,12 +192,7 @@ class WAVLTree
     Rotate<TNode, true, false>(gchild, parent, parent->p);
   }
 
- public:
-  static TNode* RemoveByNode(TNode* node) {
-    static_assert(use_parent, "use_parent should be true");
-    assert(node);
-    action::ApplyRootToNode(node);
-
+  static TNode* RemoveByNodeI(TNode* node) {
     // Optional swap
     if (node->l && node->r) {
       TNode* temp = node->l;

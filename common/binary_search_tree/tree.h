@@ -1,6 +1,7 @@
 #pragma once
 
 #include "common/base.h"
+#include "common/binary_search_tree/action/apply_root_to_node.h"
 #include "common/binary_search_tree/base/find_by_key.h"
 #include "common/binary_search_tree/base/find_by_order.h"
 #include "common/template.h"
@@ -100,6 +101,13 @@ class Tree : public TTNodesManager {
                               TNode*& removed_node) {
     return TMe::RemoveByOrderI(root, order_index, removed_node,
                                TFakeBool<use_parent>());
+  }
+
+  static TNode* RemoveByNode(TNode* node) {
+    static_assert(use_parent, "use_parent should be true");
+    assert(node);
+    action::ApplyRootToNode(node);
+    return TMe::RemoveByNodeI(node);
   }
 
   TNode* RemoveAndReleaseByNode(TNode* node) {
