@@ -11,6 +11,7 @@ class Min : public TInfo {
   using TSelf = Min<TMinType, TInfo>;
   static const bool is_none = false;
   static const bool use_data = true;
+  static const bool support_remove = false;
 
   TMinType min;
 
@@ -20,6 +21,12 @@ class Min : public TInfo {
     min = node->data;
     if (node->l) min = std::min(min, node->l->info.min);
     if (node->r) min = std::min(min, node->r->info.min);
+  }
+
+  template <class TNode>
+  void Insert(const TNode* node) {
+    TBase::Insert(node);
+    min = std::min(min, node->info.min);
   }
 };
 }  // namespace info

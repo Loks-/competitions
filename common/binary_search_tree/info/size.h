@@ -18,6 +18,16 @@ class Size : public None {
     size = 1 + (node->l ? node->l->info.size : 0) +
            (node->r ? node->r->info.size : 0);
   }
+
+  template <class TNode>
+  void Insert(const TNode* node) {
+    size += node->info.size;
+  }
+
+  template <class TNode>
+  void Remove(const TNode* node) {
+    size -= node->info.size;
+  }
 };
 }  // namespace info
 }  // namespace bst
