@@ -47,22 +47,18 @@ class WAVLTree
   static int RankDiff(TNode* p, TNode* c) { return p ? Rank(p) - Rank(c) : 1; }
 
  protected:
-  static void BuildTreeUpdateRankR(TNode* root) {
-    if (root) {
-      BuildTreeUpdateRankR(root->l);
-      BuildTreeUpdateRankR(root->r);
-      root->info.rank = std::max(Rank(root->l), Rank(root->r)) + 1;
-    }
-  }
-
- public:
-  static TNode* BuildTree(const std::vector<TNode*>& nodes) {
-    TNode* root = TTree::BuildTree(nodes);
-    BuildTreeUpdateRankR(root);
+  static TNode* BuildTreeI(const std::vector<TNode*>& vnodes, size_t first,
+                           size_t last) {
+    if (first >= last) return nullptr;
+    size_t m = (first + last) / 2;
+    TNode* root = vnodes[m];
+    root->SetL(BuildTreeI(vnodes, first, m));
+    root->SetR(BuildTreeI(vnodes, m + 1, last));
+    root->UpdateInfo();
+    root->info.rank = std::max(Rank(root->l), Rank(root->r)) + 1;
     return root;
   }
 
- protected:
   static TNode* InsertRotate1(TNode* child, TNode* parent) {
     --parent->info.rank;
     Rotate<TNode, false, false>(child, parent, nullptr);
