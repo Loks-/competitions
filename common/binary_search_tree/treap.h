@@ -75,18 +75,12 @@ class Treap
   static TNode* JoinI(TNode* l, TNode* r) {
     if (l->height > r->height) {
       l->ApplyAction();
-      if (!l->r)
-        l->SetR(r);
-      else
-        l->SetR(JoinI(l->r, r));
+      l->SetR(l->r ? JoinI(l->r, r) : r);
       l->UpdateInfo();
       return l;
     } else {
       r->ApplyAction();
-      if (!r->l)
-        r->SetL(l);
-      else
-        r->SetL(JoinI(l, r->l));
+      r->SetL(r->l ? JoinI(l, r->l) : l);
       r->UpdateInfo();
       return r;
     }
@@ -94,9 +88,7 @@ class Treap
 
  public:
   static TNode* Join(TNode* l, TNode* r) {
-    if (!l) return r;
-    if (!r) return l;
-    return JoinI(l, r);
+    return !l ? r : !r ? l : JoinI(l, r);
   }
 
  protected:
