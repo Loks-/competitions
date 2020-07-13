@@ -7,44 +7,24 @@
 
 namespace bst {
 namespace base {
-template <bool use_height, class THeight>
-class TNodeProxyHeight {};
-
-template <class THeight>
-class TNodeProxyHeight<false, THeight> : public BaseNode {};
-
-template <class THeight>
-class TNodeProxyHeight<true, THeight> : public BaseNode {
- public:
-  THeight height;
-
-  TNodeProxyHeight() {
-    thread_local std::minstd_rand random_engine;
-    height = random_engine();
-  }
-};
-
-template <bool use_key, bool use_height, class TKey, class Height>
+template <bool use_key, class TKey>
 class TNodeProxyKey {};
 
-template <bool use_height, class TKey, class THeight>
-class TNodeProxyKey<false, use_height, TKey, THeight>
-    : public TNodeProxyHeight<use_height, THeight> {};
+template <class TKey>
+class TNodeProxyKey<false, TKey> : public BaseNode {};
 
-template <bool use_height, class TKey, class THeight>
-class TNodeProxyKey<true, use_height, TKey, THeight>
-    : public TNodeProxyHeight<use_height, THeight> {
+template <class TKey>
+class TNodeProxyKey<true, TKey> : public BaseNode {
  public:
   TKey key;
 };
 
-template <bool use_key, bool use_parent, bool use_height, class TKey,
-          class THeight, class TSelf>
+template <bool use_key, bool use_parent, class TKey, class TSelf>
 class TNodeProxyParent {};
 
-template <bool use_key, bool use_height, class TKey, class THeight, class TSelf>
-class TNodeProxyParent<use_key, false, use_height, TKey, THeight, TSelf>
-    : public TNodeProxyKey<use_key, use_height, TKey, THeight> {
+template <bool use_key, class TKey, class TSelf>
+class TNodeProxyParent<use_key, false, TKey, TSelf>
+    : public TNodeProxyKey<use_key, TKey> {
  public:
   TSelf *l = nullptr, *r = nullptr;
 
@@ -54,9 +34,9 @@ class TNodeProxyParent<use_key, false, use_height, TKey, THeight, TSelf>
   void ResetLinks() { l = r = nullptr; }
 };
 
-template <bool use_key, bool use_height, class TKey, class THeight, class TSelf>
-class TNodeProxyParent<use_key, true, use_height, TKey, THeight, TSelf>
-    : public TNodeProxyKey<use_key, use_height, TKey, THeight> {
+template <bool use_key, class TKey, class TSelf>
+class TNodeProxyParent<use_key, true, TKey, TSelf>
+    : public TNodeProxyKey<use_key, TKey> {
  public:
   TSelf *l = nullptr, *r = nullptr, *p = nullptr;
 
@@ -75,17 +55,13 @@ class TNodeProxyParent<use_key, true, use_height, TKey, THeight, TSelf>
 };
 
 template <class TTData, class TTInfo, class TTAction, bool _use_key,
-          bool _use_parent = true, bool _use_height = false,
-          class TTKey = int64_t, class TTHeight = unsigned>
-class Node
-    : public TNodeProxyParent<_use_key, _use_parent, _use_height, TTKey,
-                              TTHeight,
-                              Node<TTData, TTInfo, TTAction, _use_key,
-                                   _use_parent, _use_height, TTKey, TTHeight>> {
+          bool _use_parent = true, class TTKey = int64_t>
+class Node : public TNodeProxyParent<
+                 _use_key, _use_parent, TTKey,
+                 Node<TTData, TTInfo, TTAction, _use_key, _use_parent, TTKey>> {
  public:
   static const bool use_key = _use_key;
   static const bool use_parent = _use_parent;
-  static const bool use_height = _use_height;
   static const bool support_insert = false;
   static const bool support_remove = false;
 
@@ -93,11 +69,8 @@ class Node
   using TInfo = TTInfo;
   using TAction = TTAction;
   using TKey = TTKey;
-  using THeight = TTHeight;
-  using TSelf = Node<TData, TInfo, TAction, use_key, use_parent, use_height,
-                     TKey, THeight>;
-  using TProxyParent =
-      TNodeProxyParent<use_key, use_parent, use_height, TKey, THeight, TSelf>;
+  using TSelf = Node<TData, TInfo, TAction, use_key, use_parent, TKey>;
+  using TProxyParent = TNodeProxyParent<use_key, use_parent, TKey, TSelf>;
 
   TData data;
   TInfo info;

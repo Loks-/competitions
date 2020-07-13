@@ -16,10 +16,10 @@ template <bool use_key, class TData, class TInfo = info::Size,
 class SplayTree
     : public base::Tree<
           TTNodesManager<
-              base::Node<TData, TInfo, TAction, use_key, true, false, TKey>>,
+              base::Node<TData, TInfo, TAction, use_key, true, TKey>>,
           SplayTree<use_key, TData, TInfo, TAction, TKey, TTNodesManager>> {
  public:
-  using TNode = base::Node<TData, TInfo, TAction, use_key, true, false, TKey>;
+  using TNode = base::Node<TData, TInfo, TAction, use_key, true, TKey>;
   using TSelf = SplayTree<use_key, TData, TInfo, TAction, TKey, TTNodesManager>;
   using TTree = base::Tree<TTNodesManager<TNode>, TSelf>;
   friend class base::Tree<TTNodesManager<TNode>, TSelf>;
