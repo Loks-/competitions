@@ -26,8 +26,8 @@ class Tree : public TTNodesManager {
   static const bool use_parent = TNode::use_parent;
   static const bool use_height = TNode::use_height;
   static const bool support_insert = true;
-  static const bool support_delete = true;
-  static const bool support_delete_by_node = use_parent;
+  static const bool support_remove = true;
+  static const bool support_remove_by_node = use_parent && TMe::support_remove;
 
  public:
   explicit Tree(size_t max_nodes) : TNodesManager(max_nodes) {}
@@ -89,6 +89,7 @@ class Tree : public TTNodesManager {
   }
 
   static TNode* InsertByKey(TNode* root, TNode* node) {
+    static_assert(TMe::support_insert, "Insert should be supported");
     static_assert(use_key, "use_key should be true");
     assert(node);
     return root ? TMe::InsertByKeyI(root, node, TFakeBool<use_parent>()) : node;
@@ -100,16 +101,20 @@ class Tree : public TTNodesManager {
 
   static TNode* RemoveByKey(TNode* root, const TKey& key,
                             TNode*& removed_node) {
+    static_assert(TMe::support_remove, "Remove should be supported");
     return TMe::RemoveByKeyI(root, key, removed_node, TFakeBool<use_parent>());
   }
 
   static TNode* RemoveByOrder(TNode* root, size_t order_index,
                               TNode*& removed_node) {
+    static_assert(TMe::support_remove, "Remove should be supported");
     return TMe::RemoveByOrderI(root, order_index, removed_node,
                                TFakeBool<use_parent>());
   }
 
   static TNode* RemoveByNode(TNode* node) {
+    static_assert(TMe::support_remove_by_node,
+                  "Remove by node should be supported");
     static_assert(use_parent, "use_parent should be true");
     assert(node);
     action::ApplyRootToNode(node);

@@ -13,35 +13,22 @@
 
 namespace bst {
 // Doesn't support add and delete operations.
-template <bool _use_parent, class TTData, class TTInfo = info::Size,
-          class TTAction = action::None, class TTKey = int64_t>
+template <bool use_parent, class TData, class TInfo = info::Size,
+          class TAction = action::None, class TKey = int64_t>
 class PerfectTree
-    : protected Tree<
-          NodesManagerFixedSize<
-              Node<TTData, TTInfo, TTAction, true, _use_parent, false, TTKey>>,
-          PerfectTree<_use_parent, TTData, TTInfo, TTAction, TTKey>> {
+    : public Tree<NodesManagerFixedSize<Node<TData, TInfo, TAction, true,
+                                             use_parent, false, TKey>>,
+                  PerfectTree<use_parent, TData, TInfo, TAction, TKey>> {
  public:
-  static const bool use_key = true;
-  static const bool use_parent = _use_parent;
-  static const bool use_height = false;
+  static const bool support_insert = false;
+  static const bool support_remove = false;
 
-  using TData = TTData;
-  using TInfo = TTInfo;
-  using TAction = TTAction;
-  using TKey = TTKey;
-  using TNode =
-      Node<TData, TInfo, TAction, use_key, use_parent, use_height, TKey>;
-  using TSelf = PerfectTree<use_parent, TData, TTInfo, TAction, TKey>;
+  using TNode = Node<TData, TInfo, TAction, true, use_parent, false, TKey>;
+  using TSelf = PerfectTree<use_parent, TData, TInfo, TAction, TKey>;
   using TTree = Tree<NodesManagerFixedSize<TNode>, TSelf>;
   friend class Tree<NodesManagerFixedSize<TNode>, TSelf>;
 
  public:
   explicit PerfectTree(size_t max_nodes) : TTree(max_nodes) {}
-
-  TNode* Build(const std::vector<TData>& data) { return TTree::Build(data); }
-
-  TNode* Build(const std::vector<TData>& data, const std::vector<TKey>& keys) {
-    return TTree::Build(data, keys);
-  }
 };
 }  // namespace bst

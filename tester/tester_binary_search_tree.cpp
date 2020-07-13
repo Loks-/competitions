@@ -1,6 +1,7 @@
 #include "tester/tester_binary_search_tree.h"
 
 #include "common/binary_search_tree/avl_tree.h"
+#include "common/binary_search_tree/perfect_tree.h"
 #include "common/binary_search_tree/red_black_tree.h"
 #include "common/binary_search_tree/scapegoat_tree.h"
 #include "common/binary_search_tree/splay_tree.h"
@@ -100,6 +101,12 @@ bool TesterBinarySearchTree::TestAllTrees() {
   TestAll<bst::AVLTree<true, TKey, bst::info::Size, bst::action::None, TKey>>(
       "avltree_upt");
   TestAll<
+      bst::PerfectTree<false, TKey, bst::info::Size, bst::action::None, TKey>>(
+      "perfect_upf");
+  TestAll<
+      bst::PerfectTree<true, TKey, bst::info::Size, bst::action::None, TKey>>(
+      "perfect_upt");
+  TestAll<
       bst::RedBlackTree<false, TKey, bst::info::Size, bst::action::None, TKey>>(
       "rbtree_upf");
   TestAll<
@@ -160,7 +167,7 @@ bool TesterBinarySearchTree::TestAllTrees() {
 
 bool TestBinarySearchTree(bool time_test) {
   Timer t;
-  TesterBinarySearchTree tbst(time_test ? 10000000 : 1000,
+  TesterBinarySearchTree tbst(time_test ? 1000000 : 1000,
                               time_test ? TesterBinarySearchTree::time_test
                                         : TesterBinarySearchTree::hash_test);
   bool result = tbst.TestAllTrees();
