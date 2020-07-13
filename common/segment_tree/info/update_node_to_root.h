@@ -1,7 +1,7 @@
 #pragma once
 
 #include "common/base.h"
-#include "common/binary_search_tree/info/update_node_to_root.h"
+#include "common/binary_search_tree/info/helpers/update_node_to_root.h"
 
 namespace st {
 namespace info {

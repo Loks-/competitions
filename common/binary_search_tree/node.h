@@ -108,6 +108,22 @@ class Node
 
   void ClearAction() { action.Clear(); }
   void UpdateInfo() { info.Update(this); }
+  void InsertInfo(TSelf* node) { info.Insert(node); }
+  void RemoveInfo(TSelf* node) { info.Remove(node); }
+
+  void InsertOrUpdateInfo(TSelf* node) {
+    if (support_insert)
+      InsertInfo(node);
+    else
+      UpdateInfo();
+  }
+
+  void RemoveOrUpdateInfo(TSelf* node) {
+    if (support_remove)
+      RemoveInfo(node);
+    else
+      UpdateInfo();
+  }
 
   template <class TActionValue>
   void AddAction(const TActionValue& value) {
