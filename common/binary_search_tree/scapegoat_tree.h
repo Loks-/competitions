@@ -15,27 +15,19 @@ namespace bst {
 // In this implementation delete operation is different from wiki Scapegoat
 // tree. It removes node from tree (similar to other trees), not just mark for
 // future deletion.
-template <bool _use_parent, class TTData, class TTInfo = info::Size,
-          class TTAction = action::None, class TTKey = int64_t,
+template <bool use_parent, class TData, class TInfo = info::Size,
+          class TAction = action::None, class TKey = int64_t,
           template <class> class TTNodesManager = NodesManagerFixedSize>
 class ScapegoatTree
-    : public Tree<TTNodesManager<Node<TTData, TTInfo, TTAction, true,
-                                      _use_parent, false, TTKey>>,
-                  ScapegoatTree<_use_parent, TTData, TTInfo, TTAction, TTKey,
+    : public Tree<TTNodesManager<Node<TData, TInfo, TAction, true, use_parent,
+                                      false, TKey>>,
+                  ScapegoatTree<use_parent, TData, TInfo, TAction, TKey,
                                 TTNodesManager>> {
  public:
-  static const bool use_key = true;
-  static const bool use_parent = _use_parent;
-  static const bool use_height = false;
-  static constexpr double alpha =
-      0.7;  // Height is less or equal to 2 * height(fully balanced tree).
+  // Height is less or equal to 2 * height(fully balanced tree).
+  static constexpr double alpha = 0.7;
 
-  using TData = TTData;
-  using TInfo = TTInfo;
-  using TAction = TTAction;
-  using TKey = TTKey;
-  using TNode =
-      Node<TData, TInfo, TAction, use_key, use_parent, use_height, TKey>;
+  using TNode = Node<TData, TInfo, TAction, true, use_parent, false, TKey>;
   using TSelf =
       ScapegoatTree<use_parent, TData, TInfo, TAction, TKey, TTNodesManager>;
   using TTree = Tree<TTNodesManager<TNode>, TSelf>;
