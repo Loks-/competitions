@@ -10,25 +10,16 @@
 #include "common/nodes_manager_fixed_size.h"
 
 namespace bst {
-template <bool _use_key, class TTData, class TTInfo = info::Size,
-          class TTAction = action::None, class TTKey = int64_t,
+template <bool use_key, class TData, class TInfo = info::Size,
+          class TAction = action::None, class TKey = int64_t,
           template <class> class TTNodesManager = NodesManagerFixedSize>
 class SplayTree
-    : public Tree<TTNodesManager<Node<TTData, TTInfo, TTAction, _use_key, true,
-                                      false, TTKey>>,
-                  SplayTree<_use_key, TTData, TTInfo, TTAction, TTKey,
-                            TTNodesManager>> {
+    : public Tree<
+          TTNodesManager<
+              Node<TData, TInfo, TAction, use_key, true, false, TKey>>,
+          SplayTree<use_key, TData, TInfo, TAction, TKey, TTNodesManager>> {
  public:
-  static const bool use_key = _use_key;
-  static const bool use_parent = true;
-  static const bool use_height = false;
-
-  using TData = TTData;
-  using TInfo = TTInfo;
-  using TAction = TTAction;
-  using TKey = TTKey;
-  using TNode =
-      Node<TData, TInfo, TAction, use_key, use_parent, use_height, TKey>;
+  using TNode = Node<TData, TInfo, TAction, use_key, true, false, TKey>;
   using TSelf = SplayTree<use_key, TData, TInfo, TAction, TKey, TTNodesManager>;
   using TTree = Tree<TTNodesManager<TNode>, TSelf>;
   friend class Tree<TTNodesManager<TNode>, TSelf>;
@@ -74,6 +65,7 @@ class SplayTree
     assert(m1 && !m1->l && !m1->r);
     m1->SetL(l);
     m1->SetR(r);
+    m1->UpdateInfo();
     return m1;
   }
 
