@@ -3,6 +3,7 @@
 #include "common/template.h"
 
 namespace bst {
+namespace ext {
 namespace info {
 namespace hidden {
 template <class TNode>
@@ -20,4 +21,5 @@ inline void InsertNodeToRoot(TNode* node, TNode* ins) {
   hidden::InsertNodeToRootI(node, ins, TFakeBool<!TNode::TInfo::is_none>());
 }
 }  // namespace info
+}  // namespace ext
 }  // namespace bst

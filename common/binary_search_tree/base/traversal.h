@@ -6,6 +6,7 @@
 #include <vector>
 
 namespace bst {
+namespace base {
 namespace hidden {
 template <class TNode, class TData>
 inline void TraversePreorder(TNode* node, std::vector<TData>& output) {
@@ -71,4 +72,5 @@ inline std::vector<TData> Traverse(TNode* root, ETraversalOrder order) {
   }
   return output;
 }
+}  // namespace base
 }  // namespace bst

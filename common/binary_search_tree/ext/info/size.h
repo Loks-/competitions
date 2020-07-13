@@ -1,7 +1,7 @@
 #pragma once
 
 #include "common/base.h"
-#include "common/binary_search_tree/info/none.h"
+#include "common/binary_search_tree/ext/info/none.h"
 
 namespace bst {
 namespace info {
@@ -17,6 +17,16 @@ class Size : public None {
   void Update(TNode* node) {
     size = 1 + (node->l ? node->l->info.size : 0) +
            (node->r ? node->r->info.size : 0);
+  }
+
+  template <class TNode>
+  void Insert(const TNode* node) {
+    size += node->info.size;
+  }
+
+  template <class TNode>
+  void Remove(const TNode* node) {
+    size -= node->info.size;
   }
 };
 }  // namespace info

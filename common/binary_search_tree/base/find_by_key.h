@@ -1,6 +1,7 @@
 #pragma once
 
 namespace bst {
+namespace base {
 template <class TNode>
 inline TNode* FindByKey(TNode* root, const typename TNode::TKey& key) {
   static_assert(TNode::use_key, "use_key should be true");
@@ -15,4 +16,5 @@ inline TNode* FindByKey(TNode* root, const typename TNode::TKey& key) {
   }
   return nullptr;
 }
+}  // namespace base
 }  // namespace bst

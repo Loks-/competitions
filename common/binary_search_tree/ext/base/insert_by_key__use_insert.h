@@ -1,13 +1,13 @@
 #pragma once
 
-#include "common/binary_search_tree/info/update_node_to_root.h"
-
 namespace bst {
+namespace ext {
 namespace base {
 template <class TNode>
-inline void InsertByKey(TNode* root, TNode* node) {
+inline void InsertByKeyUseInsert(TNode* root, TNode* node) {
   for (;;) {
     root->ApplyAction();
+    root->info.Insert(node);
     if (root->key < node->key) {
       if (root->r) {
         root = root->r;
@@ -24,7 +24,7 @@ inline void InsertByKey(TNode* root, TNode* node) {
       }
     }
   }
-  bst::info::UpdateNodeToRoot(root);
 }
 }  // namespace base
+}  // namespace ext
 }  // namespace bst

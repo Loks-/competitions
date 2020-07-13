@@ -11,6 +11,8 @@
 #include <vector>
 
 namespace bst {
+namespace ext {
+namespace base {
 template <class TTNodesManager, class TTMe>
 class Tree : public TTNodesManager {
  public:
@@ -173,4 +175,6 @@ class Tree : public TTNodesManager {
     return (removed_node ? TMe::RemoveByNodeI(removed_node) : root);
   }
 };
+}  // namespace base
+}  // namespace ext
 }  // namespace bst

@@ -6,6 +6,7 @@
 #include <random>
 
 namespace bst {
+namespace base {
 template <bool use_height, class THeight>
 class TNodeProxyHeight {};
 
@@ -85,6 +86,8 @@ class Node
   static const bool use_key = _use_key;
   static const bool use_parent = _use_parent;
   static const bool use_height = _use_height;
+  static const bool support_insert = false;
+  static const bool support_remove = false;
 
   using TData = TTData;
   using TInfo = TTInfo;
@@ -96,9 +99,6 @@ class Node
   using TProxyParent =
       TNodeProxyParent<use_key, use_parent, use_height, TKey, THeight, TSelf>;
 
-  static const bool support_insert = TInfo::support_insert;
-  static const bool support_remove = TInfo::support_remove;
-
   TData data;
   TInfo info;
   TAction action;
@@ -108,23 +108,6 @@ class Node
 
   void ClearAction() { action.Clear(); }
   void UpdateInfo() { info.Update(this); }
-  void InsertInfo(TSelf* node) { info.Insert(node); }
-  void RemoveInfo(TSelf* node) { info.Remove(node); }
-
-  void InsertOrUpdateInfo(TSelf* node) {
-    if (support_insert)
-      InsertInfo(node);
-    else
-      UpdateInfo();
-  }
-
-  void RemoveOrUpdateInfo(TSelf* node) {
-    if (support_remove)
-      RemoveInfo(node);
-    else
-      UpdateInfo();
-  }
-
   template <class TActionValue>
   void AddAction(const TActionValue& value) {
     action.Add(this, value);
@@ -142,4 +125,5 @@ class Node
     ClearAction();
   }
 };
+}  // namespace base
 }  // namespace bst

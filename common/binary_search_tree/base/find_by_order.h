@@ -3,6 +3,7 @@
 #include "common/base.h"
 
 namespace bst {
+namespace base {
 template <class TNode>
 inline TNode* FindByOrder(TNode* root, size_t order_index) {
   static_assert(TNode::TInfo::has_size, "info should contain size");
@@ -23,4 +24,5 @@ inline TNode* FindByOrder(TNode* root, size_t order_index) {
   assert(false);
   return nullptr;
 }
+}  // namespace base
 }  // namespace bst

@@ -3,10 +3,10 @@
 #include "common/base.h"
 #include "common/binary_search_tree/action/apply_root_to_node.h"
 #include "common/binary_search_tree/action/none.h"
-#include "common/binary_search_tree/base/node.h"
 #include "common/binary_search_tree/base/rotate.h"
-#include "common/binary_search_tree/base/tree.h"
 #include "common/binary_search_tree/info/size.h"
+#include "common/binary_search_tree/node.h"
+#include "common/binary_search_tree/tree.h"
 #include "common/nodes_manager_fixed_size.h"
 
 namespace bst {
@@ -14,15 +14,15 @@ template <bool use_key, class TData, class TInfo = info::Size,
           class TAction = action::None, class TKey = int64_t,
           template <class> class TTNodesManager = NodesManagerFixedSize>
 class SplayTree
-    : public base::Tree<
+    : public Tree<
           TTNodesManager<
-              base::Node<TData, TInfo, TAction, use_key, true, false, TKey>>,
+              Node<TData, TInfo, TAction, use_key, true, false, TKey>>,
           SplayTree<use_key, TData, TInfo, TAction, TKey, TTNodesManager>> {
  public:
-  using TNode = base::Node<TData, TInfo, TAction, use_key, true, false, TKey>;
+  using TNode = Node<TData, TInfo, TAction, use_key, true, false, TKey>;
   using TSelf = SplayTree<use_key, TData, TInfo, TAction, TKey, TTNodesManager>;
-  using TTree = base::Tree<TTNodesManager<TNode>, TSelf>;
-  friend class base::Tree<TTNodesManager<TNode>, TSelf>;
+  using TTree = Tree<TTNodesManager<TNode>, TSelf>;
+  friend class Tree<TTNodesManager<TNode>, TSelf>;
 
  public:
   explicit SplayTree(size_t max_nodes) : TTree(max_nodes) {}
@@ -36,12 +36,12 @@ class SplayTree
       if (!parent) break;
       TNode* gparent = parent->p;
       if (!gparent) {
-        base::Rotate<TNode, false, false>(node, parent, gparent);
+        Rotate<TNode, false, false>(node, parent, gparent);
         break;
       }
       bool zigzig = ((gparent->l == parent) == (parent->l == node));
-      base::RotateUp<TNode, false, false>(zigzig ? parent : node);
-      base::RotateUp<TNode, false, false>(node);
+      RotateUp<TNode, false, false>(zigzig ? parent : node);
+      RotateUp<TNode, false, false>(node);
     }
     node->UpdateInfo();
   }
@@ -135,10 +135,24 @@ class SplayTree
 
   static TNode* FindByOrder(TNode*& root, size_t order_index) {
     static_assert(TInfo::has_size, "info should contain size");
-    auto node = TTree::FindByOrder(root, order_index);
-    Splay(node);
-    if (node) root = node;
-    return node;
+    if (!root) return nullptr;
+    if (order_index >= root->info.size) return nullptr;
+    for (TNode* node = root; node;) {
+      node->ApplyAction();
+      size_t ls = (node->l ? node->l->info.size : 0);
+      if (order_index < ls) {
+        node = node->l;
+      } else if (order_index == ls) {
+        Splay(node);
+        root = node;
+        return node;
+      } else {
+        order_index -= 1 + ls;
+        node = node->r;
+      }
+    }
+    assert(false);
+    return nullptr;
   }
 
   static void SplitBySize(TNode* root, size_t lsize, TNode*& output_l,
