@@ -3,6 +3,14 @@
 	* BIT 2D
 * Binary Search Trees
 	* Finalize transition to new rails with Insert/Remove functions
+		* Rotate
+		* Swap
+		* Scapegoat
+		* AVL
+		* WAVL
+		* RedBlack
+		* [Optional] Splay
+		* [Optional] Treap
 	* Binarized 2-3 trees
 	* Leaning 2-3 trees
 	* Leaning Red Black Trees
