@@ -3,6 +3,7 @@
 #include "common/base.h"
 #include "common/binary_search_tree/action/none.h"
 #include "common/binary_search_tree/base/insert_by_key.h"
+#include "common/binary_search_tree/base/root.h"
 #include "common/binary_search_tree/base/rotate.h"
 #include "common/binary_search_tree/base/sibling.h"
 #include "common/binary_search_tree/base/swap.h"

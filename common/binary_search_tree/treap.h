@@ -2,6 +2,7 @@
 
 #include "common/base.h"
 #include "common/binary_search_tree/action/none.h"
+#include "common/binary_search_tree/base/root.h"
 #include "common/binary_search_tree/info/size.h"
 #include "common/binary_search_tree/info/update_node_to_root.h"
 #include "common/binary_search_tree/node.h"
