@@ -6,7 +6,7 @@
 // #include "common/binary_search_tree/red_black_tree.h"
 // #include "common/binary_search_tree/scapegoat_tree.h"
 #include "common/binary_search_tree/splay_tree.h"
-// #include "common/binary_search_tree/treap.h"
+#include "common/binary_search_tree/treap.h"
 // #include "common/binary_search_tree/wavl_tree.h"
 #include "common/timer.h"
 
@@ -130,12 +130,12 @@ bool TesterBinarySearchTree::TestAllTrees() {
   //     TKey>>( "scape_upt");
   TestAll<bst::SplayTree<true, TKey, bst::info::Size, bst::action::None, TKey>>(
       "splay_upt");
-  // TestAll<
-  //     bst::Treap<true, false, TKey, bst::info::Size, bst::action::None,
-  //     TKey>>( "treap_upf");
-  // TestAll<
-  //     bst::Treap<true, true, TKey, bst::info::Size, bst::action::None,
-  //     TKey>>( "treap_upt");
+  TestAll<
+      bst::Treap<true, false, TKey, bst::info::Size, bst::action::None, TKey>>(
+      "treap_upf");
+  TestAll<
+      bst::Treap<true, true, TKey, bst::info::Size, bst::action::None, TKey>>(
+      "treap_upt");
   // // TestAll<bst::AVLTree<false, TKey, bst::info::Size, bst::action::None,
   // // TKey>>(
   // //     "avltree_upf");
@@ -173,11 +173,10 @@ bool TesterBinarySearchTree::TestAllTrees() {
   //                            TKey>>("scape_upt");
   TestAll<bst::SplayTree<true, TKey, bst::info::Sum<TKey, bst::info::Size>,
                          bst::action::AddEachSum<TKey>, TKey>>("splay_upt");
-  // TestAll<bst::Treap<true, false, TKey, bst::info::Sum<TKey,
-  // bst::info::Size>,
-  //                    bst::action::AddEachSum<TKey>, TKey>>("treap_upf");
-  // TestAll<bst::Treap<true, true, TKey, bst::info::Sum<TKey, bst::info::Size>,
-  //                    bst::action::AddEachSum<TKey>, TKey>>("treap_upt");
+  TestAll<bst::Treap<true, false, TKey, bst::info::Sum<TKey, bst::info::Size>,
+                     bst::action::AddEachSum<TKey>, TKey>>("treap_upf");
+  TestAll<bst::Treap<true, true, TKey, bst::info::Sum<TKey, bst::info::Size>,
+                     bst::action::AddEachSum<TKey>, TKey>>("treap_upt");
   // // TestAll<bst::WAVLTree<false, TKey, bst::info::Sum<TKey,
   // bst::info::Size>,
   // //                       bst::action::AddEachSum<TKey>,
