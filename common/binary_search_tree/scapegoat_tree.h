@@ -2,11 +2,14 @@
 
 #include "common/base.h"
 #include "common/binary_search_tree/action/none.h"
+#include "common/binary_search_tree/base/insert_by_key.h"
 #include "common/binary_search_tree/base/swap.h"
+#include "common/binary_search_tree/info/helpers/update_node_to_root.h"
 #include "common/binary_search_tree/info/size.h"
 #include "common/binary_search_tree/node.h"
 #include "common/binary_search_tree/tree.h"
 #include "common/nodes_manager_fixed_size.h"
+#include "common/template.h"
 
 #include <stack>
 #include <vector>
@@ -45,12 +48,17 @@ class ScapegoatTree
     TraverseInorder(node->r, output);
   }
 
- public:
   static TNode* RebuildSubtree(TNode* node) {
     assert(node);
     std::vector<TNode*> nodes;
     TraverseInorder(node, nodes);
     return TTree::BuildTree(nodes);
+  }
+
+  static bool RebuildRequired(TNode* node) {
+    assert(node);
+    return ((node->l && node->l->info.size > alpha * node->info.size) ||
+            (node->r && node->r->info.size > alpha * node->info.size));
   }
 
   static TNode* UpdateAndFixSubtree(TNode* node) {
@@ -61,14 +69,125 @@ class ScapegoatTree
                : node;
   }
 
+ protected:
+  static inline TNode* InsertByKeyUseInsert(TNode* root, TNode* new_node) {
+    for (TNode *node = root, *p = nullptr;;) {
+      node->ApplyAction();
+      if (RebuildRequired(node)) {
+        bst::InsertByKeySkipUpdate(node, new_node);
+        TNode* r = RebuildSubtree(node);
+        (p ? ((node == p->l) ? p->l : p->r) : root) = r;
+        r->SetP(p);
+        return root;
+      }
+      node->info.Insert(new_node);
+      p = node;
+      if (node->key < new_node->key) {
+        if (node->r) {
+          node = node->r;
+        } else {
+          node->SetR(new_node);
+          break;
+        }
+      } else {
+        if (node->l) {
+          node = node->l;
+        } else {
+          node->SetL(new_node);
+          break;
+        }
+      }
+    }
+    return root;
+  }
+
+  static inline TNode* InsertByKeyUseParent(TNode* root, TNode* new_node) {
+    TNode* node = root;
+    for (;;) {
+      node->ApplyAction();
+      if (RebuildRequired(node)) {
+        bst::InsertByKeySkipUpdate(node, new_node);
+        TNode* p = node->p;
+        TNode* r = RebuildSubtree(node);
+        (p ? ((node == p->l) ? p->l : p->r) : root) = r;
+        r->SetP(p);
+        if (!p) return r;
+        node = p;
+        break;
+      }
+      if (node->key < new_node->key) {
+        if (node->r) {
+          node = node->r;
+        } else {
+          node->SetR(new_node);
+          break;
+        }
+      } else {
+        if (node->l) {
+          node = node->l;
+        } else {
+          node->SetL(new_node);
+          break;
+        }
+      }
+    }
+    info::UpdateNodeToRoot(node);
+    return root;
+  }
+
+  static inline TNode* InsertByKeyDefault(TNode* root, TNode* new_node) {
+    thread_local std::stack<TNode*> s;
+    for (TNode* node = root;;) {
+      node->ApplyAction();
+      if (RebuildRequired(node)) {
+        bst::InsertByKeySkipUpdate(node, new_node);
+        TNode *r = RebuildSubtree(node), *p = s.empty() ? nullptr : s.top();
+        (p ? ((node == p->l) ? p->l : p->r) : root) = r;
+        r->SetP(p);
+        return root;
+      }
+      s.push(node);
+      if (node->key < new_node->key) {
+        if (node->r) {
+          node = node->r;
+        } else {
+          node->SetR(new_node);
+          break;
+        }
+      } else {
+        if (node->l) {
+          node = node->l;
+        } else {
+          node->SetL(new_node);
+          break;
+        }
+      }
+    }
+    for (; !s.empty(); s.pop()) s.top()->UpdateInfo();
+    return root;
+  }
+
+  static TNode* InsertByKeyI(TNode* root, TNode* node, TFakeFalse, TFakeFalse) {
+    return InsertByKeyDefault(root, node);
+  }
+
+  static TNode* InsertByKeyI(TNode* root, TNode* node, TFakeFalse, TFakeTrue) {
+    return InsertByKeyUseParent(root, node);
+  }
+
+  static TNode* InsertByKeyI(TNode* root, TNode* node, TFakeTrue, TFakeFalse) {
+    return InsertByKeyUseInsert(root, node);
+  }
+
+  static TNode* InsertByKeyI(TNode* root, TNode* node, TFakeTrue, TFakeTrue) {
+    return InsertByKeyUseInsert(root, node);
+  }
+
+ public:
   static TNode* InsertByKey(TNode* root, TNode* node) {
     if (!root) return node;
-    root->ApplyAction();
-    if (root->key < node->key)
-      root->SetR(InsertByKey(root->r, node));
-    else
-      root->SetL(InsertByKey(root->l, node));
-    return UpdateAndFixSubtree(root);
+    return InsertByKeyI(root, node, TFakeBool<TNode::support_insert>(),
+                        TFakeBool<TNode::use_parent>());
   }
 
  protected:
