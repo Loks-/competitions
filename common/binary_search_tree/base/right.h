@@ -2,7 +2,7 @@
 
 namespace bst {
 template <class TNode>
-inline TNode* LastNode(TNode* root) {
+inline TNode* Right(TNode* root) {
   if (!root) return nullptr;
   for (; root->r;) root = root->r;
   return root;

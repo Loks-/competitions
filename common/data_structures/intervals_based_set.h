@@ -1,7 +1,7 @@
 #pragma once
 
 #include "common/base.h"
-#include "common/binary_search_tree/base/first_node.h"
+#include "common/binary_search_tree/base/left.h"
 #include "common/binary_search_tree/base/traversal.h"
 #include "common/binary_search_tree/info/size.h"
 #include "common/binary_search_tree/treap.h"
@@ -100,11 +100,11 @@ class IntervalsBasedSet {
     tree.SplitByKey(root, b, l, t);
     tree.SplitByKey(t, e, m, r);
     if (m) {
-      b = std::min(b, bst::FirstNode(m)->data.b);
+      b = std::min(b, bst::Left(m)->data.b);
       tree.ReleaseTree(m);
     }
     if (r) {
-      auto rf = bst::FirstNode(r);
+      auto rf = bst::Left(r);
       if (rf->data.b <= e) {
         e = rf->data.e;
         r = tree.RemoveAndReleaseByNode(rf);
@@ -149,11 +149,11 @@ class IntervalsBasedSet {
     tree.SplitByKey(t, i.e + 1, m, r);
     tree.ReleaseTree(l);
     if (m) {
-      auto mf = bst::FirstNode(m);
+      auto mf = bst::Left(m);
       mf->data.b = std::max(mf->data.b, i.b);
     }
     if (r) {
-      auto rf = bst::FirstNode(r);
+      auto rf = bst::Left(r);
       if (rf->data.b < i.e) {
         t = tree.New(Interval(rf->data.b, i.e), i.e);
         m = tree.Join(m, t);
