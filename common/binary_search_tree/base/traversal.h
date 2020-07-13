@@ -1,6 +1,7 @@
 #pragma once
 
 #include "common/base.h"
+
 #include <queue>
 #include <vector>
 
@@ -52,16 +53,22 @@ enum class ETraversalOrder { Preorder, Inorder, Postorder, Levelorder };
 template <class TNode, class TData>
 inline std::vector<TData> Traverse(TNode* root, ETraversalOrder order) {
   std::vector<TData> output;
-  if (order == ETraversalOrder::Preorder)
-    hidden::TraversePreorder(root, output);
-  else if (order == ETraversalOrder::Inorder)
-    hidden::TraverseInorder(root, output);
-  else if (order == ETraversalOrder::Postorder)
-    hidden::TraversePostorder(root, output);
-  else if (order == ETraversalOrder::Levelorder)
-    hidden::TraverseLevelorder(root, output);
-  else
-    assert(false);
+  switch (order) {
+    case ETraversalOrder::Preorder:
+      hidden::TraversePreorder(root, output);
+      break;
+    case ETraversalOrder::Inorder:
+      hidden::TraverseInorder(root, output);
+      break;
+    case ETraversalOrder::Postorder:
+      hidden::TraversePostorder(root, output);
+      break;
+    case ETraversalOrder::Levelorder:
+      hidden::TraverseLevelorder(root, output);
+      break;
+    default:
+      assert(false);
+  }
   return output;
 }
 }  // namespace bst
