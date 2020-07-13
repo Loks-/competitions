@@ -22,6 +22,10 @@ class Tree : public TTNodesManager {
 
   static const bool use_key = TNode::use_key;
   static const bool use_parent = TNode::use_parent;
+  static const bool use_height = TNode::use_height;
+  static const bool support_insert = true;
+  static const bool support_delete = true;
+  static const bool support_delete_by_node = use_parent;
 
  public:
   explicit Tree(size_t max_nodes) : TNodesManager(max_nodes) {}
