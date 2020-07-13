@@ -10,7 +10,9 @@ namespace {
 class NodeInfoAirports : public bst::info::Size {
  public:
   using TBase = bst::info::Size;
-  static const bool is_none = false;
+  static const bool use_data = false;
+  static const bool support_insert = false;
+  static const bool support_remove = false;
 
   int64_t l, r, d;
 

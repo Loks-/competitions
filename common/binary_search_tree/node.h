@@ -96,6 +96,9 @@ class Node
   using TProxyParent =
       TNodeProxyParent<use_key, use_parent, use_height, TKey, THeight, TSelf>;
 
+  static const bool support_insert = TInfo::support_insert;
+  static const bool support_remove = TInfo::support_remove;
+
   TData data;
   TInfo info;
   TAction action;

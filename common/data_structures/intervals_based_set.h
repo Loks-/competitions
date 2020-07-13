@@ -33,7 +33,7 @@ class IntervalsBasedSet {
    public:
     using TBase = bst::info::Size;
     using TSelf = Info;
-    static const bool use_data = false;
+    static const bool use_data = true;
 
     TTValue set_size = 0;
 
@@ -42,6 +42,18 @@ class IntervalsBasedSet {
       TBase::Update(node);
       set_size = node->data.Size() + (node->l ? node->l->info.set_size : 0) +
                  (node->r ? node->r->info.set_size : 0);
+    }
+
+    template <class TNode>
+    void Insert(const TNode* node) {
+      TBase::Insert(node);
+      set_size += node->info.set_size;
+    }
+
+    template <class TNode>
+    void Remove(const TNode* node) {
+      TBase::Remove(node);
+      set_size -= node->info.set_size;
     }
   };
 

@@ -16,6 +16,10 @@ class LinkCutTree {
     using TBase = TTInfo;
     using TSelf = LCTInfo;
 
+    static const bool is_none = false;
+    static const bool support_insert = false;
+    static const bool support_remove = false;
+
     void* lct_pp = nullptr;
 
     void* GetPP() { return lct_pp; }

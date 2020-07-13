@@ -10,6 +10,8 @@ class PInfo : public bst::info::Size {
   using TBase = bst::info::Size;
   using TSelf = PInfo;
   static const bool use_data = true;
+  static const bool support_insert = false;
+  static const bool support_remove = false;
 
   TModularD s, sp, sl, sr;
 
