@@ -18,6 +18,8 @@ class Tree : public TTNodesManager {
   using TNode = typename TNodesManager::TNode;
   using TData = typename TNode::TData;
   using TKey = typename TNode::TKey;
+  using TInfo = typename TNode::TInfo;
+  using TAction = typename TNode::TAction;
   using TMe = TTMe;
 
   static const bool use_key = TNode::use_key;

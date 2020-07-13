@@ -12,26 +12,17 @@
 #include <vector>
 
 namespace bst {
-template <bool _use_key, bool _use_parent, class TTData,
-          class TTInfo = info::Size, class TTAction = action::None,
-          class TTKey = int64_t,
+template <bool use_key, bool use_parent, class TData, class TInfo = info::Size,
+          class TAction = action::None, class TKey = int64_t,
           template <class> class TTNodesManager = NodesManagerFixedSize>
 class Treap
-    : public Tree<TTNodesManager<Node<TTData, TTInfo, TTAction, _use_key,
-                                      _use_parent, true, TTKey, unsigned>>,
-                  Treap<_use_key, _use_parent, TTData, TTInfo, TTAction, TTKey,
+    : public Tree<TTNodesManager<Node<TData, TInfo, TAction, use_key,
+                                      use_parent, true, TKey, unsigned>>,
+                  Treap<use_key, use_parent, TData, TInfo, TAction, TKey,
                         TTNodesManager>> {
  public:
-  static const bool use_key = _use_key;
-  static const bool use_parent = _use_parent;
-  static const bool use_height = true;
-
-  using TData = TTData;
-  using TInfo = TTInfo;
-  using TAction = TTAction;
-  using TKey = TTKey;
-  using TNode = Node<TData, TInfo, TAction, use_key, use_parent, use_height,
-                     TKey, unsigned>;
+  using TNode =
+      Node<TData, TInfo, TAction, use_key, use_parent, true, TKey, unsigned>;
   using TSelf =
       Treap<use_key, use_parent, TData, TInfo, TAction, TKey, TTNodesManager>;
   using TTree = Tree<TTNodesManager<TNode>, TSelf>;
