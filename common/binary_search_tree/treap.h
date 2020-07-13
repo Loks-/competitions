@@ -31,7 +31,7 @@ class Treap
   using TSelf =
       Treap<use_key, use_parent, TData, TTInfo, TAction, TKey, TTNodesManager>;
   using TTree = base::Tree<TTNodesManager<TNode>, TSelf>;
-  friend class base::Tree<TTNodesManager<TNode>, TSelf>;
+  friend TTree;
 
  protected:
   static const THeight& Height(TNode* node) { return node->info.treap_height; }

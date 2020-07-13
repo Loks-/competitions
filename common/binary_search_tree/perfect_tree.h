@@ -26,7 +26,7 @@ class PerfectTree
   using TNode = base::Node<TData, TInfo, TAction, true, use_parent, TKey>;
   using TSelf = PerfectTree<use_parent, TData, TInfo, TAction, TKey>;
   using TTree = base::Tree<NodesManagerFixedSize<TNode>, TSelf>;
-  friend class base::Tree<NodesManagerFixedSize<TNode>, TSelf>;
+  friend TTree;
 
  public:
   explicit PerfectTree(size_t max_nodes) : TTree(max_nodes) {}

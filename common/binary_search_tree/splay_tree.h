@@ -22,7 +22,7 @@ class SplayTree
   using TNode = base::Node<TData, TInfo, TAction, use_key, true, TKey>;
   using TSelf = SplayTree<use_key, TData, TInfo, TAction, TKey, TTNodesManager>;
   using TTree = base::Tree<TTNodesManager<TNode>, TSelf>;
-  friend class base::Tree<TTNodesManager<TNode>, TSelf>;
+  friend TTree;
 
  public:
   explicit SplayTree(size_t max_nodes) : TTree(max_nodes) {}
