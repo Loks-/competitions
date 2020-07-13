@@ -22,7 +22,6 @@ class BaseTree
                                              use_parent, false, TKey>>,
                   BaseTree<use_parent, TData, TInfo, TAction, TKey>> {
  public:
-  static const bool support_remove = true;
   static const bool support_remove_by_node = false;
 
   using TNode = Node<TData, TInfo, TAction, true, use_parent, false, TKey>;

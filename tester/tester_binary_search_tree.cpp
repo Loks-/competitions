@@ -143,10 +143,10 @@ bool TesterBinarySearchTree::TestAllTrees() {
   std::cout << "Testing full trees:" << std::endl;
   current_job = "full";
   if (mode == hash_test) {
-    // TestAll<bst::BaseTree<false, TKey, bst::info::Sum<TKey, bst::info::Size>,
-    //                       bst::action::AddEachSum<TKey>, TKey>>("base_upf");
-    // TestAll<bst::BaseTree<true, TKey, bst::info::Sum<TKey, bst::info::Size>,
-    //                       bst::action::AddEachSum<TKey>, TKey>>("base_upt");
+    TestAll<bst::BaseTree<false, TKey, bst::info::Sum<TKey, bst::info::Size>,
+                          bst::action::AddEachSum<TKey>, TKey>>("base_upf");
+    TestAll<bst::BaseTree<true, TKey, bst::info::Sum<TKey, bst::info::Size>,
+                          bst::action::AddEachSum<TKey>, TKey>>("base_upt");
   }
   TestAll<bst::AVLTree<false, TKey, bst::info::Sum<TKey, bst::info::Size>,
                        bst::action::AddEachSum<TKey>, TKey>>("avltree_upf");

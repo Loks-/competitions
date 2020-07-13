@@ -10,7 +10,6 @@ namespace bst {
 template <class TNode>
 inline TNode* RemoveRightSkipUpdate(TNode* root) {
   assert(root && root->r);
-  root->ApplyAction();
   for (root->r->ApplyAction(); root->r->r; root->r->ApplyAction()) {
     root = root->r;
   }
@@ -24,7 +23,6 @@ template <class TNode>
 inline TNode* RemoveRightUseParent(TNode* root) {
   assert(root && root->r);
   TNode* node = root;
-  node->ApplyAction();
   for (node->r->ApplyAction(); node->r->r; node->r->ApplyAction()) {
     node = node->r;
   }
@@ -40,7 +38,6 @@ template <class TNode>
 inline TNode* RemoveRightDefault(TNode* root) {
   thread_local std::stack<TNode*> s;
   assert(root && root->r);
-  root->ApplyAction();
   for (root->r->ApplyAction(); root->r->r; root->r->ApplyAction()) {
     s.push(root);
     root = root->r;
@@ -78,6 +75,7 @@ inline TNode* RemoveRightI(TNode* root, TFakeTrue, TFakeTrue) {
 template <class TNode>
 inline TNode* RemoveRight(TNode* root, TNode*& removed_node) {
   assert(root);
+  root->ApplyAction();
   if (root->r) {
     removed_node =
         hidden::RemoveRightI(root, TFakeBool<TNode::TInfo::is_none>(),
