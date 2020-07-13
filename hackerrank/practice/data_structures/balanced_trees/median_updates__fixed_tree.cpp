@@ -34,7 +34,7 @@ int main_median_updates__fixed_tree() {
   TNode* root = tree.Build(vector<unsigned>(vx.size(), 0), vx);
 
   for (auto p : input) {
-    TNode* node = bst::FindByKey(root, p.second);
+    TNode* node = TTree::FindByKey(root, p.second);
     assert(node);
     if (p.first == 'a') {
       node->data += 1;
