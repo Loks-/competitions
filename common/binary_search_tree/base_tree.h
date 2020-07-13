@@ -3,6 +3,7 @@
 #include "common/base.h"
 #include "common/binary_search_tree/action/none.h"
 #include "common/binary_search_tree/base/insert_by_key.h"
+#include "common/binary_search_tree/base/remove_by_key.h"
 #include "common/binary_search_tree/info/size.h"
 #include "common/binary_search_tree/node.h"
 #include "common/binary_search_tree/tree.h"
@@ -21,7 +22,8 @@ class BaseTree
                                              use_parent, false, TKey>>,
                   BaseTree<use_parent, TData, TInfo, TAction, TKey>> {
  public:
-  static const bool support_remove = false;
+  static const bool support_remove = true;
+  static const bool support_remove_by_node = false;
 
   using TNode = Node<TData, TInfo, TAction, true, use_parent, false, TKey>;
   using TSelf = BaseTree<use_parent, TData, TInfo, TAction, TKey>;
@@ -36,6 +38,11 @@ class BaseTree
     if (!root) return node;
     bst::InsertByKey(root, node);
     return root;
+  }
+
+  static TNode* RemoveByKey(TNode* root, const TKey& key,
+                            TNode*& removed_node) {
+    return bst::RemoveByKey(root, key, removed_node);
   }
 };
 }  // namespace bst

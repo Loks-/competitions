@@ -49,7 +49,7 @@ inline void InsertByKeyUseParent(TNode* root, TNode* node) {
       }
     }
   }
-  UpdateInfoNodeToRoot(root);
+  UpdateNodeToRoot(root);
 }
 
 template <class TNode>
