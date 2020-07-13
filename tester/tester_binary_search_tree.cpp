@@ -1,6 +1,7 @@
 #include "tester/tester_binary_search_tree.h"
 
 #include "common/binary_search_tree/avl_tree.h"
+#include "common/binary_search_tree/base_tree.h"
 #include "common/binary_search_tree/perfect_tree.h"
 #include "common/binary_search_tree/red_black_tree.h"
 #include "common/binary_search_tree/scapegoat_tree.h"
@@ -96,6 +97,14 @@ TesterBinarySearchTree::TesterBinarySearchTree(unsigned size, TBSTMode _mode)
 bool TesterBinarySearchTree::TestAllTrees() {
   std::cout << "Testing base trees:" << std::endl;
   current_job = "base";
+  if (mode == hash_test) {
+    TestAll<
+        bst::BaseTree<false, TKey, bst::info::Size, bst::action::None, TKey>>(
+        "base_upf");
+    TestAll<
+        bst::BaseTree<true, TKey, bst::info::Size, bst::action::None, TKey>>(
+        "base_upt");
+  }
   TestAll<bst::AVLTree<false, TKey, bst::info::Size, bst::action::None, TKey>>(
       "avltree_upf");
   TestAll<bst::AVLTree<true, TKey, bst::info::Size, bst::action::None, TKey>>(
