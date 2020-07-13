@@ -1,11 +1,11 @@
 // https://www.hackerrank.com/challenges/median
 
 #include "common/binary_search_tree/base/find_by_key.h"
-#include "common/binary_search_tree/info/helpers/update_node_to_root.h"
 #include "common/binary_search_tree/info/size.h"
 #include "common/binary_search_tree/info/sum.h"
+#include "common/binary_search_tree/info/update_node_to_root.h"
 #include "common/binary_search_tree/perfect_tree.h"
-#include "common/binary_search_tree/utils/upper_bound.h"
+#include "common/binary_search_tree/utils/prefix_sum_upper_bound.h"
 #include "common/stl/base.h"
 
 #include <iomanip>

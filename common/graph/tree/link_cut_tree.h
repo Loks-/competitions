@@ -17,8 +17,6 @@ class LinkCutTree {
     using TSelf = LCTInfo;
 
     static const bool is_none = false;
-    static const bool support_insert = false;
-    static const bool support_remove = false;
 
     void* lct_pp = nullptr;
 
@@ -69,7 +67,7 @@ class LinkCutTree {
       DisconnectR(v);
       v->r = node;
       node->info.lct_pp = nullptr;
-      bst::Rotate<TNode, true, false>(node, v, nullptr);
+      bst::base::Rotate<TNode, true, false>(node, v, nullptr);
     }
   }
 
