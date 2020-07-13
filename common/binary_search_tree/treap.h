@@ -23,6 +23,8 @@ class Treap
           Treap<use_key, use_parent, TData, TTInfo, TAction, TKey,
                 TTNodesManager>> {
  public:
+  static const bool support_remove = true;
+
   using TInfo = info::TreapHeight<unsigned, TTInfo>;
   using THeight = typename TInfo::THeight;
   using TNode = base::Node<TData, TInfo, TAction, use_key, use_parent, TKey>;
