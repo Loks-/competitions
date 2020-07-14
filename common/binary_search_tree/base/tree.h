@@ -56,7 +56,9 @@ class Tree : public TTNodesManager {
   }
 
   static TNode* BuildTree(const std::vector<TNode*>& vnodes) {
-    return TMe::BuildTreeI(vnodes, 0, vnodes.size());
+    TNode* root = TMe::BuildTreeI(vnodes, 0, vnodes.size());
+    if (root) root->SetP(nullptr);
+    return root;
   }
 
   TNode* Build(const std::vector<TData>& data) {
