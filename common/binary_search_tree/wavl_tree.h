@@ -144,5 +144,5 @@ class WAVLTree
       }
     }
   }
-};  // namespace bst
+};
 }  // namespace bst
