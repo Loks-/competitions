@@ -16,10 +16,10 @@ class None {
   void BTIReset() {}
 
   template <class TNode>
-  void BTICopy(const TNode*) {}
+  void BTICopy(TNode*) {}
 
   template <class TNode>
-  void BTISwap(const TNode*) {}
+  void BTISwap(TNode*) {}
 
   // Usused fields to support info with ext trees.
   static const bool support_insert = false;

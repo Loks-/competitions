@@ -19,14 +19,14 @@ class WAVLRank : public TInfo {
   }
 
   template <class TNode>
-  void BTICopy(const TNode* node) {
+  void BTICopy(TNode* node) {
     assert(node);
     TBase::BTICopy(node);
     rank = node->info.rank;
   }
 
   template <class TNode>
-  void BTISwap(const TNode* node) {
+  void BTISwap(TNode* node) {
     assert(node);
     TBase::BTISwap(node);
     std::swap(rank, node->info.rank);

@@ -3,7 +3,7 @@
 #include "common/binary_search_tree/avl_tree.h"
 #include "common/binary_search_tree/base_tree.h"
 #include "common/binary_search_tree/perfect_tree.h"
-// #include "common/binary_search_tree/red_black_tree.h"
+#include "common/binary_search_tree/red_black_tree.h"
 #include "common/binary_search_tree/scapegoat_tree.h"
 #include "common/binary_search_tree/splay_tree.h"
 #include "common/binary_search_tree/treap.h"
@@ -115,12 +115,8 @@ bool TesterBinarySearchTree::TestAllTrees() {
   TestAll<
       bst::PerfectTree<true, TKey, bst::info::Size, bst::action::None, TKey>>(
       "perfect_upt");
-  // TestAll<
-  //     bst::RedBlackTree<false, TKey, bst::info::Size, bst::action::None,
-  //     TKey>>( "rbtree_upf");
-  // TestAll<
-  //     bst::RedBlackTree<true, TKey, bst::info::Size, bst::action::None,
-  //     TKey>>( "rbtree_upt");
+  TestAll<bst::RedBlackTree<TKey, bst::info::Size, bst::action::None, TKey>>(
+      "rbtree");
   TestAll<bst::ScapegoatTree<false, TKey, bst::info::Size, bst::action::None,
                              TKey>>("scape_upf");
   TestAll<
@@ -151,14 +147,8 @@ bool TesterBinarySearchTree::TestAllTrees() {
                        bst::action::AddEachSum<TKey>, TKey>>("avltree_upf");
   TestAll<bst::AVLTree<true, TKey, bst::info::Sum<TKey, bst::info::Size>,
                        bst::action::AddEachSum<TKey>, TKey>>("avltree_upt");
-  // TestAll<bst::RedBlackTree<false, TKey, bst::info::Sum<TKey,
-  // bst::info::Size>,
-  //                           bst::action::AddEachSum<TKey>,
-  //                           TKey>>("rbtree_upf");
-  // TestAll<bst::RedBlackTree<true, TKey, bst::info::Sum<TKey,
-  // bst::info::Size>,
-  //                           bst::action::AddEachSum<TKey>,
-  //                           TKey>>("rbtree_upt");
+  TestAll<bst::RedBlackTree<TKey, bst::info::Sum<TKey, bst::info::Size>,
+                            bst::action::AddEachSum<TKey>, TKey>>("rbtree");
   TestAll<bst::ScapegoatTree<false, TKey, bst::info::Sum<TKey, bst::info::Size>,
                              bst::action::AddEachSum<TKey>, TKey>>("scape_upf");
   TestAll<bst::ScapegoatTree<true, TKey, bst::info::Sum<TKey, bst::info::Size>,
