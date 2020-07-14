@@ -6,7 +6,7 @@
 
 #include <iomanip>
 
-using TTree = bst::RedBlackTree<true, TEmpty>;
+using TTree = bst::RedBlackTree<TEmpty>;
 using TNode = TTree::TNode;
 
 int main_median_updates__upt_red_black() {
