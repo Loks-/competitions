@@ -19,7 +19,6 @@ class BaseTree
   using TNode = base::Node<TData, TInfo, TAction, true, use_parent, TKey>;
   using TSelf = BaseTree<use_parent, TData, TInfo, TAction, TKey>;
   using TBTree = base::BalancedTree<NodesManagerFixedSize<TNode>, TSelf>;
-  using TTree = typename TBTree::TTree;
   friend TBTree;
 
  public:
