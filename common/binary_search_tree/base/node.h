@@ -90,6 +90,7 @@ class Node : public TNodeProxyParent<
 
   void ResetLinksAndUpdateInfo() {
     TProxyParent::ResetLinks();
+    info.BTIReset();
     UpdateInfo();
   }
 

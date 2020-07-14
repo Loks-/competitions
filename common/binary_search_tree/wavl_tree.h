@@ -144,16 +144,5 @@ class WAVLTree
       }
     }
   }
-
-  static TNode* InsertByKeyI(TNode* root, TNode* node) {
-    node->info.rank = 0;
-    return TBTree::InsertByKeyIR(root, node);
-  }
-
-  static TNode* RemoveByNodeI(TNode* node) {
-    auto new_root = TBTree::RemoveByNodeI(node);
-    node->info.rank = 0;
-    return new_root;
-  }
 };  // namespace bst
 }  // namespace bst

@@ -42,6 +42,7 @@ class Tree : public TTNodesManager {
   TNode* New(const TData& data) {
     auto p = New();
     p->data = data;
+    p->info.BTIReset();
     p->UpdateInfo();
     return p;
   }
@@ -51,6 +52,7 @@ class Tree : public TTNodesManager {
     auto p = New();
     p->data = data;
     p->key = key;
+    p->info.BTIReset();
     p->UpdateInfo();
     return p;
   }
