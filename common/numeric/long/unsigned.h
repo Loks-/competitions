@@ -20,6 +20,11 @@ class Unsigned {
 
   Unsigned() {}
 
+  explicit Unsigned(int32_t u) {
+    assert(u >= 0);
+    if (u) data.push_back(u);
+  }
+
   explicit Unsigned(uint32_t u) {
     if (u) data.push_back(u);
   }
@@ -267,13 +272,6 @@ class Unsigned {
     Unsigned t(*this);
     t >>= ubits;
     return t;
-  }
-
-  Unsigned operator*(const Unsigned& r) const {
-    Unsigned s;
-    for (size_t i = 0; i < r.Size(); ++i)
-      s += ((*this) * r.data[i]).ShiftBlocksRight(i);
-    return s;
   }
 
   Unsigned operator/(const Unsigned& r) const {
