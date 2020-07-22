@@ -101,6 +101,11 @@ add_executable( icfppc_2019 ${ICFPPC_2019_SOURCES} )
 target_link_libraries( icfppc_2019 ${CMAKE_THREAD_LIBS_INIT} )
 target_include_directories(icfppc_2019 PRIVATE "${PROJECT_SOURCE_DIR}/icfppc/2019/src" )
 
+file( GLOB_RECURSE ICFPPC_2020_SOURCES RELATIVE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/icfppc/2020/src/*.cpp" )
+add_executable( icfppc_2020 ${ICFPPC_2020_SOURCES} )
+target_link_libraries( icfppc_2020 ${CMAKE_THREAD_LIBS_INIT} stb )
+target_include_directories(icfppc_2020 PRIVATE "${PROJECT_SOURCE_DIR}/icfppc/2020/src" "${PROJECT_SOURCE_DIR}/ext_libs" )
+
 file( GLOB_RECURSE IPCS_SOURCES RELATIVE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/ipcs/*.cpp" )
 list( SORT IPCS_SOURCES )
 set( IPCS_PROXY_H "${PROJECT_SOURCE_DIR}/ipcs/proxy_gen.h" )
