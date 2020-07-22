@@ -1,9 +1,9 @@
-#include "glyph_decoder.h"
-#include "linear_encoded_form.h"
-#include "message.h"
-#include "message_as_image.h"
-#include "message_as_text.h"
-#include "message_decoder.h"
+#include "galaxy/glyph_decoder.h"
+#include "galaxy/linear_encoded_form.h"
+#include "galaxy/message.h"
+#include "galaxy/message_as_image.h"
+#include "galaxy/message_as_text.h"
+#include "galaxy/message_decoder.h"
 
 #include "common/stl/base.h"
 
