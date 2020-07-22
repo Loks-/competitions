@@ -1,7 +1,7 @@
-#include "linear_encoded_form.h"
+#include "galaxy/linear_encoded_form.h"
 
-#include "expression.h"
-#include "node.h"
+#include "galaxy/expression.h"
+#include "galaxy/node.h"
 
 #include "common/base.h"
 

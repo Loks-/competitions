@@ -1,6 +1,6 @@
 #pragma once
 
-#include "function_type.h"
+#include "galaxy/function_type.h"
 
 class Node;
 

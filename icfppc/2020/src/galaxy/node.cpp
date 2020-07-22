@@ -1,8 +1,8 @@
-#include "node.h"
+#include "galaxy/node.h"
 
-#include "function_type.h"
-#include "glyph_decoder.h"
-#include "glyph_type.h"
+#include "galaxy/function_type.h"
+#include "galaxy/glyph_decoder.h"
+#include "galaxy/glyph_type.h"
 
 #include "common/nodes_manager.h"
 

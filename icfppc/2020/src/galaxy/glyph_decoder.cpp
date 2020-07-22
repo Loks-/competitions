@@ -1,4 +1,4 @@
-#include "glyph_decoder.h"
+#include "galaxy/glyph_decoder.h"
 
 #include "common/assert_exception.h"
 #include "common/base.h"

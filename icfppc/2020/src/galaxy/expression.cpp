@@ -1,10 +1,10 @@
-#include "expression.h"
+#include "galaxy/expression.h"
 
-#include "evaluation.h"
-#include "glyph.h"
-#include "glyph_decoder.h"
-#include "glyph_type.h"
-#include "node.h"
+#include "galaxy/evaluation.h"
+#include "galaxy/glyph.h"
+#include "galaxy/glyph_decoder.h"
+#include "galaxy/glyph_type.h"
+#include "galaxy/node.h"
 
 #include "common/base.h"
 #include "common/binary_search_tree/base/right.h"

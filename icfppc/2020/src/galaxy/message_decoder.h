@@ -1,13 +1,13 @@
 #pragma once
 
-#include "expression.h"
-#include "glyph.h"
-#include "glyph_compact.h"
-#include "line.h"
-#include "matrix_slice.h"
-#include "message.h"
-#include "message_as_image.h"
-#include "message_as_text.h"
+#include "galaxy/expression.h"
+#include "galaxy/glyph.h"
+#include "galaxy/glyph_compact.h"
+#include "galaxy/line.h"
+#include "galaxy/matrix_slice.h"
+#include "galaxy/message.h"
+#include "galaxy/message_as_image.h"
+#include "galaxy/message_as_text.h"
 
 #include "common/linear_algebra/matrix.h"
 

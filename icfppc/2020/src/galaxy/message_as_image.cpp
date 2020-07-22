@@ -1,10 +1,10 @@
-#include "message_as_image.h"
+#include "galaxy/message_as_image.h"
+
+#include "stb/wrapper.h"
 
 #include "common/assert_exception.h"
 #include "common/base.h"
 #include "common/linear_algebra/bool/matrix.h"
-
-#include "stb/wrapper.h"
 
 #include <iostream>
 #include <string>

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "glyph.h"
+#include "galaxy/glyph.h"
 
 #include "common/node.h"
 

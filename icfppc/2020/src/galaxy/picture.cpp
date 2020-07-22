@@ -1,4 +1,4 @@
-#include "picture.h"
+#include "galaxy/picture.h"
 
 #include <ostream>
 #include <sstream>

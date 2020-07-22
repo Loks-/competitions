@@ -1,9 +1,9 @@
 #pragma once
 
-#include "function_type.h"
-#include "glyph_type.h"
-#include "linear_encoded_form.h"
-#include "picture.h"
+#include "galaxy/function_type.h"
+#include "galaxy/glyph_type.h"
+#include "galaxy/linear_encoded_form.h"
+#include "galaxy/picture.h"
 
 #include "common/base.h"
 

@@ -1,6 +1,6 @@
-#include "dictionary.h"
+#include "galaxy/dictionary.h"
 
-#include "node.h"
+#include "galaxy/node.h"
 
 #include "common/base.h"
 #include "common/template.h"

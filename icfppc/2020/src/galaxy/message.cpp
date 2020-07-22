@@ -1,6 +1,6 @@
-#include "message.h"
+#include "galaxy/message.h"
 
-#include "dictionary.h"
+#include "galaxy/dictionary.h"
 
 #include "common/base.h"
 

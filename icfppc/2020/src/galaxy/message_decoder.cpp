@@ -1,6 +1,6 @@
-#include "message_decoder.h"
+#include "galaxy/message_decoder.h"
 
-#include "glyph_decoder.h"
+#include "galaxy/glyph_decoder.h"
 
 #include "common/base.h"
 #include "common/linear_algebra/bool/vector.h"

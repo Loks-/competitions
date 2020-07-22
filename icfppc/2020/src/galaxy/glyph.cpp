@@ -1,6 +1,6 @@
-#include "glyph.h"
+#include "galaxy/glyph.h"
 
-#include "glyph_type.h"
+#include "galaxy/glyph_type.h"
 
 #include <iostream>
 

@@ -1,4 +1,4 @@
-#include "line.h"
+#include "galaxy/line.h"
 
 #include <iostream>
 

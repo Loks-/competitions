@@ -1,10 +1,10 @@
-#include "evaluation.h"
+#include "galaxy/evaluation.h"
 
-#include "dictionary.h"
-#include "expression.h"
-#include "function_type.h"
-#include "glyph_type.h"
-#include "node.h"
+#include "galaxy/dictionary.h"
+#include "galaxy/expression.h"
+#include "galaxy/function_type.h"
+#include "galaxy/glyph_type.h"
+#include "galaxy/node.h"
 
 #include "common/base.h"
 

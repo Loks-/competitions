@@ -1,4 +1,4 @@
-#include "message_as_text.h"
+#include "galaxy/message_as_text.h"
 
 #include "common/assert_exception.h"
 

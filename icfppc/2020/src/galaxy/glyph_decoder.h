@@ -1,9 +1,9 @@
 #pragma once
 
-#include "function_type.h"
-#include "glyph.h"
-#include "glyph_compact.h"
-#include "glyph_type.h"
+#include "galaxy/function_type.h"
+#include "galaxy/glyph.h"
+#include "galaxy/glyph_compact.h"
+#include "galaxy/glyph_type.h"
 
 #include <string>
 #include <unordered_map>

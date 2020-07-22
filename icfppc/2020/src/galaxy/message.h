@@ -1,6 +1,6 @@
 #pragma once
 
-#include "line.h"
+#include "galaxy/line.h"
 
 #include <vector>
 
