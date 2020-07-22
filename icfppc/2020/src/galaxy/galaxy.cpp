@@ -44,6 +44,7 @@ void LoadGalaxy() {
 }
 
 int TestGalaxy() {
+  LoadGalaxy();
   MessageAsText mt(path_to_messages + "test.txt");
   MessageDecoder md;
   Message m = md.Decode(mt);
