@@ -66,3 +66,5 @@ void Expression::Print() {
 }
 
 bool Expression::operator==(const Expression& r) const { return v == r.v; }
+
+bool Expression::operator!=(const Expression& r) const { return !(*this == r); }

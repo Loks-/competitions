@@ -25,4 +25,5 @@ class Expression {
   void Print();
 
   bool operator==(const Expression& r) const;
+  bool operator!=(const Expression& r) const;
 };
