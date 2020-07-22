@@ -12,6 +12,7 @@ include_directories( PRIVATE "${PROJECT_SOURCE_DIR}" )
 find_package( Threads )
 
 add_library(stb STATIC ${PROJECT_SOURCE_DIR}/ext_libs/stb/wrapper.cpp)
+target_compile_options(stb PRIVATE -Wno-sign-compare -Wno-unused-but-set-variable)
 
 file( GLOB_RECURSE GOOGLE_DISTRIBUTED_CODE_JAM_SOURCES RELATIVE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/google/distributed_code_jam/*.cpp" )
 add_executable( google_distributed_code_jam ${GOOGLE_DISTRIBUTED_CODE_JAM_SOURCES} )
