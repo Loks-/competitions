@@ -1,0 +1,10 @@
+send
+
+ap send x0 =  x1
+
+humans   x0                     aliens
+humans   ~~~~~ ap mod x0        aliens
+humans                       x0 aliens
+humans                       x1 aliens
+humans          ap mod x1 ~~~~~ aliens
+humans x1                       aliens

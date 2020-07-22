@@ -1,0 +1,3 @@
+car
+ap car ap ap cons x0 x1   =   x0
+ap car x2   =   ap x2 t

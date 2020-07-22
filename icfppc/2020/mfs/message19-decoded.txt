@@ -1,0 +1,4 @@
+c
+ap ap ap c x0 x1 x2   =   ap ap x0 x2 x1
+ap ap ap c add 1 2   =   3
+...

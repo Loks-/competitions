@@ -1,0 +1,12 @@
+div
+ap ap div 4 2   =   2
+ap ap div 4 3   =   1
+ap ap div 4 4   =   1
+ap ap div 4 5   =   0
+ap ap div 5 2   =   2
+ap ap div 6 -2   =   -3
+ap ap div 5 -3   =   -1
+ap ap div -5 3   =   -1
+ap ap div -5 -3   =   1
+ap ap div x0 1   =   x0
+...

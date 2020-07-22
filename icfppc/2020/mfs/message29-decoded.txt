@@ -1,0 +1,3 @@
+isnil
+ap isnil nil   =   t
+ap isnil ap ap cons x0 x1   =   f

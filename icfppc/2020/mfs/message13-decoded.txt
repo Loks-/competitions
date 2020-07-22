@@ -1,0 +1,15 @@
+mod
+ap mod 0   =   [0]
+ap mod 1   =   [1]
+ap mod -1   =   [-1]
+ap mod 2   =   [2]
+ap mod -2   =   [-2]
+...
+ap mod 16   =   [16]
+ap mod -16   =   [-16]
+...
+ap mod 255   =   [255]
+ap mod -255   =   [-255]
+ap mod 256   =   [256]
+ap mod -256   =   [-256]
+...

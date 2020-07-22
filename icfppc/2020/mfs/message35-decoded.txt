@@ -1,0 +1,9 @@
+mod cons
+ap mod nil   =   [nil]
+ap mod ap ap cons nil nil   =   [ap ap cons nil nil]
+ap mod ap ap cons 0 nil   =   [ap ap cons 0 nil]
+ap mod ap ap cons 1 2   =   [ap ap cons 1 2]
+ap mod ap ap cons 1 ap ap cons 2 nil   =   [ap ap cons 1 ap ap cons 2 nil]
+ap mod ( 1 , 2 )   =   [( 1 , 2 )]
+ap mod ( 1 , ( 2 , 3 ) , 4 )   =   [( 1 , ( 2 , 3 ) , 4 )]
+...

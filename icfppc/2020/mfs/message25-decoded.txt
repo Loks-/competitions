@@ -1,0 +1,2 @@
+cons
+ap ap ap cons x0 x1 x2   =   ap ap x2 x0 x1

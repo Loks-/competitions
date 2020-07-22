@@ -1,0 +1,7 @@
+neg
+ap neg 0   =   0
+ap neg 1   =   -1
+ap neg -1   =   1
+ap neg 2   =   -2
+ap neg -2   =   2
+...

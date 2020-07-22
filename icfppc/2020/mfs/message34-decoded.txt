@@ -1,0 +1,3 @@
+multipledraw
+ap multipledraw nil   =   nil
+ap multipledraw ap ap cons x0 x1   =   ap ap cons ap draw x0 ap multipledraw x1
