@@ -232,6 +232,8 @@ foreach( testfile_in ${HACKERRANK_LANGUAGE_C_TESTS} )
 	add_test( NAME ${testshortname} COMMAND hackerrank_c ${solution} ${testfile_in} ${testfile_out} WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} )
 endforeach( testfile_in ${HACKERRANK_LANGUAGE_C_TESTS} )
 
+add_test( NAME icfppc_2020_galaxy COMMAND icfppc_2020 galaxy_test )
+
 file( GLOB_RECURSE PROJECT_EULER_TESTS RELATIVE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/tests/project_euler/*.in" )
 list( SORT PROJECT_EULER_TESTS )
 foreach( testfile_in ${PROJECT_EULER_TESTS} )
