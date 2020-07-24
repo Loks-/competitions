@@ -18,7 +18,7 @@ void PrintListI(Node* node, bool first, GlyphDecoder& gd) {
     std::cout << (first ? "( " : "") << ") ";
   } else {
     assert(IsPair(node));
-    std::cout << (first ? "(" : ", ");
+    std::cout << (first ? "( " : ", ");
     PrintI(node->l->r, gd);
     PrintListI(node->r, false, gd);
   }
