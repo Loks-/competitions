@@ -1,3 +1,4 @@
+#include "app/send.h"
 #include "galaxy/evaluation.h"
 #include "galaxy/galaxy.h"
 #include "galaxy/message_decoder.h"
@@ -34,7 +35,7 @@
 int main(int argc, char* argv[]) {
   if (argc < 2) {
     cout << "Mode required. Supported modes are: [galaxy, galaxy_no_draw, "
-            "galaxy_test]."
+            "galaxy_test send]."
          << std::endl;
     return -1;
   }
@@ -50,6 +51,9 @@ int main(int argc, char* argv[]) {
     cout << endl;
   } else if (mode == "galaxy_test") {
     return TestGalaxy();
+  } else if (mode == "send") {
+    assert(argc > 2);
+    Send(argv[2]);
   } else {
     cout << "Unknown mode." << endl;
     return -1;
