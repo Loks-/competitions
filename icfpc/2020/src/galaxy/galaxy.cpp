@@ -11,7 +11,7 @@
 #include <string>
 
 namespace {
-std::string path_to_messages = "../icfppc/2020/mfs/";
+std::string path_to_messages = "../icfpc/2020/mfs/";
 bool galaxy_loaded = false;
 };  // namespace
 

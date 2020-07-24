@@ -97,10 +97,10 @@ file ( APPEND ${HACKERRANK_PROXY_C_C}
 add_executable( hackerrank_c ${HACKERRANK_C_SOURCES} ${HACKERRANK_PROXY_C_C} )
 set_target_properties( hackerrank_c PROPERTIES COMPILE_FLAGS "-Wno-unused-result" )
 
-file( GLOB_RECURSE ICFPPC_2020_SOURCES RELATIVE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/icfppc/2020/src/*.cpp" )
-add_executable( icfppc_2020 ${ICFPPC_2020_SOURCES} )
-target_link_libraries( icfppc_2020 ${CMAKE_THREAD_LIBS_INIT} stb OpenSSL::SSL )
-target_include_directories(icfppc_2020 PRIVATE "${PROJECT_SOURCE_DIR}/icfppc/2020/src" "${PROJECT_SOURCE_DIR}/ext_libs" )
+file( GLOB_RECURSE ICFPC_2020_SOURCES RELATIVE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/icfpc/2020/src/*.cpp" )
+add_executable( icfpc_2020 ${ICFPC_2020_SOURCES} )
+target_link_libraries( icfpc_2020 ${CMAKE_THREAD_LIBS_INIT} stb OpenSSL::SSL )
+target_include_directories(icfpc_2020 PRIVATE "${PROJECT_SOURCE_DIR}/icfpc/2020/src" "${PROJECT_SOURCE_DIR}/ext_libs" )
 
 file( GLOB_RECURSE IPCS_SOURCES RELATIVE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/ipcs/*.cpp" )
 list( SORT IPCS_SOURCES )
@@ -233,7 +233,7 @@ foreach( testfile_in ${HACKERRANK_LANGUAGE_C_TESTS} )
 	add_test( NAME ${testshortname} COMMAND hackerrank_c ${solution} ${testfile_in} ${testfile_out} WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} )
 endforeach( testfile_in ${HACKERRANK_LANGUAGE_C_TESTS} )
 
-add_test( NAME icfppc_2020_galaxy COMMAND icfppc_2020 galaxy_test )
+add_test( NAME icfpc_2020_galaxy COMMAND icfpc_2020 galaxy_test )
 
 file( GLOB_RECURSE PROJECT_EULER_TESTS RELATIVE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/tests/project_euler/*.in" )
 list( SORT PROJECT_EULER_TESTS )
