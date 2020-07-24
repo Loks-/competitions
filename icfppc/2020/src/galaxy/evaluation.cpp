@@ -13,6 +13,8 @@
 #include <vector>
 
 namespace {
+bool skip_draw = false;
+
 Node* GetI(std::vector<Node*>& current_path, unsigned index) {
   return (index < current_path.size())
              ? current_path[current_path.size() - index - 1]
@@ -153,19 +155,20 @@ Node* ApplyFunction(Node* node, std::vector<Node*>& current_path) {
         assert(false);
       }
       return p0;
-    case FunctionType::DRAW: {
-      Evaluate(p0->r);
-      assert(IsList(p0->r));
-      p0->data.pic.Clear();
-      for (Node* c = p0->r; !IsNil(c); c = c->r) {
-        assert(c->l->data.type == GlyphType::AP);
-        assert(c->l->l->data.ftype == FunctionType::CONS__PAIR);
-        auto p = GetPair(c->l->r);
-        p0->data.pic.AddPixel(p.first, p.second);
+    case FunctionType::DRAW:
+      if (!skip_draw) {
+        Evaluate(p0->r);
+        assert(IsList(p0->r));
+        p0->data.pic.Clear();
+        for (Node* c = p0->r; !IsNil(c); c = c->r) {
+          assert(c->l->data.type == GlyphType::AP);
+          assert(c->l->l->data.ftype == FunctionType::CONS__PAIR);
+          auto p = GetPair(c->l->r);
+          p0->data.pic.AddPixel(p.first, p.second);
+        }
       }
       p0->data.type = GlyphType::PICTURE;
       return p0;
-    }
     case FunctionType::MULTIPLE_DRAW: {
       Evaluate(p0->r);
       if (IsNil(p0->r)) {
@@ -446,6 +449,8 @@ Node* EvaluateI(Node* node, std::vector<Node*>& current_path) {
   return subtree_changed ? GetI(current_path, 0) : nullptr;
 }
 }  // namespace
+
+void EvaluationSkipDraw(bool _skip_draw) { skip_draw = _skip_draw; }
 
 void ExpandAlias(Node* node) {
   assert(node && node->data.type == GlyphType::ALIAS);

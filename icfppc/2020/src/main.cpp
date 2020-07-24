@@ -1,3 +1,4 @@
+#include "galaxy/evaluation.h"
 #include "galaxy/galaxy.h"
 #include "galaxy/message_decoder.h"
 
@@ -32,14 +33,16 @@
 
 int main(int argc, char* argv[]) {
   if (argc < 2) {
-    cout << "Mode required. Supported modes are: [galaxy, galaxy_test]."
+    cout << "Mode required. Supported modes are: [galaxy, galaxy_no_draw, "
+            "galaxy_test]."
          << std::endl;
     return -1;
   }
   LoadGalaxy();
   string mode = argv[1];
-  if (mode == "galaxy") {
+  if ((mode == "galaxy") || (mode == "galaxy_no_draw")) {
     assert(argc > 2);
+    EvaluationSkipDraw(mode == "galaxy_no_draw");
     MessageDecoder md;
     Expression e = md.DecodeExpression(argv[2]);
     e.Evaluate();
