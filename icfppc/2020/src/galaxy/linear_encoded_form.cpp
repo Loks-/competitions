@@ -82,3 +82,19 @@ Node* LEFDecodeExpression(const LEF& lef) {
   assert(index == lef.size());
   return e.MakeRoot();
 }
+
+std::string LEFToString(const LEF& lef) {
+  std::string s(lef.size(), '0');
+  for (unsigned i = 0; i < lef.size(); ++i) {
+    s[i] = (lef[i] ? '1' : '0');
+  }
+  return s;
+}
+
+LEF StringToLEF(const std::string& s) {
+  LEF lef(s.size());
+  for (unsigned i = 0; i < s.size(); ++i) {
+    lef[i] = (s[i] == '1');
+  }
+  return lef;
+}

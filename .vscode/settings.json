@@ -82,6 +82,10 @@
         "ios": "cpp",
         "locale": "cpp",
         "queue": "cpp",
-        "stack": "cpp"
+        "stack": "cpp",
+        "csignal": "cpp",
+        "regex": "cpp",
+        "shared_mutex": "cpp",
+        "cinttypes": "cpp"
     }
 }

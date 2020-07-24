@@ -9,6 +9,7 @@ set( CMAKE_CXX_STANDARD 14 )
 set( CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_HOME_DIRECTORY}/${BUILD_TYPE_LOWERCASE}/build" )
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror -Wall -Wextra")
 include_directories( PRIVATE "${PROJECT_SOURCE_DIR}" )
+find_package(OpenSSL REQUIRED)
 find_package( Threads )
 
 add_library(stb STATIC ${PROJECT_SOURCE_DIR}/ext_libs/stb/wrapper.cpp)
@@ -98,7 +99,7 @@ set_target_properties( hackerrank_c PROPERTIES COMPILE_FLAGS "-Wno-unused-result
 
 file( GLOB_RECURSE ICFPPC_2020_SOURCES RELATIVE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/icfppc/2020/src/*.cpp" )
 add_executable( icfppc_2020 ${ICFPPC_2020_SOURCES} )
-target_link_libraries( icfppc_2020 ${CMAKE_THREAD_LIBS_INIT} stb )
+target_link_libraries( icfppc_2020 ${CMAKE_THREAD_LIBS_INIT} stb OpenSSL::SSL )
 target_include_directories(icfppc_2020 PRIVATE "${PROJECT_SOURCE_DIR}/icfppc/2020/src" "${PROJECT_SOURCE_DIR}/ext_libs" )
 
 file( GLOB_RECURSE IPCS_SOURCES RELATIVE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/ipcs/*.cpp" )
