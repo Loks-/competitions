@@ -2,6 +2,7 @@
 #include "galaxy/evaluation.h"
 #include "galaxy/galaxy.h"
 #include "galaxy/message_decoder.h"
+#include "tournament/referee.h"
 
 #include "common/stl/base.h"
 
@@ -35,7 +36,7 @@
 int main(int argc, char* argv[]) {
   if (argc < 2) {
     cout << "Mode required. Supported modes are: [galaxy, galaxy_no_draw, "
-            "galaxy_test send]."
+            "galaxy_test play send]."
          << std::endl;
     return -1;
   }
@@ -52,6 +53,9 @@ int main(int argc, char* argv[]) {
   } else if (mode == "galaxy_test") {
     galaxy::LoadGalaxy();
     return galaxy::TestGalaxy();
+  } else if (mode == "play") {
+    tournament::Referee r;
+    r.Play();
   } else if (mode == "send") {
     assert(argc > 2);
     app::Send(argv[2]);
