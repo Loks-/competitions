@@ -1,5 +1,6 @@
 #pragma once
 
+namespace galaxy {
 enum class FunctionType {
   NONE,
   SUCCESSOR = 5,
@@ -36,3 +37,4 @@ enum class FunctionType {
   F38 = 102,
   END
 };
+}  // namespace galaxy

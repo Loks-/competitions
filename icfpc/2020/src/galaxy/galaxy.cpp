@@ -10,6 +10,7 @@
 #include <iostream>
 #include <string>
 
+namespace galaxy {
 namespace {
 std::string path_to_messages = "../icfpc/2020/mfs/";
 bool galaxy_loaded = false;
@@ -67,3 +68,4 @@ int TestGalaxy() {
   }
   return 0;
 }
+}  // namespace galaxy

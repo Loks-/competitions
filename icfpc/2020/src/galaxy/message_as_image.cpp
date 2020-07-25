@@ -9,6 +9,7 @@
 #include <iostream>
 #include <string>
 
+namespace galaxy {
 namespace {
 bool GetPixel(const PNGWrapper& f, unsigned scale, unsigned i, unsigned j) {
   return f.get(0, i * scale, j * scale);
@@ -108,3 +109,4 @@ void MessageAsImage::PrintPNG(const std::string& png_file_name) {
     std::cout << std::endl;
   }
 }
+}  // namespace galaxy

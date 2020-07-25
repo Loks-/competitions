@@ -1,5 +1,6 @@
 #pragma once
 
+namespace galaxy {
 template <class TMatrix>
 class MatrixSlice {
  protected:
@@ -52,3 +53,4 @@ class MatrixSlice {
     return true;
   }
 };
+}  // namespace galaxy

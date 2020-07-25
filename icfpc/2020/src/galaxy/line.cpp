@@ -2,6 +2,7 @@
 
 #include <iostream>
 
+namespace galaxy {
 void Line::Print() {
   for (auto& e : v) {
     e.Print();
@@ -9,3 +10,4 @@ void Line::Print() {
   }
   std::cout << std::endl;
 }
+}  // namespace galaxy

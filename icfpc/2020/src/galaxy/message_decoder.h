@@ -13,6 +13,7 @@
 
 #include <string>
 
+namespace galaxy {
 class GlyphDecoder;
 
 class MessageDecoder {
@@ -38,3 +39,4 @@ class MessageDecoder {
   Line DecodeLine(const std::string& s);
   Message Decode(const MessageAsText& mt);
 };
+}  // namespace galaxy

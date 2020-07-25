@@ -5,6 +5,7 @@
 
 #include "common/base.h"
 
+namespace galaxy {
 LEF LEFEncodeNumber(int64_t value) {
   int64_t avalue = (value < 0) ? -value : value;
   unsigned l = 0;
@@ -98,3 +99,4 @@ LEF StringToLEF(const std::string& s) {
   }
   return lef;
 }
+}  // namespace galaxy

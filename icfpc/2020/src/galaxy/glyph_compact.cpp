@@ -1,4 +1,6 @@
 #include "galaxy/glyph_compact.h"
 
+namespace galaxy {
 GlyphCompact::GlyphCompact() : mask(0) {}
 GlyphCompact::GlyphCompact(uint64_t _mask) : mask(_mask) {}
+}  // namespace galaxy

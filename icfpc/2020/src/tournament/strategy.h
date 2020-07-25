@@ -3,6 +3,7 @@
 #include "tournament/action.h"
 #include "tournament/ship_core.h"
 
+namespace tournament {
 class Strategy {
  protected:
   int role;
@@ -11,3 +12,4 @@ class Strategy {
   ShipCore SelectCore(int budget);
   Actions Run();
 };
+}  // namespace tournament

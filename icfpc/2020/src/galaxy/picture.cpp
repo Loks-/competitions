@@ -4,6 +4,7 @@
 #include <sstream>
 #include <string>
 
+namespace galaxy {
 void Picture::Clear() { v.clear(); }
 
 void Picture::AddPixel(int64_t x, int64_t y) {
@@ -19,3 +20,4 @@ std::string Picture::ToString() const {
   ss << " }";
   return ss.str();
 }
+}  // namespace galaxy

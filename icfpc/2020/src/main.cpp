@@ -39,21 +39,22 @@ int main(int argc, char* argv[]) {
          << std::endl;
     return -1;
   }
-  LoadGalaxy();
   string mode = argv[1];
   if ((mode == "galaxy") || (mode == "galaxy_no_draw")) {
     assert(argc > 2);
-    EvaluationSkipDraw(mode == "galaxy_no_draw");
-    MessageDecoder md;
-    Expression e = md.DecodeExpression(argv[2]);
+    galaxy::LoadGalaxy();
+    galaxy::EvaluationSkipDraw(mode == "galaxy_no_draw");
+    galaxy::MessageDecoder md;
+    auto e = md.DecodeExpression(argv[2]);
     e.Evaluate();
     e.Print();
     cout << endl;
   } else if (mode == "galaxy_test") {
-    return TestGalaxy();
+    galaxy::LoadGalaxy();
+    return galaxy::TestGalaxy();
   } else if (mode == "send") {
     assert(argc > 2);
-    Send(argv[2]);
+    app::Send(argv[2]);
   } else {
     cout << "Unknown mode." << endl;
     return -1;

@@ -4,6 +4,7 @@
 
 #include <iostream>
 
+namespace galaxy {
 Glyph::Glyph()
     : type(GlyphType::UNKNOWN), ftype(FunctionType::NONE), value(0), lef(0) {}
 
@@ -68,3 +69,4 @@ void Glyph::Print() const {
       break;
   }
 }
+}  // namespace galaxy

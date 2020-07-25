@@ -7,6 +7,7 @@
 
 #include <unordered_map>
 
+namespace galaxy {
 namespace {
 std::unordered_map<unsigned, Node*> dict;
 std::unordered_map<FunctionType, Node*> fdict;
@@ -32,3 +33,4 @@ Node* GetFromDictionary(FunctionType ftype) {
   else
     return it->second;
 }
+}  // namespace galaxy

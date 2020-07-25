@@ -1,5 +1,6 @@
 #pragma once
 
+namespace tournament {
 class Location {
  public:
   int x, y;
@@ -9,3 +10,4 @@ class Location {
 
   bool IsValid() const;
 };
+}  // namespace tournament

@@ -4,6 +4,7 @@
 #include "tournament/location_with_speed.h"
 #include "tournament/ship_core.h"
 
+namespace tournament {
 class Ship {
  public:
   int role;
@@ -15,3 +16,4 @@ class Ship {
   int max_fuel_burn_speed;
   Actions applied_commands;
 };
+}  // namespace tournament

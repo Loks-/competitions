@@ -1,5 +1,6 @@
 #pragma once
 
+namespace tournament {
 class ShipCore {
  public:
   int fuel;
@@ -11,3 +12,4 @@ class ShipCore {
   int Size() const;
   int Cost() const;
 };
+}  // namespace tournament

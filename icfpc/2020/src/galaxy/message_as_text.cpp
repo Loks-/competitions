@@ -6,6 +6,7 @@
 #include <iostream>
 #include <string>
 
+namespace galaxy {
 MessageAsText::MessageAsText() {}
 
 MessageAsText::MessageAsText(const std::string& text_file_name) {
@@ -22,3 +23,4 @@ void MessageAsText::ReadText(const std::string& text_file_name) {
   }
   f.close();
 }
+}  // namespace galaxy

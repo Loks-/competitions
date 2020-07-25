@@ -6,21 +6,23 @@
 
 #include <iostream>
 
+namespace app {
 std::string EncodeMessage(const std::string& s) {
-  MessageDecoder md;
+  galaxy::MessageDecoder md;
   auto e = md.DecodeExpression(s);
   auto lef = LEFEncodeNode(e.MakeRoot());
-  return LEFToString(lef);
+  return galaxy::LEFToString(lef);
 }
 
 std::string DecodeMessage(const std::string& s) {
   if (s.empty()) return s;
 
-  auto lef = StringToLEF(s);
-  Node* node = LEFDecodeExpression(lef);
+  auto lef = galaxy::StringToLEF(s);
+  auto node = galaxy::LEFDecodeExpression(lef);
   std::cout << "[RECEIVED] ";
-  Print(node);
+  galaxy::Print(node);
   std::cout << std::endl;
 
   return s;
 }
+}  // namespace app

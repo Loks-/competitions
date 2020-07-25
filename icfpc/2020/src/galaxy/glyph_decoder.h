@@ -9,6 +9,7 @@
 #include <unordered_map>
 #include <vector>
 
+namespace galaxy {
 class GlyphDecoder {
  protected:
   std::vector<uint64_t> rows;
@@ -47,3 +48,4 @@ class GlyphDecoder {
 
   static GlyphDecoder& GetDecoder();
 };
+}  // namespace galaxy

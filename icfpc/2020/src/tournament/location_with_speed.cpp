@@ -6,6 +6,7 @@
 
 #include <cstdlib>
 
+namespace tournament {
 LocationWithSpeed::LocationWithSpeed() : Location(), vx(0), vy(0) {}
 
 LocationWithSpeed::LocationWithSpeed(int _x, int _y, int _vx, int _vy)
@@ -32,3 +33,4 @@ LocationWithSpeed LocationWithSpeed::Prev(const Acceleration& a) const {
   if (my >= mx) ay += Sign(y);
   return LocationWithSpeed(px, py, vx - ax, vy - ay);
 }
+}  // namespace tournament

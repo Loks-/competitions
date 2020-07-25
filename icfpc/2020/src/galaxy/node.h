@@ -4,6 +4,7 @@
 
 #include "common/node.h"
 
+namespace galaxy {
 class Node : public BaseNode {
  public:
   Glyph data;
@@ -21,3 +22,4 @@ bool IsPairOrNil(Node* node);
 bool IsList(Node* node);
 
 void Print(Node* node);
+}  // namespace galaxy

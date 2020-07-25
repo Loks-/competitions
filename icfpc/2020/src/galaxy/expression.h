@@ -4,6 +4,7 @@
 
 #include <vector>
 
+namespace galaxy {
 class Node;
 
 class Expression {
@@ -27,3 +28,4 @@ class Expression {
   bool operator==(const Expression& r) const;
   bool operator!=(const Expression& r) const;
 };
+}  // namespace galaxy

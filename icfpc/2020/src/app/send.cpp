@@ -8,6 +8,7 @@
 #include <iostream>
 #include <string>
 
+namespace app {
 std::string SendRaw(const std::string& s) {
   std::cout << "[RAW SEND] " << s << std::endl;
 
@@ -41,3 +42,4 @@ std::string Send(const std::string& s) {
   std::cout << "[RECEIVED] " << r << std::endl;
   return r;
 }
+}  // namespace app

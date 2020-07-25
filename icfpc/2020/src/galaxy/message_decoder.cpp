@@ -6,6 +6,7 @@
 #include "common/linear_algebra/bool/vector.h"
 #include "common/string/utils/split.h"
 
+namespace galaxy {
 MessageDecoder::MessageDecoder() : gd(GlyphDecoder::GetDecoder()) {}
 
 MessageDecoder::MessageDecoder(GlyphDecoder& _gd) : gd(_gd) {}
@@ -138,3 +139,4 @@ Message MessageDecoder::Decode(const MessageAsText& mt) {
   for (auto& l : mt.m) m.v.push_back(DecodeLine(l));
   return m;
 }
+}  // namespace galaxy

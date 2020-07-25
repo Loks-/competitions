@@ -6,6 +6,7 @@
 
 #include <algorithm>
 
+namespace galaxy {
 void Message::Process() {
   // Manual functions
   //   aliases[1117] = Expression(Glyph(FunctionType::POWER_OF_TWO));
@@ -30,3 +31,4 @@ void Message::Process() {
 void Message::Print() {
   for (auto& l : v) l.Print();
 }
+}  // namespace galaxy

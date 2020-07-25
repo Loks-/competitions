@@ -4,6 +4,7 @@
 
 #include <vector>
 
+namespace galaxy {
 class Message {
  public:
   std::vector<Line> v;
@@ -11,3 +12,4 @@ class Message {
   void Process();
   void Print();
 };
+}  // namespace galaxy

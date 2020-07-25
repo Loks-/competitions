@@ -2,6 +2,7 @@
 
 #include "common/base.h"
 
+namespace tournament {
 std::string Action::EncodePair(int x, int y) {
   return "ap ap vec " + std::to_string(x) + " " + std::to_string(y);
 }
@@ -37,3 +38,4 @@ std::string Encode(const Actions& actions) {
   s += ")";
   return s;
 }
+}  // namespace tournament

@@ -12,6 +12,7 @@
 #include <utility>
 #include <vector>
 
+namespace galaxy {
 namespace {
 bool skip_draw = false;
 
@@ -510,3 +511,4 @@ void Evaluate(Node* node) {
   EvaluateI(node, v);
   assert(v.size() == 0);
 }
+}  // namespace galaxy

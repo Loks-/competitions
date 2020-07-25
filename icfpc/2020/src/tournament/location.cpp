@@ -4,6 +4,7 @@
 
 #include <cstdlib>
 
+namespace tournament {
 Location::Location() : x(0), y(0) {}
 Location::Location(int _x, int _y) : x(_x), y(_y) {}
 
@@ -12,3 +13,4 @@ bool Location::IsValid() const {
   return (ax < FIELD_SIZE) && (ay < FIELD_SIZE) &&
          ((ax > PLANET_SIZE) || (ay > PLANET_SIZE));
 }
+}  // namespace tournament

@@ -2,6 +2,7 @@
 
 #include "tournament/world.h"
 
+namespace tournament {
 ShipCore Strategy::SelectCore(int budget) {
   ShipCore s;
   s.lasers = 0;
@@ -14,3 +15,4 @@ ShipCore Strategy::SelectCore(int budget) {
 }
 
 Actions Strategy::Run() { return {}; }
+}  // namespace tournament

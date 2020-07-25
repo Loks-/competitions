@@ -4,6 +4,7 @@
 
 #include <string>
 
+namespace galaxy {
 class MessageAsImage {
  public:
   const unsigned png_scale = 4;
@@ -18,3 +19,4 @@ class MessageAsImage {
   void Print() const;
   static void PrintPNG(const std::string& png_file_name);
 };
+}  // namespace galaxy

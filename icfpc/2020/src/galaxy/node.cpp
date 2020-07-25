@@ -8,6 +8,7 @@
 
 #include <iostream>
 
+namespace galaxy {
 namespace {
 NodesManager<Node> manager(1000);
 
@@ -76,3 +77,4 @@ void Print(Node* node) {
   auto& gd = GlyphDecoder::GetDecoder();
   PrintI(node, gd);
 }
+}  // namespace galaxy

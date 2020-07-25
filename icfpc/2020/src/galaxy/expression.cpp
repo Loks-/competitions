@@ -12,6 +12,7 @@
 #include <iostream>
 #include <vector>
 
+namespace galaxy {
 namespace {
 void MakeVectorI(Node* node, std::vector<Glyph>& v) {
   assert(node);
@@ -56,15 +57,16 @@ void Expression::MakeVector() {
 
 void Expression::Evaluate() {
   if (!root) MakeRoot();
-  ::Evaluate(root);
+  galaxy::Evaluate(root);
   MakeVector();
 }
 
 void Expression::Print() {
   if (!root) MakeRoot();
-  ::Print(root);
+  galaxy::Print(root);
 }
 
 bool Expression::operator==(const Expression& r) const { return v == r.v; }
 
 bool Expression::operator!=(const Expression& r) const { return !(*this == r); }
+}  // namespace galaxy

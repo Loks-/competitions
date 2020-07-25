@@ -1,5 +1,6 @@
 #pragma once
 
+namespace galaxy {
 enum class GlyphType {
   NUMBER = 0,
   ONE,
@@ -14,3 +15,4 @@ enum class GlyphType {
   UNKNOWN,
   END
 };
+}  // namespace galaxy

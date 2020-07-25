@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 
+namespace galaxy {
 class Node;
 
 using LEF = std::vector<bool>;
@@ -21,3 +22,4 @@ Node* LEFDecodeExpression(const LEF& lef);
 
 std::string LEFToString(const LEF& lef);
 LEF StringToLEF(const std::string& s);
+}  // namespace galaxy

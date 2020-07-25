@@ -7,6 +7,7 @@
 
 #include "common/base.h"
 
+namespace galaxy {
 class Glyph {
  public:
   GlyphType type;
@@ -26,3 +27,4 @@ class Glyph {
 
   void Print() const;
 };
+}  // namespace galaxy

@@ -2,6 +2,7 @@
 
 #include "tournament/location.h"
 
+namespace tournament {
 class Acceleration;
 
 class LocationWithSpeed : public Location {
@@ -16,3 +17,4 @@ class LocationWithSpeed : public Location {
   LocationWithSpeed Prev() const;
   LocationWithSpeed Prev(const Acceleration& a) const;
 };
+}  // namespace tournament

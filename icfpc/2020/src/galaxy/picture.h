@@ -6,6 +6,7 @@
 #include <utility>
 #include <vector>
 
+namespace galaxy {
 class Picture {
  protected:
   std::vector<std::pair<int64_t, int64_t>> v;
@@ -16,3 +17,4 @@ class Picture {
 
   std::string ToString() const;
 };
+}  // namespace galaxy

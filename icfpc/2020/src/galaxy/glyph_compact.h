@@ -2,6 +2,7 @@
 
 #include "common/base.h"
 
+namespace galaxy {
 // We assume that max size for glyph is 8*8.
 class GlyphCompact {
  public:
@@ -10,3 +11,4 @@ class GlyphCompact {
   GlyphCompact();
   GlyphCompact(uint64_t _mask);
 };
+}  // namespace galaxy

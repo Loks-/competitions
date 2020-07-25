@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 
+namespace galaxy {
 class MessageAsText {
  public:
   std::vector<std::string> m;
@@ -13,3 +14,4 @@ class MessageAsText {
 
   void ReadText(const std::string& text_file_name);
 };
+}  // namespace galaxy

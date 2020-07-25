@@ -7,6 +7,7 @@
 #include <string>
 #include <vector>
 
+namespace tournament {
 class Action {
  public:
   enum Type { ACCELERATE, DETONATE, SHOOT, SPLIT };
@@ -29,3 +30,4 @@ class Action {
 using Actions = std::vector<Action>;
 
 std::string Encode(const Actions& actions);
+}  // namespace tournament

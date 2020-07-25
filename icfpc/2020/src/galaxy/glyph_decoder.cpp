@@ -5,6 +5,7 @@
 
 #include <vector>
 
+namespace galaxy {
 namespace {
 uint64_t MASK_DOT = 1 << 8;
 
@@ -271,3 +272,4 @@ std::string GlyphDecoder::ToString(const Glyph& g) const {
 }
 
 GlyphDecoder& GlyphDecoder::GetDecoder() { return gd; }
+}  // namespace galaxy
