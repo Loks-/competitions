@@ -12,32 +12,31 @@ namespace galaxy {
 namespace {
 NodesManager<Node> manager(1000);
 
-void PrintI(Node* node, GlyphDecoder& gd);
+void PrintI(Node* node, GlyphDecoder& gd, std::ostream& s);
 
-void PrintListI(Node* node, bool first, GlyphDecoder& gd) {
+void PrintListI(Node* node, bool first, GlyphDecoder& gd, std::ostream& s) {
   if (IsNil(node)) {
-    std::cout << (first ? "( " : "") << ") ";
+    s << (first ? "( " : "") << ") ";
   } else {
     assert(IsPair(node));
-    std::cout << (first ? "( " : ", ");
-    PrintI(node->l->r, gd);
-    PrintListI(node->r, false, gd);
+    s << (first ? "( " : ", ");
+    PrintI(node->l->r, gd, s);
+    PrintListI(node->r, false, gd, s);
   }
 }
 
-void PrintI(Node* node, GlyphDecoder& gd) {
+void PrintI(Node* node, GlyphDecoder& gd, std::ostream& s) {
   assert(node);
   if (IsList(node)) {
-    PrintListI(node, true, gd);
+    PrintListI(node, true, gd, s);
   } else {
-    std::cout << gd.ToString(node->data) << " ";
+    s << gd.ToString(node->data) << " ";
     if (node->data.type == GlyphType::AP) {
-      PrintI(node->l, gd);
-      PrintI(node->r, gd);
+      PrintI(node->l, gd, s);
+      PrintI(node->r, gd, s);
     }
   }
 }
-
 }  // namespace
 
 Node* NewNode(const Glyph& g) {
@@ -73,8 +72,11 @@ bool IsList(Node* node) {
   return false;
 }
 
-void Print(Node* node) {
+void Print(Node* node) { Print(node, std::cout); }
+
+void Print(Node* node, std::ostream& s) {
   auto& gd = GlyphDecoder::GetDecoder();
-  PrintI(node, gd);
+  PrintI(node, gd, s);
 }
+
 }  // namespace galaxy

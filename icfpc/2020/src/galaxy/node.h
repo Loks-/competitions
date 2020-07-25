@@ -4,6 +4,8 @@
 
 #include "common/node.h"
 
+#include <ostream>
+
 namespace galaxy {
 class Node : public BaseNode {
  public:
@@ -22,4 +24,5 @@ bool IsPairOrNil(Node* node);
 bool IsList(Node* node);
 
 void Print(Node* node);
+void Print(Node* node, std::ostream& s);
 }  // namespace galaxy
