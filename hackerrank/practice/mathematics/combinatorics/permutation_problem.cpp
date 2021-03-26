@@ -8,7 +8,6 @@
 using TFactorial = modular::mstatic::Factorial<TModularD>;
 
 int main_permutation_problem() {
-  const uint64_t M = TModularD::GetMod();
   TFactorial f;
   unsigned maxd = 11, maxn = local_run ? 10 : 1001;
   vector<vector<vector<TModularD>>> v(

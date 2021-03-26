@@ -12,3 +12,6 @@ class TFakeUnsigned {};
 
 template <class T>
 class TFakeType {};
+
+template <class T>
+inline void FakeUse(const T&) {}

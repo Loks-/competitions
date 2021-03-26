@@ -1,6 +1,7 @@
 #pragma once
 
 #include "common/graph/graph_ei.h"
+
 #include <algorithm>
 #include <vector>
 
@@ -10,9 +11,9 @@ namespace distance {
 // https://en.wikipedia.org/wiki/Floyd%E2%80%93Warshall_algorithm
 // Time: O(V^3)
 template <class TGraph, class TEdgeCostFunction, class TEdgeCost>
-std::vector<std::vector<TEdgeCost>> FloydWarshall(const TGraph& graph,
-                                                  const TEdgeCostFunction& f,
-                                                  const TEdgeCost& max_cost) {
+inline std::vector<std::vector<TEdgeCost>> FloydWarshall(
+    const TGraph& graph, const TEdgeCostFunction& f,
+    const TEdgeCost& max_cost) {
   unsigned N = graph.Size();
   std::vector<std::vector<TEdgeCost>> vd(N,
                                          std::vector<TEdgeCost>(N, max_cost));

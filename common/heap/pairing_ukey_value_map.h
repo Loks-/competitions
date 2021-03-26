@@ -3,6 +3,7 @@
 #include "common/base.h"
 #include "common/heap/pairing.h"
 #include "common/nodes_manager_fixed_size.h"
+
 #include <functional>
 #include <vector>
 
@@ -35,7 +36,8 @@ class PairingUKeyValueMap
   TNode* GetNode(unsigned key) { return manager.NodeByRawIndex(key); }
 
  public:
-  PairingUKeyValueMap(unsigned ukey_size) : TBase(manager), manager(ukey_size) {
+  explicit PairingUKeyValueMap(unsigned ukey_size)
+      : TBase(manager), manager(ukey_size) {
     for (unsigned i = 0; i < ukey_size; ++i) SetUnused(manager.New());
   }
 

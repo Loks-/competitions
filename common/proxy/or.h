@@ -10,7 +10,7 @@ class Or : public Base<TValue> {
   using TSelf = Or<TValue>;
 
   Or() : TBase() {}
-  Or(const TValue& _data) : TBase(_data) {}
+  explicit Or(const TValue& _data) : TBase(_data) {}
 
   TSelf& operator+=(const TSelf& r) {
     TBase::data |= r.data;

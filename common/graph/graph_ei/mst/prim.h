@@ -1,6 +1,7 @@
 #pragma once
 
 #include "common/heap/pairing_ukey_value_map.h"
+
 #include <utility>
 #include <vector>
 
@@ -10,7 +11,7 @@ namespace mst {
 // https://en.wikipedia.org/wiki/Prim%27s_algorithm
 // Time: O((V + E) log V)
 template <class TGraph, class TEdgeCostFunction>
-std::pair<unsigned, typename TEdgeCostFunction::TEdgeCost> Prim(
+inline std::pair<unsigned, typename TEdgeCostFunction::TEdgeCost> Prim(
     const TGraph& graph, const TEdgeCostFunction& f,
     typename TEdgeCostFunction::TEdgeCost max_cost, unsigned source = 0) {
   using TEdgeCost = typename TEdgeCostFunction::TEdgeCost;

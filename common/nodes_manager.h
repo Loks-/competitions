@@ -1,5 +1,7 @@
 #pragma once
 
+#include "common/base.h"
+
 #include <deque>
 #include <stack>
 
@@ -10,19 +12,21 @@ class NodesManager {
 
  protected:
   std::deque<TNode> nodes;
-  unsigned used_nodes;
+  size_t used_nodes;
   std::stack<TNode*> released_nodes;
 
  public:
-  NodesManager(unsigned reserve_nodes) : nodes(reserve_nodes), used_nodes(0) {}
+  explicit NodesManager(size_t reserve_nodes)
+      : nodes(reserve_nodes), used_nodes(0) {}
+  NodesManager() : NodesManager(0) {}
 
-  void Reserve(unsigned new_max_nodes) {
+  void Reserve(size_t new_max_nodes) {
     if (new_max_nodes > nodes.size()) {
-      nodes.resize(std::max(new_max_nodes, unsigned(2 * nodes.size())));
+      nodes.resize(std::max(new_max_nodes, 2 * nodes.size()));
     }
   }
 
-  void ReserveAdditional(unsigned new_nodes) {
+  void ReserveAdditional(size_t new_nodes) {
     if (Reserved() < new_nodes) {
       Reserve(Used() + new_nodes);
     }
@@ -48,14 +52,12 @@ class NodesManager {
     released_nodes.push(p);
   }
 
-  unsigned Size() const { return unsigned(nodes.size()); }
+  size_t Size() const { return nodes.size(); }
+  size_t Used() const { return used_nodes - released_nodes.size(); }
+  size_t Reserved() const { return Size() - Used(); }
 
-  unsigned Used() const { return used_nodes - unsigned(released_nodes.size()); }
-
-  unsigned Reserved() const { return Size() - Used(); }
-
-  TNode* NodeByRawIndex(unsigned index) { return &(nodes[index]); }
-  const TNode* NodeByRawIndex(unsigned index) const { return &(nodes[index]); }
+  TNode* NodeByRawIndex(size_t index) { return &(nodes[index]); }
+  const TNode* NodeByRawIndex(size_t index) const { return &(nodes[index]); }
 
   void ResetNodes() {
     std::stack<TNode*>().swap(released_nodes);

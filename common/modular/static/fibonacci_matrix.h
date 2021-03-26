@@ -2,6 +2,7 @@
 
 #include "common/base.h"
 #include "common/linear_algebra/matrix_static_size.h"
+
 #include <utility>
 
 namespace modular {
@@ -13,12 +14,7 @@ class FibonacciMatrix {
 
   // Return { F_{n-1}, F_n }.
   static std::pair<TModular, TModular> GetPU(uint64_t n) {
-    TMatrix transition;
-    transition(0, 0) = 0;
-    transition(0, 1) = 1;
-    transition(1, 0) = 1;
-    transition(1, 1) = 1;
-    TMatrix fn = transition.PowU(n);
+    TMatrix fn = (TMatrix{0, 1, 1, 1}).PowU(n);
     return {fn(0, 0), fn(0, 1)};
   }
 

@@ -2,6 +2,7 @@
 
 #include "common/base.h"
 #include "common/generating_function/generating_function.h"
+
 #include <vector>
 
 namespace gf {
@@ -18,7 +19,8 @@ class Partition : public GeneratingFunction<TValue> {
   }
 
  public:
-  Partition(PGeneratingFunction<TValue> _f) : f(_f), vcache({{TValue(1)}}) {}
+  explicit Partition(PGeneratingFunction<TValue> _f)
+      : f(_f), vcache({{TValue(1)}}) {}
 
   void Adjust(uint64_t n) override {
     f->Adjust(n);

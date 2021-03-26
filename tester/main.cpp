@@ -1,7 +1,7 @@
-#include "common/base.h"
-
 #include "tester/testers.h"
+
 #include "common/assert_exception.h"
+#include "common/base.h"
 
 #include <iostream>
 
@@ -19,6 +19,8 @@ int main(int nargs, char **pargs) {
       Assert(TestBinarySearchTree(false));
     else if (tester_mode == "convergent")
       Assert(TestContinuedFractionConvergent());
+    else if (tester_mode == "find_primes_for_modular_fft")
+      FindPrimesForModularFFT(10);
     else if (tester_mode == "generating_function")
       Assert(TestGeneratingFunction());
     else if (tester_mode == "graph_distance_positive_cost")
@@ -27,6 +29,8 @@ int main(int nargs, char **pargs) {
       Assert(TestHeap(false));
     else if (tester_mode == "interpolation")
       Assert(TestInterpolation());
+    else if (tester_mode == "long_mult")
+      Assert(TestLongMult());
     else if (tester_mode == "mertens")
       Assert(TestMertens());
     else if (tester_mode == "mertens_compact")

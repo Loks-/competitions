@@ -5,6 +5,7 @@
 #include "common/factorization/utils/factorization_base.h"
 #include "common/modular/arithmetic.h"
 #include "common/modular/utils/primitive_root.h"
+
 #include <vector>
 
 // Calculate discrete logarithm.
@@ -40,7 +41,7 @@ class DiscreteLogFullMap {
   DiscreteLogFullMap(unsigned prime, const TFactorization& p1_factorization)
       : DiscreteLogFullMap(
             prime, FindSmallestPrimitiveRoot(prime, p1_factorization)) {}
-  DiscreteLogFullMap(unsigned prime)
+  explicit DiscreteLogFullMap(unsigned prime)
       : DiscreteLogFullMap(prime, FactorizeBase(prime - 1)) {}
 
   unsigned Log(uint64_t x) const {

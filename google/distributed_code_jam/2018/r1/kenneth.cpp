@@ -1,4 +1,5 @@
 #include "kenneth.h"
+
 #include "message.h"
 
 #include "common/factorization/utils/divisors.h"
@@ -29,7 +30,7 @@ int main_kenneth() {
     mc *= mm;
   }
   TModularD mmsum = mm.PowU(l) - one;
-  assert(mmsum.Get() != 0);
+  assert(mmsum);
 
   if (node_id != 0) {
     Receive(node_id - 1);

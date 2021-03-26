@@ -16,8 +16,8 @@ inline Function<TValueF, TValueTerm> MakeX() {
 
 // x - c
 template <class TValueF, class TValueTerm>
-inline Function<TValueF, TValueTerm> MakeLinear(const TValueF& c) {
-  return MakeX<TValueF, TValueTerm>() - c;
+inline Function<TValueF, TValueTerm> MakeLinear(const TValueTerm& c) {
+  return MakeX<TValueF, TValueTerm>() - TValueF(c);
 }
 
 inline DFunction DMakeX() { return MakeX<double, double>(); }

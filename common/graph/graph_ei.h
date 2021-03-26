@@ -2,6 +2,7 @@
 
 #include "common/graph/edge.h"
 #include "common/graph/graph.h"
+
 #include <iostream>
 #include <vector>
 
@@ -39,7 +40,7 @@ class GraphEI : public Graph<_directed_edges> {
     if (directed_edges) inverted_edges_info.resize(nvertices);
   }
 
-  GraphEI(unsigned _nvertices = 0) { Resize(_nvertices); }
+  explicit GraphEI(unsigned _nvertices = 0) { Resize(_nvertices); }
 
   TEdges EdgesEI(unsigned from) const {
     return TEdges(TBase::edges[from], edges_info[from]);

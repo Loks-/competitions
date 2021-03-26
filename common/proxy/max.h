@@ -1,6 +1,7 @@
 #pragma once
 
 #include "common/proxy/base.h"
+
 #include <algorithm>
 #include <limits>
 
@@ -12,7 +13,7 @@ class Max : public Base<TValue> {
   using TSelf = Max<TValue>;
 
   Max() : TBase(std::numeric_limits<TValue>::lowest()) {}
-  Max(const TValue& _data) : TBase(_data) {}
+  explicit Max(const TValue& _data) : TBase(_data) {}
 
   TSelf& operator+=(const TSelf& r) {
     TBase::data = std::max(TBase::data, r.data);

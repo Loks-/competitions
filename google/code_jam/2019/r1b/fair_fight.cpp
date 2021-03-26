@@ -34,22 +34,22 @@ int main_fair_fight() {
     for (int i = 0; i < n; ++i) {
       int k0 = vv[0][i];
       tree.SplitByKey(vh[0], k0, p0, p1);
-      int l0 = p1->info.subtree_max;
+      int l0 = p1->info.max;
       vh[0] = tree.Join(p0, p1);
       tree.SplitByKey(vh[1], k0 + 1, p0, p1);
-      int r0 = p1->info.subtree_min;
+      int r0 = p1->info.min;
       vh[1] = tree.Join(p0, p1);
       tree.SplitByKey(vh[2], k0 + k + 1, p0, p1);
-      int l1 = p1->info.subtree_max;
+      int l1 = p1->info.max;
       vh[2] = tree.Join(p0, p1);
       tree.SplitByKey(vh[3], k0 + k + 1, p0, p1);
-      int r1 = p1->info.subtree_min;
+      int r1 = p1->info.min;
       vh[3] = tree.Join(p0, p1);
       tree.SplitByKey(vh[2], k0 - k, p0, p1);
-      int l2 = p1->info.subtree_max;
+      int l2 = p1->info.max;
       vh[2] = tree.Join(p0, p1);
       tree.SplitByKey(vh[3], k0 - k, p0, p1);
-      int r2 = p1->info.subtree_min;
+      int r2 = p1->info.min;
       vh[3] = tree.Join(p0, p1);
       l1 = max(l0, l1);
       l2 = max(l0, l2);

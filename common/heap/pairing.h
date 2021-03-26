@@ -4,6 +4,7 @@
 #include "common/node.h"
 #include "common/nodes_manager.h"
 #include "common/template.h"
+
 #include <functional>
 
 namespace heap {
@@ -40,7 +41,7 @@ class Pairing {
   bool Compare(Node* l, Node* r) const { return compare(l->value, r->value); }
 
  public:
-  Pairing(TNodesManager& _nodes_manager)
+  explicit Pairing(TNodesManager& _nodes_manager)
       : nodes_manager(_nodes_manager), head(nullptr), size(0) {}
 
   TSelf Make() const { return TSelf(nodes_manager); }

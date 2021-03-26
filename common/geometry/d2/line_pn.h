@@ -7,7 +7,7 @@
 
 namespace geometry {
 namespace d2 {
-// Similar to Plane class but in point-normal form.
+// Similar to Line class but in point-normal form.
 template <class T>
 class LinePN {
  public:

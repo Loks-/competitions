@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/maximum-cost-queries
 
-#include "common/disjoint_set.h"
+#include "common/data_structures/disjoint_set.h"
 #include "common/stl/base.h"
 
 #include <map>
@@ -10,7 +10,7 @@ int main_super_maximum_cost_queries() {
   mpaths[0] = 0;
   unsigned n, q;
   cin >> n >> q;
-  DisjointSet ds(n + 1);
+  ds::DisjointSet djs(n + 1);
   vector<tuple<unsigned, unsigned, unsigned>> vt;
   for (unsigned i = 1; i < n; ++i) {
     unsigned u, v, w;
@@ -19,11 +19,11 @@ int main_super_maximum_cost_queries() {
   }
   sort(vt.begin(), vt.end());
   for (auto t : vt) {
-    unsigned r1 = ds.Find(get<1>(t));
-    unsigned r2 = ds.Find(get<2>(t));
+    unsigned r1 = djs.Find(get<1>(t));
+    unsigned r2 = djs.Find(get<2>(t));
     if (r1 != r2) {
-      mpaths[get<0>(t)] += ds.GetSize(r1) * ds.GetSize(r2);
-      ds.Union(r1, r2);
+      mpaths[get<0>(t)] += djs.GetSize(r1) * djs.GetSize(r2);
+      djs.Union(r1, r2);
     }
   }
   uint64_t s = 0;

@@ -11,7 +11,7 @@ class Base {
   TValue data;
 
  public:
-  Base(const TValue& _data = TValue()) : data(_data) {}
+  explicit Base(const TValue& _data = TValue()) : data(_data) {}
   const TValue& Get() const { return data; }
   TValue& Get() { return data; }
   void Set(const TValue& _data) { data = _data; }

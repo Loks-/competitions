@@ -1,7 +1,7 @@
 // https://www.hackerrank.com/challenges/pairs-again
 
+#include "common/data_structures/unsigned_set.h"
 #include "common/stl/base.h"
-#include "common/unsigned_set.h"
 
 int main_satisfactory_pairs() {
   unsigned n;
@@ -10,7 +10,7 @@ int main_satisfactory_pairs() {
   for (unsigned i = n - 1; i; --i) {
     for (unsigned ix = i; ix < n; ix += i) vvd[ix].push_back(i);
   }
-  UnsignedSet us(n);
+  ds::UnsignedSet us(n);
   uint64_t total = 0;
   for (unsigned i = 1; i < n; ++i) {
     for (unsigned ix = i; ix < n; ix += i) {

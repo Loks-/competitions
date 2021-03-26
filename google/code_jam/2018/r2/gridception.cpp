@@ -1,28 +1,28 @@
-#include "common/disjoint_set.h"
+#include "common/data_structures/disjoint_set.h"
 #include "common/stl/base.h"
 
 namespace {
-unsigned MaxSize(DisjointSet& ds) {
-  auto vr = ds.GetRepresentatives();
+unsigned MaxSize(ds::DisjointSet& djs) {
+  auto vr = djs.GetRepresentatives();
   unsigned msize = 1;
-  for (unsigned r : vr) msize = max(msize, ds.GetSize(r));
+  for (unsigned r : vr) msize = max(msize, djs.GetSize(r));
   return msize;
 }
 
 unsigned CheckB(const vector<string>& v, unsigned R, unsigned C) {
-  DisjointSet ds(R * C);
+  ds::DisjointSet djs(R * C);
   for (unsigned i = 0; i < R; ++i) {
     for (unsigned j = 0; j < C; ++j) {
       if (v[i][j] != 'B') continue;
       if ((i + 1 < R) && (v[i + 1][j] == 'B')) {
-        ds.Union(i * C + j, (i + 1) * C + j);
+        djs.Union(i * C + j, (i + 1) * C + j);
       }
       if ((j + 1 < C) && (v[i][j + 1] == 'B')) {
-        ds.Union(i * C + j, i * C + j + 1);
+        djs.Union(i * C + j, i * C + j + 1);
       }
     }
   }
-  return MaxSize(ds);
+  return MaxSize(djs);
 }
 
 void Invert(vector<string>& v, unsigned i0, unsigned i1, unsigned j0,

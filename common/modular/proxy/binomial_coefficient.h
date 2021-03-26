@@ -6,6 +6,7 @@
 #include "common/modular/utils/merge_remainders.h"
 #include "common/modular_proxy.h"
 #include "common/numeric/utils/pow.h"
+
 #include <tuple>
 #include <vector>
 
@@ -76,7 +77,7 @@ class BinomialCoefficient {
       factorial_proxies_composite;
 
  public:
-  BinomialCoefficient(uint64_t n) {
+  explicit BinomialCoefficient(uint64_t n) {
     TFactorization nf(FactorizeBase(n));
     for (auto fp : nf) {
       if (fp.power == 1)

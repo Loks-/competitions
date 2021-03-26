@@ -1,10 +1,10 @@
+#include "common/data_structures/unsigned_set.h"
 #include "common/numeric/utils/pow.h"
 #include "common/stl/base.h"
-#include "common/unsigned_set.h"
 
 int main_zilionim() {
   uint64_t B = PowU<uint64_t>(10, 10), N = PowU<uint64_t>(10, 12);
-  UnsignedSet us(100);
+  ds::UnsignedSet us(100);
   vector<pair<uint64_t, unsigned>> vp;
   vp.push_back({0, 0});
   vp.push_back({B - 1, 0});
@@ -39,7 +39,7 @@ int main_zilionim() {
 
     auto Move = [&]() {
       for (unsigned i = 0; i < v.size(); ++i) {
-        if ((v[i].first <= M) && (v[i].second >= M + B)) {
+        if ((v[i].first <= uint64_t(M)) && (v[i].second >= M + B)) {
           v.push_back({M + B, v[i].second});
           v[i].second = M;
           break;

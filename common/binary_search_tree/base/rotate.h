@@ -3,6 +3,7 @@
 #include "common/base.h"
 
 namespace bst {
+namespace base {
 template <class TNode, bool update_child, bool apply_action>
 inline void Rotate(TNode* child, TNode* parent, TNode* gparent) {
   assert(child && parent);
@@ -35,4 +36,5 @@ inline bool RotateUp(TNode* node) {
   Rotate<TNode, update_child, apply_action>(node, node->p, node->p->p);
   return true;
 }
+}  // namespace base
 }  // namespace bst

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "common/linear_algebra/vector_static_size.h"
+
 #include <algorithm>
 
 namespace la {
@@ -23,7 +24,9 @@ class MatrixStaticSize : public VectorStaticSize<TTValue, _rows * _columns> {
   unsigned Columns() const { return columns; }
 
   MatrixStaticSize() {}
-  MatrixStaticSize(const TValue& v) { TBase::Fill(v); }
+  explicit MatrixStaticSize(const TValue& v) : TBase(v) {}
+  MatrixStaticSize(std::initializer_list<TValue> l) : TBase(l) {}
+
   TSelf& operator=(const TValue& v) {
     TBase::Fill(v);
     return *this;
@@ -83,7 +86,7 @@ class MatrixStaticSize : public VectorStaticSize<TTValue, _rows * _columns> {
     for (unsigned i = 0; i < rows; ++i) {
       for (const_iterator pB = v.begin(), pBend = v.end(); pB < pBend;) {
         const TValue& vA = *pA++;
-        for (iterator pC = pC = output.GetP(i, 0), pCend = pC + columns2;
+        for (iterator pC = output.GetP(i, 0), pCend = pC + columns2;
              pC < pCend;)
           *pC++ += *pB++ * vA;
       }

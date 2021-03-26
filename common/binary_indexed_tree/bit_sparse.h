@@ -1,6 +1,7 @@
 #pragma once
 
 #include "common/base.h"
+
 #include <unordered_map>
 
 template <class TValue = int64_t>
@@ -10,7 +11,7 @@ class BITSparse {
   std::unordered_map<uint64_t, TValue> values;
 
  public:
-  BITSparse(uint64_t _size) : size(_size) {}
+  explicit BITSparse(uint64_t _size) : size(_size) {}
 
   void Reset(uint64_t new_size) {
     size = new_size;

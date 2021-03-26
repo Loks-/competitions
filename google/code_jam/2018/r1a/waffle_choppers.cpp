@@ -21,7 +21,7 @@ int main_waffle_choppers() {
         vC[j] += v[i][j];
       }
     }
-    if (total != 0) {
+    if (total) {
       b = b && ((total % ((H + 1) * (V + 1))) == 0);
       vector<unsigned> vRs(1, 0), vCs(1, 0);
       if (b) {

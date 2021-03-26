@@ -14,12 +14,13 @@ int main_largest_rectangle() {
   for (unsigned i = 0; i < N; ++i) {
     cin >> h;
     vnodes[i] = tree.New();
-    vnodes[i]->height = ~h;
+    vnodes[i]->info.treap_height = ~h;
   }
   tree.BuildTree(vnodes);
   uint64_t output = 0;
   for (TNode* p : vnodes)
-    output = max(output, unsigned(~p->height) * uint64_t(p->info.size));
+    output =
+        max(output, unsigned(~p->info.treap_height) * uint64_t(p->info.size));
   cout << output << endl;
   return 0;
 }

@@ -11,20 +11,20 @@ class SolutionJumpingOverWalls {
   const int xsize = 7, ysize = 7, dsize = int(vd.size());
 
   vector<bool> direction_used;
-  vector<vector<unsigned>> vused;
+  vector<vector<int>> vused;
 
   void Init() {
     direction_used.resize(dsize);
     fill(direction_used.begin(), direction_used.end(), false);
     vused.resize(xsize);
-    fill(vused.begin(), vused.end(), vector<unsigned>(ysize, 0));
+    fill(vused.begin(), vused.end(), vector<int>(ysize, 0));
   }
 
   bool Inside(int x, int y) const {
     return (x >= 0) && (x < xsize) && (y >= 0) && (y < ysize);
   }
 
-  bool ValidToSet(int x, int y, unsigned d) const {
+  bool ValidToSet(int x, int y, int d) const {
     if (vused[x][y] != 0) return false;
     for (int di = 0; di < dsize; ++di) {
       if (di == d) continue;
@@ -41,7 +41,7 @@ class SolutionJumpingOverWalls {
     cout << xsize << " " << ysize << endl;
     for (int x = 0; x < xsize; ++x) {
       for (int y = 0; y < ysize; ++y) {
-        unsigned u = vused[x][y];
+        int u = vused[x][y];
         cout << ((u == 0) ? '#'
                           : (u == 1) ? 'A' : (u == dsize + 1) ? 'B' : '.');
       }
@@ -54,7 +54,7 @@ class SolutionJumpingOverWalls {
       PrintSolution();
       return true;
     }
-    vector<unsigned> vda;
+    vector<int> vda;
     for (int i = 0; i < dsize; ++i) {
       if (!direction_used[i]) vda.push_back(i);
     }

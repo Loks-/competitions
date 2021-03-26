@@ -10,7 +10,20 @@ class None {
   static const bool has_size = false;
 
   template <class TNode>
-  void Update(const TNode* node) {}
+  void Update(const TNode*) {}
+
+  // Balance Tree Info
+  void BTIReset() {}
+
+  template <class TNode>
+  void BTICopy(TNode*) {}
+
+  template <class TNode>
+  void BTISwap(TNode*) {}
+
+  // Usused fields to support info with ext trees.
+  static const bool support_insert = false;
+  static const bool support_remove = false;
 };
 }  // namespace info
 }  // namespace bst

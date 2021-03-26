@@ -1,6 +1,7 @@
 #pragma once
 
 #include "common/base.h"
+
 #include <algorithm>
 #include <vector>
 
@@ -13,7 +14,7 @@ class FactorizedLinear {
   unsigned index;
   TValue c;
 
-  FactorizedLinear(unsigned _index, const TValue& _c = TValue(0))
+  explicit FactorizedLinear(unsigned _index, const TValue& _c = TValue(0))
       : index(_index), c(_c) {}
 
   bool operator==(const FactorizedLinear& r) const {
@@ -35,10 +36,10 @@ class Factorized {
   std::vector<TLinear> vn, vd;
 
   Factorized() : a(1) {}
-  Factorized(const TLinear& l, const TValue& _a = TValue(1))
+  explicit Factorized(const TLinear& l, const TValue& _a = TValue(1))
       : a(_a), vn(1, l) {}
-  Factorized(const TValue& _a, const std::vector<TLinear>& _vn = {},
-             const std::vector<TLinear>& _vd = {})
+  explicit Factorized(const TValue& _a, const std::vector<TLinear>& _vn = {},
+                      const std::vector<TLinear>& _vd = {})
       : a(_a), vn(_vn), vd(_vd) {}
 
   bool IsConstant() const { return vn.empty() && vd.empty(); }

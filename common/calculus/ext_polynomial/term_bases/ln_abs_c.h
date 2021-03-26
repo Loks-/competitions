@@ -3,6 +3,7 @@
 #include "common/base.h"
 #include "common/calculus/ext_polynomial/term_base.h"
 #include "common/calculus/ext_polynomial/term_bases/type.h"
+
 #include <cmath>
 #include <memory>
 #include <string>
@@ -17,7 +18,7 @@ class LnAbsC : public TermBase<TValue> {
 
   TValue c;
 
-  LnAbsC(const TValue& _c) : c(_c) {}
+  explicit LnAbsC(const TValue& _c) : c(_c) {}
   Type GetType() const override { return Type::LN_ABS_C; }
   TValue BaseGet(const TValue& x) const override { return log(fabs(x - c)); }
   bool IsBaseFinite(const TValue& x) const override { return (x != c); }

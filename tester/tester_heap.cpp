@@ -163,7 +163,6 @@ size_t TesterHeap::TestDHeapUKeyPosMap() {
 template <unsigned d>
 size_t TesterHeap::TestDHeapUKeyValueMap() {
   using THeap = heap::DHeapUKeyValueMap<d, size_t>;
-  using TData = typename THeap::TData;
   Timer t;
   size_t h = 0;
   THeap heap(vinit.size() + vloop.size());
@@ -182,7 +181,6 @@ template <bool multipass, bool auxiliary>
 size_t TesterHeap::TestPairingBaseHeap() {
   using THeap = heap::PairingBase<size_t, std::less<size_t>, NodesManager,
                                   multipass, auxiliary>;
-  using TData = typename THeap::TData;
   Timer t;
   size_t h = 0;
   THeap heap(vinit.size());
@@ -201,7 +199,6 @@ template <bool multipass, bool auxiliary>
 size_t TesterHeap::TestPairingHeap() {
   using THeap = heap::Pairing<size_t, std::less<size_t>, NodesManager,
                               multipass, auxiliary>;
-  using TData = typename THeap::TData;
   Timer t;
   size_t h = 0;
   typename THeap::TNodesManager nodes_manager(vinit.size());

@@ -1,9 +1,10 @@
 #pragma once
 
 #include "common/numeric/long/unsigned.h"
+
 #include <algorithm>
 
-LongUnsigned GCD(LongUnsigned a, LongUnsigned b) {
+inline LongUnsigned GCD(LongUnsigned a, LongUnsigned b) {
   if (a.Empty()) return b;
   if (b.Empty()) return a;
   unsigned p2a = 0, p2b = 0;

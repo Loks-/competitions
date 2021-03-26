@@ -3,6 +3,7 @@
 #include "common/base.h"
 #include "common/heap/fibonacci.h"
 #include "common/nodes_manager_fixed_size.h"
+
 #include <functional>
 #include <vector>
 
@@ -32,7 +33,7 @@ class FibonacciUKeyValueMap
   TNode* GetNode(unsigned key) { return manager.NodeByRawIndex(key); }
 
  public:
-  FibonacciUKeyValueMap(unsigned ukey_size)
+  explicit FibonacciUKeyValueMap(unsigned ukey_size)
       : TBase(manager), manager(ukey_size) {
     for (unsigned i = 0; i < ukey_size; ++i) SetUnused(manager.New());
   }

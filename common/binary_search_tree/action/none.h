@@ -10,9 +10,9 @@ class None {
   bool IsEmpty() const { return true; }
   void Clear(){};
   template <class TNode, class TActionValue>
-  void Add(TNode* node, const TActionValue& value) {}
+  void Add(TNode*, const TActionValue&) {}
   template <class TNode>
-  void Apply(const TNode* node) {}
+  void Apply(const TNode*) {}
 };
 }  // namespace action
 }  // namespace bst

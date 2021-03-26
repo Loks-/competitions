@@ -1,6 +1,12 @@
 # TODO list
 * BIT
 	* BIT 2D
+* Binary Search Trees
+	* Binarized 2-3 trees
+	* Leaning 2-3 trees
+	* Leaning Red Black Trees
+	* Tester for Join / Split
+	* Add Join / Split to RedBlack Tree
 * Graph
 	* Additional MST algorithms
 	* Shortest path for directed acyclic graphs
@@ -12,9 +18,6 @@
 	* Johnson's - Dijkstra
 * Heap
 	* Van Emde Boas tree
-* HLD
-	* https://www.hackerrank.com/challenges/fibonacci-numbers-tree
-	* https://www.hackerrank.com/challenges/lazy-white-falcon
 * Persistent Binary Search Trees
 * SegmentTree
 	* Compact SegmentTree

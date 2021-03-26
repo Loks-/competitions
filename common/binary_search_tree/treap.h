@@ -1,44 +1,43 @@
 #pragma once
-
 #include "common/base.h"
-#include "common/binary_search_tree/action/apply_action.h"
 #include "common/binary_search_tree/action/none.h"
+#include "common/binary_search_tree/base/node.h"
+#include "common/binary_search_tree/base/root.h"
+#include "common/binary_search_tree/base/tree.h"
 #include "common/binary_search_tree/info/size.h"
-#include "common/binary_search_tree/info/update_info.h"
-#include "common/binary_search_tree/node.h"
-#include "common/binary_search_tree/tree.h"
+#include "common/binary_search_tree/info/treap_height.h"
+#include "common/binary_search_tree/info/update_node_to_root.h"
 #include "common/nodes_manager_fixed_size.h"
+
 #include <stack>
 #include <vector>
 
 namespace bst {
-template <bool _use_key, bool _use_parent, class TTData,
-          class TTInfo = info::Size, class TTAction = action::None,
-          class TTKey = int64_t,
+template <bool use_key, bool use_parent, class TData, class TTInfo = info::Size,
+          class TAction = action::None, class TKey = int64_t,
           template <class> class TTNodesManager = NodesManagerFixedSize>
-class Treap : public Tree<Node<TTData, TTInfo, TTAction, _use_key, _use_parent,
-                               true, TTKey, unsigned>,
-                          TTNodesManager,
-                          Treap<_use_key, _use_parent, TTData, TTInfo, TTAction,
-                                TTKey, TTNodesManager>> {
+class Treap
+    : public base::Tree<
+          TTNodesManager<base::Node<TData, info::TreapHeight<unsigned, TTInfo>,
+                                    TAction, use_key, use_parent, TKey>>,
+          Treap<use_key, use_parent, TData, TTInfo, TAction, TKey,
+                TTNodesManager>> {
  public:
-  static const bool use_key = _use_key;
-  static const bool use_parent = _use_parent;
-  static const bool use_height = true;
+  static const bool support_remove = true;
 
-  using TData = TTData;
-  using TInfo = TTInfo;
-  using TAction = TTAction;
-  using TKey = TTKey;
-  using TNode = Node<TData, TInfo, TAction, use_key, use_parent, use_height,
-                     TKey, unsigned>;
+  using TInfo = info::TreapHeight<unsigned, TTInfo>;
+  using THeight = typename TInfo::THeight;
+  using TNode = base::Node<TData, TInfo, TAction, use_key, use_parent, TKey>;
   using TSelf =
-      Treap<use_key, use_parent, TData, TInfo, TAction, TKey, TTNodesManager>;
-  using TTree = Tree<TNode, TTNodesManager, TSelf>;
-  friend class Tree<TNode, TTNodesManager, TSelf>;
+      Treap<use_key, use_parent, TData, TTInfo, TAction, TKey, TTNodesManager>;
+  using TTree = base::Tree<TTNodesManager<TNode>, TSelf>;
+  friend TTree;
+
+ protected:
+  static const THeight& Height(TNode* node) { return node->info.treap_height; }
 
  public:
-  Treap(unsigned max_nodes) : TTree(max_nodes) {}
+  explicit Treap(size_t max_nodes) : TTree(max_nodes) {}
 
  public:
   static TNode* BuildTree(const std::vector<TNode*>& nodes) {
@@ -47,18 +46,18 @@ class Treap : public Tree<Node<TTData, TTInfo, TTAction, _use_key, _use_parent,
     TNode* plast = proot;
     std::stack<TNode*> s;
     s.push(proot);
-    for (unsigned j = 1; j < nodes.size(); ++j) {
+    for (size_t j = 1; j < nodes.size(); ++j) {
       TNode* pj = nodes[j];
-      if (pj->height < plast->height) {
+      if (Height(pj) < Height(plast)) {
         plast->SetR(pj);
         s.push(plast);
-      } else if (pj->height >= proot->height) {
+      } else if (Height(pj) >= Height(proot)) {
         for (plast->UpdateInfo(); !s.empty(); s.pop()) s.top()->UpdateInfo();
         pj->SetL(proot);
         proot = pj;
         s.push(proot);
       } else {
-        for (plast->UpdateInfo(); pj->height >= s.top()->height; s.pop()) {
+        for (plast->UpdateInfo(); Height(pj) >= Height(s.top()); s.pop()) {
           plast = s.top();
           plast->UpdateInfo();
         }
@@ -73,20 +72,14 @@ class Treap : public Tree<Node<TTData, TTInfo, TTAction, _use_key, _use_parent,
 
  protected:
   static TNode* JoinI(TNode* l, TNode* r) {
-    if (l->height > r->height) {
+    if (Height(l) > Height(r)) {
       l->ApplyAction();
-      if (!l->r)
-        l->SetR(r);
-      else
-        l->SetR(JoinI(l->r, r));
+      l->SetR(l->r ? JoinI(l->r, r) : r);
       l->UpdateInfo();
       return l;
     } else {
       r->ApplyAction();
-      if (!r->l)
-        r->SetL(l);
-      else
-        r->SetL(JoinI(l, r->l));
+      r->SetL(r->l ? JoinI(l, r->l) : l);
       r->UpdateInfo();
       return r;
     }
@@ -94,9 +87,7 @@ class Treap : public Tree<Node<TTData, TTInfo, TTAction, _use_key, _use_parent,
 
  public:
   static TNode* Join(TNode* l, TNode* r) {
-    if (!l) return r;
-    if (!r) return l;
-    return JoinI(l, r);
+    return !l ? r : !r ? l : JoinI(l, r);
   }
 
  protected:
@@ -140,10 +131,10 @@ class Treap : public Tree<Node<TTData, TTInfo, TTAction, _use_key, _use_parent,
   }
 
  protected:
-  static void SplitBySizeI(TNode* p, unsigned lsize, TNode*& output_l,
+  static void SplitBySizeI(TNode* p, size_t lsize, TNode*& output_l,
                            TNode*& output_r) {
     p->ApplyAction();
-    unsigned hlsize = (p->l ? p->l->info.size : 0);
+    size_t hlsize = (p->l ? p->l->info.size : 0);
     if (lsize < hlsize) {
       output_r = p;
       SplitBySizeI(p->l, lsize, output_l, p->l);
@@ -165,7 +156,7 @@ class Treap : public Tree<Node<TTData, TTInfo, TTAction, _use_key, _use_parent,
   }
 
  public:
-  static void SplitBySize(TNode* root, unsigned lsize, TNode*& output_l,
+  static void SplitBySize(TNode* root, size_t lsize, TNode*& output_l,
                           TNode*& output_r) {
     static_assert(TInfo::has_size, "info should contain size");
     if (!root) {
@@ -187,20 +178,19 @@ class Treap : public Tree<Node<TTData, TTInfo, TTAction, _use_key, _use_parent,
     static_assert(use_key, "use_key should be true");
     if (!root) return node;
     root->ApplyAction();
-    if (root->height >= node->height) {
+    if (Height(root) >= Height(node)) {
       if (root->key < node->key)
         root->SetR(InsertByKey(root->r, node));
       else
         root->SetL(InsertByKey(root->l, node));
-      root->UpdateInfo();
-      return root;
     } else {
       SplitByKeyI(root, node->key, node->l, node->r);
       if (node->l) node->l->SetP(node);
       if (node->r) node->r->SetP(node);
-      node->UpdateInfo();
-      return node;
+      root = node;
     }
+    root->UpdateInfo();
+    return root;
   }
 
   static TNode* RemoveByKey(TNode* root, const TKey& key,
@@ -225,10 +215,8 @@ class Treap : public Tree<Node<TTData, TTInfo, TTAction, _use_key, _use_parent,
     return root;
   }
 
-  static TNode* RemoveByNode(TNode* node) {
-    static_assert(use_parent, "use_parent should be true");
-    assert(node);
-    ApplyActionRootToNode(node);
+ protected:
+  static TNode* RemoveByNodeI(TNode* node) {
     TNode* l = node->l;
     if (l) l->SetP(nullptr);
     TNode* r = node->r;
@@ -241,7 +229,7 @@ class Treap : public Tree<Node<TTData, TTInfo, TTAction, _use_key, _use_parent,
       p->SetL(m);
     else
       p->SetR(m);
-    UpdateInfoNodeToRoot(p);
+    info::UpdateNodeToRoot(p);
     return Root(p);
   }
 };

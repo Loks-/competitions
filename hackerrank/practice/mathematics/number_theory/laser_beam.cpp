@@ -16,12 +16,6 @@ int main_laser_beam() {
     vfs[i] = vfs[i - 1] + vf[i];
   }
 
-  auto Mobius = [&](uint64_t n) {
-    TModularD x;
-    x.SetS(mertens.GetMobius(n));
-    return x;
-  };
-
   auto Mertens = [&](uint64_t n) {
     TModularD x;
     x.SetS(mertens.GetMertens(n));
@@ -55,7 +49,7 @@ int main_laser_beam() {
   for (unsigned iT = 0; iT < T; ++iT) {
     uint64_t N, M, D;
     cin >> N >> M >> D;
-    uint64_t NM = N / M, maxk = 0;
+    uint64_t NM = N / M;
     if (D == 1) {
       cout << FS(NM) << endl;
     } else {

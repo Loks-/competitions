@@ -18,8 +18,8 @@ class DHeap {
 
  public:
   DHeap() {}
-  DHeap(unsigned expected_size) { data.reserve(expected_size); }
-  DHeap(const std::vector<TData>& v) : data(v) { Heapify(); }
+  explicit DHeap(unsigned expected_size) { data.reserve(expected_size); }
+  explicit DHeap(const std::vector<TData>& v) : data(v) { Heapify(); }
 
   bool Empty() const { return data.empty(); }
   unsigned Size() const { return unsigned(data.size()); }

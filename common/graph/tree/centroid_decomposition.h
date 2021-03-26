@@ -3,6 +3,7 @@
 #include "common/base.h"
 #include "common/graph/tree.h"
 #include "common/graph/tree/nodes_info.h"
+
 #include <algorithm>
 #include <stack>
 #include <vector>
@@ -21,7 +22,7 @@ class CentroidDecomposition {
   const std::vector<unsigned>& GetGroupMap() const { return group; }
 
  protected:
-  CentroidDecomposition(const TreeGraph& _tree) : tree(_tree) {
+  explicit CentroidDecomposition(const TreeGraph& _tree) : tree(_tree) {
     unsigned n = tree.Size();
     group.resize(n, 0);
     group_root.reserve(n);
@@ -37,7 +38,6 @@ class CentroidDecomposition {
     unsigned root = group_root[current_group];
     unsigned group_size = info.subtree_size[root];
     if (group_size <= 2) return;
-    unsigned best_size = group_size, best_node = root;
     unsigned v = root;
     for (bool next = true; next;) {
       next = false;
@@ -120,9 +120,10 @@ class CentroidDecomposition {
 
 class ICentroidDecompositionCallBack {
  public:
-  void PreDecompose(unsigned vertex, const CentroidDecomposition& cd) {}
-  void PostDecompose(unsigned vertex, const CentroidDecomposition& cd) {}
+  // Unsigned vertex, CentroidDecomposition& cd
+  void PreDecompose(unsigned, const CentroidDecomposition&) {}
+  void PostDecompose(unsigned, const CentroidDecomposition&) {}
   bool IsComposeRequired() const { return false; }
-  void Compose(unsigned vertex, const CentroidDecomposition& cd) {}
+  void Compose(unsigned, const CentroidDecomposition&) {}
 };
 }  // namespace graph

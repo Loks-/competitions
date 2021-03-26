@@ -1,6 +1,7 @@
 #pragma once
 
 #include "common/base.h"
+
 #include <vector>
 
 namespace factorization {
@@ -12,7 +13,7 @@ class Primes {
   std::vector<unsigned> table;
 
  public:
-  Primes(uint64_t size) {
+  explicit Primes(uint64_t size) {
     table_size = size;
     squared_table_size = table_size * table_size;
     table.resize(table_size + 1, 0);

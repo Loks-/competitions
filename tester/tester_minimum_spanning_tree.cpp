@@ -1,7 +1,10 @@
 #include "tester/tester_minimum_spanning_tree.h"
 
+#include "tester/minimum_spanning_tree.h"
+
 #include "common/graph/graph_ei/create_random_graph.h"
 #include "common/graph/graph_ei/edge_cost_proxy.h"
+#include "common/graph/graph_ei/mst/boruvka.h"
 #include "common/graph/graph_ei/mst/kruskal.h"
 #include "common/heap/binary_heap.h"
 #include "common/heap/binomial_ukey_value_map.h"
@@ -11,8 +14,6 @@
 #include "common/heap/fibonacci_ukey_value_map.h"
 #include "common/heap/pairing_ukey_value_map.h"
 #include "common/timer.h"
-
-#include "tester/minimum_spanning_tree.h"
 
 #include <iostream>
 #include <string>
@@ -39,6 +40,14 @@ TesterMinimumSpanningTree::TesterMinimumSpanningTree(EGraphType _gtype,
     : gtype(_gtype),
       g(CreateRandomGraph<uint64_t, false>(graph_size, edges_per_node,
                                            (1u << 30))) {}
+
+uint64_t TesterMinimumSpanningTree::TestBoruvka() const {
+  Timer t;
+  uint64_t d = graph::mst::Boruvka(g, edge_proxy).second * g.Size();
+  std::cout << "Test results Boruvka   : " << d << "\t"
+            << (t.GetMicroseconds() * g.Size()) / 1000 << std::endl;
+  return d;
+}
 
 uint64_t TesterMinimumSpanningTree::TestKruskal() const {
   Timer t;
@@ -116,6 +125,7 @@ bool TesterMinimumSpanningTree::TestAll() {
       assert(false);
   }
   std::unordered_set<uint64_t> hs;
+  hs.insert(TestBoruvka());
   hs.insert(TestKruskal());
   if (gtype != EGraphType::DENSE) hs.insert(TestPrimBaseBinaryHeap());
   hs.insert(TestPrimDHeap<TDHeap2>("DH2"));

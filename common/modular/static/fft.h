@@ -3,6 +3,7 @@
 #include "common/base.h"
 #include "common/factorization/factorization.h"
 #include "common/modular/utils/primitive_root.h"
+
 #include <algorithm>
 #include <vector>
 
@@ -75,7 +76,7 @@ class FFT {
     return n;
   }
 
-  FFT(unsigned n = 0) { Init(n); }
+  explicit FFT(unsigned n = 0) { Init(n); }
 
   unsigned GetMaxN() const { return maxn; }
 
@@ -106,6 +107,13 @@ class FFT {
     TVector output = Apply(n, vx);
     FFTI_Adjust(output);
     return output;
+  }
+
+  TVector Mult(const TVector& vx1, const TVector& vx2) {
+    unsigned n = GetFFTN(unsigned(vx1.size() + vx2.size()));
+    auto vf1 = Apply(n, vx1), vf2 = Apply(n, vx2);
+    for (unsigned i = 0; i < n; ++i) vf1[i] *= vf2[i];
+    return ApplyI(n, vf1);
   }
 };
 }  // namespace mstatic

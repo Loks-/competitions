@@ -2,6 +2,7 @@
 
 #include "common/base.h"
 #include "common/numeric/utils/usqrt.h"
+
 #include <vector>
 
 namespace factorization {
@@ -63,7 +64,7 @@ class PrimesGenerator {
 
  public:
   PrimesGenerator() { SetBlockSize(default_block_size); }
-  PrimesGenerator(uint64_t _block_size) { SetBlockSize(_block_size); }
+  explicit PrimesGenerator(uint64_t _block_size) { SetBlockSize(_block_size); }
 
   uint64_t Get() const {
     assert(current_prime_block_index < current_block_primes.size());

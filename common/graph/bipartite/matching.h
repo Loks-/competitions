@@ -1,6 +1,7 @@
 #pragma once
 
 #include "common/graph/bipartite.h"
+
 #include <queue>
 #include <vector>
 
@@ -82,7 +83,7 @@ class BipartiteMatching {
 }  // namespace graph
 
 template <class TGraph>
-unsigned BipartiteMatching(const graph::Bipartite<TGraph>& graph) {
+inline unsigned BipartiteMatching(const graph::Bipartite<TGraph>& graph) {
   graph::BipartiteMatching bm;
   return bm.Matching(graph);
 }

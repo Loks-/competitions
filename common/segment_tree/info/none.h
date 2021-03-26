@@ -1,26 +1,18 @@
 #pragma once
 
-#include "common/segment_tree/info/proxy.h"
-
 namespace st {
 namespace info {
-class TNone {
+class None {
  public:
-  using TCoordinate = unsigned;
-  using TSelf = TNone;
+  using TSelf = None;
 
   static const bool is_none = true;
   static const bool use_data = false;
-  static const bool has_coordinate = false;
-
-  void SetCoordinate(const TCoordinate& x) {}
 
   template <class TData>
-  void UpdateData(const TData& data) {}
+  void UpdateData(const TData&) {}
 
-  void UpdateLR(const TSelf& l, const TSelf& r) {}
+  void UpdateLR(const TSelf&, const TSelf&) {}
 };
-
-using None = Proxy<TNone>;
 }  // namespace info
 }  // namespace st

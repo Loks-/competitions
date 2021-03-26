@@ -10,7 +10,7 @@ class PConstant : public GeneratingFunction<TValue> {
   TValue a0;
 
  public:
-  PConstant(const TValue& _a0) : a0(_a0) {}
+  explicit PConstant(const TValue& _a0) : a0(_a0) {}
   TValue Get(uint64_t n) override { return n ? TValue(0) : a0; }
 };
 

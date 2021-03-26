@@ -3,33 +3,34 @@
 #include "common/base.h"
 
 namespace st {
+namespace hidden {
 template <class TNode, class TActionValue>
 inline void AddActionToSegmentI(TNode* root,
-                                const typename TNode::TInfo::TCoordinate& l,
-                                const typename TNode::TInfo::TCoordinate& r,
+                                const typename TNode::TCoordinate& l,
+                                const typename TNode::TCoordinate& r,
                                 const TActionValue& action_value) {
-  if ((l <= root->info.left) && (r >= root->info.right)) {
+  if ((l <= root->sinfo.left) && (r >= root->sinfo.right)) {
     root->AddAction(action_value);
   } else {
     assert(!root->IsLeaf());
     root->ApplyAction();
-    if (l <= root->l->info.right)
+    if (l <= root->l->sinfo.right)
       AddActionToSegmentI(root->l, l, r, action_value);
-    if (r >= root->r->info.left)
+    if (r >= root->r->sinfo.left)
       AddActionToSegmentI(root->r, l, r, action_value);
     root->UpdateInfo();
   }
 }
+}  // namespace hidden
 
 template <class TNode, class TActionValue>
 inline void AddActionToSegment(TNode* root,
-                               const typename TNode::TInfo::TCoordinate& l,
-                               const typename TNode::TInfo::TCoordinate& r,
+                               const typename TNode::TCoordinate& l,
+                               const typename TNode::TCoordinate& r,
                                const TActionValue& action_value) {
-  using TInfo = typename TNode::TInfo;
-  static_assert(TInfo::has_coordinate, "has_coordinate should be true");
+  static_assert(TNode::TSInfo::has_coordinate, "has_coordinate should be true");
   if (!root || (r < l)) return;
-  if ((r < root->info.left) || (l > root->info.right)) return;
-  AddActionToSegmentI(root, l, r, action_value);
+  if ((r < root->sinfo.left) || (l > root->sinfo.right)) return;
+  hidden::AddActionToSegmentI(root, l, r, action_value);
 }
 }  // namespace st

@@ -1,9 +1,11 @@
 #pragma once
 
+#include "common/base.h"
+
 namespace bst {
 template <class TTree>
 inline typename TTree::TNode* SegmentInfoByIndex(
-    typename TTree::TNode* root, unsigned begin, unsigned end,
+    typename TTree::TNode* root, size_t begin, size_t end,
     typename TTree::TInfo& output) {
   using TNode = typename TTree::TNode;
   TNode *l, *m, *r;

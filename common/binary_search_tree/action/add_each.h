@@ -13,13 +13,12 @@ class AddEach : public None {
 
   TData add_value;
 
-  AddEach() : add_value(0) {}
-  bool IsEmpty() const { return add_value == 0; }
-  void Clear() { add_value = 0; };
+  AddEach() : add_value() {}
+  bool IsEmpty() const { return add_value == TData(); }
+  void Clear() { add_value = TData(); };
 
   template <class TNode>
-  void Add(TNode* node, const TData& value) {
-    node->info.sum += node->info.size * value;
+  void Add(TNode*, const TData& value) {
     add_value += value;
   }
 
@@ -29,7 +28,7 @@ class AddEach : public None {
     node->data += add_value;
     if (node->l) node->l->AddAction(add_value);
     if (node->r) node->r->AddAction(add_value);
-    add_value = 0;
+    add_value = TData();
   }
 };
 }  // namespace action

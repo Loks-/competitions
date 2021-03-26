@@ -10,8 +10,7 @@
 using TMatrix = SquareMatrixStaticSize<TModularD, 2>;
 
 int main_number_of_m_coprime_arrays__factorization() {
-  TMatrix m;
-  m(0, 0) = m(0, 1) = 1;
+  TMatrix m{1, 1};
 
   unsigned T;
   cin >> T;

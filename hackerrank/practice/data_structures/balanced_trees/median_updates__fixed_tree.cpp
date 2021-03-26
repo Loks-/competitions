@@ -1,18 +1,18 @@
 // https://www.hackerrank.com/challenges/median
 
 #include "common/binary_search_tree/base/find_by_key.h"
-#include "common/binary_search_tree/fixed_tree.h"
 #include "common/binary_search_tree/info/size.h"
 #include "common/binary_search_tree/info/sum.h"
-#include "common/binary_search_tree/info/update_info.h"
-#include "common/binary_search_tree/utils/upper_bound.h"
+#include "common/binary_search_tree/info/update_node_to_root.h"
+#include "common/binary_search_tree/perfect_tree.h"
+#include "common/binary_search_tree/utils/prefix_sum_upper_bound.h"
 #include "common/stl/base.h"
 
 #include <iomanip>
 #include <unordered_set>
 
 using TTree =
-    bst::FixedTree<true, unsigned, bst::info::Sum<unsigned, bst::info::Size>>;
+    bst::PerfectTree<true, unsigned, bst::info::Sum<unsigned, bst::info::Size>>;
 using TNode = TTree::TNode;
 
 int main_median_updates__fixed_tree() {
@@ -34,7 +34,7 @@ int main_median_updates__fixed_tree() {
   TNode* root = tree.Build(vector<unsigned>(vx.size(), 0), vx);
 
   for (auto p : input) {
-    TNode* node = bst::FindByKey(root, p.second);
+    TNode* node = TTree::FindByKey(root, p.second);
     assert(node);
     if (p.first == 'a') {
       node->data += 1;
@@ -45,7 +45,7 @@ int main_median_updates__fixed_tree() {
       }
       node->data -= 1;
     }
-    bst::UpdateInfoNodeToRoot(node);
+    bst::info::UpdateNodeToRoot(node);
     if (root->info.sum == 0) {
       cout << "Wrong!" << endl;
       continue;

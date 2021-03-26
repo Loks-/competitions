@@ -2,6 +2,8 @@
 
 #include "common/base.h"
 #include "common/modular/static/bool.h"
+#include "common/template.h"
+
 #include <algorithm>
 #include <vector>
 
@@ -46,7 +48,7 @@ class VectorBool {
     std::fill(data.begin(), data.end(), v.Get() ? ~0ull : 0ull);
   }
 
-  void Clear() { Fill(TValue(0)); }
+  void Clear() { Fill(TValue()); }
 
   void Complement() {
     for (biterator p = BBegin(), pend = BEnd(); p < pend; ++p) *p = ~*p;
@@ -55,7 +57,7 @@ class VectorBool {
   unsigned DSize() const { return unsigned(data.size()); }
   const TData& GetData() const { return data; }
 
-  VectorBool(unsigned _size) { Resize(_size); }
+  explicit VectorBool(unsigned _size) { Resize(_size); }
 
   VectorBool(unsigned _size, const TValue& v) {
     Resize(_size);
@@ -114,6 +116,7 @@ class VectorBool {
   }
 
   TSelf& operator/=(const TValue& v) {
+    FakeUse(v);
     assert(v.Get());
     return *this;
   }
@@ -141,6 +144,7 @@ class VectorBool {
   }
 
   TSelf operator/(const TValue& v) const {
+    FakeUse(v);
     assert(v.Get());
     return *this;
   }

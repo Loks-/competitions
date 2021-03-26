@@ -1,18 +1,17 @@
 // https://www.hackerrank.com/challenges/subsequence-weighting
 
 #include "common/segment_tree/base/find_leaf.h"
-#include "common/segment_tree/base/get_segment.h"
+#include "common/segment_tree/base/get_segment_info.h"
 #include "common/segment_tree/info/max.h"
-#include "common/segment_tree/info/update_info.h"
+#include "common/segment_tree/info/update_node_to_root.h"
 #include "common/segment_tree/segment_tree.h"
 #include "common/stl/base.h"
 #include "common/vector/read.h"
 
 #include <set>
 
-using TTree =
-    st::SegmentTree<uint64_t,
-                    st::info::Max<uint64_t, st::info::Segment<uint64_t>>>;
+using TTree = st::SegmentTree<uint64_t, st::info::Max<uint64_t>,
+                              st::action::None, st::sinfo::Position<uint64_t>>;
 using TNode = TTree::TNode;
 using TInfo = TNode::TInfo;
 
@@ -28,13 +27,13 @@ int main_subsequence_weighting__segment_tree() {
     vector<uint64_t> vaus(s.begin(), s.end());
     TNode* root = tree.BuildTree(vector<uint64_t>(vaus.size(), 0), vaus);
     for (unsigned i = 0; i < N; ++i) {
-      TInfo info = st::GetSegment<TNode>(root, 0, va[i] - 1);
+      TInfo info = st::GetSegmentInfo<TNode>(root, 0, va[i] - 1);
       TNode* node = st::FindLeaf(root, va[i]);
       assert(node && node->IsLeaf());
-      node->GetData() = std::max(node->GetData(), info.segment_max + vw[i]);
-      st::UpdateInfoNodeToRoot<TNode>(node);
+      node->GetData() = std::max(node->GetData(), info.max + vw[i]);
+      st::info::UpdateNodeToRoot<TNode>(node);
     }
-    cout << root->info.segment_max << endl;
+    cout << root->info.max << endl;
   }
   return 0;
 }

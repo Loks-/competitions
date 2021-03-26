@@ -1,6 +1,7 @@
 #pragma once
 
 #include "common/graph/tree.h"
+
 #include <algorithm>
 #include <stack>
 #include <vector>
@@ -34,7 +35,7 @@ class LCA {
   LCA() : n(0), n2p(1) {}
 
   template <class TGraph>
-  LCA(const Tree<TGraph>& g) {
+  explicit LCA(const Tree<TGraph>& g) {
     Build(g);
   }
 

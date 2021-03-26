@@ -1,6 +1,7 @@
 #pragma once
 
 #include "common/base.h"
+#include "common/template.h"
 
 namespace modular {
 namespace mstatic {
@@ -24,26 +25,34 @@ class Bool {
   void SetT(TValue _value) { value = _value; }
 
   Bool() : value(false) {}
-  Bool(const TSelf& s) : value(s.value) {}
-  Bool(uint64_t _value) { SetU(_value); }
+  Bool(bool b) : value(b) {}
+  explicit Bool(uint32_t _value) { SetU(_value); }
+  explicit Bool(uint64_t _value) { SetU(_value); }
+  explicit Bool(int32_t _value) { SetS(_value); }
+  explicit Bool(int64_t _value) { SetS(_value); }
 
-  TSelf operator+(TSelf rvalue) const { return TSelf(value ^ rvalue.value); }
+  static Bool False() { return Bool(false); }
+  static Bool True() { return Bool(true); }
+
+  operator bool() const { return value; }
+
+  TSelf operator+(TSelf rvalue) const { return TSelf(value != rvalue.value); }
 
   TSelf& operator+=(TSelf rvalue) {
-    value ^= rvalue.value;
+    value = (value != rvalue.value);
     return *this;
   }
 
   TSelf operator-() const { return *this; }
 
-  TSelf operator-(TSelf rvalue) const { return TSelf(value ^ rvalue.value); }
+  TSelf operator-(TSelf rvalue) const { return TSelf(value != rvalue.value); }
 
   TSelf& operator-=(TSelf rvalue) {
-    value ^= rvalue.value;
+    value = (value != rvalue.value);
     return *this;
   }
 
-  TSelf operator*(TSelf rvalue) const { return TSelf(value & rvalue.value); }
+  TSelf operator*(TSelf rvalue) const { return TSelf(value && rvalue.value); }
 
   TSelf& operator*=(TSelf rvalue) {
     value &= rvalue.value;
@@ -51,11 +60,13 @@ class Bool {
   }
 
   TSelf operator/(TSelf rvalue) const {
+    FakeUse(rvalue);
     assert(rvalue.value);
     return *this;
   }
 
   TSelf& operator/=(TSelf rvalue) {
+    FakeUse(rvalue);
     assert(rvalue.value);
     return *this;
   }
@@ -65,11 +76,11 @@ class Bool {
     return *this;
   }
 
-  TSelf PowU(uint64_t pow) const { return (pow == 0) ? TSelf(1) : *this; }
+  TSelf PowU(uint64_t pow) const { return (pow == 0) ? TSelf(true) : *this; }
 
   TSelf PowS(int64_t pow) const {
     assert(value || (pow >= 0));
-    return (pow == 0) ? TSelf(1) : *this;
+    return (pow == 0) ? TSelf(true) : *this;
   }
 
   bool operator<(const TSelf& r) const { return !value && r.value; }

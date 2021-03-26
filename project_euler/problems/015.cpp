@@ -5,8 +5,8 @@
 // Time: O(T + N + M)
 // Memory: O(N + M)
 int main_015() {
-  modular::mstatic::Factorial<TModularD> f;
   unsigned T, N, M;
+  modular::mstatic::Factorial<TModularD> f;
   cin >> T;
   for (unsigned it = 0; it < T; ++it) {
     cin >> N >> M;

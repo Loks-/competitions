@@ -9,16 +9,20 @@
             "type": "cppdbg",
             "request": "launch",
             // "program": "${workspaceFolder}/debug/build/google_code_jam",
+            // "program": "${workspaceFolder}/debug/build/hackerrank",
             // "program": "${workspaceFolder}/debug/build/icfppc_2019",
-            "program": "${workspaceFolder}/debug/build/project_euler",
+            // "program": "${workspaceFolder}/debug/build/project_euler",
+            "program": "${workspaceFolder}/debug/build/tester",
             "args": [
-                // "heap"
+                "binary_search_tree"
                 // "minimum_spanning_tree"
-                // "p3",
+                // "subtrees_and_paths__lcte",
+                // "pen_testing"
                 // "tests/google/code_jam/2019/r2/p3.in"
+                // "../tests/hackerrank/practice/data_structures/advanced/subtrees_and_paths.1.in"
                 // "-threads",
                 // "1"
-                "695"
+                // "695"
             ],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}/debug/",

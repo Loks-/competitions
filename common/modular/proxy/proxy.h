@@ -20,7 +20,7 @@ class Proxy {
   TValue GetMod() const { return mod; }
   void SetMod(TValue _mod) { mod = _mod; }
 
-  Proxy(TValue _mod = 1000000007) : mod(_mod) {}
+  explicit Proxy(TValue _mod = 1000000007) : mod(_mod) {}
 
   TValue ApplyU(uint64_t value) const { return TBase::ApplyU(value, mod); }
   TValue ApplyS(int64_t value) const { return TBase::ApplyS(value, mod); }

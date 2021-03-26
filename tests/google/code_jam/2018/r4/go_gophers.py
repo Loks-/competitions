@@ -154,7 +154,7 @@ for i in range(NUM_TEST_CASES):
   try:
     while True:
       # Detect whether the your code has finished running.
-      CheckSubprocessExit(p, i + 1)
+      # CheckSubprocessExit(p, i + 1)
       if snacks % n == 0:
         random.shuffle(taste_levels)
       try:

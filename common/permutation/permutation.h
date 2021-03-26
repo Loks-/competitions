@@ -3,6 +3,7 @@
 #include "common/base.h"
 #include "common/permutation/base.h"
 #include "common/vector/read.h"
+
 #include <algorithm>
 #include <utility>
 #include <vector>
@@ -53,7 +54,7 @@ class Permutation {
   }
 
  public:
-  Permutation(unsigned size = 0) { SetSize(size); }
+  explicit Permutation(unsigned size = 0) { SetSize(size); }
 
   Permutation(const TLine& l, bool shited_line) { SetLine(l, shited_line); }
 

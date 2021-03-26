@@ -2,6 +2,8 @@
 
 #include "common/base.h"
 #include "common/node.h"
+#include "common/segment_tree/info/update.h"
+#include "common/segment_tree/sinfo/update.h"
 
 namespace st {
 template <bool use_parent, class TSelf>
@@ -37,21 +39,25 @@ class TNodeProxyParent<true, TSelf> : public BaseNode {
   void ResetLinks() { l = r = p = nullptr; }
 };
 
-template <class TTData, class TTInfo, class TTAction, bool _use_parent = true>
+template <class TTData, class TTInfo, class TTAction, class TTSInfo,
+          bool _use_parent = true>
 class Node
-    : public TNodeProxyParent<_use_parent,
-                              Node<TTData, TTInfo, TTAction, _use_parent>> {
+    : public TNodeProxyParent<
+          _use_parent, Node<TTData, TTInfo, TTAction, TTSInfo, _use_parent>> {
  public:
   static const bool use_parent = _use_parent;
 
   using TData = TTData;
   using TInfo = TTInfo;
   using TAction = TTAction;
-  using TSelf = Node<TData, TInfo, TAction, use_parent>;
+  using TSInfo = TTSInfo;
+  using TCoordinate = typename TSInfo::TCoordinate;
+  using TSelf = Node<TData, TInfo, TAction, TSInfo, use_parent>;
   using TBase = TNodeProxyParent<use_parent, TSelf>;
 
   TInfo info;
   TAction action;
+  TSInfo sinfo;
 
   bool IsLeaf() const { return (TBase::l == nullptr); }
 
@@ -71,7 +77,8 @@ class Node
   }
 
   void ClearAction() { action.Clear(); }
-  void UpdateInfo() { info.Update(this); }
+  void UpdateInfo() { info::Update(this); }
+  void UpdateSInfo() { sinfo::SUpdate(this); }
 
   template <class TActionValue>
   void AddAction(const TActionValue& value) {

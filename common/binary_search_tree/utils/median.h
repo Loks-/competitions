@@ -8,12 +8,12 @@ template <class TNode, class TValue>
 inline TValue Median(TNode* root) {
   static_assert(TNode::TInfo::has_size, "info should contain size");
   assert(root);
-  unsigned size = root->info.size;
+  size_t size = root->info.size;
   if (size & 1)
-    return TValue(FindByOrder(root, size / 2)->key);
+    return TValue(base::FindByOrder(root, size / 2)->key);
   else
-    return TValue(FindByOrder(root, size / 2 - 1)->key +
-                  FindByOrder(root, size / 2)->key) /
+    return TValue(base::FindByOrder(root, size / 2 - 1)->key +
+                  base::FindByOrder(root, size / 2)->key) /
            TValue(2);
 }
 }  // namespace bst

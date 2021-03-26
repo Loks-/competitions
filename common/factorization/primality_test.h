@@ -3,6 +3,7 @@
 #include "common/base.h"
 #include "common/factorization/primes_list.h"
 #include "common/modular/arithmetic.h"
+
 #include <vector>
 
 namespace factorization {
@@ -89,7 +90,7 @@ class PrimalityTest {
   std::vector<uint8_t> table;
 
  public:
-  PrimalityTest(unsigned maxprime = 13) {
+  explicit PrimalityTest(unsigned maxprime = 13) {
     N = maxprime, M = 1;
     PrimesList primes_list(maxprime);
     const std::vector<uint64_t>& pl_primes = primes_list.GetPrimes();

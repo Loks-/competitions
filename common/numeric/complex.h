@@ -13,7 +13,7 @@ class Complex {
   TValue re, im;
 
   Complex() : re(0), im(0) {}
-  Complex(const TValue& _re) : re(_re), im(0) {}
+  explicit Complex(const TValue& _re) : re(_re), im(0) {}
   Complex(const TValue& _re, const TValue& _im) : re(_re), im(_im) {}
 
   TSelf& operator+=(const TSelf& r) {

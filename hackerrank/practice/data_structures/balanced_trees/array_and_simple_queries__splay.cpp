@@ -24,8 +24,8 @@ int main_array_and_simple_queries__splay() {
     else
       bst::SwapIntervals<TSplayTree>(root, i - 1, j, N);
   }
-  vector<int> vf =
-      bst::Traverse<TNode, int>(root, bst::ETraversalOrder::Inorder);
+  vector<int> vf = bst::base::Traverse<TNode, int>(
+      root, bst::base::ETraversalOrder::Inorder);
   cout << abs(vf[0] - vf.back()) << endl;
   WriteVector(vf);
   return 0;

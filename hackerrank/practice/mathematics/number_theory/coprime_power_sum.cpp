@@ -10,7 +10,7 @@
 using TPolynom = polynomial::BaseNewton<TModularD>;
 
 int main_coprime_power_sum() {
-  unsigned T, N, K, maxn = 50, max_cache_size = 1000;
+  unsigned T, N, K, max_cache_size = 1000;
   cin >> T;
   for (unsigned iT = 0; iT < T; ++iT) {
     uint64_t M;

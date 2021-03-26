@@ -1,6 +1,7 @@
 #pragma once
 
 #include "common/base.h"
+
 #include <functional>
 #include <vector>
 
@@ -37,7 +38,7 @@ class DHeapUKeyPosMap {
   }
 
  public:
-  DHeapUKeyPosMap(unsigned ukey_size) {
+  explicit DHeapUKeyPosMap(unsigned ukey_size) {
     ResetHeapPosition(ukey_size);
     data.reserve(ukey_size);
   }

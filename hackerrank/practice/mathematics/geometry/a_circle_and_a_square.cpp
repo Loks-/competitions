@@ -6,7 +6,7 @@
 #include "common/stl/base.h"
 
 int main_a_circle_and_a_square() {
-  int w, h, x1, y1, x3, y3;
+  int w, h;
   I2Circle c;
   I2Point pa, pc;
   cin >> w >> h >> c >> pa >> pc;

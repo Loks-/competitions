@@ -1,6 +1,6 @@
 #pragma once
 
-#include "common/disjoint_set_extended.h"
+#include "common/data_structures/disjoint_set_extended.h"
 #include "common/hash.h"
 #include "common/timer.h"
 

@@ -26,7 +26,7 @@ class Fraction {
   }
 
   Fraction() : numerator(0), denominator(1) {}
-  Fraction(const TValue& value) : numerator(value), denominator(1) {}
+  explicit Fraction(const TValue& value) : numerator(value), denominator(1) {}
   Fraction(const TValue& _numerator, const TValue& _denominator)
       : numerator(_numerator), denominator(_denominator) {
     Simplify();
@@ -39,8 +39,34 @@ class Fraction {
     return (numerator == r.numerator) && (denominator == r.denominator);
   }
 
+  bool operator!=(const TSelf& r) const {
+    return (numerator != r.numerator) || (denominator != r.denominator);
+  }
+
   bool operator<(const TSelf& r) const {
     return numerator * r.denominator < r.numerator * denominator;
+  }
+
+  bool operator<=(const TSelf& r) const {
+    return numerator * r.denominator <= r.numerator * denominator;
+  }
+
+  bool operator>(const TSelf& r) const {
+    return numerator * r.denominator > r.numerator * denominator;
+  }
+
+  bool operator>=(const TSelf& r) const {
+    return numerator * r.denominator >= r.numerator * denominator;
+  }
+
+  TSelf operator*(const TValue& value) const {
+    return TSelf(numerator * value, denominator);
+  }
+
+  TSelf& operator*=(const TValue& value) {
+    numerator *= value;
+    Simplify();
+    return *this;
   }
 };
 }  // namespace numeric

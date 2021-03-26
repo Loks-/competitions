@@ -3,6 +3,7 @@
 #include "common/base.h"
 #include "common/calculus/ext_polynomial/term_bases/type.h"
 #include "common/numeric/utils/pow.h"
+
 #include <memory>
 #include <string>
 
@@ -31,7 +32,7 @@ class TermBase {
   virtual term_bases::Type GetType() const = 0;
   virtual bool IsOne() const { return GetType() == term_bases::Type::ONE; }
 
-  virtual TValue BaseGet(const TValue& x) const {
+  virtual TValue BaseGet(const TValue&) const {
     assert(false);
     return TValue(0);
   }
@@ -44,7 +45,7 @@ class TermBase {
     return GetXPower(x, power) * BaseGet(x);
   }
 
-  virtual bool IsBaseFinite(const TValue& x) const { return true; }
+  virtual bool IsBaseFinite(const TValue&) const { return true; }
 
   virtual bool IsFinite(const TValue& x, int power) const {
     return IsBaseFinite(x) && ((x != TValue(0)) || (power >= 0));
@@ -54,8 +55,8 @@ class TermBase {
     return GetType() == r.GetType();
   }
 
-  virtual bool SameTypeLess(const TSelf& r) const { return false; }
-  virtual bool SameTypeEqual(const TSelf& r) const { return true; }
+  virtual bool SameTypeLess(const TSelf&) const { return false; }
+  virtual bool SameTypeEqual(const TSelf&) const { return true; }
 
   virtual bool operator<(const TSelf& r) const {
     return SameType(r) ? SameTypeLess(r) : (GetType() < r.GetType());

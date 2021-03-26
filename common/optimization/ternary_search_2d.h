@@ -5,9 +5,9 @@
 
 namespace opt {
 template <class TFunction>
-D2Point TernarySearch2D(TFunction& f, double xl, double xr, double yl,
-                        double yr, double eps) {
-  double cx, cy;
+inline D2Point TernarySearch2D(TFunction& f, double xl, double xr, double yl,
+                               double yr, double eps) {
+  double cy;
   auto fx = [&](double x) { return f(x, cy); };
   auto fy = [&](double y) {
     cy = y;
@@ -21,8 +21,8 @@ D2Point TernarySearch2D(TFunction& f, double xl, double xr, double yl,
 }
 
 template <class TFunction>
-D2Point TernarySearch2DSafe(TFunction& f, double xl, double xr, double yl,
-                            double yr, double eps) {
+inline D2Point TernarySearch2DSafe(TFunction& f, double xl, double xr,
+                                   double yl, double yr, double eps) {
   eps /= 2.0;
   auto fyx = [&](double y, double x) { return f(x, y); };
   auto p1 = TernarySearch2D(f, xl, xr, yl, yr, eps),

@@ -4,6 +4,7 @@
 #include "common/geometry/d2/compare/vector_angle.h"
 #include "common/geometry/d2/polygon_static_size.h"
 #include "common/geometry/d2/triangle.h"
+
 #include <algorithm>
 
 namespace geometry {
@@ -14,7 +15,8 @@ class ConvexPolygonStaticSize : public PolygonStaticSize<T, size> {
   using TBase = PolygonStaticSize<T, size>;
   using TPoint = typename TBase::TPoint;
 
-  ConvexPolygonStaticSize(const std::array<TPoint, size>& vp) : TBase(vp) {}
+  explicit ConvexPolygonStaticSize(const std::array<TPoint, size>& vp)
+      : TBase(vp) {}
 
   bool Inside(const TPoint& p) const {
     if (p == TBase::v[0]) return true;

@@ -2,6 +2,7 @@
 
 #include "common/calculus/ext_polynomial/term_base.h"
 #include "common/calculus/ext_polynomial/term_bases/type.h"
+
 #include <memory>
 #include <string>
 
@@ -15,11 +16,9 @@ class One : public TermBase<TValue> {
 
   One() {}
   Type GetType() const override { return Type::ONE; }
-  TValue BaseGet(const TValue& x) const override { return TValue(1); }
+  TValue BaseGet(const TValue&) const override { return TValue(1); }
 
-  std::string ToString(const std::string& variable_name) const override {
-    return "";
-  }
+  std::string ToString(const std::string&) const override { return ""; }
 };
 
 template <class TValue>

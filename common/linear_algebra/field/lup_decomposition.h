@@ -3,6 +3,7 @@
 #include "common/base.h"
 #include "common/linear_algebra/rows/sub_m.h"
 #include "common/linear_algebra/rows/swap.h"
+
 #include <vector>
 
 namespace la {
@@ -30,7 +31,7 @@ class LUPDecomposition {
     for (unsigned k = 0; k < n; ++k) {
       p[k] = k;
       for (unsigned i = k; i < n; ++i) {
-        if (lu(i, k) != 0) {
+        if (lu(i, k)) {
           if (i != k) {
             rows::Swap(lu, k, i);
             det_sign = -det_sign;
@@ -39,9 +40,9 @@ class LUPDecomposition {
           break;
         }
       }
-      if (lu(k, k) == 0) {
+      if (!lu(k, k)) {
         for (unsigned i = k; i < n; ++i) {
-          if (lu(i, k) != 0) return false;
+          if (lu(i, k)) return false;
         }
       } else {
         TValue ilukk = TValue(1) / lu(k, k);
@@ -73,7 +74,7 @@ class LUPDecomposition {
       output_x(ip) = output_x(i);
       if (ii != 0) {
         for (unsigned j = ii - 1; j < i; ++j) sum -= lu(i, j) * output_x(j);
-      } else if (sum != 0) {
+      } else if (sum) {
         ii = i + 1;
       }
       output_x(i) = sum;
@@ -81,8 +82,8 @@ class LUPDecomposition {
     for (unsigned i = n; i--;) {
       TValue sum = output_x(i);
       for (unsigned j = i + 1; j < n; ++j) sum -= lu(i, j) * output_x(j);
-      if (lu(i, i) == 0) {
-        if (sum != 0) return false;
+      if (!lu(i, i)) {
+        if (sum) return false;
         output_x(i) = 0;
       } else {
         output_x(i) = sum / lu(i, i);

@@ -16,8 +16,8 @@ class Complex {
   TProxy proxy;
 
  public:
-  Complex(TValue mod = 1000000007) : proxy(mod) {}
-  Complex(const TProxy& _proxy) : proxy(_proxy) {}
+  explicit Complex(TValue mod = 1000000007) : proxy(mod) {}
+  explicit Complex(const TProxy& _proxy) : proxy(_proxy) {}
 
   TProxy GetProxy() const { return proxy; }
   void SetProxy(const TProxy& _proxy) { proxy = _proxy; }

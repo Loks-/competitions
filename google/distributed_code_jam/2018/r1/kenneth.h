@@ -1,10 +1,11 @@
 // Sample input 1, in CPP.
 #include "message.h"
+
 #include <cassert>
 #include <cstdio>
 
 namespace {
-long long GetPieceLength(long long node_index) { return 1; }
+long long GetPieceLength(long long) { return 1; }
 
 static char __S[101] =
     "ABCABCABCABCABCABCABCABCABCABCABCABCABCABCABCABCABCABCABCABCABCABCABCABCAB"

@@ -1,32 +1,30 @@
 #pragma once
 
-#include "common/binary_search_tree/info/update_info.h"
+#include "common/binary_search_tree/info/update_node_to_root.h"
 
 namespace bst {
+namespace base {
 template <class TNode>
 inline void InsertByKey(TNode* root, TNode* node) {
-  static_assert(TNode::use_key, "use_key should be true");
-  static_assert(TNode::use_parent, "use_parent should be true");
-  if (!root || !node) return;
   for (;;) {
     root->ApplyAction();
     if (root->key < node->key) {
       if (root->r) {
         root = root->r;
       } else {
-        root->r = node;
+        root->SetR(node);
         break;
       }
     } else {
       if (root->l) {
         root = root->l;
       } else {
-        root->l = node;
+        root->SetL(node);
         break;
       }
     }
   }
-  node->p = root;
-  UpdateInfoNodeToRoot(root);
+  bst::info::UpdateNodeToRoot(root);
 }
+}  // namespace base
 }  // namespace bst

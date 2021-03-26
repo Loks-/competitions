@@ -4,7 +4,7 @@
 #include "common/hash.h"
 
 template <class TEdgeInfo, bool directed_edges>
-graph::GraphEI<TEdgeInfo, directed_edges> CreateRandomGraph(
+inline graph::GraphEI<TEdgeInfo, directed_edges> CreateRandomGraph(
     unsigned size, unsigned edges_per_node, size_t max_edge_cost,
     size_t seed = 0) {
   size_t h = seed;

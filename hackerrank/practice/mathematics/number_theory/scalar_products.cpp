@@ -19,7 +19,7 @@ int main_scalar_products() {
     s2[i] = (s[i] * s[i]) % M;
   }
   unordered_set<uint64_t> us;
-  for (int kl = 3; kl < 2 * n; ++kl) us.insert((s2[kl + 1] + s2[kl]) % M);
+  for (uint64_t kl = 3; kl < 2 * n; ++kl) us.insert((s2[kl + 1] + s2[kl]) % M);
   cout << us.size() << endl;
   return 0;
 }

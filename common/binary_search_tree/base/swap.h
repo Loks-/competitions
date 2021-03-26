@@ -1,10 +1,12 @@
 #pragma once
 
 #include "common/base.h"
-#include "common/binary_search_tree/base/sibling.h"
+
 #include <utility>
 
 namespace bst {
+namespace base {
+// Swap doesn't apply action and not update info.
 template <class TNode>
 inline void SwapNotRelated(TNode* node1, TNode* parent1, TNode* node2,
                            TNode* parent2) {
@@ -34,6 +36,7 @@ inline void SwapNotRelated(TNode* node1, TNode* parent1, TNode* node2,
   } else {
     node1->SetP(nullptr);
   }
+  node1->info.BTISwap(node2);
 }
 
 template <class TNode>
@@ -59,6 +62,7 @@ inline void SwapChildParent(TNode* child, TNode* parent, TNode* gparent) {
   } else {
     child->SetP(nullptr);
   }
+  child->info.BTISwap(parent);
 }
 
 template <class TNode>
@@ -73,4 +77,5 @@ inline void SwapAuto(TNode* node1, TNode* parent1, TNode* node2,
   else
     SwapNotRelated(node1, parent1, node2, parent2);
 }
+}  // namespace base
 }  // namespace bst

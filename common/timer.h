@@ -18,7 +18,7 @@ class Timer {
     running = false;
   }
 
-  Timer(bool start = true) : running(false) {
+  explicit Timer(bool start = true) : running(false) {
     if (start) Start();
   }
 

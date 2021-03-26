@@ -1,6 +1,7 @@
 #include "message.h"
 
 #include "common/base.h"
+#include "common/template.h"
 
 #include <queue>
 
@@ -12,26 +13,31 @@ static std::queue<long long> qp, qs, qr;
 }
 
 void PutChar(int target, char value) {
+  FakeUse(target);
   assert(target == 0);
   qp.push(value);
 }
 
 void PutInt(int target, int value) {
+  FakeUse(target);
   assert(target == 0);
   qp.push(value);
 }
 
 void PutLL(int target, long long value) {
+  FakeUse(target);
   assert(target == 0);
   qp.push(value);
 }
 
 void Send(int target) {
+  FakeUse(target);
   assert(target == 0);
   for (; !qp.empty(); qp.pop()) qs.push(qp.front());
 }
 
 int Receive(int source) {
+  FakeUse(source);
   assert((source == 0) || (source == -1));
   assert(!qs.empty());
   for (; !qs.empty(); qs.pop()) qr.push(qs.front());
@@ -39,6 +45,7 @@ int Receive(int source) {
 }
 
 char GetChar(int source) {
+  FakeUse(source);
   assert(source == 0);
   assert(!qr.empty());
   long long value = qr.front();
@@ -47,6 +54,7 @@ char GetChar(int source) {
 }
 
 int GetInt(int source) {
+  FakeUse(source);
   assert(source == 0);
   assert(!qr.empty());
   long long value = qr.front();
@@ -55,6 +63,7 @@ int GetInt(int source) {
 }
 
 long long GetLL(int source) {
+  FakeUse(source);
   assert(source == 0);
   assert(!qr.empty());
   long long value = qr.front();

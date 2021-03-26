@@ -1,6 +1,7 @@
 #pragma once
 
 #include "common/factorization/base.h"
+
 #include <algorithm>
 #include <vector>
 
@@ -12,7 +13,7 @@ class PrimesList {
   std::vector<unsigned> table;
 
  public:
-  PrimesList(uint64_t size) {
+  explicit PrimesList(uint64_t size) {
     table_size = size;
     squared_table_size = table_size * table_size;
     table.resize(table_size + 1, 0);

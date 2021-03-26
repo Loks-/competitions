@@ -2,6 +2,7 @@
 
 #include "common/base.h"
 #include "common/numeric/fraction.h"
+
 #include <algorithm>
 #include <vector>
 
@@ -15,12 +16,12 @@ class ContinuedFraction {
   std::vector<int64_t> cf;
 
  public:
-  ContinuedFraction(const std::vector<int64_t>& continued_fraction)
+  explicit ContinuedFraction(const std::vector<int64_t>& continued_fraction)
       : cf(continued_fraction) {
     if (cf.size() == 0) cf.push_back(0);
   }
 
-  ContinuedFraction(const TIFraction& f) {
+  explicit ContinuedFraction(const TIFraction& f) {
     int64_t n = f.GetN(), d = f.GetD();
     if (d == 0) {
       assert(n > 0);

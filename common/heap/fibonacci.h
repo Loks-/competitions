@@ -3,6 +3,7 @@
 #include "common/base.h"
 #include "common/node.h"
 #include "common/nodes_manager.h"
+
 #include <algorithm>
 #include <functional>
 #include <vector>
@@ -46,7 +47,7 @@ class Fibonacci {
   bool Compare(Node* l, Node* r) const { return compare(l->value, r->value); }
 
  public:
-  Fibonacci(TNodesManager& _nodes_manager)
+  explicit Fibonacci(TNodesManager& _nodes_manager)
       : nodes_manager(_nodes_manager), head(nullptr), size(0) {}
 
   TSelf Make() const { return TSelf(nodes_manager); }

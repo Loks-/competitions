@@ -2,6 +2,7 @@
 
 #include "common/base.h"
 #include "common/vector/enumerate.h"
+
 #include <algorithm>
 #include <functional>
 #include <vector>
@@ -43,7 +44,7 @@ class DHeapUKeyValueMap {
   }
 
  public:
-  DHeapUKeyValueMap(unsigned ukey_size) {
+  explicit DHeapUKeyValueMap(unsigned ukey_size) {
     key_map.resize(ukey_size, {not_in_heap, TValue()});
     pbegin = &(key_map[0]);
     heap_pointers.reserve(ukey_size);

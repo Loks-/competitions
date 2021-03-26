@@ -19,7 +19,7 @@ TesterDisjointSet::TesterDisjointSet(unsigned _size, unsigned _unions,
 size_t TesterDisjointSet::TestExtended() const {
   Timer t;
   size_t h = 0;
-  DisjointSetExtended<unsigned> dsp;
+  ds::DisjointSetExtended<unsigned> dsp;
   dsp.Reserve(size);
   for (unsigned i = 0; i < unions; ++i) {
     if ((i > 0) && ((i % unions_per_block) == 0)) dsp.Reset();

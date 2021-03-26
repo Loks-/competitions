@@ -1,9 +1,11 @@
 #pragma once
 
 #include "common/template.h"
+
 #include <stack>
 
 namespace bst {
+namespace base {
 namespace hidden {
 template <class TNode>
 inline void ResetParentLinksI(TNode* root, TFakeFalse) {}
@@ -31,4 +33,5 @@ template <class TNode>
 inline void ResetParentLinks(TNode* root) {
   hidden::ResetParentLinksI(root, TFakeBool<TNode::use_parent>());
 }
+}  // namespace base
 }  // namespace bst

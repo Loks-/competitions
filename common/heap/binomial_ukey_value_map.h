@@ -3,6 +3,7 @@
 #include "common/base.h"
 #include "common/node.h"
 #include "common/nodes_manager_fixed_size.h"
+
 #include <functional>
 
 namespace heap {
@@ -63,7 +64,7 @@ class BinomialUKeyValueMap {
   }
 
  public:
-  BinomialUKeyValueMap(unsigned ukey_size)
+  explicit BinomialUKeyValueMap(unsigned ukey_size)
       : nodes_manager(ukey_size), head(nullptr), size(0), top(nullptr) {
     key_map.resize(ukey_size, {nullptr, TValue()});
     pv_begin = &(key_map[0]);

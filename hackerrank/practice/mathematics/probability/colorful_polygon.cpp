@@ -6,7 +6,7 @@
 
 int main_colorful_polygon() {
   TModularD two = 2;
-  unsigned n, i, j, u = -1u;
+  unsigned n, u = -1u;
   cin >> n;
   vector<unsigned> v = ReadVector<unsigned>(n);
   vector<unsigned> vlast(n, n), vlast_map(n + 1, u);

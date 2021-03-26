@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/subset-component
 
-#include "common/disjoint_set.h"
+#include "common/data_structures/disjoint_set.h"
 #include "common/stl/base.h"
 #include "common/vector/read.h"
 
@@ -17,15 +17,15 @@ int main_subset_component() {
     }
   }
   for (unsigned ss = 0; ss < (1u << n); ++ss) {
-    DisjointSet ds(64);
+    ds::DisjointSet djs(64);
     for (unsigned i = 0; i < n; ++i) {
       if ((1u << i) & ss) {
         for (unsigned j = 1; j < vv[i].size(); ++j) {
-          ds.Union(vv[i][0], vv[i][j]);
+          djs.Union(vv[i][0], vv[i][j]);
         }
       }
     }
-    s += ds.GetSetsCount();
+    s += djs.GetSetsCount();
   }
   cout << s << endl;
   return 0;
