@@ -203,6 +203,9 @@ add_test( NAME blindfolded_bullseye.0 COMMAND python3 tests/google/code_jam/2020
 add_test( NAME blindfolded_bullseye.1 COMMAND python3 tests/google/code_jam/2020/interactive_runner.py python3 tests/google/code_jam/2020/r1b/blindfolded_bullseye.py 1 -- ./release/build/google_code_jam blindfolded_bullseye WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} )
 add_test( NAME blindfolded_bullseye.2 COMMAND python3 tests/google/code_jam/2020/interactive_runner.py python3 tests/google/code_jam/2020/r1b/blindfolded_bullseye.py 2 -- ./release/build/google_code_jam blindfolded_bullseye WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} )
 # add_test( NAME pen_testing COMMAND python3 tests/google/code_jam/2020/interactive_runner.py python3 tests/google/code_jam/2020/r3/pen_testing.py 2 -- ./release/build/google_code_jam pen_testing WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} )
+add_test( NAME median_sort.0 COMMAND python3 tests/google/code_jam/2020/interactive_runner.py python3 tests/google/code_jam/2021/qr/median_sort.py 0 -- ./release/build/google_code_jam median_sort WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} )
+add_test( NAME median_sort.1 COMMAND python3 tests/google/code_jam/2020/interactive_runner.py python3 tests/google/code_jam/2021/qr/median_sort.py 1 -- ./release/build/google_code_jam median_sort WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} )
+add_test( NAME median_sort.2 COMMAND python3 tests/google/code_jam/2020/interactive_runner.py python3 tests/google/code_jam/2021/qr/median_sort.py 2 -- ./release/build/google_code_jam median_sort WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} )
 
 file( GLOB_RECURSE HACKERRANK_TESTS RELATIVE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/tests/hackerrank/*.in" )
 list( SORT HACKERRANK_TESTS )

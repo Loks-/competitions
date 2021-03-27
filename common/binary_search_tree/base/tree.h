@@ -29,6 +29,10 @@ class Tree : public TTNodesManager {
   static const bool support_insert = true;
   static const bool support_remove = use_parent;
   static const bool support_remove_by_node = use_parent && TMe::support_remove;
+  static const bool support_join = false;
+  static const bool support_split = false;
+  static const bool support_insert_by_order =
+      !use_key && TInfo::has_size && TMe::support_join && TMe::support_split;
 
  public:
   explicit Tree(size_t max_nodes) : TNodesManager(max_nodes) {}
@@ -100,8 +104,27 @@ class Tree : public TTNodesManager {
     return root ? TMe::InsertByKeyI(root, node) : node;
   }
 
+  static TNode* InsertByOrder(TNode* root, TNode* node, size_t order_index) {
+    static_assert(TMe::support_insert_by_order);
+    assert(node);
+    if (!root) {
+      assert(order_index == 0);
+      return node;
+    } else {
+      assert(order_index <= root->info.size);
+      TNode *l = nullptr, *r = nullptr;
+      TMe::SplitBySize(root, order_index, l, r);
+      return TMe::Join3(l, node, r);
+    }
+  }
+
   TNode* InsertNewNode(TNode* root, const TData& data, const TKey& key) {
     return TMe::InsertByKey(root, New(data, key));
+  }
+
+  TNode* InsertNewNodeByOrder(TNode* root, const TData& data,
+                              size_t order_index) {
+    return TMe::InsertByOrder(root, New(data), order_index);
   }
 
   static TNode* RemoveByKey(TNode* root, const TKey& key,
@@ -145,6 +168,17 @@ class Tree : public TTNodesManager {
     if (removed_node) TNodesManager::Release(removed_node);
     return new_root;
   }
+
+  static TNode* Join(TNode* l, TNode* r);
+
+  static TNode* Join3(TNode* l, TNode* m1, TNode* r) {
+    return TMe::Join(l, TMe::Join(m1, r));
+  }
+
+  static void SplitByKey(TNode* root, const TKey& key, TNode*& output_l,
+                         TNode*& output_r);
+  static void SplitBySize(TNode* root, size_t lsize, TNode*& output_l,
+                          TNode*& output_r);
 
   void ReleaseTree(TNode* root) {
     if (root) {

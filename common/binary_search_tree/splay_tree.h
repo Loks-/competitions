@@ -19,6 +19,10 @@ class SplayTree
               base::Node<TData, TInfo, TAction, use_key, true, TKey>>,
           SplayTree<use_key, TData, TInfo, TAction, TKey, TTNodesManager>> {
  public:
+  static const bool support_remove = true;
+  static const bool support_join = true;
+  static const bool support_split = true;
+
   using TNode = base::Node<TData, TInfo, TAction, use_key, true, TKey>;
   using TSelf = SplayTree<use_key, TData, TInfo, TAction, TKey, TTNodesManager>;
   using TTree = base::Tree<TTNodesManager<TNode>, TSelf>;
@@ -61,7 +65,7 @@ class SplayTree
     return p;
   }
 
-  static TNode* Join(TNode* l, TNode* m1, TNode* r) {
+  static TNode* Join3(TNode* l, TNode* m1, TNode* r) {
     assert(m1 && !m1->l && !m1->r);
     m1->SetL(l);
     m1->SetR(r);
