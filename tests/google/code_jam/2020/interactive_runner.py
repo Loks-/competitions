@@ -105,7 +105,7 @@ if t_judge.error_message:
   print("Judge error message:", t_judge.error_message)
 
 print("Solution return code:", t_sol.return_code)
-if t_judge.error_message:
+if t_sol.error_message:
   print("Solution error message:", t_sol.error_message)
 
 if t_sol.return_code:
