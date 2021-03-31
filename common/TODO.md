@@ -6,7 +6,9 @@
 	* Leaning 2-3 trees
 	* Leaning Red Black Trees
 	* Tester for Join / Split
-	* Add Join / Split to RedBlack Tree
+	* Add Join / Split to Red Black Tree
+	* Add insert by order id to balanced trees
+	* Add insert by order id to Red Black Trees
 * Graph
 	* Additional MST algorithms
 	* Shortest path for directed acyclic graphs
