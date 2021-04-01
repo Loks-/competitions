@@ -37,6 +37,5 @@ class TesterGraphEIDistancePositiveCost {
   size_t TestKVM(const std::string& name) const;
 
  public:
-  size_t Test(unsigned type);
   bool TestAll();
 };
