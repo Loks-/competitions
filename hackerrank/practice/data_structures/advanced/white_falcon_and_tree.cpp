@@ -40,7 +40,7 @@ class FInfo : public st::info::None {
 
 class FActionSet : public st::action::None {
  public:
-  static const bool is_none = false;
+  static const bool modify_data = true;
 
   bool empty;
   FData f;

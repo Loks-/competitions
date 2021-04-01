@@ -10,7 +10,7 @@ class Reverse : public None {
  public:
   using TBase = None;
   using TSelf = Reverse;
-  static const bool is_none = false;
+  static const bool modify_tree = true;
 
   bool reverse;
 

@@ -5,7 +5,8 @@ namespace action {
 class None {
  public:
   using TSelf = None;
-  static const bool is_none = true;
+  static const bool modify_data = false;
+  static const bool modify_tree = false;
 
   bool IsEmpty() const { return true; }
   void Clear(){};

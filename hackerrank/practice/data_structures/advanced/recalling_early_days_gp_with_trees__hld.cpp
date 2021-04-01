@@ -23,7 +23,7 @@ class FData {
 class ActionAdd : public st::action::None {
  public:
   using TData = std::pair<TModular, TModular>;
-  static const bool is_none = false;
+  static const bool modify_data = true;
 
   TData x;
 
