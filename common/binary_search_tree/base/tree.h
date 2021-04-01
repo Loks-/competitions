@@ -34,6 +34,8 @@ class Tree : public TTNodesManager {
   static const bool support_insert_by_order =
       !use_key && TInfo::has_size && TMe::support_join && TMe::support_split;
 
+  static const bool is_persistent = false;
+
  public:
   explicit Tree(size_t max_nodes) : TNodesManager(max_nodes) {}
   Tree() : Tree(0) {}
