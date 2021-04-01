@@ -59,6 +59,10 @@ int main(int nargs, char **pargs) {
       Assert(TestPrimesCount(true));
     else if (tester_mode == "time_primes_generation")
       Assert(TestPrimesGeneration(true));
+    else if (tester_mode == "time_tree_path_maxima")
+      Assert(TestTreePathMaxima(true));
+    else if (tester_mode == "tree_path_maxima")
+      Assert(TestTreePathMaxima(false));
     else
       Assert(false, "Unknown tester mode");
   } catch (AssertException) {

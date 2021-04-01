@@ -17,3 +17,4 @@ bool TestMinimumSpanningTree(bool time_test);
 bool TestModularFFT();
 bool TestPrimesGeneration(bool time_test);
 bool TestPrimesCount(bool time_test);
+bool TestTreePathMaxima(bool time_test);

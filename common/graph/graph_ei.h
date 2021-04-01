@@ -50,6 +50,23 @@ class GraphEI : public Graph<_directed_edges> {
     return TEdges(TBase::inverted_edges[from], inverted_edges_info[from]);
   }
 
+  std::vector<std::vector<TEdgeInfo>>& EdgesInfo() { return edges_info; }
+  const std::vector<std::vector<TEdgeInfo>>& EdgesInfo() const { return edges_info; }
+  std::vector<TEdgeInfo>& EdgesInfo(unsigned from) { return edges_info[from]; }
+  const std::vector<TEdgeInfo>& EdgesInfo(unsigned from) const {
+    return edges_info[from];
+  }
+  std::vector<std::vector<TEdgeInfo>>& InvertedEdgesInfo() { return inverted_edges_info; }
+  const std::vector<std::vector<TEdgeInfo>>& InvertedEdgesInfo() const {
+    return inverted_edges_info;
+  }
+  std::vector<TEdgeInfo>& InvertedEdgesInfo(unsigned from) {
+    return inverted_edges_info[from];
+  }
+  const std::vector<TEdgeInfo>& InvertedEdgesInfo(unsigned from) const {
+    return inverted_edges_info[from];
+  }
+
   void AddBaseEdge(unsigned from, unsigned to, const TEdgeInfo& edge_info) {
     TBase::AddBaseEdge(from, to);
     edges_info[from].push_back(edge_info);
