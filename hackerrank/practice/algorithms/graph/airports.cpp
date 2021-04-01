@@ -2,7 +2,7 @@
 
 #include "common/binary_search_tree/info/size.h"
 #include "common/binary_search_tree/treap.h"
-#include "common/binary_search_tree/utils/segment_info_by_key.h"
+#include "common/binary_search_tree/utils/get_segment_info_by_key.h"
 #include "common/stl/base.h"
 #include "common/vector/read.h"
 
@@ -58,7 +58,7 @@ int main_airports() {
         head = tree.InsertNewNode(head, e, v[i]);
       }
       info.size = 0;
-      head = bst::SegmentInfoByKey<TTree>(head, r - d + 1, l + d, info);
+      head = bst::GetSegmentInfoByKey<TTree>(head, r - d + 1, l + d, info);
       int64_t lrd = max<int64_t>(d - (r - l), 0);
       if (info.size == 0) {
         cout << " " << lrd;

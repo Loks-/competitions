@@ -1,7 +1,7 @@
 #include "common/binary_search_tree/action/reverse.h"
 #include "common/binary_search_tree/base/order.h"
 #include "common/binary_search_tree/treap.h"
-#include "common/binary_search_tree/utils/add_action_to_segment.h"
+#include "common/binary_search_tree/utils/add_action_to_segment_by_index.h"
 #include "common/stl/base.h"
 #include "common/template.h"
 #include "common/vector/read.h"
@@ -25,7 +25,7 @@ int main_reversort() {
     for (unsigned i = 0; i < N - 1; ++i) {
       auto position = bst::base::Order(tree.NodeByRawIndex(i));
       c += position - i + 1;
-      r = bst::AddActionToSegment<TTree>(r, i, position + 1, true);
+      r = bst::AddActionToSegmentByIndex<TTree>(r, i, position + 1, true);
     }
     cout << "Case #" << it + 1 << ": " << c << endl;
   }

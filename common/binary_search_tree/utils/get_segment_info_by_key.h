@@ -2,7 +2,7 @@
 
 namespace bst {
 template <class TTree>
-inline typename TTree::TNode* SegmentInfoByKey(
+inline typename TTree::TNode* GetSegmentInfoByKey(
     typename TTree::TNode* root, const typename TTree::TKey& begin,
     const typename TTree::TKey& end, typename TTree::TInfo& output) {
   using TNode = typename TTree::TNode;
