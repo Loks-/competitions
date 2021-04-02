@@ -5,6 +5,7 @@
 #include "common/graph/tree_ei/assign_cost_to_nodes.h"
 #include "common/graph/tree_ei/tpm/full_branching_tree.h"
 #include "common/graph/tree_ei/tpm/tpm_hld.h"
+#include "common/graph/tree_ei/tpm/tpm_pbst.h"
 #include "common/hash.h"
 #include "common/timer.h"
 
@@ -56,10 +57,25 @@ size_t TesterTreePathMaxima::TestHLDFBT() const {
   return total_cost;
 }
 
+size_t TesterTreePathMaxima::TestPBST() const {
+  Timer t;
+  size_t total_cost = 0;
+  std::vector<uint64_t> v;
+  for (const auto& t : trees) {
+    auto nodes_values = graph::AssignCostToNodes(t, edge_proxy);
+    v = graph::tpm::TPM_PBST(t, nodes_values, paths, true);
+    total_cost += std::accumulate(v.begin(), v.end(), size_t(0));
+  }
+  std::cout << "Test results  [PT     ]: " << total_cost << "\t" << t.GetMilliseconds()
+            << std::endl;
+  return total_cost;
+}
+
 bool TesterTreePathMaxima::TestAll() {
   std::unordered_set<size_t> hs;
   hs.insert(TestHLD());
   hs.insert(TestHLDFBT());
+  hs.insert(TestPBST());
   return hs.size() == 1;
 }
 
