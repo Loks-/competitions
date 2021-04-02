@@ -25,6 +25,7 @@ class TesterTreePathMaxima {
   size_t TestHLD() const;
   size_t TestHLDFBT() const;
   size_t TestPBST() const;
+  size_t TestPBSTFBT() const;
 
  public:
   bool TestAll();

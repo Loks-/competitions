@@ -71,11 +71,27 @@ size_t TesterTreePathMaxima::TestPBST() const {
   return total_cost;
 }
 
+size_t TesterTreePathMaxima::TestPBSTFBT() const {
+  Timer t;
+  TreeGraph ttemp;
+  size_t total_cost = 0;
+  std::vector<uint64_t> v, nodes_values;
+  for (const auto& t : trees) {
+    graph::tpm::FullBranchingTree(t,edge_proxy, ttemp, nodes_values);
+    v = graph::tpm::TPM_PBST(ttemp, nodes_values, paths, true);
+    total_cost += std::accumulate(v.begin(), v.end(), size_t(0));
+  }
+  std::cout << "Test results  [PT  FBT]: " << total_cost << "\t" << t.GetMilliseconds()
+            << std::endl;
+  return total_cost;
+}
+
 bool TesterTreePathMaxima::TestAll() {
   std::unordered_set<size_t> hs;
   hs.insert(TestHLD());
   hs.insert(TestHLDFBT());
   hs.insert(TestPBST());
+  hs.insert(TestPBSTFBT());
   return hs.size() == 1;
 }
 
