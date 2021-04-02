@@ -11,6 +11,7 @@
 
 namespace graph {
 namespace tpm {
+// Solve tree path maxima problem using Heavy-Light Decomposition. 
 template<class TGraph, class TValue>
 inline std::vector<TValue> TPM_HLD(const Tree<TGraph>& tree, const std::vector<TValue>& nodes_values, const std::vector<std::pair<unsigned, unsigned>>& paths, bool ignore_lca = false) {
   assert(tree.Size() == nodes_values.size());
