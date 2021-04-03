@@ -2,13 +2,10 @@
 
 #include "common/base.h"
 #include "common/data_structures/disjoint_set.h"
-#include "common/data_structures/unsigned_set.h"
-#include "common/graph/graph/subgraph.h"
 #include "common/graph/tree.h"
 #include "common/graph/tree/convert_to_tree_graph.h"
 #include "common/graph/tree_ei.h"
 
-#include <algorithm>
 #include <vector>
 
 namespace graph {
@@ -39,7 +36,7 @@ inline void FullBranchingTree(
     return;
   }
 
-  TreeGraph fbt(n2);
+  output_fbt.Resize(n2);
   ds::DisjointSet tds(n2);
   std::vector<TEdge2> edges, edges2;
   std::vector<TEdge1> best_edge(n2, {CNone, TEdgeCost()});
@@ -69,7 +66,7 @@ inline void FullBranchingTree(
     }
     for (unsigned u = k0; u < k1; ++u) {
       umap[u] = umap[tds.Find(u)];
-      fbt.AddEdge(u, umap[u]);
+      output_fbt.AddEdge(u, umap[u]);
     }
     edges2.clear();
     for (auto& e : edges) {
@@ -80,13 +77,9 @@ inline void FullBranchingTree(
     k0 = k1;
     k1 = k2;
   }
-  fbt.SetRoot(k2 - 1);
   assert(edges.empty());
-
-  // TODO: faster version?
-  std::vector<bool> vmask(n2, false);
-  std::fill(vmask.begin(), vmask.begin() + k2, true);
-  output_fbt = Subgraph(fbt, vmask);
+  output_fbt.ResizeWithoutClear(k2);
+  output_fbt.SetRoot(k2 - 1);
   output_nodes.resize(k2);
 }
 }  // namespace tpm

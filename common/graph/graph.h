@@ -1,5 +1,7 @@
 #pragma once
 
+#include "common/base.h"
+
 #include <iostream>
 #include <vector>
 
@@ -26,6 +28,16 @@ class Graph {
 
   void Resize(unsigned _nvertices) {
     Clear();
+    nvertices = _nvertices;
+    edges.resize(nvertices);
+    if (directed_edges) inverted_edges.resize(nvertices);
+  }
+
+  void ResizeWithoutClear(unsigned _nvertices) {
+    for (unsigned i = _nvertices; i < nvertices; ++i) {
+      assert((edges[i].size() == 0) &&
+             (!directed_edges || (inverted_edges[i].size() == 0)));
+    }
     nvertices = _nvertices;
     edges.resize(nvertices);
     if (directed_edges) inverted_edges.resize(nvertices);
