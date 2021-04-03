@@ -28,6 +28,8 @@ inline std::vector<typename TEdgeCostFunction::TEdgeCost> TPM_PBST_FBT(
       bst::info::segment::Max<TValue, bst::info::segment::None>>;
   using TNode = typename TTree::TNode;
 
+  if (tree.Size() <= 1) return std::vector<TValue>(paths.size(), TValue());
+
   TreeGraph fbt;
   std::vector<TValue> nodes_values;
   FullBranchingTree(tree, f, fbt, nodes_values);
@@ -48,18 +50,15 @@ inline std::vector<typename TEdgeCostFunction::TEdgeCost> TPM_PBST_FBT(
     }
   }
 
+  unsigned d = lca.deep[0] + 1;
   for (auto& p : paths) {
     if (p.first == p.second) {
       output.push_back(0);
     } else {
-      unsigned a = lca.GetLCA(p.first, p.second);
+      unsigned a = lca.GetLCA(p.first, p.second), da = lca.deep[a] + 1;
       output.push_back(
-          std::max(bst::info::segment::GetByKey(roots[p.first], lca.deep[a] + 1,
-                                                lca.deep[p.first] + 1)
-                       .max,
-                   bst::info::segment::GetByKey(
-                       roots[p.second], lca.deep[a] + 1, lca.deep[p.second] + 1)
-                       .max));
+          std::max(bst::info::segment::GetByKey(roots[p.first], da, d).max,
+                   bst::info::segment::GetByKey(roots[p.second], da, d).max));
     }
   }
   return output;
