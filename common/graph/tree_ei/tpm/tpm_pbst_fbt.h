@@ -11,7 +11,6 @@
 #include "common/graph/tree_ei/tpm/full_branching_tree.h"
 
 #include <algorithm>
-#include <stack>
 #include <utility>
 #include <vector>
 
@@ -34,21 +33,14 @@ inline std::vector<typename TEdgeCostFunction::TEdgeCost> TPM_PBST_FBT(
   std::vector<TValue> nodes_values;
   FullBranchingTree(tree, f, fbt, nodes_values);
   assert(fbt.Size() == nodes_values.size());
+  unsigned s = fbt.Size();
   std::vector<TValue> output;
   graph::LCA lca(fbt);
   TTree ptree;
-  std::vector<TNode*> roots(fbt.Size());
-  std::stack<std::pair<unsigned, unsigned>> s;
-  for (s.push(std::make_pair(fbt.GetRoot(), CNone)); !s.empty();) {
-    unsigned v = s.top().first, p = s.top().second;
-    s.pop();
-    roots[v] = ptree.InsertNewNode((p == CNone) ? nullptr : roots[p],
-                                   nodes_values[v], lca.deep[v]);
-    for (auto u : fbt.Edges(v)) {
-      if (u == p) continue;
-      s.push(std::make_pair(u, v));
-    }
-  }
+  std::vector<TNode*> roots(s, nullptr);
+  for (unsigned i = s - 1; i > 0; --i)
+    roots[i - 1] = ptree.InsertNewNode(roots[fbt.Edges(i - 1).back()],
+                                       nodes_values[i - 1], lca.deep[i - 1]);
 
   unsigned d = lca.deep[0] + 1;
   for (auto& p : paths) {
