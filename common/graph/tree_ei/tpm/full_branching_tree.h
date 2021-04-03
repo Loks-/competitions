@@ -8,6 +8,8 @@
 
 #include <vector>
 
+// TODO:
+//   Check speed if we use linear algorithm instead of disjoint set.
 namespace graph {
 namespace tpm {
 template <class TEdgeInfo, class TEdgeCostFunction>
