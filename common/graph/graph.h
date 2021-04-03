@@ -33,19 +33,27 @@ class Graph {
 
   explicit Graph(unsigned _nvertices = 0) { Resize(_nvertices); }
   unsigned Size() const { return nvertices; }
+
   std::vector<std::vector<unsigned>>& Edges() { return edges; }
+
   const std::vector<std::vector<unsigned>>& Edges() const { return edges; }
+
   std::vector<unsigned>& Edges(unsigned from) { return edges[from]; }
+
   const std::vector<unsigned>& Edges(unsigned from) const {
     return edges[from];
   }
+
   std::vector<std::vector<unsigned>>& InvertedEdges() { return inverted_edges; }
+
   const std::vector<std::vector<unsigned>>& InvertedEdges() const {
     return inverted_edges;
   }
+
   std::vector<unsigned>& InvertedEdges(unsigned from) {
     return inverted_edges[from];
   }
+
   const std::vector<unsigned>& InvertedEdges(unsigned from) const {
     return inverted_edges[from];
   }
@@ -57,6 +65,7 @@ class Graph {
   }
 
   void AddBaseEdge(unsigned from, unsigned to) { edges[from].push_back(to); }
+
   void AddInvertedEdge(unsigned from, unsigned to) {
     inverted_edges[from].push_back(to);
   }

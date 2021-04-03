@@ -11,9 +11,12 @@
 
 namespace graph {
 namespace tpm {
-// Solve tree path maxima problem using Heavy-Light Decomposition. 
-template<class TGraph, class TValue>
-inline std::vector<TValue> TPM_HLD(const Tree<TGraph>& tree, const std::vector<TValue>& nodes_values, const std::vector<std::pair<unsigned, unsigned>>& paths, bool ignore_lca = false) {
+// Solve tree path maxima problem using Heavy-Light Decomposition.
+template <class TGraph, class TValue>
+inline std::vector<TValue> TPM_HLD(
+    const Tree<TGraph>& tree, const std::vector<TValue>& nodes_values,
+    const std::vector<std::pair<unsigned, unsigned>>& paths,
+    bool ignore_lca = false) {
   assert(tree.Size() == nodes_values.size());
   std::vector<TValue> output;
   graph::HLD<TValue, st::info::Max<TValue>> hld(tree);
@@ -21,7 +24,9 @@ inline std::vector<TValue> TPM_HLD(const Tree<TGraph>& tree, const std::vector<T
   for (auto& p : paths) {
     if (ignore_lca) {
       unsigned lca = hld.LCA(p.first, p.second);
-      output.push_back(std::max(hld.PathFromAncestor(lca, p.first, true).GetInfo().max, hld.PathFromAncestor(lca, p.second, true).GetInfo().max));
+      output.push_back(
+          std::max(hld.PathFromAncestor(lca, p.first, true).GetInfo().max,
+                   hld.PathFromAncestor(lca, p.second, true).GetInfo().max));
     } else {
       output.push_back(hld.Path(p.first, p.second).GetInfo().max);
     }

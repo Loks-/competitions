@@ -3,7 +3,7 @@
 #include "common/graph/tree.h"
 
 namespace graph {
-template<class TGraph>
+template <class TGraph>
 inline TreeGraph ConvertToTreeGraph(const Tree<TGraph>& input) {
   TreeGraph output(input.Size());
   output.SetRoot(input.GetRoot());

@@ -3,10 +3,10 @@
 #include "common/base.h"
 #include "common/data_structures/disjoint_set.h"
 #include "common/data_structures/unsigned_set.h"
-#include "common/graph/tree.h"
-#include "common/graph/tree_ei.h"
 #include "common/graph/graph/subgraph.h"
+#include "common/graph/tree.h"
 #include "common/graph/tree/convert_to_tree_graph.h"
+#include "common/graph/tree_ei.h"
 
 #include <algorithm>
 #include <vector>
@@ -14,10 +14,10 @@
 namespace graph {
 namespace tpm {
 template <class TEdgeInfo, class TEdgeCostFunction>
-inline void FullBranchingTree(const TreeEI<TEdgeInfo>& tree,
-                              const TEdgeCostFunction& f,
-                              TreeGraph& output_fbt,
-                              std::vector<typename TEdgeCostFunction::TEdgeCost>& output_nodes) {
+inline void FullBranchingTree(
+    const TreeEI<TEdgeInfo>& tree, const TEdgeCostFunction& f,
+    TreeGraph& output_fbt,
+    std::vector<typename TEdgeCostFunction::TEdgeCost>& output_nodes) {
   using TEdgeCost = typename TEdgeCostFunction::TEdgeCost;
   class TEdge1 {
    public:
@@ -47,11 +47,10 @@ inline void FullBranchingTree(const TreeEI<TEdgeInfo>& tree,
   unsigned k2 = n;
   for (unsigned i = 0; i < n; ++i) {
     for (const auto& e : tree.EdgesEI(i)) {
-      if (i < e.to)
-        edges.push_back({i, e.to, f(e.info)});
+      if (i < e.to) edges.push_back({i, e.to, f(e.info)});
     }
   }
-  for (unsigned k0 = 0, k1 = n; k1 > k0 + 1; ) {
+  for (unsigned k0 = 0, k1 = n; k1 > k0 + 1;) {
     for (auto& e : edges) {
       if ((best_edge[e.u0].u == CNone) || (e.cost < best_edge[e.u0].cost))
         best_edge[e.u0] = {e.u1, e.cost};

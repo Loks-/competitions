@@ -6,8 +6,8 @@
 #include "common/binary_search_tree/info/segment/none.h"
 #include "common/binary_search_tree/persistent/treap.h"
 #include "common/graph/tree.h"
-#include "common/graph/tree_ei.h"
 #include "common/graph/tree/lca.h"
+#include "common/graph/tree_ei.h"
 #include "common/graph/tree_ei/tpm/full_branching_tree.h"
 
 #include <algorithm>
@@ -17,11 +17,15 @@
 
 namespace graph {
 namespace tpm {
-template<class TEdgeInfo, class TEdgeCostFunction>
+template <class TEdgeInfo, class TEdgeCostFunction>
 // Solve tree path maxima problem using LCA and Persistent Binary Search Tree.
-inline std::vector<typename TEdgeCostFunction::TEdgeCost> TPM_PBST_FBT(const TreeEI<TEdgeInfo>& tree, const TEdgeCostFunction& f, const std::vector<std::pair<unsigned, unsigned>>& paths) {
+inline std::vector<typename TEdgeCostFunction::TEdgeCost> TPM_PBST_FBT(
+    const TreeEI<TEdgeInfo>& tree, const TEdgeCostFunction& f,
+    const std::vector<std::pair<unsigned, unsigned>>& paths) {
   using TValue = typename TEdgeCostFunction::TEdgeCost;
-  using TTree = bst::persistent::Treap<true, false, TValue, bst::info::segment::Max<TValue, bst::info::segment::None>>;
+  using TTree = bst::persistent::Treap<
+      true, false, TValue,
+      bst::info::segment::Max<TValue, bst::info::segment::None>>;
   using TNode = typename TTree::TNode;
 
   TreeGraph fbt;
@@ -36,7 +40,8 @@ inline std::vector<typename TEdgeCostFunction::TEdgeCost> TPM_PBST_FBT(const Tre
   for (s.push(std::make_pair(fbt.GetRoot(), CNone)); !s.empty();) {
     unsigned v = s.top().first, p = s.top().second;
     s.pop();
-    roots[v] = ptree.InsertNewNode((p == CNone) ? nullptr : roots[p], nodes_values[v], lca.deep[v]);
+    roots[v] = ptree.InsertNewNode((p == CNone) ? nullptr : roots[p],
+                                   nodes_values[v], lca.deep[v]);
     for (auto u : fbt.Edges(v)) {
       if (u == p) continue;
       s.push(std::make_pair(u, v));
@@ -48,9 +53,13 @@ inline std::vector<typename TEdgeCostFunction::TEdgeCost> TPM_PBST_FBT(const Tre
       output.push_back(0);
     } else {
       unsigned a = lca.GetLCA(p.first, p.second);
-      output.push_back(std::max(
-        bst::info::segment::GetByKey(roots[p.first], lca.deep[a] + 1, lca.deep[p.first] + 1).max,
-        bst::info::segment::GetByKey(roots[p.second], lca.deep[a] + 1, lca.deep[p.second] + 1).max));
+      output.push_back(
+          std::max(bst::info::segment::GetByKey(roots[p.first], lca.deep[a] + 1,
+                                                lca.deep[p.first] + 1)
+                       .max,
+                   bst::info::segment::GetByKey(
+                       roots[p.second], lca.deep[a] + 1, lca.deep[p.second] + 1)
+                       .max));
     }
   }
   return output;

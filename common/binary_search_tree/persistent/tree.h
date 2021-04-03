@@ -35,7 +35,7 @@ class Tree : public bst::base::Tree<TTNodesManager, TTMe> {
       if (node->l) node->l->SetP(node);
       if (node->r) node->r->SetP(node);
     }
-  } 
+  }
 };
 }  // namespace persistent
 }  // namespace bst

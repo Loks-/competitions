@@ -4,19 +4,21 @@ namespace bst {
 namespace info {
 namespace segment {
 template <class TNode>
-inline typename TNode::TInfo GetByKey(
-    TNode* root,
-    const typename TNode::TKey& begin,
-    const typename TNode::TKey& end) {
+inline typename TNode::TInfo GetByKey(TNode* root,
+                                      const typename TNode::TKey& begin,
+                                      const typename TNode::TKey& end) {
   for (; root;) {
-    if (root->key < begin) root = root->r;
-    else if (root->key >= end) root = root->l;
-    else break;
+    if (root->key < begin)
+      root = root->r;
+    else if (root->key >= end)
+      root = root->l;
+    else
+      break;
   }
   typename TNode::TInfo output;
   if (!root) return output;
   output.SetN(root);
-  for (TNode* node = root->l; node; ) {
+  for (TNode* node = root->l; node;) {
     if (node->key < begin) {
       node = node->r;
     } else {
@@ -25,7 +27,7 @@ inline typename TNode::TInfo GetByKey(
       node = node->l;
     }
   }
-  for (TNode* node = root->r; node; ) {
+  for (TNode* node = root->r; node;) {
     if (node->key < end) {
       output.AddS(node->l);
       output.AddN(node);

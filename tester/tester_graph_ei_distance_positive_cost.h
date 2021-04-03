@@ -1,10 +1,10 @@
 #pragma once
 
+#include "tester/graph_type.h"
+
 #include "common/base.h"
 #include "common/graph/graph_ei.h"
 #include "common/graph/graph_ei/edge_cost_proxy.h"
-
-#include "tester/graph_type.h"
 
 #include <string>
 #include <vector>

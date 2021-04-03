@@ -1,8 +1,8 @@
 #include "tester/tester_tree_path_maxima.h"
 
 #include "common/base.h"
-#include "common/graph/tree_ei/create_random_tree.h"
 #include "common/graph/tree_ei/assign_cost_to_nodes.h"
+#include "common/graph/tree_ei/create_random_tree.h"
 #include "common/graph/tree_ei/tpm/full_branching_tree.h"
 #include "common/graph/tree_ei/tpm/tpm_hld.h"
 #include "common/graph/tree_ei/tpm/tpm_pbst.h"
@@ -38,8 +38,8 @@ size_t TesterTreePathMaxima::TestHLD() const {
     v = graph::tpm::TPM_HLD(t, nodes_values, paths, true);
     total_cost += std::accumulate(v.begin(), v.end(), size_t(0));
   }
-  std::cout << "Test results  [HLD    ]: " << total_cost << "\t" << t.GetMilliseconds()
-            << std::endl;
+  std::cout << "Test results  [HLD    ]: " << total_cost << "\t"
+            << t.GetMilliseconds() << std::endl;
   return total_cost;
 }
 
@@ -49,12 +49,12 @@ size_t TesterTreePathMaxima::TestHLDFBT() const {
   size_t total_cost = 0;
   std::vector<uint64_t> v, nodes_values;
   for (const auto& t : trees) {
-    graph::tpm::FullBranchingTree(t,edge_proxy, ttemp, nodes_values);
+    graph::tpm::FullBranchingTree(t, edge_proxy, ttemp, nodes_values);
     v = graph::tpm::TPM_HLD(ttemp, nodes_values, paths, true);
     total_cost += std::accumulate(v.begin(), v.end(), size_t(0));
   }
-  std::cout << "Test results  [HLD FBT]: " << total_cost << "\t" << t.GetMilliseconds()
-            << std::endl;
+  std::cout << "Test results  [HLD FBT]: " << total_cost << "\t"
+            << t.GetMilliseconds() << std::endl;
   return total_cost;
 }
 
@@ -67,8 +67,8 @@ size_t TesterTreePathMaxima::TestPBST() const {
     v = graph::tpm::TPM_PBST(t, nodes_values, paths, true);
     total_cost += std::accumulate(v.begin(), v.end(), size_t(0));
   }
-  std::cout << "Test results  [PT     ]: " << total_cost << "\t" << t.GetMilliseconds()
-            << std::endl;
+  std::cout << "Test results  [PT     ]: " << total_cost << "\t"
+            << t.GetMilliseconds() << std::endl;
   return total_cost;
 }
 
@@ -78,12 +78,12 @@ size_t TesterTreePathMaxima::TestPBSTFBT() const {
   size_t total_cost = 0;
   std::vector<uint64_t> v, nodes_values;
   for (const auto& t : trees) {
-    graph::tpm::FullBranchingTree(t,edge_proxy, ttemp, nodes_values);
+    graph::tpm::FullBranchingTree(t, edge_proxy, ttemp, nodes_values);
     v = graph::tpm::TPM_PBST(ttemp, nodes_values, paths, true);
     total_cost += std::accumulate(v.begin(), v.end(), size_t(0));
   }
-  std::cout << "Test results  [PT  FBT]: " << total_cost << "\t" << t.GetMilliseconds()
-            << std::endl;
+  std::cout << "Test results  [PT  FBT]: " << total_cost << "\t"
+            << t.GetMilliseconds() << std::endl;
   return total_cost;
 }
 
@@ -95,15 +95,15 @@ size_t TesterTreePathMaxima::TestPBST2() const {
     v = graph::tpm::TPM_PBST_FBT(t, edge_proxy, paths);
     total_cost += std::accumulate(v.begin(), v.end(), size_t(0));
   }
-  std::cout << "Test results  [PT2    ]: " << total_cost << "\t" << t.GetMilliseconds()
-            << std::endl;
+  std::cout << "Test results  [PT2    ]: " << total_cost << "\t"
+            << t.GetMilliseconds() << std::endl;
   return total_cost;
 }
 
 bool TesterTreePathMaxima::TestAll() {
   std::unordered_set<size_t> hs;
-  // hs.insert(TestHLD());
-  // hs.insert(TestHLDFBT());
+  hs.insert(TestHLD());
+  hs.insert(TestHLDFBT());
   hs.insert(TestPBST());
   hs.insert(TestPBSTFBT());
   hs.insert(TestPBST2());
@@ -111,6 +111,7 @@ bool TesterTreePathMaxima::TestAll() {
 }
 
 bool TestTreePathMaxima(bool time_test) {
-  TesterTreePathMaxima t(time_test ? 10000 : 100, 10, time_test ? 100000 : 1000);
+  TesterTreePathMaxima t(time_test ? 100000 : 100, 10,
+                         time_test ? 1000000 : 1000);
   return t.TestAll();
 }

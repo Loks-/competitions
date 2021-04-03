@@ -12,23 +12,23 @@ class None : public bst::info::None {
   using TBase = bst::info::None;
   using TSelf = None;
 
-  template<class TNode>
+  template <class TNode>
   void SetN(const TNode* node) {
     assert(node);
     FakeUse(node);
-  } 
+  }
 
-  template<class TNode>
+  template <class TNode>
   void SetS(const TNode* node) {
     assert(node);
     FakeUse(node);
-  } 
+  }
 
-  template<class TNode>
-  void AddN(const TNode*) {} 
+  template <class TNode>
+  void AddN(const TNode*) {}
 
-  template<class TNode>
-  void AddS(const TNode*) {} 
+  template <class TNode>
+  void AddS(const TNode*) {}
 };
 }  // namespace segment
 }  // namespace info

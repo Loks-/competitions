@@ -51,18 +51,29 @@ class GraphEI : public Graph<_directed_edges> {
   }
 
   std::vector<std::vector<TEdgeInfo>>& EdgesInfo() { return edges_info; }
-  const std::vector<std::vector<TEdgeInfo>>& EdgesInfo() const { return edges_info; }
+
+  const std::vector<std::vector<TEdgeInfo>>& EdgesInfo() const {
+    return edges_info;
+  }
+
   std::vector<TEdgeInfo>& EdgesInfo(unsigned from) { return edges_info[from]; }
+
   const std::vector<TEdgeInfo>& EdgesInfo(unsigned from) const {
     return edges_info[from];
   }
-  std::vector<std::vector<TEdgeInfo>>& InvertedEdgesInfo() { return inverted_edges_info; }
+
+  std::vector<std::vector<TEdgeInfo>>& InvertedEdgesInfo() {
+    return inverted_edges_info;
+  }
+
   const std::vector<std::vector<TEdgeInfo>>& InvertedEdgesInfo() const {
     return inverted_edges_info;
   }
+
   std::vector<TEdgeInfo>& InvertedEdgesInfo(unsigned from) {
     return inverted_edges_info[from];
   }
+
   const std::vector<TEdgeInfo>& InvertedEdgesInfo(unsigned from) const {
     return inverted_edges_info[from];
   }

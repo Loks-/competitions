@@ -54,7 +54,7 @@ class HLD {
   TNode* stroot;
 
  protected:
-  template<class TGraph>
+  template <class TGraph>
   void AddNewChain(const Tree<TGraph>& g, unsigned x) {
     unsigned chain_index = unsigned(chains.size());
     chains.push_back({tni.parent[x], tni.deep[x], tni.preorder[x], nullptr});
@@ -89,15 +89,17 @@ class HLD {
  public:
   HLD() {}
 
-  template<class TGraph>
-  explicit HLD(const Tree<TGraph>& tree) { Build(tree); }
-  
-  template<class TGraph>
+  template <class TGraph>
+  explicit HLD(const Tree<TGraph>& tree) {
+    Build(tree);
+  }
+
+  template <class TGraph>
   HLD(const Tree<TGraph>& tree, const std::vector<TData>& data) {
     Build(tree, data);
   }
 
-  template<class TGraph>
+  template <class TGraph>
   void Build(const Tree<TGraph>& tree) {
     stree.ResetNodes(tree.Size());
     tni.Init(tree);
@@ -112,7 +114,7 @@ class HLD {
     stroot = stree.BuildTree(v);
   }
 
-  template<class TGraph>
+  template <class TGraph>
   void Build(const Tree<TGraph>& tree, const std::vector<TData>& data) {
     assert(tree.Size() == data.size());
     Build(tree);

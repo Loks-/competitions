@@ -1,11 +1,11 @@
 #pragma once
 
 #include "common/base.h"
-#include "common/graph/tree_ei.h"
 #include "common/graph/graph_ei/edge_cost_proxy.h"
+#include "common/graph/tree_ei.h"
 
-#include <vector>
 #include <utility>
+#include <vector>
 
 class TesterTreePathMaxima {
  public:
@@ -18,8 +18,7 @@ class TesterTreePathMaxima {
   std::vector<std::pair<unsigned, unsigned>> paths;
 
  public:
-  TesterTreePathMaxima(unsigned tree_size, unsigned ntrees,
-                       unsigned npaths);
+  TesterTreePathMaxima(unsigned tree_size, unsigned ntrees, unsigned npaths);
 
  protected:
   size_t TestHLD() const;

@@ -14,12 +14,14 @@
 
 namespace bst {
 namespace persistent {
-template <bool use_key, bool use_parent, class TData, class TTInfo = bst::info::Size,
-          class TAction = bst::action::None, class TKey = int64_t>
+template <bool use_key, bool use_parent, class TData,
+          class TTInfo = bst::info::Size, class TAction = bst::action::None,
+          class TKey = int64_t>
 class Treap
     : public bst::persistent::Tree<
-          NodesManager<bst::base::Node<TData, bst::info::TreapHeight<unsigned, TTInfo>,
-                                    TAction, use_key, use_parent, TKey>>,
+          NodesManager<
+              bst::base::Node<TData, bst::info::TreapHeight<unsigned, TTInfo>,
+                              TAction, use_key, use_parent, TKey>>,
           Treap<use_key, use_parent, TData, TTInfo, TAction, TKey>> {
  public:
   static const bool support_remove = true;
@@ -28,7 +30,8 @@ class Treap
 
   using TInfo = bst::info::TreapHeight<unsigned, TTInfo>;
   using THeight = typename TInfo::THeight;
-  using TNode = bst::base::Node<TData, TInfo, TAction, use_key, use_parent, TKey>;
+  using TNode =
+      bst::base::Node<TData, TInfo, TAction, use_key, use_parent, TKey>;
   using TSelf = Treap<use_key, use_parent, TData, TTInfo, TAction, TKey>;
   using TBase = bst::persistent::Tree<NodesManager<TNode>, TSelf>;
   using TTree = bst::base::Tree<NodesManager<TNode>, TSelf>;
@@ -75,7 +78,7 @@ class Treap
 
  protected:
   void SplitByKeyI(TNode* p, const TKey& key, TNode*& output_l,
-                          TNode*& output_r) {
+                   TNode*& output_r) {
     p->ApplyAction();
     if (p->key < key) {
       if (p->r) {
@@ -104,7 +107,7 @@ class Treap
 
  public:
   void SplitByKey(TNode* root, const TKey& key, TNode*& output_l,
-                         TNode*& output_r) {
+                  TNode*& output_r) {
     static_assert(use_key, "use_key should be true");
     if (!root) {
       output_l = output_r = nullptr;

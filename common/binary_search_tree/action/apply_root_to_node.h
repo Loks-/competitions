@@ -19,7 +19,8 @@ inline void ApplyRootToNode(TNode* node, TFakeTrue) {
 
 template <class TNode>
 inline void ApplyRootToNode(TNode* node) {
-  ApplyRootToNode(node, TFakeBool<TNode::TAction::modify_data || TNode::TAction::modify_tree>());
+  ApplyRootToNode(node, TFakeBool < TNode::TAction::modify_data ||
+                            TNode::TAction::modify_tree > ());
 }
 }  // namespace action
 }  // namespace bst

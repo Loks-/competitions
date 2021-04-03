@@ -8,7 +8,8 @@
 
 namespace graph {
 template <class TEdgeInfo, class TEdgeCostFunction>
-inline std::vector<TEdgeInfo> AssignCostToNodes(const TreeEI<TEdgeInfo>& tree, const TEdgeCostFunction& f) {
+inline std::vector<TEdgeInfo> AssignCostToNodes(const TreeEI<TEdgeInfo>& tree,
+                                                const TEdgeCostFunction& f) {
   std::vector<TEdgeInfo> output(tree.Size(), TEdgeInfo());
   std::stack<std::pair<unsigned, unsigned>> s;
   for (s.push(std::make_pair(tree.GetRoot(), CNone)); !s.empty();) {
