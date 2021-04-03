@@ -10,6 +10,7 @@ bool TestGraphEIDistancePositiveCost(bool time_test);
 bool TestHeap(bool time_test);
 bool TestInterpolation();
 bool TestLongMult();
+bool TestLowestCommonAncestor(bool time_test);
 bool TestMatrixMult();
 bool TestMertens();
 bool TestMertensCompact();

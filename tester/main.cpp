@@ -31,6 +31,8 @@ int main(int nargs, char **pargs) {
       Assert(TestInterpolation());
     else if (tester_mode == "long_mult")
       Assert(TestLongMult());
+    else if (tester_mode == "lowest_common_ancestor")
+      Assert(TestLowestCommonAncestor(false));
     else if (tester_mode == "mertens")
       Assert(TestMertens());
     else if (tester_mode == "mertens_compact")
@@ -51,6 +53,8 @@ int main(int nargs, char **pargs) {
       Assert(TestGraphEIDistancePositiveCost(true));
     else if (tester_mode == "time_heap")
       Assert(TestHeap(true));
+    else if (tester_mode == "time_lowest_common_ancestor")
+      Assert(TestLowestCommonAncestor(true));
     else if (tester_mode == "time_matrix_mult")
       Assert(TestMatrixMult());
     else if (tester_mode == "time_minimum_spanning_tree")
