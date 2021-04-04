@@ -2,7 +2,7 @@
 
 #include "tester/minimum_spanning_tree.h"
 
-#include "common/graph/graph_ei/create_random_graph.h"
+#include "common/graph/graph_ei/create_hrandom_graph.h"
 #include "common/graph/graph_ei/edge_cost_proxy.h"
 #include "common/graph/graph_ei/mst/boruvka.h"
 #include "common/graph/graph_ei/mst/kruskal.h"
@@ -38,8 +38,8 @@ TesterMinimumSpanningTree::TesterMinimumSpanningTree(EGraphType _gtype,
                                                      unsigned graph_size,
                                                      unsigned edges_per_node)
     : gtype(_gtype),
-      g(CreateRandomGraph<uint64_t, false>(graph_size, edges_per_node,
-                                           (1u << 30))) {}
+      g(CreateHRandomGraph<uint64_t, false>(graph_size, edges_per_node,
+                                            (1u << 30))) {}
 
 uint64_t TesterMinimumSpanningTree::TestBoruvka() const {
   Timer t;

@@ -1,6 +1,9 @@
 #include "tester/tester_graph_ei_distance_positive_cost.h"
 
-#include "common/graph/graph_ei/create_random_graph.h"
+#include "tester/graph_ei_distance_positive_cost.h"
+#include "tester/graph_type.h"
+
+#include "common/graph/graph_ei/create_hrandom_graph.h"
 #include "common/graph/graph_ei/distance/bellman_ford.h"
 #include "common/graph/graph_ei/distance/floyd_warshall.h"
 #include "common/graph/graph_ei/edge_cost_proxy.h"
@@ -12,9 +15,6 @@
 #include "common/heap/fibonacci_ukey_value_map.h"
 #include "common/heap/pairing_ukey_value_map.h"
 #include "common/timer.h"
-
-#include "tester/graph_ei_distance_positive_cost.h"
-#include "tester/graph_type.h"
 
 #include <functional>
 #include <iostream>
@@ -39,8 +39,8 @@ using TPairing = heap::PairingUKeyValueMap<uint64_t, std::less<uint64_t>,
 TesterGraphEIDistancePositiveCost::TesterGraphEIDistancePositiveCost(
     EGraphType _gtype, unsigned graph_size, unsigned edges_per_node)
     : gtype(_gtype),
-      g(CreateRandomGraph<uint64_t, true>(graph_size, edges_per_node,
-                                          (1u << 30))) {}
+      g(CreateHRandomGraph<uint64_t, true>(graph_size, edges_per_node,
+                                           (1u << 30))) {}
 
 size_t TesterGraphEIDistancePositiveCost::TestBellmanFord() const {
   Timer t;
