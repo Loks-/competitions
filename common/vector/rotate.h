@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <vector>
 
+namespace nvector {
 template <class TIterator>
 inline void SwapIntervals(const TIterator& b, const TIterator& m,
                           const TIterator& e) {
@@ -20,3 +21,4 @@ inline void RotateLeft(const std::vector<T>& v, size_t shift) {
     SwapIntervals(v.begin(), v.begin() + (shift % size), v.end());
   }
 }
+}  // namespace nvector

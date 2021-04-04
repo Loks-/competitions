@@ -19,7 +19,7 @@ int main_join_the_ranks() {
         l -= (S - k);
       }
       cout << k << " " << l - k << endl;
-      SwapIntervals(v.begin(), v.begin() + k, v.begin() + l);
+      nvector::SwapIntervals(v.begin(), v.begin() + k, v.begin() + l);
     }
   }
   return 0;

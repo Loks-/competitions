@@ -35,7 +35,7 @@ class PolygonStaticSize {
           ((v[i].y == v[ilowest].y) && (v[i].x < v[ilowest].x)))
         ilowest = i;
     }
-    SwapIntervals(v.begin(), v.begin() + ilowest, v.end());
+    nvector::SwapIntervals(v.begin(), v.begin() + ilowest, v.end());
     if ((size > 2) && CompareVectorAngle(v.back() - v[0], v[1] - v[0]))
       std::reverse(v.begin() + 1, v.end());
   }
