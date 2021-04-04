@@ -9,9 +9,9 @@ inline void Update(TNode* node) {
   assert(node);
   node->ApplyAction();
   if (node->IsLeaf())
-    node->info.UpdateData(node->GetData());
+    node->info.UpdateData(node->GetData(), node->sinfo);
   else
-    node->info.UpdateLR(node->l->info, node->r->info);
+    node->info.UpdateLR(node->l->info, node->r->info, node->sinfo);
 }
 }  // namespace info
 }  // namespace st

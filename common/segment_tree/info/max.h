@@ -18,14 +18,15 @@ class Max : public TInfo {
 
   TValue max;
 
-  template <class TData>
-  void UpdateData(const TData& data) {
-    TBase::UpdateData(data);
+  template <class TData, class TSInfo>
+  void UpdateData(const TData& data, const TSInfo& sinfo) {
+    TBase::UpdateData(data, sinfo);
     max = data;
   }
 
-  void UpdateLR(const TSelf& l, const TSelf& r) {
-    TBase::UpdateLR(l, r);
+  template <class TSInfo>
+  void UpdateLR(const TSelf& l, const TSelf& r, const TSInfo& sinfo) {
+    TBase::UpdateLR(l, r, sinfo);
     max = std::max(l.max, r.max);
   }
 };

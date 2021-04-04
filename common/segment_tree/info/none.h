@@ -8,11 +8,14 @@ class None {
 
   static const bool is_none = true;
   static const bool use_data = false;
+  static const bool use_sinfo_in_update_data = false;
+  static const bool use_sinfo_in_update_lr = false;
 
-  template <class TData>
-  void UpdateData(const TData&) {}
+  template <class TData, class TSInfo>
+  void UpdateData(const TData&, const TSInfo&) {}
 
-  void UpdateLR(const TSelf&, const TSelf&) {}
+  template <class TSInfo>
+  void UpdateLR(const TSelf&, const TSelf&, const TSInfo&) {}
 };
 }  // namespace info
 }  // namespace st

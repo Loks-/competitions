@@ -16,14 +16,15 @@ class Sum : public TInfo {
 
   TValue sum;
 
-  template <class TData>
-  void UpdateData(const TData& data) {
-    TBase::UpdateData(data);
+  template <class TData, class TSInfo>
+  void UpdateData(const TData& data, const TSInfo& sinfo) {
+    TBase::UpdateData(data, sinfo);
     sum = data;
   }
 
-  void UpdateLR(const TSelf& l, const TSelf& r) {
-    TBase::UpdateLR(l, r);
+  template <class TSInfo>
+  void UpdateLR(const TSelf& l, const TSelf& r, const TSInfo& sinfo) {
+    TBase::UpdateLR(l, r, sinfo);
     sum = l.sum + r.sum;
   }
 };

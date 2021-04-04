@@ -24,14 +24,15 @@ class FInfo : public st::info::None {
 
   FData f;
 
-  template <class TData>
-  void UpdateData(const TData& data) {
-    TBase::UpdateData(data);
+  template <class TData, class TSInfo>
+  void UpdateData(const TData& data, const TSInfo& sinfo) {
+    TBase::UpdateData(data, sinfo);
     f = data;
   }
 
-  void UpdateLR(const TSelf& l, const TSelf& r) {
-    TBase::UpdateLR(l, r);
+  template <class TSInfo>
+  void UpdateLR(const TSelf& l, const TSelf& r, const TSInfo& sinfo) {
+    TBase::UpdateLR(l, r, sinfo);
     f.a = l.f.a * r.f.a;
     f.b = r.f.a * l.f.b + r.f.b;
     f.br = l.f.a * r.f.br + l.f.br;

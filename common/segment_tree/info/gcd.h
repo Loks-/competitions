@@ -17,14 +17,15 @@ class GCD : public TInfo {
 
   TValue gcd;
 
-  template <class TData>
-  void UpdateData(const TData& data) {
-    TBase::UpdateData(data);
+  template <class TData, class TSInfo>
+  void UpdateData(const TData& data, const TSInfo& sinfo) {
+    TBase::UpdateData(data, sinfo);
     gcd = data;
   }
 
-  void UpdateLR(const TSelf& l, const TSelf& r) {
-    TBase::UpdateLR(l, r);
+  template <class TSInfo>
+  void UpdateLR(const TSelf& l, const TSelf& r, const TSInfo& sinfo) {
+    TBase::UpdateLR(l, r, sinfo);
     gcd = ::GCD<TValue>(l.gcd, r.gcd);
   }
 };
