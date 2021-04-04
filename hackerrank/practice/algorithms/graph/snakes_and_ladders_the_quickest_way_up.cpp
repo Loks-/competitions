@@ -9,7 +9,7 @@ int main_snakes_and_ladders_the_quickest_way_up() {
   unsigned T, n = 101, max_cost = 200;
   cin >> T;
   for (unsigned it = 0; it < T; ++it) {
-    auto v = Enumerate(0u, n);
+    auto v = nvector::Enumerate(0u, n);
     for (unsigned i = 0; i < 2; ++i) {
       unsigned m, x, y;
       cin >> m;

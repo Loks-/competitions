@@ -111,7 +111,7 @@ class SegmentTree {
   TNode* BuildTree(const std::vector<TData>& vdata) {
     if (vdata.size() == 0) return 0;
     std::vector<TCoordinate> vx =
-        Enumerate<TCoordinate>(0, TCoordinate(vdata.size()));
+        nvector::Enumerate<TCoordinate>(0, TCoordinate(vdata.size()));
     return BuildTreeI(vdata, vx, 0, unsigned(vdata.size()) - 1);
   }
 

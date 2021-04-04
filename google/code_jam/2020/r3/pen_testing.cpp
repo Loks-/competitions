@@ -130,7 +130,7 @@ class FullState : public CompactState {
  public:
   vector<unsigned> vp;
 
-  FullState() { vp = Enumerate<unsigned>(1, N + 1); }
+  FullState() { vp = nvector::Enumerate<unsigned>(1, N + 1); }
 };
 
 class SolverProxy {
