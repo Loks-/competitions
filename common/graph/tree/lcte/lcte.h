@@ -205,8 +205,9 @@ class LCTE {
   TPNode* TreeParent(TPNode* node) {
     assert(node);
     ApplyActionRootToNode(node);
-    return node->l ? node->l->GetRR()
-                   : node->vp ? node->vp->GetRP()->vp : nullptr;
+    return node->l    ? node->l->GetRR()
+           : node->vp ? node->vp->GetRP()->vp
+                      : nullptr;
   }
 
   void SelectNode(TPNode* node) {
