@@ -22,18 +22,18 @@ bool TestContinuedFractionConvergent() {
   if (output_exact != expected_exact) {
     std::cout << "CFConvergent output doesn't match expectation:" << std::endl;
     std::cout << "Expected:" << std::endl;
-    WriteVector(expected_exact);
+    nvector::Write(expected_exact);
     std::cout << "Output:" << std::endl;
-    WriteVector(output_exact);
+    nvector::Write(output_exact);
     good = false;
   }
   if (output_semi != expected_semi) {
     std::cout << "CFSemiConvergent output doesn't match expectation:"
               << std::endl;
     std::cout << "Expected:" << std::endl;
-    WriteVector(expected_semi);
+    nvector::Write(expected_semi);
     std::cout << "Output:" << std::endl;
-    WriteVector(output_semi);
+    nvector::Write(output_semi);
     good = false;
   }
   return good;

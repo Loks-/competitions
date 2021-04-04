@@ -27,6 +27,6 @@ int main_array_and_simple_queries__splay() {
   vector<int> vf = bst::base::Traverse<TNode, int>(
       root, bst::base::ETraversalOrder::Inorder);
   cout << abs(vf[0] - vf.back()) << endl;
-  WriteVector(vf);
+  nvector::Write(vf);
   return 0;
 }

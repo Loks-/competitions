@@ -18,7 +18,7 @@ int main_draupnir() {
     v[2] = (r >> 14) & 127;
     v[1] = (r >> 21) & 127;
     v[0] = (r >> 42) & 127;
-    WriteVector(v);
+    nvector::Write(v);
     cin >> r;
   }
   return 0;

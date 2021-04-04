@@ -42,7 +42,7 @@ int main_median_sort() {
     }
     auto v = bst::base::Traverse<TNode, TNode::TData>(
         root, bst::base::ETraversalOrder::Inorder);
-    WriteVector(v);
+    nvector::Write(v);
     cin >> jr;
     if (jr != 1) return -2;
   }

@@ -75,7 +75,7 @@ int main_fence_construction() {
     }
     reverse(order.begin(), order.end());
     cout << "Case #" << it << ": ";
-    WriteVector(order);
+    nvector::Write(order);
   }
   return 0;
 }

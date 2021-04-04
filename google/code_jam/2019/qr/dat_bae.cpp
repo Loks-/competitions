@@ -89,7 +89,7 @@ int main_dat_bae() {
       }
       shift += b.l;
     }
-    WriteVector(vpos);
+    nvector::Write(vpos);
     cin >> f;
     if (f != 1) return 0;
   }

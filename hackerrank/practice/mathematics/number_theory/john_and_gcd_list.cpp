@@ -14,7 +14,7 @@ int main_john_and_gcd_list() {
     vb.push_back(va[0]);
     for (unsigned i = 1; i < N; ++i) vb.push_back(LCM(va[i - 1], va[i]));
     vb.push_back(va.back());
-    WriteVector(vb);
+    nvector::Write(vb);
   }
   return 0;
 }

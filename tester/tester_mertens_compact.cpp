@@ -14,9 +14,9 @@ bool TestMertensCompact() {
   for (unsigned i = 0; i <= 30; ++i) output.push_back(mertens(1ull << i));
   if (output != expected) {
     std::cout << "Expected:" << std::endl;
-    WriteVector(expected);
+    nvector::Write(expected);
     std::cout << "Output:" << std::endl;
-    WriteVector(output);
+    nvector::Write(output);
     return false;
   }
   return true;
