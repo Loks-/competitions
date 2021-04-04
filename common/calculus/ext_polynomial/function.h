@@ -57,12 +57,12 @@ class Function {
   }
 
   bool AreTermsSorted() const {
-    return IsWeakSorted(
+    return nvector::IsWeakSorted(
         terms, [](const TTerm& x, const TTerm& y) { return x.tp < y.tp; });
   }
 
   bool AreTermsCompressed() const {
-    return IsStrongSorted(
+    return nvector::IsStrongSorted(
         terms, [](const TTerm& x, const TTerm& y) { return x.tp < y.tp; });
   }
 

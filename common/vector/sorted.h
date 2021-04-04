@@ -2,6 +2,7 @@
 
 #include <vector>
 
+namespace nvector {
 template <class T>
 inline bool IsStrongSorted(const std::vector<T>& v) {
   for (size_t i = 1; i < v.size(); ++i) {
@@ -33,3 +34,4 @@ inline bool IsWeakSorted(const std::vector<T>& v, const TCompare& cmp_less) {
   }
   return true;
 }
+}  // namespace nvector
