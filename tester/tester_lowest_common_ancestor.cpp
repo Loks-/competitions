@@ -1,7 +1,7 @@
 #include "tester/tester_lowest_common_ancestor.h"
 
 #include "common/base.h"
-#include "common/graph/tree/create_random_tree.h"
+#include "common/graph/tree/create_hrandom_tree.h"
 #include "common/graph/tree/lca/offline_proxy.h"
 #include "common/graph/tree/lca/schieber_vishkin.h"
 #include "common/graph/tree/lca/tarjan_offline.h"
@@ -18,7 +18,7 @@ TesterLowestCommonAncestor::TesterLowestCommonAncestor(unsigned tree_size,
                                                        unsigned nqueries) {
   trees.resize(ntrees);
   for (unsigned i = 0; i < ntrees; ++i)
-    trees[i] = CreateRandomTree(tree_size, i);
+    trees[i] = CreateHRandomTree(tree_size, i);
   size_t h1 = 0, h2 = 0;
   for (unsigned i = 0; i < nqueries; ++i) {
     h1 = HashCombine(h2, i);

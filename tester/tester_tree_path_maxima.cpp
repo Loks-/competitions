@@ -2,7 +2,7 @@
 
 #include "common/base.h"
 #include "common/graph/tree_ei/assign_cost_to_nodes.h"
-#include "common/graph/tree_ei/create_random_tree.h"
+#include "common/graph/tree_ei/create_hrandom_tree.h"
 #include "common/graph/tree_ei/tpm/full_branching_tree.h"
 #include "common/graph/tree_ei/tpm/tpm_hld.h"
 #include "common/graph/tree_ei/tpm/tpm_pbst.h"
@@ -20,7 +20,7 @@ TesterTreePathMaxima::TesterTreePathMaxima(unsigned tree_size, unsigned ntrees,
                                            unsigned npaths) {
   trees.resize(ntrees);
   for (unsigned i = 0; i < ntrees; ++i)
-    trees[i] = CreateRandomTree<uint64_t>(tree_size, (1u << 30), i);
+    trees[i] = CreateHRandomTree<uint64_t>(tree_size, (1u << 30), i);
   size_t h1 = 0, h2 = 0;
   for (unsigned i = 0; i < npaths; ++i) {
     h1 = HashCombine(h2, i);
