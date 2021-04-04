@@ -7,8 +7,8 @@
 #include "common/graph/tree_ei/tpm/tpm_hld.h"
 #include "common/graph/tree_ei/tpm/tpm_pbst.h"
 #include "common/graph/tree_ei/tpm/tpm_pbst_fbt.h"
-#include "common/hash.h"
 #include "common/timer.h"
+#include "common/vector/hrandom_pair.h"
 
 #include <iostream>
 #include <numeric>
@@ -21,12 +21,7 @@ TesterTreePathMaxima::TesterTreePathMaxima(unsigned tree_size, unsigned ntrees,
   trees.resize(ntrees);
   for (unsigned i = 0; i < ntrees; ++i)
     trees[i] = CreateHRandomTree<uint64_t>(tree_size, (1u << 30), i);
-  size_t h1 = 0, h2 = 0;
-  for (unsigned i = 0; i < npaths; ++i) {
-    h1 = HashCombine(h2, i);
-    h2 = HashCombine(h1, i);
-    paths.push_back(std::make_pair(h1 % tree_size, h2 % tree_size));
-  }
+  paths = nvector::HRandomPair<unsigned>(npaths, 0, tree_size);
 }
 
 size_t TesterTreePathMaxima::TestHLD() const {

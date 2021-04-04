@@ -7,6 +7,7 @@
 #include "common/graph/tree/lca/tarjan_offline.h"
 #include "common/hash.h"
 #include "common/timer.h"
+#include "common/vector/hrandom_pair.h"
 
 #include <iostream>
 #include <unordered_set>
@@ -19,12 +20,7 @@ TesterLowestCommonAncestor::TesterLowestCommonAncestor(unsigned tree_size,
   trees.resize(ntrees);
   for (unsigned i = 0; i < ntrees; ++i)
     trees[i] = CreateHRandomTree(tree_size, i);
-  size_t h1 = 0, h2 = 0;
-  for (unsigned i = 0; i < nqueries; ++i) {
-    h1 = HashCombine(h2, i);
-    h2 = HashCombine(h1, i);
-    queries.push_back(std::make_pair(h1 % tree_size, h2 % tree_size));
-  }
+  queries = nvector::HRandomPair<unsigned>(nqueries, 0, tree_size);
 }
 
 size_t TesterLowestCommonAncestor::TestTarjanOffline() const {

@@ -13,23 +13,15 @@
 #include "common/heap/pairing_base.h"
 #include "common/heap/pairing_ukey_value_map.h"
 #include "common/timer.h"
+#include "common/vector/hrandom.h"
 
 #include <iostream>
 #include <queue>
 #include <unordered_set>
 
 TesterHeap::TesterHeap(unsigned size_init, unsigned size_loop) {
-  size_t h = 0;
-  vinit.resize(size_init);
-  for (unsigned i = 0; i < size_init; ++i) {
-    h = HashCombine(h, i);
-    vinit[i] = h;
-  }
-  vloop.resize(size_loop);
-  for (unsigned i = 0; i < size_loop; ++i) {
-    h = HashCombine(h, i);
-    vloop[i] = h;
-  }
+  vinit = nvector::HRandom(size_init, 0);
+  vloop = nvector::HRandom(size_loop, vinit.back());
 }
 
 size_t TesterHeap::TestPriorityQueue() {
