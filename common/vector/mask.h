@@ -4,6 +4,7 @@
 
 #include <vector>
 
+namespace nvector {
 inline std::vector<unsigned> MaskToVector(uint64_t mask) {
   std::vector<unsigned> v;
   for (unsigned i = 0; mask; ++i) {
@@ -15,3 +16,4 @@ inline std::vector<unsigned> MaskToVector(uint64_t mask) {
   }
   return v;
 }
+}  // namespace nvector

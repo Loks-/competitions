@@ -44,7 +44,7 @@ class Solver {
 
   uint64_t Count(const CompactState& s) {
     uint64_t r = 1;
-    auto v = MaskToVector(s.mask);
+    auto v = nvector::MaskToVector(s.mask);
     assert(v.size() == s.l);
     unsigned k = s.l;
     for (unsigned i = 0; i < s.l; ++i) {
@@ -65,7 +65,7 @@ class Solver {
   }
 
   bool GaveUp(const CompactState& s) const {
-    auto v = MaskToVector(s.mask);
+    auto v = nvector::MaskToVector(s.mask);
     assert(v.size() == s.l);
     unsigned ss = v[s.l - 1] + v[s.l - 2] - s.vc[s.l - 1] - s.vc[s.l - 2];
     return ss < N;
