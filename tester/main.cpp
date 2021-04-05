@@ -45,6 +45,8 @@ int main(int nargs, char **pargs) {
       Assert(TestPrimesCount(false));
     else if (tester_mode == "primes_generation")
       Assert(TestPrimesGeneration(false));
+    else if (tester_mode == "range_minimum_query")
+      Assert(TestRangeMinimumQuery(false));
     else if (tester_mode == "time_binary_search_tree")
       Assert(TestBinarySearchTree(true));
     else if (tester_mode == "time_disjoint_set")
@@ -63,6 +65,8 @@ int main(int nargs, char **pargs) {
       Assert(TestPrimesCount(true));
     else if (tester_mode == "time_primes_generation")
       Assert(TestPrimesGeneration(true));
+    else if (tester_mode == "time_range_minimum_query")
+      Assert(TestRangeMinimumQuery(true));
     else if (tester_mode == "time_tree_path_maxima")
       Assert(TestTreePathMaxima(true));
     else if (tester_mode == "tree_path_maxima")
