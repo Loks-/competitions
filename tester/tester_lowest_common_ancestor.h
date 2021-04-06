@@ -18,6 +18,7 @@ class TesterLowestCommonAncestor {
  protected:
   size_t TestTarjanOffline() const;
   size_t TestSchieberVishkin() const;
+  size_t TestEulerTour() const;
 
  public:
   bool TestAll();
