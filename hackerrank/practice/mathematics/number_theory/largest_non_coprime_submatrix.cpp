@@ -15,7 +15,7 @@ int main_largest_non_coprime_submatrix() {
   unsigned n, m, best = 0;
   cin >> n >> m;
   vector<vector<unsigned>> matrix(n);
-  for (unsigned i = 0; i < n; ++i) matrix[i] = ReadVector<unsigned>(m);
+  for (unsigned i = 0; i < n; ++i) matrix[i] = nvector::Read<unsigned>(m);
   vector<unsigned> vrow(m);
   TTree st(m);
   for (unsigned i1 = 0; i1 < n; ++i1) {

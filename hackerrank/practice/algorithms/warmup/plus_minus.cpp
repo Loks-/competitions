@@ -9,7 +9,7 @@ int main_plus_minus() {
   cout << setprecision(6) << fixed;
   unsigned n;
   cin >> n;
-  vector<int> v = ReadVector<int>(n);
+  vector<int> v = nvector::Read<int>(n);
   vector<unsigned> vc(3, 0);
   for (int x : v) {
     if (x > 0)

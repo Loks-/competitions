@@ -15,7 +15,7 @@ int main_coprime_power_sum() {
   for (unsigned iT = 0; iT < T; ++iT) {
     uint64_t M;
     cin >> N >> K >> M;
-    vector<uint64_t> vs = ReadVector<uint64_t>(N);
+    vector<uint64_t> vs = nvector::Read<uint64_t>(N);
     sort(vs.begin(), vs.end());
     reverse(vs.begin(), vs.end());
 
@@ -47,8 +47,8 @@ int main_coprime_power_sum() {
       vpoly[i].Interpolate(vpolytemp);
     }
 
-    std::function<TModularD(uint64_t, unsigned)> SolveR =
-        [&](uint64_t rM, unsigned i) -> TModularD {
+    std::function<TModularD(uint64_t, unsigned)> SolveR = [&](
+        uint64_t rM, unsigned i) -> TModularD {
       return (i >= l)
                  ? (rM < full_cache_size ? vcache[rM]
                                          : vpoly[rM % tail_cache_size].Apply(

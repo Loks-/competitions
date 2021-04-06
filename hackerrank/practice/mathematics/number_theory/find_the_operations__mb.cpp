@@ -14,7 +14,7 @@ int main_find_the_operations__mb() {
   unsigned N, D;
   cin >> N >> D;
   unsigned NN = N * N;
-  TVector v = ReadVectorBool(NN), x(NN);
+  TVector v = la::ReadVectorBool(NN), x(NN);
   TMatrix M(NN);
   for (unsigned i = 0; i < NN; ++i) {
     int i1 = int(i / N), i2 = int(i % N);

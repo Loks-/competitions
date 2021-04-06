@@ -16,7 +16,8 @@ int main_subsequence_weighting__treap() {
   TTree tree(150000);
   for (unsigned it = 0; it < T; ++it) {
     cin >> N;
-    vector<uint64_t> va = ReadVector<uint64_t>(N), vw = ReadVector<uint64_t>(N);
+    vector<uint64_t> va = nvector::Read<uint64_t>(N),
+                     vw = nvector::Read<uint64_t>(N);
     TNode *root = 0, *l, *r;
     for (unsigned i = 0; i < N; ++i) {
       tree.SplitByKey(root, va[i], l, r);

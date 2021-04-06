@@ -8,7 +8,7 @@ int main_consecutive_subsequences() {
   cin >> T;
   for (unsigned iT = 0; iT < T; ++iT) {
     cin >> N >> K;
-    vector<unsigned> va = ReadVector<unsigned>(N);
+    vector<unsigned> va = nvector::Read<unsigned>(N);
     vector<uint64_t> vc(K, 0);
     vc[0] = 1;
     unsigned s = 0;

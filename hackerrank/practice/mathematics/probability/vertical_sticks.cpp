@@ -18,7 +18,7 @@ int main_vertical_sticks() {
   for (unsigned iT = 0; iT < T; ++iT) {
     unsigned n;
     cin >> n;
-    vector<unsigned> v = ReadVector<unsigned>(n);
+    vector<unsigned> v = nvector::Read<unsigned>(n);
     sort(v.begin(), v.end());
     double sum = 0;
     unsigned j = 0;

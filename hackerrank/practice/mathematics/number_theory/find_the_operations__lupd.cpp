@@ -15,7 +15,7 @@ int main_find_the_operations__lupd() {
   unsigned N, D;
   cin >> N >> D;
   unsigned NN = N * N;
-  TVector v = ReadVector<TModular>(NN), x(NN);
+  TVector v = nvector::Read<TModular>(NN), x(NN);
   TMatrix M(NN);
   for (unsigned i = 0; i < NN; ++i) {
     int i1 = int(i / N), i2 = int(i % N);

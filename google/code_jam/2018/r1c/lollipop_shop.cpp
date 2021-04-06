@@ -10,7 +10,7 @@ int main_lollipop_shop() {
     vector<unsigned> vc(N, 0);
     for (unsigned i = 0; i < N; ++i) {
       cin >> D;
-      vector<unsigned> v = ReadVector<unsigned>(D);
+      vector<unsigned> v = nvector::Read<unsigned>(D);
       unsigned best = N + 1, bestu = N;
       for (unsigned u : v) {
         vc[u] += 1;

@@ -9,8 +9,8 @@ int main_coinage() {
   unsigned T, n;
   vector<unsigned> vs, vc{1, 2, 5, 10};
 
-  std::function<uint64_t(unsigned, unsigned)> SolveR =
-      [&](unsigned k, unsigned n) -> uint64_t {
+  std::function<uint64_t(unsigned, unsigned)> SolveR = [&](
+      unsigned k, unsigned n) -> uint64_t {
     if (k == 0) return (n <= vs[0]) ? 1 : 0;
     uint64_t r = 0;
     for (unsigned i = 0; (i <= vs[k]) && (i * vc[k] <= n); ++i)
@@ -21,7 +21,7 @@ int main_coinage() {
   cin >> T;
   for (unsigned iT = 0; iT < T; ++iT) {
     cin >> n;
-    vs = ReadVector<unsigned>(4);
+    vs = nvector::Read<unsigned>(4);
     cout << SolveR(3, n) << endl;
   }
   return 0;

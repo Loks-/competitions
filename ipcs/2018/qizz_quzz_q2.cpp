@@ -24,7 +24,7 @@ int main_qizz_quzz_q2() {
   cin >> T;
   for (unsigned iT = 0; iT < T; ++iT) {
     cin >> N;
-    vector<string> vs = ReadVector<string>(N), vkey(N + 1);
+    vector<string> vs = nvector::Read<string>(N), vkey(N + 1);
     for (i = 1; i <= N; ++i) {
       string s = vs[i - 1];
       unsigned type = get_type(s);

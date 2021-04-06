@@ -14,7 +14,7 @@ int main_zombie_march() {
     cin >> n >> m >> k;
     UndirectedGraph graph(n);
     graph.ReadEdges(m, true);
-    vector<double> va = ReadVector<double>(n);
+    vector<double> va = nvector::Read<double>(n);
 
     // Base solution. Works only for connected non-bipartite graphs and (k >>
     // n).

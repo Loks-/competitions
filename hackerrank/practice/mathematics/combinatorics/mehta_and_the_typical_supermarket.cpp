@@ -8,7 +8,7 @@ int main_mehta_and_the_typical_supermarket() {
   uint64_t mv = -1ull;
   unsigned N, T;
   cin >> N;
-  vector<uint64_t> va = ReadVector<uint64_t>(N);
+  vector<uint64_t> va = nvector::Read<uint64_t>(N);
   vector<uint64_t> vlcm(1, 1), vsign(1, mv);
   for (unsigned j = 0; j < N; ++j) {
     size_t l = vlcm.size();

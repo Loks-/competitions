@@ -17,7 +17,7 @@ int main_fair_fight() {
     int n, k;
     cin >> n >> k;
     TTree tree(2 * n + 4);
-    vector<vector<int>> vv{ReadVector<int>(n), ReadVector<int>(n)};
+    vector<vector<int>> vv{nvector::Read<int>(n), nvector::Read<int>(n)};
     vector<TNode*> vh(4, 0);
     for (int j = 0; j < 2; ++j) {
       for (int i = 0; i < n; ++i) {

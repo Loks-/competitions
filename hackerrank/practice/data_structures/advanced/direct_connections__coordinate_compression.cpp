@@ -14,8 +14,8 @@ int main_direct_connections__coordinate_compression() {
   cin >> T;
   for (unsigned it = 0; it < T; ++it) {
     cin >> N;
-    vector<uint64_t> vx = ReadVector<uint64_t>(N);
-    vector<uint64_t> vp = ReadVector<uint64_t>(N);
+    vector<uint64_t> vx = nvector::Read<uint64_t>(N);
+    vector<uint64_t> vp = nvector::Read<uint64_t>(N);
     vector<pair<uint64_t, uint64_t>> vpx;
     for (unsigned i = 0; i < N; ++i) vpx.push_back({vp[i], vx[i]});
     sort(vpx.begin(), vpx.end());

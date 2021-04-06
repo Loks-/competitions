@@ -8,7 +8,7 @@ int main_colorful_polygon() {
   TModularD two = 2;
   unsigned n, u = -1u;
   cin >> n;
-  vector<unsigned> v = ReadVector<unsigned>(n);
+  vector<unsigned> v = nvector::Read<unsigned>(n);
   vector<unsigned> vlast(n, n), vlast_map(n + 1, u);
   unsigned best_i = 0, best_d = n, different_values = 0;
   for (unsigned i = 0; i < 2 * n; ++i) {

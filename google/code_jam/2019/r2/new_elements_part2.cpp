@@ -10,7 +10,7 @@ int main_new_elements_part2() {
   for (unsigned it = 1; it <= T; ++it) {
     unsigned n;
     cin >> n;
-    auto v = ReadVector<pair<int64_t, int64_t>>(n);
+    auto v = nvector::Read<pair<int64_t, int64_t>>(n);
     bool impossible = false;
     TIFraction fg(1, 0), fl(0, 1);
     for (unsigned i = 0; i + 1 < n; ++i) {

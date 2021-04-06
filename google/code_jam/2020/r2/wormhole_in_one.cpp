@@ -13,7 +13,7 @@ int main_wormhole_in_one() {
   cin >> T;
   for (unsigned it = 1; it <= T; ++it) {
     cin >> N;
-    auto v = ReadVector<I2Point>(N);
+    auto v = nvector::Read<I2Point>(N);
     unordered_map<I2Angle, unordered_set<unsigned>> m;
     for (unsigned i = 0; i < N; ++i) {
       for (unsigned j = 0; j < N; ++j) {

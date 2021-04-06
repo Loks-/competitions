@@ -10,7 +10,7 @@ int main_falling_balls() {
     cout << "Case #" << it << ": ";
     unsigned N;
     cin >> N;
-    vector<unsigned> vc = ReadVector<unsigned>(N);
+    vector<unsigned> vc = nvector::Read<unsigned>(N);
     unsigned s = accumulate(vc.begin(), vc.end(), 0u);
     if ((s != N) || (vc[0] == 0) || (vc.back() == 0)) {
       cout << "IMPOSSIBLE" << endl;

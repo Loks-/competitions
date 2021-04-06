@@ -18,7 +18,7 @@ int main_cheating_detection() {
 
   cin >> T >> U;
   for (unsigned it = 0; it < T; ++it) {
-    auto vs = ReadVector<string>(P);
+    auto vs = nvector::Read<string>(P);
     std::vector<double> vp(P, 0.0), vq(Q, 0.0);
 
     auto FPQ = [&](double lp, double lq, char r) {

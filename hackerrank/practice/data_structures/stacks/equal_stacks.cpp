@@ -6,10 +6,10 @@
 #include <unordered_map>
 
 int main_equal_stacks() {
-  vector<unsigned> vn = ReadVector<unsigned>(3);
+  vector<unsigned> vn = nvector::Read<unsigned>(3);
   unordered_map<unsigned, unsigned> m;
   for (unsigned i = 0; i < 3; ++i) {
-    vector<unsigned> vt = ReadVector<unsigned>(vn[i]);
+    vector<unsigned> vt = nvector::Read<unsigned>(vn[i]);
     reverse(vt.begin(), vt.end());
     unsigned h = 0;
     for (unsigned ih : vt) {

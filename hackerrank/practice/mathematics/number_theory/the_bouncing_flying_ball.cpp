@@ -49,10 +49,10 @@ int main_the_bouncing_flying_ball() {
   cin >> T;
   for (unsigned iT = 0; iT < T; ++iT) {
     vector<int> vD, vP1, vP2, vS;
-    vD = ReadVector<int>(D);
-    vP1 = ReadVector<int>(D);
-    vP2 = ReadVector<int>(D);
-    vS = ReadVector<int>(D);
+    vD = nvector::Read<int>(D);
+    vP1 = nvector::Read<int>(D);
+    vP2 = nvector::Read<int>(D);
+    vS = nvector::Read<int>(D);
     int N;
     cin >> N;
     vector<vector<DInfo>> vvinfo(D);

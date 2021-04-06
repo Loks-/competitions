@@ -12,7 +12,7 @@ using TNode = TTreap::TNode;
 int main_the_chosen_one__treap() {
   unsigned n;
   cin >> n;
-  vector<uint64_t> v = ReadVector<uint64_t>(n);
+  vector<uint64_t> v = nvector::Read<uint64_t>(n);
   if (n == 1) {
     cout << v[0] + 1 << endl;
     return 0;

@@ -11,7 +11,7 @@ int main_points_on_a_rectangle() {
   cin >> T;
   for (unsigned it = 0; it < T; ++it) {
     cin >> N;
-    auto v = ReadVector<I2Point>(N);
+    auto v = nvector::Read<I2Point>(N);
     auto r = Box(v);
     bool good = true;
     for (auto& p : v) {

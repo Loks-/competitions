@@ -50,7 +50,7 @@ int main_cyclic_quadruples() {
   unsigned T;
   cin >> T;
   for (unsigned iT = 0; iT < T; ++iT) {
-    v = ReadVector<unsigned>(8);
+    v = nvector::Read<unsigned>(8);
     v.insert(v.end(), v.begin(), v.end());
     cout << ABCD() - AACD() + AACC() + AAAD() - AAAA() * 3 << endl;
   }

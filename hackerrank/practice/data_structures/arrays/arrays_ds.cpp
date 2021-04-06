@@ -7,7 +7,7 @@
 int main_arrays_ds() {
   unsigned n;
   cin >> n;
-  vector<int> v = ReadVector<int>(n);
+  vector<int> v = nvector::Read<int>(n);
   reverse(v.begin(), v.end());
   nvector::Write(v);
   return 0;

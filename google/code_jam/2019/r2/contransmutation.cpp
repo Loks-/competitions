@@ -20,7 +20,7 @@ int main_contransmutation() {
       g.AddEdge(i, r1 - 1);
       g.AddEdge(i, r2 - 1);
     }
-    vector<TModularD> vc = ReadVector<TModularD>(n);
+    vector<TModularD> vc = nvector::Read<TModularD>(n);
     for (unsigned i = 0; i < n; ++i) {
       if (vc[i].Get()) g.AddEdge(n, i);
     }

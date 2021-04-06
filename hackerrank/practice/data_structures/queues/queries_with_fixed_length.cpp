@@ -8,7 +8,7 @@
 int main_queries_with_fixed_length() {
   unsigned N, Q, d;
   cin >> N >> Q;
-  vector<unsigned> v = ReadVector<unsigned>(N);
+  vector<unsigned> v = nvector::Read<unsigned>(N);
   for (unsigned iq = 0; iq < Q; ++iq) {
     cin >> d;
     unsigned best = 1000000;

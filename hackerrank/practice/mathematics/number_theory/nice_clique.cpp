@@ -9,7 +9,7 @@ int main_nice_clique() {
   PrimesTable primes_table(100000);
   unsigned n;
   cin >> n;
-  vector<uint64_t> v = ReadVector<uint64_t>(n);
+  vector<uint64_t> v = nvector::Read<uint64_t>(n);
   vector<unsigned> m1(2), m2(2);
   for (uint64_t x : v) {
     auto f = PrimesPowers(primes_table, x);

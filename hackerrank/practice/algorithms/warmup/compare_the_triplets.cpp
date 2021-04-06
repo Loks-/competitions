@@ -4,7 +4,8 @@
 #include "common/vector/read.h"
 
 int main_compare_the_triplets() {
-  vector<unsigned> v1 = ReadVector<unsigned>(3), v2 = ReadVector<unsigned>(3);
+  vector<unsigned> v1 = nvector::Read<unsigned>(3),
+                   v2 = nvector::Read<unsigned>(3);
   unsigned a = 0, b = 0;
   for (unsigned i = 0; i < 3; ++i) {
     if (v1[i] < v2[i])

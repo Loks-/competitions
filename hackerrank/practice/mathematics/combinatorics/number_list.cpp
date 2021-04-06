@@ -9,7 +9,7 @@ int main_number_list() {
   for (unsigned iT = 0; iT < T; ++iT) {
     uint64_t n, k;
     cin >> n >> k;
-    vector<uint64_t> va = ReadVector<uint64_t>(n);
+    vector<uint64_t> va = nvector::Read<uint64_t>(n);
     uint64_t lg = -1ull, s = 0;
     for (uint64_t i = 0; i < n; ++i) {
       if (va[i] <= k) continue;

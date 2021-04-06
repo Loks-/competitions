@@ -6,7 +6,7 @@
 int main_birthday_cake_candles() {
   unsigned n;
   cin >> n;
-  vector<unsigned> v = ReadVector<unsigned>(n);
+  vector<unsigned> v = nvector::Read<unsigned>(n);
   unsigned value = *max_element(v.begin(), v.end());
   cout << count(v.begin(), v.end(), value) << endl;
   return 0;

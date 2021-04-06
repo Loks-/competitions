@@ -11,7 +11,7 @@ int main_the_letter_n() {
   auto cmp = CompareVectorAngle<int64_t>;
   unsigned N;
   cin >> N;
-  auto vp = ReadVector<I2Point>(N);
+  auto vp = nvector::Read<I2Point>(N);
   vector<vector<uint64_t>> vc(N, vector<uint64_t>(N, 0));
   for (unsigned i = 0; i < N; ++i) {
     vector<I2Vector> vi;

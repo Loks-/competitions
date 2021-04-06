@@ -11,7 +11,7 @@ int main_choose_and_calculate() {
   TFactorial f;
   unsigned N, K;
   cin >> N >> K;
-  vector<TModularD> va = ReadVector<TModularD>(N);
+  vector<TModularD> va = nvector::Read<TModularD>(N);
   sort(va.begin(), va.end());
   TModularD s1 = 0, s2 = 0;
   for (unsigned i = 0; i < N; ++i) {

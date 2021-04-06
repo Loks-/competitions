@@ -52,7 +52,7 @@ int main_pancake_pyramid() {
   cin >> T;
   for (unsigned iT = 1; iT <= T; ++iT) {
     cin >> S;
-    auto vs = ReadVector<unsigned>(S);
+    auto vs = nvector::Read<unsigned>(S);
     TTree tree(S);
     vector<TNode*> vn;
     for (unsigned p : vs) {

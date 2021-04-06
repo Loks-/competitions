@@ -6,7 +6,7 @@
 #include <numeric>
 
 int main_mini_max_sum() {
-  vector<unsigned> v = ReadVector<unsigned>(5);
+  vector<unsigned> v = nvector::Read<unsigned>(5);
   unsigned s = accumulate(v.begin(), v.end(), 0u);
   cout << s - *max_element(v.begin(), v.end()) << " "
        << s - *min_element(v.begin(), v.end()) << endl;

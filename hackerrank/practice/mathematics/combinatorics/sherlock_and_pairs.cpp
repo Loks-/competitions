@@ -10,7 +10,7 @@ int main_sherlock_and_pairs() {
   cin >> T;
   for (unsigned i = 0; i < T; ++i) {
     cin >> N;
-    vector<unsigned> va = ReadVector<unsigned>(N);
+    vector<unsigned> va = nvector::Read<unsigned>(N);
     unordered_map<unsigned, uint64_t> m;
     for (unsigned a : va) m[a] += 1;
     uint64_t s = 0;

@@ -10,12 +10,12 @@
 int main_matrix_tree() {
   unsigned N;
   cin >> N;
-  vector<TModularD> vw = ReadVector<TModularD>(N);
+  vector<TModularD> vw = nvector::Read<TModularD>(N);
   TreeGraph tree(N);
   tree.ReadEdges();
 
-  std::function<TModularD(unsigned, unsigned, TModularD)> SolveR =
-      [&](unsigned node, unsigned p, TModularD pw) -> TModularD {
+  std::function<TModularD(unsigned, unsigned, TModularD)> SolveR = [&](
+      unsigned node, unsigned p, TModularD pw) -> TModularD {
     TModularD r = vw[node] - pw;
     for (unsigned c : tree.Edges(node)) {
       if (c == p) continue;

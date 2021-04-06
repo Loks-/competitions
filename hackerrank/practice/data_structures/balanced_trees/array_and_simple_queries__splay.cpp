@@ -13,7 +13,7 @@ using TNode = TSplayTree::TNode;
 int main_array_and_simple_queries__splay() {
   unsigned N, M;
   cin >> N >> M;
-  vector<int> va = ReadVector<int>(N);
+  vector<int> va = nvector::Read<int>(N);
   TSplayTree splay_tree(N);
   TNode* root = splay_tree.Build(va);
   for (; M; --M) {

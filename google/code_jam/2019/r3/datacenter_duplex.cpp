@@ -8,7 +8,7 @@ int main_datacenter_duplex() {
   for (unsigned iT = 1; iT <= T; ++iT) {
     cin >> R >> C;
     ds::DisjointSet djs(R * C);
-    auto vs = ReadVector<string>(R);
+    auto vs = nvector::Read<string>(R);
     for (unsigned i = 0; i < R; ++i) {
       for (unsigned j = 0; j < C; ++j) {
         if ((i + 1 < R) && (vs[i][j] == vs[i + 1][j]))

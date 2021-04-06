@@ -13,7 +13,7 @@ using TFibonacci = modular::mstatic::FibonacciMatrix<TModularD>;
 int main_fibonacci_lcm() {
   unsigned N;
   cin >> N;
-  vector<uint64_t> va = ReadVector<uint64_t>(N);
+  vector<uint64_t> va = nvector::Read<uint64_t>(N);
   unordered_map<uint64_t, int64_t> current, next;
   for (uint64_t a : va) {
     next = current;

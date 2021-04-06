@@ -7,7 +7,7 @@
 int main_diagonal_difference() {
   unsigned n;
   cin >> n;
-  auto m = ReadMatrix<int>(n);
+  auto m = la::ReadMatrix<int>(n);
   int d = 0;
   for (unsigned i = 0; i < n; ++i) d += m(i, i) - m(i, n - i - 1);
   cout << abs(d) << endl;

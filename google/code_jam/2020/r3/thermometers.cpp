@@ -7,7 +7,7 @@ int main_thermometers() {
   for (unsigned it = 1; it <= T; ++it) {
     int64_t K;
     cin >> K >> N;
-    auto vx = ReadVector<int64_t>(N), vt = ReadVector<int64_t>(N);
+    auto vx = nvector::Read<int64_t>(N), vt = nvector::Read<int64_t>(N);
     for (unsigned i = 0; i < N; ++i) vx.push_back(vx[i] + K);
     vector<unsigned> vd(N, N);
     unsigned r = 2 * N;

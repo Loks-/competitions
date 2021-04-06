@@ -12,7 +12,7 @@ int main_oversized_pancake_choppers() {
   for (unsigned it = 1; it <= T; ++it) {
     uint64_t N, D;
     cin >> N >> D;
-    auto v = ReadVector<uint64_t>(N);
+    auto v = nvector::Read<uint64_t>(N);
     vector<TFraction> vf;
     map<TFraction, vector<uint64_t>> m;
     for (auto vv : v) {

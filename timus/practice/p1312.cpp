@@ -12,7 +12,7 @@ int main_p1312() {
 
   int64_t h, w;
   cin >> w >> h;
-  vector<int64_t> vr = ReadVector<int64_t>(3);
+  vector<int64_t> vr = nvector::Read<int64_t>(3);
   bool impossible = false;
   for (unsigned r : vr) {
     if (2 * r > min(h, w)) impossible = true;

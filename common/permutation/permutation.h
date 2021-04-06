@@ -105,7 +105,7 @@ class Permutation {
   }
 
   void ReadAsLine(unsigned n, bool shited_line) {
-    TLine l = ReadVector<unsigned>(n);
+    TLine l = nvector::Read<unsigned>(n);
     SetLine(l, shited_line);
   }
 };

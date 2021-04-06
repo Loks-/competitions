@@ -41,7 +41,7 @@ int main_airports() {
     unsigned n;
     int64_t d;
     cin >> n >> d;
-    auto v = ReadVector<int64_t>(n);
+    auto v = nvector::Read<int64_t>(n);
     int64_t l = min(v[0], v[1]), r = max(v[0], v[1]);
     TTree tree(n);
     cout << 0 << " " << max<int64_t>(d - (r - l), 0);

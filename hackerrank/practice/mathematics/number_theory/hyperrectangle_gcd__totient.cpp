@@ -11,7 +11,7 @@ int main_hyperrectangle_gcd__totient() {
   cin >> T;
   for (unsigned iT = 0; iT < T; ++iT) {
     cin >> K;
-    vector<unsigned> vnk = ReadVector<unsigned>(K);
+    vector<unsigned> vnk = nvector::Read<unsigned>(K);
     unsigned n0 = *min_element(vnk.begin(), vnk.end());
     TModularD s = 0;
     for (unsigned i = 1; i <= n0; ++i) {

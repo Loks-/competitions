@@ -2,6 +2,7 @@
 
 #include <iostream>
 
+namespace la {
 template <class TMatrix>
 inline void WriteMatrix(const TMatrix& m) {
   for (unsigned i = 0; i < m.Rows(); ++i) {
@@ -9,3 +10,4 @@ inline void WriteMatrix(const TMatrix& m) {
     std::cout << std::endl;
   }
 }
+}  // namespace la

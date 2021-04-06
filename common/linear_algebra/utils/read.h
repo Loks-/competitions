@@ -3,6 +3,7 @@
 #include "common/linear_algebra/matrix.h"
 #include <iostream>
 
+namespace la {
 template <class TValue>
 inline la::Matrix<TValue> ReadMatrix(unsigned rows, unsigned columns) {
   la::Matrix<TValue> m(rows, columns);
@@ -16,3 +17,4 @@ template <class TValue>
 inline la::Matrix<TValue> ReadMatrix(unsigned size) {
   return ReadMatrix<TValue>(size, size);
 }
+}  // namespace la

@@ -6,7 +6,7 @@ int main_armed_bandit() {
   cin >> T;
   for (unsigned iT = 0; iT < T; ++iT) {
     cin >> N;
-    vector<unsigned> v = ReadVector<unsigned>(N);
+    vector<unsigned> v = nvector::Read<unsigned>(N);
     for (unsigned i = 0; i + 1 < v.size(); ++i) {
       if (v[i] >= 100)
         cout << "100 ";

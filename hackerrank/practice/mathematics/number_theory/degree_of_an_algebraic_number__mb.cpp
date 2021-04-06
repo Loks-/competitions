@@ -19,7 +19,7 @@ int main_degree_of_an_algebraic_number__mb() {
   for (unsigned iT = 0; iT < T; ++iT) {
     set<unsigned> ps;
     cin >> N;
-    vector<unsigned> va = ReadVector<unsigned>(N);
+    vector<unsigned> va = nvector::Read<unsigned>(N);
     vector<vector<unsigned>> vap;
     for (unsigned a : va) {
       TFactorization f = Factorize(a);

@@ -17,7 +17,7 @@ int main_pottery_lottery() {
       } else if (j < N + 20) {
         cout << j - N + 1 << " " << 0 << endl;
         cin >> k;
-        ReadVector<unsigned>(k);
+        nvector::Read<unsigned>(k);
         h.Add({k, j - N + 1});
         if (j == N + 19) {
           bet = h.Extract().second;

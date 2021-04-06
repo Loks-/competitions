@@ -8,9 +8,9 @@ int main_018() {
   cin >> T;
   for (unsigned it = 0; it < T; ++it) {
     cin >> N;
-    auto vl = ReadVector<unsigned>(1);
+    auto vl = nvector::Read<unsigned>(1);
     for (unsigned i = 2; i <= N; ++i) {
-      auto vc = ReadVector<unsigned>(i);
+      auto vc = nvector::Read<unsigned>(i);
       vc[0] += vl[0];
       vc.back() += vl.back();
       for (unsigned j = 1; j < vl.size(); ++j)

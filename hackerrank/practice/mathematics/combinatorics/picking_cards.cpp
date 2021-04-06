@@ -9,7 +9,7 @@ int main_picking_cards() {
   cin >> T;
   for (unsigned iT = 0; iT < T; ++iT) {
     cin >> n;
-    vector<unsigned> v = ReadVector<unsigned>(n);
+    vector<unsigned> v = nvector::Read<unsigned>(n);
     sort(v.begin(), v.end());
     v.push_back(n);
     TModularD r = 1;

@@ -9,7 +9,7 @@ int main_robot_programming_strategy() {
   for (unsigned it = 1; it <= T; ++it) {
     unsigned n;
     cin >> n;
-    auto vs = ReadVector<string>(n);
+    auto vs = nvector::Read<string>(n);
     string strategy;
     for (unsigned i = 0;; ++i) {
       bool r, s, p;

@@ -6,7 +6,7 @@
 int main_011() {
   int K = 4, N = 20;
   vector<vector<unsigned>> v;
-  for (int i = 0; i < N; ++i) v.emplace_back(ReadVector<unsigned>(N));
+  for (int i = 0; i < N; ++i) v.emplace_back(nvector::Read<unsigned>(N));
   vector<int> dx{1, 1, 0, -1}, dy{0, 1, 1, 1};
   unsigned max_value = 0;
   for (int i = 0; i < N; ++i) {

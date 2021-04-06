@@ -8,7 +8,7 @@ int main_vestigium() {
   cin >> T;
   for (unsigned it = 0; it < T; ++it) {
     cin >> N;
-    auto M = ReadMatrix<unsigned>(N);
+    auto M = la::ReadMatrix<unsigned>(N);
     unsigned t = 0, r = 0, c = 0;
     ds::UnsignedSet sr(N + 1), sc(N + 1);
     for (unsigned i = 0; i < N; ++i) {

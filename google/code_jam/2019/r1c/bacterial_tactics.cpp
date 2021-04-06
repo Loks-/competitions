@@ -10,11 +10,11 @@ int main_bacterial_tactics() {
   for (unsigned it = 1; it <= T; ++it) {
     unsigned r, c;
     cin >> r >> c;
-    auto vs = ReadVector<string>(r);
+    auto vs = nvector::Read<string>(r);
     vector<int> vcache(1u << 16, -1);
 
-    std::function<int(unsigned, unsigned, unsigned, unsigned)> solve =
-        [&](unsigned rb, unsigned re, unsigned cb, unsigned ce) -> int {
+    std::function<int(unsigned, unsigned, unsigned, unsigned)> solve = [&](
+        unsigned rb, unsigned re, unsigned cb, unsigned ce) -> int {
       if ((rb >= re) || (cb >= ce)) return 0;
       unsigned h = rb | (re << 4) | (cb << 8) | (ce << 12);
       int& ch = vcache[h];

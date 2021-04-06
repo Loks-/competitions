@@ -13,7 +13,7 @@ using TNode = TTreap::TNode;
 int main_array_and_simple_queries__treap() {
   unsigned N, M;
   cin >> N >> M;
-  vector<int> va = ReadVector<int>(N);
+  vector<int> va = nvector::Read<int>(N);
   TTreap treap(N);
   TNode* root = treap.Build(va);
   for (; M; --M) {

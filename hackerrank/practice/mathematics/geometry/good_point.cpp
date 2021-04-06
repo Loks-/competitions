@@ -16,14 +16,14 @@ int main_good_point() {
   vector<D2Line> vl;
   for (unsigned in = 0; in < n; ++in) {
     cin >> ni;
-    auto vi = ReadVector<D2Point>(ni);
+    auto vi = nvector::Read<D2Point>(ni);
     for (unsigned i = 0; i < ni; ++i) {
       vl.push_back(D2Line(vi[(i + 1) % ni], vi[i]));
       vl.back().Normalize();
     }
   }
   cin >> m;
-  auto ve = ReadVector<D2Ellipse>(m);
+  auto ve = nvector::Read<D2Ellipse>(m);
 
   auto f = [&](double x, double y) {
     D2Point p(x, y);

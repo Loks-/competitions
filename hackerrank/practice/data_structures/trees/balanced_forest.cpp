@@ -26,7 +26,7 @@ struct BalancedForest {
 
   void Solve() {
     cin >> n;
-    vc = ReadVector<int64_t>(n);
+    vc = nvector::Read<int64_t>(n);
     t.Resize(n);
     t.ReadEdges();
     vstc.resize(n);

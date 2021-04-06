@@ -9,11 +9,11 @@
 int main_divisibility_of_power() {
   unsigned N, Q;
   cin >> N;
-  vector<uint64_t> v = ReadVector<uint64_t>(N);
+  vector<uint64_t> v = nvector::Read<uint64_t>(N);
   cin >> Q;
 
-  std::function<bool(unsigned, unsigned, unsigned)> SolveGE =
-      [&](unsigned i, unsigned j, unsigned p) -> bool {
+  std::function<bool(unsigned, unsigned, unsigned)> SolveGE = [&](
+      unsigned i, unsigned j, unsigned p) -> bool {
     if ((i > j) || (v[i] == 1)) return (p <= 1);
     if (v[i] == 0) return (p <= 0);
     if (p <= 1) return true;

@@ -7,7 +7,7 @@ int main_ant_stack() {
   for (unsigned it = 1; it <= T; ++it) {
     unsigned N;
     cin >> N;
-    vector<uint64_t> weights = ReadVector<uint64_t>(N);
+    vector<uint64_t> weights = nvector::Read<uint64_t>(N);
     uint64_t max_weight = 10 * uint64_t(1000000000);
     vector<uint64_t> best_weights(N + 1, max_weight);
     best_weights[0] = 0;

@@ -6,7 +6,7 @@
 int main_ants() {
   unsigned N, L = 1000, p = 0;
   cin >> N;
-  vector<unsigned> vp = ReadVector<unsigned>(N);
+  vector<unsigned> vp = nvector::Read<unsigned>(N);
   sort(vp.begin(), vp.end());
   for (unsigned i = 0; i < vp.size(); ++i) {
     if (vp[i] == i) vp.push_back(i + L);

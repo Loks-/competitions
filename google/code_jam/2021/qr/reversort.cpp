@@ -17,7 +17,7 @@ int main_reversort() {
     cin >> N;
     TTree tree(N);
     for (unsigned i = 0; i < N; ++i) tree.New();
-    auto vu = ReadVector<unsigned>(N);
+    auto vu = nvector::Read<unsigned>(N);
     std::vector<TNode*> vn;
     for (unsigned u : vu) vn.push_back(tree.NodeByRawIndex(u - 1));
     auto r = tree.BuildTree(vn);

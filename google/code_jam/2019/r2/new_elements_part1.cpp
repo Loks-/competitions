@@ -12,7 +12,7 @@ int main_new_elements_part1() {
   for (unsigned it = 1; it <= T; ++it) {
     unsigned n;
     cin >> n;
-    auto v = ReadVector<pair<int64_t, int64_t>>(n);
+    auto v = nvector::Read<pair<int64_t, int64_t>>(n);
     unordered_set<pair<int64_t, int64_t>> us;
     for (unsigned i = 0; i < n; ++i) {
       for (unsigned j = i + 1; j < n; ++j) {

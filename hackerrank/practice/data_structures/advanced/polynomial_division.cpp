@@ -29,7 +29,7 @@ int main_polynomial_division() {
         cout << ((bit.Sum(l, r + 1) == 0) ? "Yes" : "No") << endl;
     }
   } else {
-    vector<unsigned> vc = ReadVector<unsigned>(n);
+    vector<unsigned> vc = nvector::Read<unsigned>(n);
     for (unsigned it = 0; it < q; ++it) {
       unsigned t, l, r;
       cin >> t >> l >> r;

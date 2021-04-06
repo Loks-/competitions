@@ -7,7 +7,7 @@
 int main_014() {
   unsigned T;
   cin >> T;
-  auto vt = ReadVector<unsigned>(T);
+  auto vt = nvector::Read<unsigned>(T);
   unsigned N = *max_element(vt.begin(), vt.end());
   unsigned l = 0, r = 0;
   vector<unsigned> vr(1, 0);

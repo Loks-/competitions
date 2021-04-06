@@ -14,7 +14,8 @@ int main_subsequence_weighting__bit_sparse() {
   cin >> T;
   for (unsigned it = 0; it < T; ++it) {
     cin >> N;
-    vector<uint64_t> va = ReadVector<uint64_t>(N), vw = ReadVector<uint64_t>(N);
+    vector<uint64_t> va = nvector::Read<uint64_t>(N),
+                     vw = nvector::Read<uint64_t>(N);
     TBIT bit(max_size);
     for (unsigned i = 0; i < N; ++i) {
       TProxy pv = bit.Sum(va[i]);

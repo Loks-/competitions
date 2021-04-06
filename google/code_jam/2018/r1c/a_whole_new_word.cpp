@@ -9,7 +9,7 @@ int main_a_whole_new_word() {
   for (unsigned it = 1; it <= T; ++it) {
     unsigned N, L;
     cin >> N >> L;
-    vector<string> words = ReadVector<string>(N);
+    vector<string> words = nvector::Read<string>(N);
     vector<unsigned> blocked_words, blocked_words_next;
     for (unsigned i = 0; i < N; ++i) blocked_words.push_back(i);
     string sfinal;

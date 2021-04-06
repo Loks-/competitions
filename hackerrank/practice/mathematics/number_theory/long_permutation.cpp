@@ -7,7 +7,7 @@ int main_long_permutation() {
   unsigned n;
   uint64_t m;
   cin >> n >> m;
-  vector<unsigned> p = ReadVector<unsigned>(n);
+  vector<unsigned> p = nvector::Read<unsigned>(n);
   uint64_t pos = m, move = m;
   for (; move && (pos < move + n); --move) {
     uint64_t rel_pos = pos - move;
