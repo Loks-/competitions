@@ -5,10 +5,10 @@
 namespace opt {
 namespace root {
 template <class TFunction>
-inline double BinarySearch(TFunction& f, double l, double r, double eps) {
+inline double Bisection(TFunction& f, double l, double r, double eps) {
   auto fl = f(l), fr = f(r);
   if ((0 < fl) && (fr < 0)) {
-    return BinarySearch([&](double x) { return -f(x); }, l, r, eps);
+    return Bisection([&](double x) { return -f(x); }, l, r, eps);
   }
   assert((fl <= 0) && (0 <= fr));
   for (; r - l > eps;) {
