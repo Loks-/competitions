@@ -3,7 +3,7 @@
 #include "common/geometry/d2/ellipse_io.h"
 #include "common/geometry/d2/line.h"
 #include "common/geometry/d2/point_io.h"
-#include "common/optimization/ternary_search_2d.h"
+#include "common/optimization/minimum_2d.h"
 #include "common/stl/base.h"
 #include "common/vector/read.h"
 
@@ -32,7 +32,7 @@ int main_good_point() {
     for (auto& e : ve) fv = max(fv, e(p));
     return fv;
   };
-  auto p = opt::TernarySearch2DSafe(f, -1e4, 1e4, -1e4, 1e4, 1e-8);
+  auto p = opt::Minimum2DSafe(f, -1e4, 1e4, -1e4, 1e4, 1e-8);
   cout << p.x << endl << p.y << endl;
   return 0;
 }

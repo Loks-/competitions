@@ -1,6 +1,7 @@
 #pragma once
 
 namespace opt {
+namespace minimum {
 template <class TFunction>
 inline double TernarySearch(TFunction& f, double l, double r, double eps) {
   for (; r - l > eps;) {
@@ -12,4 +13,5 @@ inline double TernarySearch(TFunction& f, double l, double r, double eps) {
   }
   return (l + r) / 2;
 }
+}  // namespace minimum
 }  // namespace opt

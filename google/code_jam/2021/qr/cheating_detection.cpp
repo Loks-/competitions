@@ -1,6 +1,6 @@
 #include "common/optimization/approximation/table.h"
 #include "common/optimization/functions/sigmoid.h"
-#include "common/optimization/ternary_search.h"
+#include "common/optimization/minimum.h"
 #include "common/stl/base.h"
 #include "common/vector/read.h"
 
@@ -50,11 +50,11 @@ int main_cheating_detection() {
     for (unsigned o = 0; o < O; ++o) {
       for (unsigned p = 0; p < P; ++p) {
         auto fp = [&](double x) { return FP(p, x); };
-        vp[p] = opt::TernarySearch(fp, -b, b, eps);
+        vp[p] = opt::Minimum(fp, -b, b, eps);
       }
       for (unsigned q = 0; q < Q; ++q) {
         auto fq = [&](double x) { return FQ(q, x); };
-        vq[q] = opt::TernarySearch(fq, -b, b, eps);
+        vq[q] = opt::Minimum(fq, -b, b, eps);
       }
     }
 
@@ -62,7 +62,7 @@ int main_cheating_detection() {
     unsigned c = 0;
     for (unsigned p = 0; p < P; ++p) {
       auto fpc = [&](double x) { return FPC(p, x); };
-      double s = opt::TernarySearch(fpc, -b, b, eps);
+      double s = opt::Minimum(fpc, -b, b, eps);
       double g = FP(p, vp[p]) - FPC(p, s);
       if (gain < g) {
         gain = g;
