@@ -4,7 +4,6 @@
 
 namespace opt {
 namespace root {
-// Finding root on interval for continuous function.
 template <class TFunction>
 inline double BinarySearch(TFunction& f, double l, double r, double eps) {
   auto fl = f(l), fr = f(r);
