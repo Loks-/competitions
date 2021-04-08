@@ -3,8 +3,10 @@
 #include "common/base.h"
 
 namespace opt {
+namespace root {
+// Finding root on interval for continuous function.
 template <class TFunction>
-double BinarySearch(TFunction& f, double l, double r, double eps) {
+inline double BinarySearch(TFunction& f, double l, double r, double eps) {
   auto fl = f(l), fr = f(r);
   if ((0 < fl) && (fr < 0)) {
     return BinarySearch([&](double x) { return -f(x); }, l, r, eps);
@@ -20,4 +22,5 @@ double BinarySearch(TFunction& f, double l, double r, double eps) {
   }
   return (l + r) / 2;
 }
+}  // namespace root
 }  // namespace opt
