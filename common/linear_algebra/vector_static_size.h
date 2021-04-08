@@ -1,6 +1,7 @@
 #pragma once
 
 #include "common/base.h"
+#include "common/template.h"
 
 #include <array>
 #include <initializer_list>
@@ -28,8 +29,20 @@ class VectorStaticSize {
   const TData& GetData() const { return data; }
 
   VectorStaticSize() { Clear(); }
-  explicit VectorStaticSize(const TValue& v) { Fill(v); }
-  VectorStaticSize(std::initializer_list<TValue> l) {
+
+  explicit VectorStaticSize(unsigned vsize) {
+    assert(vsize == size);
+    FakeUse(vsize);
+    Clear();
+  }
+
+  VectorStaticSize(unsigned vsize, const TValue& v) {
+    assert(vsize == size);
+    FakeUse(vsize);
+    Fill(v);
+  }
+
+  explicit VectorStaticSize(std::initializer_list<TValue> l) {
     assert(l.size() <= Size());
     Clear();
     iterator p = begin();

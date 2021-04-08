@@ -24,8 +24,10 @@ class MatrixStaticSize : public VectorStaticSize<TTValue, _rows * _columns> {
   unsigned Columns() const { return columns; }
 
   MatrixStaticSize() {}
-  explicit MatrixStaticSize(const TValue& v) : TBase(v) {}
-  MatrixStaticSize(std::initializer_list<TValue> l) : TBase(l) {}
+
+  // explicit MatrixStaticSize(const TValue& v) : TBase(v) {}
+
+  explicit MatrixStaticSize(std::initializer_list<TValue> l) : TBase(l) {}
 
   TSelf& operator=(const TValue& v) {
     TBase::Fill(v);
