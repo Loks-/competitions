@@ -20,6 +20,17 @@
 	* Johnson's - Dijkstra
 * Heap
 	* Van Emde Boas tree
+* Optimization
+	* Root finding algorithms
+		* Tester
+		* Secant
+		* Ridders
+		* Brent
+		* ITP
+		* TOMS748 (in boost)
+	* Minimum
+		* Tester
+		* Brent (in boost)
 * Persistent Binary Search Trees
 * SegmentTree
 	* Compact SegmentTree
