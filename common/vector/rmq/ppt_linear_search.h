@@ -14,7 +14,7 @@ namespace rmq {
 // Block size ~ log(N).
 // O(N) memory, O(N) preprocessing time, O(log N) request time
 template <class TTValue>
-class LBS {
+class PPTLinearSearch {
  public:
   using TValue = TTValue;
   using TPositionValue = PositionValue<TValue>;
@@ -26,8 +26,8 @@ class LBS {
   PPT<TValue> rmq;
 
  public:
-  LBS() {}
-  LBS(const std::vector<TValue>& v, double block_size_scale = 0.5) {
+  PPTLinearSearch() {}
+  PPTLinearSearch(const std::vector<TValue>& v, double block_size_scale = 0.5) {
     Build(v, block_size_scale);
   }
 

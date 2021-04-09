@@ -13,7 +13,7 @@ namespace rmq {
 // Similar to PPT but for vectors with difference exactly 1 between elements.
 // O(N) memory, O(N) preprocessing time, O(1) request time
 template <class TTValue>
-class RMQ1 {
+class PPTRMQ1 {
  public:
   using TValue = TTValue;
   using TPositionValue = PositionValue<TValue>;
@@ -36,8 +36,8 @@ class RMQ1 {
   }
 
  public:
-  RMQ1() {}
-  RMQ1(const std::vector<TValue>& v) { Build(v); }
+  PPTRMQ1() {}
+  PPTRMQ1(const std::vector<TValue>& v) { Build(v); }
 
   void Build(const std::vector<TValue>& v) {
     n = v.size();

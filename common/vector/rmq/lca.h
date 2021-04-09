@@ -14,7 +14,7 @@
 
 namespace nvector {
 namespace rmq {
-// Convert RMQ problem to LCA problem for binary tree using Treap.
+// Convert RMQ problem to LCA problem for binary tree using Cartesian Tree.
 // O(N) memory, O(N) preprocessing time, O(1) request time
 template <class TTValue>
 class LCA {
@@ -36,7 +36,7 @@ class LCA {
     assert(v.size() > 0);
     vv = v;
     size_t n = v.size();
-    // Build Treap
+    // Build Cartesian Tree
     NodesManagerFixedSize<TNode> m(n);
     TNode *proot = m.New(), *plast = proot, *p0 = proot;
     proot->data = v[0];

@@ -15,7 +15,7 @@ namespace rmq {
 // O(N log N / block_size + N) memory, O(N log N / block_size + N) preprocessing
 // time, O(1) request time
 template <class TTValue>
-class MBS32 {
+class PPTMask32 {
  public:
   using TValue = TTValue;
   using TPositionValue = PositionValue<TValue>;
@@ -38,8 +38,8 @@ class MBS32 {
   }
 
  public:
-  MBS32() {}
-  MBS32(const std::vector<TValue>& v) { Build(v); }
+  PPTMask32() {}
+  PPTMask32(const std::vector<TValue>& v) { Build(v); }
 
   void Build(const std::vector<TValue>& v) {
     n = v.size();

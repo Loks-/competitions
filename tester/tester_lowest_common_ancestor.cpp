@@ -10,7 +10,7 @@
 #include "common/timer.h"
 #include "common/vector/hrandom_pair.h"
 #include "common/vector/rmq.h"
-#include "common/vector/rmq/rmq1.h"
+#include "common/vector/rmq/ppt_rmq1.h"
 
 #include <iostream>
 #include <unordered_set>
@@ -73,7 +73,7 @@ size_t TesterLowestCommonAncestor::TestEulerTourRMQ1() const {
   std::vector<uint64_t> r;
   for (const auto& t : trees) {
     auto vr = graph::lca::OfflineProxy<
-        graph::lca::EulerTour<nvector::rmq::RMQ1<unsigned>>>(t, queries);
+        graph::lca::EulerTour<nvector::rmq::PPTRMQ1<unsigned>>>(t, queries);
     for (auto r : vr) h = HashCombine(h, r);
   }
   std::cout << "Test results  [Euler Tour RMQ1 ]: " << h << "\t"
