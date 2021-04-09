@@ -8,6 +8,7 @@
 #include "common/vector/rmq/lbs.h"
 #include "common/vector/rmq/lca.h"
 #include "common/vector/rmq/mbs32.h"
+#include "common/vector/rmq/mbs64.h"
 #include "common/vector/rmq/ppt.h"
 #include "common/vector/rmq/segment_tree.h"
 
@@ -46,6 +47,7 @@ bool RangeMinimumQuery::TestAll() {
   hs.insert(Test<nvector::rmq::LBS<size_t>>("LBS  "));
   hs.insert(Test<nvector::rmq::LCA<size_t>>("LCA  "));
   hs.insert(Test<nvector::rmq::MBS32<size_t>>("MBS32"));
+  hs.insert(Test<nvector::rmq::MBS64<size_t>>("MBS64"));
   hs.insert(Test<nvector::rmq::PPT<size_t>>("PPT  "));
   hs.insert(Test<nvector::rmq::SegmentTree<size_t>>("ST   "));
   return hs.size() == 1;
