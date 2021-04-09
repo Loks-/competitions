@@ -10,6 +10,6 @@ inline unsigned FirstBit(uint64_t u) { return __builtin_ffsll(u); }
 
 // Returns the number of trailing 0-bits in x, starting at the least significant
 // bit position. If x is 0, the result is undefined.
-inline unsigned Trailing0Bits(uint32_t u) { return __builtin_ctz(u); }
-inline unsigned Trailing0Bits(uint64_t u) { return __builtin_ctzll(u); }
+inline unsigned Lowest0Bits(uint32_t u) { return __builtin_ctz(u); }
+inline unsigned Lowest0Bits(uint64_t u) { return __builtin_ctzll(u); }
 }  // namespace numeric

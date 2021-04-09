@@ -19,7 +19,7 @@ class MBS32 {
  public:
   using TValue = TTValue;
   using TPositionValue = PositionValue<TValue>;
-  static const unsigned k = 32;
+  static const size_t k = 32, klog = 5, k1 = k - 1;
   using TMask = uint32_t;
   static const TMask one = 1;
 
@@ -31,10 +31,9 @@ class MBS32 {
   PPT<TValue> rmq;
 
  protected:
-  TPositionValue GetBlock(size_t j, size_t b, size_t e) const {
-    auto m = vmask[j * k + e - 1];
-    m &= -(one << b);
-    size_t pos = j * k + numeric::Trailing0Bits(m);
+  TPositionValue GetBlock(size_t jk, size_t jb, size_t e) const {
+    auto m = vmask[e - 1] & (-(one << jb));
+    size_t pos = jk + numeric::Lowest0Bits(m);
     return {pos, vv[pos]};
   }
 
@@ -44,21 +43,20 @@ class MBS32 {
 
   void Build(const std::vector<TValue>& v) {
     n = v.size();
-    l = (n + k - 1) / k;
-    n = k * l;
+    l = (n + k - 1) >> klog;
     vv = v;
-    for (; vv.size() < n;) vv.push_back(v.back());
     vmask.resize(n);
     vlpos.resize(l);
     std::vector<TValue> vlmin(l);
     std::stack<std::pair<TValue, size_t>> s;
     for (size_t i = 0; i < l; ++i) {
-      size_t ik = i * k, lpos = ik;
+      size_t ik = i << klog, lpos = ik;
       TValue lvalue = vv[ik];
       TMask mask = one;
       vmask[ik] = mask;
       s.push({lvalue, 0});
-      for (size_t j = 1; j < k; ++j) {
+      size_t je = ((i + 1) == l) ? n - i * k : k;
+      for (size_t j = 1; j < je; ++j) {
         mask |= (one << j);
         auto& vj = vv[ik + j];
         if (vj < lvalue) {
@@ -74,25 +72,28 @@ class MBS32 {
       }
       vlpos[i] = lpos;
       vlmin[i] = lvalue;
+      for (; !s.empty();) s.pop();
     }
     rmq.Build(vlmin);
   }
 
   TPositionValue Minimum(size_t b, size_t e) const {
     assert(b < e);
-    size_t ib = b / k, jb = b % k, ie = e / k, je = e % k;
+    size_t ib = b >> klog, jb = b & k1, ie = e >> klog, je = e & k1;
     if (je == 0) {
       ie -= 1;
       je = k;
     }
     if (ib == ie) {
-      return GetBlock(ib, jb, je);
+      return GetBlock(ib << klog, jb, e);
     } else if (ib + 1 == ie) {
-      return Merge(GetBlock(ib, jb, k), GetBlock(ie, 0, je));
+      return Merge(GetBlock(ib << klog, jb, ie << klog),
+                   GetBlock(ie << klog, 0, e));
     } else {
       auto pv = rmq.Minimum(ib + 1, ie);
       pv.pos = vlpos[pv.pos];
-      return Merge(Merge(GetBlock(ib, jb, k), pv), GetBlock(ie, 0, je));
+      return Merge(Merge(GetBlock(ib << klog, jb, (ib + 1) << klog), pv),
+                   GetBlock(ie << klog, 0, e));
     }
   }
 };
