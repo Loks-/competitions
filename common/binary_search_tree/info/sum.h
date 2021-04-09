@@ -15,8 +15,8 @@ class Sum : public TInfo {
   template <class TNode>
   void Update(TNode* node) {
     TBase::Update(node);
-    sum = node->data + (node->l ? node->l->info.sum : TSumType(0)) +
-          (node->r ? node->r->info.sum : TSumType(0));
+    sum = node->data + (node->l ? node->l->info.sum : TSumType()) +
+          (node->r ? node->r->info.sum : TSumType());
   }
 };
 }  // namespace info
