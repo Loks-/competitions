@@ -5,6 +5,7 @@
 #include "common/timer.h"
 #include "common/vector/hrandom.h"
 #include "common/vector/hrandom_pair.h"
+#include "common/vector/rmq/lca.h"
 #include "common/vector/rmq/ppt.h"
 #include "common/vector/rmq/segment_tree.h"
 
@@ -42,6 +43,7 @@ bool RangeMinimumQuery::TestAll() {
   std::unordered_set<size_t> hs;
   hs.insert(Test<nvector::rmq::SegmentTree<size_t>>("ST "));
   hs.insert(Test<nvector::rmq::PPT<size_t>>("PPT"));
+  hs.insert(Test<nvector::rmq::LCA<size_t>>("LCA"));
   return hs.size() == 1;
 }
 
