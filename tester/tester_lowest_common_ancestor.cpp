@@ -90,7 +90,7 @@ bool TesterLowestCommonAncestor::TestAll() {
 }
 
 bool TestLowestCommonAncestor(bool time_test) {
-  TesterLowestCommonAncestor t(time_test ? 100000 : 100, 10,
+  TesterLowestCommonAncestor t(time_test ? 1000000 : 100, 10,
                                time_test ? 1000000 : 1000);
   return t.TestAll();
 }
