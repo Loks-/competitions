@@ -24,11 +24,6 @@ class PPT {
   PPT() : n(0), vlog(2, 0) {}
   PPT(const std::vector<TValue>& v) : PPT() { Build(v); }
 
-  static TPositionValue Merge(const TPositionValue& l,
-                              const TPositionValue& r) {
-    return (r.value < l.value) ? r : l;
-  }
-
   void Build(const std::vector<TValue>& v) {
     n = v.size();
     for (; vlog.size() <= n;) vlog.push_back(vlog[vlog.size() / 2] + 1);
