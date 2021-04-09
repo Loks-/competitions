@@ -39,7 +39,6 @@ class PPT {
   }
 
   TPositionValue Minimum(size_t b, size_t e) const {
-    e = std::min(e, n);
     assert(b < e);
     unsigned k = vlog[e - b];
     return Merge(vpv[k][b], vpv[k][e - (size_t(1) << k)]);

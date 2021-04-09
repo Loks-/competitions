@@ -88,7 +88,6 @@ class RMQ1 {
 
   TPositionValue Minimum(size_t b, size_t e) const {
     if (k == 1) return rmq.Minimum(b, e);
-    e = std::min(e, n);
     assert(b < e);
     size_t ib = b / k, jb = b % k, ie = e / k, je = e % k;
     if (je == 0) {
