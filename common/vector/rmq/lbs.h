@@ -61,14 +61,18 @@ class LBS {
     if (k == 1) return rmq.Minimum(b, e);
     assert(b < e);
     size_t ib = b / k, ie = e / k;
+    TPositionValue pv{b, vv[b]};
     if (ib + 1 < ie) {
-      auto pv = rmq.Minimum(ib + 1, ie);
-      pv.pos = vlpos[pv.pos];
-      for (size_t i = b; i < (ib + 1) * k; ++i) {
+      for (size_t i = b + 1; i < (ib + 1) * k; ++i) {
         if (vv[i] < pv.value) {
           pv.pos = i;
           pv.value = vv[i];
         }
+      }
+      auto rm = rmq.Minimum(ib + 1, ie);
+      if (rm.value < pv.value) {
+        pv.pos = vlpos[rm.pos];
+        pv.value = rm.value;
       }
       for (size_t i = ie * k; i < e; ++i) {
         if (vv[i] < pv.value) {
@@ -76,17 +80,15 @@ class LBS {
           pv.value = vv[i];
         }
       }
-      return pv;
     } else {
-      TPositionValue pv{b, vv[b]};
       for (size_t i = b + 1; i < e; ++i) {
         if (vv[i] < pv.value) {
           pv.pos = i;
           pv.value = vv[i];
         }
       }
-      return pv;
     }
+    return pv;
   }
 };
 }  // namespace rmq
