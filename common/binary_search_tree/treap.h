@@ -47,7 +47,6 @@ class Treap
     TNode* proot = nodes[0];
     TNode* plast = proot;
     std::stack<TNode*> s;
-    s.push(proot);
     for (size_t j = 1; j < nodes.size(); ++j) {
       TNode* pj = nodes[j];
       if (Height(pj) < Height(plast)) {
@@ -57,7 +56,6 @@ class Treap
         for (plast->UpdateInfo(); !s.empty(); s.pop()) s.top()->UpdateInfo();
         pj->SetL(proot);
         proot = pj;
-        s.push(proot);
       } else {
         for (plast->UpdateInfo(); Height(pj) >= Height(s.top()); s.pop()) {
           plast = s.top();

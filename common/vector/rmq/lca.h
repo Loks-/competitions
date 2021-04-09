@@ -41,7 +41,6 @@ class LCA {
     TNode *proot = m.New(), *plast = proot, *p0 = proot;
     proot->data = v[0];
     std::stack<TNode*> s;
-    s.push(proot);
     for (size_t j = 1; j < n; ++j) {
       TNode* pj = m.New();
       pj->data = v[j];
@@ -52,7 +51,6 @@ class LCA {
         for (; !s.empty();) s.pop();
         pj->l = proot;
         proot = pj;
-        s.push(proot);
       } else {
         for (; pj->data < s.top()->data; s.pop()) plast = s.top();
         pj->l = plast;
