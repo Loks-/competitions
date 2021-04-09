@@ -10,6 +10,7 @@
 #include "common/timer.h"
 #include "common/vector/hrandom_pair.h"
 #include "common/vector/rmq/ppt.h"
+#include "common/vector/rmq/rmq1.h"
 
 #include <iostream>
 #include <unordered_set>
@@ -51,7 +52,7 @@ size_t TesterLowestCommonAncestor::TestSchieberVishkin() const {
   return h;
 }
 
-size_t TesterLowestCommonAncestor::TestEulerTour() const {
+size_t TesterLowestCommonAncestor::TestEulerTourPPT() const {
   Timer t;
   size_t h = 0;
   std::vector<uint64_t> r;
@@ -60,7 +61,21 @@ size_t TesterLowestCommonAncestor::TestEulerTour() const {
         graph::lca::EulerTour<nvector::rmq::PPT<unsigned>>>(t, queries);
     for (auto r : vr) h = HashCombine(h, r);
   }
-  std::cout << "Test results  [Euler Tour      ]: " << h << "\t"
+  std::cout << "Test results  [Euler Tour PPT  ]: " << h << "\t"
+            << t.GetMilliseconds() << std::endl;
+  return h;
+}
+
+size_t TesterLowestCommonAncestor::TestEulerTourRMQ1() const {
+  Timer t;
+  size_t h = 0;
+  std::vector<uint64_t> r;
+  for (const auto& t : trees) {
+    auto vr = graph::lca::OfflineProxy<
+        graph::lca::EulerTour<nvector::rmq::RMQ1<unsigned>>>(t, queries);
+    for (auto r : vr) h = HashCombine(h, r);
+  }
+  std::cout << "Test results  [Euler Tour RMQ1 ]: " << h << "\t"
             << t.GetMilliseconds() << std::endl;
   return h;
 }
@@ -69,7 +84,8 @@ bool TesterLowestCommonAncestor::TestAll() {
   std::unordered_set<size_t> hs;
   hs.insert(TestTarjanOffline());
   hs.insert(TestSchieberVishkin());
-  hs.insert(TestEulerTour());
+  hs.insert(TestEulerTourPPT());
+  hs.insert(TestEulerTourRMQ1());
   return hs.size() == 1;
 }
 
