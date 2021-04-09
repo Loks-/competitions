@@ -37,7 +37,7 @@ class RMQ1 {
 
  public:
   RMQ1() {}
-  RMQ1(const std::vector<TValue>& v) : RMQ1() { Build(v); }
+  RMQ1(const std::vector<TValue>& v) { Build(v); }
 
   void Build(const std::vector<TValue>& v) {
     n = v.size();
