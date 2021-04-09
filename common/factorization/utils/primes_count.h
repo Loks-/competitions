@@ -4,9 +4,9 @@
 #include "common/binary_indexed_tree/bit.h"
 #include "common/factorization/table/mobius.h"
 #include "common/factorization/table/pi.h"
+#include "common/numeric/bits/ulog2.h"
 #include "common/numeric/utils/pow.h"
 #include "common/numeric/utils/ucbrt.h"
-#include "common/numeric/utils/ulog2.h"
 #include "common/numeric/utils/usqrt.h"
 
 #include <algorithm>
@@ -17,7 +17,7 @@
 // Simplified version with O(n^(2/3)) memory.
 inline uint64_t PrimesCount(uint64_t n) {
   if (n < 2) return 0;
-  uint64_t n2 = USqrt(n), n3 = UCbrt(n), n4 = USqrt(n2), nl = ULog2(n),
+  uint64_t n2 = USqrt(n), n3 = UCbrt(n), n4 = USqrt(n2), nl = numeric::ULog2(n),
            yr = n3 * PowU(nl, 3), y = std::max(n3, std::min(yr, n2)),
            ny = n / y, ny2 = USqrt(n / y);
   factorization::table::Mobius mobius(y);
