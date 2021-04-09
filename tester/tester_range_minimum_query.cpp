@@ -7,6 +7,7 @@
 #include "common/vector/hrandom_pair.h"
 #include "common/vector/rmq/lbs.h"
 #include "common/vector/rmq/lca.h"
+#include "common/vector/rmq/mbs32.h"
 #include "common/vector/rmq/ppt.h"
 #include "common/vector/rmq/segment_tree.h"
 
@@ -42,10 +43,11 @@ size_t RangeMinimumQuery::Test(const std::string& solver_name) const {
 
 bool RangeMinimumQuery::TestAll() {
   std::unordered_set<size_t> hs;
-  hs.insert(Test<nvector::rmq::LBS<size_t>>("LBS"));
-  hs.insert(Test<nvector::rmq::LCA<size_t>>("LCA"));
-  hs.insert(Test<nvector::rmq::PPT<size_t>>("PPT"));
-  hs.insert(Test<nvector::rmq::SegmentTree<size_t>>("ST "));
+  hs.insert(Test<nvector::rmq::LBS<size_t>>("LBS  "));
+  hs.insert(Test<nvector::rmq::LCA<size_t>>("LCA  "));
+  hs.insert(Test<nvector::rmq::MBS32<size_t>>("MBS32"));
+  hs.insert(Test<nvector::rmq::PPT<size_t>>("PPT  "));
+  hs.insert(Test<nvector::rmq::SegmentTree<size_t>>("ST   "));
   return hs.size() == 1;
 }
 
