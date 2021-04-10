@@ -1,6 +1,7 @@
 #pragma once
 
 #include "common/base.h"
+#include "common/numeric/bits/ulog2.h"
 #include "common/vector/rmq/position_value.h"
 
 #include <vector>
@@ -16,18 +17,16 @@ class PPT {
   using TPositionValue = PositionValue<TValue>;
 
  protected:
-  size_t n;
-  std::vector<unsigned> vlog;
   std::vector<std::vector<TPositionValue>> vpv;
 
  public:
-  PPT() : n(0), vlog(2, 0) {}
-  PPT(const std::vector<TValue>& v) : PPT() { Build(v); }
+  PPT() {}
+  PPT(const std::vector<TValue>& v) { Build(v); }
 
   void Build(const std::vector<TValue>& v) {
-    n = v.size();
-    for (; vlog.size() <= n;) vlog.push_back(vlog[vlog.size() / 2] + 1);
-    vpv.resize(vlog[n] + 1);
+    size_t n = v.size();
+    size_t k = numeric::ULog2(n);
+    vpv.resize(k + 1);
     vpv[0].resize(n);
     for (size_t i = 0; i < n; ++i) vpv[0][i] = {i, v[i]};
     for (unsigned k = 1; k < vpv.size(); ++k) {
@@ -40,7 +39,7 @@ class PPT {
 
   TPositionValue Minimum(size_t b, size_t e) const {
     assert(b < e);
-    unsigned k = vlog[e - b];
+    unsigned k = numeric::ULog2(e - b);
     return Merge(vpv[k][b], vpv[k][e - (size_t(1) << k)]);
   }
 };

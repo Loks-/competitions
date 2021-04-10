@@ -41,7 +41,7 @@ class PPTRMQ1 {
 
   void Build(const std::vector<TValue>& v) {
     n = v.size();
-    k = std::max<size_t>(size_t(0.5 * log(double(n))), 1);
+    k = std::max<size_t>(size_t(0.5 * log2(double(n))), 1);
     if (k == 1) {
       rmq.Build(v);
       return;

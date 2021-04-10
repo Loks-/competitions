@@ -33,7 +33,7 @@ class PPTLinearSearch {
 
   void Build(const std::vector<TValue>& v, double block_size_scale = 0.5) {
     n = v.size();
-    k = std::max<size_t>(size_t(block_size_scale * log(double(n))), 1);
+    k = std::max<size_t>(size_t(block_size_scale * log2(double(n))), 1);
     if (k == 1) {
       rmq.Build(v);
       return;
