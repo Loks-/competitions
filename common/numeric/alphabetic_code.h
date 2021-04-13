@@ -32,20 +32,17 @@ class AlphabeticCode {
   template <class TValue>
   static std::vector<TSelf> Construct(const std::vector<TValue>& vcounts) {
     if (vcounts.empty()) return {};
-    TValue n = std::accumulate(vcounts.begin(), vcounts.end(), TValue(0));
-    auto nbits = numeric::ULog2(n - 1) + 1;
+    TCode z = 0, n = std::accumulate(vcounts.begin(), vcounts.end(), z),
+          m = ((~z) / n) >> 1;
     std::vector<TSelf> output;
     output.reserve(vcounts.size());
-    TValue s = 0;
+    TCode s = 0;
     for (auto& v : vcounts) {
       assert(v > 0);
-      TValue snew = s + v;
-      if (v == 1) {
-        output.push_back({s, nbits});
-      } else {
-        auto vbits = numeric::ULog2(v);
-        output.push_back({((s + snew) / 2) >> (vbits - 1), nbits - vbits + 1});
-      }
+      TCode va = m * TCode(v);
+      TCode snew = s + va;
+      auto vbits = numeric::ULog2(va);
+      output.push_back({(s + snew) >> vbits, nbits - vbits});
       s = snew;
     }
     return output;

@@ -101,7 +101,7 @@ bool TesterLowestCommonAncestor::TestAll() {
   hs.insert(TestSchieberVishkin());
   hs.insert(TestEulerTourRMQ());
   hs.insert(TestEulerTourRMQ1());
-  // hs.insert(TestAlphabeticCode());
+  hs.insert(TestAlphabeticCode());
   return hs.size() == 1;
 }
 

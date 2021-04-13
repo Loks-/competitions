@@ -16,7 +16,7 @@ namespace graph {
 namespace lca {
 // First version for LCA using Alphabetic Code.
 // TODO:
-//   1. Better compression for codes (we use 61~67 bits for n = 1M)
+//   1. Better compression for codes (we use 59~63 bits for n = 1M)
 //   2. Invert codes
 // Time: O(V) preprocessing, O(1) lca
 class AlphabeticCode {
@@ -111,9 +111,9 @@ class AlphabeticCode {
                                      TCode(1, vhl[u].length);
       }
     }
-    unsigned mk = 0;
-    for (auto c : vl) mk = std::max(mk, c.length);
-    std::cout << "Max length = " << mk << std::endl;
+    // unsigned mk = 0;
+    // for (auto c : vl) mk = std::max(mk, c.length);
+    // std::cout << "Max length = " << mk << std::endl;
 
     for (unsigned i = 0; i < n; ++i) mc2v[vl[i].Adjust()] = i;
   }
