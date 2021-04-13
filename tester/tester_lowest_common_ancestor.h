@@ -20,6 +20,7 @@ class TesterLowestCommonAncestor {
   size_t TestSchieberVishkin() const;
   size_t TestEulerTourRMQ() const;
   size_t TestEulerTourRMQ1() const;
+  size_t TestAlphabeticCode() const;
 
  public:
   bool TestAll();

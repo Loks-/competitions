@@ -12,4 +12,9 @@ inline unsigned FirstBit(uint64_t u) { return __builtin_ffsll(u); }
 // bit position. If x is 0, the result is undefined.
 inline unsigned Lowest0Bits(uint32_t u) { return __builtin_ctz(u); }
 inline unsigned Lowest0Bits(uint64_t u) { return __builtin_ctzll(u); }
+
+// Returns the number of leading 0-bits in x, starting at the least significant
+// bit position. If x is 0, the result is undefined.
+inline unsigned Highest0Bits(uint32_t u) { return __builtin_clz(u); }
+inline unsigned Highest0Bits(uint64_t u) { return __builtin_clzll(u); }
 }  // namespace numeric

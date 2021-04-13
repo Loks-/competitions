@@ -2,6 +2,7 @@
 
 #include "common/base.h"
 #include "common/graph/tree/create_hrandom_tree.h"
+#include "common/graph/tree/lca/alphabetic_code.h"
 #include "common/graph/tree/lca/euler_tour.h"
 #include "common/graph/tree/lca/offline_proxy.h"
 #include "common/graph/tree/lca/schieber_vishkin.h"
@@ -81,12 +82,26 @@ size_t TesterLowestCommonAncestor::TestEulerTourRMQ1() const {
   return h;
 }
 
+size_t TesterLowestCommonAncestor::TestAlphabeticCode() const {
+  Timer t;
+  size_t h = 0;
+  std::vector<uint64_t> r;
+  for (const auto& t : trees) {
+    auto vr = graph::lca::OfflineProxy<graph::lca::AlphabeticCode>(t, queries);
+    for (auto r : vr) h = HashCombine(h, r);
+  }
+  std::cout << "Test results  [Alphabetic Code ]: " << h << "\t"
+            << t.GetMilliseconds() << std::endl;
+  return h;
+}
+
 bool TesterLowestCommonAncestor::TestAll() {
   std::unordered_set<size_t> hs;
   hs.insert(TestTarjanOffline());
   hs.insert(TestSchieberVishkin());
   hs.insert(TestEulerTourRMQ());
   hs.insert(TestEulerTourRMQ1());
+  // hs.insert(TestAlphabeticCode());
   return hs.size() == 1;
 }
 
