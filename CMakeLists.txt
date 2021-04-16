@@ -188,7 +188,7 @@ add_test( NAME number_guessing COMMAND python3 tests/google/code_jam/2018/ps/num
 add_test( NAME go_gopher COMMAND python3 tests/google/code_jam/2018/qr/go_gopher.py ./release/build/google_code_jam go_gopher WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} )
 add_test( NAME lollipop_shop COMMAND python3 tests/google/code_jam/2018/r1c/lollipop_shop.py ./release/build/google_code_jam lollipop_shop WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} )
 add_test( NAME name_preserving_network COMMAND python3 tests/google/code_jam/2018/r3/name_preserving_network.py ./release/build/google_code_jam name_preserving_network WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} )
-add_test( NAME go_gophers COMMAND python3 tests/google/code_jam/2018/r4/go_gophers.py ./release/build/google_code_jam go_gophers WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} )
+add_test( NAME go_gophers COMMAND python3 tests/google/code_jam/2018/wf/go_gophers.py ./release/build/google_code_jam go_gophers WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} )
 # add_test( NAME dat_bae.0 COMMAND python3 tests/google/code_jam/2019/interactive_runner.py python3 tests/google/code_jam/2019/qr/dat_bae.py 0 -- ./release/build/google_code_jam dat_bae WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} )
 add_test( NAME dat_bae.1 COMMAND python3 tests/google/code_jam/2019/interactive_runner.py python3 tests/google/code_jam/2019/qr/dat_bae.py 1 -- ./release/build/google_code_jam dat_bae WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} )
 add_test( NAME golf_gophers.0 COMMAND python3 tests/google/code_jam/2019/interactive_runner.py python3 tests/google/code_jam/2019/r1a/golf_gophers.py 0 -- ./release/build/google_code_jam golf_gophers WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} )
