@@ -35,13 +35,13 @@ int main_juggle_struggle_part1() {
       }
       if (e1 != 2 * N) vvt[1].swap(vvt[3]);
       unsigned k = b1;
+      std::vector<unsigned> vk(5, b1);
       for (unsigned j = 0; j < 4; ++j) {
+        vk[j + 1] = vk[j] + vvt[j].size();
         for (unsigned ij : vvt[j]) vl[k++] = ij;
       }
-      unsigned lp1 = b1 + vvt[0].size(), lp2 = lp1 + vvt[1].size(),
-               lp3 = lp2 + vvt[2].size();
-      Solve(b1, lp1, lp2);
-      Solve(lp2, lp3, k);
+      Solve(vk[0], vk[1], vk[2]);
+      Solve(vk[2], vk[3], vk[4]);
     };
 
     Solve(0, 2 * N, 2 * N);
