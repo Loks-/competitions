@@ -21,14 +21,14 @@ int main_board_meeting() {
     vector<unordered_set<int>> vs(2);
     vector<unordered_map<int, int>> va(2);
     for (int a = 0; a < 2; ++a) {
-      auto GetA = [&](int x) { return Get(x, (1 - 2*a) * x); };
+      auto GetA = [&](int x) { return Get(x, (1 - 2 * a) * x); };
 
       std::function<void(int, int, int, int, int, int)> FindAll = [&](
-      int lx, int lr, int dlr, int rx, int rr, int drr) -> void 
-      {
+          int lx, int lr, int dlr, int rx, int rr, int drr) -> void {
         if (dlr == drr) return;
         if (rx > lx + 2) {
-          int mx1 = (lx + rx) / 2, mx2 = mx1 + 1, mr1 = GetA(mx1), mr2 = GetA(mx2);
+          int mx1 = (lx + rx) / 2, mx2 = mx1 + 1, mr1 = GetA(mx1),
+              mr2 = GetA(mx2);
           FindAll(lx, lr, dlr, mx1, mr1, mr2 - mr1);
           FindAll(mx2, mr2, mr2 - mr1, rx, rr, drr);
         } else if (rx == lx + 2) {
@@ -38,7 +38,7 @@ int main_board_meeting() {
         } else if (rx == lx + 1) {
           FindAll(lx, lr, dlr, lx, lr, rr - lr);
           FindAll(rx, rr, rr - lr, rx, lr, drr);
-        } else { // rx == lx
+        } else {  // rx == lx
           vt.insert(vt.end(), drr - dlr, lx);
         }
       };
@@ -48,10 +48,8 @@ int main_board_meeting() {
       FindAll(lx, lr, lr - GetA(lx - 1), rx, rr, GetA(rx + 1) - rr);
 
       for (size_t i = 0; i < vt.size(); i += 2) {
-        int x = vt[i] + vt[i+1];
+        int x = vt[i] + vt[i + 1];
         vp[a].push_back(x);
-        // vs[a].insert(x - 1);
-        // vs[a].insert(x);
         vs[a].insert(x + 1);
       }
     }
@@ -73,13 +71,13 @@ int main_board_meeting() {
     }
 
     cout << "READY" << endl;
-    for (; ;) {
+    for (;;) {
       cin >> s;
       if (s == "ERROR") return -1;
       if (s == "DONE") break;
       int c = stoi(s), d;
       cin >> d;
-      cout << Calc(c, d) + va[0][c+d] + va[1][c-d] << endl;
+      cout << Calc(c, d) + va[0][c + d] + va[1][c - d] << endl;
     }
   }
   return 0;
