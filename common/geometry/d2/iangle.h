@@ -46,6 +46,8 @@ class IAngle {
     return TSelf(dx * r.dx + dy * r.dy, -dx * r.dy + dy * r.dx);
   }
 
+  TSelf ShiftPi() const { return TSelf(-dx, -dy); }
+
  protected:
   bool CompareI(const TSelf& r) const { return dy * r.dx < dx * r.dy; }
 

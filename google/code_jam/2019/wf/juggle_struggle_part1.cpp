@@ -1,6 +1,7 @@
 #include "common/geometry/d2/line_pv.h"
 #include "common/geometry/d2/point_io.h"
 #include "common/geometry/d2/utils/half_splitting_line.h"
+#include "common/hash.h"
 #include "common/stl/base.h"
 #include "common/stl/pair.h"
 #include "common/vector/enumerate.h"
@@ -17,14 +18,16 @@ int main_juggle_struggle_part1() {
     vector<unsigned> vl = nvector::Enumerate<unsigned>(0, 2 * N), vm(2 * N);
     vector<pair<I2Angle, unsigned>> vpai;
     vector<vector<unsigned>> vvt(4);
+    size_t h = 0;
 
     function<void(unsigned, unsigned, unsigned)> Solve = [&](
         unsigned b1, unsigned e1, unsigned e2) -> void {
       if (e2 == b1) return;
       vpt.clear();
       for (unsigned i = b1; i < e2; ++i) vpt.push_back(vp[vl[i]]);
-      auto p = HalfSplittingLineAB(vpt);
-      unsigned p1 = vl[b1 + p.first], p2 = vl[b1 + p.second];
+      h = HashCombine(h, e2 - b1);
+      unsigned p0 = h % (e2 - b1), p1 = vl[b1 + p0],
+               p2 = vl[b1 + HalfSplittingLineAB(vpt, p0)];
       vm[p1] = p2;
       vm[p2] = p1;
       I2LinePV l(vp[p1], vp[p2]);
