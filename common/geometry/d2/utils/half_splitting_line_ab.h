@@ -6,13 +6,14 @@
 #include "common/geometry/d2/iangle.h"
 #include "common/geometry/d2/point.h"
 #include "common/geometry/d2/vector.h"
+#include "common/stl/pair.h"
 
 #include <algorithm>
 #include <utility>
 #include <vector>
 
 // Find a line that split set of points into two halves.
-std::pair<unsigned, unsigned> HalfSplittingLineAB(
+inline std::pair<unsigned, unsigned> HalfSplittingLineAB(
     const std::vector<I2Point>& points) {
   assert(points.size() >= 2);
   unsigned a = 0;
@@ -30,7 +31,7 @@ std::pair<unsigned, unsigned> HalfSplittingLineAB(
   return {a, va[m].second};
 }
 
-unsigned HalfSplittingLine0B(const std::vector<I2Point>& points) {
+inline unsigned HalfSplittingLine0B(const std::vector<I2Point>& points) {
   unsigned n = points.size(), h = n / 2 + 1;
   assert(n >= 1);
   std::vector<std::pair<I2Angle, unsigned>> va;
@@ -56,7 +57,8 @@ unsigned HalfSplittingLine0B(const std::vector<I2Point>& points) {
   return 0;
 }
 
-unsigned HalfSplittingLineAB(const std::vector<I2Point>& points, unsigned a) {
+inline unsigned HalfSplittingLineAB(const std::vector<I2Point>& points,
+                                    unsigned a) {
   assert((points.size() >= 2) && (a < points.size()));
   std::vector<I2Point> v;
   v.reserve(points.size() - 1);

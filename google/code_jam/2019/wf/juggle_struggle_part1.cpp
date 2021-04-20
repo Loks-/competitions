@@ -1,6 +1,6 @@
 #include "common/geometry/d2/line_pv.h"
 #include "common/geometry/d2/point_io.h"
-#include "common/geometry/d2/utils/half_splitting_line.h"
+#include "common/geometry/d2/utils/half_splitting_line_ab.h"
 #include "common/hash.h"
 #include "common/stl/base.h"
 #include "common/stl/pair.h"
@@ -16,38 +16,36 @@ int main_juggle_struggle_part1() {
     cin >> N;
     std::vector<I2Point> vp = nvector::Read<I2Point>(2 * N), vpt;
     vector<unsigned> vl = nvector::Enumerate<unsigned>(0, 2 * N), vm(2 * N);
-    vector<pair<I2Angle, unsigned>> vpai;
     vector<vector<unsigned>> vvt(4);
     size_t h = 0;
 
-    function<void(unsigned, unsigned, unsigned)> Solve = [&](
-        unsigned b1, unsigned e1, unsigned e2) -> void {
-      if (e2 == b1) return;
+    function<void(unsigned, unsigned)> Solve = [&](unsigned b,
+                                                   unsigned s) -> void {
+      if (s == 0) return;
+      unsigned e1 = b + s, e2 = (s == 2 * N) ? e1 : e1 + s;
       vpt.clear();
-      for (unsigned i = b1; i < e2; ++i) vpt.push_back(vp[vl[i]]);
-      h = HashCombine(h, e2 - b1);
-      unsigned p0 = h % (e2 - b1), p1 = vl[b1 + p0],
-               p2 = vl[b1 + HalfSplittingLineAB(vpt, p0)];
+      for (unsigned i = b; i < e2; ++i) vpt.push_back(vp[vl[i]]);
+      h = HashCombine(h, s);
+      unsigned p0 = h % s, p1 = vl[b + p0],
+               p2 = vl[b + HalfSplittingLineAB(vpt, p0)];
       vm[p1] = p2;
       vm[p2] = p1;
       I2LinePV l(vp[p1], vp[p2]);
       for (auto& vt : vvt) vt.clear();
-      for (unsigned i = b1; i < e2; ++i) {
+      for (unsigned i = b; i < e2; ++i) {
         if ((vl[i] == p1) || (vl[i] == p2)) continue;
         vvt[(i < e1 ? 0 : 2) + (l(vp[vl[i]]) > 0 ? 0 : 1)].push_back(vl[i]);
       }
-      if (e1 != 2 * N) vvt[1].swap(vvt[3]);
-      unsigned k = b1;
-      std::vector<unsigned> vk(5, b1);
+      if (s != 2 * N) vvt[1].swap(vvt[3]);
+      unsigned k = b, s1 = vvt[0].size(), s2 = vvt[2].size();
       for (unsigned j = 0; j < 4; ++j) {
-        vk[j + 1] = vk[j] + vvt[j].size();
         for (unsigned ij : vvt[j]) vl[k++] = ij;
       }
-      Solve(vk[0], vk[1], vk[2]);
-      Solve(vk[2], vk[3], vk[4]);
+      Solve(b, s1);
+      Solve(b + 2 * s1, s2);
     };
 
-    Solve(0, 2 * N, 2 * N);
+    Solve(0, 2 * N);
 
     cout << "Case #" << it << ":";
     for (auto m : vm) cout << " " << m + 1;
