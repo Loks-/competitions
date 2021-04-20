@@ -4,6 +4,7 @@
 #include "common/base.h"
 #include "common/geometry/d2/line_pv.h"
 #include "common/geometry/d2/point.h"
+#include "common/geometry/d2/utils/center_of_mass.h"
 #include "common/geometry/d2/utils/midpoint.h"
 #include "common/geometry/d2/vector.h"
 
@@ -22,7 +23,7 @@ inline D2LinePV HalfSplittingLineDL(const std::vector<D2Point>& points,
 
   unsigned n = points.size();
   assert(n > 0);
-  D2LinePV l0(D2Point(), direction);
+  D2LinePV l0(CenterOfMass(points), direction);
   std::vector<VP> vp;
   vp.reserve(points.size());
   for (auto& p : points) vp.push_back({l0(p), p});
