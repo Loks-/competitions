@@ -1,6 +1,6 @@
 #pragma once
 
-#include "common/geometry/d2/iangle.h"
+#include "common/geometry/d2/angle_int.h"
 #include "common/hash.h"
 
 namespace std {
