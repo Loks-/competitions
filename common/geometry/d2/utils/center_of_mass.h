@@ -17,11 +17,12 @@ inline geometry::d2::Vector<T> CenterOfMass(
 template <class T>
 inline geometry::d2::Point<T> CenterOfMass(
     const std::vector<geometry::d2::Point<T>>& points) {
-  if (points.empty()) return {};
-  T sx = 0, sy = 0;
+  unsigned n = points.size();
+  if (n == 0) return {};
+  T sx(0), sy(0);
   for (auto& p : points) {
     sx += p.x;
     sy += p.y;
   }
-  return geometry::d2::Point<T>(sx / points.size(), sy / points.size());
+  return geometry::d2::Point<T>(sx / n, sy / n);
 }
