@@ -6,7 +6,6 @@
 #include "common/hash.h"
 #include "common/numeric/long/signed_io.h"
 #include "common/stl/base.h"
-#include "common/stl/pair.h"
 #include "common/vector/enumerate.h"
 #include "common/vector/read.h"
 

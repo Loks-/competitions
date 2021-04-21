@@ -3,7 +3,6 @@
 #include "common/geometry/d2/utils/half_splitting_line_ab.h"
 #include "common/hash.h"
 #include "common/stl/base.h"
-#include "common/stl/pair.h"
 #include "common/vector/enumerate.h"
 #include "common/vector/read.h"
 
