@@ -43,11 +43,6 @@ class Angle {
  protected:
   bool CompareI(const TSelf& r) const { return dy * r.dx < dx * r.dy; }
 
-  bool CompareI_i128(const TSelf& r) const {
-    return __int128_t(dy) * __int128_t(r.dx) <
-           __int128_t(dx) * __int128_t(r.dy);
-  }
-
  public:
   // Compare angle with pi keeping angle in the range [0, 2pi).
   bool CompareVSPi() const { return (dy > 0) || ((dy == 0) && (dx > 0)); }
@@ -60,18 +55,9 @@ class Angle {
     return (CompareVS0() != r.CompareVS0()) ? CompareVS0() : CompareI(r);
   }
 
-  bool ComparePiPi_i128(const TSelf& r) const {
-    return (CompareVS0() != r.CompareVS0()) ? CompareVS0() : CompareI_i128(r);
-  }
-
   // Compare angles keeping them in the range [0, 2pi)
   bool Compare02Pi(const TSelf& r) const {
     return (CompareVSPi() != r.CompareVSPi()) ? CompareVSPi() : CompareI(r);
-  }
-
-  bool Compare02Pi_i128(const TSelf& r) const {
-    return (CompareVSPi() != r.CompareVSPi()) ? CompareVSPi()
-                                              : CompareI_i128(r);
   }
 
   bool operator==(const TSelf& r) const { return (dx == r.dx) && (dy == r.dy); }
