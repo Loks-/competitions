@@ -1,5 +1,5 @@
+#include "common/numeric/long/unsigned/multiplication.h"
 #include "common/numeric/long/unsigned_io.h"
-#include "common/numeric/long/unsigned_multiplication.h"
 #include "common/numeric/long/utils/factorial.h"
 
 #include <iostream>
