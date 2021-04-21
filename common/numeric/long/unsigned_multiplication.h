@@ -10,7 +10,7 @@
 
 namespace numeric {
 namespace nlong {
-Unsigned MultBase(const Unsigned& a, const Unsigned& b) {
+inline Unsigned MultBase(const Unsigned& a, const Unsigned& b) {
   Unsigned r;
   for (auto it = b.end(); it != b.begin();) {
     r.ShiftBlocksRight(1);
@@ -21,7 +21,7 @@ Unsigned MultBase(const Unsigned& a, const Unsigned& b) {
 
 namespace hidden {
 template <class TModular>
-std::vector<TModular> MultFFTConvert(const Unsigned& a) {
+inline std::vector<TModular> MultFFTConvert(const Unsigned& a) {
   static const uint32_t mask16 = (1u << 16) - 1;
   std::vector<TModular> v;
   v.reserve(2 * a.Size());
@@ -35,7 +35,7 @@ std::vector<TModular> MultFFTConvert(const Unsigned& a) {
 
 // Max supported length for (a*b) is 2^26.
 template <unsigned maxn = (1u << 16)>
-Unsigned MultFFT(const Unsigned& a, const Unsigned& b) {
+inline Unsigned MultFFT(const Unsigned& a, const Unsigned& b) {
   static const uint32_t mask16 = (1u << 16) - 1;
   using TModular1 = TModular_P32<2013265921>;
   using TModular2 = TModular_P32<1811939329>;
@@ -62,17 +62,17 @@ Unsigned MultFFT(const Unsigned& a, const Unsigned& b) {
   return Unsigned(v);
 }
 
-Unsigned MultAuto(const Unsigned& a, const Unsigned& b) {
+inline Unsigned MultAuto(const Unsigned& a, const Unsigned& b) {
   return (std::min(a.Size(), b.Size()) < 100) ? MultBase(a, b) : MultFFT(a, b);
 }
 }  // namespace nlong
 }  // namespace numeric
 
-LongUnsigned operator*(const LongUnsigned& l, const LongUnsigned& r) {
+inline LongUnsigned operator*(const LongUnsigned& l, const LongUnsigned& r) {
   return numeric::nlong::MultAuto(l, r);
 }
 
-LongUnsigned& operator*=(LongUnsigned& l, const LongUnsigned& r) {
+inline LongUnsigned& operator*=(LongUnsigned& l, const LongUnsigned& r) {
   l = numeric::nlong::MultAuto(l, r);
   return l;
 }
