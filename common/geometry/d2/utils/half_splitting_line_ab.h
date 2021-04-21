@@ -34,15 +34,18 @@ inline std::pair<unsigned, unsigned> HalfSplittingLineAB(
 
 template <class T, class TAngle = geometry::d2::IAngle<T>>
 inline unsigned HalfSplittingLine0B(
-    const std::vector<geometry::d2::Point<T>>& points) {
-  unsigned n = points.size(), h = n / 2 + 1;
+    const std::vector<geometry::d2::Point<T>>& points,
+    geometry::d2::Point<T> p0 = geometry::d2::Point<T>()) {
+  thread_local std::vector<std::pair<TAngle, unsigned>> va;
+  va.clear();
+  for (unsigned i = 0; i < points.size(); ++i) {
+    if (points[i] == p0) continue;
+    va.push_back({TAngle(points[i] - p0), i});
+  }
+  unsigned n = va.size(), h = n / 2 + 1;
   assert(n >= 1);
-  std::vector<std::pair<TAngle, unsigned>> va;
-  va.reserve(2 * n);
-  for (unsigned i = 0; i < n; ++i)
-    va.push_back({TAngle(geometry::d2::Vector<T>(points[i])), i});
   std::sort(va.begin(), va.end());
-  if (va.back() == va[0]) return 0;
+  if (va.back().first == va[0].first) return va[0].second;
   unsigned i = 0, j1 = 0, j2 = 0;
   auto AdjustJ = [&]() {
     auto a = va[i].first.ShiftPi();
@@ -62,13 +65,5 @@ inline unsigned HalfSplittingLine0B(
 template <class T, class TAngle = geometry::d2::IAngle<T>>
 inline unsigned HalfSplittingLineAB(
     const std::vector<geometry::d2::Point<T>>& points, unsigned a) {
-  assert((points.size() >= 2) && (a < points.size()));
-  std::vector<geometry::d2::Point<T>> v;
-  v.reserve(points.size() - 1);
-  for (unsigned i = 0; i < points.size(); ++i) {
-    if (i == a) continue;
-    v.push_back((points[i] - points[a]).ToPoint());
-  }
-  unsigned b = HalfSplittingLine0B<T, TAngle>(v);
-  return b + (b < a ? 0 : 1);
+  return HalfSplittingLine0B(points, points[a]);
 }
