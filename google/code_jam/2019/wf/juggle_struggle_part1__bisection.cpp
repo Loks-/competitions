@@ -26,14 +26,9 @@ int main_juggle_struggle_part1__bisection() {
     vector<unsigned> vl(2 * N), vm(2 * N);
     vector<vector<unsigned>> vvt(4);
 
-    // function<void(unsigned, unsigned, const L2Vector&, const L2Vector&,
-    //               unsigned)>
-    //     Solve = [&](unsigned b, unsigned s, const L2Vector& v1,
-    //                 const L2Vector& v2, unsigned d) -> void {
-    function<void(unsigned, unsigned, const TLine&, const TLine&,
-                  unsigned)>
-        Solve = [&](unsigned b, unsigned s, const TLine& l1,
-                    const TLine& l2, unsigned d) -> void {
+    function<void(unsigned, unsigned, const L2Vector&, const L2Vector&)>
+        Solve = [&](unsigned b, unsigned s, const L2Vector& v1,
+                    const L2Vector& v2) -> void {
       if (s == 0) return;
       if (s == 1) {
         unsigned p0 = vl[b], p1 = vl[b + 1];
@@ -44,27 +39,21 @@ int main_juggle_struggle_part1__bisection() {
       unsigned e1 = b + s, e2 = b + 2 * s;
       vpt.clear();
       for (unsigned i = b; i < e2; ++i) vpt.push_back(vp[vl[i]]);
-      // L2Vector v3 = ApproximateBisector(v1, v2);
-      L2Vector v3 = ApproximateBisector(l1.v, l2.v);
+      L2Vector v3 = ApproximateBisector(v1, v2);
       auto l3 = HalfSplittingLineDL(vpt, v3);
       for (auto& vt : vvt) vt.clear();
       for (unsigned i = b; i < e2; ++i) {
-        assert(!l3(vp[vl[i]]).Empty());
-        vvt[(i < e1 ? 0 : 1) + (l3(vp[vl[i]]) < 0 ? 0 : 2)].push_back(vl[i]);
+        vvt[(i < e1 ? 0 : 1) + (l3(vp[vl[i]]).Negative() ? 0 : 2)].push_back(vl[i]);
       }
       vvt[1].swap(vvt[3]);
-      assert(vvt[0].size() == vvt[1].size());
-      assert(vvt[2].size() == vvt[3].size());
       unsigned k = b;
       std::vector<unsigned> vk(5, b);
       for (unsigned j = 0; j < 4; ++j) {
         vk[j + 1] = vk[j] + vvt[j].size();
         for (unsigned ij : vvt[j]) vl[k++] = ij;
       }
-      // Solve(vk[0], vk[1] - vk[0], v3, v2, d + 1);
-      // Solve(vk[2], vk[3] - vk[2], v1, v3, d + 1);
-      Solve(vk[0], vk[1] - vk[0], l1, l3, d + 1);
-      Solve(vk[2], vk[3] - vk[2], l3, l2, d + 1);
+      Solve(vk[0], vk[1] - vk[0], v1, v3);
+      Solve(vk[2], vk[3] - vk[2], v3, v2);
     };
 
     auto v1 = L2Vector(LongSigned(PowU<uint64_t>(10, 10)), LongSigned(1));
@@ -73,18 +62,14 @@ int main_juggle_struggle_part1__bisection() {
     for (unsigned i = 0; i < 2 * N; ++i)
       vvt[(l1(vp[i]) > 0 ? 0 : 1) + (l2(vp[i]) < 0 ? 0 : 2)].push_back(i);
     vvt[1].swap(vvt[3]);
-    assert(vvt[0].size() == vvt[1].size());
-    assert(vvt[2].size() == vvt[3].size());
     unsigned k = 0;
     std::vector<unsigned> vk(5, 0);
     for (unsigned j = 0; j < 4; ++j) {
       vk[j + 1] = vk[j] + vvt[j].size();
       for (unsigned ij : vvt[j]) vl[k++] = ij;
     }
-    // Solve(vk[0], vk[1] - vk[0], v2, -v1, 0);
-    // Solve(vk[2], vk[3] - vk[2], v1, v2, 0);
-    Solve(vk[0], vk[1] - vk[0], l1, l2, 0);
-    Solve(vk[2], vk[3] - vk[2], l2, TLine(l1.p, -l1.v), 0);
+    Solve(vk[0], vk[1] - vk[0], v1, v2);
+    Solve(vk[2], vk[3] - vk[2], v2, -v1);
 
     cout << "Case #" << it << ":";
     for (auto m : vm) cout << " " << m + 1;
