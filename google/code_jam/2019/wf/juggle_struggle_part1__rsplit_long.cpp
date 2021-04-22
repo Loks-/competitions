@@ -4,14 +4,11 @@
 #include "common/geometry/d2/utils/scale.h"
 #include "common/hash.h"
 #include "common/numeric/long/signed_io.h"
-#include "common/numeric/utils/pow.h"
 #include "common/stl/base.h"
 #include "common/vector/enumerate.h"
 #include "common/vector/read.h"
 
 #include <functional>
-
-using TLine = geometry::d2::LinePV<LongSigned>;
 
 int main_juggle_struggle_part1__rsplit_long() {
   unsigned T, N;
@@ -24,18 +21,9 @@ int main_juggle_struggle_part1__rsplit_long() {
     vector<vector<unsigned>> vvt(5);
     size_t h = 0;
 
-    auto Match = [&](unsigned p1, unsigned p2) {
-      vm[p1] = p2;
-      vm[p2] = p1;
-    };
-
     function<void(unsigned, unsigned)> Solve = [&](unsigned b,
                                                    unsigned s) -> void {
       if (s == 0) return;
-      if (s == 1) {
-        Match(vl[b], vl[b + 1]);
-        return;
-      }
       unsigned e1 = b + s, e2 = (s == 2 * N) ? e1 : e1 + s;
       vpt.clear();
       for (unsigned i = b; i < e2; ++i) vpt.push_back(vp[vl[i]]);
@@ -54,8 +42,8 @@ int main_juggle_struggle_part1__rsplit_long() {
         for (unsigned ij : vvt[j]) vl[k++] = ij;
       }
       if (!vvt[4].empty()) {
-        assert(vvt[4].size() == 2);
-        Match(vvt[4][0], vvt[4][1]);
+        vm[vvt[4][0]] = vvt[4][1];
+        vm[vvt[4][1]] = vvt[4][0];
       }
       Solve(b, s1);
       Solve(b + 2 * s1, s2);
