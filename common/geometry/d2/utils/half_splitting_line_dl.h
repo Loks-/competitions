@@ -7,6 +7,7 @@
 #include "common/geometry/d2/utils/center_of_mass.h"
 #include "common/geometry/d2/utils/midpoint.h"
 #include "common/geometry/d2/vector.h"
+#include "common/stl/pair.h"
 
 #include <algorithm>
 #include <vector>
@@ -16,25 +17,19 @@ template <class T>
 inline geometry::d2::LinePV<T> HalfSplittingLineDL(
     const std::vector<geometry::d2::Point<T>>& points,
     const geometry::d2::Vector<T>& direction) {
-  struct VP {
-    T v;
-    geometry::d2::Point<T> p;
-
-    bool operator<(const VP& r) const { return v < r.v; }
-  };
-
   unsigned n = points.size();
   assert(n > 0);
   geometry::d2::LinePV<T> l0(CenterOfMass(points), direction);
-  std::vector<VP> vp;
+  std::vector<std::pair<T, unsigned>> vp;
   vp.reserve(points.size());
-  for (auto& p : points) vp.push_back({l0(p), p});
+  for (unsigned i = 0; i < n; ++i) vp.push_back({l0(points[i]), i});
   unsigned m = (n - 1) / 2;
   std::nth_element(vp.begin(), vp.begin() + m, vp.end());
   if (n & 1) {
-    return {vp[m].p, direction};
+    return {points[vp[m].second], direction};
   } else {
     std::nth_element(vp.begin() + m, vp.begin() + m + 1, vp.end());
-    return {MidPoint(vp[m].p, vp[m + 1].p), direction};
+    return {MidPoint(points[vp[m].second], points[vp[m + 1].second]),
+            direction};
   }
 }
