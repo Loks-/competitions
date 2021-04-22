@@ -50,7 +50,7 @@ class Signed {
   const Unsigned& GetUnsigned() const { return value; }
 
   bool Positive() const { return sign && !Empty(); }
-  bool Negative() const { return sign; }
+  bool Negative() const { return !sign; }
 
   void swap(Signed& ls) {
     std::swap(sign, ls.sign);
