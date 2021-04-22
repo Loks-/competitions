@@ -8,7 +8,6 @@
 #include "common/stl/base.h"
 #include "common/vector/read.h"
 
-#include <cmath>
 #include <functional>
 
 using TLine = geometry::d2::LinePV<LongSigned>;
