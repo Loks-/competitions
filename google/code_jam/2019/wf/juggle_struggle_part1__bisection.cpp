@@ -3,6 +3,7 @@
 #include "common/geometry/d2/point_io.h"
 #include "common/geometry/d2/utils/approximate_bisector.h"
 #include "common/geometry/d2/utils/half_splitting_line_dl.h"
+#include "common/geometry/d2/utils/scale.h"
 #include "common/numeric/long/signed_io.h"
 #include "common/numeric/utils/pow.h"
 #include "common/stl/base.h"
@@ -18,16 +19,13 @@ int main_juggle_struggle_part1__bisection() {
   for (unsigned it = 1; it <= T; ++it) {
     cin >> N;
     std::vector<L2Point> vp = nvector::Read<L2Point>(2 * N), vpt;
-    for (auto& p : vp) {
-      p.x *= 2;
-      p.y *= 2;
-    }
+    ScaleXY(vp, 2);
     vector<unsigned> vl(2 * N), vm(2 * N);
     vector<vector<unsigned>> vvt(4);
 
-    function<void(unsigned, unsigned, const L2Vector&, const L2Vector&)>
-        Solve = [&](unsigned b, unsigned s, const L2Vector& v1,
-                    const L2Vector& v2) -> void {
+    function<void(unsigned, unsigned, const L2Vector&, const L2Vector&)> Solve =
+        [&](unsigned b, unsigned s, const L2Vector& v1,
+            const L2Vector& v2) -> void {
       if (s == 0) return;
       if (s == 1) {
         unsigned p0 = vl[b], p1 = vl[b + 1];
@@ -42,7 +40,8 @@ int main_juggle_struggle_part1__bisection() {
       auto l3 = HalfSplittingLineDL(vpt, v3);
       for (auto& vt : vvt) vt.clear();
       for (unsigned i = b; i < e2; ++i) {
-        vvt[(i < e1 ? 0 : 1) + (l3(vp[vl[i]]).Negative() ? 0 : 2)].push_back(vl[i]);
+        vvt[(i < e1 ? 0 : 1) + (l3(vp[vl[i]]).Negative() ? 0 : 2)].push_back(
+            vl[i]);
       }
       vvt[1].swap(vvt[3]);
       unsigned k = b;
