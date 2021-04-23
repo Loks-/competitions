@@ -63,6 +63,8 @@ class Vector {
 
   bool UpperHalfPlane() const { return (dy > 0) || ((dy == 0) && (dx >= 0)); }
 
+  TSelf RotateHalfPi() const { return {-dy, dx}; }
+
   double Angle() const {
     assert(!Empty());
     return atan2(dy, dx);

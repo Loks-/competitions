@@ -54,8 +54,8 @@ int main_juggle_struggle_part1__bisection() {
       Solve(vk[2], vk[3] - vk[2], v3, v2);
     };
 
-    auto v1 = L2Vector(LongSigned(PowU<uint64_t>(10, 10)), LongSigned(1));
-    auto v2 = L2Vector(-v1.dy, v1.dx);
+    auto v1 = L2Vector(LongSigned(PowU<uint64_t>(10, 10)), LongSigned(1)),
+         v2 = v1.RotateHalfPi();
     auto l1 = HalfSplittingLineDL(vp, v1), l2 = HalfSplittingLineDL(vp, v2);
     for (unsigned i = 0; i < 2 * N; ++i)
       vvt[(l1(vp[i]) > 0 ? 0 : 1) + (l2(vp[i]) < 0 ? 0 : 2)].push_back(i);

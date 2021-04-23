@@ -19,7 +19,7 @@ class LinePV {
   LinePV(const Point<T>& p1, const Point<T>& p2) : p(p1), v(p2 - p1) {}
 
   bool Valid() const { return !v.Empty(); }
-  Vector<T> Normal() const { return {-v.dy, v.dx}; }
+  Vector<T> Normal() const { return v.RotateHalfPi(); }
   T operator()(const Point<T>& pp) const { return v % (pp - p); }
 
   void SetOppositeNormal() { v = -v; }
