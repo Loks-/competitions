@@ -23,7 +23,7 @@ class Angle {
 
   Vector<T> ToVector() const { return Vector<T>(dx, dy); }
 
-  double GetAngle() const {
+  double RAngle() const {
     assert(Valid());
     return atan2(dy, dx);
   }

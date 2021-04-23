@@ -65,7 +65,7 @@ class Vector {
 
   TSelf RotateHalfPi() const { return {-dy, dx}; }
 
-  double Angle() const {
+  double RAngle() const {
     assert(!Empty());
     return atan2(dy, dx);
   }
