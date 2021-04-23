@@ -2,7 +2,7 @@
 
 #include "common/geometry/d2/point_io.h"
 #include "common/geometry/d2/segment.h"
-#include "common/geometry/d2/utils/segment_intersect.h"
+#include "common/geometry/d2/utils/intersect_segment.h"
 #include "common/stl/base.h"
 
 int main_jim_beam() {
