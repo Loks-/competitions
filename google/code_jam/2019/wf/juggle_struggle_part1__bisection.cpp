@@ -3,7 +3,7 @@
 #include "common/geometry/d2/point_io.h"
 #include "common/geometry/d2/utils/approximate_bisector.h"
 #include "common/geometry/d2/utils/half_splitting_line_dl.h"
-#include "common/geometry/d2/utils/scale.h"
+#include "common/geometry/d2/utils/scale_points.h"
 #include "common/numeric/long/signed_io.h"
 #include "common/numeric/utils/pow.h"
 #include "common/stl/base.h"
