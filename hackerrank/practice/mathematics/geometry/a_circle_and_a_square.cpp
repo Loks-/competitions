@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/a-circle-and-a-square
 
-#include "common/geometry/d2/circle_io.h"
+#include "common/geometry/d2/circle_int_io.h"
 #include "common/geometry/d2/point_io.h"
 #include "common/geometry/d2/utils/square_from_diagonal.h"
 #include "common/stl/base.h"
