@@ -1,4 +1,4 @@
-#include "common/binary_search.h"
+#include "common/algorithm/binary_search.h"
 #include "common/modular_io.h"
 #include "common/numeric/fibonacci.h"
 #include "common/numeric/utils/pow.h"

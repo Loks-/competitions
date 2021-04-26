@@ -1,4 +1,4 @@
-#include "common/binary_search.h"
+#include "common/algorithm/binary_search.h"
 #include "common/data_structures/coordinate_compression.h"
 #include "common/graph/flow/edge.h"
 #include "common/graph/flow/graph.h"

@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/little-chammys-huge-donation
 
-#include "common/binary_search.h"
+#include "common/algorithm/binary_search.h"
 #include "common/stl/base.h"
 
 int main_little_ashishs_huge_donation() {

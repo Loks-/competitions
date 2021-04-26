@@ -1,4 +1,4 @@
-#include "common/binary_search.h"
+#include "common/algorithm/binary_search.h"
 #include "common/stl/base.h"
 
 int main_incremental_house_of_pancakes() {

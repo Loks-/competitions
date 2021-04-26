@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/manasa-and-factorials
 
-#include "common/binary_search.h"
+#include "common/algorithm/binary_search.h"
 #include "common/stl/base.h"
 
 int main_manasa_and_factorials() {
