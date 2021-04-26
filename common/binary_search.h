@@ -1,5 +1,7 @@
 #pragma once
 
+#include <algorithm>
+
 template <class TValue1, class TValue2, class TFunction>
 inline TValue1 LowerBoundF(TValue1 begin, TValue1 end, const TValue2& value,
                            TFunction& f) {
@@ -36,4 +38,11 @@ inline TValue1 LowerBoundB(TValue1 begin, TValue1 end, TFunction& f) {
       begin = m + 1;
   }
   return begin;
+}
+
+template <class TValue1, class TFunction>
+inline TValue1 LowerBoundB(TValue1 begin, TFunction& f) {
+  auto end = std::max(begin, TValue1(1));
+  for (; !f(end); end *= 2) begin = end + 1;
+  return LowerBoundB(begin, end, f);
 }
