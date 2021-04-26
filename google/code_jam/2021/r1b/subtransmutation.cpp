@@ -21,7 +21,7 @@ int main_subtransmutation() {
 
     auto F = [&](unsigned n) {
       vt.clear();
-      vt.resize(++n, 0);
+      vt.resize(n, 0);
       vt.back() = 1;
       for (unsigned i = n; i-- > 0;) {
         auto v2i = (i < v.size() ? v[i] : 0);
@@ -33,7 +33,7 @@ int main_subtransmutation() {
     };
 
     cout << "Case #" << it << ": "
-         << (ok ? to_string(FirstIfB(N, F) + 1) : "IMPOSSIBLE") << endl;
+         << (ok ? to_string(FirstIfB(N, F)) : "IMPOSSIBLE") << endl;
   }
   return 0;
 }
