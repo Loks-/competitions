@@ -1,3 +1,4 @@
+#include "common/algorithm/linear_search.h"
 #include "common/numeric/utils/gcd.h"
 #include "common/stl/base.h"
 #include "common/vector/read.h"
@@ -5,7 +6,7 @@
 #include <string>
 
 int main_subtransmutation() {
-  unsigned T, N, A, B, k;
+  unsigned T, N, A, B;
   cin >> T;
   for (unsigned it = 1; it <= T; ++it) {
     cin >> N >> A >> B;
@@ -31,16 +32,8 @@ int main_subtransmutation() {
       return true;
     };
 
-    if (ok) {
-      for (unsigned i = N;; ++i) {
-        if (F(i)) {
-          k = i;
-          break;
-        }
-      }
-    }
-    cout << "Case #" << it << ": " << (ok ? to_string(k + 1) : "IMPOSSIBLE")
-         << endl;
+    cout << "Case #" << it << ": "
+         << (ok ? to_string(FirstIfB(N, F) + 1) : "IMPOSSIBLE") << endl;
   }
   return 0;
 }
