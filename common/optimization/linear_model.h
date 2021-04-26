@@ -4,6 +4,7 @@
 #include "common/linear_algebra/matrix.h"
 #include "common/linear_algebra/real/lup_decomposition.h"
 
+// NOT FINISHED!
 namespace opt {
 template <class TMatrix, class TVector1, class TVector2>
 inline void LinearModel(const TMatrix& x, const TVector1& y, const TVector1& w,
