@@ -4,7 +4,6 @@
 #include "common/modular/static/factorial.h"
 
 // Based on Lucas's theorem.
-
 namespace modular {
 namespace mstatic {
 template <class TModular>

@@ -5,7 +5,6 @@
 
 // Calculate (n!/p^k) mod p, where k is the power of p in n!.
 // Based on Wilson theorem.
-
 namespace modular {
 namespace mstatic {
 template <class TModular>
