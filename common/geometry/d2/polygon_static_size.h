@@ -1,6 +1,5 @@
 #pragma once
 
-#include "common/base.h"
 #include "common/geometry/d2/base.h"
 #include "common/geometry/d2/compare/point_yx.h"
 #include "common/geometry/d2/compare/vector_angle.h"
@@ -34,7 +33,8 @@ class PolygonStaticSize {
     for (unsigned i = 1; i < size; ++i) {
       if (CompareYX(v[i], v[ilowest])) ilowest = i;
     }
-    nvector::SwapIntervals(v.begin(), v.begin() + ilowest, v.end());
+    if (ilowest > 0)
+      nvector::SwapIntervals(v.begin(), v.begin() + ilowest, v.end());
     if ((size > 2) && CompareVectorAngle(v.back() - v[0], v[1] - v[0]))
       std::reverse(v.begin() + 1, v.end());
   }
