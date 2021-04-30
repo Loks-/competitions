@@ -2,6 +2,7 @@
 
 #include "common/geometry/d2/arectangle.h"
 #include "common/geometry/d2/point.h"
+
 #include <algorithm>
 #include <vector>
 
