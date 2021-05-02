@@ -12,8 +12,7 @@ class BIT_2D {
   std::vector<TValue> values;
 
  public:
-  BIT_2D(size_t _size1, size_t _size2)
-      : size1(_size1), size2(_size2) {
+  BIT_2D(size_t _size1, size_t _size2) : size1(_size1), size2(_size2) {
     values.resize(size1 * size2);
   }
 
@@ -24,8 +23,7 @@ class BIT_2D {
     std::fill(values.begin(), values.end(), TValue(0));
   }
 
-  void Add(size_t index1, size_t index2,
-           TValue value = TValue(1)) {
+  void Add(size_t index1, size_t index2, TValue value = TValue(1)) {
     for (size_t i1 = index1; i1 < size1; i1 |= (i1 + 1)) {
       for (size_t i2 = index2; i2 < size2; i2 |= (i2 + 1)) {
         values[i2 + size2 * i1] += value;
