@@ -31,11 +31,11 @@ int main_double_or_noting() {
       if (einb) best = min(best, bs - es);
     }
     if (vs[1] == "1") best = min(best, bs + 1);
+    // N*D+[ND+]*N?
     if (es & 1) {
       es += 1;
       e.push_back(0);
     }
-    // N*D+[ND+]*N?
     for (unsigned i = 0; i < bs; ++i) {
       if ((bs - i + 1) / 2 != (es + 1) / 2) continue;
       vector<unsigned> bi(b.begin() + i, b.end());
