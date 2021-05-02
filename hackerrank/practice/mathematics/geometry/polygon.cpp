@@ -1,6 +1,7 @@
 // https://www.hackerrank.com/challenges/polygon
 
-#include "common/geometry/d2/apolygon.h"
+#include "common/geometry/d2/axis/polygon.h"
+
 #include "common/geometry/d2/point_io.h"
 #include "common/stl/base.h"
 #include "common/vector/read.h"

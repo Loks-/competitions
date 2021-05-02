@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/points-on-rectangle
 
-#include "common/geometry/d2/arectangle.h"
+#include "common/geometry/d2/axis/rectangle.h"
 #include "common/geometry/d2/point_io.h"
 #include "common/geometry/d2/utils/box.h"
 #include "common/stl/base.h"

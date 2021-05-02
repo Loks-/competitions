@@ -10,11 +10,12 @@
 
 namespace geometry {
 namespace d2 {
+namespace axis {
 // Polygon with edges parallel to coordinate axis
 template <class T>
-class APolygon : public Polygon<T> {
+class Polygon : public geometry::d2::Polygon<T> {
  public:
-  using TBase = Polygon<T>;
+  using TBase = geometry::d2::Polygon<T>;
   using TPoint = typename TBase::TPoint;
 
  protected:
@@ -22,7 +23,7 @@ class APolygon : public Polygon<T> {
   std::vector<std::vector<T>> vvy;
 
  public:
-  explicit APolygon(const std::vector<TPoint>& vp) : TBase(vp) { Normalize(); }
+  explicit Polygon(const std::vector<TPoint>& vp) : TBase(vp) { Normalize(); }
 
   void Normalize() {
     TBase::Normalize();
@@ -58,8 +59,9 @@ class APolygon : public Polygon<T> {
     return false;
   }
 };
+}  // namespace axis
 }  // namespace d2
 }  // namespace geometry
 
-using D2APolygon = geometry::d2::APolygon<double>;
-using I2APolygon = geometry::d2::APolygon<int64_t>;
+using D2APolygon = geometry::d2::axis::Polygon<double>;
+using I2APolygon = geometry::d2::axis::Polygon<int64_t>;
