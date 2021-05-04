@@ -32,8 +32,8 @@ class Polygon : public geometry::d2::Polygon<T> {
     for (auto& p : TBase::v) vx.push_back(p.x);
     nvector::UniqueS(vx);
     vvy.resize(vx.size());
-    for (unsigned i = 0; i < TBase::v.size(); ++i) {
-      auto p0 = TBase::v[i], p1 = TBase::v[(i + 1) % TBase::v.size()];
+    for (unsigned i = 0; i < TBase::Size(); ++i) {
+      auto p0 = (*this)[i], p1 = (*this)[(i + 1) % TBase::Size()];
       assert((i & 1) ? p0.x == p1.x : p0.y == p1.y);
       if (p0.x != p1.x) {
         auto i0 = std::lower_bound(vx.begin(), vx.end(), p0.x) - vx.begin();

@@ -12,6 +12,8 @@ class BIT_2D {
   std::vector<TValue> values;
 
  public:
+  BIT_2D() {}
+
   BIT_2D(size_t _size1, size_t _size2) : size1(_size1), size2(_size2) {
     values.resize(size1 * size2);
   }

@@ -31,6 +31,10 @@ class Polygon {
     if ((v.size() > 2) && CompareVectorAngle(v.back() - v[0], v[1] - v[0]))
       std::reverse(v.begin() + 1, v.end());
   }
+
+  unsigned Size() const { return v.size(); }
+
+  const TPoint& operator[](unsigned i) const { return v[i]; }
 };
 }  // namespace d2
 }  // namespace geometry
