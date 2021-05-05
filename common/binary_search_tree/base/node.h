@@ -3,8 +3,6 @@
 #include "common/base.h"
 #include "common/node.h"
 
-#include <random>
-
 namespace bst {
 namespace base {
 template <bool use_key, class TKey>
