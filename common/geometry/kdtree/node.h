@@ -9,8 +9,7 @@ template <bool use_parent, class TSelf>
 class TNodeProxyParent {};
 
 template <class TSelf>
-class TNodeProxyParent<false, TSelf>
-    : public BaseNode {
+class TNodeProxyParent<false, TSelf> : public BaseNode {
  public:
   TSelf *l = nullptr, *r = nullptr;
 
@@ -21,8 +20,7 @@ class TNodeProxyParent<false, TSelf>
 };
 
 template <class TSelf>
-class TNodeProxyParent<true, TSelf>
-    : public BaseNode {
+class TNodeProxyParent<true, TSelf> : public BaseNode {
  public:
   TSelf *l = nullptr, *r = nullptr, *p = nullptr;
 
@@ -40,26 +38,33 @@ class TNodeProxyParent<true, TSelf>
   void ResetLinks() { l = r = p = nullptr; }
 };
 
-template <class TTValue, class TTData, class TTInfo, class TTAction,
-          bool _use_parent = true>
-class Node : public TNodeProxyParent<_use_parent,
-                 Node<TTValue, TTData, TTInfo, TTAction, _use_parent>> {
+template <class TTValue, class TTLData, class TTIData, class TTInfo,
+          class TTAction, bool _use_parent = true>
+class Node
+    : public TNodeProxyParent<
+          _use_parent,
+          Node<TTValue, TTLData, TTIData, TTInfo, TTAction, _use_parent>> {
  public:
   static const bool use_parent = _use_parent;
 
   using TValue = TTValue;
-  using TData = TTData;
+  using TLData = TTLData;
+  using TIData = TTIData;
   using TInfo = TTInfo;
   using TAction = TTAction;
-  using TSelf = Node<TData, TInfo, TAction, use_parent>;
+  using TSelf = Node<TValue, TLData, TIData, TInfo, TAction, use_parent>;
   using TProxyParent = TNodeProxyParent<use_parent, TSelf>;
 
-  TData data;
+  TLData ldata;
+  TIData idata;
   TInfo info;
   TAction action;
+  unsigned split_dim;
+  TValue split_value;
 
-  Node() : data() {}
-  explicit Node(const TData& _data) : data(_data) {}
+  Node() : ldata() {}
+
+  bool IsLeaf() const { return (TProxyParent::l == TProxyParent::r); }
 
   void ClearAction() { action.Clear(); }
   void UpdateInfo() { info.Update(this); }
@@ -72,7 +77,6 @@ class Node : public TNodeProxyParent<_use_parent,
 
   void ResetLinksAndUpdateInfo() {
     TProxyParent::ResetLinks();
-    info.BTIReset();
     UpdateInfo();
   }
 

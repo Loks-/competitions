@@ -4,9 +4,10 @@
 
 namespace geometry {
 namespace d3 {
-template <class T>
+template <class TValue>
 class Point {
  public:
+  using T = TValue;
   using TSelf = Point<T>;
 
   T x, y, z;
