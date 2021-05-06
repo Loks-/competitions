@@ -1,5 +1,5 @@
-#include "common/numeric/long/multiplication.h"
-#include "common/numeric/long/unsigned_gcd.h"
+#include "common/numeric/long/unsigned/gcd.h"
+#include "common/numeric/long/unsigned/multiplication.h"
 #include "common/numeric/long/unsigned_io.h"
 #include "common/numeric/long/utils/binomial_coefficient.h"
 #include "common/stl/base.h"

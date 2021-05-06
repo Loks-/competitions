@@ -5,7 +5,6 @@
 #include "common/modular_proxy.h"
 
 // Based on Lucas's theorem.
-
 namespace modular {
 namespace proxy {
 inline uint64_t BinomialCoefficientPrime(uint64_t n, uint64_t k,

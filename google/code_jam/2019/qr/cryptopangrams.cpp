@@ -1,7 +1,7 @@
 #include "common/data_structures/coordinate_compression.h"
 #include "common/numeric/long/unsigned.h"
-#include "common/numeric/long/unsigned_gcd.h"
-#include "common/numeric/long/unsigned_hash.h"
+#include "common/numeric/long/unsigned/gcd.h"
+#include "common/numeric/long/unsigned/hash.h"
 #include "common/numeric/long/unsigned_io.h"
 #include "common/stl/base.h"
 

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "common/base.h"
 #include "common/geometry/d2/base.h"
+#include "common/geometry/d2/compare/point_yx.h"
 #include "common/geometry/d2/compare/vector_angle.h"
 #include "common/geometry/d2/point.h"
 #include "common/vector/rotate.h"
@@ -31,11 +31,10 @@ class PolygonStaticSize {
   void Normalize() {
     unsigned ilowest = 0;
     for (unsigned i = 1; i < size; ++i) {
-      if ((v[i].y < v[ilowest].y) ||
-          ((v[i].y == v[ilowest].y) && (v[i].x < v[ilowest].x)))
-        ilowest = i;
+      if (CompareYX(v[i], v[ilowest])) ilowest = i;
     }
-    nvector::SwapIntervals(v.begin(), v.begin() + ilowest, v.end());
+    if (ilowest > 0)
+      nvector::SwapIntervals(v.begin(), v.begin() + ilowest, v.end());
     if ((size > 2) && CompareVectorAngle(v.back() - v[0], v[1] - v[0]))
       std::reverse(v.begin() + 1, v.end());
   }

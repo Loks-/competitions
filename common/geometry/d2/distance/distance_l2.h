@@ -1,6 +1,7 @@
 #pragma once
 
 #include "common/geometry/d2/point.h"
+
 #include <cmath>
 
 template <class T>

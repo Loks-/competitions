@@ -16,7 +16,7 @@ class Circle {
   Circle() : r() {}
   Circle(const Point<T>& _c, const T& _r) : c(_c), r(_r) {}
 
-  bool Valid() const { return !(r < T(0)); }
+  bool Valid() const { return r >= 0; }
 
   bool Inside(const Point<T>& p) const {
     return SquaredDistance(p, c) <= r * r;
@@ -28,4 +28,3 @@ class Circle {
 }  // namespace geometry
 
 using D2Circle = geometry::d2::Circle<double>;
-using I2Circle = geometry::d2::Circle<int64_t>;

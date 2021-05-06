@@ -2,8 +2,8 @@
 
 #include "common/base.h"
 #include "common/modular/arithmetic.h"
-#include "common/numeric/long/multiplication.h"
 #include "common/numeric/long/unsigned.h"
+#include "common/numeric/long/unsigned/multiplication.h"
 
 namespace numeric {
 namespace nlong {

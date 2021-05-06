@@ -5,7 +5,6 @@
 
 // Calculate (n!/p^k) mod p, where k is the power of p in n!.
 // Based on Wilson theorem.
-
 namespace modular {
 namespace mstatic {
 template <class TModular>
@@ -30,6 +29,14 @@ template <class TModular>
 inline TModular FactorialExtendedPrime(uint64_t n, bool inverted = false) {
   thread_local Factorial<TModular, true> f;
   return FactorialExtendedPrime(n, f, inverted);
+}
+
+template <class TModular>
+inline TModular BinomialCoefficientExtendedPrime(uint64_t n, uint64_t k,
+                                                 bool inverted = false) {
+  return FactorialExtendedPrime<TModular>(n, inverted) *
+         FactorialExtendedPrime<TModular>(k, !inverted) *
+         FactorialExtendedPrime<TModular>(n - k, !inverted);
 }
 }  // namespace mstatic
 }  // namespace modular

@@ -1,7 +1,7 @@
+#include "common/geometry/d2/angle_int.h"
 #include "common/geometry/d2/base.h"
-#include "common/geometry/d2/iangle.h"
 #include "common/geometry/d2/point_io.h"
-#include "common/geometry/d2/stl_hash/iangle.h"
+#include "common/geometry/d2/stl_hash/angle_int.h"
 #include "common/stl/base.h"
 #include "common/vector/read.h"
 

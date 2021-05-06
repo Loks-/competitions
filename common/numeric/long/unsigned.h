@@ -82,6 +82,37 @@ class Unsigned {
     return r + ((data.size() > 0) ? data[0] : 0);
   }
 
+  bool operator==(uint32_t u) const {
+    return (data.size() <= 1) && (ToUint32() == u);
+  }
+
+  bool operator<(uint32_t u) const {
+    return (data.size() <= 1) && (ToUint32() < u);
+  }
+
+  bool operator<=(uint32_t u) const {
+    return (data.size() <= 1) && (ToUint32() <= u);
+  }
+
+  bool operator==(uint64_t u) const {
+    return (data.size() <= 2) && (ToUint64() == u);
+  }
+
+  bool operator<(uint64_t u) const {
+    return (data.size() <= 2) && (ToUint64() < u);
+  }
+
+  bool operator<=(uint64_t u) const {
+    return (data.size() <= 2) && (ToUint64() <= u);
+  }
+
+  bool operator!=(uint32_t u) const { return !(*this == u); }
+  bool operator>(uint32_t u) const { return !(*this <= u); }
+  bool operator>=(uint32_t u) const { return !(*this < u); }
+  bool operator!=(uint64_t u) const { return !(*this == u); }
+  bool operator>(uint64_t u) const { return !(*this <= u); }
+  bool operator>=(uint64_t u) const { return !(*this < u); }
+
   Unsigned operator+(uint32_t u) const {
     if (u == 0) return (*this);
     Unsigned lu;
