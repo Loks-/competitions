@@ -53,7 +53,7 @@ class PointsSet {
     return ((x0 == x1) || (y0 == y1)) ? T2(0) : s.Sum(x0, y0, x1, y1);
   }
 
-  T2 Count(const Rectagnle<T1>& r) const {
+  T2 Count(const Rectangle<T1>& r) const {
     auto x0 = ccx.LowerBound(r.p1.x), x1 = ccx.UpperBound(r.p2.x),
          y0 = ccy.LowerBound(r.p1.y), y1 = ccy.UpperBound(r.p2.y);
     return ((x0 == x1) || (y0 == y1)) ? T2(0) : s.Sum(x0, y0, x1, y1);
