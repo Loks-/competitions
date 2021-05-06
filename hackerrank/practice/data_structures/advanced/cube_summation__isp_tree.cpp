@@ -1,33 +1,39 @@
 // https://www.hackerrank.com/challenges/cube-summation
 
-#include "common/binary_indexed_tree/bit_3d.h"
-#include "common/geometry/kdtree/isp_tree.h"
+#include "common/geometry/d3/base.h"
+#include "common/geometry/d3/point_io.h"
+#include "common/geometry/d3/vector.h"
+#include "common/geometry/kdtree/d3/isp_tree.h"
+#include "common/geometry/kdtree/info/sum.h"
 #include "common/stl/base.h"
 
 #include <string>
 
+using TPoint = geometry::d3::Point<unsigned>;
+using TVector = geometry::d3::Vector<unsigned>;
+using TTree = geometry::kdtree::D3ISPTree<
+    unsigned, int64_t, geometry::kdtree::idata::None,
+    geometry::kdtree::info::Sum<int64_t, geometry::kdtree::info::None>>;
+
 int main_cube_summation__isp_tree() {
-  unsigned T;
+  unsigned T, N, M;
+  TPoint p1, p2;
+  TVector v1(1, 1, 1);
   cin >> T;
-  BIT_3D<int64_t> bit(0, 0, 0);
+  TTree tree;
   for (unsigned it = 0; it < T; ++it) {
-    unsigned N, M;
     cin >> N >> M;
-    ++N;
-    bit.Reset(N, N, N);
+    tree.Init(TPoint(0, 0, 0), TPoint(N + 1, N + 1, N + 1));
     for (unsigned im = 0; im < M; ++im) {
       string s;
       cin >> s;
       if (s == "UPDATE") {
-        unsigned i1, i2, i3;
         int64_t v;
-        cin >> i1 >> i2 >> i3 >> v;
-        v -= bit.Get(i1, i2, i3);
-        bit.Add(i1, i2, i3, v);
+        cin >> p1 >> v;
+        tree.Set(p1, v);
       } else if (s == "QUERY") {
-        unsigned i1, i2, i3, j1, j2, j3;
-        cin >> i1 >> i2 >> i3 >> j1 >> j2 >> j3;
-        cout << bit.Sum(i1, i2, i3, j1 + 1, j2 + 1, j3 + 1) << endl;
+        cin >> p1 >> p2;
+        cout << tree.GetInfo(p1, p2 + v1).sum << endl;
       }
     }
   }

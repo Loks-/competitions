@@ -39,20 +39,22 @@ class TNodeProxyParent<true, TSelf> : public BaseNode {
 };
 
 template <class TTValue, class TTLData, class TTIData, class TTInfo,
-          class TTAction, bool _use_parent = true>
+          class TTAction, bool _use_parent, bool _ldata_in_inode>
 class Node
-    : public TNodeProxyParent<
-          _use_parent,
-          Node<TTValue, TTLData, TTIData, TTInfo, TTAction, _use_parent>> {
+    : public TNodeProxyParent<_use_parent,
+                              Node<TTValue, TTLData, TTIData, TTInfo, TTAction,
+                                   _use_parent, _ldata_in_inode>> {
  public:
   static const bool use_parent = _use_parent;
+  static const bool ldata_in_inode = _ldata_in_inode;
 
   using TValue = TTValue;
   using TLData = TTLData;
   using TIData = TTIData;
   using TInfo = TTInfo;
   using TAction = TTAction;
-  using TSelf = Node<TValue, TLData, TIData, TInfo, TAction, use_parent>;
+  using TSelf =
+      Node<TValue, TLData, TIData, TInfo, TAction, use_parent, ldata_in_inode>;
   using TProxyParent = TNodeProxyParent<use_parent, TSelf>;
 
   TLData ldata;

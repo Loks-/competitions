@@ -9,7 +9,7 @@ class None {
   static const bool is_none = true;
   static const bool use_data = false;
 
-  void Merge(const TSelf& r);
+  void Merge(const TSelf&) {}
 
   template <class TNode>
   void Update(const TNode*) {}

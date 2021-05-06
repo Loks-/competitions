@@ -8,10 +8,8 @@ class None {
   static const bool support_box = false;
 
  public:
-  None();
-
   template <class TPoint>
-  void SetBox(const TPoint& pb, const TPoint& pe) {}
+  void SetBox(const TPoint&, const TPoint&) {}
 };
 }  // namespace idata
 }  // namespace kdtree

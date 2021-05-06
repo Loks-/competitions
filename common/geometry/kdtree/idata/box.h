@@ -18,9 +18,8 @@ class Box : public None {
   TPoint b, e;
 
  public:
-  Box();
-
   void SetBox(const TPoint& pb, const TPoint& pe) {
+    TBase::SetBox(pb, pe);
     b = pb;
     e = pe;
   }
