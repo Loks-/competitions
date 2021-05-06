@@ -6,11 +6,10 @@
 #include <string>
 
 int main_cube_summation() {
-  unsigned T;
+  unsigned T, N, M;
   cin >> T;
   BIT_3D<int64_t> bit(0, 0, 0);
   for (unsigned it = 0; it < T; ++it) {
-    unsigned N, M;
     cin >> N >> M;
     ++N;
     bit.Reset(N, N, N);
