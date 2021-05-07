@@ -95,13 +95,13 @@ class ISPTree : NodesManager<Node<typename TTPoint::T, TTLData, TTIData, TTInfo,
     SplitNode(p, p->idata.b, p->idata.e);
   }
 
-  static TLData Get(const TNode* p, const TPoint& pp) {
+  static TLData Get(TNode* p, const TPoint& pp) {
     for (p->ApplyAction(); !p->IsLeaf(); p->ApplyAction())
       p = (TPProxy::DGet(p->split_dim, pp) < p->split_value) ? p->l : p->r;
-    return p->idata;
+    return p->ldata;
   }
 
-  TLData Get(const TPoint& pp) const { return Get(root, pp); }
+  TLData Get(const TPoint& pp) { return Get(root, pp); }
 
  protected:
   void SetI(const TPoint& pp, const TLData& ldata, TFakeFalse) {
@@ -151,36 +151,39 @@ class ISPTree : NodesManager<Node<typename TTPoint::T, TTLData, TTIData, TTInfo,
 
   void Add(const TPoint& pp, const TLData& ldata) { Set(pp, ldata + Get(pp)); }
 
+ protected:
   // Get info in rectangle
-  static TInfo GetInfo(const TNode* p, const TPoint& pb, const TPoint& pe) {
-    for (; !p->IsLeaf();) {
+  static TInfo GetInfoI(TNode* p, TPoint rb, TPoint re, const TPoint& pb,
+                        const TPoint& pe) {
+    p->ApplyAction();
+    if (TPProxy::Under(pb, rb) && TPProxy::Under(re, pe)) return p->info;
+    TInfo r;
+    for (; !p->IsLeaf(); p->ApplyAction()) {
       unsigned d = p->split_dim;
       const TValue& v = p->split_value;
       if (TPProxy::DGet(d, pb) >= v) {
         p = p->r;
+        TPProxy::DSet(d, rb, v);
       } else if (TPProxy::DGet(d, pe) <= v) {
         p = p->l;
+        TPProxy::DSet(d, re, v);
       } else {
-        auto i1 = GetInfo(p->l, pb, TPProxy::DSetCopy(d, pe, v)),
-             i2 = GetInfo(p->r, TPProxy::DSetCopy(d, pb, v), pe);
-        i1.Merge(i2);
-        return i1;
+        r.Merge(GetInfoI(p->l, rb, TPProxy::DSetCopy(d, re, v), pb, pe));
+        p = p->r;
+        TPProxy::DSet(d, rb, v);
       }
     }
-    return p->info;
+    r.Merge(p->info);
+    return r;
   }
 
-  TInfo GetInfo(const TPoint& pb, const TPoint& pe) const {
-    auto pba(pb), pea(pe);
-    for (unsigned i = 0; i < dim; ++i) {
-      if (TPProxy::DGet(i, pba) < TPProxy::DGet(i, sb))
-        TPProxy::DSet(i, pba, TPProxy::DGet(i, sb));
-      if (TPProxy::DGet(i, pea) > TPProxy::DGet(i, se))
-        TPProxy::DSet(i, pea, TPProxy::DGet(i, se));
-      if (TPProxy::DGet(i, pba) >= TPProxy::DGet(i, pea)) return {};
-    }
-    return GetInfo(root, pb, pe);
+ public:
+  TInfo GetInfo(const TPoint& pb, const TPoint& pe) {
+    if (!TPProxy::StrictUnder(pb, pe)) return {};
+    return GetInfoI(root, sb, se, pb, pe);
   }
+
+  TInfo GetInfo(const TPoint& pe) { return GetInfo(sb, pe); }
 };
 }  // namespace kdtree
 }  // namespace geometry

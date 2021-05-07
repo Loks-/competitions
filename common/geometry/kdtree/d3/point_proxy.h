@@ -3,6 +3,8 @@
 #include "common/geometry/d3/point.h"
 #include "common/geometry/kdtree/point_proxy.h"
 
+#include <algorithm>
+
 namespace geometry {
 namespace kdtree {
 template <class TTValue>
@@ -25,6 +27,14 @@ class PointProxy<geometry::d3::Point<TTValue>> {
     assert(d < 3);
     return (d == 0) ? TPoint(v, p.y, p.z) : (d == 1) ? TPoint(p.x, v, p.z)
                                                      : TPoint(p.x, p.y, v);
+  }
+
+  static TPoint DMin(const TPoint& l, const TPoint& r) {
+    return {std::min(l.x, r.x), std::min(l.y, r.y), std::min(l.z, r.z)};
+  }
+
+  static TPoint DMax(const TPoint& l, const TPoint& r) {
+    return {std::max(l.x, r.x), std::max(l.y, r.y), std::max(l.z, r.z)};
   }
 
   static bool Under(const TPoint& l, const TPoint& r) {

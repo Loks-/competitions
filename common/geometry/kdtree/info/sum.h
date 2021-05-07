@@ -14,6 +14,8 @@ class Sum : public TInfo {
 
   TSumType sum;
 
+  Sum() : sum() {}
+
   void Merge(const TSelf& r) {
     TBase::Merge(r);
     sum += r.sum;

@@ -11,6 +11,9 @@ class PointProxy {
   static TValue DGet(unsigned, const TPoint&);
   static void DSet(unsigned, TPoint&, const TValue&);
   static TPoint DSetCopy(unsigned, const TPoint&, const TValue&);
+  static TPoint DMin(const TPoint&, const TPoint&);
+  static TPoint DMax(const TPoint&, const TPoint&);
+
   static bool Under(const TPoint& l, const TPoint& r);
   static bool StrictUnder(const TPoint& l, const TPoint& r);
 };
