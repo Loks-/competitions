@@ -18,7 +18,7 @@ namespace geometry {
 namespace d2 {
 namespace axis {
 template <class T1, class T2 = unsigned>
-class StaticPointsSet {
+class StaticWPointsSet {
  public:
   using TWeight = T2;
   using TPoint = Point<T1>;
@@ -34,9 +34,9 @@ class StaticPointsSet {
   std::vector<TPair> vx;
 
  public:
-  StaticPointsSet() {}
-  StaticPointsSet(const std::vector<TPoint>& points) { Init(points); }
-  StaticPointsSet(const std::vector<TWPoint>& points) { Init(points); }
+  StaticWPointsSet() {}
+  StaticWPointsSet(const std::vector<TPoint>& points) { Init(points); }
+  StaticWPointsSet(const std::vector<TWPoint>& points) { Init(points); }
 
   void Clear() {
     vx.clear();
@@ -77,4 +77,4 @@ class StaticPointsSet {
 }  // namespace d2
 }  // namespace geometry
 
-using I2ASPointsSet = geometry::d2::axis::StaticPointsSet<int64_t>;
+using I2ASWPointsSet = geometry::d2::axis::StaticWPointsSet<int64_t>;
