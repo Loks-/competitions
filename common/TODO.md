@@ -1,6 +1,4 @@
 # TODO list
-* BIT
-	* BIT 2D
 * Binary Search Trees
 	* Binarized 2-3 trees
 	* Leaning 2-3 trees
