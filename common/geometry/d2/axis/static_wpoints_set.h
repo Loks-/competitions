@@ -17,6 +17,7 @@
 namespace geometry {
 namespace d2 {
 namespace axis {
+// Class for points set with fast CountQ function (O(log N) time).
 template <class T1, class T2 = unsigned>
 class StaticWPointsSet {
  public:

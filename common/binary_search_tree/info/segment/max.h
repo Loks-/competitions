@@ -30,16 +30,16 @@ class Max : public bst::info::Max<TMaxType, TInfo> {
 
   template <class TNode>
   void AddN(const TNode* node) {
+    TBase::AddN(node);
     if (node) {
-      TBase::AddN(node);
       TBase::max = std::max(TBase::max, node->data);
     }
   }
 
   template <class TNode>
   void AddS(const TNode* node) {
+    TBase::AddS(node);
     if (node) {
-      TBase::AddS(node);
       TBase::max = std::max(TBase::max, node->info.max);
     }
   }
