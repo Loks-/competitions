@@ -5,7 +5,7 @@
 
 namespace geometry {
 namespace d2 {
-template <class T1, class T2 = T1>
+template <class T1, class T2 = unsigned>
 class WPoint : public Point<T1> {
  public:
   using TBase = Point<T1>;
@@ -15,6 +15,7 @@ class WPoint : public Point<T1> {
 
   WPoint() : w(T2(1)) {}
   WPoint(const T1& _x, const T1& _y, const T2& _w) : TBase(_x, _y), w(_w) {}
+  WPoint(const TBase& p, const T2& _w = T2(1)) : TBase(p), w(_w) {}
 };
 }  // namespace d2
 }  // namespace geometry

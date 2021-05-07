@@ -5,6 +5,22 @@ namespace info {
 namespace segment {
 template <class TNode>
 inline typename TNode::TInfo GetByKey(TNode* root,
+                                      const typename TNode::TKey& end) {
+  typename TNode::TInfo output;
+  for (; root;) {
+    if (root->key < end) {
+      output.AddS(root->l);
+      output.AddN(root);
+      root = root->r;
+    } else {
+      root = root->l;
+    }
+  }
+  return output;
+}
+
+template <class TNode>
+inline typename TNode::TInfo GetByKey(TNode* root,
                                       const typename TNode::TKey& begin,
                                       const typename TNode::TKey& end) {
   for (; root;) {
