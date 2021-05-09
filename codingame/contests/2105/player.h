@@ -1,5 +1,6 @@
 #pragma once
 
+#include <array>
 #include <iostream>
 
 class Player {
@@ -8,6 +9,7 @@ class Player {
   unsigned sun;
   unsigned score;
   bool waiting;
+  std::array<unsigned, 4> ntrees;
 
   void Read(unsigned _id) {
     id = _id;
