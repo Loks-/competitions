@@ -12,10 +12,13 @@ int main() {
   while (1) {
     gturn.Read();
 
+    unsigned d = gturn.day, rs = ((d == 0) || (d == 1))   ? 1
+                                 : ((d == 2) || (d == 4)) ? 2
+                                                          : 3;
     unsigned best_cell = cells.size(), richness = 0;
-    if (gturn.Me().sun >= 4) {
+    if (gturn.Me().sun >= ((rs == 1) ? 3 : (rs == 2) ? 7 : 4)) {
       for (auto& tree : gturn.trees) {
-        if (tree.player) {
+        if (tree.player && (tree.size == rs)) {
           if (cells[tree.cell].richness > richness) {
             richness = cells[tree.cell].richness;
             best_cell = tree.cell;
@@ -24,7 +27,7 @@ int main() {
       }
     }
     if (best_cell < cells.size()) {
-      cout << "COMPLETE " << best_cell << endl;
+      cout << ((rs < 3) ? "GROW " : "COMPLETE ") << best_cell << endl;
     } else {
       cout << "WAIT" << endl;
     }
