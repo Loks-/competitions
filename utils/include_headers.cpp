@@ -11,10 +11,9 @@ static std::unordered_set<std::string> used_files, used_stl_files;
 static std::string JoinPath(const std::string& sdir, const std::string& sfile) {
   assert((sdir.back() == '/') || (sdir.back() == '\\'));
   size_t nposl1 = sdir.find_last_of('/'), nposl2 = sdir.find_last_of('\\');
-  size_t nposl =
-      (nposl1 == std::string::npos)
-          ? nposl2
-          : (nposl2 == std::string::npos) ? nposl1 : std::max(nposl1, nposl2);
+  size_t nposl = (nposl1 == std::string::npos)   ? nposl2
+                 : (nposl2 == std::string::npos) ? nposl1
+                                                 : std::max(nposl1, nposl2);
   assert(nposl != std::string::npos);
   size_t nposr = 0;
   for (;;) {
@@ -22,10 +21,10 @@ static std::string JoinPath(const std::string& sdir, const std::string& sfile) {
     if (sfile.substr(nposr, 3) != "../") break;
     size_t nposl1 = sdir.find_last_of('/', nposl - 1),
            nposl2 = sdir.find_last_of('\\', nposl - 1);
-    size_t nposl_new =
-        (nposl1 == std::string::npos)
-            ? nposl2
-            : (nposl2 == std::string::npos) ? nposl1 : std::max(nposl1, nposl2);
+    size_t nposl_new = (nposl1 == std::string::npos) ? nposl2
+                       : (nposl2 == std::string::npos)
+                           ? nposl1
+                           : std::max(nposl1, nposl2);
     if (nposl_new == std::string::npos) break;
     nposl = nposl_new;
     nposr += 3;
@@ -64,10 +63,9 @@ static void AddFile(const std::string& input_filename, std::ofstream& output,
         std::string current_dir = ".\\";
         size_t npos1 = input_filename.find_last_of('\\');
         size_t npos2 = input_filename.find_last_of('/');
-        size_t npos =
-            (npos1 == std::string::npos)
-                ? npos2
-                : (npos2 == std::string::npos) ? npos1 : std::max(npos1, npos2);
+        size_t npos = (npos1 == std::string::npos)   ? npos2
+                      : (npos2 == std::string::npos) ? npos1
+                                                     : std::max(npos1, npos2);
         if (npos != std::string::npos)
           current_dir = input_filename.substr(0, npos + 1);
 
@@ -111,6 +109,6 @@ int main(int nargs, char** pargs) {
   else
     output_filename = pargs[2];
   std::ofstream output(output_filename);
-  AddFile(input_filename, output, true);
+  AddFile(input_filename, output, false);
   return 0;
 }
