@@ -57,8 +57,8 @@ class Game {
     }
   }
 
-  void NextDay() {
-    pos.day += 1;
+  void NextDay(bool skip_day_increase) {
+    if (!skip_day_increase) pos.day += 1;
     if (pos.day >= TotalDays()) return;
     std::vector<uint8_t> shade;
     CalcShades(pos.day, shade);
@@ -135,6 +135,6 @@ class Game {
     }
     ApplyAction(0, action0);
     ApplyAction(1, action1);
-    if ((action0.type == WAIT) && (action1.type == WAIT)) NextDay();
+    if ((action0.type == WAIT) && (action1.type == WAIT)) NextDay(false);
   }
 };

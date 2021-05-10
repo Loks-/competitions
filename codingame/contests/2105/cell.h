@@ -13,6 +13,11 @@ class Cell {
   std::vector<uint8_t> neighbors;  // the index of the neighbouring cell
   std::vector<std::vector<uint8_t>> neighbors_by_distance;
 
+  Cell() {}
+  Cell(uint8_t _index, uint8_t _richness,
+       const std::vector<uint8_t>& _neighbors)
+      : index(_index), richness(_richness), neighbors(_neighbors) {}
+
   void Read() {
     int _index, _richness;
     std::cin >> _index >> _richness;

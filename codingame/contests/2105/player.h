@@ -11,6 +11,13 @@ class Player {
   bool waiting;
   std::array<uint8_t, 4> ntrees;
 
+  void Reset(uint8_t _id) {
+    id = _id;
+    sun = 0;
+    score = 0;
+    waiting = false;
+  }
+
   void Read(uint8_t _id) {
     id = _id;
     std::cin >> sun >> score;
@@ -20,4 +27,6 @@ class Player {
       waiting = false;
     std::cin.ignore();
   }
+
+  unsigned CombinedScore() const { return score + sun / 3; }
 };

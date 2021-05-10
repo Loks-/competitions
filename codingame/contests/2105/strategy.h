@@ -3,6 +3,7 @@
 #include "action.h"
 #include "game.h"
 
+#include <memory>
 #include <string>
 
 class Strategy {
@@ -10,6 +11,14 @@ class Strategy {
   unsigned player;
 
   void SetP(unsigned _player) { player = _player; }
+
+  virtual void Reset() {}
   virtual std::string Name() const { return "Wait"; }
   virtual Action GetAction(const Game&) { return {}; }
+
+  static std::shared_ptr<Strategy> Make() {
+    return std::make_shared<Strategy>();
+  }
 };
+
+using PStrategy = std::shared_ptr<Strategy>;

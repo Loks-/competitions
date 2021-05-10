@@ -25,6 +25,15 @@ class Position {
   Player& Me() { return players[1]; }
   Player& Opponent() { return players[0]; }
 
+  void Reset() {
+    day = 0;
+    nutrients = InitialNutrient();
+    trees.clear();
+    players[0].Reset(0);
+    players[1].Reset(1);
+    std::fill(cell_to_tree.begin(), cell_to_tree.end(), 255);
+  }
+
   void DecreaseNutrients() {
     if (nutrients > 0) nutrients -= 1;
   }
