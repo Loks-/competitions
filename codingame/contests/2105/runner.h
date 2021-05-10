@@ -22,7 +22,10 @@ class Runner {
 
   Runner(unsigned seed) { SetSeed(seed); }
 
-  void SetSeed(unsigned seed) { rng.seed(seed); }
+  void SetSeed(unsigned seed) {
+    std::cout << "Seed = " << seed << std::endl;
+    rng.seed(seed);
+  }
 
   void SetStrategy0(PStrategy s) { s0 = s; }
   void SetStrategy1(PStrategy s) { s1 = s; }
