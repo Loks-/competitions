@@ -85,7 +85,14 @@ class Runner {
   }
 
   void DisableRandomCells() {
-    // TODO:
+    std::uniform_int_distribution<> uid(1, 36), uid2(0, 1);
+    for (unsigned i = 0; i < 4; ++i) {
+      if (uid2(rng)) {
+        unsigned cid = uid(rng);
+        game.cells[cid].richness = 0;
+        game.cells[PairCell(cid)].richness = 0;
+      }
+    }
   }
 
   void AddStartingTrees() {
