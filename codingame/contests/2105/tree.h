@@ -1,5 +1,8 @@
 #pragma once
 
+#include "common/base.h"
+#include "common/hash.h"
+
 #include <iostream>
 
 class Tree {
@@ -16,5 +19,14 @@ class Tree {
     cell = _cell;
     size = _size;
     player = _player;
+  }
+
+  size_t Hash() const {
+    size_t h = 0;
+    h = HashCombine(h, cell);
+    h = HashCombine(h, size);
+    h = HashCombine(h, player);
+    h = HashCombine(h, used);
+    return h;
   }
 };

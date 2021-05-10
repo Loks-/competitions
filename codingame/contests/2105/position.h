@@ -5,6 +5,7 @@
 #include "tree.h"
 
 #include "common/base.h"
+#include "common/hash.h"
 
 #include <algorithm>
 #include <array>
@@ -91,5 +92,19 @@ class Position {
     std::string stemp;
     for (unsigned i = 0; i < npactions; ++i) std::getline(std::cin, stemp);
     CountTrees();
+  }
+
+  size_t Hash() const {
+    size_t h = 0;
+    h = HashCombine(h, day);
+    h = HashCombine(h, nutrients);
+    h = HashCombine(h, players[0].Hash());
+    h = HashCombine(h, players[1].Hash());
+    thread_local std::vector<size_t> vth;
+    vth.clear();
+    for (auto& t : trees) vth.push_back(t.Hash());
+    std::sort(vth.begin(), vth.end());
+    for (auto vh : vth) h = HashCombine(h, vh);
+    return h;
   }
 };

@@ -1,5 +1,8 @@
 #pragma once
 
+#include "common/base.h"
+#include "common/hash.h"
+
 #include <array>
 #include <iostream>
 
@@ -29,4 +32,12 @@ class Player {
   }
 
   unsigned CombinedScore() const { return score + sun / 3; }
+
+  size_t Hash() const {
+    size_t h = 0;
+    h = HashCombine(h, sun);
+    h = HashCombine(h, score);
+    h = HashCombine(h, waiting);
+    return h;
+  }
 };
