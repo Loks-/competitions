@@ -1,17 +1,17 @@
 #include "cell.h"
-#include "game_turn.h"
+#include "game.h"
 
 #include "common/base.h"
 #include "common/stl/base.h"
 
 int main() {
-  auto cells = Cell::ReadCells();
-  GameTurn gturn;
+  Game g;
+  g.ReadCells();
 
   // game loop
   while (1) {
-    gturn.Read();
-    auto m = gturn.GetPossibleActions(1);
+    g.ReadPosition();
+    auto m = g.GetPossibleActions(1);
     auto a = m[rand() % m.size()];
     a.Write();
   }

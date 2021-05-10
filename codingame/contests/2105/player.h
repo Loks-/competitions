@@ -14,7 +14,10 @@ class Player {
   void Read(unsigned _id) {
     id = _id;
     std::cin >> sun >> score;
-    if (id == 0) std::cin >> waiting;
+    if (id == 0)
+      std::cin >> waiting;
+    else
+      waiting = false;
     std::cin.ignore();
   }
 };
