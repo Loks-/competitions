@@ -52,7 +52,8 @@ class Game {
       case SEED: {
         auto& t = pos.GetTreeByCell(action.value1);
         assert((t.player == player) && !t.used && (t.size > 0) &&
-               (pos.cell_to_tree[action.value2] == 255));
+               (pos.cell_to_tree[action.value2] == 255) &&
+               (cells[action.value2].richness > 0));
         // TODO: check distance
         unsigned dsun = p.ntrees[0] + SeedBaseCost();
         assert(p.sun >= dsun);
@@ -91,5 +92,20 @@ class Game {
         assert(false);
         break;
     }
+  }
+
+  void ApplyActions(const Action& action0, const Action action1) {
+    if ((action0.type == SEED) && (action1.type == SEED) &&
+        (action0.value2 == action1.value2)) {
+      pos.GetTreeByCell(action0.value1).used = true;
+      pos.GetTreeByCell(action1.value1).used = true;
+      return;
+    }
+    if ((action0.type == COMPLETE) && (action1.type == COMPLETE) &&
+        (pos.nutrients > 0)) {
+      pos.players[1].score += 1;
+    }
+    ApplyAction(0, action0);
+    ApplyAction(1, action1);
   }
 };
