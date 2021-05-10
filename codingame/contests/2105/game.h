@@ -25,14 +25,11 @@ class Game {
         for (uint8_t d = 1; d <= t.size; ++d) {
           for (uint8_t sp : cells[t.cell].neighbors_by_distance[d]) {
             if (cells[sp].richness == 0) continue;
-            // check if available
-            // ...
+            if (pos.cell_to_tree[sp] != 255) continue;
             r.push_back(Action(SEED, t.cell, sp));
           }
         }
       }
-      // SEED
-      // ...
       if ((t.size < 3) &&
           (p.sun >= p.ntrees[t.size + 1] + GrowBaseCost(t.size + 1)))
         r.push_back(Action(GROW, t.cell));

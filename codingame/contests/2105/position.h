@@ -1,6 +1,7 @@
 #pragma once
 
 #include "player.h"
+#include "settings.h"
 #include "tree.h"
 
 #include <algorithm>
@@ -15,6 +16,9 @@ class Position {
   uint8_t nutrients;
   std::array<Player, 2> players;
   std::vector<Tree> trees;
+  std::vector<uint8_t> cell_to_tree;
+
+  Position() : cell_to_tree(CellsSize()) {}
 
   Player& Me() { return players[1]; }
   Player& Opponent() { return players[0]; }
@@ -34,11 +38,15 @@ class Position {
     nutrients = _nutrients;
     players[1].Read(1);
     players[0].Read(0);
+    std::fill(cell_to_tree.begin(), cell_to_tree.end(), 255);
     unsigned ntrees;
     std::cin >> ntrees;
     std::cin.ignore();
     trees.resize(ntrees);
-    for (auto& t : trees) t.Read();
+    for (unsigned i = 0; i < ntrees; ++i) {
+      trees[i].Read();
+      cell_to_tree[trees[i].cell] = i;
+    }
     unsigned npactions;
     std::cin >> npactions;
     std::cin.ignore();

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "cell.h"
+#include "settings.h"
 
 #include "common/graph/graph.h"
 #include "common/graph/graph/distance.h"
@@ -42,7 +43,7 @@ class Cells {
     unsigned total;
     std::cin >> total;
     std::cin.ignore();
-    assert(total == 37);
+    assert(total == CellsSize());
     cells.resize(total);
     for (auto& c : cells) c.Read();
     InitNBD();
