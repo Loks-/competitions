@@ -2,7 +2,10 @@
 
 #include "game.h"
 #include "settings.h"
+
 #include "common/base.h"
+
+#include <vector>
 
 inline int64_t EvaluationAutoWait(const Game& game) {
   thread_local std::vector<uint8_t> shade;

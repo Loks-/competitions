@@ -1,7 +1,7 @@
 #pragma once
 
 #include "action.h"
-#include "evaluation_auto_wait.h"
+#include "evaluation_wait_and_complete.h"
 #include "game.h"
 #include "settings.h"
 #include "strategy.h"
@@ -33,20 +33,25 @@ class StrategyMCTS2 : public Strategy {
 
  public:
   unsigned max_time_per_move_milliseconds = 50;
-  bool first_move;
   double exploration_mult = 14;
+  bool one_side_seach = true;
+  bool first_move;
   Game g;
   std::unordered_map<size_t, MasterNode> mnodes;
   unsigned total_runs;
 
  protected:
+  unsigned EPMask() const {
+    return one_side_seach ? (1u << Strategy::player) : 3;
+  }
+
   int64_t Play() {
     if (g.pos.day >= TotalDays()) return g.Score();
     auto& mnode = mnodes[g.pos.Hash()];
     mnode.games += 1;
     if (mnode.games == 1) {
       // First time, use evaluation instead of search
-      return (mnode.evaluation = EvaluationAutoWait(g));
+      return (mnode.evaluation = EvaluationWaitAndComplete(g, EPMask()));
     }
     if (mnode.nodes.empty()) {
       assert(mnode.games == 2);
@@ -67,6 +72,7 @@ class StrategyMCTS2 : public Strategy {
     }
     std::array<unsigned, 2> pm{0, 0};
     for (unsigned i = 0; i < 2; ++i) {
+      if (one_side_seach && (i != Strategy::player)) continue;
       double best_score = -1000;
       auto& nodes = mnode.nodes[i];
       for (unsigned j = 0; j < nodes.size(); ++j) {
