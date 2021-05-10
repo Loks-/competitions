@@ -13,6 +13,7 @@ class Cells {
   std::vector<Cell> cells;
 
   Cell& operator[](uint8_t index) { return cells[index]; }
+  const Cell& operator[](uint8_t index) const { return cells[index]; }
 
   uint8_t Size() const { return cells.size(); }
 

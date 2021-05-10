@@ -21,6 +21,16 @@ class Game {
     if (p.waiting) return r;
     for (auto& t : pos.trees) {
       if ((t.player != player) || t.used) continue;
+      if ((t.size > 0) && (p.sun >= p.ntrees[0] + SeedBaseCost())) {
+        for (uint8_t d = 1; d <= t.size; ++d) {
+          for (uint8_t sp : cells[t.cell].neighbors_by_distance[d]) {
+            if (cells[sp].richness == 0) continue;
+            // check if available
+            // ...
+            r.push_back(Action(SEED, t.cell, sp));
+          }
+        }
+      }
       // SEED
       // ...
       if ((t.size < 3) &&
