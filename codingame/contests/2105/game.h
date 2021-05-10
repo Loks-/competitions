@@ -76,7 +76,7 @@ class Game {
 
   void ApplyAction(unsigned player, const Action& action) {
     auto& p = pos.players[player];
-    assert(!p.waiting || (action.type == AUTO_WAIT));
+    assert(!p.waiting || (action.type == AUTO_WAIT) || (action.type == SKIP));
     switch (action.type) {
       case AUTO_WAIT:
       case WAIT: {
@@ -122,6 +122,8 @@ class Game {
         pos.RemoveTree(action.value1);
         break;
       }
+      case SKIP:
+        break;
       default:
         assert(false);
         break;
