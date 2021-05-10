@@ -32,7 +32,7 @@ class StrategyMCTS2 : public Strategy {
   };
 
  public:
-  unsigned max_time_per_move_milliseconds;
+  unsigned max_time_per_move_milliseconds = 50;
   bool first_move;
   double exploration_mult = 14;
   Game g;
@@ -94,11 +94,7 @@ class StrategyMCTS2 : public Strategy {
   }
 
  public:
-  StrategyMCTS2() : max_time_per_move_milliseconds(50) { Reset(); }
-  StrategyMCTS2(unsigned time_per_move)
-      : max_time_per_move_milliseconds(time_per_move) {
-    Reset();
-  }
+  StrategyMCTS2() { Reset(); }
 
   void Reset() override {
     first_move = true;
