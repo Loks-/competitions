@@ -5,15 +5,39 @@
 #include "settings.h"
 #include "strategy.h"
 
+#include <chrono>
 #include <iostream>
+#include <random>
 
 class Runner {
  public:
+  std::minstd_rand rng;
   Game game;
   PStrategy s0, s1;
 
+  Runner() {
+    SetSeed(
+        std::chrono::high_resolution_clock::now().time_since_epoch().count());
+  }
+
+  Runner(unsigned seed) { SetSeed(seed); }
+
+  void SetSeed(unsigned seed) { rng.seed(seed); }
+
   void SetStrategy0(PStrategy s) { s0 = s; }
   void SetStrategy1(PStrategy s) { s1 = s; }
+
+  unsigned PairCell(unsigned index) const {
+    if (index == 0) return index;
+    if (index < 4) return index + 3;
+    if (index < 7) return index - 3;
+    if (index < 13) return index + 6;
+    if (index < 19) return index - 6;
+    if (index < 28) return index + 9;
+    if (index < 37) return index - 9;
+    assert(false);
+    return index;
+  }
 
   void ResetCells() {
     auto& cells = game.cells.cells;
@@ -62,11 +86,14 @@ class Runner {
   }
 
   void AddStartingTrees() {
-    // TODO: Random symmetric trees
-    game.pos.AddTree({24, 1, 0, false});
-    game.pos.AddTree({29, 1, 0, false});
-    game.pos.AddTree({33, 1, 1, false});
-    game.pos.AddTree({20, 1, 1, false});
+    std::uniform_int_distribution<> uid(19, 36);
+    for (; game.pos.trees.size() < 4;) {
+      unsigned cid = uid(rng);
+      if (game.cells[cid].richness == 0) continue;
+      if (game.pos.cell_to_tree[cid] != 255) continue;
+      game.pos.AddTree({uint8_t(cid), 1, 0, false});
+      game.pos.AddTree({uint8_t(PairCell(cid)), 1, 1, false});
+    }
   }
 
   void Reset() {
