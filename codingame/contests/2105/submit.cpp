@@ -1,9 +1,9 @@
 #include "cell.h"
 #include "game.h"
-#include "strategy_random_action.h"
+#include "strategy_mcts.h"
 
 int main_submit() {
-  auto s = StrategyRandomAction::Make();
+  auto s = StrategyMCTS::Make();
   s->SetP(1);
   Game g;
   g.ReadCells();

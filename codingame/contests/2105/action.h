@@ -15,6 +15,12 @@ class Action {
   Action(ActionType _type = WAIT, uint8_t _value1 = 0, uint8_t _value2 = 0)
       : type(_type), value1(_value1), value2(_value2) {}
 
+  bool operator<(const Action& r) const {
+    return (type != r.type)       ? type < r.type
+           : (value1 != r.value1) ? value1 < r.value1
+                                  : value2 < r.value2;
+  }
+
   void Write() const {
     switch (type) {
       case SEED:
