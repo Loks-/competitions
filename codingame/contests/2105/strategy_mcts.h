@@ -33,6 +33,7 @@ class StrategyMCTS : public Strategy {
   double exploration_mult = 14;
   Game g;
   std::unordered_map<size_t, MasterNode> mnodes;
+  unsigned total_runs;
 
  protected:
   int64_t Play() {
@@ -87,7 +88,7 @@ class StrategyMCTS : public Strategy {
   }
 
  public:
-  StrategyMCTS() : max_time_per_move_milliseconds(10) { Reset(); }
+  StrategyMCTS() : max_time_per_move_milliseconds(50) { Reset(); }
   StrategyMCTS(unsigned time_per_move)
       : max_time_per_move_milliseconds(time_per_move) {
     Reset();
@@ -96,6 +97,7 @@ class StrategyMCTS : public Strategy {
   void Reset() override {
     first_move = true;
     mnodes.clear();
+    total_runs = 0;
   }
 
   std::string Name() const override { return "MCTS"; }
@@ -106,15 +108,19 @@ class StrategyMCTS : public Strategy {
       g.cells = game.cells;
       first_move = false;
     }
+    unsigned runs = 0;
     for (; std::chrono::duration_cast<std::chrono::milliseconds>(
                std::chrono::high_resolution_clock::now() - t0)
-               .count() < max_time_per_move_milliseconds;) {
+               .count() < max_time_per_move_milliseconds;
+         ++runs) {
       g.pos = game.pos;
       Play();
     }
+    total_runs += runs;
     auto p = Strategy::player;
     auto& mnode = mnodes[game.pos.Hash()];
-    std::cerr << "Total games = " << mnode.games << std::endl;
+    std::cerr << "Total games = " << mnode.games << "\tRuns = " << runs
+              << "\tTotal = " << total_runs << std::endl;
     if (mnode.nodes.size() != 2) {
       auto m = game.GetPossibleActions(Strategy::player);
       return m[rand() % m.size()];
