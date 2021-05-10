@@ -21,8 +21,8 @@ class Game {
   Actions GetPossibleActions(unsigned player) const {
     Actions r;
     auto& p = pos.players[player];
+    if (p.waiting) return {Action(AUTO_WAIT)};
     r.push_back(Action(WAIT));
-    if (p.waiting) return r;
     for (auto& t : pos.trees) {
       if ((t.player != player) || t.used) continue;
       if ((t.size > 0) && (p.sun >= p.ntrees[0] + SeedBaseCost())) {
@@ -71,8 +71,9 @@ class Game {
 
   void ApplyAction(unsigned player, const Action& action) {
     auto& p = pos.players[player];
-    assert(!p.waiting || (action.type == WAIT));
+    assert(!p.waiting || (action.type == AUTO_WAIT));
     switch (action.type) {
+      case AUTO_WAIT:
       case WAIT: {
         p.waiting = true;
         break;
@@ -135,6 +136,6 @@ class Game {
     }
     ApplyAction(0, action0);
     ApplyAction(1, action1);
-    if ((action0.type == WAIT) && (action1.type == WAIT)) NextDay(false);
+    if (pos.players[0].waiting && pos.players[1].waiting) NextDay(false);
   }
 };

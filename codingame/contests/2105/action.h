@@ -12,13 +12,13 @@ class Action {
   ActionType type;
   uint8_t value1, value2;
 
-  Action(ActionType _type = WAIT, uint8_t _value1 = 0, uint8_t _value2 = 0)
+  Action(ActionType _type = AUTO_WAIT, uint8_t _value1 = 0, uint8_t _value2 = 0)
       : type(_type), value1(_value1), value2(_value2) {}
 
   bool operator<(const Action& r) const {
-    return (type != r.type)       ? type < r.type
-           : (value1 != r.value1) ? value1 < r.value1
-                                  : value2 < r.value2;
+    return (type != r.type) ? type < r.type : (value1 != r.value1)
+                                                  ? value1 < r.value1
+                                                  : value2 < r.value2;
   }
 
   void Write() const {
@@ -33,6 +33,7 @@ class Action {
       case COMPLETE:
         std::cout << "COMPLETE " << unsigned(value1) << std::endl;
         break;
+      case AUTO_WAIT:
       case WAIT:
         std::cout << "WAIT" << std::endl;
         break;

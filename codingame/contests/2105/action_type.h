@@ -1,3 +1,3 @@
 #pragma once
 
-enum ActionType { WAIT = 0, SEED, GROW, COMPLETE, AT_END };
+enum ActionType { AUTO_WAIT = 0, WAIT, SEED, GROW, COMPLETE, AT_END };

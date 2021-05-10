@@ -125,8 +125,8 @@ class Runner {
     auto& p0 = game.pos.players[0];
     auto& p1 = game.pos.players[1];
     for (; game.pos.day < TotalDays();) {
-      Action a0 = p0.waiting ? Action() : s0->GetAction(game);
-      Action a1 = p1.waiting ? Action() : s1->GetAction(game);
+      Action a0 = p0.waiting ? Action(AUTO_WAIT) : s0->GetAction(game);
+      Action a1 = p1.waiting ? Action(AUTO_WAIT) : s1->GetAction(game);
       game.ApplyActions(a0, a1);
     }
     std::cout << "S0: [" << p0.score << ", " << p0.sun << ", "
