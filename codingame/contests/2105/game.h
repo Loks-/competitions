@@ -2,6 +2,7 @@
 
 #include "action.h"
 #include "cell.h"
+#include "cells.h"
 #include "position.h"
 #include "settings.h"
 
@@ -10,7 +11,7 @@ class Game {
   Cells cells;
   Position pos;
 
-  void ReadCells() { cells = Cell::ReadCells(); }
+  void ReadCells() { cells.Read(); }
   void ReadPosition() { pos.Read(); }
 
   Actions GetPossibleActions(unsigned player) const {

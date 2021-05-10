@@ -11,22 +11,16 @@ class Cell {
   uint8_t index;     // 0 is the center cell, the next cells spiral outwards
   uint8_t richness;  // 0 if the cell is unusable, 1-3 for usable cells
   std::vector<uint8_t> neighbors;  // the index of the neighbouring cell
+  std::vector<std::vector<uint8_t>> neighbors_by_distance;
 
   void Read() {
-    std::cin >> index >> richness;
-    neighbors = nvector::Read<uint8_t>(6);
+    int _index, _richness;
+    std::cin >> _index >> _richness;
+    auto vn = nvector::Read<int>(6);
     std::cin.ignore();
-  }
-
-  static std::vector<Cell> ReadCells() {
-    uint8_t total;
-    std::cin >> total;
-    std::cin.ignore();
-    assert(total == 37);
-    std::vector<Cell> cells(total);
-    for (auto& c : cells) c.Read();
-    return cells;
+    index = _index;
+    richness = _richness;
+    neighbors.clear();
+    for (auto n : vn) neighbors.push_back(uint8_t((n < 0) ? 255 : n));
   }
 };
-
-using Cells = std::vector<Cell>;

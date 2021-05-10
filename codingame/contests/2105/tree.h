@@ -10,7 +10,11 @@ class Tree {
   bool used;  // 1 if this tree is dormant (used)
 
   void Read() {
-    std::cin >> cell >> size >> player >> used;
+    int _cell, _size, _player;
+    std::cin >> _cell >> _size >> _player >> used;
     std::cin.ignore();
+    cell = _cell;
+    size = _size;
+    player = _player;
   }
 };

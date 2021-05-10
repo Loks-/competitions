@@ -25,13 +25,16 @@ class Position {
   }
 
   void Read() {
-    std::cin >> day;
+    unsigned _day, _nutrients;
+    std::cin >> _day;
     std::cin.ignore();
-    std::cin >> nutrients;
+    std::cin >> _nutrients;
     std::cin.ignore();
+    day = _day;
+    nutrients = _nutrients;
     players[1].Read(1);
     players[0].Read(0);
-    uint8_t ntrees;
+    unsigned ntrees;
     std::cin >> ntrees;
     std::cin.ignore();
     trees.resize(ntrees);

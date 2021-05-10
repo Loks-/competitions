@@ -18,13 +18,14 @@ class Action {
   void Write() const {
     switch (type) {
       case SEED:
-        std::cout << "SEED " << value1 << " " << value2 << std::endl;
+        std::cout << "SEED " << unsigned(value1) << " " << unsigned(value2)
+                  << std::endl;
         break;
       case GROW:
-        std::cout << "GROW " << value1 << std::endl;
+        std::cout << "GROW " << unsigned(value1) << std::endl;
         break;
       case COMPLETE:
-        std::cout << "COMPLETE " << value1 << std::endl;
+        std::cout << "COMPLETE " << unsigned(value1) << std::endl;
         break;
       case WAIT:
         std::cout << "WAIT" << std::endl;
