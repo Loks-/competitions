@@ -8,6 +8,8 @@
 
 #include "common/base.h"
 
+#include <algorithm>
+
 class Game {
  public:
   Cells cells;
@@ -39,6 +41,32 @@ class Game {
         r.push_back(Action(COMPLETE, t.cell));
     }
     return r;
+  }
+
+  void CalcShades(unsigned day, std::vector<uint8_t>& output) const {
+    output.resize(cells.Size());
+    std::fill(output.begin(), output.end(), 0);
+    unsigned d = day % 6;
+    for (auto& t : pos.trees) {
+      uint8_t c = t.cell;
+      for (unsigned i = 0; i < t.size; ++i) {
+        c = cells[c].neighbors[d];
+        if (c > cells.Size()) break;
+        output[c] = std::max(output[c], t.size);
+      }
+    }
+  }
+
+  void NextDay() {
+    pos.day += 1;
+    if (pos.day >= TotalDays()) return;
+    std::vector<uint8_t> shade;
+    CalcShades(pos.day, shade);
+    for (auto& t : pos.trees) {
+      if (t.size > shade[t.cell]) pos.players[t.player].sun += t.size;
+      t.used = false;
+    }
+    for (auto& p : pos.players) p.waiting = false;
   }
 
   void ApplyAction(unsigned player, const Action& action) {
@@ -107,5 +135,6 @@ class Game {
     }
     ApplyAction(0, action0);
     ApplyAction(1, action1);
+    if ((action0.type == WAIT) && (action1.type == WAIT)) NextDay();
   }
 };
