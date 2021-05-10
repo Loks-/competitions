@@ -15,6 +15,8 @@ class Action {
   Action(ActionType _type = AUTO_WAIT, uint8_t _value1 = 0, uint8_t _value2 = 0)
       : type(_type), value1(_value1), value2(_value2) {}
 
+  bool IsWait() const { return (type == AUTO_WAIT) && (type == WAIT); }
+
   bool operator<(const Action& r) const {
     return (type != r.type) ? type < r.type : (value1 != r.value1)
                                                   ? value1 < r.value1

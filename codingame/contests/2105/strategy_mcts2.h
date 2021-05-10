@@ -1,19 +1,22 @@
 #pragma once
 
 #include "action.h"
+#include "evaluation_auto_wait.h"
 #include "game.h"
 #include "settings.h"
 #include "strategy.h"
 
 #include "common/base.h"
 
+#include <algorithm>
+#include <array>
 #include <chrono>
 #include <cmath>
 #include <string>
 #include <unordered_map>
 #include <vector>
 
-class StrategyMCTS : public Strategy {
+class StrategyMCTS2 : public Strategy {
  public:
   class Node {
    public:
@@ -25,6 +28,7 @@ class StrategyMCTS : public Strategy {
    public:
     unsigned games = 0;
     std::vector<std::vector<std::pair<Node, Action>>> nodes;
+    int64_t evaluation = 0;
   };
 
  public:
@@ -39,23 +43,29 @@ class StrategyMCTS : public Strategy {
   int64_t Play() {
     if (g.pos.day >= TotalDays()) return g.Score();
     auto& mnode = mnodes[g.pos.Hash()];
-    thread_local std::vector<std::vector<Action>> pactions(2);
-    pactions[0] = g.GetPossibleActions(0);
-    pactions[1] = g.GetPossibleActions(1);
-    // Assume that if hash and number of moves match, everything is safe to go
-    if (mnode.nodes.size() == 2) {
-      if ((mnode.nodes[0].size() != pactions[0].size()) ||
-          (mnode.nodes[1].size() != pactions[1].size()))
-        return 0;
-    } else {
+    mnode.games += 1;
+    if (mnode.games == 1) {
+      // First time, use evaluation instead of search
+      return (mnode.evaluation = EvaluationAutoWait(g));
+    }
+    if (mnode.nodes.empty()) {
+      assert(mnode.games == 2);
       mnode.nodes.resize(2);
+      thread_local std::array<std::vector<Action>, 2> pactions;
+      pactions[0] = g.GetPossibleActions(0);
+      pactions[1] = g.GetPossibleActions(1);
       for (unsigned i = 0; i < 2; ++i) {
+        assert(!pactions[i].empty() && pactions[i][0].IsWait());
+        std::random_shuffle(pactions[i].begin() + 1, pactions[i].end());
         mnode.nodes[i].resize(pactions[i].size());
         for (unsigned j = 0; j < pactions[i].size(); ++j)
           mnode.nodes[i][j].second = pactions[i][j];
+        auto& wnode = mnode.nodes[i][0].first;
+        wnode.games += 1;
+        wnode.total_score += mnode.evaluation;
       }
     }
-    std::vector<unsigned> pm(2, 0);
+    std::array<unsigned, 2> pm{0, 0};
     for (unsigned i = 0; i < 2; ++i) {
       double best_score = -1000;
       auto& nodes = mnode.nodes[i];
@@ -65,7 +75,7 @@ class StrategyMCTS : public Strategy {
           pm[i] = j;
           break;
         }
-        double score = n.total_score * (2.0 * i - 1) / n.games +
+        double score = n.total_score * (2.0 * i - 1.0) / n.games +
                        exploration_mult * sqrt(log2(mnode.games) / n.games);
         if (score > best_score) {
           best_score = score;
@@ -75,7 +85,6 @@ class StrategyMCTS : public Strategy {
     }
     g.ApplyActions(mnode.nodes[0][pm[0]].second, mnode.nodes[1][pm[1]].second);
     auto r = Play();
-    mnode.games += 1;
     for (unsigned i = 0; i < 2; ++i) {
       auto& n = mnode.nodes[i][pm[i]].first;
       n.games += 1;
@@ -85,8 +94,8 @@ class StrategyMCTS : public Strategy {
   }
 
  public:
-  StrategyMCTS() : max_time_per_move_milliseconds(50) { Reset(); }
-  StrategyMCTS(unsigned time_per_move)
+  StrategyMCTS2() : max_time_per_move_milliseconds(50) { Reset(); }
+  StrategyMCTS2(unsigned time_per_move)
       : max_time_per_move_milliseconds(time_per_move) {
     Reset();
   }
@@ -97,7 +106,7 @@ class StrategyMCTS : public Strategy {
     total_runs = 0;
   }
 
-  std::string Name() const override { return "MCTS"; }
+  std::string Name() const override { return "MCTS2"; }
 
   Action GetAction(const Game& game) override {
     auto t0 = std::chrono::high_resolution_clock::now();
@@ -127,7 +136,7 @@ class StrategyMCTS : public Strategy {
       double best_score = -1000;
       for (unsigned j = 0; j < nodes.size(); ++j) {
         auto& n = nodes[j].first;
-        double score = n.total_score * (2.0 * p - 1) / std::max(n.games, 1u);
+        double score = n.total_score * (2.0 * p - 1.0) / std::max(n.games, 1u);
         if (score > best_score) {
           best_score = score;
           move = j;
@@ -137,5 +146,5 @@ class StrategyMCTS : public Strategy {
     }
   }
 
-  static PStrategy Make() { return std::make_shared<StrategyMCTS>(); }
+  static PStrategy Make() { return std::make_shared<StrategyMCTS2>(); }
 };

@@ -69,6 +69,11 @@ class Game {
     for (auto& p : pos.players) p.waiting = false;
   }
 
+  int64_t Score() const {
+    return int64_t(pos.players[1].CombinedScore()) -
+           int64_t(pos.players[0].CombinedScore());
+  }
+
   void ApplyAction(unsigned player, const Action& action) {
     auto& p = pos.players[player];
     assert(!p.waiting || (action.type == AUTO_WAIT));
