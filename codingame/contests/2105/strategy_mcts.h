@@ -112,8 +112,8 @@ class StrategyMCTS : public Strategy {
     total_runs += runs;
     auto p = Strategy::player;
     auto& mnode = mnodes[game.pos.Hash()];
-    std::cerr << "Total games = " << mnode.games << "\tRuns = " << runs
-              << "\tTotal = " << total_runs << std::endl;
+    // std::cerr << "Total games = " << mnode.games << "\tRuns = " << runs
+    //           << "\tTotal = " << total_runs << std::endl;
     if (mnode.nodes.size() != 2) {
       auto m = game.GetPossibleActions(Strategy::player);
       return m[rand() % m.size()];
