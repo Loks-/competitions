@@ -10,7 +10,7 @@
 class Action {
  public:
   ActionType type;
-  unsigned value1, value2;
+  uint8_t value1, value2;
 
   Action(ActionType _type = WAIT, unsigned _value1 = 0, unsigned _value2 = 0)
       : type(_type), value1(_value1), value2(_value2) {}
