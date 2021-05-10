@@ -60,7 +60,7 @@ class Game {
   void NextDay(bool skip_day_increase) {
     if (!skip_day_increase) pos.day += 1;
     if (pos.day >= TotalDays()) return;
-    std::vector<uint8_t> shade;
+    thread_local std::vector<uint8_t> shade;
     CalcShades(pos.day, shade);
     for (auto& t : pos.trees) {
       if (t.size > shade[t.cell]) pos.players[t.player].sun += t.size;
