@@ -4,9 +4,9 @@
 
 class Tree {
  public:
-  unsigned cell;  // location of this tree
-  unsigned size;  // size of this tree: 0-3
-  unsigned player;
+  uint8_t cell;  // location of this tree
+  uint8_t size;  // size of this tree: 0-3
+  uint8_t player;
   bool used;  // 1 if this tree is dormant (used)
 
   void Read() {

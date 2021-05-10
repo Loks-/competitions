@@ -5,13 +5,13 @@
 
 class Player {
  public:
-  unsigned id;
+  uint8_t id;
   unsigned sun;
   unsigned score;
   bool waiting;
-  std::array<unsigned, 4> ntrees;
+  std::array<uint8_t, 4> ntrees;
 
-  void Read(unsigned _id) {
+  void Read(uint8_t _id) {
     id = _id;
     std::cin >> sun >> score;
     if (id == 0)

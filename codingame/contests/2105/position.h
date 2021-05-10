@@ -11,8 +11,8 @@
 
 class Position {
  public:
-  unsigned day;
-  unsigned nutrients;
+  uint8_t day;
+  uint8_t nutrients;
   std::array<Player, 2> players;
   std::vector<Tree> trees;
 
@@ -31,7 +31,7 @@ class Position {
     std::cin.ignore();
     players[1].Read(1);
     players[0].Read(0);
-    unsigned ntrees;
+    uint8_t ntrees;
     std::cin >> ntrees;
     std::cin.ignore();
     trees.resize(ntrees);
