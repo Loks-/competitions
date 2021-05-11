@@ -17,7 +17,7 @@
 #include <unordered_map>
 #include <vector>
 
-class StrategyWSGCUTS1P : public Strategy {
+class StrategyWSGCUTS : public Strategy {
  public:
   class Node {
    public:
@@ -72,7 +72,7 @@ class StrategyWSGCUTS1P : public Strategy {
   }
 
  public:
-  StrategyWSGCUTS1P() { Reset(); }
+  StrategyWSGCUTS() { Reset(); }
 
   void Reset() override {
     first_move = true;
@@ -80,7 +80,7 @@ class StrategyWSGCUTS1P : public Strategy {
     total_runs = 0;
   }
 
-  std::string Name() const override { return "WSGC_1P"; }
+  std::string Name() const override { return "WSGC_UTS"; }
 
   Action GetAction(const Game& game) override {
     auto t0 = std::chrono::high_resolution_clock::now();
@@ -111,5 +111,5 @@ class StrategyWSGCUTS1P : public Strategy {
     }
   }
 
-  static PStrategy Make() { return std::make_shared<StrategyWSGCUTS1P>(); }
+  static PStrategy Make() { return std::make_shared<StrategyWSGCUTS>(); }
 };
