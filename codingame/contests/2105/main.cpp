@@ -8,10 +8,12 @@
 int main() {
   Runner r;
   // r.SetStrategy0(Strategy::Make());
-  r.SetStrategy0(StrategyMCTS2::Make());
+  // r.SetStrategy0(StrategyMCTS2::Make());
+  r.SetStrategy0(StrategyWSGCUTS1P::Make());
   // r.SetStrategy1(Strategy::Make());
   // r.SetStrategy1(StrategyRandomAction::Make());
-  r.SetStrategy1(StrategyWSGCUTS1P::Make());
+  r.SetStrategy1(StrategyMCTS2::Make());
+  // r.SetStrategy1(StrategyWSGCUTS1P::Make());
   r.RunGame();
   return 0;
 }
