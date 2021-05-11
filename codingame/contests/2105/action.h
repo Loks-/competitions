@@ -17,10 +17,14 @@ class Action {
 
   bool IsWait() const { return (type == AUTO_WAIT) || (type == WAIT); }
 
+  bool operator==(const Action& r) const {
+    return (type == r.type) && (value1 == r.value1) && (value2 == r.value2);
+  }
+
   bool operator<(const Action& r) const {
-    return (type != r.type) ? type < r.type : (value1 != r.value1)
-                                                  ? value1 < r.value1
-                                                  : value2 < r.value2;
+    return (type != r.type) ? type < r.type : (value2 != r.value2)
+                                                  ? value2 < r.value2
+                                                  : value1 < r.value1;
   }
 
   void Write() const {

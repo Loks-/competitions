@@ -74,6 +74,8 @@ class Game {
            int64_t(pos.players[0].CombinedScore());
   }
 
+  int64_t PScore(unsigned p) const { return (2 * int(p) - 1) * Score(); }
+
   void ApplyAction(unsigned player, const Action& action) {
     auto& p = pos.players[player];
     assert(!p.waiting || (action.type == AUTO_WAIT) || (action.type == SKIP));

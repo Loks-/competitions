@@ -56,3 +56,10 @@ inline int64_t EvaluationWaitAndComplete(const Game& game,
   }
   return int64_t(pscore[1] + psun[1] / 3) - int64_t(pscore[0] + psun[0] / 3);
 }
+
+inline int64_t EvaluationWaitAndComplete(const Game& game,
+                                         unsigned pmask_for_complete,
+                                         unsigned player) {
+  return (2 * int(player) - 1) *
+         EvaluationWaitAndComplete(game, pmask_for_complete);
+}

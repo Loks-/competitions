@@ -50,6 +50,12 @@ class Position {
     return trees[tid];
   }
 
+  const Tree& GetTreeByCell(uint8_t cell) const {
+    uint8_t tid = cell_to_tree[cell];
+    assert(tid < trees.size());
+    return trees[tid];
+  }
+
   void AddTree(const Tree& tree) {
     assert(cell_to_tree[tree.cell] == 255);
     cell_to_tree[tree.cell] = trees.size();
