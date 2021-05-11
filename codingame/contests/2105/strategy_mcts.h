@@ -1,6 +1,7 @@
 #pragma once
 
 #include "action.h"
+#include "fstrategy_random.h"
 #include "game.h"
 #include "settings.h"
 #include "strategy.h"
@@ -114,23 +115,19 @@ class StrategyMCTS : public Strategy {
     auto& mnode = mnodes[game.pos.Hash()];
     // std::cerr << "Total games = " << mnode.games << "\tRuns = " << runs
     //           << "\tTotal = " << total_runs << std::endl;
-    if (mnode.nodes.size() != 2) {
-      auto m = game.GetPossibleActions(p);
-      return m[rand() % m.size()];
-    } else {
-      auto& nodes = mnode.nodes[p];
-      unsigned move = 0;
-      double best_score = -1000;
-      for (unsigned j = 0; j < nodes.size(); ++j) {
-        auto& n = nodes[j].first;
-        double score = n.total_score * (2.0 * p - 1) / std::max(n.games, 1u);
-        if (score > best_score) {
-          best_score = score;
-          move = j;
-        }
+    if (mnode.nodes.size() != 2) return FStrategyRandom::Get(game, p);
+    auto& nodes = mnode.nodes[p];
+    unsigned move = 0;
+    double best_score = -1000;
+    for (unsigned j = 0; j < nodes.size(); ++j) {
+      auto& n = nodes[j].first;
+      double score = n.total_score * (2.0 * p - 1) / std::max(n.games, 1u);
+      if (score > best_score) {
+        best_score = score;
+        move = j;
       }
-      return nodes[move].second;
     }
+    return nodes[move].second;
   }
 
   static PStrategy Make() { return std::make_shared<StrategyMCTS>(); }

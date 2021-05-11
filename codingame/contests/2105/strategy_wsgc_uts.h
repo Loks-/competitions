@@ -2,6 +2,7 @@
 
 #include "action.h"
 #include "evaluation_wait_and_complete.h"
+#include "fstrategy_random.h"
 #include "game.h"
 #include "settings.h"
 #include "strategy.h"
@@ -102,13 +103,9 @@ class StrategyWSGCUTS : public Strategy {
     // std::cerr << "Total games = " << mnode.games << "\tRuns = " << runs
     //           << "\tTotal = " << total_runs
     //           << "\tBest score = " << mnode.data.s.best_score << std::endl;
-    if (mnode.games < 1) {
-      auto m = game.GetPossibleActions(p);
-      return m[rand() % m.size()];
-    } else {
-      return mnode.data.GetBestAction(
-          [](auto& l, auto& r) { return l.best_score > r.best_score; });
-    }
+    if (mnode.games < 1) return FStrategyRandom::Get(game, p);
+    return mnode.data.GetBestAction(
+        [](auto& l, auto& r) { return l.best_score > r.best_score; });
   }
 
   static PStrategy Make() { return std::make_shared<StrategyWSGCUTS>(); }
