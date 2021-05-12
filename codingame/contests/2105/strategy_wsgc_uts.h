@@ -37,6 +37,7 @@ class StrategyWSGCUTS : public Strategy {
   };
 
  public:
+  EvaluationAutoWaitAndComplete e;
   unsigned max_time_per_move_milliseconds = 50;
   bool first_move;
   Game g;
@@ -44,8 +45,6 @@ class StrategyWSGCUTS : public Strategy {
   unsigned total_runs;
 
  protected:
-  unsigned EPMask() const { return (1u << Strategy::player); }
-
   void Apply(Action a) {
     if (Strategy::player)
       g.ApplyActions(Action(AUTO_WAIT), a);
@@ -60,7 +59,7 @@ class StrategyWSGCUTS : public Strategy {
     if (mnode.games == 1) {
       // First time, use evaluation instead of search
       mnode.data.Init(g.pos, g.GetPossibleActions(Strategy::player));
-      auto r = EvaluationWaitAndComplete(g, EPMask(), Strategy::player);
+      auto r = e.Apply(g);
       if (g.pos.day + 1u < TotalDays())
         mnode.data.Update(Action(WAIT), mnode.evaluation);
       return r;
@@ -73,9 +72,8 @@ class StrategyWSGCUTS : public Strategy {
   }
 
  public:
-  StrategyWSGCUTS() { Reset(); }
-
-  void Reset() override {
+  void Reset(const Cells& cells) override {
+    e.Reset(cells, Strategy::player);
     first_move = true;
     mnodes.clear();
     total_runs = 0;

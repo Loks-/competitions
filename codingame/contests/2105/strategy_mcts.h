@@ -86,9 +86,7 @@ class StrategyMCTS : public Strategy {
   }
 
  public:
-  StrategyMCTS() { Reset(); }
-
-  void Reset() override {
+  void Reset(const Cells&) override {
     first_move = true;
     mnodes.clear();
     total_runs = 0;

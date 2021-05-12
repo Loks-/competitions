@@ -113,10 +113,10 @@ class Runner {
     game.pos.Reset();
     AddStartingTrees();
     game.pos.CountTrees();
-    s0->Reset();
-    s1->Reset();
     s0->SetP(0);
+    s0->Reset(game.cells);
     s1->SetP(1);
+    s1->Reset(game.cells);
   }
 
   void RunGame() {

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "cells.h"
 #include "evaluation.h"
 #include "game.h"
 
@@ -16,9 +17,9 @@ class EvaluationProxy : public Evaluation {
   Game game;
 
  public:
-  void Reset(const Game& _game, unsigned _player) {
-    TBase::Reset(_game, _player);
-    game.cells = _game.cells;
+  void Reset(const Cells& cells, unsigned _player) {
+    TBase::Reset(cells, _player);
+    game.cells = cells;
   }
 
   int64_t Apply(const Game& _game) {

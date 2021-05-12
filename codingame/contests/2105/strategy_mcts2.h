@@ -33,6 +33,7 @@ class StrategyMCTS2 : public Strategy {
   };
 
  public:
+  EvaluationAutoWaitAndComplete e;
   unsigned max_time_per_move_milliseconds = 50;
   double exploration_mult = 14;
   bool one_side_seach = true;
@@ -52,7 +53,7 @@ class StrategyMCTS2 : public Strategy {
     mnode.games += 1;
     if (mnode.games == 1) {
       // First time, use evaluation instead of search
-      return (mnode.evaluation = EvaluationWaitAndComplete(g, EPMask()));
+      return (mnode.evaluation = e.Apply(g));
     }
     if (mnode.nodes.empty()) {
       assert(mnode.games == 2);
@@ -101,9 +102,8 @@ class StrategyMCTS2 : public Strategy {
   }
 
  public:
-  StrategyMCTS2() { Reset(); }
-
-  void Reset() override {
+  void Reset(const Cells& cells) override {
+    e.Reset(cells, Strategy::player);
     first_move = true;
     mnodes.clear();
     total_runs = 0;

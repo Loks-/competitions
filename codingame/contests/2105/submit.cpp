@@ -7,6 +7,7 @@ int main_submit() {
   s->SetP(1);
   Game g;
   g.ReadCells();
+  s->Reset(g.cells);
 
   // game loop
   while (1) {
