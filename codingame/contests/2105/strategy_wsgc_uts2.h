@@ -102,6 +102,10 @@ class StrategyWSGCUTS2 : public Strategy {
     // std::cerr << "Total games = " << mnode.games << "\tRuns = " << runs
     //           << "\tTotal = " << total_runs
     //           << "\tBest score = " << mnode.data.s.best_score << std::endl;
+    // std::cerr << "W = " << mnode.data.w.s.best_score
+    //           << "\tS = " << mnode.data.e.s.best_score
+    //           << "\tG = " << mnode.data.g.s.best_score
+    //           << "\tC = " << mnode.data.c.s.best_score << std::endl;
     if (mnode.games < 1) {
       g.pos = game.pos;
       return FSActionMe();

@@ -95,6 +95,10 @@ class StrategyWSGCUTS : public Strategy {
     // std::cerr << "Total games = " << mnode.games << "\tRuns = " << runs
     //           << "\tTotal = " << total_runs
     //           << "\tBest score = " << mnode.data.s.best_score << std::endl;
+    // std::cerr << "W = " << mnode.data.w.s.best_score
+    //           << "\tS = " << mnode.data.e.s.best_score
+    //           << "\tG = " << mnode.data.g.s.best_score
+    //           << "\tC = " << mnode.data.c.s.best_score << std::endl;
     if (mnode.games < 1) return FStrategyRandom::Get(game, p);
     return mnode.data.GetBestAction(
         [](auto& l, auto& r) { return l.best_score > r.best_score; });
