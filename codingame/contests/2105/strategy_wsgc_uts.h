@@ -39,7 +39,6 @@ class StrategyWSGCUTS : public Strategy {
  public:
   EvaluationAutoWaitAndComplete e;
   unsigned max_time_per_move_milliseconds = 50;
-  bool first_move;
   Game g;
   std::unordered_map<size_t, MasterNode> mnodes;
   unsigned total_runs;
@@ -74,7 +73,7 @@ class StrategyWSGCUTS : public Strategy {
  public:
   void Reset(const Cells& cells) override {
     e.Reset(cells, Strategy::player);
-    first_move = true;
+    g.cells = cells;
     mnodes.clear();
     total_runs = 0;
   }
@@ -83,10 +82,6 @@ class StrategyWSGCUTS : public Strategy {
 
   Action GetAction(const Game& game) override {
     auto t0 = std::chrono::high_resolution_clock::now();
-    if (first_move) {
-      g.cells = game.cells;
-      first_move = false;
-    }
     unsigned runs = 0;
     for (; std::chrono::duration_cast<std::chrono::milliseconds>(
                std::chrono::high_resolution_clock::now() - t0)

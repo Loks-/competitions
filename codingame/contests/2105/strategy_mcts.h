@@ -30,7 +30,6 @@ class StrategyMCTS : public Strategy {
 
  public:
   unsigned max_time_per_move_milliseconds = 50;
-  bool first_move;
   double exploration_mult = 14;
   Game g;
   std::unordered_map<size_t, MasterNode> mnodes;
@@ -86,8 +85,8 @@ class StrategyMCTS : public Strategy {
   }
 
  public:
-  void Reset(const Cells&) override {
-    first_move = true;
+  void Reset(const Cells& cells) override {
+    g.cells = cells;
     mnodes.clear();
     total_runs = 0;
   }
@@ -96,10 +95,6 @@ class StrategyMCTS : public Strategy {
 
   Action GetAction(const Game& game) override {
     auto t0 = std::chrono::high_resolution_clock::now();
-    if (first_move) {
-      g.cells = game.cells;
-      first_move = false;
-    }
     unsigned runs = 0;
     for (; std::chrono::duration_cast<std::chrono::milliseconds>(
                std::chrono::high_resolution_clock::now() - t0)
