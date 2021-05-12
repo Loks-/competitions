@@ -110,12 +110,13 @@ class StrategyMCTS3 : public Strategy {
       Apply(mnode.nodes[best_node].second, mnode.action_opp);
       // auto r = Play();
       auto r = Play(h);
-      mnode.nodes[best_node].first.Update(r);
-      if (mnode.best_score < r) {
-        mnode.best_score = r;
-        mnode.best_action = mnode.nodes[best_node].second;
+      auto& mnode2 = mnodes[h];  // mnode reference can be wrong!
+      mnode2.nodes[best_node].first.Update(r);
+      if (mnode2.best_score < r) {
+        mnode2.best_score = r;
+        mnode2.best_action = mnode2.nodes[best_node].second;
       }
-      return mnode.best_score;
+      return mnode2.best_score;
     }
   }
 

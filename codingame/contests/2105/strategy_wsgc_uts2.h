@@ -79,8 +79,9 @@ class StrategyWSGCUTS2 : public Strategy {
     Apply(a, mnode.action_opp);
     // auto r = Play();
     auto r = Play(h);
-    mnode.data.Update(a, r);
-    return mnode.data.s.best_score;
+    auto& mnode2 = mnodes[h];
+    mnode2.data.Update(a, r);
+    return mnode2.data.s.best_score;
   }
 
  public:
