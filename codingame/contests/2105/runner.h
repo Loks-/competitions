@@ -129,9 +129,9 @@ class Runner {
       Action a1 = p1.waiting ? Action(AUTO_WAIT) : s1->GetAction(game);
       game.ApplyActions(a0, a1);
     }
-    std::cout << "S0: [" << p0.score << ", " << p0.sun << ", "
-              << p0.CombinedScore() << "] -- " << s0->Name() << std::endl;
-    std::cout << "S1: [" << p1.score << ", " << p1.sun << ", "
-              << p1.CombinedScore() << "] -- " << s1->Name() << std::endl;
+    std::cout << "S0: [" << p0.score << ", " << p0.sun << ", " << p0.FScore()
+              << "] -- " << s0->Name() << std::endl;
+    std::cout << "S1: [" << p1.score << ", " << p1.sun << ", " << p1.FScore()
+              << "] -- " << s1->Name() << std::endl;
   }
 };

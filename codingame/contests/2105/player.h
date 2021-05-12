@@ -1,5 +1,7 @@
 #pragma once
 
+#include "settings.h"
+
 #include "common/base.h"
 #include "common/hash.h"
 
@@ -31,7 +33,7 @@ class Player {
     std::cin.ignore();
   }
 
-  unsigned CombinedScore() const { return score + sun / 3; }
+  unsigned FScore() const { return FinalScore(score, sun); }
 
   size_t Hash() const {
     size_t h = 0;

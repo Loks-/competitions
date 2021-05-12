@@ -38,7 +38,7 @@ class StrategyMCTS : public Strategy {
 
  protected:
   int64_t Play() {
-    if (g.pos.day >= TotalDays()) return g.Score();
+    if (g.pos.day >= TotalDays()) return g.PScore(1);
     auto& mnode = mnodes[g.pos.Hash()];
     thread_local std::vector<std::vector<Action>> pactions(2);
     pactions[0] = g.GetPossibleActions(0);

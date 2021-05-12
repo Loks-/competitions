@@ -69,12 +69,9 @@ class Game {
     for (auto& p : pos.players) p.waiting = false;
   }
 
-  int64_t Score() const {
-    return int64_t(pos.players[1].CombinedScore()) -
-           int64_t(pos.players[0].CombinedScore());
+  int64_t PScore(unsigned p) const {
+    return PDScore(pos.players[0].FScore(), pos.players[1].FScore(), p);
   }
-
-  int64_t PScore(unsigned p) const { return (2 * int(p) - 1) * Score(); }
 
   void ApplyAction(unsigned player, const Action& action) {
     auto& p = pos.players[player];

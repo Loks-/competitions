@@ -47,7 +47,7 @@ class StrategyMCTS2 : public Strategy {
   }
 
   int64_t Play() {
-    if (g.pos.day >= TotalDays()) return g.Score();
+    if (g.pos.day >= TotalDays()) return g.PScore(1);
     auto& mnode = mnodes[g.pos.Hash()];
     mnode.games += 1;
     if (mnode.games == 1) {
