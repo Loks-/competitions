@@ -29,7 +29,7 @@ class StrategyMCTS : public Strategy {
   };
 
  public:
-  unsigned max_time_per_move_milliseconds = 50;
+  unsigned max_time_per_move_milliseconds = 10;
   double exploration_mult = 14;
   Game g;
   std::unordered_map<size_t, MasterNode> mnodes;

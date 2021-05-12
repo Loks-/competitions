@@ -34,7 +34,7 @@ class StrategyMCTS2 : public Strategy {
 
  public:
   EvaluationAutoWaitAndComplete e;
-  unsigned max_time_per_move_milliseconds = 50;
+  unsigned max_time_per_move_milliseconds = 10;
   double exploration_mult = 14;
   bool one_side_seach = true;
   Game g;
