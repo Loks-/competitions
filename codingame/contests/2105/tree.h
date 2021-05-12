@@ -22,11 +22,7 @@ class Tree {
   }
 
   size_t Hash() const {
-    size_t h = 0;
-    h = HashCombine(h, cell);
-    h = HashCombine(h, size);
-    h = HashCombine(h, player);
-    h = HashCombine(h, used);
-    return h;
+    return (unsigned(cell) << 11) + (size << 2) + (player << 1) +
+           (used ? 1 : 0);
   }
 };

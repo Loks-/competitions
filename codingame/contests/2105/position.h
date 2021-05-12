@@ -6,6 +6,7 @@
 
 #include "common/base.h"
 #include "common/hash.h"
+#include "common/stl/pair.h"
 
 #include <algorithm>
 #include <array>
@@ -101,16 +102,14 @@ class Position {
   }
 
   size_t Hash() const {
-    size_t h = 0;
-    h = HashCombine(h, day);
-    h = HashCombine(h, nutrients);
+    size_t h = (day << 5) + nutrients;
     h = HashCombine(h, players[0].Hash());
     h = HashCombine(h, players[1].Hash());
-    thread_local std::vector<size_t> vth;
+    thread_local std::vector<std::pair<uint8_t, size_t>> vth;
     vth.clear();
-    for (auto& t : trees) vth.push_back(t.Hash());
+    for (auto& t : trees) vth.push_back({t.cell, t.Hash()});
     std::sort(vth.begin(), vth.end());
-    for (auto vh : vth) h = HashCombine(h, vh);
+    for (auto vh : vth) h = HashCombine(h, vh.second);
     return h;
   }
 };

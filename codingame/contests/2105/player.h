@@ -50,11 +50,5 @@ class Player {
     return (uint64_t(FScore()) << 14) + (Trees() << 8) + HTrees() + sun;
   }
 
-  size_t Hash() const {
-    size_t h = 0;
-    h = HashCombine(h, sun);
-    h = HashCombine(h, score);
-    h = HashCombine(h, waiting);
-    return h;
-  }
+  size_t Hash() const { return (score << 11) + (sun << 1) + (waiting ? 1 : 0); }
 };
