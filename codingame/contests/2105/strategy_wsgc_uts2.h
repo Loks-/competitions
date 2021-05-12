@@ -1,8 +1,7 @@
 #pragma once
 
 #include "action.h"
-#include "evaluation_wait_and_complete.h"
-#include "fstrategy_random.h"
+#include "evaluation_proxy.h"
 #include "game.h"
 #include "settings.h"
 #include "strategy.h"
@@ -17,7 +16,8 @@
 #include <unordered_map>
 #include <vector>
 
-class StrategyWSGCUTS : public Strategy {
+template <class TFStrategy0, class TFStrategy1 = TFStrategy0>
+class StrategyWSGCUTS2 : public Strategy {
  public:
   class Node {
    public:
@@ -30,24 +30,32 @@ class StrategyWSGCUTS : public Strategy {
 
   class MasterNode {
    public:
+    Action action_opp;
     unsigned games = 0;
     WSGC<Node> data;
-    int64_t evaluation = 0;
   };
 
  public:
-  EvaluationAutoWaitAndComplete e;
+  EvaluationProxy<TFStrategy0, TFStrategy1> e;
   unsigned max_time_per_move_milliseconds = 50;
   Game g;
   std::unordered_map<size_t, MasterNode> mnodes;
   unsigned total_runs;
 
  protected:
-  void Apply(Action a) {
+  Action FSActionMe() {
+    return Strategy::player ? TFStrategy1::Get(g, 1) : TFStrategy0::Get(g, 0);
+  }
+
+  Action FSActionOpp() {
+    return Strategy::player ? TFStrategy0::Get(g, 0) : TFStrategy1::Get(g, 1);
+  }
+
+  void Apply(Action a_me, Action a_opp) {
     if (Strategy::player)
-      g.ApplyActions(Action(AUTO_WAIT), a);
+      g.ApplyActions(a_opp, a_me);
     else
-      g.ApplyActions(a, Action(AUTO_WAIT));
+      g.ApplyActions(a_me, a_opp);
   }
 
   int64_t Play() {
@@ -56,14 +64,14 @@ class StrategyWSGCUTS : public Strategy {
     mnode.games += 1;
     if (mnode.games == 1) {
       // First time, use evaluation instead of search
+      mnode.action_opp = FSActionOpp();
       mnode.data.Init(g.pos, g.GetPossibleActions(Strategy::player));
       auto r = e.Apply(g);
-      if (g.pos.day + 1u < TotalDays())
-        mnode.data.Update(Action(WAIT), mnode.evaluation);
+      mnode.data.Update(FSActionMe(), r);
       return r;
     }
     auto a = mnode.data.GetAction();
-    Apply(a);
+    Apply(a, mnode.action_opp);
     auto r = Play();
     mnode.data.Update(a, r);
     return mnode.data.s.best_score;
@@ -77,7 +85,7 @@ class StrategyWSGCUTS : public Strategy {
     total_runs = 0;
   }
 
-  std::string Name() const override { return "WSGC_UTS"; }
+  std::string Name() const override { return "WSGC_UTS2"; }
 
   Action GetAction(const Game& game) override {
     auto t0 = std::chrono::high_resolution_clock::now();
@@ -90,15 +98,17 @@ class StrategyWSGCUTS : public Strategy {
       Play();
     }
     total_runs += runs;
-    auto p = Strategy::player;
     auto& mnode = mnodes[game.pos.Hash()];
     // std::cerr << "Total games = " << mnode.games << "\tRuns = " << runs
     //           << "\tTotal = " << total_runs
     //           << "\tBest score = " << mnode.data.s.best_score << std::endl;
-    if (mnode.games < 1) return FStrategyRandom::Get(game, p);
+    if (mnode.games < 1) {
+      g.pos = game.pos;
+      return FSActionMe();
+    }
     return mnode.data.GetBestAction(
         [](auto& l, auto& r) { return l.best_score > r.best_score; });
   }
 
-  static PStrategy Make() { return std::make_shared<StrategyWSGCUTS>(); }
+  static PStrategy Make() { return std::make_shared<StrategyWSGCUTS2>(); }
 };
