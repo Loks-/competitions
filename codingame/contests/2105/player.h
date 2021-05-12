@@ -7,6 +7,7 @@
 
 #include <array>
 #include <iostream>
+#include <numeric>
 
 class Player {
  public:
@@ -33,7 +34,21 @@ class Player {
     std::cin.ignore();
   }
 
+  unsigned Trees() const {
+    return std::accumulate(ntrees.begin(), ntrees.end(), 0u);
+  }
+
+  unsigned HTrees() const {
+    unsigned s = 0;
+    for (unsigned i = 1; i < 4; ++i) s += i * ntrees[i];
+    return s;
+  }
+
   unsigned FScore() const { return FinalScore(score, sun); }
+
+  uint64_t FScoreExt() const {
+    return (uint64_t(FScore()) << 14) + (Trees() << 8) + HTrees() + sun;
+  }
 
   size_t Hash() const {
     size_t h = 0;

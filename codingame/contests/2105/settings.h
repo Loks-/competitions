@@ -1,5 +1,7 @@
 #pragma once
 
+#include "common/base.h"
+
 inline unsigned CellsSize() { return 37; }
 inline unsigned InitialNutrient() { return 20; }
 inline unsigned SeedBaseCost() { return 0; }
@@ -12,6 +14,9 @@ inline unsigned FinalScore(unsigned score, unsigned sun) {
   return score + sun / 3;
 }
 
-inline int64_t PDScore(unsigned fscore0, unsigned fscore1, unsigned player) {
+inline int64_t PDScore(uint64_t fscore0, uint64_t fscore1, unsigned player) {
   return (2 * int(player) - 1) * (int64_t(fscore1) - int64_t(fscore0));
 }
+
+inline bool UseExtScore() { return true; }
+inline int64_t ExtScoreScale() { return (1ll << 14); }

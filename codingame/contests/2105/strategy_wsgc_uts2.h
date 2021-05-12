@@ -21,7 +21,7 @@ class StrategyWSGCUTS2 : public Strategy {
  public:
   class Node {
    public:
-    int64_t best_score = -1000;
+    int64_t best_score = -1000000000;
 
     void Update(int64_t new_score) {
       best_score = std::max(best_score, new_score);
@@ -59,7 +59,7 @@ class StrategyWSGCUTS2 : public Strategy {
   }
 
   int64_t Play() {
-    if (g.pos.day >= TotalDays()) return g.PScore(Strategy::player);
+    if (g.pos.day >= TotalDays()) return g.PScoreAuto(Strategy::player);
     auto& mnode = mnodes[g.pos.Hash()];
     mnode.games += 1;
     if (mnode.games == 1) {

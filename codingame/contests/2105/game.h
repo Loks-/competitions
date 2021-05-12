@@ -73,6 +73,14 @@ class Game {
     return PDScore(pos.players[0].FScore(), pos.players[1].FScore(), p);
   }
 
+  int64_t PScoreExt(unsigned p) const {
+    return PDScore(pos.players[0].FScoreExt(), pos.players[1].FScoreExt(), p);
+  }
+
+  int64_t PScoreAuto(unsigned p) const {
+    return UseExtScore() ? PScoreExt(p) : PScore(p);
+  }
+
   void ApplyAction(unsigned player, const Action& action) {
     auto& p = pos.players[player];
     assert(!p.waiting || (action.type == AUTO_WAIT) || (action.type == SKIP));
