@@ -33,13 +33,11 @@ class StrategyWSGCUTS2 : public Strategy {
     Action action_opp;
     unsigned games = 0;
     WSGC<Node> data;
-
-    size_t hp;
   };
 
  public:
   EvaluationProxy<TFStrategy0, TFStrategy1> e;
-  unsigned max_time_per_move_milliseconds = 50;
+  unsigned max_time_per_move_milliseconds = 10;
   Game g;
   std::unordered_map<size_t, MasterNode> mnodes;
   unsigned total_runs;
@@ -60,7 +58,7 @@ class StrategyWSGCUTS2 : public Strategy {
       g.ApplyActions(a_me, a_opp);
   }
 
-  int64_t Play(size_t hp) {
+  int64_t Play() {
     if (g.pos.day >= TotalDays()) return g.PScoreAuto(Strategy::player);
     // auto& mnode = mnodes[g.pos.Hash()];
     size_t h = g.pos.Hash();
@@ -72,13 +70,11 @@ class StrategyWSGCUTS2 : public Strategy {
       mnode.data.Init(g.pos, g.GetPossibleActions(Strategy::player));
       auto r = e.Apply(g);
       mnode.data.Update(FSActionMe(), r);
-      mnode.hp = hp;
       return r;
     }
     auto a = mnode.data.GetAction();
     Apply(a, mnode.action_opp);
-    // auto r = Play();
-    auto r = Play(h);
+    auto r = Play();
     auto& mnode2 = mnodes[h];
     mnode2.data.Update(a, r);
     return mnode2.data.s.best_score;
@@ -102,7 +98,7 @@ class StrategyWSGCUTS2 : public Strategy {
                .count() < max_time_per_move_milliseconds;
          ++runs) {
       g.pos = game.pos;
-      Play(0);
+      Play();
     }
     total_runs += runs;
     auto& mnode = mnodes[game.pos.Hash()];

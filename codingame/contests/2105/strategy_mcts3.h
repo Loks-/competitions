@@ -37,14 +37,12 @@ class StrategyMCTS3 : public Strategy {
     std::vector<std::pair<Node, Action>> nodes;
     int64_t best_score = -1000000000;
     Action best_action = Action(WAIT);
-
-    size_t hp;
   };
 
  public:
   EvaluationProxy<TFStrategy0, TFStrategy1> e;
-  unsigned max_time_per_move_milliseconds = 50;
-  double exploration_mult = 15 * (UseExtScore() ? ExtScoreScale() : 1ll);
+  unsigned max_time_per_move_milliseconds = 10;
+  double exploration_mult = 30 * (UseExtScore() ? ExtScoreScale() : 1ll);
   Game g;
   std::unordered_map<size_t, MasterNode> mnodes;
   unsigned total_runs;
@@ -65,7 +63,7 @@ class StrategyMCTS3 : public Strategy {
       g.ApplyActions(a_me, a_opp);
   }
 
-  int64_t Play(size_t hp) {
+  int64_t Play() {
     if (g.pos.day >= TotalDays()) return g.PScoreAuto(Strategy::player);
     // auto& mnode = mnodes[g.pos.Hash()];
     size_t h = g.pos.Hash();
@@ -84,12 +82,10 @@ class StrategyMCTS3 : public Strategy {
         if (v[j] == mnode.best_action)
           mnode.nodes[j].first.Update(mnode.best_score);
       }
-      mnode.hp = hp;
       return mnode.best_score;
     } else if (mnode.nodes.size() == 1) {
       Apply(mnode.best_action, mnode.action_opp);
-      // return Play();
-      return Play(h);
+      return Play();
     } else {
       double best_score = -1000000000, l2g = log2(mnode.games);
       unsigned best_node = 0;
@@ -108,8 +104,7 @@ class StrategyMCTS3 : public Strategy {
         }
       }
       Apply(mnode.nodes[best_node].second, mnode.action_opp);
-      // auto r = Play();
-      auto r = Play(h);
+      auto r = Play();
       auto& mnode2 = mnodes[h];  // mnode reference can be wrong!
       mnode2.nodes[best_node].first.Update(r);
       if (mnode2.best_score < r) {
@@ -138,7 +133,7 @@ class StrategyMCTS3 : public Strategy {
                .count() < max_time_per_move_milliseconds;
          ++runs) {
       g.pos = game.pos;
-      Play(0);
+      Play();
     }
     total_runs += runs;
     auto& mnode = mnodes[game.pos.Hash()];
