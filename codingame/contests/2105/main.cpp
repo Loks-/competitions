@@ -1,3 +1,4 @@
+#include "fstrategy_complete.h"
 #include "fstrategy_random.h"
 #include "fstrategy_wait_and_complete.h"
 #include "runner.h"
@@ -20,6 +21,8 @@ int main() {
   // r.SetStrategy1(StrategyProxy<FStrategyRandom>::Make("Random"));
   // r.SetStrategy1(StrategyMCTS2::Make());
   r.SetStrategy1(StrategyMCTS3<FStrategyWaitAndComplete>::Make());
+  // r.SetStrategy1(
+  //     StrategyMCTS3<FStrategyComplete, FStrategyWaitAndComplete>::Make());
   // r.SetStrategy1(StrategyWSGCUTS::Make());
   r.RunGame();
   return 0;
