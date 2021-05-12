@@ -32,7 +32,7 @@ class StrategyWSGCUTS : public Strategy {
   class MasterNode {
    public:
     unsigned games = 0;
-    wsgc::WSGC<Node> data;
+    WSGC<Node> data;
     int64_t evaluation = 0;
   };
 
