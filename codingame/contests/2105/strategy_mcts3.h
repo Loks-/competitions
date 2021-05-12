@@ -5,26 +5,28 @@
 #include "game.h"
 #include "settings.h"
 #include "strategy.h"
-#include "wsgc.h"
 
 #include "common/base.h"
 
 #include <algorithm>
 #include <array>
 #include <chrono>
+#include <cmath>
 #include <string>
 #include <unordered_map>
 #include <vector>
 
 template <class TFStrategy0, class TFStrategy1 = TFStrategy0>
-class StrategyWSGCUTS2 : public Strategy {
+class StrategyMCTS3 : public Strategy {
  public:
   class Node {
    public:
+    unsigned games = 0;
     int64_t best_score = -1000000000;
 
-    void Update(int64_t new_score) {
-      best_score = std::max(best_score, new_score);
+    void Update(int64_t score) {
+      games += 1;
+      best_score = std::max(best_score, score);
     }
   };
 
@@ -32,7 +34,9 @@ class StrategyWSGCUTS2 : public Strategy {
    public:
     Action action_opp;
     unsigned games = 0;
-    WSGC<Node> data;
+    std::vector<std::pair<Node, Action>> nodes;
+    int64_t best_score = -1000000000;
+    Action best_action = Action(WAIT);
 
     size_t hp;
   };
@@ -40,6 +44,7 @@ class StrategyWSGCUTS2 : public Strategy {
  public:
   EvaluationProxy<TFStrategy0, TFStrategy1> e;
   unsigned max_time_per_move_milliseconds = 50;
+  double exploration_mult = 15 * (UseExtScore() ? ExtScoreScale() : 1ll);
   Game g;
   std::unordered_map<size_t, MasterNode> mnodes;
   unsigned total_runs;
@@ -69,18 +74,49 @@ class StrategyWSGCUTS2 : public Strategy {
     if (mnode.games == 1) {
       // First time
       mnode.action_opp = FSActionOpp();
-      mnode.data.Init(g.pos, g.GetPossibleActions(Strategy::player));
-      auto r = e.Apply(g);
-      mnode.data.Update(FSActionMe(), r);
+      mnode.best_action = FSActionMe();
+      mnode.best_score = e.Apply(g);
+      auto v = g.GetPossibleActions(Strategy::player);
+      std::random_shuffle(v.begin(), v.end());
+      mnode.nodes.resize(v.size());
+      for (unsigned j = 0; j < v.size(); ++j) {
+        mnode.nodes[j].second = v[j];
+        if (v[j] == mnode.best_action)
+          mnode.nodes[j].first.Update(mnode.best_score);
+      }
       mnode.hp = hp;
-      return r;
+      return mnode.best_score;
+    } else if (mnode.nodes.size() == 1) {
+      Apply(mnode.best_action, mnode.action_opp);
+      // return Play();
+      return Play(h);
+    } else {
+      double best_score = -1000000000, l2g = log2(mnode.games);
+      unsigned best_node = 0;
+      for (unsigned j = 0; j < mnode.nodes.size(); ++j) {
+        // It's already main candidate
+        if (mnode.nodes[j].second == mnode.best_action) continue;
+        auto& n = mnode.nodes[j].first;
+        if (n.games == 0) {
+          best_node = j;
+          break;
+        }
+        double score = n.best_score + exploration_mult * sqrt(l2g / n.games);
+        if (score > best_score) {
+          best_score = score;
+          best_node = j;
+        }
+      }
+      Apply(mnode.nodes[best_node].second, mnode.action_opp);
+      // auto r = Play();
+      auto r = Play(h);
+      mnode.nodes[best_node].first.Update(r);
+      if (mnode.best_score < r) {
+        mnode.best_score = r;
+        mnode.best_action = mnode.nodes[best_node].second;
+      }
+      return mnode.best_score;
     }
-    auto a = mnode.data.GetAction();
-    Apply(a, mnode.action_opp);
-    // auto r = Play();
-    auto r = Play(h);
-    mnode.data.Update(a, r);
-    return mnode.data.s.best_score;
   }
 
  public:
@@ -91,7 +127,7 @@ class StrategyWSGCUTS2 : public Strategy {
     total_runs = 0;
   }
 
-  std::string Name() const override { return "WSGC_UTS2"; }
+  std::string Name() const override { return "MCTS3"; }
 
   Action GetAction(const Game& game) override {
     auto t0 = std::chrono::high_resolution_clock::now();
@@ -106,15 +142,9 @@ class StrategyWSGCUTS2 : public Strategy {
     total_runs += runs;
     auto& mnode = mnodes[game.pos.Hash()];
     // std::cerr << "Total games = " << mnode.games << "\tRuns = " << runs
-    //           << "\tTotal = " << total_runs
-    //           << "\tBest score = " << mnode.data.s.best_score << std::endl;
-    // std::cerr << "W = " << mnode.data.w.s.best_score
-    //           << "\tS = " << mnode.data.e.s.best_score
-    //           << "\tG = " << mnode.data.g.s.best_score
-    //           << "\tC = " << mnode.data.c.s.best_score << std::endl;
-    return mnode.data.GetBestAction(
-        [](auto& l, auto& r) { return l.best_score > r.best_score; });
+    //           << "\tTotal = " << total_runs << std::endl;
+    return mnode.best_action;
   }
 
-  static PStrategy Make() { return std::make_shared<StrategyWSGCUTS2>(); }
+  static PStrategy Make() { return std::make_shared<StrategyMCTS3>(); }
 };
