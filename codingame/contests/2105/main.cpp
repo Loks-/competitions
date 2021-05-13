@@ -11,8 +11,8 @@
 #include "strategy_wsgc_uts2.h"
 
 int main() {
-  // Runner r;
-  Runner r(2230846503);
+  Runner r;
+  // Runner r(2230846503);
   // r.SetStrategy0(Strategy::Make());
   // r.SetStrategy0(StrategyMCTS2::Make());
   // r.SetStrategy0(StrategyWSGCUTS::Make());
