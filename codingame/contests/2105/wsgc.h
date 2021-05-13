@@ -68,7 +68,6 @@ class WSGC {
     }
 
     Action GetMCAction() const {
-      assert(!Empty());
       unsigned best_index = 0;
       double best_score = -MCMaxScore(), l2g = s.L2G();
       for (unsigned i = 0; i < nodes.size(); ++i) {
@@ -78,7 +77,23 @@ class WSGC {
           best_index = i;
         }
       }
+      assert(best_score > -MCMaxScore());
       return nodes[best_index].action;
+    }
+
+    std::pair<Action, double> GetMCActionE(Action exclude) const {
+      unsigned best_index = 0;
+      double best_score = -MCMaxScore(), l2g = s.L2G();
+      for (unsigned i = 0; i < nodes.size(); ++i) {
+        if (nodes[i].action == exclude) continue;
+        double score = nodes[i].s.Eval(l2g);
+        if (best_score < score) {
+          best_score = score;
+          best_index = i;
+        }
+      }
+      assert(best_score > -MCMaxScore());
+      return {nodes[best_index].action, best_score};
     }
   };
 
@@ -123,6 +138,31 @@ class WSGC {
       }
       assert(best_score > -MCMaxScore());
       return leafs[best_index].GetMCAction();
+    }
+
+    std::pair<Action, double> GetMCActionE(Action exclude) const {
+      double best_score = -MCMaxScore(), l2g = s.L2G();
+      Action best_action;
+      for (unsigned i = 0; i < leafs.size(); ++i) {
+        if (leafs[i].Empty()) continue;
+        if (leafs[i].Has(exclude)) {
+          if (leafs[i].Size() > 1) {
+            auto p = leafs[i].GetMCActionE(exclude);
+            if (best_score < p.second) {
+              best_score = p.second;
+              best_action = p.first;
+            }
+          }
+        } else {
+          double score = leafs[i].s.Eval(l2g);
+          if (best_score < score) {
+            best_score = score;
+            best_action = leafs[i].GetMCAction();
+          }
+        }
+      }
+      assert(best_score > -MCMaxScore());
+      return {best_action, best_score};
     }
   };
 
@@ -356,9 +396,61 @@ class WSGC {
     return v[b].second;
   }
 
-  Action GetMCActionE(Action exclude = Action(AT_END)) const {
-    // TODO: Real code
-    FakeUse(exclude);
-    return GetMCAction();
+  Action GetMCActionE(Action exclude) const {
+    double best_score = -MCMaxScore(), l2g = s.L2G();
+    Action best_action;
+    if (!exclude.IsWait()) {
+      double score = w.s.Eval(l2g);
+      if (best_score < score) {
+        best_score = score;
+        best_action = w.GetMCAction();
+      }
+    }
+    if (exclude.type == SEED) {
+      if (e.Size() > 1) {
+        auto p = e.GetMCActionE(exclude);
+        if (best_score < p.second) {
+          best_score = p.second;
+          best_action = p.first;
+        }
+      }
+    } else if (!e.Empty()) {
+      double score = e.s.Eval(l2g);
+      if (best_score < score) {
+        best_score = score;
+        best_action = e.GetMCAction();
+      }
+    }
+    if (exclude.type == GROW) {
+      if (g.Size() > 1) {
+        auto p = g.GetMCActionE(exclude);
+        if (best_score < p.second) {
+          best_score = p.second;
+          best_action = p.first;
+        }
+      }
+    } else if (!g.Empty()) {
+      double score = g.s.Eval(l2g);
+      if (best_score < score) {
+        best_score = score;
+        best_action = g.GetMCAction();
+      }
+    }
+    if (exclude.type == COMPLETE) {
+      if (c.Size() > 1) {
+        auto p = c.GetMCActionE(exclude);
+        if (best_score < p.second) {
+          best_score = p.second;
+          best_action = p.first;
+        }
+      }
+    } else if (!c.Empty()) {
+      double score = c.s.Eval(l2g);
+      if (best_score < score) {
+        best_score = score;
+        best_action = c.GetMCAction();
+      }
+    }
+    return best_action;
   }
 };
