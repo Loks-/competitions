@@ -6,7 +6,7 @@
 
 #include <algorithm>
 
-template <unsigned target_trees = 8, unsigned max_seeds = 2>
+template <unsigned target_trees = 1, unsigned max_seeds = 1>
 class FStrategyBuilder {
  public:
   static Action Get(const Game& game, unsigned player) {
