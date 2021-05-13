@@ -50,5 +50,6 @@ class Player {
     return (uint64_t(FScore()) << 14) + (Trees() << 8) + HTrees() + sun;
   }
 
-  size_t Hash() const { return (score << 11) + (sun << 1) + (waiting ? 1 : 0); }
+  size_t Hash() const { return (score << 19) + (sun << 9) + (waiting ? 4 : 0); }
+  size_t Hash2() const { return (sun << 11) + (waiting ? 4 : 0); }
 };

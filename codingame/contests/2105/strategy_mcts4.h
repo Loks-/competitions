@@ -15,7 +15,7 @@
 #include <vector>
 
 template <class TFStrategy0, class TFStrategy1 = TFStrategy0>
-class StrategyMCTS3 : public StrategyEProxy<TFStrategy0, TFStrategy1> {
+class StrategyMCTS4 : public StrategyEProxy<TFStrategy0, TFStrategy1> {
  public:
   using TBase = StrategyEProxy<TFStrategy0, TFStrategy1>;
 
@@ -47,15 +47,18 @@ class StrategyMCTS3 : public StrategyEProxy<TFStrategy0, TFStrategy1> {
   int64_t Play() {
     auto& g = TBase::g;
     if (g.Ended()) return g.PScoreExt(TBase::player);
-    // auto& mnode = mnodes[g.pos.Hash()];
-    size_t h = g.pos.Hash();
+    int64_t adjust =
+        PDScore(g.pos.players[0].score, g.pos.players[1].score, TBase::player) *
+        ExtScoreScale();
+    // auto& mnode = mnodes[g.pos.Hash2()];
+    size_t h = g.pos.Hash2();
     auto& mnode = mnodes[h];
     mnode.games += 1;
     if (mnode.games == 1) {
       // First time
       mnode.action_opp = TBase::FSActionOpp();
       mnode.best_action = TBase::FSActionMe();
-      mnode.best_score = TBase::e.Apply(g);
+      mnode.best_score = TBase::e.Apply(g) - adjust;
       auto v = g.GetPossibleActions(TBase::player);
       std::random_shuffle(v.begin(), v.end());
       mnode.nodes.resize(v.size());
@@ -64,7 +67,7 @@ class StrategyMCTS3 : public StrategyEProxy<TFStrategy0, TFStrategy1> {
         if (v[j] == mnode.best_action)
           mnode.nodes[j].first.Update(mnode.best_score);
       }
-      return mnode.best_score;
+      return mnode.best_score + adjust;
     } else if (mnode.nodes.size() == 1) {
       TBase::Apply(mnode.best_action, mnode.action_opp);
       return Play();
@@ -86,14 +89,14 @@ class StrategyMCTS3 : public StrategyEProxy<TFStrategy0, TFStrategy1> {
         }
       }
       TBase::Apply(mnode.nodes[best_node].second, mnode.action_opp);
-      auto r = Play();
+      auto r = Play() - adjust;
       auto& mnode2 = mnodes[h];
       mnode2.nodes[best_node].first.Update(r);
       if (mnode2.best_score < r) {
         mnode2.best_score = r;
         mnode2.best_action = mnode2.nodes[best_node].second;
       }
-      return mnode2.best_score;
+      return mnode2.best_score + adjust;
     }
   }
 
@@ -104,7 +107,7 @@ class StrategyMCTS3 : public StrategyEProxy<TFStrategy0, TFStrategy1> {
     total_runs = 0;
   }
 
-  std::string Name() const override { return "MCTS3"; }
+  std::string Name() const override { return "MCTS4"; }
 
   Action GetAction(const Game& game) override {
     TBase::StartTurn();
@@ -114,7 +117,7 @@ class StrategyMCTS3 : public StrategyEProxy<TFStrategy0, TFStrategy1> {
       Play();
     }
     total_runs += runs;
-    auto& mnode = mnodes[game.pos.Hash()];
+    auto& mnode = mnodes[game.pos.Hash2()];
     // std::cerr << "Total games = " << mnode.games << "\tRuns = " << runs
     //           << "\tTotal = " << total_runs << "\tSize = " << mnodes.size()
     //           << std::endl;
@@ -122,5 +125,5 @@ class StrategyMCTS3 : public StrategyEProxy<TFStrategy0, TFStrategy1> {
     return mnode.best_action;
   }
 
-  static PStrategy Make() { return std::make_shared<StrategyMCTS3>(); }
+  static PStrategy Make() { return std::make_shared<StrategyMCTS4>(); }
 };
