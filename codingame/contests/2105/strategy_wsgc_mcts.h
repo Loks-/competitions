@@ -4,6 +4,7 @@
 #include "evaluation_proxy.h"
 #include "game.h"
 #include "settings.h"
+#include "settings_mcts.h"
 #include "strategy.h"
 #include "wsgc.h"
 
@@ -32,7 +33,9 @@ class StrategyWSGMCTS : public Strategy {
       best_score = std::max(best_score, new_score);
     }
 
-    double Eval(double l2n) const {
+    double L2G() const { return Log2Games(games); }
+
+    double Eval(double l2g) const {
       return (games > 0) ? best_score + exploration_mult * sqrt(l2g / games)
                          : 1000000000;
     }
@@ -81,6 +84,8 @@ class StrategyWSGMCTS : public Strategy {
       auto r = e.Apply(g);
       mnode.data.Update(FSActionMe(), r);
       return r;
+    } else if (mnode.data.Size() == 1) {
+      // ...
     }
     auto a = mnode.data.GetAction();
     Apply(a, mnode.action_opp);

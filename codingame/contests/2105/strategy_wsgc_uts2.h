@@ -72,7 +72,7 @@ class StrategyWSGCUTS2 : public Strategy {
       mnode.data.Update(FSActionMe(), r);
       return r;
     }
-    auto a = mnode.data.GetAction();
+    auto a = mnode.data.GetNextAction();
     Apply(a, mnode.action_opp);
     auto r = Play();
     auto& mnode2 = mnodes[h];

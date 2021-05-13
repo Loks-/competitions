@@ -62,7 +62,7 @@ class StrategyWSGCUTS : public Strategy {
         mnode.data.Update(Action(WAIT), mnode.evaluation);
       return r;
     }
-    auto a = mnode.data.GetAction();
+    auto a = mnode.data.GetNextAction();
     Apply(a);
     auto r = Play();
     mnode.data.Update(a, r);
