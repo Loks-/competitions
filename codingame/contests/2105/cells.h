@@ -16,17 +16,15 @@ class Cells {
   Cell& operator[](uint8_t index) { return cells[index]; }
   const Cell& operator[](uint8_t index) const { return cells[index]; }
 
-  uint8_t Size() const { return cells.size(); }
-
   void InitNBD() {
-    DirectedGraph g(Size());
-    for (uint8_t i = 0; i < Size(); ++i) {
+    DirectedGraph g(CellsSize());
+    for (uint8_t i = 0; i < CellsSize(); ++i) {
       for (auto j : cells[i].neighbors) {
-        if (j >= Size()) continue;
+        if (j >= CellsSize()) continue;
         g.AddEdge(i, j);
       }
     }
-    for (uint8_t i = 0; i < Size(); ++i) {
+    for (uint8_t i = 0; i < CellsSize(); ++i) {
       auto v = DistanceFromSource(g, i);
       auto& c = cells[i];
       c.neighbors_by_distance.clear();

@@ -46,14 +46,14 @@ class Game {
   }
 
   void CalcShades(unsigned day, std::vector<uint8_t>& output) const {
-    output.resize(cells.Size());
+    output.resize(CellsSize());
     std::fill(output.begin(), output.end(), 0);
     unsigned d = day % 6;
     for (auto& t : pos.trees) {
       uint8_t c = t.cell;
       for (unsigned i = 0; i < t.size; ++i) {
         c = cells[c].neighbors[d];
-        if (c > cells.Size()) break;
+        if (c > CellsSize()) break;
         output[c] = std::max(output[c], t.size);
       }
     }
