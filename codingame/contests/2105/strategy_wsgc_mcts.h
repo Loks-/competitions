@@ -26,7 +26,7 @@ class StrategyWSGMCTS : public Strategy {
   class Node {
    public:
     unsigned games = 0;
-    int64_t best_score = -1000000000;
+    int64_t best_score = -MCMaxScore();
 
     void Update(int64_t new_score) {
       games += 1;
@@ -37,7 +37,7 @@ class StrategyWSGMCTS : public Strategy {
 
     double Eval(double l2g) const {
       return (games > 0) ? best_score + exploration_mult * sqrt(l2g / games)
-                         : 1000000000;
+                         : MCMaxScore();
     }
   };
 

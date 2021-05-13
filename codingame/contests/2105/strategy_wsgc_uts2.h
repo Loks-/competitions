@@ -21,7 +21,7 @@ class StrategyWSGCUTS2 : public Strategy {
  public:
   class Node {
    public:
-    int64_t best_score = -1000000000;
+    int64_t best_score = -MCMaxScore();
 
     void Update(int64_t new_score) {
       best_score = std::max(best_score, new_score);
@@ -37,7 +37,6 @@ class StrategyWSGCUTS2 : public Strategy {
 
  public:
   EvaluationProxy<TFStrategy0, TFStrategy1> e;
-  unsigned max_time_per_move_milliseconds = 10;
   Game g;
   std::unordered_map<size_t, MasterNode> mnodes;
   unsigned total_runs;
@@ -95,7 +94,7 @@ class StrategyWSGCUTS2 : public Strategy {
     unsigned runs = 0;
     for (; std::chrono::duration_cast<std::chrono::milliseconds>(
                std::chrono::high_resolution_clock::now() - t0)
-               .count() < max_time_per_move_milliseconds;
+               .count() < MaxTimePerMove();
          ++runs) {
       g.pos = game.pos;
       Play();

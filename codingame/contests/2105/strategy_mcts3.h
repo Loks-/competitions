@@ -4,6 +4,7 @@
 #include "evaluation_proxy.h"
 #include "game.h"
 #include "settings.h"
+#include "settings_mcts.h"
 #include "strategy.h"
 
 #include "common/base.h"
@@ -11,7 +12,6 @@
 #include <algorithm>
 #include <array>
 #include <chrono>
-#include <cmath>
 #include <string>
 #include <unordered_map>
 #include <vector>
@@ -22,7 +22,7 @@ class StrategyMCTS3 : public Strategy {
   class Node {
    public:
     unsigned games = 0;
-    int64_t best_score = -1000000000;
+    int64_t best_score = -MCMaxScore();
 
     void Update(int64_t score) {
       games += 1;
@@ -35,14 +35,12 @@ class StrategyMCTS3 : public Strategy {
     Action action_opp;
     unsigned games = 0;
     std::vector<std::pair<Node, Action>> nodes;
-    int64_t best_score = -1000000000;
+    int64_t best_score = -MCMaxScore();
     Action best_action = Action(WAIT);
   };
 
  public:
   EvaluationProxy<TFStrategy0, TFStrategy1> e;
-  unsigned max_time_per_move_milliseconds = 10;
-  double exploration_mult = 30 * (UseExtScore() ? ExtScoreScale() : 1ll);
   Game g;
   std::unordered_map<size_t, MasterNode> mnodes;
   unsigned total_runs;
@@ -87,7 +85,7 @@ class StrategyMCTS3 : public Strategy {
       Apply(mnode.best_action, mnode.action_opp);
       return Play();
     } else {
-      double best_score = -1000000000, l2g = log2(mnode.games);
+      double best_score = -MCMaxScore(), l2g = Log2Games(mnode.games);
       unsigned best_node = 0;
       for (unsigned j = 0; j < mnode.nodes.size(); ++j) {
         // It's already main candidate
@@ -97,7 +95,7 @@ class StrategyMCTS3 : public Strategy {
           best_node = j;
           break;
         }
-        double score = n.best_score + exploration_mult * sqrt(l2g / n.games);
+        double score = MCScoreExt(n.best_score, l2g, n.games);
         if (score > best_score) {
           best_score = score;
           best_node = j;
@@ -130,7 +128,7 @@ class StrategyMCTS3 : public Strategy {
     unsigned runs = 0;
     for (; std::chrono::duration_cast<std::chrono::milliseconds>(
                std::chrono::high_resolution_clock::now() - t0)
-               .count() < max_time_per_move_milliseconds;
+               .count() < MaxTimePerMove();
          ++runs) {
       g.pos = game.pos;
       Play();

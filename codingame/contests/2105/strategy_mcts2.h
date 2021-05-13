@@ -5,6 +5,7 @@
 #include "fstrategy_random.h"
 #include "game.h"
 #include "settings.h"
+#include "settings_mcts.h"
 #include "strategy.h"
 
 #include "common/base.h"
@@ -12,7 +13,6 @@
 #include <algorithm>
 #include <array>
 #include <chrono>
-#include <cmath>
 #include <string>
 #include <unordered_map>
 #include <vector>
@@ -34,8 +34,6 @@ class StrategyMCTS2 : public Strategy {
 
  public:
   EvaluationAutoWaitAndComplete e;
-  unsigned max_time_per_move_milliseconds = 10;
-  double exploration_mult = 14;
   bool one_side_seach = true;
   Game g;
   std::unordered_map<size_t, MasterNode> mnodes;
@@ -74,7 +72,7 @@ class StrategyMCTS2 : public Strategy {
     std::array<unsigned, 2> pm{0, 0};
     for (unsigned i = 0; i < 2; ++i) {
       if (one_side_seach && (i != Strategy::player)) continue;
-      double best_score = -1000;
+      double best_score = -MCMaxScore(), l2g = Log2Games(mnode.games);
       auto& nodes = mnode.nodes[i];
       for (unsigned j = 0; j < nodes.size(); ++j) {
         auto& n = nodes[j].first;
@@ -82,8 +80,9 @@ class StrategyMCTS2 : public Strategy {
           pm[i] = j;
           break;
         }
-        double score = n.total_score * (2.0 * i - 1.0) / n.games +
-                       exploration_mult * sqrt(log2(mnode.games) / n.games);
+        double score =
+            PMult(i) *
+            MCScore(double(n.total_score) / double(n.games), l2g, n.games);
         if (score > best_score) {
           best_score = score;
           pm[i] = j;
@@ -115,7 +114,7 @@ class StrategyMCTS2 : public Strategy {
     unsigned runs = 0;
     for (; std::chrono::duration_cast<std::chrono::milliseconds>(
                std::chrono::high_resolution_clock::now() - t0)
-               .count() < max_time_per_move_milliseconds;
+               .count() < MaxTimePerMove();
          ++runs) {
       g.pos = game.pos;
       Play();
@@ -128,10 +127,10 @@ class StrategyMCTS2 : public Strategy {
     if (mnode.nodes.size() != 2) return FStrategyRandom::Get(game, p);
     auto& nodes = mnode.nodes[p];
     unsigned move = 0;
-    double best_score = -1000;
+    double best_score = -MCMaxScore();
     for (unsigned j = 0; j < nodes.size(); ++j) {
       auto& n = nodes[j].first;
-      double score = n.total_score * (2.0 * p - 1.0) / std::max(n.games, 1u);
+      double score = PMult(p) * double(n.total_score) / std::max(n.games, 1u);
       if (score > best_score) {
         best_score = score;
         move = j;
