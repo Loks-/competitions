@@ -124,7 +124,7 @@ class Runner {
     game.NextDay(true);
     auto& p0 = game.pos.players[0];
     auto& p1 = game.pos.players[1];
-    for (; game.pos.day < TotalDays();) {
+    for (; !game.Ended();) {
       Action a0 = p0.waiting ? Action(AUTO_WAIT) : s0->GetAction(game);
       Action a1 = p1.waiting ? Action(AUTO_WAIT) : s1->GetAction(game);
       game.ApplyActions(a0, a1);
@@ -133,5 +133,33 @@ class Runner {
               << "] -- " << s0->Name() << std::endl;
     std::cout << "S1: [" << p1.score << ", " << p1.sun << ", " << p1.FScore()
               << "] -- " << s1->Name() << std::endl;
+  }
+
+  void RunNGames(unsigned n) {
+    std::vector<std::vector<unsigned>> vr(2, std::vector<unsigned>(4, 0));
+    for (unsigned i = 0; i < n; ++i) {
+      Reset();
+      game.NextDay(true);
+      auto& p0 = game.pos.players[0];
+      auto& p1 = game.pos.players[1];
+      for (; !game.Ended();) {
+        Action a0 = p0.waiting ? Action(AUTO_WAIT) : s0->GetAction(game);
+        Action a1 = p1.waiting ? Action(AUTO_WAIT) : s1->GetAction(game);
+        game.ApplyActions(a0, a1);
+      }
+      for (unsigned p = 0; p < 2; ++p) {
+        auto& pp = game.pos.players[p];
+        vr[p][0] += pp.score;
+        vr[p][1] += pp.sun;
+        vr[p][2] += pp.FScore();
+        vr[p][3] += (pp.FScore() > game.pos.players[1 - p].FScore() ? 1 : 0);
+      }
+    }
+    for (unsigned p = 0; p < 2; ++p) {
+      std::cout << "S" << p << ": [" << double(vr[p][0]) / n << ", "
+                << double(vr[p][1]) / n << ", " << double(vr[p][2]) / n << ", "
+                << double(vr[p][3]) / n << "] -- " << (p ? s1 : s0)->Name()
+                << std::endl;
+    }
   }
 };
