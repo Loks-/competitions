@@ -24,7 +24,7 @@ class EvaluationProxy : public Evaluation {
 
   int64_t Apply(const Game& _game) {
     game.pos = _game.pos;
-    for (; game.pos.day < TotalDays();)
+    for (; !game.Ended();)
       game.ApplyActions(TFStrategy0::Get(game, 0), TFStrategy1::Get(game, 1));
     return game.PScoreExt(Evaluation::player);
   }

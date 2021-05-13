@@ -7,6 +7,7 @@
 #include "strategy_mcts2.h"
 #include "strategy_mcts3.h"
 #include "strategy_proxy.h"
+#include "strategy_wsgc_mcts.h"
 #include "strategy_wsgc_uts.h"
 #include "strategy_wsgc_uts2.h"
 

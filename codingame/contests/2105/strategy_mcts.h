@@ -5,17 +5,18 @@
 #include "game.h"
 #include "settings.h"
 #include "settings_mcts.h"
-#include "strategy.h"
+#include "strategy_time.h"
 
 #include "common/base.h"
 
-#include <chrono>
 #include <string>
 #include <unordered_map>
 #include <vector>
 
-class StrategyMCTS : public Strategy {
+class StrategyMCTS : public StrategyTime {
  public:
+  using TBase = StrategyTime;
+
   class Node {
    public:
     unsigned games = 0;
@@ -28,14 +29,14 @@ class StrategyMCTS : public Strategy {
     std::vector<std::vector<std::pair<Node, Action>>> nodes;
   };
 
- public:
+ protected:
   Game g;
   std::unordered_map<size_t, MasterNode> mnodes;
   unsigned total_runs;
 
  protected:
   int64_t Play() {
-    if (g.pos.day >= TotalDays()) return g.PScore(1);
+    if (g.Ended()) return g.PScore(1);
     auto& mnode = mnodes[g.pos.Hash()];
     thread_local std::vector<std::vector<Action>> pactions(2);
     pactions[0] = g.GetPossibleActions(0);
@@ -93,17 +94,14 @@ class StrategyMCTS : public Strategy {
   std::string Name() const override { return "MCTS"; }
 
   Action GetAction(const Game& game) override {
-    auto t0 = std::chrono::high_resolution_clock::now();
+    TBase::StartTurn();
     unsigned runs = 0;
-    for (; std::chrono::duration_cast<std::chrono::milliseconds>(
-               std::chrono::high_resolution_clock::now() - t0)
-               .count() < MaxTimePerMove();
-         ++runs) {
+    for (; !TBase::TimeToStop(); ++runs) {
       g.pos = game.pos;
       Play();
     }
     total_runs += runs;
-    auto p = Strategy::player;
+    auto p = TBase::player;
     auto& mnode = mnodes[game.pos.Hash()];
     // std::cerr << "Total games = " << mnode.games << "\tRuns = " << runs
     //           << "\tTotal = " << total_runs << std::endl;

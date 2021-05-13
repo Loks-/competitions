@@ -6,20 +6,21 @@
 #include "game.h"
 #include "settings.h"
 #include "settings_mcts.h"
-#include "strategy.h"
+#include "strategy_time.h"
 #include "wsgc.h"
 
 #include "common/base.h"
 
 #include <algorithm>
 #include <array>
-#include <chrono>
 #include <string>
 #include <unordered_map>
 #include <vector>
 
-class StrategyWSGCUTS : public Strategy {
+class StrategyWSGCUTS : public StrategyTime {
  public:
+  using TBase = StrategyTime;
+
   class Node {
    public:
     int64_t best_score = -MCMaxScore();
@@ -36,7 +37,7 @@ class StrategyWSGCUTS : public Strategy {
     int64_t evaluation = 0;
   };
 
- public:
+ protected:
   EvaluationAutoWaitAndComplete e;
   Game g;
   std::unordered_map<size_t, MasterNode> mnodes;
@@ -51,7 +52,7 @@ class StrategyWSGCUTS : public Strategy {
   }
 
   int64_t Play() {
-    if (g.pos.day >= TotalDays()) return g.PScore(Strategy::player);
+    if (g.Ended()) return g.PScore(Strategy::player);
     auto& mnode = mnodes[g.pos.Hash()];
     mnode.games += 1;
     if (mnode.games == 1) {
@@ -80,17 +81,14 @@ class StrategyWSGCUTS : public Strategy {
   std::string Name() const override { return "WSGC_UTS"; }
 
   Action GetAction(const Game& game) override {
-    auto t0 = std::chrono::high_resolution_clock::now();
+    TBase::StartTurn();
     unsigned runs = 0;
-    for (; std::chrono::duration_cast<std::chrono::milliseconds>(
-               std::chrono::high_resolution_clock::now() - t0)
-               .count() < MaxTimePerMove();
-         ++runs) {
+    for (; !TBase::TimeToStop(); ++runs) {
       g.pos = game.pos;
       Play();
     }
     total_runs += runs;
-    auto p = Strategy::player;
+    auto p = TBase::player;
     auto& mnode = mnodes[game.pos.Hash()];
     // std::cerr << "Total games = " << mnode.games << "\tRuns = " << runs
     //           << "\tTotal = " << total_runs

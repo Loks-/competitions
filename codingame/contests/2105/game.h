@@ -18,6 +18,8 @@ class Game {
   void ReadCells() { cells.Read(); }
   void ReadPosition() { pos.Read(); }
 
+  bool Ended() const { return pos.day >= TotalDays(); }
+
   Actions GetPossibleActions(unsigned player) const {
     Actions r;
     auto& p = pos.players[player];

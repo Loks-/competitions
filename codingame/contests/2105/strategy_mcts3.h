@@ -1,24 +1,24 @@
 #pragma once
 
 #include "action.h"
-#include "evaluation_proxy.h"
 #include "game.h"
 #include "settings.h"
 #include "settings_mcts.h"
-#include "strategy.h"
+#include "strategy_eproxy.h"
 
 #include "common/base.h"
 
 #include <algorithm>
 #include <array>
-#include <chrono>
 #include <string>
 #include <unordered_map>
 #include <vector>
 
 template <class TFStrategy0, class TFStrategy1 = TFStrategy0>
-class StrategyMCTS3 : public Strategy {
+class StrategyMCTS3 : public StrategyEProxy<TFStrategy0, TFStrategy1> {
  public:
+  using TBase = StrategyEProxy<TFStrategy0, TFStrategy1>;
+
   class Node {
    public:
     unsigned games = 0;
@@ -39,40 +39,24 @@ class StrategyMCTS3 : public Strategy {
     Action best_action = Action(WAIT);
   };
 
- public:
-  EvaluationProxy<TFStrategy0, TFStrategy1> e;
-  Game g;
+ protected:
   std::unordered_map<size_t, MasterNode> mnodes;
   unsigned total_runs;
 
  protected:
-  Action FSActionMe() {
-    return Strategy::player ? TFStrategy1::Get(g, 1) : TFStrategy0::Get(g, 0);
-  }
-
-  Action FSActionOpp() {
-    return Strategy::player ? TFStrategy0::Get(g, 0) : TFStrategy1::Get(g, 1);
-  }
-
-  void Apply(Action a_me, Action a_opp) {
-    if (Strategy::player)
-      g.ApplyActions(a_opp, a_me);
-    else
-      g.ApplyActions(a_me, a_opp);
-  }
-
   int64_t Play() {
-    if (g.pos.day >= TotalDays()) return g.PScoreExt(Strategy::player);
+    auto& g = TBase::g;
+    if (g.Ended()) return g.PScoreExt(TBase::player);
     // auto& mnode = mnodes[g.pos.Hash()];
     size_t h = g.pos.Hash();
     auto& mnode = mnodes[h];
     mnode.games += 1;
     if (mnode.games == 1) {
       // First time
-      mnode.action_opp = FSActionOpp();
-      mnode.best_action = FSActionMe();
-      mnode.best_score = e.Apply(g);
-      auto v = g.GetPossibleActions(Strategy::player);
+      mnode.action_opp = TBase::FSActionOpp();
+      mnode.best_action = TBase::FSActionMe();
+      mnode.best_score = TBase::e.Apply(g);
+      auto v = g.GetPossibleActions(TBase::player);
       std::random_shuffle(v.begin(), v.end());
       mnode.nodes.resize(v.size());
       for (unsigned j = 0; j < v.size(); ++j) {
@@ -82,7 +66,7 @@ class StrategyMCTS3 : public Strategy {
       }
       return mnode.best_score;
     } else if (mnode.nodes.size() == 1) {
-      Apply(mnode.best_action, mnode.action_opp);
+      TBase::Apply(mnode.best_action, mnode.action_opp);
       return Play();
     } else {
       double best_score = -MCMaxScore(), l2g = Log2Games(mnode.games);
@@ -101,9 +85,9 @@ class StrategyMCTS3 : public Strategy {
           best_node = j;
         }
       }
-      Apply(mnode.nodes[best_node].second, mnode.action_opp);
+      TBase::Apply(mnode.nodes[best_node].second, mnode.action_opp);
       auto r = Play();
-      auto& mnode2 = mnodes[h];  // mnode reference can be wrong!
+      auto& mnode2 = mnodes[h];
       mnode2.nodes[best_node].first.Update(r);
       if (mnode2.best_score < r) {
         mnode2.best_score = r;
@@ -115,8 +99,7 @@ class StrategyMCTS3 : public Strategy {
 
  public:
   void Reset(const Cells& cells) override {
-    e.Reset(cells, Strategy::player);
-    g.cells = cells;
+    TBase::Reset(cells);
     mnodes.clear();
     total_runs = 0;
   }
@@ -124,13 +107,10 @@ class StrategyMCTS3 : public Strategy {
   std::string Name() const override { return "MCTS3"; }
 
   Action GetAction(const Game& game) override {
-    auto t0 = std::chrono::high_resolution_clock::now();
+    TBase::StartTurn();
     unsigned runs = 0;
-    for (; std::chrono::duration_cast<std::chrono::milliseconds>(
-               std::chrono::high_resolution_clock::now() - t0)
-               .count() < MaxTimePerMove();
-         ++runs) {
-      g.pos = game.pos;
+    for (; !TBase::TimeToStop(); ++runs) {
+      TBase::g.pos = game.pos;
       Play();
     }
     total_runs += runs;
