@@ -98,8 +98,7 @@ class StrategyWSGCUTS : public StrategyTime {
     //           << "\tG = " << mnode.data.g.s.best_score
     //           << "\tC = " << mnode.data.c.s.best_score << std::endl;
     if (mnode.games < 1) return FStrategyRandom::Get(game, p);
-    return mnode.data.GetBestAction(
-        [](auto& l, auto& r) { return l.best_score > r.best_score; });
+    return mnode.data.GetBestAction();
   }
 
   static PStrategy Make() { return std::make_shared<StrategyWSGCUTS>(); }

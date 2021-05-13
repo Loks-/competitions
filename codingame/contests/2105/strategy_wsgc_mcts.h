@@ -16,7 +16,7 @@
 #include <vector>
 
 template <class TFStrategy0, class TFStrategy1 = TFStrategy0>
-class StrategyWSGMCTS : public StrategyEProxy<TFStrategy0, TFStrategy1> {
+class StrategyWSGCMCTS : public StrategyEProxy<TFStrategy0, TFStrategy1> {
  public:
   using TBase = StrategyEProxy<TFStrategy0, TFStrategy1>;
 
@@ -49,27 +49,27 @@ class StrategyWSGMCTS : public StrategyEProxy<TFStrategy0, TFStrategy1> {
   int64_t Play() {
     auto& g = TBase::g;
     if (g.Ended()) return g.PScoreExt(TBase::player);
-    return 0;
-    // // auto& mnode = mnodes[g.pos.Hash()];
-    // size_t h = g.pos.Hash();
-    // auto& mnode = mnodes[h];
-    // mnode.games += 1;
-    // if (mnode.games == 1) {
-    //   // First time
-    //   mnode.action_opp = FSActionOpp();
-    //   mnode.data.Init(g.pos, g.GetPossibleActions(Strategy::player));
-    //   auto r = e.Apply(g);
-    //   mnode.data.Update(FSActionMe(), r);
-    //   return r;
-    // } else if (mnode.data.Size() == 1) {
-    //   // ...
-    // }
-    // auto a = mnode.data.GetAction();
-    // Apply(a, mnode.action_opp);
-    // auto r = Play();
-    // auto& mnode2 = mnodes[h];
-    // mnode2.data.Update(a, r);
-    // return mnode2.data.s.best_score;
+    // auto& mnode = mnodes[g.pos.Hash()];
+    size_t h = g.pos.Hash();
+    auto& mnode = mnodes[h];
+    mnode.games += 1;
+    if (mnode.games == 1) {
+      // First time
+      mnode.action_opp = TBase::FSActionOpp();
+      mnode.data.Init(g.pos, g.GetPossibleActions(TBase::player));
+      auto r = TBase::e.Apply(g);
+      mnode.data.Update(TBase::FSActionMe(), r);
+      return r;
+    } else if (mnode.data.Size() == 1) {
+      TBase::Apply(mnode.data.GetWaitAction(), mnode.action_opp);
+      return Play();
+    }
+    auto a = mnode.data.GetMCActionE(mnode.data.GetBestAction());
+    TBase::Apply(a, mnode.action_opp);
+    auto r = Play();
+    auto& mnode2 = mnodes[h];
+    mnode2.data.Update(a, r);
+    return mnode2.data.s.best_score;
   }
 
  public:
@@ -97,9 +97,8 @@ class StrategyWSGMCTS : public StrategyEProxy<TFStrategy0, TFStrategy1> {
     //           << "\tS = " << mnode.data.e.s.best_score
     //           << "\tG = " << mnode.data.g.s.best_score
     //           << "\tC = " << mnode.data.c.s.best_score << std::endl;
-    return mnode.data.GetBestAction(
-        [](auto& l, auto& r) { return l.best_score > r.best_score; });
+    return mnode.data.GetBestAction();
   }
 
-  static PStrategy Make() { return std::make_shared<StrategyWSGMCTS>(); }
+  static PStrategy Make() { return std::make_shared<StrategyWSGCMCTS>(); }
 };

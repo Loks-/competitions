@@ -88,8 +88,7 @@ class StrategyWSGCUTS2 : public StrategyEProxy<TFStrategy0, TFStrategy1> {
     //           << "\tS = " << mnode.data.e.s.best_score
     //           << "\tG = " << mnode.data.g.s.best_score
     //           << "\tC = " << mnode.data.c.s.best_score << std::endl;
-    return mnode.data.GetBestAction(
-        [](auto& l, auto& r) { return l.best_score > r.best_score; });
+    return mnode.data.GetBestAction();
   }
 
   static PStrategy Make() { return std::make_shared<StrategyWSGCUTS2>(); }

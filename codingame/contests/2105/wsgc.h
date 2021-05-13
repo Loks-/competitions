@@ -254,6 +254,8 @@ class WSGC {
   Complete c;
   unsigned k = 0, size;
 
+  unsigned Size() const { return size; }
+
   template <class T>
   void Update(const Action& a, const T& x) {
     switch (a.type) {
@@ -332,6 +334,11 @@ class WSGC {
       if (cmp(v[i].s, v[b].s)) b = i;
     }
     return v[b].action;
+  }
+
+  Action GetBestAction() const {
+    return GetBestAction(
+        [](auto& l, auto& r) { return l.best_score > r.best_score; });
   }
 
   Action GetMCAction() const {

@@ -17,7 +17,8 @@ int main() {
   // r.SetStrategy0(Strategy::Make());
   // r.SetStrategy0(StrategyMCTS2::Make());
   // r.SetStrategy0(StrategyWSGCUTS::Make());
-  r.SetStrategy0(StrategyWSGCUTS2<FStrategyWaitAndComplete>::Make());
+  // r.SetStrategy0(StrategyWSGCUTS2<FStrategyWaitAndComplete>::Make());
+  r.SetStrategy0(StrategyWSGCMCTS<FStrategyWaitAndComplete>::Make());
   // r.SetStrategy1(Strategy::Make());
   // r.SetStrategy1(StrategyProxy<FStrategyRandom>::Make("Random"));
   // r.SetStrategy1(StrategyMCTS2::Make());
