@@ -46,7 +46,7 @@ class Player {
 
   unsigned FScore() const { return FinalScore(score, sun); }
 
-  uint64_t FScoreExt() const {
+  uint64_t FScoreExtRaw() const {
     return (uint64_t(FScore()) << 14) + (Trees() << 8) + HTrees() + sun;
   }
 

@@ -58,7 +58,7 @@ class StrategyWSGCUTS2 : public Strategy {
   }
 
   int64_t Play() {
-    if (g.pos.day >= TotalDays()) return g.PScoreAuto(Strategy::player);
+    if (g.pos.day >= TotalDays()) return g.PScoreExt(Strategy::player);
     // auto& mnode = mnodes[g.pos.Hash()];
     size_t h = g.pos.Hash();
     auto& mnode = mnodes[h];

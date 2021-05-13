@@ -73,12 +73,13 @@ class Game {
     return PDScore(pos.players[0].FScore(), pos.players[1].FScore(), p);
   }
 
-  int64_t PScoreExt(unsigned p) const {
-    return PDScore(pos.players[0].FScoreExt(), pos.players[1].FScoreExt(), p);
+  int64_t PScoreExtRaw(unsigned p) const {
+    return PDScore(pos.players[0].FScoreExtRaw(), pos.players[1].FScoreExtRaw(),
+                   p);
   }
 
-  int64_t PScoreAuto(unsigned p) const {
-    return UseExtScore() ? PScoreExt(p) : PScore(p);
+  int64_t PScoreExt(unsigned p) const {
+    return UseExtScore() ? PScoreExtRaw(p) : PScore(p);
   }
 
   void ApplyAction(unsigned player, const Action& action) {
