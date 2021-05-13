@@ -7,7 +7,6 @@
 #include "common/template.h"
 
 #include <algorithm>
-#include <array>
 #include <vector>
 
 template <class TNodeInfo>
@@ -71,12 +70,8 @@ class WSGC {
     Action GetMCAction() const {
       assert(!Empty());
       unsigned best_index = 0;
-      double best_score = -1000000000, l2g = s.L2G();
+      double best_score = -MCMaxScore(), l2g = s.L2G();
       for (unsigned i = 0; i < nodes.size(); ++i) {
-        if (nodes[i].s.games == 0) {
-          best_index = i;
-          break;
-        }
         double score = nodes[i].s.Eval(l2g);
         if (best_score < score) {
           best_score = score;
@@ -84,6 +79,50 @@ class WSGC {
         }
       }
       return nodes[best_index].action;
+    }
+  };
+
+  class VLeaf {
+   public:
+    TNodeInfo s;
+    std::vector<Leaf> leafs;
+    unsigned k = 0, size;
+
+    bool Empty() const { return size == 0; }
+
+    unsigned Size() const { return size; }
+
+    void ResetK() { k = (size > 0) ? size - 1 : 0; }
+
+    Action GetNextAction() {
+      for (++k; leafs[k % leafs.size()].Empty();) ++k;
+      return leafs[k % leafs.size()].GetNextAction();
+    }
+
+    template <class TCompare>
+    Action GetBestAction(TCompare cmp) const {
+      unsigned b = 0;
+      for (; leafs[b].Empty();) ++b;
+      for (unsigned i = b + 1; i < leafs.size(); ++i) {
+        if (!leafs[i].Empty() && cmp(leafs[i].s, leafs[b].s)) b = i;
+      }
+      return leafs[b].GetBestAction(cmp);
+    }
+
+    Action GetMCAction() const {
+      assert(!Empty());
+      unsigned best_index = 0;
+      double best_score = -MCMaxScore(), l2g = s.L2G();
+      for (unsigned i = 0; i < leafs.size(); ++i) {
+        if (leafs[i].Empty()) continue;
+        double score = leafs[i].s.Eval(l2g);
+        if (best_score < score) {
+          best_score = score;
+          best_index = i;
+        }
+      }
+      assert(best_score > -MCMaxScore());
+      return leafs[best_index].GetMCAction();
     }
   };
 
@@ -115,87 +154,40 @@ class WSGC {
       return Node::action;
     }
 
-    Action GetMCAction() const {
-      return Node::action;
-    }
+    Action GetMCAction() const { return Node::action; }
   };
 
-  class Seed {
+  class Seed : public VLeaf {
    public:
-    TNodeInfo s;
-    std::vector<Leaf> leafs;
-    unsigned k = 0, size;
-
-    bool Empty() const { return leafs.empty(); }
-
-    unsigned Size() const { return size; }
-
     template <class T>
     void Update(const Action& a, const T& x) {
       auto it = std::lower_bound(
-          leafs.begin(), leafs.end(), a.value2,
+          VLeaf::leafs.begin(), VLeaf::leafs.end(), a.value2,
           [](auto& l, auto& r) { return l.nodes[0].action.value2 < r; });
-      assert(it != leafs.end());
+      assert(it != VLeaf::leafs.end());
       it->Update(a, x);
-      s.Update(x);
+      VLeaf::s.Update(x);
     }
 
     template <class TActionIterator>
     void InitS(const Position&, TActionIterator begin, TActionIterator end) {
-      size = end - begin;
-      leafs.clear();
+      VLeaf::size = end - begin;
+      VLeaf::leafs.clear();
       for (auto it = begin; begin != end; begin = it) {
         for (; (it < end) && (it->value2 == begin->value2);) ++it;
-        leafs.push_back({});
-        leafs.back().InitS(begin, it);
+        VLeaf::leafs.push_back({});
+        VLeaf::leafs.back().InitS(begin, it);
       }
-    }
-
-    Action GetNextAction() { return leafs[(k++) % leafs.size()].GetNextAction(); }
-
-    template <class TCompare>
-    Action GetBestAction(TCompare cmp) const {
-      unsigned b = 0;
-      for (unsigned i = 1; i < leafs.size(); ++i) {
-        if (cmp(leafs[i].s, leafs[b].s)) b = i;
-      }
-      return leafs[b].GetBestAction(cmp);
-    }
-
-    Action GetMCAction() const {
-      assert(!Empty());
-      unsigned best_index = 0;
-      double best_score = -1000000000, l2g = s.L2G();
-      for (unsigned i = 0; i < leafs.size(); ++i) {
-        if (leafs[i].Empty()) continue;
-        if (leafs[i].s.games == 0) {
-          best_index = i;
-          break;
-        }
-        double score = leafs[i].s.Eval(l2g);
-        if (best_score < score) {
-          best_score = score;
-          best_index = i;
-        }
-      }
-      return leafs[best_index].GetMCAction();
+      VLeaf::ResetK();
     }
   };
 
-  class Grow {
+  class Grow : public VLeaf {
    public:
-    TNodeInfo s;
-    std::array<Leaf, 3> leafs;
-    unsigned k = 2, size;
-
-    bool Empty() const { return size == 0; }
-
-    unsigned Size() const { return size; }
-
     template <class T>
     void Update(const Action& a, const T& x) {
       bool f = false;
-      for (auto& l : leafs) {
+      for (auto& l : VLeaf::leafs) {
         if (l.Has(a)) {
           f = true;
           l.Update(a, x);
@@ -204,13 +196,13 @@ class WSGC {
       }
       assert(f);
       FakeUse(f);
-      s.Update(x);
+      VLeaf::s.Update(x);
     }
 
     template <class TActionIterator>
     void InitS(const Position& p, TActionIterator begin, TActionIterator end) {
       thread_local std::array<std::vector<Action>, 3> t;
-      size = end - begin;
+      VLeaf::size = end - begin;
       for (auto& it : t) it.clear();
       for (auto it = begin; it < end; ++it) {
         Action a = *it;
@@ -218,54 +210,15 @@ class WSGC {
         assert(ts < 3);
         t[ts].push_back(a);
       }
-      for (unsigned i = 0; i < 3; ++i) leafs[i].InitS(t[i].begin(), t[i].end());
-    }
-
-    Action GetNextAction() {
-      for (++k; leafs[k % 3].Empty();) ++k;
-      return leafs[k % 3].GetNextAction();
-    }
-
-    template <class TCompare>
-    Action GetBestAction(TCompare cmp) const {
-      unsigned b = 0;
-      for (; leafs[b].Empty();) ++b;
-      for (unsigned i = b + 1; i < leafs.size(); ++i) {
-        if (!leafs[i].Empty() && cmp(leafs[i].s, leafs[b].s)) b = i;
-      }
-      return leafs[b].GetBestAction(cmp);
-    }
-
-    Action GetMCAction() const {
-      assert(!Empty());
-      unsigned best_index = 0;
-      double best_score = -1000000000, l2g = s.L2G();
-      for (unsigned i = 0; i < leafs.size(); ++i) {
-        if (leafs[i].Empty()) continue;
-        if (leafs[i].s.games == 0) {
-          best_index = i;
-          break;
-        }
-        double score = leafs[i].s.Eval(l2g);
-        if (best_score < score) {
-          best_score = score;
-          best_index = i;
-        }
-      }
-      return leafs[best_index].GetMCAction();
+      VLeaf::leafs.resize(3);
+      for (unsigned i = 0; i < 3; ++i)
+        VLeaf::leafs[i].InitS(t[i].begin(), t[i].end());
+      VLeaf::ResetK();
     }
   };
 
-  class Complete {
+  class Complete : public VLeaf {
    public:
-    TNodeInfo s;
-    std::array<Leaf, 3> leafs;
-    unsigned k = 2, size;
-
-    bool Empty() const { return size == 0; }
-
-    unsigned Size() const { return size; }
-
     template <class T>
     void Update(const Action& a, const T& x) {
       unsigned ri = (a.value1 < 7)    ? 0
@@ -273,8 +226,8 @@ class WSGC {
                     : (a.value1 < 37) ? 2
                                       : 3;
       assert(ri < 3);
-      leafs[ri].Update(a, x);
-      s.Update(x);
+      VLeaf::leafs[ri].Update(a, x);
+      VLeaf::s.Update(x);
     }
 
     template <class TActionIterator>
@@ -283,45 +236,13 @@ class WSGC {
         return std::lower_bound(begin, end, x,
                                 [](auto& l, auto& r) { return l.value1 < r; });
       };
-      size = end - begin;
+      VLeaf::size = end - begin;
       auto it0 = begin, it1 = F(7), it2 = F(19), it3 = end;
-      leafs[0].InitS(it0, it1);
-      leafs[1].InitS(it1, it2);
-      leafs[2].InitS(it2, it3);
-    }
-
-    Action GetNextAction() {
-      for (++k; leafs[k % 3].Empty();) ++k;
-      return leafs[k % 3].GetNextAction();
-    }
-
-    template <class TCompare>
-    Action GetBestAction(TCompare cmp) const {
-      unsigned b = 0;
-      for (; leafs[b].Empty();) ++b;
-      for (unsigned i = b + 1; i < leafs.size(); ++i) {
-        if (!leafs[i].Empty() && cmp(leafs[i].s, leafs[b].s)) b = i;
-      }
-      return leafs[b].GetBestAction(cmp);
-    }
-
-    Action GetMCAction() const {
-      assert(!Empty());
-      unsigned best_index = 0;
-      double best_score = -1000000000, l2g = s.L2G();
-      for (unsigned i = 0; i < leafs.size(); ++i) {
-        if (leafs[i].Empty()) continue;
-        if (leafs[i].s.games == 0) {
-          best_index = i;
-          break;
-        }
-        double score = leafs[i].s.Eval(l2g);
-        if (best_score < score) {
-          best_score = score;
-          best_index = i;
-        }
-      }
-      return leafs[best_index].GetMCAction();
+      VLeaf::leafs.resize(3);
+      VLeaf::leafs[0].InitS(it0, it1);
+      VLeaf::leafs[1].InitS(it1, it2);
+      VLeaf::leafs[2].InitS(it2, it3);
+      VLeaf::ResetK();
     }
   };
 
@@ -377,9 +298,7 @@ class WSGC {
     InitS(p, v.begin(), v.end());
   }
 
-  Action GetWaitAction() const {
-    return w.GetNextAction();
-  }
+  Action GetWaitAction() const { return w.GetNextAction(); }
 
   Action GetNextAction() {
     for (++k;; ++k) {
