@@ -15,8 +15,15 @@ class Featurization {
       auto& pi = p.players[ip ^ player];
       output.push_back(pi.sun);
       output.push_back(pi.waiting);
-      for (unsigned j = 0; j < 4; ++j) {
-        output.push_back(pi.ntrees[j]);
+      for (unsigned j = 0; j < 4; ++j) output.push_back(pi.ntrees[j]);
+    }
+    for (unsigned d = 0; d < 24; ++d) {
+      double dm = (d == game.pos.day) ? 1 : 0;
+      for (unsigned ip = 0; ip < 2; ++ip) {
+        auto& pi = p.players[ip ^ player];
+        output.push_back(dm * pi.sun);
+        output.push_back(dm * pi.waiting);
+        for (unsigned j = 0; j < 4; ++j) output.push_back(dm * pi.ntrees[j]);
       }
     }
   }

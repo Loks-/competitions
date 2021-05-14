@@ -32,7 +32,7 @@ class Trainer {
   }
 
   void AddRandomGame(bool both_players_view) {
-    t.SetRidge(.01, .01);
+    t.SetRidge(.1, .01);
     r.NewGame();
     r.RunGame();
     auto v = r.GetActions();
