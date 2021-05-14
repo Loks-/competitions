@@ -124,4 +124,16 @@ class Position {
     for (auto vh : vth) h = HashCombine(h, vh.second);
     return h;
   }
+
+  size_t Hash3(unsigned player) const {
+    size_t h = (day << 5) + nutrients;
+    h = HashCombine(h, players[player].waiting ? 4 : 0);
+    h = HashCombine(h, players[1 - player].Hash2());
+    thread_local std::vector<std::pair<uint8_t, size_t>> vth;
+    vth.clear();
+    for (auto& t : trees) vth.push_back({t.cell, t.Hash()});
+    std::sort(vth.begin(), vth.end());
+    for (auto vh : vth) h = HashCombine(h, vh.second);
+    return h;
+  }
 };
