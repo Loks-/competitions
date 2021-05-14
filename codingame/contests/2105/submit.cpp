@@ -1,5 +1,6 @@
 #include "cell.h"
 #include "fstrategy_builder.h"
+#include "fstrategy_builder2.h"
 #include "game.h"
 #include "strategy_proxy.h"
 // #include "strategy_mcts3.h"
@@ -9,8 +10,7 @@
 int main_submit() {
   // auto s = StrategyProxy<FStrategyBuilder<>>::Make();
   // auto s = StrategyMCTS3<FStrategyBuilder<>>::Make();
-  auto s = StrategyWSGCMCTS<FStrategyBuilder<>>::Make();
-  // auto s = StrategyWSGCUTS2<FStrategyBuilder<>>::Make();
+  auto s = StrategyWSGCMCTS<FStrategyBuilder<>, FStrategyBuilder2<>>::Make();
   s->SetP(1);
   Game g;
   g.ReadCells();

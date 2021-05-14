@@ -1,4 +1,5 @@
 #include "fstrategy_builder.h"
+#include "fstrategy_builder2.h"
 #include "fstrategy_complete.h"
 #include "fstrategy_wait_and_complete.h"
 #include "runner.h"
@@ -15,15 +16,18 @@
 
 #include <string>
 
-// using TStrategy0 = FStrategyBuilder<1, 1>;
-// using TStrategy0 = StrategyMCTS3<FStrategyBuilder<1, 1>>;
-// using TStrategy0 = StrategyMCTS4<FStrategyBuilder<1, 1>>;
-using TStrategy0 = StrategyWSGCMCTS<FStrategyBuilder<1, 1>>;
+// using TStrategy0 = StrategyProxy<FStrategyBuilder<1, 1>>;
+// using TStrategy0 = StrategyProxy<FStrategyBuilder2<1, 1, 2, 4>>;
+// using TStrategy0 = StrategyMCTS3<FStrategyBuilder<>>;
+// using TStrategy0 = StrategyMCTS4<FStrategyBuilder<>>;
+using TStrategy0 = StrategyWSGCMCTS<FStrategyBuilder<>>;
 
-// using TStrategy1 = FStrategyBuilder<1, 1>;
-using TStrategy1 = StrategyMCTS3<FStrategyBuilder<1, 1>>;
-// using TStrategy1 = StrategyMCTS4<FStrategyBuilder<1, 1>>;
-// using TStrategy1 = StrategyWSGCMCTS<FStrategyBuilder<1, 1>>;
+// using TStrategy1 = StrategyProxy<FStrategyBuilder<>>;
+// using TStrategy1 = StrategyProxy<FStrategyBuilder2<>>;
+// using TStrategy1 = StrategyMCTS3<FStrategyBuilder<>>;
+// using TStrategy1 = StrategyMCTS3<FStrategyBuilder2<>>;
+// using TStrategy1 = StrategyMCTS4<FStrategyBuilder<>>;
+using TStrategy1 = StrategyWSGCMCTS<FStrategyBuilder2<>, FStrategyBuilder2<>>;
 
 int main(int nargs, char **pargs) {
   if (nargs > 1) {
