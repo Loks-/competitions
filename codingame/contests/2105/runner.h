@@ -181,7 +181,7 @@ class Runner {
       ThreadPool p(8);
       for (unsigned i = 0; i < n; ++i) {
         auto t = std::make_shared<std::packaged_task<void()>>([&, i]() {
-          Runner r(seed + i);
+          Runner r(seed + i * 137951);
           r.SetStrategy0(TStrategy0::Make());
           r.SetStrategy1(TStrategy1::Make());
           r.RunGameI();

@@ -46,7 +46,7 @@ class StrategyWSGCMCTS : public StrategyEProxy<TFStrategy0, TFStrategy1> {
   std::unordered_map<size_t, MasterNode> mnodes;
   unsigned total_runs;
 
-  int64_t Play() {
+  int64_t Play(bool first = false) {
     auto& g = TBase::g;
     if (g.Ended()) return g.PScoreExt(TBase::player);
     // auto& mnode = mnodes[g.pos.Hash()];
@@ -64,7 +64,8 @@ class StrategyWSGCMCTS : public StrategyEProxy<TFStrategy0, TFStrategy1> {
       TBase::Apply(mnode.data.GetWaitAction(), mnode.action_opp);
       return Play();
     }
-    auto a = mnode.data.GetMCActionE(mnode.data.GetBestAction());
+    auto a = first ? mnode.data.GetMCActionE(mnode.data.GetBestAction())
+                   : mnode.data.GetMCAction();
     TBase::Apply(a, mnode.action_opp);
     auto r = Play();
     auto& mnode2 = mnodes[h];
@@ -86,7 +87,7 @@ class StrategyWSGCMCTS : public StrategyEProxy<TFStrategy0, TFStrategy1> {
     unsigned runs = 0;
     for (; !TBase::TimeToStop(); ++runs) {
       TBase::g.pos = game.pos;
-      Play();
+      Play(true);
     }
     total_runs += runs;
     auto& mnode = mnodes[game.pos.Hash()];
