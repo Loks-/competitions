@@ -17,7 +17,7 @@
 
 int main(int nargs, char **pargs) {
   Runner r;
-  // Runner r(2230846503);
+  // Runner r(3112396252);
   // r.SetStrategy0(Strategy::Make());
   // r.SetStrategy0(StrategyProxy<FStrategyBuilder<1, 1>>::Make("Builder 1/1"));
   // r.SetStrategy0(StrategyMCTS2::Make());

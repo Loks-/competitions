@@ -44,7 +44,7 @@ class StrategyMCTS4 : public StrategyEProxy<TFStrategy0, TFStrategy1> {
   unsigned total_runs;
 
  protected:
-  int64_t Play() {
+  int64_t Play(bool ignore_best = false) {
     auto& g = TBase::g;
     if (g.Ended()) return g.PScoreExt(TBase::player);
     int64_t adjust =
@@ -58,17 +58,25 @@ class StrategyMCTS4 : public StrategyEProxy<TFStrategy0, TFStrategy1> {
       // First time
       mnode.action_opp = TBase::FSActionOpp();
       mnode.best_action = TBase::FSActionMe();
-      mnode.best_score = TBase::e.Apply(g) - adjust;
+      TBase::Apply(mnode.best_action, mnode.action_opp);
+      auto r = Play() - adjust;
+      auto& mnode2 = mnodes[h];
+      mnode2.best_score = r;
+      return r + adjust;
+    } else if (mnode.games == 2) {
+      // Time for init
       auto v = g.GetPossibleActions(TBase::player);
-      std::random_shuffle(v.begin(), v.end());
-      mnode.nodes.resize(v.size());
-      for (unsigned j = 0; j < v.size(); ++j) {
-        mnode.nodes[j].second = v[j];
-        if (v[j] == mnode.best_action)
-          mnode.nodes[j].first.Update(mnode.best_score);
+      if (v.size() > 1) {
+        std::random_shuffle(v.begin(), v.end());
+        mnode.nodes.resize(v.size());
+        for (unsigned j = 0; j < v.size(); ++j) {
+          mnode.nodes[j].second = v[j];
+          if (v[j] == mnode.best_action)
+            mnode.nodes[j].first.Update(mnode.best_score);
+        }
       }
-      return mnode.best_score + adjust;
-    } else if (mnode.nodes.size() == 1) {
+    }
+    if (mnode.nodes.size() <= 1) {
       TBase::Apply(mnode.best_action, mnode.action_opp);
       return Play();
     } else {
@@ -76,7 +84,8 @@ class StrategyMCTS4 : public StrategyEProxy<TFStrategy0, TFStrategy1> {
       unsigned best_node = 0;
       for (unsigned j = 0; j < mnode.nodes.size(); ++j) {
         // It's already main candidate
-        if (mnode.nodes[j].second == mnode.best_action) continue;
+        if (ignore_best && (mnode.nodes[j].second == mnode.best_action))
+          continue;
         auto& n = mnode.nodes[j].first;
         if (n.games == 0) {
           best_node = j;
@@ -113,15 +122,16 @@ class StrategyMCTS4 : public StrategyEProxy<TFStrategy0, TFStrategy1> {
     TBase::StartTurn();
     unsigned runs = 0;
     for (; !TBase::TimeToStop(); ++runs) {
+      // for (; runs < 100; ++runs) {
       TBase::g.pos = game.pos;
-      Play();
+      Play(true);
     }
     total_runs += runs;
     auto& mnode = mnodes[game.pos.Hash2()];
+    // std::cerr << Name() << " " << mnode.best_score << std::endl;
     // std::cerr << "Total games = " << mnode.games << "\tRuns = " << runs
     //           << "\tTotal = " << total_runs << "\tSize = " << mnodes.size()
     //           << std::endl;
-    // std::cerr << Name() << " " << mnode.best_score << std::endl;
     return mnode.best_action;
   }
 

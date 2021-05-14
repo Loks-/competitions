@@ -110,15 +110,16 @@ class StrategyMCTS3 : public StrategyEProxy<TFStrategy0, TFStrategy1> {
     TBase::StartTurn();
     unsigned runs = 0;
     for (; !TBase::TimeToStop(); ++runs) {
+      // for (; runs < 100; ++runs) {
       TBase::g.pos = game.pos;
       Play();
     }
     total_runs += runs;
     auto& mnode = mnodes[game.pos.Hash()];
+    // std::cerr << Name() << " " << mnode.best_score << std::endl;
     // std::cerr << "Total games = " << mnode.games << "\tRuns = " << runs
     //           << "\tTotal = " << total_runs << "\tSize = " << mnodes.size()
     //           << std::endl;
-    // std::cerr << Name() << " " << mnode.best_score << std::endl;
     return mnode.best_action;
   }
 
