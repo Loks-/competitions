@@ -101,7 +101,7 @@ class WSGC {
    public:
     TNodeInfo s;
     std::vector<Leaf> leafs;
-    unsigned k = 0, size;
+    unsigned k = 0, size = 0;
 
     bool Empty() const { return size == 0; }
 
@@ -261,10 +261,8 @@ class WSGC {
    public:
     template <class T>
     void Update(const Action& a, const T& x) {
-      unsigned ri = (a.value1 < 7)    ? 0
-                    : (a.value1 < 19) ? 1
-                    : (a.value1 < 37) ? 2
-                                      : 3;
+      unsigned ri =
+          (a.value1 < 7) ? 0 : (a.value1 < 19) ? 1 : (a.value1 < 37) ? 2 : 3;
       assert(ri < 3);
       VLeaf::leafs[ri].Update(a, x);
       VLeaf::s.Update(x);
@@ -292,7 +290,7 @@ class WSGC {
   Seed e;
   Grow g;
   Complete c;
-  unsigned k = 0, size;
+  unsigned k = 0, size = 1;
 
   unsigned Size() const { return size; }
 
@@ -335,7 +333,8 @@ class WSGC {
   }
 
   void Init(const Position& p, const Actions& va) {
-    std::vector<Action> v(va);
+    thread_local std::vector<Action> v;
+    v = va;
     std::sort(v.begin(), v.end());
     InitS(p, v.begin(), v.end());
   }

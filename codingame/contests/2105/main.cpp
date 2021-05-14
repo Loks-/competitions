@@ -11,6 +11,7 @@
 #include "strategy_proxy.h"
 #include "strategy_proxy.h"
 #include "strategy_wsgc_mcts.h"
+#include "strategy_wsgc_mcts2.h"
 #include "strategy_wsgc_uts.h"
 #include "strategy_wsgc_uts2.h"
 
@@ -27,7 +28,9 @@ using TStrategy0 = StrategyWSGCMCTS<FStrategyBuilder<>>;
 // using TStrategy1 = StrategyMCTS3<FStrategyBuilder<>>;
 // using TStrategy1 = StrategyMCTS3<FStrategyBuilder2<>>;
 // using TStrategy1 = StrategyMCTS4<FStrategyBuilder<>>;
-using TStrategy1 = StrategyWSGCMCTS<FStrategyBuilder2<>, FStrategyBuilder2<>>;
+// using TStrategy1 = StrategyWSGCMCTS<FStrategyBuilder<>>;
+// using TStrategy1 = StrategyWSGCMCTS<FStrategyBuilder2<>>;
+using TStrategy1 = StrategyWSGCMCTS2<FStrategyBuilder<>>;
 
 int main(int nargs, char **pargs) {
   if (nargs > 1) {
