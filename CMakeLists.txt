@@ -13,6 +13,7 @@ find_package( Threads )
 
 file( GLOB_RECURSE CODINGAME_CONTESTS_2105_SOURCES RELATIVE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/codingame/contests/2105/*.cpp" )
 add_executable( codingame_contests_2105 ${CODINGAME_CONTESTS_2105_SOURCES} )
+target_link_libraries( codingame_contests_2105 ${CMAKE_THREAD_LIBS_INIT} )
 
 file( GLOB_RECURSE GOOGLE_DISTRIBUTED_CODE_JAM_SOURCES RELATIVE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/google/distributed_code_jam/*.cpp" )
 add_executable( google_distributed_code_jam ${GOOGLE_DISTRIBUTED_CODE_JAM_SOURCES} )

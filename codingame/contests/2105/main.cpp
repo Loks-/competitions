@@ -15,26 +15,26 @@
 
 #include <string>
 
+// using TStrategy0 = FStrategyBuilder<1, 1>;
+// using TStrategy0 = StrategyMCTS3<FStrategyBuilder<1, 1>>;
+// using TStrategy0 = StrategyMCTS4<FStrategyBuilder<1, 1>>;
+using TStrategy0 = StrategyWSGCMCTS<FStrategyBuilder<1, 1>>;
+
+// using TStrategy1 = FStrategyBuilder<1, 1>;
+using TStrategy1 = StrategyMCTS3<FStrategyBuilder<1, 1>>;
+// using TStrategy1 = StrategyMCTS4<FStrategyBuilder<1, 1>>;
+// using TStrategy1 = StrategyWSGCMCTS<FStrategyBuilder<1, 1>>;
+
 int main(int nargs, char **pargs) {
-  Runner r;
-  // Runner r(3112396252);
-  // r.SetStrategy0(Strategy::Make());
-  // r.SetStrategy0(StrategyProxy<FStrategyBuilder<1, 1>>::Make("Builder 1/1"));
-  // r.SetStrategy0(StrategyMCTS2::Make());
-  r.SetStrategy0(StrategyMCTS3<FStrategyBuilder<1, 1>>::Make());
-  // r.SetStrategy0(StrategyWSGCUTS::Make());
-  // r.SetStrategy0(StrategyWSGCUTS2<FStrategyWaitAndComplete>::Make());
-  // r.SetStrategy0(StrategyWSGCMCTS<FStrategyBuilder<1, 1>>::Make());
-  // r.SetStrategy1(Strategy::Make());
-  // r.SetStrategy1(StrategyProxy<FStrategyBuilder<1, 1>>::Make("Builder 1/1"));
-  // r.SetStrategy1(StrategyMCTS2::Make());
-  r.SetStrategy1(StrategyMCTS4<FStrategyBuilder<1, 1>>::Make());
-  // r.SetStrategy1(StrategyWSGCMCTS<FStrategyBuilder<1, 1>>::Make());
   if (nargs > 1) {
     unsigned ngames = std::stoul(pargs[1]);
-    r.RunNGames(ngames);
+    Runner::RunTP<TStrategy0, TStrategy1>(ngames);
   } else {
+    Runner r;
+    r.SetStrategy0(TStrategy0::Make());
+    r.SetStrategy1(TStrategy1::Make());
     r.RunGame();
+    // r.RunNGames(40);
   }
   return 0;
 }

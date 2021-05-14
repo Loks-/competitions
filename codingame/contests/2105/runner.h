@@ -5,30 +5,38 @@
 #include "settings.h"
 #include "strategy.h"
 
+#include "common/thread_pool.h"
+
 #include <chrono>
 #include <iostream>
 #include <random>
 
 class Runner {
  public:
+  bool print_seed = true;
   std::minstd_rand rng;
   Game game;
   PStrategy s0, s1;
 
+ public:
   Runner() {
     SetSeed(
         std::chrono::high_resolution_clock::now().time_since_epoch().count());
   }
 
-  Runner(unsigned seed) { SetSeed(seed); }
-
-  void SetSeed(unsigned seed) {
-    std::cout << "Seed = " << seed << std::endl;
-    rng.seed(seed);
+  Runner(unsigned seed) {
+    print_seed = false;
+    SetSeed(seed);
   }
 
   void SetStrategy0(PStrategy s) { s0 = s; }
   void SetStrategy1(PStrategy s) { s1 = s; }
+
+ protected:
+  void SetSeed(unsigned seed) {
+    if (print_seed) std::cout << "Seed = " << seed << std::endl;
+    rng.seed(seed);
+  }
 
   unsigned PairCell(unsigned index) const {
     if (index == 0) return index;
@@ -119,7 +127,8 @@ class Runner {
     s1->Reset(game.cells);
   }
 
-  void RunGame() {
+ protected:
+  void RunGameI() {
     Reset();
     game.NextDay(true);
     auto& p0 = game.pos.players[0];
@@ -129,6 +138,13 @@ class Runner {
       Action a1 = p1.waiting ? Action(AUTO_WAIT) : s1->GetAction(game);
       game.ApplyActions(a0, a1);
     }
+  }
+
+ public:
+  void RunGame() {
+    RunGameI();
+    auto& p0 = game.pos.players[0];
+    auto& p1 = game.pos.players[1];
     std::cout << "S0: [" << p0.score << ", " << p0.sun << ", " << p0.FScore()
               << "] -- " << s0->Name() << std::endl;
     std::cout << "S1: [" << p1.score << ", " << p1.sun << ", " << p1.FScore()
@@ -138,15 +154,7 @@ class Runner {
   void RunNGames(unsigned n) {
     std::vector<std::vector<unsigned>> vr(2, std::vector<unsigned>(4, 0));
     for (unsigned i = 0; i < n; ++i) {
-      Reset();
-      game.NextDay(true);
-      auto& p0 = game.pos.players[0];
-      auto& p1 = game.pos.players[1];
-      for (; !game.Ended();) {
-        Action a0 = p0.waiting ? Action(AUTO_WAIT) : s0->GetAction(game);
-        Action a1 = p1.waiting ? Action(AUTO_WAIT) : s1->GetAction(game);
-        game.ApplyActions(a0, a1);
-      }
+      RunGameI();
       for (unsigned p = 0; p < 2; ++p) {
         auto& pp = game.pos.players[p];
         vr[p][0] += pp.score;
@@ -160,6 +168,47 @@ class Runner {
                 << double(vr[p][1]) / n << ", " << double(vr[p][2]) / n << ", "
                 << double(vr[p][3]) / n << "] -- " << (p ? s1 : s0)->Name()
                 << std::endl;
+    }
+  }
+
+  template <class TStrategy0, class TStrategy1>
+  static void RunTP(unsigned n) {
+    std::vector<std::vector<std::vector<unsigned>>> vr(
+        n, std::vector<std::vector<unsigned>>(2, std::vector<unsigned>(4)));
+    unsigned seed =
+        std::chrono::high_resolution_clock::now().time_since_epoch().count();
+    {
+      ThreadPool p(8);
+      for (unsigned i = 0; i < n; ++i) {
+        auto t = std::make_shared<std::packaged_task<void()>>([&, i]() {
+          Runner r(seed + i);
+          r.SetStrategy0(TStrategy0::Make());
+          r.SetStrategy1(TStrategy1::Make());
+          r.RunGameI();
+          for (unsigned p = 0; p < 2; ++p) {
+            auto& pp = r.game.pos.players[p];
+            vr[i][p][0] = pp.score;
+            vr[i][p][1] = pp.sun;
+            vr[i][p][2] = pp.FScore();
+            vr[i][p][3] =
+                (pp.FScore() > r.game.pos.players[1 - p].FScore() ? 1 : 0);
+          }
+        });
+        p.EnqueueTask(std::move(t));
+      }
+    }
+    for (unsigned i = 1; i < n; ++i) {
+      for (unsigned p = 0; p < 2; ++p) {
+        for (unsigned k = 0; k < 4; ++k) vr[0][p][k] += vr[i][p][k];
+      }
+    }
+    auto s0 = TStrategy0::Make();
+    auto s1 = TStrategy1::Make();
+    for (unsigned p = 0; p < 2; ++p) {
+      std::cout << "S" << p << ": [" << double(vr[0][p][0]) / n << ", "
+                << double(vr[0][p][1]) / n << ", " << double(vr[0][p][2]) / n
+                << ", " << double(vr[0][p][3]) / n << "] -- "
+                << (p ? s1 : s0)->Name() << std::endl;
     }
   }
 };
