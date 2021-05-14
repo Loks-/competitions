@@ -14,6 +14,7 @@
 #include "strategy_wsgc_mcts2.h"
 #include "strategy_wsgc_uts.h"
 #include "strategy_wsgc_uts2.h"
+#include "trainer.h"
 
 #include <string>
 
@@ -21,18 +22,24 @@
 // using TStrategy0 = StrategyProxy<FStrategyBuilder2<1, 1, 2, 4>>;
 // using TStrategy0 = StrategyMCTS3<FStrategyBuilder<>>;
 // using TStrategy0 = StrategyMCTS4<FStrategyBuilder<>>;
-using TStrategy0 = StrategyWSGCMCTS<FStrategyBuilder<>>;
+using TStrategy0 = StrategyWSGCMCTS<FStrategyBuilder2<>>;
 
 // using TStrategy1 = StrategyProxy<FStrategyBuilder<>>;
 // using TStrategy1 = StrategyProxy<FStrategyBuilder2<>>;
-// using TStrategy1 = StrategyMCTS3<FStrategyBuilder<>>;
+using TStrategy1 = StrategyMCTS3<FStrategyBuilder<>>;
 // using TStrategy1 = StrategyMCTS3<FStrategyBuilder2<>>;
 // using TStrategy1 = StrategyMCTS4<FStrategyBuilder<>>;
 // using TStrategy1 = StrategyWSGCMCTS<FStrategyBuilder<>>;
 // using TStrategy1 = StrategyWSGCMCTS<FStrategyBuilder2<>>;
-using TStrategy1 = StrategyWSGCMCTS2<FStrategyBuilder<>>;
+// using TStrategy1 = StrategyWSGCMCTS2<FStrategyBuilder<>>;
 
 int main(int nargs, char **pargs) {
+  // int main() {
+  // Trainer t;
+  // t.SetTrainers<TStrategy0, TStrategy1>();
+  // t.AddNGames(20, true);
+  // t.Train();
+
   if (nargs > 1) {
     unsigned ngames = std::stoul(pargs[1]);
     Runner::RunTP<TStrategy0, TStrategy1>(ngames);

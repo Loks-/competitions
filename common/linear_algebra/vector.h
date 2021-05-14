@@ -117,6 +117,14 @@ class Vector {
     t -= v;
     return t;
   }
+
+  TValue DotProduct(const TSelf& v) const {
+    assert(Size() == v.Size());
+    TValue s = TValue();
+    for (const_iterator p1 = begin(), p2 = v.begin(), pend = end(); p1 != pend;)
+      s += *p1++ * *p2++;
+    return s;
+  }
 };
 }  // namespace la
 

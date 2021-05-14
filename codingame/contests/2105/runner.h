@@ -5,6 +5,7 @@
 #include "settings.h"
 #include "strategy.h"
 
+#include "common/optimization/model/trainer/xtx.h"
 #include "common/thread_pool.h"
 
 #include <chrono>
@@ -125,12 +126,12 @@ class Runner {
     s0->Reset(game.cells);
     s1->SetP(1);
     s1->Reset(game.cells);
+    game.pos.players[0].sun = game.pos.players[1].sun = 2;
   }
 
  protected:
   void RunGameI() {
     Reset();
-    game.NextDay(true);
     auto& p0 = game.pos.players[0];
     auto& p1 = game.pos.players[1];
     for (; !game.Ended();) {
