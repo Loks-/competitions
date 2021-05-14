@@ -14,16 +14,20 @@ class EvaluationProxy : public Evaluation {
   using TBase = Evaluation;
 
  protected:
-  Game game;
+  Game lgame;
 
  public:
   void Reset(const Cells& cells, unsigned _player) {
     TBase::Reset(cells, _player);
-    game.cells = cells;
+    lgame.cells = cells;
   }
 
-  int64_t Apply(const Game& _game) {
-    game.pos = _game.pos;
+  int64_t ApplyC(const Game& game) {
+    lgame.pos = game.pos;
+    return ApplyI(lgame);
+  }
+
+  int64_t ApplyI(Game& game) {
     for (; !game.Ended();)
       game.ApplyActions(TFStrategy0::Get(game, 0), TFStrategy1::Get(game, 1));
     return game.PScoreExt(Evaluation::player);

@@ -55,7 +55,7 @@ class StrategyMCTS3 : public StrategyEProxy<TFStrategy0, TFStrategy1> {
       // First time
       mnode.action_opp = TBase::FSActionOpp();
       mnode.best_action = TBase::FSActionMe();
-      mnode.best_score = TBase::e.Apply(g);
+      mnode.best_score = TBase::e.ApplyC(g);
       auto v = g.GetPossibleActions(TBase::player);
       std::random_shuffle(v.begin(), v.end());
       mnode.nodes.resize(v.size());

@@ -16,7 +16,7 @@ class EvaluationAutoWait : public Evaluation {
  public:
   EvaluationAutoWait() : ps(2) {}
 
-  int64_t Apply(const Game& game) {
+  int64_t ApplyC(const Game& game) {
     ps[0] = game.pos.players[0].sun;
     ps[1] = game.pos.players[1].sun;
     for (unsigned day = game.pos.day + 1; day < TotalDays(); ++day) {
@@ -29,4 +29,6 @@ class EvaluationAutoWait : public Evaluation {
                    FinalScore(game.pos.players[1].score, ps[1]),
                    Evaluation::player);
   }
+
+  int64_t ApplyI(Game& game) { return ApplyC(game); }
 };

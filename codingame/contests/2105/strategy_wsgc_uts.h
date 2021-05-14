@@ -58,7 +58,7 @@ class StrategyWSGCUTS : public StrategyTime {
     if (mnode.games == 1) {
       // First time, use evaluation instead of search
       mnode.data.Init(g.pos, g.GetPossibleActions(Strategy::player));
-      auto r = e.Apply(g);
+      auto r = e.ApplyC(g);
       if (g.pos.day + 1u < TotalDays())
         mnode.data.Update(Action(WAIT), mnode.evaluation);
       return r;

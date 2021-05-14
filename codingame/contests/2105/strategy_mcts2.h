@@ -51,7 +51,7 @@ class StrategyMCTS2 : public StrategyTime {
     mnode.games += 1;
     if (mnode.games == 1) {
       // First time, use evaluation instead of search
-      return (mnode.evaluation = e.Apply(g));
+      return (mnode.evaluation = e.ApplyI(g));
     }
     if (mnode.nodes.empty()) {
       assert(mnode.games == 2);

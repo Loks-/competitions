@@ -29,7 +29,7 @@ class EvaluationAutoWaitAndComplete : public Evaluation {
     pmask = (1u << _player);
   }
 
-  int64_t Apply(const Game& game) {
+  int64_t ApplyC(const Game& game) {
     for (unsigned i = 0; i < 2; ++i) {
       psun[i] = game.pos.players[i].sun;
       pscore[i] = game.pos.players[i].score;
@@ -74,4 +74,6 @@ class EvaluationAutoWaitAndComplete : public Evaluation {
     return PDScore(FinalScore(pscore[0], psun[0]),
                    FinalScore(pscore[1], psun[1]), Evaluation::player);
   }
+
+  int64_t ApplyI(Game& game) { return ApplyC(game); }
 };

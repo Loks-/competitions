@@ -57,8 +57,9 @@ class StrategyWSGCMCTS : public StrategyEProxy<TFStrategy0, TFStrategy1> {
       // First time
       mnode.action_opp = TBase::FSActionOpp();
       mnode.data.Init(g.pos, g.GetPossibleActions(TBase::player));
-      auto r = TBase::e.Apply(g);
-      mnode.data.Update(TBase::FSActionMe(), r);
+      auto a = TBase::FSActionMe();
+      auto r = TBase::e.ApplyI(g);
+      mnode.data.Update(a, r);
       return r;
     } else if (mnode.data.Size() == 1) {
       TBase::Apply(mnode.data.GetWaitAction(), mnode.action_opp);

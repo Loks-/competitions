@@ -10,5 +10,6 @@ class Evaluation {
  public:
   void Reset(const Cells&, unsigned _player) { player = _player; }
 
-  int64_t Apply(const Game&) { return 0; }
+  int64_t ApplyC(const Game&) { return 0; }
+  int64_t ApplyI(Game&) { return 0; }
 };
