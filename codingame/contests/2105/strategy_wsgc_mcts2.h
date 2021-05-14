@@ -46,6 +46,7 @@ class StrategyWSGCMCTS2 : public StrategyEProxy<TFStrategy0, TFStrategy1> {
  protected:
   std::unordered_map<size_t, MasterNode> mnodes;
   unsigned total_runs;
+  unsigned current_day;
 
   int64_t Play(bool first = false) {
     auto& g = TBase::g;
@@ -59,7 +60,7 @@ class StrategyWSGCMCTS2 : public StrategyEProxy<TFStrategy0, TFStrategy1> {
       mnode.action_opp = TBase::FSActionOpp();
       mnode.action_me = TBase::FSActionMe();
       TBase::Apply(mnode.action_me, mnode.action_opp);
-      auto r = Play();
+      auto r = (g.pos.day == current_day) ? Play() : TBase::e.ApplyI(g);
       auto& mnode2 = mnodes[h];
       mnode2.data.s.best_score = r;
       return r;
@@ -93,6 +94,7 @@ class StrategyWSGCMCTS2 : public StrategyEProxy<TFStrategy0, TFStrategy1> {
 
   Action GetAction(const Game& game) override {
     TBase::StartTurn();
+    current_day = game.pos.day;
     unsigned runs = 0;
     for (; !TBase::TimeToStop(); ++runs) {
       TBase::g.pos = game.pos;
