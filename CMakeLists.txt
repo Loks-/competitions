@@ -217,6 +217,7 @@ add_test( NAME blindfolded_bullseye.2 COMMAND python3 tests/google/code_jam/2020
 add_test( NAME median_sort.2 COMMAND python3 tests/google/code_jam/2020/interactive_runner.py python3 tests/google/code_jam/2021/qr/median_sort.py 2 -- ./release/build/google_code_jam median_sort WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} )
 # add_test( NAME digit_blocks.0 COMMAND python3 tests/google/code_jam/2020/interactive_runner.py python3 tests/google/code_jam/2021/r1b/digit_blocks.py 0 -- ./release/build/google_code_jam digit_blocks WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} )
 add_test( NAME digit_blocks.1 COMMAND python3 tests/google/code_jam/2020/interactive_runner.py python3 tests/google/code_jam/2021/r1b/digit_blocks.py 1 -- ./release/build/google_code_jam digit_blocks WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} )
+add_test( NAME minimum_sort COMMAND python3 tests/google/code_jam/2020/interactive_runner.py python3 tests/google/code_jam/2021/r2/minimum_sort.py -- ./release/build/google_code_jam minimum_sort WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} )
 
 file( GLOB_RECURSE HACKERRANK_TESTS RELATIVE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/tests/hackerrank/*.in" )
 list( SORT HACKERRANK_TESTS )
