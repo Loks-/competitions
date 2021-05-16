@@ -6,29 +6,20 @@
 int main_matrygons() {
   unsigned N = 1000001, T, n;
   PrimesTable pt(N);
-  vector<unsigned> v(N, 0);
-  for (unsigned i = 2; i < N; ++i) {
-    auto fi = Factorize(pt, i);
-    auto vd = GetDivisors(fi);
-    v[i] = 1;
-    for (auto d : vd) {
-      if ((d > 1) && (d < i)) v[i] = max(v[i], 1 + v[i / d - 1]);
-    }
-  }
+  vector<unsigned> v2{0, 0, 1}, v3(3, 0);
   cin >> T;
   for (unsigned it = 1; it <= T; ++it) {
     cin >> n;
-    unsigned k = 1;
-    if ((n % 2) == 0) {
-      auto fn = Factorize(pt, n);
-      auto vd = GetDivisors(fn);
-      for (auto d : vd) {
-        if ((d > 2) && (d < n)) k = max(k, 1 + v[n / d - 1]);
+    for (; v3.size() <= n;) {
+      unsigned i = v3.size();
+      unsigned k3 = 1;
+      for (auto d : GetDivisors(Factorize(pt, i))) {
+        if (d > 2) k3 = max(k3, 1 + v2[i / d - 1]);
       }
-    } else {
-      k = v[n];
+      v3.push_back(k3);
+      v2.push_back(((i % 2) == 0) ? max(k3, 1 + v2[i / 2 - 1]) : k3);
     }
-    cout << "Case #" << it << ": " << k << endl;
+    cout << "Case #" << it << ": " << v3[n] << endl;
   }
   return 0;
 }
