@@ -1,7 +1,6 @@
 #include "common/modular/static/factorial.h"
 #include "common/modular_io.h"
 #include "common/stl/base.h"
-#include "common/vector/enumerate.h"
 #include "common/vector/read.h"
 #include "common/vector/rmq.h"
 
