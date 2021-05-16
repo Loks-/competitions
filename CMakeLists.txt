@@ -15,6 +15,9 @@ file( GLOB_RECURSE CODINGAME_CONTESTS_2105_SOURCES RELATIVE "${PROJECT_SOURCE_DI
 add_executable( codingame_contests_2105 ${CODINGAME_CONTESTS_2105_SOURCES} )
 target_link_libraries( codingame_contests_2105 ${CMAKE_THREAD_LIBS_INIT} )
 
+file( GLOB_RECURSE CODINGAME_PRACTICE_SOURCES RELATIVE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/codingame/practice/*.cpp" )
+add_executable( codingame_practice ${CODINGAME_PRACTICE_SOURCES} )
+
 file( GLOB_RECURSE GOOGLE_DISTRIBUTED_CODE_JAM_SOURCES RELATIVE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/google/distributed_code_jam/*.cpp" )
 add_executable( google_distributed_code_jam ${GOOGLE_DISTRIBUTED_CODE_JAM_SOURCES} )
 target_include_directories(google_distributed_code_jam PRIVATE "${PROJECT_SOURCE_DIR}/google/distributed_code_jam" )
