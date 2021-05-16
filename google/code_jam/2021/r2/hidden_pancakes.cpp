@@ -7,7 +7,7 @@
 
 #include <stack>
 
-int main_hidden_pancakes__rmq() {
+int main_hidden_pancakes() {
   class Task {
    public:
     size_t b, e, m;
