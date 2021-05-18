@@ -44,6 +44,11 @@ class Matrix : public Vector<TTValue> {
     return TBase::data[i * columns + j];
   }
 
+  iterator begin() { return TBase::begin(); }
+  const_iterator begin() const { return TBase::begin(); }
+  iterator end() { return TBase::end(); }
+  const_iterator end() const { return TBase::end(); }
+
   iterator GetP(unsigned i, unsigned j) { return TBase::GetP(i * columns + j); }
 
   const_iterator GetP(unsigned i, unsigned j) const {
@@ -59,9 +64,14 @@ class Matrix : public Vector<TTValue> {
   void SetDiagonal(const TValue& v) {
     unsigned diagonal_length = std::min(rows, columns);
     unsigned shift = columns + 1;
-    for (iterator p = TBase::begin(), pend = p + diagonal_length * shift;
-         p < pend; p += shift)
+    for (iterator p = begin(), pend = p + diagonal_length * shift; p < pend;
+         p += shift)
       *p = v;
+  }
+
+  TSelf& operator*=(const TValue& v) {
+    TBase::operator*=(v);
+    return *this;
   }
 
   TSelf& operator+=(const TSelf& v) {
@@ -91,7 +101,7 @@ class Matrix : public Vector<TTValue> {
            (output.columns == v.columns));
     unsigned columns2 = output.columns;
     output.Clear();
-    const_iterator pA = TBase::begin();
+    const_iterator pA = begin();
     for (unsigned i = 0; i < rows; ++i) {
       for (const_iterator pB = v.begin(), pBend = v.end(); pB < pBend;) {
         const TValue& vA = *pA++;
@@ -105,7 +115,7 @@ class Matrix : public Vector<TTValue> {
   void MultAx(const TBase& x, TBase& output) const {
     assert((x.Size() == columns) && (output.Size() == rows));
     output.Clear();
-    const_iterator pA = TBase::begin(), pBbegin = x.begin(), pBend = x.end();
+    const_iterator pA = begin(), pBbegin = x.begin(), pBend = x.end();
     for (iterator pO = output.begin(), pOend = output.end(); pO < pOend; ++pO) {
       for (const_iterator pB = pBbegin; pB < pBend;) *pO += *pA++ * *pB++;
     }
@@ -140,6 +150,15 @@ class Matrix : public Vector<TTValue> {
       x *= x;
     }
     return ans;
+  }
+
+  void AddXXT(const TBase& x) {
+    assert((x.Size() == rows) && (rows == columns));
+    iterator p = begin();
+    for (const_iterator pxr = x.begin(), px_end = x.end(); pxr < px_end;
+         ++pxr) {
+      for (const_iterator pxc = x.begin(); pxc < px_end;) *p++ += *pxr * *pxc++;
+    }
   }
 };
 }  // namespace la
