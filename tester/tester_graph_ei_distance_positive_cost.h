@@ -25,6 +25,7 @@ class TesterGraphEIDistancePositiveCost {
 
  protected:
   size_t TestBellmanFord() const;
+  size_t TestBellmanFordYen() const;
   size_t TestFloydWarshall() const;
   size_t TestLevit() const;
   size_t TestPallottino() const;

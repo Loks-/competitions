@@ -5,6 +5,7 @@
 
 #include "common/graph/graph_ei/create_hrandom_graph.h"
 #include "common/graph/graph_ei/distance/bellman_ford.h"
+#include "common/graph/graph_ei/distance/bellman_ford_yen.h"
 #include "common/graph/graph_ei/distance/floyd_warshall.h"
 #include "common/graph/graph_ei/distance/spfa/large_label_last.h"
 #include "common/graph/graph_ei/distance/spfa/levit.h"
@@ -57,6 +58,20 @@ size_t TesterGraphEIDistancePositiveCost::TestBellmanFord() const {
     for (uint64_t d : v) h = HashCombine(h, d);
   }
   std::cout << "Test results  [BeFo]: " << h << "\t" << t.GetMilliseconds()
+            << std::endl;
+  return h;
+}
+
+size_t TesterGraphEIDistancePositiveCost::TestBellmanFordYen() const {
+  Timer t;
+  size_t h = 0;
+  uint64_t max_cost = -1ull;
+  std::vector<uint64_t> v;
+  for (unsigned i = 0; i < g.Size(); ++i) {
+    v = graph::distance::BellmanFordYen(g, edge_proxy, i, max_cost);
+    for (uint64_t d : v) h = HashCombine(h, d);
+  }
+  std::cout << "Test results  [BFY ]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
 }
@@ -226,6 +241,7 @@ bool TesterGraphEIDistancePositiveCost::TestAll() {
   hs.insert(TestKVM<TPairing<0, 1>>("PR10"));
   hs.insert(TestKVM<TPairing<1, 1>>("PR11"));
   hs.insert(TestBellmanFord());
+  hs.insert(TestBellmanFordYen());
   hs.insert(TestSPFA());
   hs.insert(TestSPFALLL());
   hs.insert(TestSPFASLF());
