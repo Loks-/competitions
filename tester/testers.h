@@ -6,6 +6,7 @@ bool TestBinarySearchTree(bool time_test);
 bool TestContinuedFractionConvergent();
 bool TestDisjointSet();
 bool TestGeneratingFunction();
+bool TestGraphEIDistance(bool time_test);
 bool TestGraphEIDistancePositiveCost(bool time_test);
 bool TestHeap(bool time_test);
 bool TestInterpolation();

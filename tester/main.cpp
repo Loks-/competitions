@@ -23,6 +23,8 @@ int main(int nargs, char **pargs) {
       FindPrimesForModularFFT(10);
     else if (tester_mode == "generating_function")
       Assert(TestGeneratingFunction());
+    else if (tester_mode == "graph_distance")
+      Assert(TestGraphEIDistance(false));
     else if (tester_mode == "graph_distance_positive_cost")
       Assert(TestGraphEIDistancePositiveCost(false));
     else if (tester_mode == "heap")
@@ -51,6 +53,8 @@ int main(int nargs, char **pargs) {
       Assert(TestBinarySearchTree(true));
     else if (tester_mode == "time_disjoint_set")
       Assert(TestDisjointSet());
+    else if (tester_mode == "time_graph_distance")
+      Assert(TestGraphEIDistance(true));
     else if (tester_mode == "time_graph_distance_positive_cost")
       Assert(TestGraphEIDistancePositiveCost(true));
     else if (tester_mode == "time_heap")
