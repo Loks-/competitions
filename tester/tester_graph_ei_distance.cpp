@@ -10,25 +10,26 @@
 #include "common/graph/graph_ei/distance/spfa_slf.h"
 #include "common/graph/graph_ei/edge_cost_proxy.h"
 #include "common/graph/graph_ei/replace_edge_info.h"
-#include "common/vector/hrandom.h"
 #include "common/hash.h"
 #include "common/timer.h"
+#include "common/vector/hrandom.h"
 
 #include <iostream>
 #include <string>
 #include <unordered_set>
 #include <vector>
 
-
-TesterGraphEIDistance::TesterGraphEIDistance(
-    EGraphType _gtype, unsigned graph_size, unsigned edges_per_node)
+TesterGraphEIDistance::TesterGraphEIDistance(EGraphType _gtype,
+                                             unsigned graph_size,
+                                             unsigned edges_per_node)
     : gtype(_gtype) {
-    auto gtemp = CreateHRandomGraph<uint64_t, true>(graph_size, edges_per_node,
-                                           (1u << 30));
-    auto vp = nvector::HRandom<uint64_t>(graph_size, 0, (1u << 30));
-    auto f = [&](unsigned from, unsigned to, uint64_t cost) { 
-        return int64_t((vp[from] << 10) - (vp[to] << 10) + cost); };
-    g = ReplaceEdgeInfo<uint64_t, int64_t>(gtemp, f);
+  auto gtemp = CreateHRandomGraph<uint64_t, true>(graph_size, edges_per_node,
+                                                  (1u << 30));
+  auto vp = nvector::HRandom<uint64_t>(graph_size, 0, (1u << 30));
+  auto f = [&](unsigned from, unsigned to, uint64_t cost) {
+    return int64_t((vp[from] << 10) - (vp[to] << 10) + cost);
+  };
+  g = ReplaceEdgeInfo<uint64_t, int64_t>(gtemp, f);
 }
 
 size_t TesterGraphEIDistance::TestBellmanFord() const {
@@ -125,8 +126,8 @@ bool TesterGraphEIDistance::TestAll() {
 
 bool TestGraphEIDistance(bool time_test) {
   if (time_test) {
-    TesterGraphEIDistance t1(EGraphType::SPARSE, 2000, 4),
-        t2(EGraphType::DENSE, 400, 100);
+    TesterGraphEIDistance t1(EGraphType::SPARSE, 5000, 4),
+        t2(EGraphType::DENSE, 1000, 200);
     return t1.TestAll() && t2.TestAll();
   } else {
     TesterGraphEIDistance t(EGraphType::SMALL, 100, 4);
