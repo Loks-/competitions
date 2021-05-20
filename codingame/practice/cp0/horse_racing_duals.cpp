@@ -12,4 +12,5 @@ int main_horse_racing_duals() {
   sort(v.begin(), v.end());
   adjacent_difference(v.begin(), v.end(), v.begin());
   cout << *min_element(v.begin() + 1, v.end()) << endl;
+  return 0;
 }
