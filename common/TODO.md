@@ -11,10 +11,9 @@
 	* Additional MST algorithms
 	* Shortest path for directed acyclic graphs
 	* Shortest path with integer costs
+	* Shortest path Levit algorithm
 	* Shortest path Thorup algorithm
 	* Bellman-Ford with Yen improvements
-	* SPFA
-	* SPFA LLL
 	* Johnson's - Dijkstra
 * Heap
 	* Van Emde Boas tree
