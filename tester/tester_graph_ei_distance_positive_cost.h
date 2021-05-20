@@ -27,6 +27,7 @@ class TesterGraphEIDistancePositiveCost {
   size_t TestBellmanFord() const;
   size_t TestFloydWarshall() const;
   size_t TestSPFA() const;
+  size_t TestSPFALLL() const;
   size_t TestSPFASLF() const;
 
   template <template <class TData> class THeap>

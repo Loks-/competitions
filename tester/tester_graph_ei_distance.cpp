@@ -6,6 +6,7 @@
 #include "common/graph/graph_ei/distance/bellman_ford.h"
 #include "common/graph/graph_ei/distance/floyd_warshall.h"
 #include "common/graph/graph_ei/distance/spfa.h"
+#include "common/graph/graph_ei/distance/spfa_lll.h"
 #include "common/graph/graph_ei/distance/spfa_slf.h"
 #include "common/graph/graph_ei/edge_cost_proxy.h"
 #include "common/graph/graph_ei/replace_edge_info.h"
@@ -71,6 +72,20 @@ size_t TesterGraphEIDistance::TestSPFA() const {
   return h;
 }
 
+size_t TesterGraphEIDistance::TestSPFALLL() const {
+  Timer t;
+  size_t h = 0;
+  int64_t max_cost = (1ll << 60);
+  std::vector<int64_t> v;
+  for (unsigned i = 0; i < g.Size(); ++i) {
+    v = graph::distance::SPFALLL(g, edge_proxy, i, max_cost);
+    for (int64_t d : v) h = HashCombine(h, d);
+  }
+  std::cout << "Test results  [ LLL]: " << h << "\t" << t.GetMilliseconds()
+            << std::endl;
+  return h;
+}
+
 size_t TesterGraphEIDistance::TestSPFASLF() const {
   Timer t;
   size_t h = 0;
@@ -102,6 +117,7 @@ bool TesterGraphEIDistance::TestAll() {
   std::unordered_set<size_t> hs;
   hs.insert(TestBellmanFord());
   hs.insert(TestSPFA());
+  hs.insert(TestSPFALLL());
   hs.insert(TestSPFASLF());
   if (gtype != EGraphType::SPARSE) hs.insert(TestFloydWarshall());
   return hs.size() == 1;
