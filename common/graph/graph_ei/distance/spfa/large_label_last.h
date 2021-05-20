@@ -11,7 +11,6 @@ namespace spfa {
 // Shortest Path Faster Algorithm + Large Label Last.
 // https://en.wikipedia.org/wiki/Shortest_Path_Faster_Algorithm
 // Assume that no negative cycles exists
-// Time: O(VE) worst case, O(E) on random graph
 template <class TGraph, class TEdgeCostFunction, class TEdgeCost>
 inline std::vector<TEdgeCost> LargeLabelLast(const TGraph& graph,
                                              const TEdgeCostFunction& f,
