@@ -6,6 +6,7 @@
 #include "common/graph/graph_ei/create_hrandom_graph.h"
 #include "common/graph/graph_ei/distance/bellman_ford.h"
 #include "common/graph/graph_ei/distance/floyd_warshall.h"
+#include "common/graph/graph_ei/distance/spfa.h"
 #include "common/graph/graph_ei/edge_cost_proxy.h"
 #include "common/hash.h"
 #include "common/heap/binary_heap.h"
@@ -65,6 +66,20 @@ size_t TesterGraphEIDistancePositiveCost::TestFloydWarshall() const {
     for (uint64_t d : vv[i]) h = HashCombine(h, d);
   }
   std::cout << "Test results  [FLYD]: " << h << "\t" << t.GetMilliseconds()
+            << std::endl;
+  return h;
+}
+
+size_t TesterGraphEIDistancePositiveCost::TestSPFA() const {
+  Timer t;
+  size_t h = 0;
+  uint64_t max_cost = -1ull;
+  std::vector<uint64_t> v;
+  for (unsigned i = 0; i < g.Size(); ++i) {
+    v = graph::distance::SPFA(g, edge_proxy, i, max_cost);
+    for (uint64_t d : v) h = HashCombine(h, d);
+  }
+  std::cout << "Test results  [SPFA]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
 }
@@ -150,15 +165,16 @@ bool TesterGraphEIDistancePositiveCost::TestAll() {
   hs.insert(TestKVM<TPairing<1, 0>>("PR01"));
   hs.insert(TestKVM<TPairing<0, 1>>("PR10"));
   hs.insert(TestKVM<TPairing<1, 1>>("PR11"));
-  if (gtype == EGraphType::SMALL) hs.insert(TestBellmanFord());
+  hs.insert(TestBellmanFord());
+  hs.insert(TestSPFA());
   if (gtype != EGraphType::SPARSE) hs.insert(TestFloydWarshall());
   return hs.size() == 1;
 }
 
 bool TestGraphEIDistancePositiveCost(bool time_test) {
   if (time_test) {
-    TesterGraphEIDistancePositiveCost t1(EGraphType::SPARSE, 5000, 4),
-        t2(EGraphType::DENSE, 2000, 500);
+    TesterGraphEIDistancePositiveCost t1(EGraphType::SPARSE, 2000, 4),
+        t2(EGraphType::DENSE, 400, 100);
     return t1.TestAll() && t2.TestAll();
   } else {
     TesterGraphEIDistancePositiveCost t(EGraphType::SMALL, 100, 4);

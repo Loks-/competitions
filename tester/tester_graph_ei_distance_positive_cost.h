@@ -26,6 +26,7 @@ class TesterGraphEIDistancePositiveCost {
  protected:
   size_t TestBellmanFord() const;
   size_t TestFloydWarshall() const;
+  size_t TestSPFA() const;
 
   template <template <class TData> class THeap>
   size_t TestCBH(const std::string& name) const;
