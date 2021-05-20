@@ -6,9 +6,9 @@
 #include "common/graph/graph_ei/create_hrandom_graph.h"
 #include "common/graph/graph_ei/distance/bellman_ford.h"
 #include "common/graph/graph_ei/distance/floyd_warshall.h"
-#include "common/graph/graph_ei/distance/spfa.h"
-#include "common/graph/graph_ei/distance/spfa_lll.h"
-#include "common/graph/graph_ei/distance/spfa_slf.h"
+#include "common/graph/graph_ei/distance/spfa/large_label_last.h"
+#include "common/graph/graph_ei/distance/spfa/small_label_first.h"
+#include "common/graph/graph_ei/distance/spfa/spfa.h"
 #include "common/graph/graph_ei/edge_cost_proxy.h"
 #include "common/hash.h"
 #include "common/heap/binary_heap.h"
@@ -78,7 +78,7 @@ size_t TesterGraphEIDistancePositiveCost::TestSPFA() const {
   uint64_t max_cost = -1ull;
   std::vector<uint64_t> v;
   for (unsigned i = 0; i < g.Size(); ++i) {
-    v = graph::distance::SPFA(g, edge_proxy, i, max_cost);
+    v = graph::distance::spfa::SPFA(g, edge_proxy, i, max_cost);
     for (uint64_t d : v) h = HashCombine(h, d);
   }
   std::cout << "Test results  [SPFA]: " << h << "\t" << t.GetMilliseconds()
@@ -92,7 +92,7 @@ size_t TesterGraphEIDistancePositiveCost::TestSPFALLL() const {
   uint64_t max_cost = -1ull;
   std::vector<uint64_t> v;
   for (unsigned i = 0; i < g.Size(); ++i) {
-    v = graph::distance::SPFALLL(g, edge_proxy, i, max_cost);
+    v = graph::distance::spfa::LargeLabelLast(g, edge_proxy, i, max_cost);
     for (uint64_t d : v) h = HashCombine(h, d);
   }
   std::cout << "Test results  [ LLL]: " << h << "\t" << t.GetMilliseconds()
@@ -106,7 +106,7 @@ size_t TesterGraphEIDistancePositiveCost::TestSPFASLF() const {
   uint64_t max_cost = -1ull;
   std::vector<uint64_t> v;
   for (unsigned i = 0; i < g.Size(); ++i) {
-    v = graph::distance::SPFASLF(g, edge_proxy, i, max_cost);
+    v = graph::distance::spfa::SmallLabelFirst(g, edge_proxy, i, max_cost);
     for (uint64_t d : v) h = HashCombine(h, d);
   }
   std::cout << "Test results  [ SLF]: " << h << "\t" << t.GetMilliseconds()
