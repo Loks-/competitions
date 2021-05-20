@@ -7,7 +7,7 @@
 
 namespace graph {
 namespace distance {
-// Shortest Path Faster Algorithm + SLF.
+// Shortest Path Faster Algorithm + Small Label First.
 // https://en.wikipedia.org/wiki/Shortest_Path_Faster_Algorithm
 // Assume that no negative cycles exists
 // Time: O(VE) worst case, O(E) on random graph
