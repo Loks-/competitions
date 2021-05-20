@@ -7,6 +7,7 @@
 #include "common/graph/graph_ei/distance/bellman_ford.h"
 #include "common/graph/graph_ei/distance/bellman_ford_yen.h"
 #include "common/graph/graph_ei/distance/floyd_warshall.h"
+#include "common/graph/graph_ei/distance/spfa/goldfarb_hao_kai.h"
 #include "common/graph/graph_ei/distance/spfa/large_label_last.h"
 #include "common/graph/graph_ei/distance/spfa/levit.h"
 #include "common/graph/graph_ei/distance/spfa/pallottino.h"
@@ -85,6 +86,20 @@ size_t TesterGraphEIDistancePositiveCost::TestFloydWarshall() const {
     for (uint64_t d : vv[i]) h = HashCombine(h, d);
   }
   std::cout << "Test results  [FlWa]: " << h << "\t" << t.GetMilliseconds()
+            << std::endl;
+  return h;
+}
+
+size_t TesterGraphEIDistancePositiveCost::TestGoldfarbHaoKai() const {
+  Timer t;
+  size_t h = 0;
+  uint64_t max_cost = -1ull;
+  std::vector<uint64_t> v;
+  for (unsigned i = 0; i < g.Size(); ++i) {
+    v = graph::distance::spfa::GoldfarbHaoKai(g, edge_proxy, i, max_cost);
+    for (uint64_t d : v) h = HashCombine(h, d);
+  }
+  std::cout << "Test results  [GHK ]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
 }
@@ -247,6 +262,7 @@ bool TesterGraphEIDistancePositiveCost::TestAll() {
   hs.insert(TestSPFASLF());
   hs.insert(TestLevit());
   hs.insert(TestPallottino());
+  hs.insert(TestGoldfarbHaoKai());
   if (gtype != EGraphType::SPARSE) hs.insert(TestFloydWarshall());
   return hs.size() == 1;
 }
