@@ -8,7 +8,7 @@
 namespace graph {
 namespace distance {
 namespace spfa {
-// Pallottino algorithm
+// Goldfarb-Hao-Kai algorithm
 // Time: O(VE) worst case
 template <class TGraph, class TEdgeCostFunction, class TEdgeCost>
 inline std::vector<TEdgeCost> GoldfarbHaoKai(const TGraph& graph,
