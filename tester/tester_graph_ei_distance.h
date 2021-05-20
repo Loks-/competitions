@@ -21,11 +21,12 @@ class TesterGraphEIDistance {
 
  public:
   TesterGraphEIDistance(EGraphType _gtype, unsigned graph_size,
-                                    unsigned edges_per_node);
+                        unsigned edges_per_node);
 
  protected:
   size_t TestBellmanFord() const;
   size_t TestFloydWarshall() const;
+  size_t TestLevit() const;
   size_t TestSPFA() const;
   size_t TestSPFALLL() const;
   size_t TestSPFASLF() const;

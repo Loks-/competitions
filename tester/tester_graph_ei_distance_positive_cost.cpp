@@ -7,6 +7,7 @@
 #include "common/graph/graph_ei/distance/bellman_ford.h"
 #include "common/graph/graph_ei/distance/floyd_warshall.h"
 #include "common/graph/graph_ei/distance/spfa/large_label_last.h"
+#include "common/graph/graph_ei/distance/spfa/levit.h"
 #include "common/graph/graph_ei/distance/spfa/small_label_first.h"
 #include "common/graph/graph_ei/distance/spfa/spfa.h"
 #include "common/graph/graph_ei/edge_cost_proxy.h"
@@ -54,7 +55,7 @@ size_t TesterGraphEIDistancePositiveCost::TestBellmanFord() const {
     v = graph::distance::BellmanFord(g, edge_proxy, i, max_cost);
     for (uint64_t d : v) h = HashCombine(h, d);
   }
-  std::cout << "Test results  [BlFd]: " << h << "\t" << t.GetMilliseconds()
+  std::cout << "Test results  [BeFo]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
 }
@@ -67,7 +68,21 @@ size_t TesterGraphEIDistancePositiveCost::TestFloydWarshall() const {
   for (unsigned i = 0; i < vv.size(); ++i) {
     for (uint64_t d : vv[i]) h = HashCombine(h, d);
   }
-  std::cout << "Test results  [FLYD]: " << h << "\t" << t.GetMilliseconds()
+  std::cout << "Test results  [FlWa]: " << h << "\t" << t.GetMilliseconds()
+            << std::endl;
+  return h;
+}
+
+size_t TesterGraphEIDistancePositiveCost::TestLevit() const {
+  Timer t;
+  size_t h = 0;
+  uint64_t max_cost = -1ull;
+  std::vector<uint64_t> v;
+  for (unsigned i = 0; i < g.Size(); ++i) {
+    v = graph::distance::spfa::Levit(g, edge_proxy, i, max_cost);
+    for (uint64_t d : v) h = HashCombine(h, d);
+  }
+  std::cout << "Test results  [Levi]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
 }
@@ -199,6 +214,7 @@ bool TesterGraphEIDistancePositiveCost::TestAll() {
   hs.insert(TestSPFA());
   hs.insert(TestSPFALLL());
   hs.insert(TestSPFASLF());
+  hs.insert(TestLevit());
   if (gtype != EGraphType::SPARSE) hs.insert(TestFloydWarshall());
   return hs.size() == 1;
 }
