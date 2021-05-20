@@ -27,6 +27,7 @@ class TesterGraphEIDistance {
   size_t TestBellmanFord() const;
   size_t TestFloydWarshall() const;
   size_t TestLevit() const;
+  size_t TestPallottino() const;
   size_t TestSPFA() const;
   size_t TestSPFALLL() const;
   size_t TestSPFASLF() const;
