@@ -2,6 +2,7 @@
 
 #include "common/graph/graph_ei.h"
 
+#include <algorithm>
 #include <utility>
 #include <vector>
 
@@ -26,6 +27,9 @@ inline std::vector<TEdgeCost> BellmanFordYen(const TGraph& graph,
   }
   v1b[gsize] = v1.size();
   v2b[gsize] = v2.size();
+  for (auto& k : v2b) k = v2.size() - k;
+  std::reverse(v2.begin(), v2.end());
+  std::reverse(v2b.begin(), v2b.end());
 
   std::vector<TEdgeCost> v(gsize, max_cost);
   v[source] = TEdgeCost();
@@ -45,10 +49,10 @@ inline std::vector<TEdgeCost> BellmanFordYen(const TGraph& graph,
     }
     if (!relaxed && (i > 0)) break;
     relaxed = false;
-    for (unsigned u = gsize; u-- > 0;) {
-      auto ucost = v[u];
+    for (unsigned u = 0; u < gsize; ++u) {
+      auto ucost = v[gsize - 1 - u];
       if (ucost == max_cost) continue;
-      for (unsigned i = v2b[u + 1], iend = v2b[u]; i-- > iend;) {
+      for (unsigned i = v2b[u], iend = v2b[u + 1]; i < iend; ++i) {
         const auto& p = v2[i];
         if (ucost + p.second < v[p.first]) {
           v[p.first] = ucost + p.second;
