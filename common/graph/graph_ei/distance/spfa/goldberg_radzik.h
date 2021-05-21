@@ -31,7 +31,7 @@ inline std::vector<TEdgeCost> GoldbergRadzik(const TGraph& graph,
         auto ucost = v[u];
         for (const auto& e : graph.EdgesEI(u)) {
           if (m[e.to] != 3) continue;
-          if (ucost + f(e.info) < v[e.to]) sb.push(e.to);
+          if (ucost + f(e.info) <= v[e.to]) sb.push(e.to);
         }
       } else {
         sb.pop();
