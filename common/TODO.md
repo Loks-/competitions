@@ -12,7 +12,6 @@
 	* Shortest path for directed acyclic graphs
 	* Shortest path with integer costs
 	* Shortest path Thorup algorithm
-	* Bellman-Ford with Yen improvements
 	* Johnson's - Dijkstra
 * Heap
 	* Van Emde Boas tree
