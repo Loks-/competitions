@@ -19,7 +19,7 @@ inline std::vector<TEdgeCost> GoldbergRadzik(const TGraph& graph,
   std::vector<TEdgeCost> v(gsize, max_cost);
   v[source] = TEdgeCost();
   std::stack<unsigned> sa, sb, st;
-  // 0 - untouched, 1 - scaned, 2 - in a, 3 - in b, 4 - in b + checked
+  // 0 - untouched, 2 - in a, 3 - in b, 4 - in b + checked
   std::vector<unsigned> m(gsize, 0);
   sb.push(source);
   m[source] = 3;
@@ -48,11 +48,13 @@ inline std::vector<TEdgeCost> GoldbergRadzik(const TGraph& graph,
       for (const auto& e : graph.EdgesEI(u)) {
         if (ucost + f(e.info) < v[e.to]) {
           v[e.to] = ucost + f(e.info);
-          sb.push(e.to);
-          m[e.to] = 3;
+          if (m[e.to] == 0) {
+            sb.push(e.to);
+            m[e.to] = 3;
+          }
         }
       }
-      m[u] = 1;
+      m[u] = 0;
     }
   }
   return v;
