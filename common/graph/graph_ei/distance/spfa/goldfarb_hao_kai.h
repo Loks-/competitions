@@ -2,7 +2,7 @@
 
 #include "common/graph/graph_ei.h"
 
-#include <queue>
+#include <stack>
 #include <vector>
 
 namespace graph {
@@ -18,13 +18,13 @@ inline std::vector<TEdgeCost> GoldfarbHaoKai(const TGraph& graph,
   unsigned gsize = graph.Size();
   std::vector<TEdgeCost> v(gsize, max_cost);
   v[source] = TEdgeCost();
-  std::queue<unsigned> q0, q1;
+  std::stack<unsigned> q0, q1;
   std::vector<unsigned> m(gsize, 0);
   q1.push(source);
   for (unsigned i = 0; !q1.empty(); ++i) {
     q0.swap(q1);
     for (; !q0.empty();) {
-      unsigned u = q0.front();
+      unsigned u = q0.top();
       q0.pop();
       if (m[u] != i) continue;
       auto ucost = v[u];
