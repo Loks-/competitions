@@ -2,6 +2,7 @@
 
 #include "common/graph/graph_ei.h"
 
+#include <utility>
 #include <vector>
 
 namespace graph {
@@ -15,11 +16,17 @@ inline std::vector<TEdgeCost> BellmanFordYen(const TGraph& graph,
                                              unsigned source,
                                              const TEdgeCost& max_cost) {
   unsigned gsize = graph.Size();
-  TGraph g1(gsize), g2(gsize);
+  std::vector<std::pair<unsigned, TEdgeCost>> v1, v2;
+  std::vector<unsigned> v1b(gsize + 1), v2b(gsize + 1);
   for (unsigned u = 0; u < gsize; ++u) {
+    v1b[u] = v1.size();
+    v2b[u] = v2.size();
     for (const auto& e : graph.EdgesEI(u))
-      (u < e.to ? g1 : g2).AddBaseEdge(u, e.to, e.info);
+      (u < e.to ? v1 : v2).push_back({e.to, f(e.info)});
   }
+  v1b[gsize] = v1.size();
+  v2b[gsize] = v2.size();
+
   std::vector<TEdgeCost> v(gsize, max_cost);
   v[source] = TEdgeCost();
   bool relaxed = true;
@@ -28,9 +35,10 @@ inline std::vector<TEdgeCost> BellmanFordYen(const TGraph& graph,
     for (unsigned u = 0; u < gsize; ++u) {
       auto ucost = v[u];
       if (ucost == max_cost) continue;
-      for (const auto& e : g1.EdgesEI(u)) {
-        if (ucost + f(e.info) < v[e.to]) {
-          v[e.to] = ucost + f(e.info);
+      for (unsigned i = v1b[u], iend = v1b[u + 1]; i < iend; ++i) {
+        const auto& p = v1[i];
+        if (ucost + p.second < v[p.first]) {
+          v[p.first] = ucost + p.second;
           relaxed = true;
         }
       }
@@ -40,9 +48,10 @@ inline std::vector<TEdgeCost> BellmanFordYen(const TGraph& graph,
     for (unsigned u = gsize; u-- > 0;) {
       auto ucost = v[u];
       if (ucost == max_cost) continue;
-      for (const auto& e : g2.EdgesEI(u)) {
-        if (ucost + f(e.info) < v[e.to]) {
-          v[e.to] = ucost + f(e.info);
+      for (unsigned i = v2b[u + 1], iend = v2b[u]; i-- > iend;) {
+        const auto& p = v2[i];
+        if (ucost + p.second < v[p.first]) {
+          v[p.first] = ucost + p.second;
           relaxed = true;
         }
       }
