@@ -28,9 +28,11 @@ inline std::vector<TEdgeCost> GoldbergRadzikLazy(const TGraph& graph,
       if (m[u] == 3) {
         m[u] = 4;
         auto ucost = v[u];
-        for (const auto& e : graph.EdgesEI(u)) {
-          if (m[e.to] != 3) continue;
-          if (ucost + f(e.info) <= v[e.to]) sb.push(e.to);
+        if (ucost < max_cost) {
+          for (const auto& e : graph.EdgesEI(u)) {
+            if (m[e.to] != 3) continue;
+            if (ucost + f(e.info) <= v[e.to]) sb.push(e.to);
+          }
         }
       } else {
         sb.pop();
