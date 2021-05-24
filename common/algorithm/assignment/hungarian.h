@@ -13,12 +13,14 @@ namespace assignment {
 class Hungarian {
 protected: 
 std::vector<unsigned> p;
+unsigned n, m;
 
 public:
   template<class TMatrix>
   typename TMatrix::TValue Solve(const TMatrix& a, const typename TMatrix::TValue& max_value) {
     using TValue = typename TMatrix::TValue;
-    unsigned n = a.Rows(), m = a.Columns();
+    n = a.Rows();
+    m = a.Columns();
     assert(n <= m);
     p.resize(m + 1);
     std::fill(p.begin(), p.end(), n);
@@ -63,6 +65,14 @@ public:
         } while (j0 < m);
     }
   return -v[m];
+  }
+
+  std::vector<unsigned> Get() const {
+      std::vector<unsigned> r(n);
+      for (unsigned j = 0; j < m; ++j) {
+          if (p[j] != n) r[p[j]] = j;
+      }
+      return r;
   }
 };
 }  // namespace assignment
