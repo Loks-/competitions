@@ -8,6 +8,7 @@
 #include "common/graph/graph_ei/distance/bellman_ford_yen.h"
 #include "common/graph/graph_ei/distance/floyd_warshall.h"
 #include "common/graph/graph_ei/distance/spfa/goldberg_radzik.h"
+#include "common/graph/graph_ei/distance/spfa/goldberg_radzik_lazy.h"
 #include "common/graph/graph_ei/distance/spfa/goldfarb_hao_kai.h"
 #include "common/graph/graph_ei/distance/spfa/large_label_last.h"
 #include "common/graph/graph_ei/distance/spfa/levit.h"
@@ -91,6 +92,34 @@ size_t TesterGraphEIDistancePositiveCost::TestFloydWarshall() const {
   return h;
 }
 
+size_t TesterGraphEIDistancePositiveCost::TestGoldbergRadzik() const {
+  Timer t;
+  size_t h = 0;
+  uint64_t max_cost = -1ull;
+  std::vector<uint64_t> v;
+  for (unsigned i = 0; i < g.Size(); ++i) {
+    v = graph::distance::spfa::GoldbergRadzik(g, edge_proxy, i, max_cost);
+    for (uint64_t d : v) h = HashCombine(h, d);
+  }
+  std::cout << "Test results  [GR  ]: " << h << "\t" << t.GetMilliseconds()
+            << std::endl;
+  return h;
+}
+
+size_t TesterGraphEIDistancePositiveCost::TestGoldbergRadzikLazy() const {
+  Timer t;
+  size_t h = 0;
+  uint64_t max_cost = -1ull;
+  std::vector<uint64_t> v;
+  for (unsigned i = 0; i < g.Size(); ++i) {
+    v = graph::distance::spfa::GoldbergRadzikLazy(g, edge_proxy, i, max_cost);
+    for (uint64_t d : v) h = HashCombine(h, d);
+  }
+  std::cout << "Test results  [GRL ]: " << h << "\t" << t.GetMilliseconds()
+            << std::endl;
+  return h;
+}
+
 size_t TesterGraphEIDistancePositiveCost::TestGoldfarbHaoKai() const {
   Timer t;
   size_t h = 0;
@@ -101,20 +130,6 @@ size_t TesterGraphEIDistancePositiveCost::TestGoldfarbHaoKai() const {
     for (uint64_t d : v) h = HashCombine(h, d);
   }
   std::cout << "Test results  [GHK ]: " << h << "\t" << t.GetMilliseconds()
-            << std::endl;
-  return h;
-}
-
-size_t TesterGraphEIDistancePositiveCost::TestGoldbergRadzik() const {
-  Timer t;
-  size_t h = 0;
-  uint64_t max_cost = -1ull;
-  std::vector<uint64_t> v;
-  for (unsigned i = 0; i < g.Size(); ++i) {
-    v = graph::distance::spfa::GoldbergRadzik(g, edge_proxy, i, max_cost);
-    for (uint64_t d : v) h = HashCombine(h, d);
-  }
-  std::cout << "Test results  [GoRa]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
 }
@@ -279,6 +294,7 @@ bool TesterGraphEIDistancePositiveCost::TestAll() {
   hs.insert(TestPallottino());
   hs.insert(TestGoldfarbHaoKai());
   hs.insert(TestGoldbergRadzik());
+  hs.insert(TestGoldbergRadzikLazy());
   if (gtype != EGraphType::SPARSE) hs.insert(TestFloydWarshall());
   return hs.size() == 1;
 }
