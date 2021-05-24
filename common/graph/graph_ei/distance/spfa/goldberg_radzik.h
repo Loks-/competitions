@@ -19,7 +19,7 @@ inline std::vector<TEdgeCost> GoldbergRadzik(const TGraph& graph,
   std::vector<TEdgeCost> v(gsize, max_cost);
   v[source] = TEdgeCost();
   std::stack<unsigned> sa, sb, st;
-  // 0 - untouched, 2 - in a, 3 - in b, 4 - recursive call
+  // 0 - untouched, 2 - in a, 3 - in b, 4 - recursive call, 5 - processing
   std::vector<unsigned> m(gsize, 0);
   sb.push(source);
   m[source] = 3;
@@ -36,20 +36,23 @@ inline std::vector<TEdgeCost> GoldbergRadzik(const TGraph& graph,
           m[u] = 0;
           for (const auto& e : graph.EdgesEI(u)) {
             if (ucost + f(e.info) < v[e.to]) {
-              m[u] = 4;  // Need to add to a.
-              break;
+              m[u] = 5;                    // Processing
+              if (m[e.to] == 2) continue;  // Already in a.
+              m[e.to] = 4;
+              sb.push(e.to);
             }
           }
           break;
         case 4:
           m[u] = 5;
-          for (const auto& e : graph.EdgesEI(u)) {
-            if (m[e.to] == 2) continue;  // Already in a.
-            if (m[e.to] == 5) continue;  // Already in processing
-            if (ucost + f(e.info) <= v[e.to]) {
-              // if (m[e.to] == 5) return {};  // Negative loop
-              m[e.to] = 4;
-              sb.push(e.to);
+          if (ucost < max_cost) {
+            for (const auto& e : graph.EdgesEI(u)) {
+              if (m[e.to] == 2) continue;  // Already in a.
+              if (ucost + f(e.info) <= v[e.to]) {
+                if (m[e.to] == 5) return {};  // Negative loop
+                m[e.to] = 4;
+                sb.push(e.to);
+              }
             }
           }
           break;
