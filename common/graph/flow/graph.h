@@ -53,7 +53,7 @@ class Graph {
                    TFlow max_flow, TFlow max_flow_inverted = 0) {
     edges[from].push_back(
         {data, max_flow, 0, from, to, unsigned(edges[to].size())});
-    edges[to].push_back({data, max_flow_inverted, 0, to, from,
+    edges[to].push_back({-data, max_flow_inverted, 0, to, from,
                          unsigned(edges[from].size() - 1)});
   }
 

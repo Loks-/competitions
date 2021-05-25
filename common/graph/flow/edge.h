@@ -1,11 +1,11 @@
 #pragma once
 
 #include "common/base.h"
-#include "common/template.h"
+#include "common/graph/flow/empty.h"
 
 namespace graph {
 namespace flow {
-template <class TTData = TEmpty, class TTFlow = int64_t>
+template <class TTData = Empty, class TTFlow = int64_t>
 class Edge {
  public:
   using TData = TTData;
