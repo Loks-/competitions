@@ -16,9 +16,9 @@ namespace max_flow {
 template <class TEdge>
 inline typename TEdge::TFlow Dinic(Graph<TEdge>& g) {
   using TFlow = typename TEdge::TFlow;
-  thread_local std::queue<unsigned> q;
-  thread_local std::vector<unsigned> d;
-  thread_local std::vector<unsigned> ei;
+  std::queue<unsigned> q;
+  std::vector<unsigned> d;
+  std::vector<unsigned> ei;
   unsigned source = g.Source(), sink = g.Sink();
   d.resize(g.Size());
   ei.resize(g.Size());
