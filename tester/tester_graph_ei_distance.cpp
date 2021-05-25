@@ -8,6 +8,7 @@
 #include "common/graph/graph_ei/distance/floyd_warshall.h"
 #include "common/graph/graph_ei/distance/spfa/goldberg_radzik.h"
 #include "common/graph/graph_ei/distance/spfa/goldberg_radzik_lazy.h"
+#include "common/graph/graph_ei/distance/spfa/goldberg_radzik_pcr.h"
 #include "common/graph/graph_ei/distance/spfa/goldfarb_hao_kai.h"
 #include "common/graph/graph_ei/distance/spfa/large_label_last.h"
 #include "common/graph/graph_ei/distance/spfa/levit.h"
@@ -103,6 +104,20 @@ size_t TesterGraphEIDistance::TestGoldbergRadzikLazy() const {
     for (int64_t d : v) h = HashCombine(h, d);
   }
   std::cout << "Test results  [GRL ]: " << h << "\t" << t.GetMilliseconds()
+            << std::endl;
+  return h;
+}
+
+size_t TesterGraphEIDistance::TestGoldbergRadzikPCR() const {
+  Timer t;
+  size_t h = 0;
+  int64_t max_cost = (1ll << 60);
+  std::vector<int64_t> v;
+  for (unsigned i = 0; i < g.Size(); ++i) {
+    v = graph::distance::spfa::GoldbergRadzikPCR(g, edge_proxy, i, max_cost);
+    for (int64_t d : v) h = HashCombine(h, d);
+  }
+  std::cout << "Test results  [GRP ]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
 }
@@ -216,6 +231,7 @@ bool TesterGraphEIDistance::TestAll() {
   hs.insert(TestGoldfarbHaoKai());
   hs.insert(TestGoldbergRadzik());
   hs.insert(TestGoldbergRadzikLazy());
+  hs.insert(TestGoldbergRadzikPCR());
   if (gtype != EGraphType::SPARSE) hs.insert(TestFloydWarshall());
   return hs.size() == 1;
 }

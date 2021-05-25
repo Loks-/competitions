@@ -29,6 +29,7 @@ class TesterGraphEIDistancePositiveCost {
   size_t TestFloydWarshall() const;
   size_t TestGoldbergRadzik() const;
   size_t TestGoldbergRadzikLazy() const;
+  size_t TestGoldbergRadzikPCR() const;
   size_t TestGoldfarbHaoKai() const;
   size_t TestLevit() const;
   size_t TestPallottino() const;
