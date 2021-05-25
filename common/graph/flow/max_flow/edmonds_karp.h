@@ -14,10 +14,9 @@ namespace max_flow {
 // Time: O(VE^2)
 template <class TEdge>
 inline typename TEdge::TFlow EdmondsKarp(Graph<TEdge>& g) {
-  std::queue<unsigned> q;
-  std::vector<TEdge*> p;
   unsigned source = g.Source(), sink = g.Sink();
-  p.resize(g.Size());
+  std::queue<unsigned> q;
+  std::vector<TEdge*> p(g.Size());
   for (;;) {
     for (; !q.empty();) q.pop();
     std::fill(p.begin(), p.end(), nullptr);
