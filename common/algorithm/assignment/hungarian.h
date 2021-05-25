@@ -10,6 +10,7 @@ namespace assignment {
 // Hungarian algorithm.
 // https://en.wikipedia.org/wiki/Hungarian_algorithm
 // O(n^2 m) time
+// All the elements should be less than max_value.
 class Hungarian {
  protected:
   std::vector<unsigned> p;
