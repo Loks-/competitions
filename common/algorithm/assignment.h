@@ -4,8 +4,8 @@
 
 namespace alg {
 template <class TMatrix>
-typename TMatrix::TValue Assignment(const TMatrix& a,
-                                    const typename TMatrix::TValue& max_value) {
+inline typename TMatrix::TValue Assignment(
+    const TMatrix& a, const typename TMatrix::TValue& max_value) {
   assignment::Hungarian s;
   return s.Solve(a, max_value);
 }
