@@ -10,7 +10,7 @@ int main_ascii_art() {
   cin >> L >> H;
   cin.ignore();
   getline(cin, m);
-  for (int i = 0; i < H; i++) {
+  for (unsigned i = 0; i < H; ++i) {
     getline(cin, r);
     for (char c : m) {
       unsigned index = isalpha(c) ? toupper(c) - 'A' : 26;
