@@ -10,10 +10,10 @@
 namespace graph {
 namespace flow {
 namespace min_cost {
-// Based on Edmonds-Karp algorithm with SPFA for path search.
-// Time: O(V^2 E^2)
+// Basaker-Gowen algorithm with SPFA for path search.
+// Time: O(FVE)
 template <class TEdge, class TCostProxy>
-inline typename TCostProxy::TCost EdmondsKarpSPFA(
+inline typename TCostProxy::TCost BasakerGowenSPFA(
     Graph<TEdge>& g, const typename TEdge::TFlow& max_flow,
     const TCostProxy& f) {
   using TFlow = typename TEdge::TFlow;
