@@ -1,7 +1,5 @@
 #pragma once
 
-#include "common/graph/graph_ei.h"
-
 #include <stack>
 #include <vector>
 
@@ -18,7 +16,7 @@ inline std::vector<TEdgeCost> GoldbergRadzik(const TGraph& graph,
   unsigned gsize = graph.Size();
   std::vector<TEdgeCost> v(gsize, max_cost);
   v[source] = TEdgeCost();
-  std::stack<unsigned> sa, sb, st;
+  std::stack<unsigned> sa, sb;
   // 0 - untouched, 2 - in a, 3 - in b, 4 - recursive call, 5 - processing
   std::vector<unsigned> m(gsize, 0);
   sb.push(source);

@@ -1,7 +1,5 @@
 #pragma once
 
-#include "common/graph/graph_ei.h"
-
 #include <algorithm>
 #include <utility>
 #include <vector>

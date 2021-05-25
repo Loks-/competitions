@@ -1,13 +1,12 @@
 #pragma once
 
 #include "common/base.h"
+#include "common/graph/cnone.h"
 
 #include <iostream>
 #include <vector>
 
 namespace graph {
-static const unsigned CNone = unsigned(-1);
-
 template <bool _directed_edges = false>
 class Graph {
  public:

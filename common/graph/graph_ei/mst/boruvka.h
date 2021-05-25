@@ -2,7 +2,7 @@
 
 #include "common/data_structures/disjoint_set.h"
 #include "common/data_structures/unsigned_set.h"
-#include "common/graph/graph.h"
+#include "common/graph/cnone.h"
 
 #include <algorithm>
 #include <utility>

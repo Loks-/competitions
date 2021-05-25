@@ -1,6 +1,5 @@
 #pragma once
 
-#include "common/graph/graph_ei.h"
 #include "common/heap/dheap_ukey_value_map.h"
 
 #include <vector>

@@ -1,7 +1,6 @@
 #pragma once
 
 #include "common/data_structures/unsigned_set.h"
-#include "common/graph/graph_ei.h"
 #include "common/heap/dheap.h"
 
 #include <vector>
