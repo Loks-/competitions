@@ -33,6 +33,7 @@ class TesterGraphEIDistance {
   size_t TestGoldfarbHaoKai() const;
   size_t TestLevit() const;
   size_t TestPallottino() const;
+  size_t TestSIPITQ() const;
   size_t TestSPFA() const;
   size_t TestSPFALLL() const;
   size_t TestSPFASLF() const;
