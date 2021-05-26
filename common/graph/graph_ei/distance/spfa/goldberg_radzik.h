@@ -47,7 +47,7 @@ inline std::vector<TEdgeCost> GoldbergRadzik(const TGraph& graph,
             for (const auto& e : graph.EdgesEI(u)) {
               if (m[e.to] == 2) continue;  // Already in a.
               if (ucost + f(e.info) <= v[e.to]) {
-                if (m[e.to] == 5) return {};  // Negative loop
+                if (m[e.to] == 5) return {};  // Negative cycle
                 m[e.to] = 4;
                 sb.push(e.to);
               }

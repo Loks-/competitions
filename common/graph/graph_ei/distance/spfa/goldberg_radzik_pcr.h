@@ -37,7 +37,7 @@ inline std::vector<TEdgeCost> GoldbergRadzikPCR(const TGraph& graph,
           const auto& upcr = pcr(u);
           for (auto c : upcr.childs) {
             if (m[c] == 2) continue;   // Already in a.
-            if (m[c] == 4) return {};  // Negative loop
+            if (m[c] == 4) return {};  // Negative cycle
             m[c] = 3;
             sb.push(c);
           }

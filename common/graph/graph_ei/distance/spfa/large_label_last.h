@@ -8,7 +8,7 @@ namespace distance {
 namespace spfa {
 // Shortest Path Faster Algorithm + Large Label Last.
 // https://en.wikipedia.org/wiki/Shortest_Path_Faster_Algorithm
-// Assume that no negative cycles exists
+// For graphs without negative cycle. 
 template <class TGraph, class TEdgeCostFunction, class TEdgeCost>
 inline std::vector<TEdgeCost> LargeLabelLast(const TGraph& graph,
                                              const TEdgeCostFunction& f,

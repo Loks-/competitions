@@ -7,6 +7,7 @@ namespace graph {
 namespace distance {
 namespace spfa {
 // Goldfarb-Hao-Kai algorithm
+// For graphs without negative cycle. 
 // Time: O(VE) worst case
 template <class TGraph, class TEdgeCostFunction, class TEdgeCost>
 inline std::vector<TEdgeCost> GoldfarbHaoKai(const TGraph& graph,
