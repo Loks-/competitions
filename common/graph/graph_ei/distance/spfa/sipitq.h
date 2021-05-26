@@ -27,14 +27,18 @@ inline std::vector<TEdgeCost> SIPITQ(const TGraph& graph,
   for (q.push(source); !q.empty();) {
     unsigned u = q.front();
     q.pop();
+    if (inq[p[u]]) {
+      // No reason to update u because parent of u will be updated again.
+      inq[u] = 2;
+      continue;
+    }
     inq[u] = 0;
-    if (inq[p[u]]) continue;
     auto ucost = v[u];
     for (const auto& e : graph.EdgesEI(u)) {
       if (ucost + f(e.info) < v[e.to]) {
         v[e.to] = ucost + f(e.info);
         p[e.to] = u;
-        if (!inq[e.to]) {
+        if (inq[e.to] != 1) {
           inq[e.to] = 1;
           q.push(e.to);
         }
