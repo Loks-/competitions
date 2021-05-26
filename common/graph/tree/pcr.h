@@ -27,6 +27,8 @@ class PCR {
   PCR(unsigned size) { Reset(size); }
 
   unsigned Size() const { return nodes.size(); }
+  Node& operator()(unsigned u) { return nodes[u]; }
+  const Node& operator()(unsigned u) const { return nodes[u]; }
 
   void ClearP(unsigned c) {
     auto& n = nodes[c];
