@@ -15,9 +15,9 @@ namespace distance {
 // https://en.wikipedia.org/wiki/Johnson%27s_algorithm
 // Time: O(V (V + E) log(V))
 template <class TGraph, class TEdgeCostFunction, class TEdgeCost>
-inline std::vector<std::vector<TEdgeCost>> Johson(const TGraph& graph,
-                                                  const TEdgeCostFunction& f,
-                                                  const TEdgeCost& max_cost) {
+inline std::vector<std::vector<TEdgeCost>> Johnson(const TGraph& graph,
+                                                   const TEdgeCostFunction& f,
+                                                   const TEdgeCost& max_cost) {
   unsigned gsize = graph.Size();
   // Bellman-Ford
   std::vector<TEdgeCost> vh(gsize, TEdgeCost());

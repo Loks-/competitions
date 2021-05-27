@@ -157,7 +157,7 @@ size_t TesterGraphEIDistancePositiveCost::TestJohnson() const {
   Timer t;
   size_t h = 0;
   uint64_t max_cost = -1ull;
-  auto vv = graph::distance::Johson(g, edge_proxy, max_cost);
+  auto vv = graph::distance::Johnson(g, edge_proxy, max_cost);
   for (unsigned i = 0; i < vv.size(); ++i) {
     for (uint64_t d : vv[i]) h = HashCombine(h, d);
   }
