@@ -31,6 +31,7 @@ class TesterGraphEIDistance {
   size_t TestGoldbergRadzikLazy() const;
   size_t TestGoldbergRadzikPCR() const;
   size_t TestGoldfarbHaoKai() const;
+  size_t TestJohnson() const;
   size_t TestLevit() const;
   size_t TestPallottino() const;
   size_t TestSIPITQ() const;

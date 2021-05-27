@@ -6,6 +6,7 @@
 #include "common/graph/graph_ei/distance/bellman_ford.h"
 #include "common/graph/graph_ei/distance/bellman_ford_yen.h"
 #include "common/graph/graph_ei/distance/floyd_warshall.h"
+#include "common/graph/graph_ei/distance/johnson.h"
 #include "common/graph/graph_ei/distance/spfa/goldberg_radzik.h"
 #include "common/graph/graph_ei/distance/spfa/goldberg_radzik_lazy.h"
 #include "common/graph/graph_ei/distance/spfa/goldberg_radzik_pcr.h"
@@ -138,6 +139,19 @@ size_t TesterGraphEIDistance::TestGoldfarbHaoKai() const {
   return h;
 }
 
+size_t TesterGraphEIDistance::TestJohnson() const {
+  Timer t;
+  size_t h = 0;
+  int64_t max_cost = (1ll << 60);
+  auto vv = graph::distance::Johson(g, edge_proxy, max_cost);
+  for (unsigned i = 0; i < vv.size(); ++i) {
+    for (int64_t d : vv[i]) h = HashCombine(h, d);
+  }
+  std::cout << "Test results  [John]: " << h << "\t" << t.GetMilliseconds()
+            << std::endl;
+  return h;
+}
+
 size_t TesterGraphEIDistance::TestLevit() const {
   Timer t;
   size_t h = 0;
@@ -265,6 +279,7 @@ bool TesterGraphEIDistance::TestAll() {
   hs.insert(TestGoldbergRadzikPCR());
   hs.insert(TestTarjan());
   if (gtype != EGraphType::SPARSE) hs.insert(TestFloydWarshall());
+  hs.insert(TestJohnson());
   return hs.size() == 1;
 }
 
