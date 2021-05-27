@@ -11,10 +11,10 @@ template <class TGraph, class TEdgeCostFunction, class TEdgeCost>
 inline std::vector<std::vector<TEdgeCost>> DistanceAllPairsPositiveCost(
     const TGraph& graph, const TEdgeCostFunction& f,
     const TEdgeCost& max_cost) {
-  unsigned N = graph.Size();
+  unsigned gsize = graph.Size();
   std::vector<std::vector<TEdgeCost>> vd;
-  vd.reserve(N);
-  for (unsigned i =0 ; i < N; ++i)
+  vd.reserve(gsize);
+  for (unsigned i = 0; i < gsize; ++i)
     vd.emplace_back(distance::Dijkstra(graph, f, i, max_cost));
   return vd;
 }
