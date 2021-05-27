@@ -1,7 +1,7 @@
 #pragma once
 
 #include "common/graph/graph_ei.h"
-#include "common/graph/graph_ei/distance/bellman_ford.h"
+#include "common/graph/graph_ei/distance/spfa/safe.h"
 #include "common/graph/graph_ei/edge_cost_proxy.h"
 
 #include <vector>
@@ -12,7 +12,7 @@ inline std::vector<TEdgeCost> DistanceFromSource(const TGraph& graph,
                                                  const TEdgeCostFunction& f,
                                                  unsigned source,
                                                  const TEdgeCost& max_cost) {
-  return distance::BellmanFord(graph, f, source, max_cost);
+  return distance::spfa::Safe(graph, f, source, max_cost);
 }
 }  // namespace graph
 
