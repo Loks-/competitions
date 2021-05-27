@@ -20,6 +20,7 @@
 #include "common/graph/graph_ei/distance/spfa/spfa.h"
 #include "common/graph/graph_ei/distance/spfa/tarjan_pcr.h"
 #include "common/graph/graph_ei/distance/spfa/tarjan_pcr_time.h"
+#include "common/graph/graph_ei/distance/spfa/zero_degrees_only_base.h"
 #include "common/graph/graph_ei/edge_cost_proxy.h"
 #include "common/graph/graph_ei/replace_edge_info.h"
 #include "common/hash.h"
@@ -280,6 +281,20 @@ size_t TesterGraphEIDistance::TestTarjanPCRTime() const {
   return h;
 }
 
+size_t TesterGraphEIDistance::TestZDOB() const {
+  Timer t;
+  size_t h = 0;
+  int64_t max_cost = (1ll << 60);
+  std::vector<int64_t> v;
+  for (unsigned i = 0; i < g.Size(); ++i) {
+    v = graph::distance::spfa::ZeroDegreesOnlyBase(g, edge_proxy, i, max_cost);
+    for (int64_t d : v) h = HashCombine(h, d);
+  }
+  std::cout << "Test results  [ZDOB]: " << h << "\t" << t.GetMilliseconds()
+            << std::endl;
+  return h;
+}
+
 bool TesterGraphEIDistance::TestAll() {
   switch (gtype) {
     case EGraphType::SMALL:
@@ -310,6 +325,7 @@ bool TesterGraphEIDistance::TestAll() {
   hs.insert(TestGoldbergRadzikPCR());
   hs.insert(TestTarjanPCR());
   hs.insert(TestTarjanPCRTime());
+  hs.insert(TestZDOB());
   if (gtype != EGraphType::SPARSE) hs.insert(TestFloydWarshall());
   hs.insert(TestJohnson());
   return hs.size() == 1;
