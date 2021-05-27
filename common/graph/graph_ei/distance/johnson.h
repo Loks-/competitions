@@ -15,9 +15,9 @@ namespace distance {
 // https://en.wikipedia.org/wiki/Johnson%27s_algorithm
 // Time: O(V (V + E) log(V))
 template <class TGraph, class TEdgeCostFunction, class TEdgeCost>
-inline std::vector<std::vector<TEdgeCost>> Johson(
-    const TGraph& graph, const TEdgeCostFunction& f,
-    const TEdgeCost& max_cost) {
+inline std::vector<std::vector<TEdgeCost>> Johson(const TGraph& graph,
+                                                  const TEdgeCostFunction& f,
+                                                  const TEdgeCost& max_cost) {
   unsigned gsize = graph.Size();
   // Bellman-Ford
   std::vector<TEdgeCost> vh(gsize, TEdgeCost());
@@ -34,12 +34,12 @@ inline std::vector<std::vector<TEdgeCost>> Johson(
       }
     }
   }
-  if (relaxed) return {}; // Negative cycle
+  if (relaxed) return {};  // Negative cycle
   // New graph
   TEdgeCost adjust = *std::min_element(vh.begin(), vh.end());
   GraphEI<TEdgeCost, true> g2(gsize);
-  for (unsigned u = 0; u < gsize; ++u){
-      for (const auto& e : graph.EdgesEI(u)) 
+  for (unsigned u = 0; u < gsize; ++u) {
+    for (const auto& e : graph.EdgesEI(u))
       g2.AddBaseEdge(u, e.to, f(e.info) + vh[u] - vh[e.to]);
   }
   EdgeCostProxy<TEdgeCost> fp;
@@ -48,7 +48,7 @@ inline std::vector<std::vector<TEdgeCost>> Johson(
   for (unsigned u = 0; u < gsize; ++u) {
     auto vu = distance::Dijkstra(g2, fp, u, max_cost - adjust);
     for (unsigned v = 0; v < gsize; ++v)
-        vu[v] = std::min(vu[v] + vh[v] - vh[u], max_cost);
+      vu[v] = std::min(vu[v] + vh[v] - vh[u], max_cost);
     vd.push_back(vu);
   }
   return vd;

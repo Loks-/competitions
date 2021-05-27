@@ -23,6 +23,6 @@ inline std::vector<std::vector<TEdgeCost>> DistanceAllPairsPositiveCost(
 template <class TEdgeInfo, bool directed_edges>
 inline std::vector<std::vector<TEdgeInfo>> DistanceAllPairsPositiveCost(
     const graph::GraphEI<TEdgeInfo, directed_edges>& g, TEdgeInfo max_cost) {
-  return graph::DistanceAllPairsPositiveCost(g, graph::EdgeCostProxy<TEdgeInfo>(),
-                                 max_cost);
+  return graph::DistanceAllPairsPositiveCost(
+      g, graph::EdgeCostProxy<TEdgeInfo>(), max_cost);
 }

@@ -9,7 +9,7 @@ namespace graph {
 namespace distance {
 namespace spfa {
 // Shortest Path Faster Algorithm + Skip if parent in the queue
-// For graphs without negative cycle. 
+// For graphs without negative cycle.
 // Time: O(VE) worst case
 template <class TGraph, class TEdgeCostFunction, class TEdgeCost>
 inline std::vector<TEdgeCost> SIPITQ(const TGraph& graph,

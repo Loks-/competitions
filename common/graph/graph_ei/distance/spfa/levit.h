@@ -7,7 +7,7 @@ namespace graph {
 namespace distance {
 namespace spfa {
 // Pape-Levit's algorithm
-// For graphs without negative cycle. 
+// For graphs without negative cycle.
 // Time: O(V 2^V) worst case
 template <class TGraph, class TEdgeCostFunction, class TEdgeCost>
 inline std::vector<TEdgeCost> Levit(const TGraph& graph,

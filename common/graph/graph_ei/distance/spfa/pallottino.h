@@ -7,7 +7,7 @@ namespace graph {
 namespace distance {
 namespace spfa {
 // Pallottino algorithm
-// For graphs without negative cycle. 
+// For graphs without negative cycle.
 // Time: O(V^2 E) worst case.
 template <class TGraph, class TEdgeCostFunction, class TEdgeCost>
 inline std::vector<TEdgeCost> Pallottino(const TGraph& graph,

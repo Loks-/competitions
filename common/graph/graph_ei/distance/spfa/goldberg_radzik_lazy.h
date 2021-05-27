@@ -7,7 +7,7 @@ namespace graph {
 namespace distance {
 namespace spfa {
 // Goldberg-Radzik algorithm with lazy copy from b to a.
-// For graphs without negative cycle. 
+// For graphs without negative cycle.
 template <class TGraph, class TEdgeCostFunction, class TEdgeCost>
 inline std::vector<TEdgeCost> GoldbergRadzikLazy(const TGraph& graph,
                                                  const TEdgeCostFunction& f,

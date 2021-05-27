@@ -13,8 +13,8 @@ inline std::vector<std::vector<TEdgeCost>> FloydWarshall(
     const TGraph& graph, const TEdgeCostFunction& f,
     const TEdgeCost& max_cost) {
   unsigned gsize = graph.Size();
-  std::vector<std::vector<TEdgeCost>> vd(gsize,
-                                         std::vector<TEdgeCost>(gsize, max_cost));
+  std::vector<std::vector<TEdgeCost>> vd(
+      gsize, std::vector<TEdgeCost>(gsize, max_cost));
   for (unsigned u = 0; u < gsize; ++u) {
     for (auto e : graph.EdgesEI(u))
       vd[u][e.to] = std::min(vd[u][e.to], f(e.info));

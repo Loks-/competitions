@@ -8,7 +8,7 @@ namespace distance {
 namespace spfa {
 // Shortest Path Faster Algorithm.
 // https://en.wikipedia.org/wiki/Shortest_Path_Faster_Algorithm
-// For graphs without negative cycle. 
+// For graphs without negative cycle.
 // Time: O(VE) worst case, O(E) on random graph
 template <class TGraph, class TEdgeCostFunction, class TEdgeCost>
 inline std::vector<TEdgeCost> SPFA(const TGraph& graph,
