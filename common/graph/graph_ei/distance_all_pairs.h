@@ -1,7 +1,7 @@
 #pragma once
 
 #include "common/graph/graph_ei.h"
-#include "common/graph/graph_ei/distance/floyd_warshall.h"
+#include "common/graph/graph_ei/distance/johnson.h"
 #include "common/graph/graph_ei/edge_cost_proxy.h"
 
 #include <vector>
@@ -11,7 +11,7 @@ template <class TGraph, class TEdgeCostFunction, class TEdgeCost>
 inline std::vector<std::vector<TEdgeCost>> DistanceAllPairs(
     const TGraph& graph, const TEdgeCostFunction& f,
     const TEdgeCost& max_cost) {
-  return distance::FloydWarshall(graph, f, max_cost);
+  return distance::Johnson(graph, f, max_cost);
 }
 }  // namespace graph
 
