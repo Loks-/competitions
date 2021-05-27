@@ -9,14 +9,14 @@
 namespace graph {
 namespace distance {
 namespace spfa {
-// Based on Tarjan negative-cycle detection algorithm.
+// Modification of Tarjan negative-cycle detection algorithm.
 // For graphs without negative cycle.
 // Time: O(VE) worst case
 template <class TGraph, class TEdgeCostFunction, class TEdgeCost>
-inline std::vector<TEdgeCost> TarjanPCR(const TGraph& graph,
-                                        const TEdgeCostFunction& f,
-                                        unsigned source,
-                                        const TEdgeCost& max_cost) {
+inline std::vector<TEdgeCost> TarjanPCRTime(const TGraph& graph,
+                                            const TEdgeCostFunction& f,
+                                            unsigned source,
+                                            const TEdgeCost& max_cost) {
   unsigned gsize = graph.Size();
   std::vector<TEdgeCost> v(gsize, max_cost);
   v[source] = TEdgeCost();
@@ -24,34 +24,31 @@ inline std::vector<TEdgeCost> TarjanPCR(const TGraph& graph,
   std::stack<unsigned> s;
   std::vector<unsigned> inq(gsize, 0);
   PCR pcr(gsize);
-  inq[source] = 1;
-  for (q.push(source); !q.empty();) {
+  q.push(source);
+  for (unsigned t = 0, te = 0; !q.empty(); ++t) {
     unsigned u = q.front();
     q.pop();
-    if (inq[u] != 1) continue;
-    inq[u] = 2;
+    if (inq[u] != t) continue;
     auto ucost = v[u];
     for (const auto& e : graph.EdgesEI(u)) {
       if (ucost + f(e.info) < v[e.to]) {
-        unsigned t = e.to;
-        if (inq[t]) {
+        unsigned u2 = e.to;
+        if (inq[u2] > t) {
           // Remove subtree from queue
-          for (auto c : pcr(t).childs)
-            if (inq[c]) s.push(c);
+          for (auto c : pcr(u2).childs)
+            if (inq[c] > t) s.push(c);
           for (; !s.empty();) {
             unsigned x = s.top();
             s.pop();
             inq[x] = 0;
             for (auto c : pcr(x).childs)
-              if (inq[c]) s.push(c);
+              if (inq[c] > t) s.push(c);
           }
         }
-        v[t] = ucost + f(e.info);
-        pcr.SetP(t, u);
-        if (inq[t] != 1) {
-          inq[t] = 1;
-          q.push(t);
-        }
+        v[u2] = ucost + f(e.info);
+        pcr.SetP(u2, u);
+        inq[u2] = ++te;
+        q.push(u2);
       }
     }
   }

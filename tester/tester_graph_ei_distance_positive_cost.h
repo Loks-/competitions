@@ -40,6 +40,7 @@ class TesterGraphEIDistancePositiveCost {
   size_t TestSPFASafe() const;
   size_t TestSPFASLF() const;
   size_t TestTarjanPCR() const;
+  size_t TestTarjanPCRTime() const;
 
   template <template <class TData> class THeap>
   size_t TestCBH(const std::string& name) const;

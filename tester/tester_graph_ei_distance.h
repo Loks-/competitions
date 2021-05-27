@@ -40,6 +40,7 @@ class TesterGraphEIDistance {
   size_t TestSPFASafe() const;
   size_t TestSPFASLF() const;
   size_t TestTarjanPCR() const;
+  size_t TestTarjanPCRTime() const;
 
  public:
   bool TestAll();
