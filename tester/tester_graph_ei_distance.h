@@ -37,6 +37,7 @@ class TesterGraphEIDistance {
   size_t TestSIPITQ() const;
   size_t TestSPFA() const;
   size_t TestSPFALLL() const;
+  size_t TestSPFASafe() const;
   size_t TestSPFASLF() const;
   size_t TestTarjan() const;
 

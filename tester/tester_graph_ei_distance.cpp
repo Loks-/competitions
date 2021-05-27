@@ -14,6 +14,7 @@
 #include "common/graph/graph_ei/distance/spfa/large_label_last.h"
 #include "common/graph/graph_ei/distance/spfa/levit.h"
 #include "common/graph/graph_ei/distance/spfa/pallottino.h"
+#include "common/graph/graph_ei/distance/spfa/safe.h"
 #include "common/graph/graph_ei/distance/spfa/sipitq.h"
 #include "common/graph/graph_ei/distance/spfa/small_label_first.h"
 #include "common/graph/graph_ei/distance/spfa/spfa.h"
@@ -222,6 +223,20 @@ size_t TesterGraphEIDistance::TestSPFALLL() const {
   return h;
 }
 
+size_t TesterGraphEIDistance::TestSPFASafe() const {
+  Timer t;
+  size_t h = 0;
+  int64_t max_cost = (1ll << 60);
+  std::vector<int64_t> v;
+  for (unsigned i = 0; i < g.Size(); ++i) {
+    v = graph::distance::spfa::Safe(g, edge_proxy, i, max_cost);
+    for (int64_t d : v) h = HashCombine(h, d);
+  }
+  std::cout << "Test results  [Safe]: " << h << "\t" << t.GetMilliseconds()
+            << std::endl;
+  return h;
+}
+
 size_t TesterGraphEIDistance::TestSPFASLF() const {
   Timer t;
   size_t h = 0;
@@ -268,6 +283,7 @@ bool TesterGraphEIDistance::TestAll() {
   hs.insert(TestBellmanFord());
   hs.insert(TestBellmanFordYen());
   hs.insert(TestSPFA());
+  hs.insert(TestSPFASafe());
   hs.insert(TestSIPITQ());
   hs.insert(TestSPFALLL());
   hs.insert(TestSPFASLF());
