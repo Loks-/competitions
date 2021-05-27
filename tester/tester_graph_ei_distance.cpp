@@ -18,7 +18,7 @@
 #include "common/graph/graph_ei/distance/spfa/sipitq.h"
 #include "common/graph/graph_ei/distance/spfa/small_label_first.h"
 #include "common/graph/graph_ei/distance/spfa/spfa.h"
-#include "common/graph/graph_ei/distance/spfa/tarjan.h"
+#include "common/graph/graph_ei/distance/spfa/tarjan_pcr.h"
 #include "common/graph/graph_ei/edge_cost_proxy.h"
 #include "common/graph/graph_ei/replace_edge_info.h"
 #include "common/hash.h"
@@ -251,16 +251,16 @@ size_t TesterGraphEIDistance::TestSPFASLF() const {
   return h;
 }
 
-size_t TesterGraphEIDistance::TestTarjan() const {
+size_t TesterGraphEIDistance::TestTarjanPCR() const {
   Timer t;
   size_t h = 0;
   int64_t max_cost = (1ll << 60);
   std::vector<int64_t> v;
   for (unsigned i = 0; i < g.Size(); ++i) {
-    v = graph::distance::spfa::Tarjan(g, edge_proxy, i, max_cost);
+    v = graph::distance::spfa::TarjanPCR(g, edge_proxy, i, max_cost);
     for (int64_t d : v) h = HashCombine(h, d);
   }
-  std::cout << "Test results  [Tarj]: " << h << "\t" << t.GetMilliseconds()
+  std::cout << "Test results  [TaP ]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
 }
@@ -293,7 +293,7 @@ bool TesterGraphEIDistance::TestAll() {
   hs.insert(TestGoldbergRadzik());
   hs.insert(TestGoldbergRadzikLazy());
   hs.insert(TestGoldbergRadzikPCR());
-  hs.insert(TestTarjan());
+  hs.insert(TestTarjanPCR());
   if (gtype != EGraphType::SPARSE) hs.insert(TestFloydWarshall());
   hs.insert(TestJohnson());
   return hs.size() == 1;

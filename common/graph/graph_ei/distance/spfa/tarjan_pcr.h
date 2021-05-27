@@ -12,10 +12,10 @@ namespace spfa {
 // Tarjan negative-cycle detection algorithm.
 // Time: O(VE) worst case
 template <class TGraph, class TEdgeCostFunction, class TEdgeCost>
-inline std::vector<TEdgeCost> Tarjan(const TGraph& graph,
-                                     const TEdgeCostFunction& f,
-                                     unsigned source,
-                                     const TEdgeCost& max_cost) {
+inline std::vector<TEdgeCost> TarjanPCR(const TGraph& graph,
+                                        const TEdgeCostFunction& f,
+                                        unsigned source,
+                                        const TEdgeCost& max_cost) {
   unsigned gsize = graph.Size();
   std::vector<TEdgeCost> v(gsize, max_cost);
   v[source] = TEdgeCost();
