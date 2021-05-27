@@ -23,15 +23,16 @@ class BucketQueue {
 
  public:
   BucketQueue() {}
-  explicit BucketQueue(unsigned max_priority) { data.resize(max_priority); }
+  explicit BucketQueue(unsigned max_priority) { data.resize(max_priority + 1); }
 
-  bool Empty() const { return Size() == 0; }
+  bool Empty() const { return size == 0; }
   unsigned Size() const { return size; }
 
   void Add(unsigned p, const TValue& value) {
     AdjustQueueSize(p);
     queue[p].push_back(value);
     ++size;
+    priority = std::min(priority, p);
   }
 
   unsigned TopPriority() const { return priority; }
@@ -46,7 +47,7 @@ class BucketQueue {
   void Pop() {
     assert(!Empty());
     queue[priority].pop_back();
-    --size();
+    --size;
     if (Empty())
       priority = -1u;
     else
