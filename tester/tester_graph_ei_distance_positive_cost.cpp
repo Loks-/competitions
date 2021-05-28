@@ -19,6 +19,7 @@
 #include "common/graph/graph_ei/distance/spfa/sipitq.h"
 #include "common/graph/graph_ei/distance/spfa/small_label_first.h"
 #include "common/graph/graph_ei/distance/spfa/spfa.h"
+#include "common/graph/graph_ei/distance/spfa/tarjan.h"
 #include "common/graph/graph_ei/distance/spfa/tarjan_pcr.h"
 #include "common/graph/graph_ei/distance/spfa/tarjan_pcr_time.h"
 #include "common/graph/graph_ei/distance/spfa/zero_degrees_only_base.h"
@@ -266,6 +267,20 @@ size_t TesterGraphEIDistancePositiveCost::TestSPFASLF() const {
   return h;
 }
 
+size_t TesterGraphEIDistancePositiveCost::TestTarjan() const {
+  Timer t;
+  size_t h = 0;
+  uint64_t max_cost = -1ull;
+  std::vector<uint64_t> v;
+  for (unsigned i = 0; i < g.Size(); ++i) {
+    v = graph::distance::spfa::Tarjan(g, edge_proxy, i, max_cost);
+    for (uint64_t d : v) h = HashCombine(h, d);
+  }
+  std::cout << "Test results  [Ta  ]: " << h << "\t" << t.GetMilliseconds()
+            << std::endl;
+  return h;
+}
+
 size_t TesterGraphEIDistancePositiveCost::TestTarjanPCR() const {
   Timer t;
   size_t h = 0;
@@ -402,6 +417,7 @@ bool TesterGraphEIDistancePositiveCost::TestAll() {
   hs.insert(TestGoldbergRadzik());
   hs.insert(TestGoldbergRadzikLazy());
   hs.insert(TestGoldbergRadzikPCR());
+  hs.insert(TestTarjan());
   hs.insert(TestTarjanPCR());
   hs.insert(TestTarjanPCRTime());
   hs.insert(TestZDOB());

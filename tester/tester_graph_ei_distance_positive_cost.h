@@ -39,6 +39,7 @@ class TesterGraphEIDistancePositiveCost {
   size_t TestSPFALLL() const;
   size_t TestSPFASafe() const;
   size_t TestSPFASLF() const;
+  size_t TestTarjan() const;
   size_t TestTarjanPCR() const;
   size_t TestTarjanPCRTime() const;
   size_t TestZDOB() const;
