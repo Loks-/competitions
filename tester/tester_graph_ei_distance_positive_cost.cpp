@@ -23,7 +23,9 @@
 #include "common/graph/graph_ei/distance/spfa/tarjan_pcr.h"
 #include "common/graph/graph_ei/distance/spfa/tarjan_pcr_time.h"
 #include "common/graph/graph_ei/distance/spfa/tarjan_time.h"
+#include "common/graph/graph_ei/distance/spfa/zero_degrees_only.h"
 #include "common/graph/graph_ei/distance/spfa/zero_degrees_only_base.h"
+#include "common/graph/graph_ei/distance/spfa/zero_degrees_only_time.h"
 #include "common/graph/graph_ei/edge_cost_proxy.h"
 #include "common/hash.h"
 #include "common/heap/binary_heap.h"
@@ -324,7 +326,21 @@ size_t TesterGraphEIDistancePositiveCost::TestTarjanTime() const {
   return h;
 }
 
-size_t TesterGraphEIDistancePositiveCost::TestZDOB() const {
+size_t TesterGraphEIDistancePositiveCost::TestZDO() const {
+  Timer t;
+  size_t h = 0;
+  uint64_t max_cost = -1ull;
+  std::vector<uint64_t> v;
+  for (unsigned i = 0; i < g.Size(); ++i) {
+    v = graph::distance::spfa::ZeroDegreesOnly(g, edge_proxy, i, max_cost);
+    for (uint64_t d : v) h = HashCombine(h, d);
+  }
+  std::cout << "Test results  [ZDO ]: " << h << "\t" << t.GetMilliseconds()
+            << std::endl;
+  return h;
+}
+
+size_t TesterGraphEIDistancePositiveCost::TestZDOBase() const {
   Timer t;
   size_t h = 0;
   uint64_t max_cost = -1ull;
@@ -334,6 +350,20 @@ size_t TesterGraphEIDistancePositiveCost::TestZDOB() const {
     for (uint64_t d : v) h = HashCombine(h, d);
   }
   std::cout << "Test results  [ZDOB]: " << h << "\t" << t.GetMilliseconds()
+            << std::endl;
+  return h;
+}
+
+size_t TesterGraphEIDistancePositiveCost::TestZDOTime() const {
+  Timer t;
+  size_t h = 0;
+  uint64_t max_cost = -1ull;
+  std::vector<uint64_t> v;
+  for (unsigned i = 0; i < g.Size(); ++i) {
+    v = graph::distance::spfa::ZeroDegreesOnlyTime(g, edge_proxy, i, max_cost);
+    for (uint64_t d : v) h = HashCombine(h, d);
+  }
+  std::cout << "Test results  [ZDOT]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
 }
@@ -436,7 +466,9 @@ bool TesterGraphEIDistancePositiveCost::TestAll() {
   hs.insert(TestTarjanTime());
   hs.insert(TestTarjanPCR());
   hs.insert(TestTarjanPCRTime());
-  hs.insert(TestZDOB());
+  hs.insert(TestZDOBase());
+  hs.insert(TestZDO());
+  hs.insert(TestZDOTime());
   if (gtype != EGraphType::SPARSE) hs.insert(TestFloydWarshall());
   hs.insert(TestJohnson());
   return hs.size() == 1;

@@ -43,7 +43,9 @@ class TesterGraphEIDistancePositiveCost {
   size_t TestTarjanPCR() const;
   size_t TestTarjanPCRTime() const;
   size_t TestTarjanTime() const;
-  size_t TestZDOB() const;
+  size_t TestZDO() const;
+  size_t TestZDOBase() const;
+  size_t TestZDOTime() const;
 
   template <template <class TData> class THeap>
   size_t TestCBH(const std::string& name) const;
