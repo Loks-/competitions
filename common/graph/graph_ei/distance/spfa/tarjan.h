@@ -9,7 +9,7 @@
 namespace graph {
 namespace distance {
 namespace spfa {
-// Based on Tarjan negative-cycle detection algorithm.
+// Tarjan negative-cycle detection algorithm.
 // Time: O(VE) worst case
 template <class TGraph, class TEdgeCostFunction, class TEdgeCost>
 inline std::vector<TEdgeCost> Tarjan(const TGraph& graph,
