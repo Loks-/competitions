@@ -1,8 +1,8 @@
 #pragma once
 
 #include "common/base.h"
-#include "common/graph/flow/graph.h"
 #include "common/graph/flow/distance/spfa.h"
+#include "common/graph/flow/graph.h"
 
 #include <algorithm>
 #include <vector>
