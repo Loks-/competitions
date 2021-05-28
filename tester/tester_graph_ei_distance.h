@@ -42,6 +42,7 @@ class TesterGraphEIDistance {
   size_t TestTarjan() const;
   size_t TestTarjanPCR() const;
   size_t TestTarjanPCRTime() const;
+  size_t TestTarjanTime() const;
   size_t TestZDOB() const;
 
  public:
