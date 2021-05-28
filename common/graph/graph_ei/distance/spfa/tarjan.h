@@ -21,7 +21,7 @@ inline std::vector<TEdgeCost> Tarjan(const TGraph& graph,
   v[source] = TEdgeCost();
   std::queue<unsigned> q;
   std::stack<unsigned> s;
-  std::vector<unsigned> inq(gsize, 0), p(gsize, CNone);
+  std::vector<unsigned> inq(gsize, 0);
   DLLR dllr(gsize);
   dllr.SetRoot(source);
   inq[source] = 1;
