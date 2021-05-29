@@ -7,6 +7,7 @@ namespace graph {
 namespace distance {
 namespace spfa {
 // Goldberg-Radzik algorithm
+// For graphs without negative cycle.
 // Time: O(VE) worst case
 template <class TGraph, class TEdgeCostFunction, class TEdgeCost>
 inline std::vector<TEdgeCost> GoldbergRadzik(const TGraph& graph,
@@ -46,8 +47,8 @@ inline std::vector<TEdgeCost> GoldbergRadzik(const TGraph& graph,
           if (ucost < max_cost) {
             for (const auto& e : graph.EdgesEI(u)) {
               if (m[e.to] == 2) continue;  // Already in a.
+              if (m[e.to] == 5) continue;
               if (ucost + f(e.info) <= v[e.to]) {
-                if (m[e.to] == 5) return {};  // Negative cycle
                 m[e.to] = 4;
                 sb.push(e.to);
               }
