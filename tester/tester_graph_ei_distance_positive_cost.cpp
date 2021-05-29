@@ -369,14 +369,14 @@ size_t TesterGraphEIDistancePositiveCost::TestZDOTime() const {
 }
 
 template <template <class TData> class THeap>
-size_t TesterGraphEIDistancePositiveCost::TestCBH(
+size_t TesterGraphEIDistancePositiveCost::TestHP(
     const std::string& name) const {
   Timer t;
   size_t h = 0;
   uint64_t max_cost = -1ull;
   std::vector<uint64_t> v;
   for (unsigned i = 0; i < g.Size(); ++i) {
-    v = DistanceFromSourcePositiveCost_CBH<THeap>(g, edge_proxy, i, max_cost);
+    v = DistanceFromSourcePositiveCost_HP<THeap>(g, edge_proxy, i, max_cost);
     for (uint64_t d : v) h = HashCombine(h, d);
   }
   std::cout << "Test results  [" << name << "]: " << h << "\t"
@@ -431,11 +431,11 @@ bool TesterGraphEIDistancePositiveCost::TestAll() {
       assert(false);
   }
   std::unordered_set<size_t> hs;
-  hs.insert(TestCBH<TBinaryHeap>("  BH"));
-  hs.insert(TestCBH<TDHeap2>("DH 2"));
-  hs.insert(TestCBH<TDHeap4>("DH 4"));
-  hs.insert(TestCBH<TDHeap8>("DH 8"));
-  hs.insert(TestCBH<TDHeap16>("DH16"));
+  hs.insert(TestHP<TBinaryHeap>("  BH"));
+  hs.insert(TestHP<TDHeap2>("DH 2"));
+  hs.insert(TestHP<TDHeap4>("DH 4"));
+  hs.insert(TestHP<TDHeap8>("DH 8"));
+  hs.insert(TestHP<TDHeap16>("DH16"));
   hs.insert(TestKPM<heap::DHeapUKeyPosMap<2, uint64_t>>("KPM2"));
   hs.insert(TestKPM<heap::DHeapUKeyPosMap<4, uint64_t>>("KPM4"));
   hs.insert(TestKPM<heap::DHeapUKeyPosMap<8, uint64_t>>("KPM8"));

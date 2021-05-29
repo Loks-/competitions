@@ -9,7 +9,7 @@
 
 template <template <class TData> class THeap, class TGraph,
           class TEdgeCostFunction, class TEdgeCost>
-std::vector<TEdgeCost> DistanceFromSourcePositiveCost_CBH(
+std::vector<TEdgeCost> DistanceFromSourcePositiveCost_HP(
     const TGraph& graph, const TEdgeCostFunction& f, unsigned source,
     const TEdgeCost& max_cost) {
   using TPair = std::pair<TEdgeCost, unsigned>;

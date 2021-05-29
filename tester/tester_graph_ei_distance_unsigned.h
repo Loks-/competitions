@@ -49,7 +49,7 @@ class TesterGraphEIDistanceUnsigned {
   size_t TestZDOTime() const;
 
   template <template <class TData> class THeap>
-  size_t TestCBH(const std::string& name) const;
+  size_t TestHP(const std::string& name) const;
 
   template <class THeap>
   size_t TestKPM(const std::string& name) const;
