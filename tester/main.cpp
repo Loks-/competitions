@@ -25,6 +25,8 @@ int main(int nargs, char **pargs) {
       Assert(TestGeneratingFunction());
     else if (tester_mode == "graph_distance")
       Assert(TestGraphEIDistance(false));
+    else if (tester_mode == "graph_distance_unsigned")
+      Assert(TestGraphEIDistanceUnsigned(false));
     else if (tester_mode == "graph_distance_positive_cost")
       Assert(TestGraphEIDistancePositiveCost(false));
     else if (tester_mode == "heap")
@@ -55,6 +57,8 @@ int main(int nargs, char **pargs) {
       Assert(TestDisjointSet());
     else if (tester_mode == "time_graph_distance")
       Assert(TestGraphEIDistance(true));
+    else if (tester_mode == "time_graph_distance_unsigned")
+      Assert(TestGraphEIDistanceUnsigned(true));
     else if (tester_mode == "time_graph_distance_positive_cost")
       Assert(TestGraphEIDistancePositiveCost(true));
     else if (tester_mode == "time_heap")
