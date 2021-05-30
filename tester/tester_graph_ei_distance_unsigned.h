@@ -51,6 +51,9 @@ class TesterGraphEIDistanceUnsigned {
   template <template <class TData> class THeap>
   size_t TestHP(const std::string& name) const;
 
+  template <template <class TData> class THeap>
+  size_t TestHPV(const std::string& name) const;
+
   template <class THeap>
   size_t TestKPM(const std::string& name) const;
 

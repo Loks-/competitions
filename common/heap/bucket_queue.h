@@ -23,7 +23,7 @@ class BucketQueue {
 
  public:
   BucketQueue() {}
-  explicit BucketQueue(unsigned max_priority) { data.resize(max_priority + 1); }
+  explicit BucketQueue(unsigned max_priority) { queue.resize(max_priority + 1); }
 
   bool Empty() const { return size == 0; }
   unsigned Size() const { return size; }
@@ -39,7 +39,7 @@ class BucketQueue {
 
   const TValue& TopValue() const {
     assert(!Empty());
-    return data[priority].back();
+    return queue[priority].back();
   }
 
   TData Top() const { return {TopPriority(), TopValue()}; }

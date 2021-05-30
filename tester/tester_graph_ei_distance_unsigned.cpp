@@ -385,6 +385,22 @@ size_t TesterGraphEIDistanceUnsigned::TestHP(
   return h;
 }
 
+template <template <class TData> class THeap>
+size_t TesterGraphEIDistanceUnsigned::TestHPV(
+    const std::string& name) const {
+  Timer t;
+  size_t h = 0;
+  unsigned max_cost = -1u;
+  std::vector<unsigned> v;
+  for (unsigned i = 0; i < g.Size(); ++i) {
+    v = DistanceFromSourcePositiveCost_HPV<THeap>(g, edge_proxy, i, max_cost);
+    for (unsigned d : v) h = HashCombine(h, d);
+  }
+  std::cout << "Test results  [" << name << "]: " << h << "\t"
+            << t.GetMilliseconds() << std::endl;
+  return h;
+}
+
 template <class THeap>
 size_t TesterGraphEIDistanceUnsigned::TestKPM(
     const std::string& name) const {
@@ -437,7 +453,7 @@ bool TesterGraphEIDistanceUnsigned::TestAll() {
   hs.insert(TestHP<TDHeap4>("HP 4"));
   hs.insert(TestHP<TDHeap8>("HP 8"));
   hs.insert(TestHP<TDHeap16>("HP16"));
-  // hs.insert(TestHP<heap::BucketQueue>("BTH "));
+  hs.insert(TestHPV<heap::BucketQueue>("BQ  "));
   hs.insert(TestKPM<heap::DHeapUKeyPosMap<2, unsigned>>("KPM2"));
   hs.insert(TestKPM<heap::DHeapUKeyPosMap<4, unsigned>>("KPM4"));
   hs.insert(TestKPM<heap::DHeapUKeyPosMap<8, unsigned>>("KPM8"));
