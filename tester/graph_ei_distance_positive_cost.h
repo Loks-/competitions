@@ -126,3 +126,19 @@ std::vector<TEdgeCost> DistanceFromSourcePositiveCost_KVM(
   }
   return q.GetValues();
 }
+
+template <class TUKeyValueMap, class TGraph, class TEdgeCostFunction,
+          class TEdgeCost>
+std::vector<TEdgeCost> DistanceFromSourcePositiveCost_MKVM(
+    const TGraph& graph, const TEdgeCostFunction& f, unsigned source,
+    const TEdgeCost& max_edge_cost, const TEdgeCost& max_cost) {
+  TUKeyValueMap q(std::vector<TEdgeCost>(graph.Size(), max_cost), true,
+                  max_edge_cost);
+  for (q.AddNewKey(source, TEdgeCost()); !q.Empty();) {
+    unsigned u = q.ExtractKey();
+    TEdgeCost ucost = q.Get(u);
+    for (auto e : graph.EdgesEI(u))
+      q.DecreaseValueIfLess(e.to, ucost + f(e.info));
+  }
+  return q.GetValues();
+}

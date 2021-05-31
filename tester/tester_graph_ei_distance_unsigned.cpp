@@ -36,6 +36,7 @@
 #include "common/heap/dheap_ukey_value_map.h"
 #include "common/heap/fibonacci_ukey_value_map.h"
 #include "common/heap/monotone_bucket_queue.h"
+#include "common/heap/monotone_bucket_ukey_map.h"
 #include "common/heap/pairing_ukey_value_map.h"
 #include "common/timer.h"
 
@@ -449,6 +450,22 @@ size_t TesterGraphEIDistanceUnsigned::TestKVM(const std::string& name) const {
   return h;
 }
 
+template <class THeap>
+size_t TesterGraphEIDistanceUnsigned::TestMKVM(const std::string& name) const {
+  Timer t;
+  size_t h = 0;
+  unsigned max_cost = -1u;
+  std::vector<unsigned> v;
+  for (unsigned i = 0; i < g.Size(); ++i) {
+    v = DistanceFromSourcePositiveCost_MKVM<THeap>(g, edge_proxy, i,
+                                                   max_edge_cost, max_cost);
+    for (unsigned d : v) h = HashCombine(h, d);
+  }
+  std::cout << "Test results  [" << name << "]: " << h << "\t"
+            << t.GetMilliseconds() << std::endl;
+  return h;
+}
+
 bool TesterGraphEIDistanceUnsigned::TestAll() {
   switch (gtype) {
     case EGraphType::SMALL:
@@ -477,7 +494,8 @@ bool TesterGraphEIDistanceUnsigned::TestAll() {
   hs.insert(TestKVM<heap::DHeapUKeyValueMap<2, unsigned>>("DM 2"));
   hs.insert(TestKVM<heap::DHeapUKeyValueMap<4, unsigned>>("DM 4"));
   hs.insert(TestKVM<heap::DHeapUKeyValueMap<8, unsigned>>("DM 8"));
-  hs.insert(TestKVM<heap::BinomialUKeyValueMap<unsigned>>(" BM "));
+  hs.insert(TestKVM<heap::BucketUKeyMap>(" BM "));
+  hs.insert(TestMKVM<heap::MonotoneBucketUKeyMap>("MBM "));
   // hs.insert(TestKVM<heap::DHeapUKeyValueMap<16, unsigned>>("DM16"));
   // hs.insert(TestKVM<heap::BinomialUKeyValueMap<unsigned>>("BNML"));
   // hs.insert(TestKVM<heap::FibonacciUKeyValueMap<unsigned>>("FBNC"));

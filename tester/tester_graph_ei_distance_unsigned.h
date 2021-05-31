@@ -64,6 +64,9 @@ class TesterGraphEIDistanceUnsigned {
   template <class THeap>
   size_t TestKVM(const std::string& name) const;
 
+  template <class THeap>
+  size_t TestMKVM(const std::string& name) const;
+
  public:
   bool TestAll();
 };
