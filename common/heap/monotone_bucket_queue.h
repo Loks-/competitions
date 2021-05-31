@@ -3,6 +3,7 @@
 #include "common/base.h"
 
 #include <algorithm>
+#include <stack>
 #include <vector>
 
 namespace heap {
@@ -20,7 +21,7 @@ class MonotoneBucketQueue {
   };
 
  protected:
-  std::vector<std::vector<TValue>> queue;
+  std::vector<std::stack<TValue>> queue;
   unsigned priority = 0, priority_adj = 0;
   unsigned size = 0;
   unsigned window;
@@ -39,7 +40,7 @@ class MonotoneBucketQueue {
 
   void Add(unsigned p, const TValue& value) {
     assert((priority <= p) && (p < priority + window));
-    queue[p % window].push_back(value);
+    queue[p % window].push(value);
     ++size;
   }
 
@@ -50,14 +51,14 @@ class MonotoneBucketQueue {
 
   const TValue& TopValue() {
     ShiftPriority();
-    return queue[priority_adj].back();
+    return queue[priority_adj].top();
   }
 
   TData Top() { return {TopPriority(), TopValue()}; }
 
   void Pop() {
     ShiftPriority();
-    queue[priority_adj].pop_back();
+    queue[priority_adj].pop();
     --size;
   }
 
