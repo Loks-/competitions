@@ -54,7 +54,7 @@ class BucketUKeyMap {
     }
   }
 
-  bool Empty() const { return Size() == 0; }
+  bool Empty() const { return size == 0; }
   unsigned Size() const { return size; }
   unsigned UKeySize() const { return unsigned(queue_position.size()); }
 
