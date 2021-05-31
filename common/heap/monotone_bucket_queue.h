@@ -12,7 +12,7 @@ template <class TTValue>
 class MonotoneBucketQueue {
  public:
   using TValue = TTValue;
-  using TSelf = BucketQueue<TTValue>;
+  using TSelf = MonotoneBucketQueue<TTValue>;
 
   class TData {
    public:

@@ -6,6 +6,7 @@
 #include "common/graph/graph_ei/create_hrandom_graph.h"
 #include "common/graph/graph_ei/distance/bellman_ford.h"
 #include "common/graph/graph_ei/distance/bellman_ford_yen.h"
+#include "common/graph/graph_ei/distance/dial.h"
 #include "common/graph/graph_ei/distance/floyd_warshall.h"
 #include "common/graph/graph_ei/distance/johnson.h"
 #include "common/graph/graph_ei/distance/spfa/goldberg_radzik.h"
@@ -92,6 +93,20 @@ size_t TesterGraphEIDistanceUnsigned::TestBellmanFordYen() const {
     for (unsigned d : v) h = HashCombine(h, d);
   }
   std::cout << "Test results  [BFY ]: " << h << "\t" << t.GetMilliseconds()
+            << std::endl;
+  return h;
+}
+
+size_t TesterGraphEIDistanceUnsigned::TestDial() const {
+  Timer t;
+  size_t h = 0;
+  unsigned max_cost = -1u;
+  std::vector<unsigned> v;
+  for (unsigned i = 0; i < g.Size(); ++i) {
+    v = graph::distance::Dial(g, edge_proxy, i, max_cost, max_edge_cost);
+    for (unsigned d : v) h = HashCombine(h, d);
+  }
+  std::cout << "Test results  [Dial]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
 }
@@ -494,15 +509,16 @@ bool TesterGraphEIDistanceUnsigned::TestAll() {
   hs.insert(TestKVM<heap::DHeapUKeyValueMap<2, unsigned>>("DM 2"));
   hs.insert(TestKVM<heap::DHeapUKeyValueMap<4, unsigned>>("DM 4"));
   hs.insert(TestKVM<heap::DHeapUKeyValueMap<8, unsigned>>("DM 8"));
+  hs.insert(TestKVM<heap::DHeapUKeyValueMap<16, unsigned>>("DM16"));
   hs.insert(TestKVM<heap::BucketUKeyMap>(" BM "));
   hs.insert(TestMKVM<heap::MonotoneBucketUKeyMap>("MBM "));
-  hs.insert(TestKVM<heap::DHeapUKeyValueMap<16, unsigned>>("DM16"));
   hs.insert(TestKVM<heap::BinomialUKeyValueMap<unsigned>>("BNML"));
   hs.insert(TestKVM<heap::FibonacciUKeyValueMap<unsigned>>("FBNC"));
   hs.insert(TestKVM<TPairing<0, 0>>("PR00"));
   hs.insert(TestKVM<TPairing<1, 0>>("PR01"));
   hs.insert(TestKVM<TPairing<0, 1>>("PR10"));
   hs.insert(TestKVM<TPairing<1, 1>>("PR11"));
+  hs.insert(TestDial());
   if (gtype == EGraphType::SMALL) hs.insert(TestBellmanFord());
   if (gtype == EGraphType::SMALL) hs.insert(TestBellmanFordYen());
   hs.insert(TestSPFA());

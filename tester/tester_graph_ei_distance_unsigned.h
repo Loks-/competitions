@@ -28,6 +28,7 @@ class TesterGraphEIDistanceUnsigned {
  protected:
   size_t TestBellmanFord() const;
   size_t TestBellmanFordYen() const;
+  size_t TestDial() const;
   size_t TestFloydWarshall() const;
   size_t TestGoldbergRadzik() const;
   size_t TestGoldbergRadzikLazy() const;
