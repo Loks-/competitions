@@ -62,8 +62,13 @@ class BucketUKeyMap {
     return queue_position[key].index != not_in_queue;
   }
 
-  unsigned GetPriority(unsigned key) const {
-    return queue_position[key].priority;
+  unsigned Get(unsigned key) const { return queue_position[key].priority; }
+
+  std::vector<TValue> GetValues() const {
+    unsigned n = UKeySize();
+    std::vector<TValue> v(n);
+    for (unsigned i = 0; i < n; ++i) v[i] = queue_position[i].priority;
+    return v;
   }
 
  public:
@@ -82,6 +87,10 @@ class BucketUKeyMap {
   void DecreasePriorityIfLess(unsigned key, unsigned new_priority) {
     if (new_priority < queue_position[key].priority)
       SetPriority(key, new_priority);
+  }
+
+  void DecreaseValueIfLess(unsigned key, unsigned new_value) {
+    DecreasePriorityIfLess(key, new_value);
   }
 
   void Add(const TData& x) { SetPriority(x.key, x.priority); }
@@ -162,7 +171,10 @@ class BucketUKeyMap {
       queue[pos.priority].pop_back();
     }
     --size;
-    ShiftPriority();
+    if (Empty())
+      top_priority = not_in_queue;
+    else
+      ShiftPriority();
   }
 };
 }  // namespace heap

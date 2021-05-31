@@ -2,6 +2,7 @@
 
 #include "common/graph/graph.h"
 #include "common/heap/bucket_ukey_map.h"
+
 #include <vector>
 
 // Time: O(V + E)
@@ -15,7 +16,7 @@ inline std::vector<unsigned> DegeneracyOrder(const UndirectedGraph& g) {
     unsigned u = queue.ExtractKey();
     order.push_back(u);
     for (unsigned v : g.Edges(u)) {
-      if (queue.HasKey(v)) queue.SetPriority(v, queue.GetPriority(v) - 1);
+      if (queue.HasKey(v)) queue.SetPriority(v, queue.Get(v) - 1);
     }
   }
   return order;
