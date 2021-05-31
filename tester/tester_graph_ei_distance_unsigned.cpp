@@ -30,8 +30,8 @@
 #include "common/hash.h"
 #include "common/heap/binary_heap.h"
 #include "common/heap/binomial_ukey_value_map.h"
-#include "common/heap/dheap_ukey_pos_map.h"
 #include "common/heap/bucket_queue.h"
+#include "common/heap/dheap_ukey_pos_map.h"
 #include "common/heap/dheap_ukey_value_map.h"
 #include "common/heap/fibonacci_ukey_value_map.h"
 #include "common/heap/pairing_ukey_value_map.h"
@@ -58,8 +58,10 @@ using TPairing = heap::PairingUKeyValueMap<unsigned, std::less<unsigned>,
                                            multipass, auxiliary>;
 
 TesterGraphEIDistanceUnsigned::TesterGraphEIDistanceUnsigned(
-    EGraphType _gtype, unsigned graph_size, unsigned edges_per_node, unsigned _max_edge_cost)
-    : max_edge_cost(_max_edge_cost), gtype(_gtype),
+    EGraphType _gtype, unsigned graph_size, unsigned edges_per_node,
+    unsigned _max_edge_cost)
+    : max_edge_cost(_max_edge_cost),
+      gtype(_gtype),
       g(CreateHRandomGraph<unsigned, true>(graph_size, edges_per_node,
                                            max_edge_cost)) {}
 
@@ -370,8 +372,7 @@ size_t TesterGraphEIDistanceUnsigned::TestZDOTime() const {
 }
 
 template <template <class TData> class THeap>
-size_t TesterGraphEIDistanceUnsigned::TestHP(
-    const std::string& name) const {
+size_t TesterGraphEIDistanceUnsigned::TestHP(const std::string& name) const {
   Timer t;
   size_t h = 0;
   unsigned max_cost = -1u;
@@ -386,8 +387,7 @@ size_t TesterGraphEIDistanceUnsigned::TestHP(
 }
 
 template <template <class TData> class THeap>
-size_t TesterGraphEIDistanceUnsigned::TestHPV(
-    const std::string& name) const {
+size_t TesterGraphEIDistanceUnsigned::TestHPV(const std::string& name) const {
   Timer t;
   size_t h = 0;
   unsigned max_cost = -1u;
@@ -402,8 +402,7 @@ size_t TesterGraphEIDistanceUnsigned::TestHPV(
 }
 
 template <class THeap>
-size_t TesterGraphEIDistanceUnsigned::TestKPM(
-    const std::string& name) const {
+size_t TesterGraphEIDistanceUnsigned::TestKPM(const std::string& name) const {
   Timer t;
   size_t h = 0;
   unsigned max_cost = -1u;
@@ -418,8 +417,7 @@ size_t TesterGraphEIDistanceUnsigned::TestKPM(
 }
 
 template <class THeap>
-size_t TesterGraphEIDistanceUnsigned::TestKVM(
-    const std::string& name) const {
+size_t TesterGraphEIDistanceUnsigned::TestKVM(const std::string& name) const {
   Timer t;
   size_t h = 0;
   unsigned max_cost = -1u;
@@ -436,13 +434,13 @@ size_t TesterGraphEIDistanceUnsigned::TestKVM(
 bool TesterGraphEIDistanceUnsigned::TestAll() {
   switch (gtype) {
     case EGraphType::SMALL:
-      std::cout << "Small:" << std::endl;
+      std::cout << "Small " << max_edge_cost << ":" << std::endl;
       break;
     case EGraphType::SPARSE:
-      std::cout << "Sparse:" << std::endl;
+      std::cout << "Sparse " << max_edge_cost << ":" << std::endl;
       break;
     case EGraphType::DENSE:
-      std::cout << "Dense:" << std::endl;
+      std::cout << "Dense " << max_edge_cost << ":" << std::endl;
       break;
     default:
       assert(false);
@@ -467,26 +465,26 @@ bool TesterGraphEIDistanceUnsigned::TestAll() {
   hs.insert(TestKVM<TPairing<1, 0>>("PR01"));
   hs.insert(TestKVM<TPairing<0, 1>>("PR10"));
   hs.insert(TestKVM<TPairing<1, 1>>("PR11"));
-  hs.insert(TestBellmanFord());
-  hs.insert(TestBellmanFordYen());
+  if (gtype == EGraphType::SMALL) hs.insert(TestBellmanFord());
+  if (gtype == EGraphType::SMALL) hs.insert(TestBellmanFordYen());
   hs.insert(TestSPFA());
-  hs.insert(TestSPFASafe());
-  hs.insert(TestSIPITQ());
-  hs.insert(TestSPFALLL());
-  hs.insert(TestSPFASLF());
-  hs.insert(TestLevit());
-  hs.insert(TestPallottino());
-  hs.insert(TestGoldfarbHaoKai());
-  hs.insert(TestGoldbergRadzik());
-  hs.insert(TestGoldbergRadzikLazy());
-  hs.insert(TestGoldbergRadzikPCR());
-  hs.insert(TestTarjan());
-  hs.insert(TestTarjanTime());
-  hs.insert(TestTarjanPCR());
-  hs.insert(TestTarjanPCRTime());
-  hs.insert(TestZDOBase());
-  hs.insert(TestZDO());
-  hs.insert(TestZDOTime());
+  if (gtype == EGraphType::SMALL) hs.insert(TestSPFASafe());
+  if (gtype == EGraphType::SMALL) hs.insert(TestSIPITQ());
+  if (gtype == EGraphType::SMALL) hs.insert(TestSPFALLL());
+  if (gtype == EGraphType::SMALL) hs.insert(TestSPFASLF());
+  if (gtype == EGraphType::SMALL) hs.insert(TestLevit());
+  if (gtype == EGraphType::SMALL) hs.insert(TestPallottino());
+  if (gtype == EGraphType::SMALL) hs.insert(TestGoldfarbHaoKai());
+  if (gtype == EGraphType::SMALL) hs.insert(TestGoldbergRadzik());
+  if (gtype == EGraphType::SMALL) hs.insert(TestGoldbergRadzikLazy());
+  if (gtype == EGraphType::SMALL) hs.insert(TestGoldbergRadzikPCR());
+  if (gtype == EGraphType::SMALL) hs.insert(TestTarjan());
+  if (gtype == EGraphType::SMALL) hs.insert(TestTarjanTime());
+  if (gtype == EGraphType::SMALL) hs.insert(TestTarjanPCR());
+  if (gtype == EGraphType::SMALL) hs.insert(TestTarjanPCRTime());
+  if (gtype == EGraphType::SMALL) hs.insert(TestZDOBase());
+  if (gtype == EGraphType::SMALL) hs.insert(TestZDO());
+  if (gtype == EGraphType::SMALL) hs.insert(TestZDOTime());
   if (gtype != EGraphType::SPARSE) hs.insert(TestFloydWarshall());
   hs.insert(TestJohnson());
   return hs.size() == 1;
@@ -494,9 +492,14 @@ bool TesterGraphEIDistanceUnsigned::TestAll() {
 
 bool TestGraphEIDistanceUnsigned(bool time_test) {
   if (time_test) {
-    TesterGraphEIDistanceUnsigned t1(EGraphType::SPARSE, 5000, 4, 10),
-        t2(EGraphType::DENSE, 1000, 200, 10);
-    return t1.TestAll() && t2.TestAll();
+    bool ok = true;
+    for (unsigned max_cost : {10, 100, 1000}) {
+      TesterGraphEIDistanceUnsigned t1(EGraphType::SPARSE, 5000, 4, max_cost),
+          t2(EGraphType::DENSE, 1000, 200, max_cost);
+      ok = t1.TestAll() && ok;
+      ok = t2.TestAll() && ok;
+    }
+    return ok;
   } else {
     TesterGraphEIDistanceUnsigned t(EGraphType::SMALL, 100, 4, 10);
     return t.TestAll();
