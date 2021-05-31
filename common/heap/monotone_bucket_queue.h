@@ -1,0 +1,89 @@
+#pragma once
+
+#include "common/base.h"
+
+#include <algorithm>
+#include <vector>
+
+namespace heap {
+// current priority <= new priority < current priority + window
+template <class TTValue>
+class MonotoneBucketQueue {
+ public:
+  using TValue = TTValue;
+  using TSelf = BucketQueue<TTValue>;
+
+  class TData {
+   public:
+    unsigned priority;
+    TValue value;
+  };
+
+ protected:
+  std::vector<std::vector<TValue>> queue;
+  unsigned priority = 0, priority_adj = 0;
+  unsigned size = 0;
+  unsigned window;
+
+ public:
+  MonotoneBucketQueue() {}
+  explicit MonotoneBucketQueue(unsigned _window) { SetWindow(_window); }
+
+  void SetWindow(unsigned _window) {
+    window = _window;
+    queue.resize(window);
+  }
+
+  bool Empty() const { return size == 0; }
+  unsigned Size() const { return size; }
+
+  void Add(unsigned p, const TValue& value) {
+    assert((priority <= p) && (p < priority + window));
+    queue[p % window].push_back(value);
+    ++size;
+  }
+
+  unsigned TopPriority() {
+    ShiftPriority();
+    return priority;
+  }
+
+  const TValue& TopValue() {
+    ShiftPriority();
+    return queue[priority_adj].back();
+  }
+
+  TData Top() { return {TopPriority(), TopValue()}; }
+
+  void Pop() {
+    ShiftPriority();
+    queue[priority_adj].pop_back();
+    --size;
+  }
+
+  unsigned ExtractPriority() {
+    unsigned t = TopPriority();
+    Pop();
+    return t;
+  }
+
+  TValue ExtractValue() {
+    TValue v = TopValue();
+    Pop();
+    return v;
+  }
+
+  TData Extract() {
+    TData t = Top();
+    Pop();
+    return t;
+  }
+
+ protected:
+  void ShiftPriority() {
+    assert(!Empty());
+    for (; queue[priority_adj].size() == 0; ++priority)
+      priority_adj = (priority_adj + 1) % window;
+  }
+};
+}  // namespace heap

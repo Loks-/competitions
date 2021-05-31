@@ -22,7 +22,8 @@ class TesterGraphEIDistanceUnsigned {
 
  public:
   TesterGraphEIDistanceUnsigned(EGraphType _gtype, unsigned graph_size,
-                                    unsigned edges_per_node, unsigned _max_edge_cost);
+                                unsigned edges_per_node,
+                                unsigned _max_edge_cost);
 
  protected:
   size_t TestBellmanFord() const;
@@ -53,6 +54,9 @@ class TesterGraphEIDistanceUnsigned {
 
   template <template <class TData> class THeap>
   size_t TestHPV(const std::string& name) const;
+
+  template <template <class TData> class THeap>
+  size_t TestMHPV(const std::string& name) const;
 
   template <class THeap>
   size_t TestKPM(const std::string& name) const;

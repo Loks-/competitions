@@ -34,6 +34,7 @@
 #include "common/heap/dheap_ukey_pos_map.h"
 #include "common/heap/dheap_ukey_value_map.h"
 #include "common/heap/fibonacci_ukey_value_map.h"
+#include "common/heap/monotone_bucket_queue.h"
 #include "common/heap/pairing_ukey_value_map.h"
 #include "common/timer.h"
 
@@ -401,6 +402,22 @@ size_t TesterGraphEIDistanceUnsigned::TestHPV(const std::string& name) const {
   return h;
 }
 
+template <template <class TData> class THeap>
+size_t TesterGraphEIDistanceUnsigned::TestMHPV(const std::string& name) const {
+  Timer t;
+  size_t h = 0;
+  unsigned max_cost = -1u;
+  std::vector<unsigned> v;
+  for (unsigned i = 0; i < g.Size(); ++i) {
+    v = DistanceFromSourcePositiveCost_MHPV<THeap>(g, edge_proxy, i,
+                                                   max_edge_cost, max_cost);
+    for (unsigned d : v) h = HashCombine(h, d);
+  }
+  std::cout << "Test results  [" << name << "]: " << h << "\t"
+            << t.GetMilliseconds() << std::endl;
+  return h;
+}
+
 template <class THeap>
 size_t TesterGraphEIDistanceUnsigned::TestKPM(const std::string& name) const {
   Timer t;
@@ -447,24 +464,25 @@ bool TesterGraphEIDistanceUnsigned::TestAll() {
   }
   std::unordered_set<size_t> hs;
   hs.insert(TestHP<TBinaryHeap>("  BH"));
-  hs.insert(TestHP<TDHeap2>("HP 2"));
-  hs.insert(TestHP<TDHeap4>("HP 4"));
-  hs.insert(TestHP<TDHeap8>("HP 8"));
-  hs.insert(TestHP<TDHeap16>("HP16"));
-  hs.insert(TestHPV<heap::BucketQueue>("BQ  "));
-  hs.insert(TestKPM<heap::DHeapUKeyPosMap<2, unsigned>>("KPM2"));
-  hs.insert(TestKPM<heap::DHeapUKeyPosMap<4, unsigned>>("KPM4"));
-  hs.insert(TestKPM<heap::DHeapUKeyPosMap<8, unsigned>>("KPM8"));
+  // hs.insert(TestHP<TDHeap2>("HP 2"));
+  // hs.insert(TestHP<TDHeap4>("HP 4"));
+  // hs.insert(TestHP<TDHeap8>("HP 8"));
+  // hs.insert(TestHP<TDHeap16>("HP16"));
+  hs.insert(TestHPV<heap::BucketQueue>(" BQ "));
+  hs.insert(TestMHPV<heap::MonotoneBucketQueue>("MBQ "));
+  // hs.insert(TestKPM<heap::DHeapUKeyPosMap<2, unsigned>>("KPM2"));
+  // hs.insert(TestKPM<heap::DHeapUKeyPosMap<4, unsigned>>("KPM4"));
+  // hs.insert(TestKPM<heap::DHeapUKeyPosMap<8, unsigned>>("KPM8"));
   hs.insert(TestKVM<heap::DHeapUKeyValueMap<2, unsigned>>("DM 2"));
   hs.insert(TestKVM<heap::DHeapUKeyValueMap<4, unsigned>>("DM 4"));
   hs.insert(TestKVM<heap::DHeapUKeyValueMap<8, unsigned>>("DM 8"));
-  hs.insert(TestKVM<heap::DHeapUKeyValueMap<16, unsigned>>("DM16"));
-  hs.insert(TestKVM<heap::BinomialUKeyValueMap<unsigned>>("BNML"));
-  hs.insert(TestKVM<heap::FibonacciUKeyValueMap<unsigned>>("FBNC"));
-  hs.insert(TestKVM<TPairing<0, 0>>("PR00"));
-  hs.insert(TestKVM<TPairing<1, 0>>("PR01"));
-  hs.insert(TestKVM<TPairing<0, 1>>("PR10"));
-  hs.insert(TestKVM<TPairing<1, 1>>("PR11"));
+  // hs.insert(TestKVM<heap::DHeapUKeyValueMap<16, unsigned>>("DM16"));
+  // hs.insert(TestKVM<heap::BinomialUKeyValueMap<unsigned>>("BNML"));
+  // hs.insert(TestKVM<heap::FibonacciUKeyValueMap<unsigned>>("FBNC"));
+  // hs.insert(TestKVM<TPairing<0, 0>>("PR00"));
+  // hs.insert(TestKVM<TPairing<1, 0>>("PR01"));
+  // hs.insert(TestKVM<TPairing<0, 1>>("PR10"));
+  // hs.insert(TestKVM<TPairing<1, 1>>("PR11"));
   if (gtype == EGraphType::SMALL) hs.insert(TestBellmanFord());
   if (gtype == EGraphType::SMALL) hs.insert(TestBellmanFordYen());
   hs.insert(TestSPFA());

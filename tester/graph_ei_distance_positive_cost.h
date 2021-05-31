@@ -62,6 +62,33 @@ std::vector<TEdgeCost> DistanceFromSourcePositiveCost_HPV(
   return vd;
 }
 
+template <template <class TData> class THeap, class TGraph,
+          class TEdgeCostFunction, class TEdgeCost>
+std::vector<TEdgeCost> DistanceFromSourcePositiveCost_MHPV(
+    const TGraph& graph, const TEdgeCostFunction& f, unsigned source,
+    const TEdgeCost& max_edge_cost, const TEdgeCost& max_cost) {
+  std::vector<TEdgeCost> vd(graph.Size(), max_cost);
+  std::vector<unsigned> visited(graph.Size(), 0);
+  THeap<TEdgeCost> q(max_edge_cost);
+  vd[source] = TEdgeCost();
+  for (q.Add(TEdgeCost(), source); !q.Empty();) {
+    auto p = q.Extract();
+    unsigned u = p.value;
+    if (!visited[u]) {
+      visited[u] = true;
+      for (auto e : graph.EdgesEI(u)) {
+        unsigned v = e.to;
+        TEdgeCost cost = p.priority + f(e.info);
+        if (cost < vd[v]) {
+          vd[v] = cost;
+          q.Add(cost, v);
+        }
+      }
+    }
+  }
+  return vd;
+}
+
 template <class TUKeyPosMap, class TGraph, class TEdgeCostFunction,
           class TEdgeCost>
 std::vector<TEdgeCost> DistanceFromSourcePositiveCost_KPM(
