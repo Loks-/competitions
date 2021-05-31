@@ -31,6 +31,7 @@
 #include "common/heap/binary_heap.h"
 #include "common/heap/binomial_ukey_value_map.h"
 #include "common/heap/bucket_queue.h"
+#include "common/heap/bucket_ukey_map.h"
 #include "common/heap/dheap_ukey_pos_map.h"
 #include "common/heap/dheap_ukey_value_map.h"
 #include "common/heap/fibonacci_ukey_value_map.h"
@@ -513,7 +514,7 @@ bool TestGraphEIDistanceUnsigned(bool time_test) {
     bool ok = true;
     for (unsigned max_cost : {10, 100, 1000}) {
       TesterGraphEIDistanceUnsigned t1(EGraphType::SPARSE, 5000, 4, max_cost),
-          t2(EGraphType::DENSE, 1000, 200, max_cost);
+          t2(EGraphType::DENSE, 1000, 400, max_cost);
       ok = t1.TestAll() && ok;
       ok = t2.TestAll() && ok;
     }

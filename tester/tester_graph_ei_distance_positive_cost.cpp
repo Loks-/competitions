@@ -477,7 +477,7 @@ bool TesterGraphEIDistancePositiveCost::TestAll() {
 bool TestGraphEIDistancePositiveCost(bool time_test) {
   if (time_test) {
     TesterGraphEIDistancePositiveCost t1(EGraphType::SPARSE, 5000, 4),
-        t2(EGraphType::DENSE, 1000, 200);
+        t2(EGraphType::DENSE, 1000, 400);
     return t1.TestAll() && t2.TestAll();
   } else {
     TesterGraphEIDistancePositiveCost t(EGraphType::SMALL, 100, 4);
