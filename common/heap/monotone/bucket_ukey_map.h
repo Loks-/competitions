@@ -6,12 +6,13 @@
 #include <vector>
 
 namespace heap {
+namespace monotone {
 // top priority <= new priority < top priority + window
-class MonotoneBucketUKeyMap {
+class BucketUKeyMap {
  public:
   static const unsigned not_in_queue = -1u;
   using TValue = unsigned;
-  using TSelf = MonotoneBucketUKeyMap;
+  using TSelf = BucketUKeyMap;
 
   struct TData {
     unsigned priority;
@@ -42,13 +43,13 @@ class MonotoneBucketUKeyMap {
     queue.resize(window);
   }
 
-  MonotoneBucketUKeyMap(unsigned ukey_size, unsigned _window) {
+  BucketUKeyMap(unsigned ukey_size, unsigned _window) {
     ResetHeapPosition(ukey_size);
     SetWindow(_window);
   }
 
-  MonotoneBucketUKeyMap(const std::vector<unsigned>& v, bool skip_heap,
-                        unsigned _window) {
+  BucketUKeyMap(const std::vector<unsigned>& v, bool skip_heap,
+                unsigned _window) {
     ResetHeapPosition(v.size());
     SetWindow(_window);
     if (skip_heap) {
@@ -186,4 +187,5 @@ class MonotoneBucketUKeyMap {
     --size;
   }
 };
+}  // namespace monotone
 }  // namespace heap

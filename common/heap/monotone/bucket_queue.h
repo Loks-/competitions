@@ -7,12 +7,13 @@
 #include <vector>
 
 namespace heap {
+namespace monotone {
 // current priority <= new priority < current priority + window
 template <class TTValue>
-class MonotoneBucketQueue {
+class BucketQueue {
  public:
   using TValue = TTValue;
-  using TSelf = MonotoneBucketQueue<TTValue>;
+  using TSelf = BucketQueue<TTValue>;
 
   class TData {
    public:
@@ -27,8 +28,8 @@ class MonotoneBucketQueue {
   unsigned window;
 
  public:
-  MonotoneBucketQueue() {}
-  explicit MonotoneBucketQueue(unsigned _window) { SetWindow(_window); }
+  BucketQueue() {}
+  explicit BucketQueue(unsigned _window) { SetWindow(_window); }
 
   void SetWindow(unsigned _window) {
     window = _window;
@@ -87,4 +88,5 @@ class MonotoneBucketQueue {
       priority_adj = (priority_adj + 1) % window;
   }
 };
+}  // namespace monotone
 }  // namespace heap

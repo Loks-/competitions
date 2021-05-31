@@ -36,8 +36,8 @@
 #include "common/heap/dheap_ukey_pos_map.h"
 #include "common/heap/dheap_ukey_value_map.h"
 #include "common/heap/fibonacci_ukey_value_map.h"
-#include "common/heap/monotone_bucket_queue.h"
-#include "common/heap/monotone_bucket_ukey_map.h"
+#include "common/heap/monotone/bucket_queue.h"
+#include "common/heap/monotone/bucket_ukey_map.h"
 #include "common/heap/pairing_ukey_value_map.h"
 #include "common/timer.h"
 
@@ -502,7 +502,7 @@ bool TesterGraphEIDistanceUnsigned::TestAll() {
   hs.insert(TestHP<TDHeap8>("HP 8"));
   hs.insert(TestHP<TDHeap16>("HP16"));
   hs.insert(TestHPV<heap::BucketQueue>(" BQ "));
-  hs.insert(TestMHPV<heap::MonotoneBucketQueue>("MBQ "));
+  hs.insert(TestMHPV<heap::monotone::BucketQueue>("MBQ "));
   hs.insert(TestKPM<heap::DHeapUKeyPosMap<2, unsigned>>("KPM2"));
   hs.insert(TestKPM<heap::DHeapUKeyPosMap<4, unsigned>>("KPM4"));
   hs.insert(TestKPM<heap::DHeapUKeyPosMap<8, unsigned>>("KPM8"));
@@ -511,7 +511,7 @@ bool TesterGraphEIDistanceUnsigned::TestAll() {
   hs.insert(TestKVM<heap::DHeapUKeyValueMap<8, unsigned>>("DM 8"));
   hs.insert(TestKVM<heap::DHeapUKeyValueMap<16, unsigned>>("DM16"));
   hs.insert(TestKVM<heap::BucketUKeyMap>(" BM "));
-  hs.insert(TestMKVM<heap::MonotoneBucketUKeyMap>("MBM "));
+  hs.insert(TestMKVM<heap::monotone::BucketUKeyMap>("MBM "));
   hs.insert(TestKVM<heap::BinomialUKeyValueMap<unsigned>>("BNML"));
   hs.insert(TestKVM<heap::FibonacciUKeyValueMap<unsigned>>("FBNC"));
   hs.insert(TestKVM<TPairing<0, 0>>("PR00"));
