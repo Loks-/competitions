@@ -477,6 +477,7 @@ bool TesterGraphEIDistanceUnsigned::TestAll() {
   hs.insert(TestKVM<heap::DHeapUKeyValueMap<2, unsigned>>("DM 2"));
   hs.insert(TestKVM<heap::DHeapUKeyValueMap<4, unsigned>>("DM 4"));
   hs.insert(TestKVM<heap::DHeapUKeyValueMap<8, unsigned>>("DM 8"));
+  hs.insert(TestKVM<heap::BinomialUKeyValueMap<unsigned>>(" BM "));
   // hs.insert(TestKVM<heap::DHeapUKeyValueMap<16, unsigned>>("DM16"));
   // hs.insert(TestKVM<heap::BinomialUKeyValueMap<unsigned>>("BNML"));
   // hs.insert(TestKVM<heap::FibonacciUKeyValueMap<unsigned>>("FBNC"));
