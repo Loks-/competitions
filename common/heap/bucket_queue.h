@@ -23,7 +23,9 @@ class BucketQueue {
 
  public:
   BucketQueue() {}
-  explicit BucketQueue(unsigned max_priority) { queue.resize(max_priority + 1); }
+  explicit BucketQueue(unsigned max_priority) {
+    queue.resize(max_priority + 1);
+  }
 
   bool Empty() const { return size == 0; }
   unsigned Size() const { return size; }
