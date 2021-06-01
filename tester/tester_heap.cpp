@@ -41,36 +41,6 @@ size_t TesterHeap::TestPriorityQueue() const {
   return h;
 }
 
-size_t TesterHeap::TestBinomialUKeyValueMap() const {
-  Timer t;
-  size_t h = 0;
-  heap::ukvm::Binomial<size_t> heap(vinit.size() + vloop.size());
-  for (unsigned i = 0; i < vinit.size(); ++i) heap.Set(i, vinit[i]);
-  for (unsigned i = 0; i < vloop.size(); ++i) {
-    h = HashCombine(h, heap.ExtractValue());
-    heap.Set(vinit.size() + i, vloop[i]);
-  }
-  for (; !heap.Empty(); heap.Pop()) h = HashCombine(h, heap.TopValue());
-  std::cout << "Test results [BKVM]: " << h << "\t" << t.GetMilliseconds()
-            << std::endl;
-  return h;
-}
-
-size_t TesterHeap::TestFibonacciUKeyValueMap() const {
-  Timer t;
-  size_t h = 0;
-  heap::ukvm::Fibonacci<size_t> heap(vinit.size() + vloop.size());
-  for (unsigned i = 0; i < vinit.size(); ++i) heap.Set(i, vinit[i]);
-  for (unsigned i = 0; i < vloop.size(); ++i) {
-    h = HashCombine(h, heap.ExtractValue());
-    heap.Set(vinit.size() + i, vloop[i]);
-  }
-  for (; !heap.Empty(); heap.Pop()) h = HashCombine(h, heap.TopValue());
-  std::cout << "Test results [FKVM]: " << h << "\t" << t.GetMilliseconds()
-            << std::endl;
-  return h;
-}
-
 template <class THeap>
 size_t TesterHeap::TestBase(const std::string& name) const {
   Timer t;
@@ -195,8 +165,8 @@ bool TesterHeap::TestAll() const {
   hs.insert(TestKVM<heap::ukvm::DHeap<2, size_t>>("M   D2"));
   hs.insert(TestKVM<heap::ukvm::DHeap<4, size_t>>("M   D4"));
   hs.insert(TestKVM<heap::ukvm::DHeap<8, size_t>>("M   D8"));
-  hs.insert(TestBinomialUKeyValueMap());
-  hs.insert(TestFibonacciUKeyValueMap());
+  hs.insert(TestKVM<heap::ukvm::Binomial<size_t>>("M BNML"));
+  hs.insert(TestKVM<heap::ukvm::Fibonacci<size_t>>("M FBNC"));
   hs.insert(TestPairingUKeyValueMap<0, 0>());
   hs.insert(TestPairingUKeyValueMap<1, 0>());
   hs.insert(TestPairingUKeyValueMap<0, 1>());

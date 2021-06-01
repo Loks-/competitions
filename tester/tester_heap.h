@@ -14,8 +14,6 @@ class TesterHeap {
 
  protected:
   size_t TestPriorityQueue() const;
-  size_t TestBinomialUKeyValueMap() const;
-  size_t TestFibonacciUKeyValueMap() const;
 
   template <class THeap>
   size_t TestBase(const std::string& name) const;
