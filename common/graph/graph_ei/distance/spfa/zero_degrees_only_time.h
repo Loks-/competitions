@@ -1,6 +1,6 @@
 #pragma once
 
-#include "common/graph/graph_ei/distance/spfa/dllr.h"
+#include "common/graph/graph_ei/distance/spfa/parent_tree.h"
 
 #include <queue>
 #include <stack>
@@ -22,8 +22,8 @@ inline std::vector<TEdgeCost> ZeroDegreesOnlyTime(const TGraph& graph,
   std::queue<unsigned> q;
   std::stack<unsigned> s;
   std::vector<unsigned> inq(gsize, 0);
-  DLLR dllr(gsize);
-  dllr.SetRoot(source);
+  ParentTree pt(gsize);
+  pt.SetRoot(source);
   q.push(source);
   for (unsigned t = 0, te = 0; !q.empty(); ++t) {
     unsigned u = q.front();
@@ -40,25 +40,23 @@ inline std::vector<TEdgeCost> ZeroDegreesOnlyTime(const TGraph& graph,
     if (skip) continue;
     for (const auto& e : graph.EdgesEI(u)) {
       if (ucost + f(e.info) < v[e.to]) {
-        unsigned u2 = e.to;
-        auto n2 = dllr.Get(u2);
-        if (n2->p) {
+        unsigned u2 = e.to, p2 = pt.vp[u2];
+        if (p2 != CNone) {
           // Disassemble subtree
-          n2->p->nchilds -= 1;
-          auto nl = n2->l;
+          pt.vc[p2] -= 1;
+          auto ul = pt.vl[u2], u3 = u2;
           for (unsigned k = 1; k > 0; --k) {
-            k += n2->nchilds;
-            n2->Reset();
-            unsigned u3 = dllr.Get(n2);
+            k += pt.vc[u3];
+            pt.Reset(u3);
             if (u3 == u) return {};  // Negative cycle
             inq[u3] = 0;
-            n2 = n2->r;
+            u3 = pt.vr[u3];
           }
-          nl->r = n2;
-          n2->l = nl;
+          pt.vr[ul] = u3;
+          pt.vl[u3] = ul;
         }
         v[u2] = ucost + f(e.info);
-        dllr.SetParent(u2, u);
+        pt.SetParent(u2, u);
         inq[u2] = ++te;
         q.push(u2);
       }
