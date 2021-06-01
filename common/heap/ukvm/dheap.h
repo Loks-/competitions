@@ -1,7 +1,6 @@
 #pragma once
 
 #include "common/base.h"
-#include "common/vector/enumerate.h"
 
 #include <algorithm>
 #include <functional>
