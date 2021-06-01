@@ -125,21 +125,10 @@ size_t TesterHeap::TestExtPairing() const {
 }
 
 template <bool multipass, bool auxiliary>
-size_t TesterHeap::TestPairingUKeyValueMap() const {
-  using THeap =
-      heap::ukvm::Pairing<size_t, std::less<size_t>, multipass, auxiliary>;
-  Timer t;
-  size_t h = 0;
-  THeap heap(vinit.size() + vloop.size());
-  for (unsigned i = 0; i < vinit.size(); ++i) heap.Set(i, vinit[i]);
-  for (unsigned i = 0; i < vloop.size(); ++i) {
-    h = HashCombine(h, heap.ExtractValue());
-    heap.Set(vinit.size() + i, vloop[i]);
-  }
-  for (; !heap.Empty(); heap.Pop()) h = HashCombine(h, heap.TopValue());
-  std::cout << "Test results [PM" << auxiliary << multipass << "]: " << h
-            << "\t" << t.GetMilliseconds() << std::endl;
-  return h;
+size_t TesterHeap::TestUKVMPairing() const {
+  return TestKVM<
+      heap::ukvm::Pairing<size_t, std::less<size_t>, multipass, auxiliary>>(
+      "M PR" + std::to_string(multipass) + std::to_string(auxiliary));
 }
 
 bool TesterHeap::TestAll() const {
@@ -167,10 +156,10 @@ bool TesterHeap::TestAll() const {
   hs.insert(TestKVM<heap::ukvm::DHeap<8, size_t>>("M   D8"));
   hs.insert(TestKVM<heap::ukvm::Binomial<size_t>>("M BNML"));
   hs.insert(TestKVM<heap::ukvm::Fibonacci<size_t>>("M FBNC"));
-  hs.insert(TestPairingUKeyValueMap<0, 0>());
-  hs.insert(TestPairingUKeyValueMap<1, 0>());
-  hs.insert(TestPairingUKeyValueMap<0, 1>());
-  hs.insert(TestPairingUKeyValueMap<1, 1>());
+  hs.insert(TestUKVMPairing<0, 0>());
+  hs.insert(TestUKVMPairing<1, 0>());
+  hs.insert(TestUKVMPairing<0, 1>());
+  hs.insert(TestUKVMPairing<1, 1>());
   return hs.size() == 1;
 }
 
