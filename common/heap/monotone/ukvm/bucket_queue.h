@@ -1,6 +1,7 @@
 #pragma once
 
 #include "common/base.h"
+#include "common/heap/ukvm/data.h"
 
 #include <algorithm>
 #include <vector>
@@ -21,12 +22,8 @@ class BucketQueue {
  public:
   static const unsigned not_in_queue = -1u;
   using TValue = unsigned;
+  using TData = heap::ukvm::Data<TValue>;
   using TSelf = BucketQueue;
-
-  struct TData {
-    unsigned priority;
-    unsigned key;
-  };
 
   struct Position {
     unsigned priority = not_in_queue;
@@ -100,39 +97,42 @@ class BucketQueue {
     AddNewKeyI(key, priority, skip_heap);
   }
 
-  void SetPriority(unsigned key, unsigned new_priority) {
+  void Set(unsigned key, unsigned new_priority) {
     assert((top_priority <= new_priority) &&
            (new_priority < top_priority + window));
     if (queue_position[key].index == not_in_queue)
       AddNewKeyI(key, new_priority, false);
     else
-      SetPriorityI(key, new_priority);
+      SetI(key, new_priority);
   }
 
-  void DecreasePriorityIfLess(unsigned key, unsigned new_priority) {
+  void DecreaseValue(unsigned key, unsigned new_priority) {
+    Set(key, new_priority);
+  }
+
+  void DecreaseValueIfLess(unsigned key, unsigned new_priority) {
     assert((top_priority <= new_priority) &&
            (new_priority < top_priority + window));
-    if (new_priority < queue_position[key].priority)
-      SetPriority(key, new_priority);
+    if (new_priority < queue_position[key].priority) Set(key, new_priority);
   }
 
-  void DecreaseValueIfLess(unsigned key, unsigned new_value) {
-    DecreasePriorityIfLess(key, new_value);
+  void IncreaseValue(unsigned key, unsigned new_priority) {
+    Set(key, new_priority);
   }
 
-  void Add(const TData& x) { SetPriority(x.key, x.priority); }
-
-  unsigned TopPriority() {
-    ShiftPriority();
-    return top_priority;
-  }
+  void Add(const TData& x) { Set(x.key, x.value); }
 
   unsigned TopKey() {
     ShiftPriority();
     return queue[top_priority_adj].back();
   }
 
-  TData Top() { return {TopPriority(), TopKey()}; }
+  unsigned TopValue() {
+    ShiftPriority();
+    return top_priority;
+  }
+
+  TData Top() { return {TopKey(), TopValue()}; }
 
   void Pop() { DeleteKey(TopKey()); }
 
@@ -142,8 +142,8 @@ class BucketQueue {
     return t;
   }
 
-  unsigned ExtractPriority() {
-    unsigned t = TopPriority();
+  unsigned ExtractValue() {
+    unsigned t = TopValue();
     Pop();
     return t;
   }
@@ -175,7 +175,7 @@ class BucketQueue {
     }
   }
 
-  void SetPriorityI(unsigned key, unsigned new_priority) {
+  void SetI(unsigned key, unsigned new_priority) {
     Position old = queue_position[key];
     if (old.priority != new_priority) {
       AddNewKeyI(key, new_priority, false);
