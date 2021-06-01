@@ -1,6 +1,7 @@
 #pragma once
 
 #include "common/base.h"
+#include "common/heap/ukvm/data.h"
 
 #include <algorithm>
 #include <functional>
@@ -22,12 +23,8 @@ class DHeap {
   const unsigned not_in_heap = unsigned(-1);
   using TValue = TTValue;
   using TCompare = TTCompare;
+  using TData = Data<TValue>;
   using TSelf = DHeap<d_, TValue, TCompare>;
-
-  struct TData {
-    unsigned key;
-    TValue value;
-  };
 
   struct TPositionValue {
     unsigned heap_position;

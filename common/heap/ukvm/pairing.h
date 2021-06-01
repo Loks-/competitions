@@ -2,6 +2,7 @@
 
 #include "common/base.h"
 #include "common/heap/ext/pairing.h"
+#include "common/heap/ukvm/data.h"
 #include "common/nodes_manager_fixed_size.h"
 
 #include <functional>
@@ -23,16 +24,12 @@ class Pairing
                                 multipass, auxiliary> {
  public:
   using TValue = TTValue;
+  using TData = Data<TValue>;
   using TBase = heap::ext::Pairing<TValue, TCompare, NodesManagerFixedSize,
                                    multipass, auxiliary>;
   using TSelf = Pairing<TValue, TCompare, multipass, auxiliary>;
   using TNode = typename TBase::Node;
   using TNodesManager = typename TBase::TNodesManager;
-
-  struct TData {
-    unsigned key;
-    TValue value;
-  };
 
  protected:
   TNodesManager manager;

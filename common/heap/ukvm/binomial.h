@@ -1,6 +1,7 @@
 #pragma once
 
 #include "common/base.h"
+#include "common/heap/ukvm/data.h"
 #include "common/node.h"
 #include "common/nodes_manager_fixed_size.h"
 
@@ -20,12 +21,8 @@ class Binomial {
  public:
   using TValue = TTValue;
   using TCompare = TTCompare;
+  using TData = Data<TValue>;
   using TSelf = Binomial<TValue, TCompare>;
-
-  struct TData {
-    unsigned key;
-    TValue value;
-  };
 
   struct TPositionValue;
 
