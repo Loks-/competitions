@@ -103,6 +103,22 @@ size_t TesterHeap::TestNodesManager(const std::string& name) const {
   return h;
 }
 
+template <class THeap>
+size_t TesterHeap::TestKVM(const std::string& name) const {
+  Timer t;
+  size_t h = 0;
+  THeap heap(vinit.size() + vloop.size());
+  for (unsigned i = 0; i < vinit.size(); ++i) heap.Set(i, vinit[i]);
+  for (unsigned i = 0; i < vloop.size(); ++i) {
+    h = HashCombine(h, heap.ExtractValue());
+    heap.Set(vinit.size() + i, vloop[i]);
+  }
+  for (; !heap.Empty(); heap.Pop()) h = HashCombine(h, heap.TopValue());
+  std::cout << "Test results [" << name << "]: " << h << "\t"
+            << t.GetMilliseconds() << std::endl;
+  return h;
+}
+
 template <unsigned d>
 size_t TesterHeap::TestDHeapUKeyPosMap() const {
   using THeap = heap::ext::DHeapUKeyPosMap<d, size_t>;
@@ -120,23 +136,6 @@ size_t TesterHeap::TestDHeapUKeyPosMap() const {
   }
   for (; !heap.Empty(); heap.Pop()) h = HashCombine(h, heap.Top().value);
   std::cout << "Test results [DKP" << d << "]: " << h << "\t"
-            << t.GetMilliseconds() << std::endl;
-  return h;
-}
-
-template <unsigned d>
-size_t TesterHeap::TestDHeapUKeyValueMap() const {
-  using THeap = heap::ukvm::DHeap<d, size_t>;
-  Timer t;
-  size_t h = 0;
-  THeap heap(vinit.size() + vloop.size());
-  for (unsigned i = 0; i < vinit.size(); ++i) heap.Set(i, vinit[i]);
-  for (unsigned i = 0; i < vloop.size(); ++i) {
-    h = HashCombine(h, heap.ExtractValue());
-    heap.Set(vinit.size() + i, vloop[i]);
-  }
-  for (; !heap.Empty(); heap.Pop()) h = HashCombine(h, heap.TopValue());
-  std::cout << "Test results [DKV" << d << "]: " << h << "\t"
             << t.GetMilliseconds() << std::endl;
   return h;
 }
@@ -177,9 +176,9 @@ bool TesterHeap::TestAll() const {
   std::unordered_set<size_t> hs;
   hs.insert(TestPriorityQueue());
   hs.insert(TestBase<heap::base::Binary<size_t>>("  BH"));
-  hs.insert(TestBase<heap::base::DHeap<2, size_t>>(" D2H"));
-  hs.insert(TestBase<heap::base::DHeap<2, size_t>>(" D4H"));
-  hs.insert(TestBase<heap::base::DHeap<2, size_t>>(" D8H"));
+  hs.insert(TestBase<heap::base::DHeap<2, size_t>>(" DH2"));
+  hs.insert(TestBase<heap::base::DHeap<2, size_t>>(" DH4"));
+  hs.insert(TestBase<heap::base::DHeap<2, size_t>>(" DH8"));
   hs.insert(TestNodesManager<heap::base::Binomial<size_t>>("BNML"));
   hs.insert(TestNodesManager<heap::ext::Fibonacci<size_t>>("FBNC"));
   hs.insert(TestBasePairing<0, 0>());
@@ -193,9 +192,9 @@ bool TesterHeap::TestAll() const {
   hs.insert(TestDHeapUKeyPosMap<2>());
   hs.insert(TestDHeapUKeyPosMap<4>());
   hs.insert(TestDHeapUKeyPosMap<8>());
-  hs.insert(TestDHeapUKeyValueMap<2>());
-  hs.insert(TestDHeapUKeyValueMap<4>());
-  hs.insert(TestDHeapUKeyValueMap<8>());
+  hs.insert(TestKVM<heap::ukvm::DHeap<2, size_t>>(" DM2"));
+  hs.insert(TestKVM<heap::ukvm::DHeap<4, size_t>>(" DM4"));
+  hs.insert(TestKVM<heap::ukvm::DHeap<8, size_t>>(" DM8"));
   hs.insert(TestBinomialUKeyValueMap());
   hs.insert(TestFibonacciUKeyValueMap());
   hs.insert(TestPairingUKeyValueMap<0, 0>());

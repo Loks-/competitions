@@ -23,11 +23,11 @@ class TesterHeap {
   template <class THeap>
   size_t TestNodesManager(const std::string& name) const;
 
-  template <unsigned d>
-  size_t TestDHeapUKeyPosMap() const;
+  template <class THeap>
+  size_t TestKVM(const std::string& name) const;
 
   template <unsigned d>
-  size_t TestDHeapUKeyValueMap() const;
+  size_t TestDHeapUKeyPosMap() const;
 
   template <bool multipass, bool auxiliary>
   size_t TestBasePairing() const;
