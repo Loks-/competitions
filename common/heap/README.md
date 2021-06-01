@@ -16,6 +16,7 @@
     * bool Empty() const;
     * unsigned Size() const;
     * unsigned UKeySize() const;
+    * bool InQueue(unsigned key) const;
     * const TValue& Get(unsigned key) const;
     * std::vector<TValue> GetValues() const;
     * void AddNewKey(unsigned key, const TValue& value, bool skip_heap = false);

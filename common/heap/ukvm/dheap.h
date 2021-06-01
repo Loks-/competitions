@@ -69,6 +69,10 @@ class DHeap {
   unsigned Size() const { return unsigned(heap_pointers.size()); }
   unsigned UKeySize() const { return unsigned(key_map.size()); }
 
+  bool InQueue(unsigned key) const {
+    return key_map[key].heap_position != not_in_heap;
+  }
+
   const TValue& Get(unsigned key) const { return key_map[key].value; }
 
   std::vector<TValue> GetValues() const {
@@ -103,7 +107,7 @@ class DHeap {
  public:
   void AddNewKey(unsigned key, const TValue& new_value,
                  bool skip_heap = false) {
-    assert(key_map[key].heap_position == not_in_heap);
+    assert(!InQueue(key));
     AddNewKeyI(key, new_value, skip_heap);
   }
 

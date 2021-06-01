@@ -60,6 +60,8 @@ class Fibonacci
     return manager.NodeByRawIndex(key);
   }
 
+  bool InQueue(unsigned key) const { return !UnusedNode(GetNode(key)); }
+
   const TValue& Get(unsigned key) const { return GetNode(key)->value; }
 
   std::vector<TValue> GetValues() const {

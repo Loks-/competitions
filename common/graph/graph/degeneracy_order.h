@@ -16,7 +16,7 @@ inline std::vector<unsigned> DegeneracyOrder(const UndirectedGraph& g) {
     unsigned u = queue.ExtractKey();
     order.push_back(u);
     for (unsigned v : g.Edges(u)) {
-      if (queue.HasKey(v)) queue.DecreaseValue(v, queue.Get(v) - 1);
+      if (queue.InQueue(v)) queue.DecreaseValue(v, queue.Get(v) - 1);
     }
   }
   return order;

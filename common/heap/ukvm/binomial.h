@@ -84,6 +84,8 @@ class Binomial {
   unsigned Size() const { return size; }
   unsigned UKeySize() const { return unsigned(key_map.size()); }
 
+  bool InQueue(unsigned key) const { return key_map[key].heap_position; }
+
   const TValue& Get(unsigned key) const { return key_map[key].value; }
 
   std::vector<TValue> GetValues() const {
@@ -119,7 +121,7 @@ class Binomial {
  public:
   void AddNewKey(unsigned key, const TValue& new_value,
                  bool skip_heap = false) {
-    assert(!key_map[key].heap_position);
+    assert(!InQueue(key));
     AddNewKeyI(key, new_value, skip_heap);
   }
 
