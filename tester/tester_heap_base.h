@@ -5,12 +5,12 @@
 #include <string>
 #include <vector>
 
-class TesterHeap {
+class TesterHeapBase {
  protected:
   std::vector<size_t> vinit, vloop;
 
  public:
-  TesterHeap(unsigned size_init, unsigned size_loop);
+  TesterHeapBase(unsigned size_init, unsigned size_loop);
 
  protected:
   size_t TestPriorityQueue() const;

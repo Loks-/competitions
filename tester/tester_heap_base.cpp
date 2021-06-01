@@ -1,4 +1,4 @@
-#include "tester/tester_heap.h"
+#include "tester/tester_heap_base.h"
 
 #include "common/hash.h"
 #include "common/heap/base/binary.h"
@@ -20,12 +20,12 @@
 #include <queue>
 #include <unordered_set>
 
-TesterHeap::TesterHeap(unsigned size_init, unsigned size_loop) {
+TesterHeapBase::TesterHeapBase(unsigned size_init, unsigned size_loop) {
   vinit = nvector::HRandom(size_init, 0);
   vloop = nvector::HRandom(size_loop, vinit.back());
 }
 
-size_t TesterHeap::TestPriorityQueue() const {
+size_t TesterHeapBase::TestPriorityQueue() const {
   Timer t;
   size_t h = 0;
   std::priority_queue<size_t, std::vector<size_t>, std::greater<size_t>> heap(
@@ -42,7 +42,7 @@ size_t TesterHeap::TestPriorityQueue() const {
 }
 
 template <class THeap>
-size_t TesterHeap::TestBase(const std::string& name) const {
+size_t TesterHeapBase::TestBase(const std::string& name) const {
   Timer t;
   size_t h = 0;
   THeap heap(vinit);
@@ -57,7 +57,7 @@ size_t TesterHeap::TestBase(const std::string& name) const {
 }
 
 template <class THeap>
-size_t TesterHeap::TestNodesManager(const std::string& name) const {
+size_t TesterHeapBase::TestNodesManager(const std::string& name) const {
   Timer t;
   size_t h = 0;
   typename THeap::TNodesManager nodes_manager(vinit.size());
@@ -74,7 +74,7 @@ size_t TesterHeap::TestNodesManager(const std::string& name) const {
 }
 
 template <class THeap>
-size_t TesterHeap::TestKVM(const std::string& name) const {
+size_t TesterHeapBase::TestKVM(const std::string& name) const {
   Timer t;
   size_t h = 0;
   THeap heap(vinit.size() + vloop.size());
@@ -90,7 +90,7 @@ size_t TesterHeap::TestKVM(const std::string& name) const {
 }
 
 template <unsigned d>
-size_t TesterHeap::TestDHeapUKeyPosMap() const {
+size_t TesterHeapBase::TestDHeapUKeyPosMap() const {
   using THeap = heap::ext::DHeapUKeyPosMap<d, size_t>;
   using TData = typename THeap::TData;
   std::vector<TData> vinit_adj;
@@ -111,27 +111,27 @@ size_t TesterHeap::TestDHeapUKeyPosMap() const {
 }
 
 template <bool multipass, bool auxiliary>
-size_t TesterHeap::TestBasePairing() const {
+size_t TesterHeapBase::TestBasePairing() const {
   return TestBase<heap::base::Pairing<size_t, std::less<size_t>, NodesManager,
                                       multipass, auxiliary>>(
       "B PR" + std::to_string(multipass) + std::to_string(auxiliary));
 }
 
 template <bool multipass, bool auxiliary>
-size_t TesterHeap::TestExtPairing() const {
+size_t TesterHeapBase::TestExtPairing() const {
   return TestNodesManager<heap::ext::Pairing<
       size_t, std::less<size_t>, NodesManager, multipass, auxiliary>>(
       "E PR" + std::to_string(multipass) + std::to_string(auxiliary));
 }
 
 template <bool multipass, bool auxiliary>
-size_t TesterHeap::TestUKVMPairing() const {
+size_t TesterHeapBase::TestUKVMPairing() const {
   return TestKVM<
       heap::ukvm::Pairing<size_t, std::less<size_t>, multipass, auxiliary>>(
       "M PR" + std::to_string(multipass) + std::to_string(auxiliary));
 }
 
-bool TesterHeap::TestAll() const {
+bool TesterHeapBase::TestAll() const {
   std::unordered_set<size_t> hs;
   hs.insert(TestPriorityQueue());
   hs.insert(TestBase<heap::base::Binary<size_t>>("B   B "));
@@ -163,7 +163,7 @@ bool TesterHeap::TestAll() const {
   return hs.size() == 1;
 }
 
-bool TestHeap(bool time_test) {
-  TesterHeap th(time_test ? 10000000 : 10000, time_test ? 10000000 : 10000);
+bool TestHeapBase(bool time_test) {
+  TesterHeapBase th(time_test ? 10000000 : 10000, time_test ? 10000000 : 10000);
   return th.TestAll();
 }

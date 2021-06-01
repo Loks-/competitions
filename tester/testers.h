@@ -9,7 +9,7 @@ bool TestGeneratingFunction();
 bool TestGraphEIDistance(bool time_test);
 bool TestGraphEIDistanceUnsigned(bool time_test);
 bool TestGraphEIDistancePositiveCost(bool time_test);
-bool TestHeap(bool time_test);
+bool TestHeapBase(bool time_test);
 bool TestInterpolation();
 bool TestLongMult();
 bool TestLowestCommonAncestor(bool time_test);
