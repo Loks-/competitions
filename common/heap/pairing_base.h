@@ -51,6 +51,10 @@ class PairingBase {
   explicit PairingBase(unsigned expected_size)
       : nodes_manager(expected_size), head(nullptr), size(0) {}
 
+  explicit PairingBase(const std::vector<TData>& v) : PairingBase(v.size()) {
+    for (auto& u : v) Add(u);
+  }
+
   bool Empty() const { return !head; }
   unsigned Size() const { return size; }
 

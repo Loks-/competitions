@@ -143,20 +143,9 @@ size_t TesterHeap::TestDHeapUKeyValueMap() const {
 
 template <bool multipass, bool auxiliary>
 size_t TesterHeap::TestPairingBaseHeap() const {
-  using THeap = heap::PairingBase<size_t, std::less<size_t>, NodesManager,
-                                  multipass, auxiliary>;
-  Timer t;
-  size_t h = 0;
-  THeap heap(vinit.size());
-  for (size_t v : vinit) heap.Add(v);
-  for (unsigned i = 0; i < vloop.size(); ++i) {
-    h = HashCombine(h, heap.Extract());
-    heap.Add(vloop[i]);
-  }
-  for (; !heap.Empty(); heap.Pop()) h = HashCombine(h, heap.Top());
-  std::cout << "Test results [PB" << auxiliary << multipass << "]: " << h
-            << "\t" << t.GetMilliseconds() << std::endl;
-  return h;
+  return TestBase<heap::PairingBase<size_t, std::less<size_t>, NodesManager,
+                                    multipass, auxiliary>>(
+      "PB" + std::to_string(multipass) + std::to_string(auxiliary));
 }
 
 template <bool multipass, bool auxiliary>
