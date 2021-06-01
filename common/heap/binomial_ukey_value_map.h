@@ -7,6 +7,13 @@
 #include <functional>
 
 namespace heap {
+// Memory  -- O(N)
+// Add     -- O(1) amortized
+// DecV    -- O(log N)
+// IncV    -- O(log N)
+// Top     -- O(1) amortized
+// Pop     -- O(log N)
+// Union   -- O(log N)
 template <class TTValue, class TTCompare = std::less<TTValue>>
 class BinomialUKeyValueMap {
  public:

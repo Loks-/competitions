@@ -11,6 +11,13 @@ namespace heap {
 // DHeap with map to position by key.
 // Values are stored outside of heap.
 // Heap stores pointers to value instead of keys.
+// Memory  -- O(N)
+// Add     -- O(log N / log d)
+// DecV    -- O(log N / log d)
+// IncV    -- O(d log N / log d)
+// Top     -- O(1)
+// Pop     -- O(d log N / log d)
+// Init    -- O(N)
 template <unsigned d_, class TTValue, class TTCompare = std::less<TTValue>>
 class DHeapUKeyValueMap {
  public:

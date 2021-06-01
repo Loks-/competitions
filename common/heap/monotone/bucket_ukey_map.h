@@ -7,6 +7,14 @@
 
 namespace heap {
 namespace monotone {
+// P - max priority, W - window
+// Memory  -- O(N + W)
+// Add     -- O(1)
+// DecV    -- O(1)
+// IncV    -- O(1)
+// Top     -- O(1) amortized
+// Pop     -- O(1 + P / N) amortized, O(W) worst case
+// Init    -- O(N)
 // top priority <= new priority < top priority + window
 class BucketUKeyMap {
  public:

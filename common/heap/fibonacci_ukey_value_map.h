@@ -8,6 +8,13 @@
 #include <vector>
 
 namespace heap {
+// Memory  -- O(N)
+// Add     -- O(1)
+// DecV    -- O(1) amortized
+// IncV    -- O(log N) amortized
+// Top     -- O(1)
+// Pop     -- O(log N) amortized
+// Union   -- O(1)
 template <class TTValue, class TCompare = std::less<TTValue>>
 class FibonacciUKeyValueMap
     : public Fibonacci<TTValue, TCompare, NodesManagerFixedSize> {

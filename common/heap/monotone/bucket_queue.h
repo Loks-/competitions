@@ -8,6 +8,11 @@
 
 namespace heap {
 namespace monotone {
+// P - max priority, W - window
+// Memory  -- O(N + W)
+// Add     -- O(1)
+// Top     -- O(1) amortized
+// Pop     -- O(1 + P / N) amortized, O(W) worst case
 // current priority <= new priority < current priority + window
 template <class TTValue>
 class BucketQueue {

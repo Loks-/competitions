@@ -4,6 +4,12 @@
 #include <vector>
 
 namespace heap {
+// Memory  -- O(N)
+// Add     -- O(log N / log d)
+// Top     -- O(1)
+// Pop     -- O(d log N / log d)
+// Init    -- O(N)
+// Union   -- O(N)
 template <unsigned d_, class TTData, class TTCompare = std::less<TTData>>
 class DHeap {
  public:

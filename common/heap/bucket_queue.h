@@ -6,6 +6,11 @@
 #include <vector>
 
 namespace heap {
+// P - max priority
+// Memory  -- O(N + P)
+// Add     -- O(1)
+// Top     -- O(1)
+// Pop     -- O(1 + P / N) amortized if monotone, O(P) otherwise
 template <class TTValue>
 class BucketQueue {
  public:

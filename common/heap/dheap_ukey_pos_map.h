@@ -8,6 +8,13 @@
 namespace heap {
 // Binary Heap with map to position by key.
 // Values are stored inside heap.
+// Memory  -- O(N)
+// Add     -- O(log N / log d)
+// DecV    -- O(log N / log d)
+// IncV    -- O(d log N / log d)
+// Top     -- O(1)
+// Pop     -- O(d log N / log d)
+// Init    -- O(N)
 template <unsigned d_, class TTValue, class TTCompare = std::less<TTValue>>
 class DHeapUKeyPosMap {
  public:

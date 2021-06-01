@@ -9,6 +9,13 @@
 #include <vector>
 
 namespace heap {
+// Memory  -- O(N)
+// Add     -- O(1)
+// DecV    -- O(1) amortized
+// IncV    -- O(log N) amortized
+// Top     -- O(1)
+// Pop     -- O(log N) amortized
+// Union   -- O(1)
 template <class TTData, class TTCompare = std::less<TTData>,
           template <class TNode> class TTNodesManager = NodesManager>
 class Fibonacci {

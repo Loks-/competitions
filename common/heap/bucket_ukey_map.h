@@ -6,6 +6,13 @@
 #include <vector>
 
 namespace heap {
+// P - max priority
+// Memory  -- O(N + P)
+// Add     -- O(1)
+// DecV    -- O(1)
+// IncV    -- O(1)
+// Top     -- O(1)
+// Pop     -- O(1 + P / N) amortized if monotone, O(P) otherwise
 class BucketUKeyMap {
  public:
   static const unsigned not_in_queue = -1u;

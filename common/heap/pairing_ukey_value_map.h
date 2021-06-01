@@ -8,6 +8,13 @@
 #include <vector>
 
 namespace heap {
+// Memory  -- O(N)
+// Add     -- O(1)
+// DecV    -- o(log N)
+// IncV    -- O(log N)
+// Top     -- O(1)
+// Pop     -- O(log N) amortized
+// Union   -- O(1)
 template <class TTValue, class TCompare = std::less<TTValue>,
           bool multipass = false, bool auxiliary = false>
 class PairingUKeyValueMap

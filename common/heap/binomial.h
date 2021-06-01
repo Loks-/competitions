@@ -7,6 +7,11 @@
 #include <functional>
 
 namespace heap {
+// Memory  -- O(N)
+// Add     -- O(1) amortized
+// Top     -- O(1) amortized
+// Pop     -- O(log N)
+// Union   -- O(log N)
 template <class TTData, class TTCompare = std::less<TTData>,
           template <class TNode> class TTNodesManager = NodesManager>
 class Binomial {
