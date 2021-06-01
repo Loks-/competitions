@@ -53,10 +53,10 @@ class TesterGraphEIDistanceUnsigned {
   template <template <class TData> class THeap>
   size_t TestHP(const std::string& name) const;
 
-  template <template <class TData> class THeap>
+  template <class THeap>
   size_t TestHPV(const std::string& name) const;
 
-  template <template <class TData> class THeap>
+  template <class THeap>
   size_t TestMHPV(const std::string& name) const;
 
   template <class THeap>

@@ -405,7 +405,7 @@ size_t TesterGraphEIDistanceUnsigned::TestHP(const std::string& name) const {
   return h;
 }
 
-template <template <class TData> class THeap>
+template <class THeap>
 size_t TesterGraphEIDistanceUnsigned::TestHPV(const std::string& name) const {
   Timer t;
   size_t h = 0;
@@ -420,7 +420,7 @@ size_t TesterGraphEIDistanceUnsigned::TestHPV(const std::string& name) const {
   return h;
 }
 
-template <template <class TData> class THeap>
+template <class THeap>
 size_t TesterGraphEIDistanceUnsigned::TestMHPV(const std::string& name) const {
   Timer t;
   size_t h = 0;
@@ -502,8 +502,8 @@ bool TesterGraphEIDistanceUnsigned::TestAll() {
   hs.insert(TestHP<TDHeap4>("HP 4"));
   hs.insert(TestHP<TDHeap8>("HP 8"));
   hs.insert(TestHP<TDHeap16>("HP16"));
-  hs.insert(TestHPV<heap::base::BucketQueue>(" BQ "));
-  hs.insert(TestMHPV<heap::monotone::base::BucketQueue>("MBQ "));
+  hs.insert(TestHPV<heap::base::BucketQueue<unsigned>>(" BQ "));
+  hs.insert(TestMHPV<heap::monotone::base::BucketQueue<unsigned>>("MBQ "));
   hs.insert(TestKPM<heap::ext::DHeapUKeyPosMap<2, unsigned>>("KPM2"));
   hs.insert(TestKPM<heap::ext::DHeapUKeyPosMap<4, unsigned>>("KPM4"));
   hs.insert(TestKPM<heap::ext::DHeapUKeyPosMap<8, unsigned>>("KPM8"));
