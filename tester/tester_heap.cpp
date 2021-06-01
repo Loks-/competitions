@@ -1,17 +1,17 @@
 #include "tester/tester_heap.h"
 
 #include "common/hash.h"
-#include "common/heap/binary_heap.h"
-#include "common/heap/binomial.h"
-#include "common/heap/binomial_ukey_value_map.h"
-#include "common/heap/dheap.h"
-#include "common/heap/dheap_ukey_pos_map.h"
-#include "common/heap/dheap_ukey_value_map.h"
-#include "common/heap/fibonacci.h"
-#include "common/heap/fibonacci_ukey_value_map.h"
-#include "common/heap/pairing.h"
-#include "common/heap/pairing_base.h"
-#include "common/heap/pairing_ukey_value_map.h"
+#include "common/heap/base/binary.h"
+#include "common/heap/base/binomial.h"
+#include "common/heap/base/dheap.h"
+#include "common/heap/base/pairing.h"
+#include "common/heap/ext/dheap_ukey_pos_map.h"
+#include "common/heap/ext/fibonacci.h"
+#include "common/heap/ext/pairing.h"
+#include "common/heap/ukvm/binomial.h"
+#include "common/heap/ukvm/dheap.h"
+#include "common/heap/ukvm/fibonacci.h"
+#include "common/heap/ukvm/pairing.h"
 #include "common/timer.h"
 #include "common/vector/hrandom.h"
 
@@ -44,7 +44,7 @@ size_t TesterHeap::TestPriorityQueue() const {
 size_t TesterHeap::TestBinomialUKeyValueMap() const {
   Timer t;
   size_t h = 0;
-  heap::BinomialUKeyValueMap<size_t> heap(vinit.size() + vloop.size());
+  heap::ukvm::Binomial<size_t> heap(vinit.size() + vloop.size());
   for (unsigned i = 0; i < vinit.size(); ++i) heap.Set(i, vinit[i]);
   for (unsigned i = 0; i < vloop.size(); ++i) {
     h = HashCombine(h, heap.ExtractValue());
@@ -59,7 +59,7 @@ size_t TesterHeap::TestBinomialUKeyValueMap() const {
 size_t TesterHeap::TestFibonacciUKeyValueMap() const {
   Timer t;
   size_t h = 0;
-  heap::FibonacciUKeyValueMap<size_t> heap(vinit.size() + vloop.size());
+  heap::ukvm::Fibonacci<size_t> heap(vinit.size() + vloop.size());
   for (unsigned i = 0; i < vinit.size(); ++i) heap.Set(i, vinit[i]);
   for (unsigned i = 0; i < vloop.size(); ++i) {
     h = HashCombine(h, heap.ExtractValue());
@@ -105,7 +105,7 @@ size_t TesterHeap::TestNodesManager(const std::string& name) const {
 
 template <unsigned d>
 size_t TesterHeap::TestDHeapUKeyPosMap() const {
-  using THeap = heap::DHeapUKeyPosMap<d, size_t>;
+  using THeap = heap::ext::DHeapUKeyPosMap<d, size_t>;
   using TData = typename THeap::TData;
   std::vector<TData> vinit_adj;
   vinit_adj.reserve(vinit.size());
@@ -126,7 +126,7 @@ size_t TesterHeap::TestDHeapUKeyPosMap() const {
 
 template <unsigned d>
 size_t TesterHeap::TestDHeapUKeyValueMap() const {
-  using THeap = heap::DHeapUKeyValueMap<d, size_t>;
+  using THeap = heap::ukvm::DHeap<d, size_t>;
   Timer t;
   size_t h = 0;
   THeap heap(vinit.size() + vloop.size());
@@ -142,23 +142,23 @@ size_t TesterHeap::TestDHeapUKeyValueMap() const {
 }
 
 template <bool multipass, bool auxiliary>
-size_t TesterHeap::TestPairingBaseHeap() const {
-  return TestBase<heap::PairingBase<size_t, std::less<size_t>, NodesManager,
-                                    multipass, auxiliary>>(
+size_t TesterHeap::TestBasePairing() const {
+  return TestBase<heap::base::Pairing<size_t, std::less<size_t>, NodesManager,
+                                      multipass, auxiliary>>(
       "PB" + std::to_string(multipass) + std::to_string(auxiliary));
 }
 
 template <bool multipass, bool auxiliary>
-size_t TesterHeap::TestPairingHeap() const {
-  return TestNodesManager<heap::Pairing<size_t, std::less<size_t>, NodesManager,
-                                        multipass, auxiliary>>(
-      "PR" + std::to_string(multipass) + std::to_string(auxiliary));
+size_t TesterHeap::TestExtPairing() const {
+  return TestNodesManager<heap::ext::Pairing<
+      size_t, std::less<size_t>, NodesManager, multipass, auxiliary>>(
+      "PE" + std::to_string(multipass) + std::to_string(auxiliary));
 }
 
 template <bool multipass, bool auxiliary>
 size_t TesterHeap::TestPairingUKeyValueMap() const {
-  using THeap = heap::PairingUKeyValueMap<size_t, std::less<size_t>, multipass,
-                                          auxiliary>;
+  using THeap =
+      heap::ukvm::Pairing<size_t, std::less<size_t>, multipass, auxiliary>;
   Timer t;
   size_t h = 0;
   THeap heap(vinit.size() + vloop.size());
@@ -176,20 +176,20 @@ size_t TesterHeap::TestPairingUKeyValueMap() const {
 bool TesterHeap::TestAll() const {
   std::unordered_set<size_t> hs;
   hs.insert(TestPriorityQueue());
-  hs.insert(TestBase<heap::BinaryHeap<size_t>>("  BH"));
-  hs.insert(TestBase<heap::DHeap<2, size_t>>(" D2H"));
-  hs.insert(TestBase<heap::DHeap<2, size_t>>(" D4H"));
-  hs.insert(TestBase<heap::DHeap<2, size_t>>(" D8H"));
-  hs.insert(TestNodesManager<heap::Binomial<size_t>>("BNML"));
-  hs.insert(TestNodesManager<heap::Fibonacci<size_t>>("FBNC"));
-  hs.insert(TestPairingBaseHeap<0, 0>());
-  hs.insert(TestPairingBaseHeap<1, 0>());
-  hs.insert(TestPairingBaseHeap<0, 1>());
-  hs.insert(TestPairingBaseHeap<1, 1>());
-  hs.insert(TestPairingHeap<0, 0>());
-  hs.insert(TestPairingHeap<1, 0>());
-  hs.insert(TestPairingHeap<0, 1>());
-  hs.insert(TestPairingHeap<1, 1>());
+  hs.insert(TestBase<heap::base::Binary<size_t>>("  BH"));
+  hs.insert(TestBase<heap::base::DHeap<2, size_t>>(" D2H"));
+  hs.insert(TestBase<heap::base::DHeap<2, size_t>>(" D4H"));
+  hs.insert(TestBase<heap::base::DHeap<2, size_t>>(" D8H"));
+  hs.insert(TestNodesManager<heap::base::Binomial<size_t>>("BNML"));
+  hs.insert(TestNodesManager<heap::ext::Fibonacci<size_t>>("FBNC"));
+  hs.insert(TestBasePairing<0, 0>());
+  hs.insert(TestBasePairing<1, 0>());
+  hs.insert(TestBasePairing<0, 1>());
+  hs.insert(TestBasePairing<1, 1>());
+  hs.insert(TestExtPairing<0, 0>());
+  hs.insert(TestExtPairing<1, 0>());
+  hs.insert(TestExtPairing<0, 1>());
+  hs.insert(TestExtPairing<1, 1>());
   hs.insert(TestDHeapUKeyPosMap<2>());
   hs.insert(TestDHeapUKeyPosMap<4>());
   hs.insert(TestDHeapUKeyPosMap<8>());

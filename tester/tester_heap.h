@@ -30,10 +30,10 @@ class TesterHeap {
   size_t TestDHeapUKeyValueMap() const;
 
   template <bool multipass, bool auxiliary>
-  size_t TestPairingBaseHeap() const;
+  size_t TestBasePairing() const;
 
   template <bool multipass, bool auxiliary>
-  size_t TestPairingHeap() const;
+  size_t TestExtPairing() const;
 
   template <bool multipass, bool auxiliary>
   size_t TestPairingUKeyValueMap() const;

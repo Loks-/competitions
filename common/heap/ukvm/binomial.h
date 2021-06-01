@@ -7,6 +7,7 @@
 #include <functional>
 
 namespace heap {
+namespace ukvm {
 // Memory  -- O(N)
 // Add     -- O(1) amortized
 // DecV    -- O(log N)
@@ -15,11 +16,11 @@ namespace heap {
 // Pop     -- O(log N)
 // Union   -- O(log N)
 template <class TTValue, class TTCompare = std::less<TTValue>>
-class BinomialUKeyValueMap {
+class Binomial {
  public:
   using TValue = TTValue;
   using TCompare = TTCompare;
-  using TSelf = BinomialUKeyValueMap<TValue, TCompare>;
+  using TSelf = Binomial<TValue, TCompare>;
 
   struct TData {
     unsigned key;
@@ -71,14 +72,13 @@ class BinomialUKeyValueMap {
   }
 
  public:
-  explicit BinomialUKeyValueMap(unsigned ukey_size)
+  explicit Binomial(unsigned ukey_size)
       : nodes_manager(ukey_size), head(nullptr), size(0), top(nullptr) {
     key_map.resize(ukey_size, {nullptr, TValue()});
     pv_begin = &(key_map[0]);
   }
 
-  BinomialUKeyValueMap(const std::vector<TValue>& v, bool skip_heap)
-      : BinomialUKeyValueMap(v.size()) {
+  Binomial(const std::vector<TValue>& v, bool skip_heap) : Binomial(v.size()) {
     unsigned n = UKeySize();
     for (unsigned i = 0; i < n; ++i) AddNewKeyI(i, v[i], skip_heap);
   }
@@ -370,4 +370,5 @@ class BinomialUKeyValueMap {
     Union(node);
   }
 };
+}  // namespace ukvm
 }  // namespace heap

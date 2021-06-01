@@ -1,7 +1,7 @@
 #pragma once
 
 #include "common/data_structures/unsigned_set.h"
-#include "common/heap/dheap.h"
+#include "common/heap.h"
 
 #include <vector>
 
@@ -18,7 +18,7 @@ inline void DijkstraMask(const TGraph& graph, const TEdgeCostFunction& f,
                          const ds::UnsignedSet& mask,
                          std::vector<TEdgeCost>& output) {
   using TPair = std::pair<TEdgeCost, unsigned>;
-  using THeap = heap::DHeap<4u, TPair>;
+  using THeap = HeapMinOnTop<TPair>;
   thread_local std::vector<unsigned> visited;
   if (visited.size() < graph.Size()) visited.resize(graph.Size());
   for (auto u : mask.List()) {

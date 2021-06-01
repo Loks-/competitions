@@ -8,6 +8,7 @@
 #include <vector>
 
 namespace heap {
+namespace ukvm {
 // DHeap with map to position by key.
 // Values are stored outside of heap.
 // Heap stores pointers to value instead of keys.
@@ -19,13 +20,13 @@ namespace heap {
 // Pop     -- O(d log N / log d)
 // Init    -- O(N)
 template <unsigned d_, class TTValue, class TTCompare = std::less<TTValue>>
-class DHeapUKeyValueMap {
+class DHeap {
  public:
   const unsigned d = d_;
   const unsigned not_in_heap = unsigned(-1);
   using TValue = TTValue;
   using TCompare = TTCompare;
-  using TSelf = DHeapUKeyValueMap<d_, TValue, TCompare>;
+  using TSelf = DHeap<d_, TValue, TCompare>;
 
   struct TData {
     unsigned key;
@@ -51,14 +52,13 @@ class DHeapUKeyValueMap {
   }
 
  public:
-  explicit DHeapUKeyValueMap(unsigned ukey_size) {
+  explicit DHeap(unsigned ukey_size) {
     key_map.resize(ukey_size, {not_in_heap, TValue()});
     pbegin = &(key_map[0]);
     heap_pointers.reserve(ukey_size);
   }
 
-  DHeapUKeyValueMap(const std::vector<TValue>& v, bool skip_heap)
-      : DHeapUKeyValueMap(v.size()) {
+  DHeap(const std::vector<TValue>& v, bool skip_heap) : DHeap(v.size()) {
     unsigned n = UKeySize();
     if (skip_heap) {
       for (unsigned i = 0; i < n; ++i) key_map[i].value = v[i];
@@ -245,4 +245,5 @@ class DHeapUKeyValueMap {
     for (unsigned pos = Size() / d; pos;) SiftDown(--pos);
   }
 };
+}  // namespace ukvm
 }  // namespace heap

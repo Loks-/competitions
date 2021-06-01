@@ -7,6 +7,7 @@
 #include <functional>
 
 namespace heap {
+namespace base {
 // Memory  -- O(N)
 // Add     -- O(1) amortized
 // Top     -- O(1) amortized
@@ -214,4 +215,5 @@ class Binomial {
     --size;
   }
 };
+}  // namespace base
 }  // namespace heap

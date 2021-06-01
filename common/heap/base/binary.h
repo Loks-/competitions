@@ -1,9 +1,12 @@
 #pragma once
 
-#include "common/heap/dheap.h"
+#include "common/heap/base/dheap.h"
+
 #include <functional>
 
 namespace heap {
+namespace base {
 template <class TData, class TCompare = std::less<TData>>
-using BinaryHeap = DHeap<2u, TData, TCompare>;
+using Binary = DHeap<2u, TData, TCompare>;
+}  // namespace base
 }  // namespace heap

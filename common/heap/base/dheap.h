@@ -4,6 +4,7 @@
 #include <vector>
 
 namespace heap {
+namespace base {
 // Memory  -- O(N)
 // Add     -- O(log N / log d)
 // Top     -- O(1)
@@ -101,4 +102,5 @@ class DHeap {
     for (unsigned pos = Size() / d; pos;) SiftDown(--pos);
   }
 };
+}  // namespace base
 }  // namespace heap

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "common/heap/pairing_ukey_value_map.h"
+#include "common/heap/ukvm/pairing.h"
 
 #include <utility>
 #include <vector>
@@ -18,7 +18,7 @@ inline std::pair<unsigned, typename TEdgeCostFunction::TEdgeCost> Prim(
   std::vector<unsigned> visited(graph.Size(), 0);
   unsigned edges_added = -1u;
   TEdgeCost total_cost = TEdgeCost();
-  heap::PairingUKeyValueMap<TEdgeCost> q(
+  heap::ukvm::Pairing<TEdgeCost> q(
       std::vector<TEdgeCost>(graph.Size(), max_cost), true);
   for (q.AddNewKey(source, TEdgeCost()); !q.Empty();) {
     unsigned u = q.ExtractKey();

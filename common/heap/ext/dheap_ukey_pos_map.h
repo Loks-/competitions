@@ -6,6 +6,7 @@
 #include <vector>
 
 namespace heap {
+namespace ext {
 // Binary Heap with map to position by key.
 // Values are stored inside heap.
 // Memory  -- O(N)
@@ -191,4 +192,5 @@ class DHeapUKeyPosMap {
     for (unsigned pos = Size() / d; pos;) SiftDown(--pos);
   }
 };
+}  // namespace ext
 }  // namespace heap

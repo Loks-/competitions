@@ -1,6 +1,6 @@
 #pragma once
 
-#include "common/heap/monotone/bucket_queue.h"
+#include "common/heap/monotone/base/bucket_queue.h"
 
 #include <vector>
 
@@ -18,7 +18,7 @@ inline std::vector<TEdgeCost> Dial(const TGraph& graph,
                                    const TEdgeCost& max_edge_cost) {
   std::vector<TEdgeCost> vd(graph.Size(), max_cost);
   std::vector<unsigned> visited(graph.Size(), 0);
-  heap::monotone::BucketQueue<unsigned> q(max_edge_cost + 1);
+  heap::monotone::base::BucketQueue<unsigned> q(max_edge_cost + 1);
   vd[source] = TEdgeCost();
   for (q.Add(TEdgeCost(), source); !q.Empty();) {
     auto p = q.Extract();

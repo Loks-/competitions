@@ -6,18 +6,22 @@
 #include <vector>
 
 namespace heap {
-// P - max priority
-// Memory  -- O(N + P)
+namespace monotone {
+namespace ukvm {
+// P - max priority, W - window
+// Memory  -- O(N + W)
 // Add     -- O(1)
 // DecV    -- O(1)
 // IncV    -- O(1)
-// Top     -- O(1)
-// Pop     -- O(1 + P / N) amortized if monotone, O(P) otherwise
-class BucketUKeyMap {
+// Top     -- O(1) amortized
+// Pop     -- O(1 + P / N) amortized, O(W) worst case
+// Init    -- O(N)
+// top priority <= new priority < top priority + window
+class BucketQueue {
  public:
   static const unsigned not_in_queue = -1u;
   using TValue = unsigned;
-  using TSelf = BucketUKeyMap;
+  using TSelf = BucketQueue;
 
   struct TData {
     unsigned priority;
@@ -32,8 +36,9 @@ class BucketUKeyMap {
  protected:
   std::vector<Position> queue_position;
   std::vector<std::vector<unsigned>> queue;
-  unsigned top_priority = not_in_queue;
+  unsigned top_priority = 0, top_priority_adj = 0;
   unsigned size = 0;
+  unsigned window;
 
  protected:
   void ResetHeapPosition(unsigned ukey_size) {
@@ -42,22 +47,31 @@ class BucketUKeyMap {
   }
 
  public:
-  explicit BucketUKeyMap(unsigned ukey_size) { ResetHeapPosition(ukey_size); }
+  void SetWindow(unsigned _window) {
+    window = _window;
+    queue.resize(window);
+  }
 
-  BucketUKeyMap(const std::vector<unsigned>& v, bool skip_heap) {
+  BucketQueue(unsigned ukey_size, unsigned _window) {
+    ResetHeapPosition(ukey_size);
+    SetWindow(_window);
+  }
+
+  BucketQueue(const std::vector<unsigned>& v, bool skip_heap,
+              unsigned _window) {
     ResetHeapPosition(v.size());
+    SetWindow(_window);
     if (skip_heap) {
       for (unsigned i = 0; i < v.size(); ++i) queue_position[i].priority = v[i];
     } else {
       for (unsigned i = 0; i < v.size(); ++i) {
         unsigned p = v[i];
-        AdjustQueueSize(p);
+        assert(p < window);
         queue_position[i].priority = p;
         queue_position[i].index = queue[p].size();
         queue[p].push_back(i);
       }
       size = v.size();
-      ResetPriority();
     }
   }
 
@@ -81,10 +95,14 @@ class BucketUKeyMap {
  public:
   void AddNewKey(unsigned key, unsigned priority, bool skip_heap = false) {
     assert(queue_position[key].index == not_in_queue);
+    assert(skip_heap ||
+           ((top_priority <= priority) && (priority < top_priority + window)));
     AddNewKeyI(key, priority, skip_heap);
   }
 
   void SetPriority(unsigned key, unsigned new_priority) {
+    assert((top_priority <= new_priority) &&
+           (new_priority < top_priority + window));
     if (queue_position[key].index == not_in_queue)
       AddNewKeyI(key, new_priority, false);
     else
@@ -92,6 +110,8 @@ class BucketUKeyMap {
   }
 
   void DecreasePriorityIfLess(unsigned key, unsigned new_priority) {
+    assert((top_priority <= new_priority) &&
+           (new_priority < top_priority + window));
     if (new_priority < queue_position[key].priority)
       SetPriority(key, new_priority);
   }
@@ -101,10 +121,18 @@ class BucketUKeyMap {
   }
 
   void Add(const TData& x) { SetPriority(x.key, x.priority); }
-  unsigned TopPriority() const { return top_priority; }
-  unsigned TopKey() const { return queue[top_priority].back(); }
 
-  TData Top() const { return {TopPriority(), TopKey()}; }
+  unsigned TopPriority() {
+    ShiftPriority();
+    return top_priority;
+  }
+
+  unsigned TopKey() {
+    ShiftPriority();
+    return queue[top_priority_adj].back();
+  }
+
+  TData Top() { return {TopPriority(), TopKey()}; }
 
   void Pop() { DeleteKey(TopKey()); }
 
@@ -132,31 +160,18 @@ class BucketUKeyMap {
   }
 
  protected:
-  void AdjustQueueSize(unsigned k) {
-    if (queue.size() <= k) queue.resize(k + 1);
-  }
-
   void ShiftPriority() {
-    for (; queue[top_priority].size() == 0;) ++top_priority;
-  }
-
-  void ResetPriority() {
-    if (Empty()) {
-      top_priority = -1u;
-    } else {
-      top_priority = 0;
-      ShiftPriority();
-    }
+    assert(!Empty());
+    for (; queue[top_priority_adj].size() == 0; ++top_priority)
+      top_priority_adj = (top_priority_adj + 1) % window;
   }
 
   void AddNewKeyI(unsigned key, unsigned priority, bool skip_heap) {
     queue_position[key].priority = priority;
     if (!skip_heap) {
-      AdjustQueueSize(priority);
-      queue_position[key].index = queue[priority].size();
-      queue[priority].push_back(key);
+      queue_position[key].index = queue[priority % window].size();
+      queue[priority % window].push_back(key);
       ++size;
-      top_priority = std::min(top_priority, priority);
     }
   }
 
@@ -170,18 +185,17 @@ class BucketUKeyMap {
 
   void DeleteI(const Position& pos) {
     assert(pos.index != not_in_queue);
-    if (pos.index == queue[pos.priority].size() - 1) {
-      queue[pos.priority].pop_back();
+    auto priority_adj = pos.priority % window;
+    if (pos.index == queue[priority_adj].size() - 1) {
+      queue[priority_adj].pop_back();
     } else {
-      queue[pos.priority][pos.index] = queue[pos.priority].back();
-      queue_position[queue[pos.priority].back()].index = pos.index;
-      queue[pos.priority].pop_back();
+      queue[priority_adj][pos.index] = queue[priority_adj].back();
+      queue_position[queue[priority_adj].back()].index = pos.index;
+      queue[priority_adj].pop_back();
     }
     --size;
-    if (Empty())
-      top_priority = not_in_queue;
-    else
-      ShiftPriority();
   }
 };
+}  // namespace ukvm
+}  // namespace monotone
 }  // namespace heap

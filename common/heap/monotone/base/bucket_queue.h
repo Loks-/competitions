@@ -8,6 +8,7 @@
 
 namespace heap {
 namespace monotone {
+namespace base {
 // P - max priority, W - window
 // Memory  -- O(N + W)
 // Add     -- O(1)
@@ -93,5 +94,6 @@ class BucketQueue {
       priority_adj = (priority_adj + 1) % window;
   }
 };
+}  // namespace base
 }  // namespace monotone
 }  // namespace heap

@@ -1,7 +1,7 @@
-#include "common/heap/dheap_ukey_value_map.h"
+#include "common/heap/ukvm/dheap.h"
 #include "common/stl/base.h"
 
-using THeap = heap::DHeapUKeyValueMap<4u, unsigned>;
+using THeap = heap::ukvm::DHeap<4u, unsigned>;
 
 int main_security_update() {
   unsigned T, C, D;

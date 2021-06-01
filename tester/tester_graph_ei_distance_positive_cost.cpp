@@ -28,12 +28,13 @@
 #include "common/graph/graph_ei/distance/spfa/zero_degrees_only_time.h"
 #include "common/graph/graph_ei/edge_cost_proxy.h"
 #include "common/hash.h"
-#include "common/heap/binary_heap.h"
-#include "common/heap/binomial_ukey_value_map.h"
-#include "common/heap/dheap_ukey_pos_map.h"
-#include "common/heap/dheap_ukey_value_map.h"
-#include "common/heap/fibonacci_ukey_value_map.h"
-#include "common/heap/pairing_ukey_value_map.h"
+#include "common/heap/base/binary.h"
+#include "common/heap/base/dheap.h"
+#include "common/heap/ext/dheap_ukey_pos_map.h"
+#include "common/heap/ukvm/binomial.h"
+#include "common/heap/ukvm/dheap.h"
+#include "common/heap/ukvm/fibonacci.h"
+#include "common/heap/ukvm/pairing.h"
 #include "common/timer.h"
 
 #include <functional>
@@ -43,18 +44,18 @@
 #include <vector>
 
 template <class TData>
-using TBinaryHeap = heap::BinaryHeap<TData>;
+using TBinaryHeap = heap::base::Binary<TData>;
 template <class TData>
-using TDHeap2 = heap::DHeap<2u, TData>;
+using TDHeap2 = heap::base::DHeap<2u, TData>;
 template <class TData>
-using TDHeap4 = heap::DHeap<4u, TData>;
+using TDHeap4 = heap::base::DHeap<4u, TData>;
 template <class TData>
-using TDHeap8 = heap::DHeap<8u, TData>;
+using TDHeap8 = heap::base::DHeap<8u, TData>;
 template <class TData>
-using TDHeap16 = heap::DHeap<16u, TData>;
+using TDHeap16 = heap::base::DHeap<16u, TData>;
 template <bool multipass, bool auxiliary>
-using TPairing = heap::PairingUKeyValueMap<uint64_t, std::less<uint64_t>,
-                                           multipass, auxiliary>;
+using TPairing =
+    heap::ukvm::Pairing<uint64_t, std::less<uint64_t>, multipass, auxiliary>;
 
 TesterGraphEIDistancePositiveCost::TesterGraphEIDistancePositiveCost(
     EGraphType _gtype, unsigned graph_size, unsigned edges_per_node)
@@ -436,15 +437,15 @@ bool TesterGraphEIDistancePositiveCost::TestAll() {
   hs.insert(TestHP<TDHeap4>("DH 4"));
   hs.insert(TestHP<TDHeap8>("DH 8"));
   hs.insert(TestHP<TDHeap16>("DH16"));
-  hs.insert(TestKPM<heap::DHeapUKeyPosMap<2, uint64_t>>("KPM2"));
-  hs.insert(TestKPM<heap::DHeapUKeyPosMap<4, uint64_t>>("KPM4"));
-  hs.insert(TestKPM<heap::DHeapUKeyPosMap<8, uint64_t>>("KPM8"));
-  hs.insert(TestKVM<heap::DHeapUKeyValueMap<2, uint64_t>>("DM 2"));
-  hs.insert(TestKVM<heap::DHeapUKeyValueMap<4, uint64_t>>("DM 4"));
-  hs.insert(TestKVM<heap::DHeapUKeyValueMap<8, uint64_t>>("DM 8"));
-  hs.insert(TestKVM<heap::DHeapUKeyValueMap<16, uint64_t>>("DM16"));
-  hs.insert(TestKVM<heap::BinomialUKeyValueMap<uint64_t>>("BNML"));
-  hs.insert(TestKVM<heap::FibonacciUKeyValueMap<uint64_t>>("FBNC"));
+  hs.insert(TestKPM<heap::ext::DHeapUKeyPosMap<2, uint64_t>>("KPM2"));
+  hs.insert(TestKPM<heap::ext::DHeapUKeyPosMap<4, uint64_t>>("KPM4"));
+  hs.insert(TestKPM<heap::ext::DHeapUKeyPosMap<8, uint64_t>>("KPM8"));
+  hs.insert(TestKVM<heap::ukvm::DHeap<2, uint64_t>>("DM 2"));
+  hs.insert(TestKVM<heap::ukvm::DHeap<4, uint64_t>>("DM 4"));
+  hs.insert(TestKVM<heap::ukvm::DHeap<8, uint64_t>>("DM 8"));
+  hs.insert(TestKVM<heap::ukvm::DHeap<16, uint64_t>>("DM16"));
+  hs.insert(TestKVM<heap::ukvm::Binomial<uint64_t>>("BNML"));
+  hs.insert(TestKVM<heap::ukvm::Fibonacci<uint64_t>>("FBNC"));
   hs.insert(TestKVM<TPairing<0, 0>>("PR00"));
   hs.insert(TestKVM<TPairing<1, 0>>("PR01"));
   hs.insert(TestKVM<TPairing<0, 1>>("PR10"));

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "common/heap/dheap_ukey_value_map.h"
+#include "common/heap/ukvm/dheap.h"
 
 #include <vector>
 
@@ -15,7 +15,7 @@ inline std::vector<TEdgeCost> Dijkstra(const TGraph& graph,
                                        const TEdgeCostFunction& f,
                                        unsigned source,
                                        const TEdgeCost& max_cost) {
-  heap::DHeapUKeyValueMap<4u, TEdgeCost> q(
+  heap::ukvm::DHeap<4u, TEdgeCost> q(
       std::vector<TEdgeCost>(graph.Size(), max_cost), true);
   for (q.AddNewKey(source, TEdgeCost()); !q.Empty();) {
     unsigned u = q.ExtractKey();

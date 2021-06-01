@@ -6,6 +6,7 @@
 #include <vector>
 
 namespace heap {
+namespace base {
 // P - max priority
 // Memory  -- O(N + P)
 // Add     -- O(1)
@@ -90,4 +91,5 @@ class BucketQueue {
     for (; queue[priority].size() == 0;) ++priority;
   }
 };
+}  // namespace base
 }  // namespace heap

@@ -9,6 +9,7 @@
 #include <vector>
 
 namespace heap {
+namespace ext {
 // Memory  -- O(N)
 // Add     -- O(1)
 // DecV    -- O(1) amortized
@@ -302,4 +303,5 @@ class Fibonacci {
     }
   }
 };
+}  // namespace ext
 }  // namespace heap

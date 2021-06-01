@@ -1,30 +1,28 @@
 #pragma once
 
 #include "common/base.h"
-#include "common/heap/pairing.h"
+#include "common/heap/ext/fibonacci.h"
 #include "common/nodes_manager_fixed_size.h"
 
 #include <functional>
 #include <vector>
 
 namespace heap {
+namespace ukvm {
 // Memory  -- O(N)
 // Add     -- O(1)
-// DecV    -- o(log N)
-// IncV    -- O(log N)
+// DecV    -- O(1) amortized
+// IncV    -- O(log N) amortized
 // Top     -- O(1)
 // Pop     -- O(log N) amortized
 // Union   -- O(1)
-template <class TTValue, class TCompare = std::less<TTValue>,
-          bool multipass = false, bool auxiliary = false>
-class PairingUKeyValueMap
-    : public Pairing<TTValue, TCompare, NodesManagerFixedSize, multipass,
-                     auxiliary> {
+template <class TTValue, class TCompare = std::less<TTValue>>
+class Fibonacci
+    : public heap::ext::Fibonacci<TTValue, TCompare, NodesManagerFixedSize> {
  public:
   using TValue = TTValue;
-  using TBase =
-      Pairing<TValue, TCompare, NodesManagerFixedSize, multipass, auxiliary>;
-  using TSelf = PairingUKeyValueMap<TValue, TCompare, multipass, auxiliary>;
+  using TBase = heap::ext::Fibonacci<TValue, TCompare, NodesManagerFixedSize>;
+  using TSelf = Fibonacci<TValue, TCompare>;
   using TNode = typename TBase::Node;
   using TNodesManager = typename TBase::TNodesManager;
 
@@ -36,19 +34,18 @@ class PairingUKeyValueMap
  protected:
   TNodesManager manager;
 
-  bool UnusedNode(const TNode* p) { return p->p == p; }
-  void SetUnused(TNode* p) { p->p = p; }
-  void CleanUnused(TNode* p) { p->p = nullptr; }
+  bool UnusedNode(const TNode* p) { return p->d == -1u; }
+  void SetUnused(TNode* p) { p->d = -1u; }
+  void CleanUnused(TNode* p) { p->d = 0; }
 
   TNode* GetNode(unsigned key) { return manager.NodeByRawIndex(key); }
 
  public:
-  explicit PairingUKeyValueMap(unsigned ukey_size)
-      : TBase(manager), manager(ukey_size) {
+  explicit Fibonacci(unsigned ukey_size) : TBase(manager), manager(ukey_size) {
     for (unsigned i = 0; i < ukey_size; ++i) SetUnused(manager.New());
   }
 
-  PairingUKeyValueMap(const std::vector<TValue>& v, bool skip_heap)
+  Fibonacci(const std::vector<TValue>& v, bool skip_heap)
       : TBase(manager), manager(v.size()) {
     for (unsigned i = 0; i < v.size(); ++i) {
       auto p = manager.New();
@@ -125,10 +122,10 @@ class PairingUKeyValueMap
 
   void Add(const TData& x) { Set(x.key, x.value); }
 
-  unsigned TopKey() { return GetKey(TBase::TopNode()); }
-  const TValue& TopValue() { return TBase::Top(); }
+  unsigned TopKey() const { return GetKey(TBase::TopNode()); }
+  const TValue& TopValue() const { return TBase::Top(); }
 
-  TData Top() {
+  TData Top() const {
     TNode* node = TBase::TopNode();
     return {GetKey(node), node->value};
   }
@@ -158,4 +155,5 @@ class PairingUKeyValueMap
     return t;
   }
 };
+}  // namespace ukvm
 }  // namespace heap

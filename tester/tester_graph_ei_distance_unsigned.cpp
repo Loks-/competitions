@@ -29,16 +29,17 @@
 #include "common/graph/graph_ei/distance/spfa/zero_degrees_only_time.h"
 #include "common/graph/graph_ei/edge_cost_proxy.h"
 #include "common/hash.h"
-#include "common/heap/binary_heap.h"
-#include "common/heap/binomial_ukey_value_map.h"
-#include "common/heap/bucket_queue.h"
-#include "common/heap/bucket_ukey_map.h"
-#include "common/heap/dheap_ukey_pos_map.h"
-#include "common/heap/dheap_ukey_value_map.h"
-#include "common/heap/fibonacci_ukey_value_map.h"
-#include "common/heap/monotone/bucket_queue.h"
-#include "common/heap/monotone/bucket_ukey_map.h"
-#include "common/heap/pairing_ukey_value_map.h"
+#include "common/heap/base/binary.h"
+#include "common/heap/base/bucket_queue.h"
+#include "common/heap/base/dheap.h"
+#include "common/heap/ext/dheap_ukey_pos_map.h"
+#include "common/heap/monotone/base/bucket_queue.h"
+#include "common/heap/monotone/ukvm/bucket_queue.h"
+#include "common/heap/ukvm/binomial.h"
+#include "common/heap/ukvm/bucket_queue.h"
+#include "common/heap/ukvm/dheap.h"
+#include "common/heap/ukvm/fibonacci.h"
+#include "common/heap/ukvm/pairing.h"
 #include "common/timer.h"
 
 #include <functional>
@@ -48,18 +49,18 @@
 #include <vector>
 
 template <class TData>
-using TBinaryHeap = heap::BinaryHeap<TData>;
+using TBinaryHeap = heap::base::Binary<TData>;
 template <class TData>
-using TDHeap2 = heap::DHeap<2u, TData>;
+using TDHeap2 = heap::base::DHeap<2u, TData>;
 template <class TData>
-using TDHeap4 = heap::DHeap<4u, TData>;
+using TDHeap4 = heap::base::DHeap<4u, TData>;
 template <class TData>
-using TDHeap8 = heap::DHeap<8u, TData>;
+using TDHeap8 = heap::base::DHeap<8u, TData>;
 template <class TData>
-using TDHeap16 = heap::DHeap<16u, TData>;
+using TDHeap16 = heap::base::DHeap<16u, TData>;
 template <bool multipass, bool auxiliary>
-using TPairing = heap::PairingUKeyValueMap<unsigned, std::less<unsigned>,
-                                           multipass, auxiliary>;
+using TPairing =
+    heap::ukvm::Pairing<unsigned, std::less<unsigned>, multipass, auxiliary>;
 
 TesterGraphEIDistanceUnsigned::TesterGraphEIDistanceUnsigned(
     EGraphType _gtype, unsigned graph_size, unsigned edges_per_node,
@@ -501,19 +502,19 @@ bool TesterGraphEIDistanceUnsigned::TestAll() {
   hs.insert(TestHP<TDHeap4>("HP 4"));
   hs.insert(TestHP<TDHeap8>("HP 8"));
   hs.insert(TestHP<TDHeap16>("HP16"));
-  hs.insert(TestHPV<heap::BucketQueue>(" BQ "));
-  hs.insert(TestMHPV<heap::monotone::BucketQueue>("MBQ "));
-  hs.insert(TestKPM<heap::DHeapUKeyPosMap<2, unsigned>>("KPM2"));
-  hs.insert(TestKPM<heap::DHeapUKeyPosMap<4, unsigned>>("KPM4"));
-  hs.insert(TestKPM<heap::DHeapUKeyPosMap<8, unsigned>>("KPM8"));
-  hs.insert(TestKVM<heap::DHeapUKeyValueMap<2, unsigned>>("DM 2"));
-  hs.insert(TestKVM<heap::DHeapUKeyValueMap<4, unsigned>>("DM 4"));
-  hs.insert(TestKVM<heap::DHeapUKeyValueMap<8, unsigned>>("DM 8"));
-  hs.insert(TestKVM<heap::DHeapUKeyValueMap<16, unsigned>>("DM16"));
-  hs.insert(TestKVM<heap::BucketUKeyMap>(" BM "));
-  hs.insert(TestMKVM<heap::monotone::BucketUKeyMap>("MBM "));
-  hs.insert(TestKVM<heap::BinomialUKeyValueMap<unsigned>>("BNML"));
-  hs.insert(TestKVM<heap::FibonacciUKeyValueMap<unsigned>>("FBNC"));
+  hs.insert(TestHPV<heap::base::BucketQueue>(" BQ "));
+  hs.insert(TestMHPV<heap::monotone::base::BucketQueue>("MBQ "));
+  hs.insert(TestKPM<heap::ext::DHeapUKeyPosMap<2, unsigned>>("KPM2"));
+  hs.insert(TestKPM<heap::ext::DHeapUKeyPosMap<4, unsigned>>("KPM4"));
+  hs.insert(TestKPM<heap::ext::DHeapUKeyPosMap<8, unsigned>>("KPM8"));
+  hs.insert(TestKVM<heap::ukvm::DHeap<2, unsigned>>("DM 2"));
+  hs.insert(TestKVM<heap::ukvm::DHeap<4, unsigned>>("DM 4"));
+  hs.insert(TestKVM<heap::ukvm::DHeap<8, unsigned>>("DM 8"));
+  hs.insert(TestKVM<heap::ukvm::DHeap<16, unsigned>>("DM16"));
+  hs.insert(TestKVM<heap::ukvm::BucketQueue>(" BM "));
+  hs.insert(TestMKVM<heap::monotone::ukvm::BucketQueue>("MBM "));
+  hs.insert(TestKVM<heap::ukvm::Binomial<unsigned>>("BNML"));
+  hs.insert(TestKVM<heap::ukvm::Fibonacci<unsigned>>("FBNC"));
   hs.insert(TestKVM<TPairing<0, 0>>("PR00"));
   hs.insert(TestKVM<TPairing<1, 0>>("PR01"));
   hs.insert(TestKVM<TPairing<0, 1>>("PR10"));
