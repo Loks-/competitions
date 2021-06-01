@@ -2,6 +2,7 @@
 
 #include "common/base.h"
 
+#include <string>
 #include <vector>
 
 class TesterHeap {
@@ -12,31 +13,31 @@ class TesterHeap {
   TesterHeap(unsigned size_init, unsigned size_loop);
 
  protected:
-  size_t TestPriorityQueue();
-  size_t TestBinaryHeap();
-  size_t TestBinomialHeap();
-  size_t TestBinomialUKeyValueMap();
-  size_t TestFibonacciHeap();
-  size_t TestFibonacciUKeyValueMap();
+  size_t TestPriorityQueue() const;
+  size_t TestBinomialUKeyValueMap() const;
+  size_t TestFibonacciUKeyValueMap() const;
+
+  template <class THeap>
+  size_t TestBase(const std::string& name) const;
+
+  template <class THeap>
+  size_t TestNodesManager(const std::string& name) const;
 
   template <unsigned d>
-  size_t TestDHeap();
+  size_t TestDHeapUKeyPosMap() const;
 
   template <unsigned d>
-  size_t TestDHeapUKeyPosMap();
-
-  template <unsigned d>
-  size_t TestDHeapUKeyValueMap();
+  size_t TestDHeapUKeyValueMap() const;
 
   template <bool multipass, bool auxiliary>
-  size_t TestPairingBaseHeap();
+  size_t TestPairingBaseHeap() const;
 
   template <bool multipass, bool auxiliary>
-  size_t TestPairingHeap();
+  size_t TestPairingHeap() const;
 
   template <bool multipass, bool auxiliary>
-  size_t TestPairingUKeyValueMap();
+  size_t TestPairingUKeyValueMap() const;
 
  public:
-  bool TestAll();
+  bool TestAll() const;
 };

@@ -15,6 +15,7 @@
 #include "common/timer.h"
 #include "common/vector/hrandom.h"
 
+#include <functional>
 #include <iostream>
 #include <queue>
 #include <unordered_set>
@@ -24,7 +25,7 @@ TesterHeap::TesterHeap(unsigned size_init, unsigned size_loop) {
   vloop = nvector::HRandom(size_loop, vinit.back());
 }
 
-size_t TesterHeap::TestPriorityQueue() {
+size_t TesterHeap::TestPriorityQueue() const {
   Timer t;
   size_t h = 0;
   std::priority_queue<size_t, std::vector<size_t>, std::greater<size_t>> heap(
@@ -40,37 +41,7 @@ size_t TesterHeap::TestPriorityQueue() {
   return h;
 }
 
-size_t TesterHeap::TestBinaryHeap() {
-  Timer t;
-  size_t h = 0;
-  heap::BinaryHeap<size_t> heap(vinit);
-  for (unsigned i = 0; i < vloop.size(); ++i) {
-    h = HashCombine(h, heap.Extract());
-    heap.Add(vloop[i]);
-  }
-  for (; !heap.Empty(); heap.Pop()) h = HashCombine(h, heap.Top());
-  std::cout << "Test results [  BH]: " << h << "\t" << t.GetMilliseconds()
-            << std::endl;
-  return h;
-}
-
-size_t TesterHeap::TestBinomialHeap() {
-  Timer t;
-  size_t h = 0;
-  heap::Binomial<size_t>::TNodesManager nodes_manager(vinit.size());
-  heap::Binomial<size_t> heap(nodes_manager);
-  for (size_t v : vinit) heap.Add(v);
-  for (unsigned i = 0; i < vloop.size(); ++i) {
-    h = HashCombine(h, heap.Extract());
-    heap.Add(vloop[i]);
-  }
-  for (; !heap.Empty(); heap.Pop()) h = HashCombine(h, heap.Top());
-  std::cout << "Test results [BNML]: " << h << "\t" << t.GetMilliseconds()
-            << std::endl;
-  return h;
-}
-
-size_t TesterHeap::TestBinomialUKeyValueMap() {
+size_t TesterHeap::TestBinomialUKeyValueMap() const {
   Timer t;
   size_t h = 0;
   heap::BinomialUKeyValueMap<size_t> heap(vinit.size() + vloop.size());
@@ -85,23 +56,7 @@ size_t TesterHeap::TestBinomialUKeyValueMap() {
   return h;
 }
 
-size_t TesterHeap::TestFibonacciHeap() {
-  Timer t;
-  size_t h = 0;
-  heap::Fibonacci<size_t>::TNodesManager nodes_manager(vinit.size());
-  heap::Fibonacci<size_t> heap(nodes_manager);
-  for (size_t v : vinit) heap.Add(v);
-  for (unsigned i = 0; i < vloop.size(); ++i) {
-    h = HashCombine(h, heap.Extract());
-    heap.Add(vloop[i]);
-  }
-  for (; !heap.Empty(); heap.Pop()) h = HashCombine(h, heap.Top());
-  std::cout << "Test results [FBNC]: " << h << "\t" << t.GetMilliseconds()
-            << std::endl;
-  return h;
-}
-
-size_t TesterHeap::TestFibonacciUKeyValueMap() {
+size_t TesterHeap::TestFibonacciUKeyValueMap() const {
   Timer t;
   size_t h = 0;
   heap::FibonacciUKeyValueMap<size_t> heap(vinit.size() + vloop.size());
@@ -116,23 +71,40 @@ size_t TesterHeap::TestFibonacciUKeyValueMap() {
   return h;
 }
 
-template <unsigned d>
-size_t TesterHeap::TestDHeap() {
+template <class THeap>
+size_t TesterHeap::TestBase(const std::string& name) const {
   Timer t;
   size_t h = 0;
-  heap::DHeap<d, size_t> heap(vinit);
+  THeap heap(vinit);
   for (unsigned i = 0; i < vloop.size(); ++i) {
     h = HashCombine(h, heap.Extract());
     heap.Add(vloop[i]);
   }
   for (; !heap.Empty(); heap.Pop()) h = HashCombine(h, heap.Top());
-  std::cout << "Test results [ D" << d << "H]: " << h << "\t"
+  std::cout << "Test results [" << name << "]: " << h << "\t"
+            << t.GetMilliseconds() << std::endl;
+  return h;
+}
+
+template <class THeap>
+size_t TesterHeap::TestNodesManager(const std::string& name) const {
+  Timer t;
+  size_t h = 0;
+  typename THeap::TNodesManager nodes_manager(vinit.size());
+  THeap heap(nodes_manager);
+  for (size_t v : vinit) heap.Add(v);
+  for (unsigned i = 0; i < vloop.size(); ++i) {
+    h = HashCombine(h, heap.Extract());
+    heap.Add(vloop[i]);
+  }
+  for (; !heap.Empty(); heap.Pop()) h = HashCombine(h, heap.Top());
+  std::cout << "Test results [" << name << "]: " << h << "\t"
             << t.GetMilliseconds() << std::endl;
   return h;
 }
 
 template <unsigned d>
-size_t TesterHeap::TestDHeapUKeyPosMap() {
+size_t TesterHeap::TestDHeapUKeyPosMap() const {
   using THeap = heap::DHeapUKeyPosMap<d, size_t>;
   using TData = typename THeap::TData;
   std::vector<TData> vinit_adj;
@@ -153,7 +125,7 @@ size_t TesterHeap::TestDHeapUKeyPosMap() {
 }
 
 template <unsigned d>
-size_t TesterHeap::TestDHeapUKeyValueMap() {
+size_t TesterHeap::TestDHeapUKeyValueMap() const {
   using THeap = heap::DHeapUKeyValueMap<d, size_t>;
   Timer t;
   size_t h = 0;
@@ -170,7 +142,7 @@ size_t TesterHeap::TestDHeapUKeyValueMap() {
 }
 
 template <bool multipass, bool auxiliary>
-size_t TesterHeap::TestPairingBaseHeap() {
+size_t TesterHeap::TestPairingBaseHeap() const {
   using THeap = heap::PairingBase<size_t, std::less<size_t>, NodesManager,
                                   multipass, auxiliary>;
   Timer t;
@@ -188,7 +160,7 @@ size_t TesterHeap::TestPairingBaseHeap() {
 }
 
 template <bool multipass, bool auxiliary>
-size_t TesterHeap::TestPairingHeap() {
+size_t TesterHeap::TestPairingHeap() const {
   using THeap = heap::Pairing<size_t, std::less<size_t>, NodesManager,
                               multipass, auxiliary>;
   Timer t;
@@ -207,7 +179,7 @@ size_t TesterHeap::TestPairingHeap() {
 }
 
 template <bool multipass, bool auxiliary>
-size_t TesterHeap::TestPairingUKeyValueMap() {
+size_t TesterHeap::TestPairingUKeyValueMap() const {
   using THeap = heap::PairingUKeyValueMap<size_t, std::less<size_t>, multipass,
                                           auxiliary>;
   Timer t;
@@ -224,15 +196,15 @@ size_t TesterHeap::TestPairingUKeyValueMap() {
   return h;
 }
 
-bool TesterHeap::TestAll() {
+bool TesterHeap::TestAll() const {
   std::unordered_set<size_t> hs;
   hs.insert(TestPriorityQueue());
-  hs.insert(TestBinaryHeap());
-  hs.insert(TestDHeap<2>());
-  hs.insert(TestDHeap<4>());
-  hs.insert(TestDHeap<8>());
-  hs.insert(TestBinomialHeap());
-  hs.insert(TestFibonacciHeap());
+  hs.insert(TestBase<heap::BinaryHeap<size_t>>("  BH"));
+  hs.insert(TestBase<heap::DHeap<2, size_t>>(" D2H"));
+  hs.insert(TestBase<heap::DHeap<2, size_t>>(" D4H"));
+  hs.insert(TestBase<heap::DHeap<2, size_t>>(" D8H"));
+  hs.insert(TestNodesManager<heap::Binomial<size_t>>("BNML"));
+  hs.insert(TestNodesManager<heap::Fibonacci<size_t>>("FBNC"));
   hs.insert(TestPairingBaseHeap<0, 0>());
   hs.insert(TestPairingBaseHeap<1, 0>());
   hs.insert(TestPairingBaseHeap<0, 1>());
@@ -257,6 +229,6 @@ bool TesterHeap::TestAll() {
 }
 
 bool TestHeap(bool time_test) {
-  TesterHeap th(time_test ? 1000000 : 10000, time_test ? 1000000 : 10000);
+  TesterHeap th(time_test ? 10000000 : 10000, time_test ? 10000000 : 10000);
   return th.TestAll();
 }
