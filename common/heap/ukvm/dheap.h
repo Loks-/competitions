@@ -9,9 +9,6 @@
 
 namespace heap {
 namespace ukvm {
-// DHeap with map to position by key.
-// Values are stored outside of heap.
-// Heap stores pointers to value instead of keys.
 // Memory  -- O(N)
 // Add     -- O(log N / log d)
 // DecV    -- O(log N / log d)
