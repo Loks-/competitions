@@ -35,6 +35,7 @@
 #include "common/heap/ukvm/dheap.h"
 #include "common/heap/ukvm/fibonacci.h"
 #include "common/heap/ukvm/pairing.h"
+#include "common/heap/ukvm/uset.h"
 #include "common/timer.h"
 
 #include <functional>
@@ -450,6 +451,8 @@ bool TesterGraphEIDistancePositiveCost::TestAll() {
   hs.insert(TestKVM<TPairing<1, 0>>("PR01"));
   hs.insert(TestKVM<TPairing<0, 1>>("PR10"));
   hs.insert(TestKVM<TPairing<1, 1>>("PR11"));
+  if (gtype != EGraphType::SPARSE)
+    hs.insert(TestKVM<heap::ukvm::USet<uint64_t>>("USet"));
   hs.insert(TestBellmanFord());
   hs.insert(TestBellmanFordYen());
   hs.insert(TestSPFA());
