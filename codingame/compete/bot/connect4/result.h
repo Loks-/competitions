@@ -13,3 +13,10 @@ enum class Result {
 inline Result Invert(Result a) {
   return Result(unsigned(Result::LossPlusWin) - unsigned(a));
 }
+
+inline bool Finalized(Result a) {
+  static const unsigned mask = (1u << unsigned(Result::Loss)) |
+                               (1u << unsigned(Result::Draw)) |
+                               (1u << unsigned(Result::Win));
+  return (1u << unsigned(a)) & mask;
+}
