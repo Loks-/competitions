@@ -14,6 +14,9 @@ find_package( Threads )
 file( GLOB_RECURSE CODINGAME_PRACTICE_SOURCES RELATIVE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/codingame/practice/*.cpp" )
 add_executable( codingame_practice ${CODINGAME_PRACTICE_SOURCES} )
 
+file( GLOB_RECURSE CODINGAME_COMPETE_CONNECT4_SOURCES RELATIVE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/codingame/compete/bot/connect4/*.cpp" )
+add_executable( codingame_compete_connect4 ${CODINGAME_COMPETE_CONNECT4_SOURCES} )
+
 file( GLOB_RECURSE GOOGLE_DISTRIBUTED_CODE_JAM_SOURCES RELATIVE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/google/distributed_code_jam/*.cpp" )
 add_executable( google_distributed_code_jam ${GOOGLE_DISTRIBUTED_CODE_JAM_SOURCES} )
 target_include_directories(google_distributed_code_jam PRIVATE "${PROJECT_SOURCE_DIR}/google/distributed_code_jam" )
