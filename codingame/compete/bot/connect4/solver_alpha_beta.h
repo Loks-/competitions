@@ -16,7 +16,7 @@ class SolverAlphaBeta {
   Position p;
   uint64_t ncalls;
   unsigned print_moves;
-  std::unordered_map<std::pair<TMask, TMask>, Result> cache;
+  std::unordered_map<std::pair<TMask, TMask>, unsigned> cache;
 
  public:
   void Reset() {
@@ -24,10 +24,23 @@ class SolverAlphaBeta {
     print_moves = p.nmoves + 3;
   }
 
-  Result SolveAB(Result alpha, Result beta) {
+  unsigned SolveAB(unsigned alpha, unsigned beta) {
     if (p.nmoves == SIZE) return Result::Draw;
     auto& r = cache[std::make_pair(p.p0, p.p1)];
-    if (Finalized(r)) return r;
+    if (Result::Finalized(r)) return r;
+    switch (r) {
+      case Result::Loss:
+      case Result::Draw:
+      case Result::Win:
+        return r;
+      case Result::LossOrDraw:
+        if ((beta = Result::Draw) <= alpha) return r;
+        break;
+      case Result::WinOrDraw:
+        if ((alpha = Result::Draw) >= beta) return r;
+      default:
+        break;
+    }
     ++ncalls;
     TMask& mask = p.GetMask();
     for (unsigned c = 0; c < WIDTH; ++c) {
@@ -38,29 +51,37 @@ class SolverAlphaBeta {
         if (b) return (r = Result::Win);
       }
     }
-    Result inv_alpha = Invert(alpha), inv_beta = Invert(beta);
+    unsigned inv_alpha = Result::Invert(alpha), inv_beta = Result::Invert(beta);
     for (unsigned c = 0; c < WIDTH; ++c) {
       if (p.LegalMove(c)) {
         p.MakeMove(c);
-        auto r = SolveAB(inv_beta, inv_alpha);
+        auto t = SolveAB(inv_beta, inv_alpha);
         p.RevertMove();
-        if (r < inv_alpha) {
-          inv_alpha = r;
-          alpha = Invert(inv_alpha);
-          if (alpha >= beta) break;
+        if (t < inv_alpha) {
+          inv_alpha = t;
+          if (inv_alpha <= inv_beta) break;
         }
       }
     }
+    unsigned r2 = Result::Invert(inv_alpha);
     if (p.nmoves <= print_moves) {
       p.Print();
-      std::cout << " " << unsigned(alpha) << " " << unsigned(beta) << " "
+      std::cout << " " << r2 << " " << alpha << " " << beta << " "
                 << numeric::ULog2(ncalls) << " " << numeric::ULog2(cache.size())
                 << std::endl;
     }
-    return (r = alpha);
+    if (r2 == Result::Draw) {
+      if (beta == Result::Draw)
+        r2 = Result::WinOrDraw;
+      else if (alpha == Result::Draw)
+        r2 = Result::LossOrDraw;
+    }
+    // LossOrDraw && WinOrDraw
+    if (r == Result::Invert(r2)) r2 = Result::Draw;
+    return (r = r2);
   }
 
-  Result Solve(const Position& _p) {
+  unsigned Solve(const Position& _p) {
     p = _p;
     Reset();
     return SolveAB(Result::Loss, Result::Win);

@@ -16,6 +16,6 @@ int main(int nargs, char** pargs) {
   for (char c : sgame) p.MakeMove(unsigned(c) - unsigned('1'));
   SolverAlphaBeta s;
   auto r = s.Solve(p);
-  std::cout << unsigned(r) << std::endl;
+  std::cout << r << std::endl;
   return 0;
 }

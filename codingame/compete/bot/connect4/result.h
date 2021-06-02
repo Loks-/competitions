@@ -1,22 +1,19 @@
 #pragma once
 
-enum class Result {
-  Unknown = 0,
-  Loss = 1,
-  LossOrDraw = 2,
-  Draw = 3,
-  WinOrDraw = 4,
-  Win = 5,
-  LossPlusWin = 6
+class Result {
+ public:
+  static const unsigned Unknown = 0;
+  static const unsigned Loss = 1;
+  static const unsigned LossOrDraw = 2;
+  static const unsigned Draw = 3;
+  static const unsigned WinOrDraw = 4;
+  static const unsigned Win = 5;
+  static const unsigned LossPlusWin = 6;
+
+  static unsigned Invert(unsigned r) { return LossPlusWin - r; }
+
+  static bool Finalized(unsigned r) {
+    static const unsigned mask = (1u << Loss) | (1u << Draw) | (1u << Win);
+    return r & mask;
+  }
 };
-
-inline Result Invert(Result a) {
-  return Result(unsigned(Result::LossPlusWin) - unsigned(a));
-}
-
-inline bool Finalized(Result a) {
-  static const unsigned mask = (1u << unsigned(Result::Loss)) |
-                               (1u << unsigned(Result::Draw)) |
-                               (1u << unsigned(Result::Win));
-  return (1u << unsigned(a)) & mask;
-}
