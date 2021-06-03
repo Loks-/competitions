@@ -1,7 +1,7 @@
 #include "board.h"
 #include "mask.h"
 #include "position.h"
-#include "solver_alpha_beta.h"
+#include "solver_alpha_beta_v1.h"
 
 #include <iostream>
 #include <string>
@@ -14,7 +14,7 @@ int main(int nargs, char** pargs) {
   std::string sgame = "45461667";
   if (nargs > 1) sgame = pargs[1];
   for (char c : sgame) p.MakeMove(unsigned(c) - unsigned('1'));
-  SolverAlphaBeta s;
+  SolverAlphaBetaV1 s;
   auto r = s.Solve(p);
   std::cout << r << std::endl;
   return 0;

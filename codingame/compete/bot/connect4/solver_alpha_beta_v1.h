@@ -11,7 +11,10 @@
 #include <unordered_map>
 #include <utility>
 
-class SolverAlphaBeta {
+// std::string sgame = "45461667"; // R = 5, T = 10s, W = 24
+// std::string sgame = "35333571"; // R = 1, T = 3m 43s, W = 28
+// std::string sgame = "13333111"; // R = 3, T = 8m 49s, W = 29
+class SolverAlphaBetaV1 {
  protected:
   Position p;
   uint64_t ncalls;
