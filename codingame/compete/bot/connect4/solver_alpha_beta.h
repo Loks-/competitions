@@ -21,13 +21,12 @@ class SolverAlphaBeta {
  public:
   void Reset() {
     ncalls = 0;
-    print_moves = p.nmoves + 3;
+    print_moves = p.nmoves + 2;
   }
 
   unsigned SolveAB(unsigned alpha, unsigned beta) {
     if (p.nmoves == SIZE) return Result::Draw;
     auto& r = cache[std::make_pair(p.p0, p.p1)];
-    if (Result::Finalized(r)) return r;
     switch (r) {
       case Result::Loss:
       case Result::Draw:
@@ -51,12 +50,20 @@ class SolverAlphaBeta {
         if (b) return (r = Result::Win);
       }
     }
+    // Something wrong here
     unsigned inv_alpha = Result::Invert(alpha), inv_beta = Result::Invert(beta);
     for (unsigned c = 0; c < WIDTH; ++c) {
       if (p.LegalMove(c)) {
         p.MakeMove(c);
         auto t = SolveAB(inv_beta, inv_alpha);
         p.RevertMove();
+        if (t == Result::LossOrDraw) {
+          // if (inv_beta != Result::Draw) std::cout << ".";
+          t = Result::Draw;
+        }
+        // if (t == Result::WinOrDraw) {
+        //   if (inv_alpha != Result::Draw) std::cout << ".";
+        // }
         if (t < inv_alpha) {
           inv_alpha = t;
           if (inv_alpha <= inv_beta) break;

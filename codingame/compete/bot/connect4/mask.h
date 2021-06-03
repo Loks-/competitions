@@ -10,7 +10,7 @@ const TMask mask_1 = 1, mask_all = (mask_1 << SIZE) - 1,
 inline bool Has4(TMask mask) {
   static const TMask mh = (mask_all >> (3 * HEIGHT)),
                      mv = mask_r0 * ((mask_1 << (HEIGHT - 3)) - 1),
-                     md1 = mh & mv, md2 = (md1 << (3 * HEIGHT));
+                     md1 = mh & mv, md2 = (md1 << 3);
   static const unsigned D1 = HEIGHT + 1, D2 = HEIGHT - 1, H = HEIGHT, V = 1;
   TMask d1 = mask & (mask >> D1), d2 = mask & (mask >> D2),
         h = mask & (mask >> H), v = mask & (mask >> V);
