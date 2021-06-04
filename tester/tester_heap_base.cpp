@@ -90,27 +90,6 @@ size_t TesterHeapBase::TestKVM(const std::string& name) const {
   return h;
 }
 
-template <unsigned d>
-size_t TesterHeapBase::TestDHeapUKeyPosMap() const {
-  using THeap = heap::ext::DHeapUKeyPosMap<d, size_t>;
-  using TData = typename THeap::TData;
-  std::vector<TData> vinit_adj;
-  vinit_adj.reserve(vinit.size());
-  for (unsigned i = 0; i < vinit.size(); ++i)
-    vinit_adj.push_back({i, vinit[i]});
-  Timer t;
-  size_t h = 0;
-  THeap heap(vinit.size() + vloop.size(), vinit_adj);
-  for (unsigned i = 0; i < vloop.size(); ++i) {
-    h = HashCombine(h, heap.Extract().value);
-    heap.Set(vinit.size() + i, vloop[i]);
-  }
-  for (; !heap.Empty();) h = HashCombine(h, heap.Extract().value);
-  std::cout << "Test results [E   D" << d << "]: " << h << "\t"
-            << t.GetMilliseconds() << std::endl;
-  return h;
-}
-
 template <bool multipass, bool auxiliary>
 size_t TesterHeapBase::TestBasePairing() const {
   return TestBase<heap::base::Pairing<size_t, std::less<size_t>, NodesManager,
@@ -137,16 +116,16 @@ bool TesterHeapBase::TestAll() const {
   hs.insert(TestPriorityQueue());
   hs.insert(TestBase<heap::base::Binary<size_t>>("B   B "));
   hs.insert(TestBase<heap::base::DHeap<2, size_t>>("B   D2"));
-  hs.insert(TestBase<heap::base::DHeap<2, size_t>>("B   D4"));
-  hs.insert(TestBase<heap::base::DHeap<2, size_t>>("B   D8"));
+  hs.insert(TestBase<heap::base::DHeap<4, size_t>>("B   D4"));
+  hs.insert(TestBase<heap::base::DHeap<8, size_t>>("B   D8"));
   hs.insert(TestNodesManager<heap::base::Binomial<size_t>>("B BNML"));
   hs.insert(TestBasePairing<0, 0>());
   hs.insert(TestBasePairing<1, 0>());
   hs.insert(TestBasePairing<0, 1>());
   hs.insert(TestBasePairing<1, 1>());
-  hs.insert(TestDHeapUKeyPosMap<2>());
-  hs.insert(TestDHeapUKeyPosMap<4>());
-  hs.insert(TestDHeapUKeyPosMap<8>());
+  hs.insert(TestKVM<heap::ext::DHeapUKeyPosMap<2, size_t>>("E   D2"));
+  hs.insert(TestKVM<heap::ext::DHeapUKeyPosMap<4, size_t>>("E   D4"));
+  hs.insert(TestKVM<heap::ext::DHeapUKeyPosMap<8, size_t>>("E   D8"));
   hs.insert(TestNodesManager<heap::ext::Fibonacci<size_t>>("E FBNC"));
   hs.insert(TestExtPairing<0, 0>());
   hs.insert(TestExtPairing<1, 0>());

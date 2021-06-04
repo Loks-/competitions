@@ -1,6 +1,7 @@
 #pragma once
 
 #include "common/base.h"
+#include "common/heap/ukvm/data.h"
 
 #include <functional>
 #include <vector>
@@ -22,13 +23,9 @@ class DHeapUKeyPosMap {
   const unsigned d = d_;
   const unsigned not_in_heap = unsigned(-1);
   using TValue = TTValue;
+  using TData = heap::ukvm::Data<TValue>;
   using TCompare = TTCompare;
   using TSelf = DHeapUKeyPosMap<d_, TValue, TCompare>;
-
-  struct TData {
-    unsigned key;
-    TValue value;
-  };
 
  protected:
   TCompare compare;
@@ -116,6 +113,8 @@ class DHeapUKeyPosMap {
   void Add(const TData& x) { Set(x.key, x.value); }
 
   const TData& Top() const { return data[0]; }
+  unsigned TopKey() const { return data[0].key; }
+  const TValue& TopValue() const { return data[0].value; }
 
   void Pop() {
     heap_position[Top().key] = not_in_heap;
@@ -131,6 +130,18 @@ class DHeapUKeyPosMap {
 
   TData Extract() {
     TData t = Top();
+    Pop();
+    return t;
+  }
+
+  unsigned ExtractKey() {
+    unsigned t = TopKey();
+    Pop();
+    return t;
+  }
+
+  TValue ExtractValue() {
+    TValue t = TopValue();
     Pop();
     return t;
   }

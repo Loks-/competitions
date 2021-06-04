@@ -24,9 +24,6 @@ class TesterHeapBase {
   template <class THeap>
   size_t TestKVM(const std::string& name) const;
 
-  template <unsigned d>
-  size_t TestDHeapUKeyPosMap() const;
-
   template <bool multipass, bool auxiliary>
   size_t TestBasePairing() const;
 
