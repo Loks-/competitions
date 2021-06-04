@@ -106,7 +106,7 @@ class CompleteBinaryTree {
     if (InHeap(key))
       DecreaseValueI(key, new_value);
     else
-      AddNewKeyI(key, new_value);
+      AddNewKeyI(key, new_value, false);
   }
 
   void DecreaseValueIfLess(unsigned key, const TValue& new_value) {
@@ -117,7 +117,7 @@ class CompleteBinaryTree {
     if (InHeap(key))
       IncreaseValueI(key, new_value);
     else
-      AddNewKeyI(key, new_value);
+      AddNewKeyI(key, new_value, false);
   }
 
   void Set(unsigned key, const TValue& new_value) {
@@ -200,7 +200,7 @@ class CompleteBinaryTree {
   }
 
   void HeapifyEmpty() {
-    for (unsigned i = cbt_size; i > 0; --i) heap[i] = heap[2 * i];
+    for (unsigned i = cbt_size - 1; i > 0; --i) heap[i] = heap[2 * i];
   }
 
   void Heapify() {
