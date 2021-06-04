@@ -63,7 +63,7 @@ class BucketQueue {
   unsigned Size() const { return size; }
   unsigned UKeySize() const { return unsigned(queue_position.size()); }
 
-  bool InQueue(unsigned key) const {
+  bool InHeap(unsigned key) const {
     return queue_position[key].index != not_in_queue;
   }
 
@@ -78,12 +78,12 @@ class BucketQueue {
 
  public:
   void AddNewKey(unsigned key, unsigned priority, bool skip_heap = false) {
-    assert(!InQueue(key));
+    assert(!InHeap(key));
     AddNewKeyI(key, priority, skip_heap);
   }
 
   void Set(unsigned key, unsigned new_priority) {
-    if (InQueue(key))
+    if (InHeap(key))
       SetI(key, new_priority);
     else
       AddNewKeyI(key, new_priority, false);

@@ -69,7 +69,7 @@ class DHeap {
   unsigned Size() const { return unsigned(heap_pointers.size()); }
   unsigned UKeySize() const { return unsigned(key_map.size()); }
 
-  bool InQueue(unsigned key) const {
+  bool InHeap(unsigned key) const {
     return key_map[key].heap_position != not_in_heap;
   }
 
@@ -107,7 +107,7 @@ class DHeap {
  public:
   void AddNewKey(unsigned key, const TValue& new_value,
                  bool skip_heap = false) {
-    assert(!InQueue(key));
+    assert(!InHeap(key));
     AddNewKeyI(key, new_value, skip_heap);
   }
 

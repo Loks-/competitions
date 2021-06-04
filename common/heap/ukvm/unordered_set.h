@@ -48,7 +48,7 @@ class UnorderedSet {
   unsigned Size() const { return queue.Size(); }
   unsigned UKeySize() const { return queue.SetSize(); }
 
-  bool InQueue(unsigned key) const { return queue.HasKey(key); }
+  bool InHeap(unsigned key) const { return queue.HasKey(key); }
 
   const TValue& Get(unsigned key) const { return values[key]; }
 
@@ -65,12 +65,12 @@ class UnorderedSet {
  public:
   void AddNewKey(unsigned key, const TValue& new_value,
                  bool skip_heap = false) {
-    assert(!InQueue(key));
+    assert(!InHeap(key));
     AddNewKeyI(key, new_value, skip_heap);
   }
 
   void Set(unsigned key, const TValue& new_value) {
-    if (InQueue(key))
+    if (InHeap(key))
       SetI(key, new_value);
     else
       AddNewKeyI(key, new_value, false);
