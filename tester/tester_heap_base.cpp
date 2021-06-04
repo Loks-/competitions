@@ -9,6 +9,7 @@
 #include "common/heap/ext/fibonacci.h"
 #include "common/heap/ext/pairing.h"
 #include "common/heap/ukvm/binomial.h"
+#include "common/heap/ukvm/complete_binary_tree.h"
 #include "common/heap/ukvm/dheap.h"
 #include "common/heap/ukvm/fibonacci.h"
 #include "common/heap/ukvm/pairing.h"
@@ -154,6 +155,7 @@ bool TesterHeapBase::TestAll() const {
   hs.insert(TestKVM<heap::ukvm::DHeap<2, size_t>>("M   D2"));
   hs.insert(TestKVM<heap::ukvm::DHeap<4, size_t>>("M   D4"));
   hs.insert(TestKVM<heap::ukvm::DHeap<8, size_t>>("M   D8"));
+  hs.insert(TestKVM<heap::ukvm::CompleteBinaryTree<size_t>>("M  CBT"));
   hs.insert(TestKVM<heap::ukvm::Binomial<size_t>>("M BNML"));
   hs.insert(TestKVM<heap::ukvm::Fibonacci<size_t>>("M FBNC"));
   hs.insert(TestUKVMPairing<0, 0>());
