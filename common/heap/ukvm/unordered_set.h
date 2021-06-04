@@ -18,12 +18,12 @@ namespace ukvm {
 // Pop     -- O(N)
 // Init    -- O(N)
 template <class TTValue, class TTCompare = std::less<TTValue>>
-class USet {
+class UnorderedSet {
  public:
   using TValue = TTValue;
   using TCompare = TTCompare;
   using TData = Data<TValue>;
-  using TSelf = USet<TValue, TCompare>;
+  using TSelf = UnorderedSet<TValue, TCompare>;
 
  protected:
   TCompare compare;
@@ -36,9 +36,10 @@ class USet {
   }
 
  public:
-  explicit USet(unsigned ukey_size) : queue(ukey_size), values(ukey_size) {}
+  explicit UnorderedSet(unsigned ukey_size)
+      : queue(ukey_size), values(ukey_size) {}
 
-  USet(const std::vector<TValue>& v, bool skip_heap)
+  UnorderedSet(const std::vector<TValue>& v, bool skip_heap)
       : queue(v.size()), values(v) {
     if (!skip_heap) queue.InsertAll();
   }
