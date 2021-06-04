@@ -61,7 +61,7 @@ class CompleteBinaryTree {
     size = skip_heap ? 0 : v.size();
     InitHeap();
     if (!skip_heap) {
-      std::fill(in_heap.begin(), in_heap.end(), 1u);
+      std::fill(in_heap.begin(), in_heap.begin() + size, 1u);
       Heapify();
     } else {
       HeapifyEmpty();
@@ -204,8 +204,9 @@ class CompleteBinaryTree {
   }
 
   void Heapify() {
-    for (unsigned i = cbt_size; i > 0; --i)
-      heap[i] = Compare(heap[2 * i], heap[2 * i + 1]) ? 2 * i : 2 * i + 1;
+    for (unsigned i = cbt_size - 1; i > 0; --i)
+      heap[i] =
+          Compare(heap[2 * i], heap[2 * i + 1]) ? heap[2 * i] : heap[2 * i + 1];
   }
 };
 }  // namespace ukvm
