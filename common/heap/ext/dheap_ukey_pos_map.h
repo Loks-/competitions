@@ -94,6 +94,14 @@ class DHeapUKeyPosMap {
       DecreaseValueI(key_position, new_value);
   }
 
+  void DecreaseValueIfLess(unsigned key, const TValue& new_value) {
+    unsigned key_position = heap_position[key];
+    if (key_position == not_in_heap)
+      AddNewKeyI(key, new_value);
+    else if (compare(new_value, data[key_position].value))
+      DecreaseValueI(key_position, new_value);
+  }
+
   void IncreaseValue(unsigned key, const TValue& new_value) {
     unsigned key_position = heap_position[key];
     assert(key_position != not_in_heap);

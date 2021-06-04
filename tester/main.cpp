@@ -31,6 +31,8 @@ int main(int nargs, char **pargs) {
       Assert(TestGraphEIDistancePositiveCost(false));
     else if (tester_mode == "heap_base")
       Assert(TestHeapBase(false));
+    else if (tester_mode == "heap_ext")
+      Assert(TestHeapExt(false));
     else if (tester_mode == "interpolation")
       Assert(TestInterpolation());
     else if (tester_mode == "long_mult")
@@ -63,6 +65,8 @@ int main(int nargs, char **pargs) {
       Assert(TestGraphEIDistancePositiveCost(true));
     else if (tester_mode == "time_heap_base")
       Assert(TestHeapBase(true));
+    else if (tester_mode == "time_heap_ext")
+      Assert(TestHeapExt(true));
     else if (tester_mode == "time_lowest_common_ancestor")
       Assert(TestLowestCommonAncestor(true));
     else if (tester_mode == "time_matrix_mult")
