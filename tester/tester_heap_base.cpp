@@ -51,7 +51,7 @@ size_t TesterHeapBase::TestBase(const std::string& name) const {
     h = HashCombine(h, heap.Extract());
     heap.Add(vloop[i]);
   }
-  for (; !heap.Empty(); heap.Pop()) h = HashCombine(h, heap.Top());
+  for (; !heap.Empty();) h = HashCombine(h, heap.Extract());
   std::cout << "Test results [" << name << "]: " << h << "\t"
             << t.GetMilliseconds() << std::endl;
   return h;
@@ -68,7 +68,7 @@ size_t TesterHeapBase::TestNodesManager(const std::string& name) const {
     h = HashCombine(h, heap.Extract());
     heap.Add(vloop[i]);
   }
-  for (; !heap.Empty(); heap.Pop()) h = HashCombine(h, heap.Top());
+  for (; !heap.Empty();) h = HashCombine(h, heap.Extract());
   std::cout << "Test results [" << name << "]: " << h << "\t"
             << t.GetMilliseconds() << std::endl;
   return h;
@@ -84,7 +84,7 @@ size_t TesterHeapBase::TestKVM(const std::string& name) const {
     h = HashCombine(h, heap.ExtractValue());
     heap.Set(vinit.size() + i, vloop[i]);
   }
-  for (; !heap.Empty(); heap.Pop()) h = HashCombine(h, heap.TopValue());
+  for (; !heap.Empty();) h = HashCombine(h, heap.ExtractValue());
   std::cout << "Test results [" << name << "]: " << h << "\t"
             << t.GetMilliseconds() << std::endl;
   return h;
@@ -105,7 +105,7 @@ size_t TesterHeapBase::TestDHeapUKeyPosMap() const {
     h = HashCombine(h, heap.Extract().value);
     heap.Set(vinit.size() + i, vloop[i]);
   }
-  for (; !heap.Empty(); heap.Pop()) h = HashCombine(h, heap.Top().value);
+  for (; !heap.Empty();) h = HashCombine(h, heap.Extract().value);
   std::cout << "Test results [E   D" << d << "]: " << h << "\t"
             << t.GetMilliseconds() << std::endl;
   return h;
