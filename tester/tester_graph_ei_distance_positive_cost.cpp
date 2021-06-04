@@ -32,6 +32,7 @@
 #include "common/heap/base/dheap.h"
 #include "common/heap/ext/dheap_ukey_pos_map.h"
 #include "common/heap/ukvm/binomial.h"
+#include "common/heap/ukvm/complete_binary_tree.h"
 #include "common/heap/ukvm/dheap.h"
 #include "common/heap/ukvm/fibonacci.h"
 #include "common/heap/ukvm/pairing.h"
@@ -445,6 +446,7 @@ bool TesterGraphEIDistancePositiveCost::TestAll() {
   hs.insert(TestKVM<heap::ukvm::DHeap<4, uint64_t>>("DM 4"));
   hs.insert(TestKVM<heap::ukvm::DHeap<8, uint64_t>>("DM 8"));
   hs.insert(TestKVM<heap::ukvm::DHeap<16, uint64_t>>("DM16"));
+  hs.insert(TestKVM<heap::ukvm::CompleteBinaryTree<uint64_t>>(" CBT"));
   hs.insert(TestKVM<heap::ukvm::Binomial<uint64_t>>("BNML"));
   hs.insert(TestKVM<heap::ukvm::Fibonacci<uint64_t>>("FBNC"));
   hs.insert(TestKVM<TPairing<0, 0>>("PR00"));

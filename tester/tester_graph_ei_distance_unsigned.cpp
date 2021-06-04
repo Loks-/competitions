@@ -37,6 +37,7 @@
 #include "common/heap/monotone/ukvm/bucket_queue.h"
 #include "common/heap/ukvm/binomial.h"
 #include "common/heap/ukvm/bucket_queue.h"
+#include "common/heap/ukvm/complete_binary_tree.h"
 #include "common/heap/ukvm/dheap.h"
 #include "common/heap/ukvm/fibonacci.h"
 #include "common/heap/ukvm/pairing.h"
@@ -512,6 +513,7 @@ bool TesterGraphEIDistanceUnsigned::TestAll() {
   hs.insert(TestKVM<heap::ukvm::DHeap<4, unsigned>>("DM 4"));
   hs.insert(TestKVM<heap::ukvm::DHeap<8, unsigned>>("DM 8"));
   hs.insert(TestKVM<heap::ukvm::DHeap<16, unsigned>>("DM16"));
+  hs.insert(TestKVM<heap::ukvm::CompleteBinaryTree<unsigned>>(" CBT"));
   hs.insert(TestKVM<heap::ukvm::BucketQueue>(" BM "));
   hs.insert(TestMKVM<heap::monotone::ukvm::BucketQueue>("MBM "));
   hs.insert(TestKVM<heap::ukvm::Binomial<unsigned>>("BNML"));
