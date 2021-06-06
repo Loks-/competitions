@@ -33,6 +33,7 @@
 #include "common/heap/base/bucket_queue.h"
 #include "common/heap/base/dheap.h"
 #include "common/heap/ext/dheap_ukey_pos_map.h"
+#include "common/heap/monotone/base/bucket_queue.h"
 #include "common/heap/monotone/base/rolling_bucket_queue.h"
 #include "common/heap/monotone/ukvm/rolling_bucket_queue.h"
 #include "common/heap/ukvm/binomial.h"
@@ -505,6 +506,7 @@ bool TesterGraphEIDistanceUnsigned::TestAll() {
   hs.insert(TestHP<TDHeap8>("HP 8"));
   hs.insert(TestHP<TDHeap16>("HP16"));
   hs.insert(TestHPV<heap::base::BucketQueue<unsigned>>(" BQ "));
+  hs.insert(TestHPV<heap::monotone::base::BucketQueue<unsigned>>("MBQ "));
   hs.insert(
       TestMHPV<heap::monotone::base::RollingBucketQueue<unsigned>>("MRQ "));
   hs.insert(TestKPM<heap::ext::DHeapUKeyPosMap<2, unsigned>>("KPM2"));
