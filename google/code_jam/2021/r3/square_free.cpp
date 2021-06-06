@@ -1,7 +1,7 @@
-#include "common/stl/base.h"
-#include "common/graph/flow/graph.h"
 #include "common/graph/flow/edge.h"
+#include "common/graph/flow/graph.h"
 #include "common/graph/flow/min_cost_flow.h"
+#include "common/stl/base.h"
 #include "common/vector/read.h"
 
 #include <numeric>
@@ -19,11 +19,11 @@ int main_square_free() {
         g.AddDataEdge((i + j) * (i + j), i, R + j, 1);
       g.AddDataEdge(0, source, i, vr[i]);
     }
-    for (unsigned j = 0; j < C; ++j)
-      g.AddDataEdge(0, R + j, sink, vc[j]);
-    MinCostFlow(g, R*C);
+    for (unsigned j = 0; j < C; ++j) g.AddDataEdge(0, R + j, sink, vc[j]);
+    MinCostFlow(g, R * C);
     auto f = g.Flow();
-    bool ok = (f == accumulate(vr.begin(), vr.end(), 0)) && (f == accumulate(vc.begin(), vc.end(), 0));
+    bool ok = (f == accumulate(vr.begin(), vr.end(), 0)) &&
+              (f == accumulate(vc.begin(), vc.end(), 0));
     cout << "Case #" << it << ": " << (ok ? "POSSIBLE" : "IMPOSSIBLE") << endl;
     if (ok) {
       for (unsigned i = 0; i < R; ++i) {

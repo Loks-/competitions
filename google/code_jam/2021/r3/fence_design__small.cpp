@@ -1,7 +1,7 @@
-#include "common/stl/base.h"
 #include "common/geometry/d2/point_io.h"
 #include "common/geometry/d2/segment.h"
 #include "common/geometry/d2/utils/intersect_segment.h"
+#include "common/stl/base.h"
 #include "common/vector/read.h"
 
 int main_fence_design__small() {
@@ -26,7 +26,10 @@ int main_fence_design__small() {
             break;
           }
         }
-        if (good) { vs.push_back(s); vsp.push_back({i + 1, j + 1}); }
+        if (good) {
+          vs.push_back(s);
+          vsp.push_back({i + 1, j + 1});
+        }
       }
     }
     cout << "Case #" << it << ": " << vsp.size() << endl;

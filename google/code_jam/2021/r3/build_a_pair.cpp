@@ -1,5 +1,5 @@
-#include "common/stl/base.h"
 #include "common/numeric/utils/pow.h"
+#include "common/stl/base.h"
 
 int main_build_a_pair() {
   unsigned T;
@@ -11,7 +11,8 @@ int main_build_a_pair() {
     for (char c : s) v.push_back(c - '0');
     if (v.size() & 1) {
       std::sort(v.begin(), v.end());
-      unsigned l = v.size(), l0 = lower_bound(v.begin(), v.end(), 1u) - v.begin();
+      unsigned l = v.size(),
+               l0 = lower_bound(v.begin(), v.end(), 1u) - v.begin();
       uint64_t u0 = 0, u1 = v[l0];
       v.erase(v.begin() + l0);
       for (unsigned i = 0; i < l / 2; ++i) {
@@ -44,7 +45,8 @@ int main_build_a_pair() {
               u0 = d0;
               u1 = d1;
               vt.clear();
-              for (unsigned d = 0; d < 10; ++d) vt.insert(vt.end(), vd[d] - vc[d], d);
+              for (unsigned d = 0; d < 10; ++d)
+                vt.insert(vt.end(), vd[d] - vc[d], d);
               for (unsigned i = 0; i < vt.size() / 2; ++i) {
                 u0 = 10 * u0 + vt[vt.size() - i - 1];
                 u1 = 10 * u1 + vt[i];
@@ -55,7 +57,7 @@ int main_build_a_pair() {
             }
             --vc[d0];
           }
-        } 
+        }
         for (unsigned i = 0;; ++i) {
           if (vc[i] + 2 <= vd[i]) {
             vc[i] += 2;
