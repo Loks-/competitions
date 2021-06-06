@@ -4,10 +4,12 @@
 #include "common/cover/dlmatrix.h"
 
 #include <stack>
+#include <utility>
 #include <vector>
 
 namespace cover {
-class DLX : public DLMatrix {
+// Extended DLX with support integer cover (min and max) for each column.
+class DLXE : public DLMatrix {
  public:
   using TBase = DLMatrix;
   using Node = TBase::Node;
@@ -16,6 +18,7 @@ class DLX : public DLMatrix {
   std::vector<size_t> selected_rows;
   std::stack<Node*> disabled_nodes;
   std::stack<size_t> stack_sizes;
+  std::vector<unsigned> count_min, count_max, count_current;
 
  public:
   void Clear() {
@@ -28,6 +31,20 @@ class DLX : public DLMatrix {
   void Init(size_t rows, size_t columns) {
     Clear();
     TBase::Init(rows, columns);
+    count_min = count_max = std::vector<unsigned>(columns, 1);
+    count_current = std::vector<unsigned>(columns, 0);
+  }
+
+  // Should be called after matrix is initialized
+  void SetColumnsMinMax(const std::vector<unsigned>& cmin,
+                        const std::vector<unsigned>& cmax) {
+    assert((cmin.size() == TBase::ncolumns) &&
+           (cmax.size() == TBase::ncolumns));
+    count_min = cmin;
+    count_max = cmax;
+    for (unsigned i = 0; i < count_max.size(); ++i) {
+      if (count_max[i] == count_current[i]) DisableColumn(i);
+    }
   }
 
   void ResetSearch() {
@@ -56,7 +73,7 @@ class DLX : public DLMatrix {
     DisableNode(node);
   }
 
-  void DisableCoveredColumn(size_t column) {
+  void DisableColumn(size_t column) {
     auto node = headers_columns[column];
     while (node->d != node) {
       DisableRow(node->d->row);
@@ -64,17 +81,34 @@ class DLX : public DLMatrix {
     DisableNode(node);
   }
 
+  void IncreaseCoveredColumn(size_t column) {
+    if (++count_current[column] == count_max[column]) {
+      DisableColumn(column);
+    }
+  }
+
+  void DecreaseCoveredColumn(size_t column) { --count_current[column]; }
+
  public:
-  Node* GetBestColumn() const {
+  // TODO:
+  // Better logic for column selection.
+  std::pair<bool, Node*> GetBestColumn() const {
     size_t best_count = TBase::nrows + 2;
     Node* best_node = nullptr;
     for (Node* n = header->r; n != header; n = n->r) {
-      if (count_columns[n->column] < best_count) {
-        best_count = count_columns[n->column];
+      if ((count_columns[n->column] + count_current[n->column] <=
+           count_min[n->column]) ||
+          (count_current[n->column] > count_max[n->column]))
+        return {false, nullptr};
+      if (count_current[n->column] >= count_min[n->column]) continue;
+      unsigned d = count_columns[n->column] + count_current[n->column] -
+                   count_min[n->column];
+      if (d < best_count) {
+        best_count = d;
         best_node = n;
       }
     }
-    return best_node;
+    return {true, best_node};
   }
 
   void SelectRow(size_t row) {
@@ -83,25 +117,36 @@ class DLX : public DLMatrix {
     auto h = headers_rows[row];
     for (auto node = h->r; node != h; node = h->r) {
       DisableNode(node);
-      DisableCoveredColumn(node->column);
+      IncreaseCoveredColumn(node->column);
     }
     DisableNode(h);
   }
 
   void ReleaseLastRow() {
+    unsigned row = selected_rows.back();
     for (; disabled_nodes.size() > stack_sizes.top();) EnableLastNode();
     stack_sizes.pop();
     selected_rows.pop_back();
+    auto h = headers_rows[row];
+    for (auto node = h->r; node != h; node = node->r) {
+      DecreaseCoveredColumn(node->column);
+    }
   }
 
   template <class TAlgorthimXCallBack>
   bool Search(TAlgorthimXCallBack& callback) {
-    auto h = GetBestColumn();
+    auto p = GetBestColumn();
+    if (!p.first) return false;
+    auto h = p.second;
     if (h == nullptr) return callback(selected_rows);
+    if (count_columns[h->column] + count_current[h->column] <=
+        count_min[h->column])
+      return false;
     for (auto n = h->d; n != h; n = n->d) {
       SelectRow(n->row);
       if (Search(callback)) return true;
       ReleaseLastRow();
+      DisableRow(n->row);
     }
     return false;
   }
