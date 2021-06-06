@@ -35,6 +35,7 @@
 #include "common/heap/ext/dheap_ukey_pos_map.h"
 #include "common/heap/monotone/base/bucket_queue.h"
 #include "common/heap/monotone/base/rolling_bucket_queue.h"
+#include "common/heap/monotone/ukvm/bucket_queue.h"
 #include "common/heap/monotone/ukvm/rolling_bucket_queue.h"
 #include "common/heap/ukvm/binomial.h"
 #include "common/heap/ukvm/bucket_queue.h"
@@ -518,6 +519,7 @@ bool TesterGraphEIDistanceUnsigned::TestAll() {
   hs.insert(TestKVM<heap::ukvm::DHeap<16, unsigned>>("DM16"));
   hs.insert(TestKVM<heap::ukvm::CompleteBinaryTree<unsigned>>(" CBT"));
   hs.insert(TestKVM<heap::ukvm::BucketQueue>(" BM "));
+  hs.insert(TestKVM<heap::monotone::ukvm::BucketQueue>("MBM "));
   hs.insert(TestMKVM<heap::monotone::ukvm::RollingBucketQueue>("MRM "));
   hs.insert(TestKVM<heap::ukvm::Binomial<unsigned>>("BNML"));
   hs.insert(TestKVM<heap::ukvm::Fibonacci<unsigned>>("FBNC"));
@@ -558,7 +560,7 @@ bool TestGraphEIDistanceUnsigned(bool time_test) {
     bool ok = true;
     for (unsigned max_cost : {10, 100, 1000}) {
       TesterGraphEIDistanceUnsigned t1(EGraphType::SPARSE, 5000, 4, max_cost),
-          t2(EGraphType::DENSE, 1000, 400, max_cost);
+          t2(EGraphType::DENSE, 1000, 500, max_cost);
       ok = t1.TestAll() && ok;
       ok = t2.TestAll() && ok;
     }
