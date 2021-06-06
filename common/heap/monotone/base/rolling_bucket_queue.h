@@ -12,7 +12,7 @@ namespace base {
 // P - max priority, W - window
 // Memory  -- O(N + W)
 // Add     -- O(1)
-// Top     -- O(1) amortized
+// Top     -- O(1 + P / N) amortized, O(W) worst case
 // Pop     -- O(1 + P / N) amortized, O(W) worst case
 // current priority <= new priority < current priority + window
 template <class TTValue>
