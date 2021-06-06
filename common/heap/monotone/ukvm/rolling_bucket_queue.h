@@ -18,12 +18,12 @@ namespace ukvm {
 // Pop     -- O(1 + P / N) amortized, O(W) worst case
 // Init    -- O(N)
 // top priority <= new priority < top priority + window
-class BucketQueue {
+class RollingBucketQueue {
  public:
   static const unsigned not_in_queue = -1u;
   using TValue = unsigned;
   using TData = heap::ukvm::Data<TValue>;
-  using TSelf = BucketQueue;
+  using TSelf = RollingBucketQueue;
 
   struct Position {
     unsigned priority = not_in_queue;
@@ -49,13 +49,13 @@ class BucketQueue {
     queue.resize(window);
   }
 
-  BucketQueue(unsigned ukey_size, unsigned _window) {
+  RollingBucketQueue(unsigned ukey_size, unsigned _window) {
     ResetHeapPosition(ukey_size);
     SetWindow(_window);
   }
 
-  BucketQueue(const std::vector<unsigned>& v, bool skip_heap,
-              unsigned _window) {
+  RollingBucketQueue(const std::vector<unsigned>& v, bool skip_heap,
+                     unsigned _window) {
     ResetHeapPosition(v.size());
     SetWindow(_window);
     if (skip_heap) {
