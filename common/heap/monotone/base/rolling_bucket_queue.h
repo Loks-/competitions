@@ -16,10 +16,10 @@ namespace base {
 // Pop     -- O(1 + P / N) amortized, O(W) worst case
 // current priority <= new priority < current priority + window
 template <class TTValue>
-class BucketQueue {
+class RollingBucketQueue {
  public:
   using TValue = TTValue;
-  using TSelf = BucketQueue<TTValue>;
+  using TSelf = RollingBucketQueue<TTValue>;
 
   class TData {
    public:
@@ -34,8 +34,8 @@ class BucketQueue {
   unsigned window;
 
  public:
-  BucketQueue() {}
-  explicit BucketQueue(unsigned _window) { SetWindow(_window); }
+  RollingBucketQueue() {}
+  explicit RollingBucketQueue(unsigned _window) { SetWindow(_window); }
 
   void SetWindow(unsigned _window) {
     window = _window;
