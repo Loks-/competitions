@@ -11,7 +11,7 @@
 
 namespace cover {
 // Extended DLX with support integer cover (min and max) for each column.
-class DLXE : public DLMatrix {
+class DLXEMinMax : public DLMatrix {
  public:
   using TBase = DLMatrix;
   using Node = TBase::Node;

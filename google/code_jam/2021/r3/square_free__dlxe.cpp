@@ -1,4 +1,4 @@
-#include "common/cover/dlxe.h"
+#include "common/cover/dlxe_minmax.h"
 #include "common/stl/base.h"
 #include "common/vector/read.h"
 
@@ -20,7 +20,7 @@ int main_square_free__dlxe() {
     unsigned rcmin = min(R, C), squares = 0;
     for (unsigned k = 2; k <= rcmin; k += 2)
       squares += (R - k + 1) * (C - k + 1);
-    cover::DLXE dlx;
+    cover::DLXEMinMax dlx;
     dlx.Init(2 * R * C, R * C + R + C + squares);
     for (unsigned i = 0; i < R; ++i) {
       for (unsigned j = 0; j < C; ++j) {
