@@ -2,7 +2,9 @@
 
 #include "common/base.h"
 #include "common/cover/dlmatrix.h"
+#include "common/data_structures/unsigned_set.h"
 
+#include <algorithm>
 #include <stack>
 #include <utility>
 #include <vector>
@@ -13,19 +15,26 @@ class DLXE : public DLMatrix {
  public:
   using TBase = DLMatrix;
   using Node = TBase::Node;
+  static const size_t missed = size_t(-1ll);
+  static const size_t stop = missed - 1;
 
  protected:
   std::vector<size_t> selected_rows;
   std::stack<Node*> disabled_nodes;
   std::stack<size_t> stack_sizes;
   std::vector<unsigned> count_min, count_max, count_current;
+  ds::UnsignedSet uncovered;
 
  public:
   void Clear() {
+    TBase::Clear();
     selected_rows.clear();
     std::stack<Node*>().swap(disabled_nodes);
     std::stack<size_t>().swap(stack_sizes);
-    TBase::Clear();
+    count_min.clear();
+    count_max.clear();
+    count_current.clear();
+    uncovered.Clear();
   }
 
   void Init(size_t rows, size_t columns) {
@@ -33,6 +42,15 @@ class DLXE : public DLMatrix {
     TBase::Init(rows, columns);
     count_min = count_max = std::vector<unsigned>(columns, 1);
     count_current = std::vector<unsigned>(columns, 0);
+    uncovered.Resize(columns);
+    uncovered.InsertAll();
+  }
+
+  void ApplyMinMax() {
+    for (unsigned i = 0; i < count_max.size(); ++i) {
+      if (count_min[i] == 0) uncovered.Remove(i);
+      if (count_max[i] == 0) DisableColumn(i);
+    }
   }
 
   // Should be called after matrix is initialized
@@ -42,15 +60,16 @@ class DLXE : public DLMatrix {
            (cmax.size() == TBase::ncolumns));
     count_min = cmin;
     count_max = cmax;
-    for (unsigned i = 0; i < count_max.size(); ++i) {
-      if (count_max[i] == count_current[i]) DisableColumn(i);
-    }
+    ApplyMinMax();
   }
 
   void ResetSearch() {
     selected_rows.clear();
     while (!disabled_nodes.empty()) EnableLastNode();
     std::stack<size_t>().swap(stack_sizes);
+    std::fill(count_current.begin(), count_current.end(), 0);
+    uncovered.InsertAll();
+    ApplyMinMax();
   }
 
   const std::vector<size_t> SelectedRows() const { return selected_rows; }
@@ -82,33 +101,31 @@ class DLXE : public DLMatrix {
   }
 
   void IncreaseCoveredColumn(size_t column) {
-    if (++count_current[column] == count_max[column]) {
-      DisableColumn(column);
-    }
+    auto cnt = ++count_current[column];
+    if (cnt == count_min[column]) uncovered.Remove(column);
+    if (cnt == count_max[column]) DisableColumn(column);
   }
 
-  void DecreaseCoveredColumn(size_t column) { --count_current[column]; }
+  void DecreaseCoveredColumn(size_t column) {
+    if (count_current[column]-- == count_min[column]) uncovered.Insert(column);
+  }
 
  public:
   // TODO:
   // Better logic for column selection.
-  std::pair<bool, Node*> GetBestColumn() const {
+  size_t GetBestColumn() const {
     size_t best_count = TBase::nrows + 2;
-    Node* best_node = nullptr;
-    for (Node* n = header->r; n != header; n = n->r) {
-      if ((count_columns[n->column] + count_current[n->column] <=
-           count_min[n->column]) ||
-          (count_current[n->column] > count_max[n->column]))
-        return {false, nullptr};
-      if (count_current[n->column] >= count_min[n->column]) continue;
-      unsigned d = count_columns[n->column] + count_current[n->column] -
-                   count_min[n->column];
+    size_t best_column = missed;
+    for (unsigned c : uncovered.List()) {
+      assert(count_current[c] < count_min[c]);
+      if (count_columns[c] + count_current[c] <= count_min[c]) return stop;
+      unsigned d = count_columns[c] + count_current[c] - count_min[c];
       if (d < best_count) {
         best_count = d;
-        best_node = n;
+        best_column = c;
       }
     }
-    return {true, best_node};
+    return best_column;
   }
 
   void SelectRow(size_t row) {
@@ -135,13 +152,10 @@ class DLXE : public DLMatrix {
 
   template <class TAlgorthimXCallBack>
   bool Search(TAlgorthimXCallBack& callback) {
-    auto p = GetBestColumn();
-    if (!p.first) return false;
-    auto h = p.second;
-    if (h == nullptr) return callback(selected_rows);
-    if (count_columns[h->column] + count_current[h->column] <=
-        count_min[h->column])
-      return false;
+    size_t c = GetBestColumn();
+    if (c == stop) return false;
+    if (c == missed) return callback(selected_rows);
+    auto h = headers_columns[c];
     for (auto n = h->d; n != h; n = n->d) {
       SelectRow(n->row);
       if (Search(callback)) return true;
