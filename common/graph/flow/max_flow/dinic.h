@@ -24,8 +24,8 @@ inline typename TEdge::TFlow Dinic(Graph<TEdge>& g) {
   for (auto& e : g.Edges(source))
     source_max_flow = std::max(source_max_flow, e.max_flow);
 
-  std::function<TFlow(unsigned, TFlow)> AddBlockingFlow =
-      [&](unsigned u, TFlow flow) -> TFlow {
+  std::function<TFlow(unsigned, TFlow)> AddBlockingFlow = [&](
+      unsigned u, TFlow flow) -> TFlow {
     if (u == sink) return flow;
     unsigned du = d[u];
     auto& uedges = g.Edges(u);

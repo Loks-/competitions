@@ -13,8 +13,8 @@ namespace distance {
 // Time: O((V + E) log V)
 template <class TEdge, class TCostProxy, class TCost, class TKVMHeap>
 void Dijkstra(Graph<TEdge>& g, const TCostProxy& f,
-                                const std::vector<TCost>& vu, TKVMHeap& q,
-                                unsigned source, std::vector<TEdge*>& vp) {
+              const std::vector<TCost>& vu, TKVMHeap& q, unsigned source,
+              std::vector<TEdge*>& vp) {
   thread_local std::vector<unsigned> vf;
   unsigned gsize = g.Size();
   if (vp.size() != gsize) vp.resize(gsize);

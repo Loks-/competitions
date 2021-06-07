@@ -1,8 +1,8 @@
 #pragma once
 
 #include "common/base.h"
-#include "common/graph/flow/distance/spfa.h"
 #include "common/graph/flow/distance/dijkstra.h"
+#include "common/graph/flow/distance/spfa.h"
 #include "common/graph/flow/graph.h"
 
 #include <algorithm>
@@ -15,8 +15,8 @@ namespace min_cost {
 // Time: O(F (V+E) log V + VE)
 template <class TEdge, class TCostProxy, class TKVMHeap>
 inline typename TCostProxy::TCost BasakerGowenDijkstra(
-    Graph<TEdge>& g, const typename TEdge::TFlow& max_flow,
-    const TCostProxy& f, TKVMHeap& q) {
+    Graph<TEdge>& g, const typename TEdge::TFlow& max_flow, const TCostProxy& f,
+    TKVMHeap& q) {
   using TFlow = typename TEdge::TFlow;
   using TCost = typename TCostProxy::TCost;
   g.ResetFlow();
@@ -34,6 +34,7 @@ inline typename TCostProxy::TCost BasakerGowenDijkstra(
   }
   if (vu_init_req) {
     // ...
+    assert(false);
   }
 
   TFlow flow = TFlow(0);
@@ -44,8 +45,7 @@ inline typename TCostProxy::TCost BasakerGowenDijkstra(
     if (vp[sink] == nullptr) break;
     auto d = q.Get(sink) + vu[sink];
     for (unsigned u = 0; u < gsize; ++u) {
-      if (vp[u])
-        vu[u] = q.Get(u) + vu[u];
+      if (vp[u]) vu[u] = q.Get(u) + vu[u];
     }
     auto new_flow = max_flow - flow;
     for (pe = vp[sink]; pe; pe = vp[pe->from])

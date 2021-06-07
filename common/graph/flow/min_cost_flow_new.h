@@ -12,6 +12,6 @@ inline typename TEdge::TData MinCostFlow(
   // return graph::flow::min_cost::BasakerGowenSPFA(
   //     g, max_flow, graph::flow::EdgeCostProxy<TEdge>());
   heap::ukvm::DHeap<4, typename TEdge::TData> q(g.Size());
-  return graph::flow::min_cost::BasakerGowenDijkstra(g, max_flow,
-    graph::flow::EdgeCostProxy<TEdge>(), q);
+  return graph::flow::min_cost::BasakerGowenDijkstra(
+      g, max_flow, graph::flow::EdgeCostProxy<TEdge>(), q);
 }
