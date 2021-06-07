@@ -15,8 +15,7 @@ int main_square_free() {
     unsigned source = R + C, sink = source + 1;
     FlowGraph<graph::flow::Edge<int, int>> g(sink + 1, source, sink);
     for (unsigned i = 0; i < R; ++i) {
-      for (unsigned j = 0; j < C; ++j)
-        g.AddDataEdge((i + j) * (i + j), i, R + j, 1);
+      for (unsigned j = 0; j < C; ++j) g.AddDataEdge(i * j, i, R + j, 1);
       g.AddDataEdge(0, source, i, vr[i]);
     }
     for (unsigned j = 0; j < C; ++j) g.AddDataEdge(0, R + j, sink, vc[j]);
