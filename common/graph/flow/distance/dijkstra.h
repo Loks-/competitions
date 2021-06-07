@@ -22,7 +22,7 @@ void Dijkstra(Graph<TEdge>& g, const TCostProxy& f,
   for (q.AddNewKey(source, TCost()); !q.Empty();) {
     unsigned u = q.ExtractKey();
     TCost ucost = q.Get(u) + vu[u];
-    for (auto e : g.Edges(u)) {
+    for (auto& e : g.Edges(u)) {
       if ((e.to != source) && (e.flow < e.max_flow)) {
         auto ecost = ucost + f(e) - vu[e.to];
         if ((vp[e.to] == nullptr) || (ecost < q.Get(e.to))) {
