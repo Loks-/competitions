@@ -102,6 +102,7 @@ class DLX : public DLMatrix {
       SelectRow(n->row);
       if (Search(callback)) return true;
       ReleaseLastRow();
+      DisableRow(n->row);
     }
     return false;
   }
