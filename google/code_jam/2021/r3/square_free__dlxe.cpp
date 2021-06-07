@@ -43,10 +43,10 @@ int main_square_free__dlxe() {
           for (unsigned j = 0; j + k <= C; ++j) {
             vdlxc_max.push_back(2 * k - 1);
             for (unsigned l = 0; l < k / 2; ++l) {
-              dlx.Add(2 * ((i + l) * C + (k / 2 - 1 - l)) + 1, jk);
-              dlx.Add(2 * ((i + l) * C + (k / 2 + l)), jk);
-              dlx.Add(2 * ((i + k - l - 1) * C + (k / 2 - 1 - l)), jk);
-              dlx.Add(2 * ((i + k - l - 1) * C + (k / 2 + l)) + 1, jk);
+              dlx.Add(2 * ((i + l) * C + j + (k / 2 - 1 - l)) + 1, jk);
+              dlx.Add(2 * ((i + l) * C + j + (k / 2 + l)), jk);
+              dlx.Add(2 * ((i + k - l - 1) * C + j + (k / 2 - 1 - l)), jk);
+              dlx.Add(2 * ((i + k - l - 1) * C + j + (k / 2 + l)) + 1, jk);
             }
             ++jk;
           }
