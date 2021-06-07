@@ -72,6 +72,13 @@ class DLXEMinMax : public DLMatrix {
     ApplyMinMax();
   }
 
+  void ShuffleOrder() {
+    auto v = uncovered.List();
+    std::random_shuffle(v.begin(), v.end());
+    uncovered.Clear();
+    for (unsigned c : v) uncovered.Insert(c);
+  }
+
   const std::vector<size_t> SelectedRows() const { return selected_rows; }
 
  protected:
