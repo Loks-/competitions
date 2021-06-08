@@ -60,7 +60,10 @@ class RollingBucketQueue {
     return queue[priority_adj].top();
   }
 
-  TData Top() { return {TopPriority(), TopValue()}; }
+  TData Top() {
+    ShiftPriority();
+    return {priority, queue[priority_adj].top()};
+  }
 
   void Pop() {
     ShiftPriority();
@@ -69,9 +72,8 @@ class RollingBucketQueue {
   }
 
   unsigned ExtractPriority() {
-    unsigned t = TopPriority();
     Pop();
-    return t;
+    return priority;
   }
 
   TValue ExtractValue() {
