@@ -2,7 +2,6 @@
 
 #include "common/base.h"
 
-#include <algorithm>
 #include <vector>
 
 namespace heap {
