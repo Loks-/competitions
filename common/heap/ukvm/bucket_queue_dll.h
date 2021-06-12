@@ -21,7 +21,6 @@ namespace ukvm {
 // Pop     -- O(1 + P / N) amortized if monotone, O(P) otherwise
 class BucketQueueDLL {
  public:
-  static const unsigned not_in_queue = -1u;
   using TValue = unsigned;
   using TData = Data<TValue>;
   using TSelf = BucketQueueDLL;
@@ -36,7 +35,7 @@ class BucketQueueDLL {
   NodesManager<TNode> manager_priority;
   std::vector<TNode*> priority_map;
   std::vector<unsigned> priorities;
-  unsigned top_priority = not_in_queue;
+  unsigned top_priority = -1u;
   unsigned size = 0;
 
  protected:
@@ -202,7 +201,7 @@ class BucketQueueDLL {
     node->prev = node->next = nullptr;
     --size;
     if (Empty())
-      top_priority = not_in_queue;
+      top_priority = -1u;
     else
       ShiftPriority();
   }
