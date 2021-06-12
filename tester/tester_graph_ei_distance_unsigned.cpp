@@ -31,14 +31,18 @@
 #include "common/hash.h"
 #include "common/heap/base/binary.h"
 #include "common/heap/base/bucket_queue.h"
+#include "common/heap/base/bucket_queue_ll.h"
 #include "common/heap/base/dheap.h"
 #include "common/heap/ext/dheap_ukey_pos_map.h"
 #include "common/heap/monotone/base/bucket_queue.h"
+#include "common/heap/monotone/base/bucket_queue_ll.h"
 #include "common/heap/monotone/base/rolling_bucket_queue.h"
+#include "common/heap/monotone/base/rolling_bucket_queue_ll.h"
 #include "common/heap/monotone/ukvm/bucket_queue.h"
 #include "common/heap/monotone/ukvm/rolling_bucket_queue.h"
 #include "common/heap/ukvm/binomial.h"
 #include "common/heap/ukvm/bucket_queue.h"
+#include "common/heap/ukvm/bucket_queue_dll.h"
 #include "common/heap/ukvm/complete_binary_tree.h"
 #include "common/heap/ukvm/dheap.h"
 #include "common/heap/ukvm/fibonacci.h"
@@ -507,9 +511,13 @@ bool TesterGraphEIDistanceUnsigned::TestAll() {
   hs.insert(TestHP<TDHeap8>("HP 8"));
   hs.insert(TestHP<TDHeap16>("HP16"));
   hs.insert(TestHPV<heap::base::BucketQueue<unsigned>>(" BQ "));
+  hs.insert(TestHPV<heap::base::BucketQueueLL<unsigned>>(" BQL"));
   hs.insert(TestHPV<heap::monotone::base::BucketQueue<unsigned>>("MBQ "));
+  hs.insert(TestHPV<heap::monotone::base::BucketQueueLL<unsigned>>("MBQL"));
   hs.insert(
       TestMHPV<heap::monotone::base::RollingBucketQueue<unsigned>>("MRQ "));
+  hs.insert(
+      TestMHPV<heap::monotone::base::RollingBucketQueueLL<unsigned>>("MRQL"));
   hs.insert(TestKPM<heap::ext::DHeapUKeyPosMap<2, unsigned>>("KPM2"));
   hs.insert(TestKPM<heap::ext::DHeapUKeyPosMap<4, unsigned>>("KPM4"));
   hs.insert(TestKPM<heap::ext::DHeapUKeyPosMap<8, unsigned>>("KPM8"));
@@ -519,6 +527,7 @@ bool TesterGraphEIDistanceUnsigned::TestAll() {
   hs.insert(TestKVM<heap::ukvm::DHeap<16, unsigned>>("DM16"));
   hs.insert(TestKVM<heap::ukvm::CompleteBinaryTree<unsigned>>(" CBT"));
   hs.insert(TestKVM<heap::ukvm::BucketQueue>(" BM "));
+  hs.insert(TestKVM<heap::ukvm::BucketQueueDLL>(" BML"));
   hs.insert(TestKVM<heap::monotone::ukvm::BucketQueue>("MBM "));
   hs.insert(TestMKVM<heap::monotone::ukvm::RollingBucketQueue>("MRM "));
   hs.insert(TestKVM<heap::ukvm::Binomial<unsigned>>("BNML"));
