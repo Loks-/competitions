@@ -39,6 +39,7 @@
 #include "common/heap/monotone/base/rolling_bucket_queue.h"
 #include "common/heap/monotone/base/rolling_bucket_queue_ll.h"
 #include "common/heap/monotone/ukvm/bucket_queue.h"
+#include "common/heap/monotone/ukvm/bucket_queue_dll.h"
 #include "common/heap/monotone/ukvm/rolling_bucket_queue.h"
 #include "common/heap/ukvm/binomial.h"
 #include "common/heap/ukvm/bucket_queue.h"
@@ -529,6 +530,7 @@ bool TesterGraphEIDistanceUnsigned::TestAll() {
   hs.insert(TestKVM<heap::ukvm::BucketQueue>(" BM "));
   hs.insert(TestKVM<heap::ukvm::BucketQueueDLL>(" BML"));
   hs.insert(TestKVM<heap::monotone::ukvm::BucketQueue>("MBM "));
+  hs.insert(TestKVM<heap::monotone::ukvm::BucketQueueDLL>("MBML"));
   hs.insert(TestMKVM<heap::monotone::ukvm::RollingBucketQueue>("MRM "));
   hs.insert(TestKVM<heap::ukvm::Binomial<unsigned>>("BNML"));
   hs.insert(TestKVM<heap::ukvm::Fibonacci<unsigned>>("FBNC"));
