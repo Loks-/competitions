@@ -191,7 +191,12 @@ class BucketQueueDLL {
       knode->prev->next = knode;
       pnode->prev = knode;
       knode->next = pnode;
-      ShiftPriority();
+      if (new_priority <= top_priority) {
+        top_priority = new_priority;
+      } else if (priorities[key] == top_priority) {
+        ShiftPriority();
+      }
+      priorities[key] = top_priority;
     }
   }
 
