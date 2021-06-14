@@ -75,7 +75,7 @@ class RollingBucketQueue {
   unsigned Size() const { return size; }
   unsigned UKeySize() const { return unsigned(queue_position.size()); }
 
-  bool HasKey(unsigned key) const {
+  bool InHeap(unsigned key) const {
     return queue_position[key].index != not_in_queue;
   }
 
@@ -90,7 +90,7 @@ class RollingBucketQueue {
 
  public:
   void AddNewKey(unsigned key, unsigned priority, bool skip_heap = false) {
-    assert(queue_position[key].index == not_in_queue);
+    assert(!InHeap(key));
     assert(skip_heap ||
            ((top_priority <= priority) && (priority < top_priority + window)));
     AddNewKeyI(key, priority, skip_heap);
@@ -99,10 +99,10 @@ class RollingBucketQueue {
   void Set(unsigned key, unsigned new_priority) {
     assert((top_priority <= new_priority) &&
            (new_priority < top_priority + window));
-    if (queue_position[key].index == not_in_queue)
-      AddNewKeyI(key, new_priority, false);
-    else
+    if (InHeap(key))
       SetI(key, new_priority);
+    else
+      AddNewKeyI(key, new_priority, false);
   }
 
   void DecreaseValue(unsigned key, unsigned new_priority) {

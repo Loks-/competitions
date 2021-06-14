@@ -82,7 +82,7 @@ class BucketQueueDLL {
 
   unsigned Get(unsigned key) const { return priorities[key]; }
 
-  std::vector<TValue> GetValues() const { return priorities; }
+  const std::vector<TValue>& GetValues() const { return priorities; }
 
  public:
   void AddNewKey(unsigned key, unsigned priority, bool skip_heap = false) {
