@@ -6,7 +6,6 @@
 #include "common/nodes_manager.h"
 #include "common/nodes_manager_fixed_size.h"
 
-#include <algorithm>
 #include <vector>
 
 namespace heap {
@@ -164,7 +163,7 @@ class BucketQueueDLL {
 
   void ShiftPriority() {
     assert(!Empty());
-    for (; priority_map[top_priority]->next == priority_map[top_priority]; ) 
+    for (; priority_map[top_priority]->next == priority_map[top_priority];)
       ++top_priority;
   }
 

@@ -3,7 +3,6 @@
 #include "common/base.h"
 #include "common/heap/ukvm/data.h"
 
-#include <algorithm>
 #include <vector>
 
 namespace heap {
