@@ -9,6 +9,7 @@ namespace heap {
 namespace monotone {
 namespace base {
 // Similar to BucketQueue but use less memory.
+// Memory  -- O(N + first_layer_size + P / first_layer_size)
 template <unsigned first_layer_size, class TTValue>
 class TwoLayersBuckets {
  public:
