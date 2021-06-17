@@ -92,7 +92,7 @@ class TwoLayersBuckets {
 
   void ShiftPriority() {
     assert(!Empty());
-    for (; true;) {
+    for (;;) {
       for (; priority < p1e; ++priority) {
         if (!queue1[priority - p1b].empty()) return;
       }
