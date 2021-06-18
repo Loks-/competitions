@@ -17,7 +17,7 @@ class TwoLayersBuckets {
   static const unsigned fl_size = first_layer_size;
   using TValue = unsigned;
   using TData = heap::ukvm::Data<TValue>;
-  using TSelf = BucketQueue;
+  using TSelf = TwoLayersBuckets<fl_size>;
 
   struct Position {
     unsigned priority = not_in_queue;

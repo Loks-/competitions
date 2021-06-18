@@ -43,7 +43,6 @@ class RollingBucketQueueDLL {
   TNode* KNode(unsigned key) { return pkey0 + key; }
   const TNode* KNode(unsigned key) const { return pkey0 + key; }
   TNode* PNode(unsigned priority) { return ppriority0 + priority; }
-  const TNode* PNode(unsigned priority) const { return ppriority0 + priority; }
   unsigned Key(const TNode* node) const { return node - pkey0; }
 
  public:
@@ -57,6 +56,7 @@ class RollingBucketQueueDLL {
       auto n = PNode(i);
       n->next = n->prev = n;
     }
+    top_priority = top_priority_adj = size = 0;
   }
 
   RollingBucketQueueDLL(unsigned ukey_size, unsigned _window) {
