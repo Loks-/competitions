@@ -38,9 +38,13 @@
 #include "common/heap/monotone/base/bucket_queue_ll.h"
 #include "common/heap/monotone/base/rolling_bucket_queue.h"
 #include "common/heap/monotone/base/rolling_bucket_queue_ll.h"
+#include "common/heap/monotone/base/two_layers_buckets.h"
 #include "common/heap/monotone/ukvm/bucket_queue.h"
 #include "common/heap/monotone/ukvm/bucket_queue_dll.h"
 #include "common/heap/monotone/ukvm/rolling_bucket_queue.h"
+#include "common/heap/monotone/ukvm/rolling_bucket_queue_dll.h"
+#include "common/heap/monotone/ukvm/two_layers_buckets.h"
+#include "common/heap/monotone/ukvm/two_layers_buckets_dll.h"
 #include "common/heap/ukvm/binomial.h"
 #include "common/heap/ukvm/bucket_queue.h"
 #include "common/heap/ukvm/bucket_queue_dll.h"
@@ -519,6 +523,14 @@ bool TesterGraphEIDistanceUnsigned::TestAll() {
       TestMHPV<heap::monotone::base::RollingBucketQueue<unsigned>>("MRQ "));
   hs.insert(
       TestMHPV<heap::monotone::base::RollingBucketQueueLL<unsigned>>("MRQL"));
+  hs.insert(
+      TestHPV<heap::monotone::base::TwoLayersBuckets<4, unsigned>>("MQ2 "));
+  hs.insert(
+      TestHPV<heap::monotone::base::TwoLayersBuckets<8, unsigned>>("MQ3 "));
+  hs.insert(
+      TestHPV<heap::monotone::base::TwoLayersBuckets<16, unsigned>>("MQ4 "));
+  hs.insert(
+      TestHPV<heap::monotone::base::TwoLayersBuckets<32, unsigned>>("MQ5 "));
   hs.insert(TestKPM<heap::ext::DHeapUKeyPosMap<2, unsigned>>("KPM2"));
   hs.insert(TestKPM<heap::ext::DHeapUKeyPosMap<4, unsigned>>("KPM4"));
   hs.insert(TestKPM<heap::ext::DHeapUKeyPosMap<8, unsigned>>("KPM8"));
@@ -532,6 +544,15 @@ bool TesterGraphEIDistanceUnsigned::TestAll() {
   hs.insert(TestKVM<heap::monotone::ukvm::BucketQueue>("MBM "));
   hs.insert(TestKVM<heap::monotone::ukvm::BucketQueueDLL>("MBML"));
   hs.insert(TestMKVM<heap::monotone::ukvm::RollingBucketQueue>("MRM "));
+  hs.insert(TestMKVM<heap::monotone::ukvm::RollingBucketQueueDLL>("MRML"));
+  hs.insert(TestKVM<heap::monotone::ukvm::TwoLayersBuckets<4>>("MM2 "));
+  hs.insert(TestKVM<heap::monotone::ukvm::TwoLayersBuckets<8>>("MM3 "));
+  hs.insert(TestKVM<heap::monotone::ukvm::TwoLayersBuckets<16>>("MM4 "));
+  hs.insert(TestKVM<heap::monotone::ukvm::TwoLayersBuckets<32>>("MM5 "));
+  hs.insert(TestKVM<heap::monotone::ukvm::TwoLayersBucketsDLL<4>>("MM2L"));
+  hs.insert(TestKVM<heap::monotone::ukvm::TwoLayersBucketsDLL<8>>("MM3L"));
+  hs.insert(TestKVM<heap::monotone::ukvm::TwoLayersBucketsDLL<16>>("MM4L"));
+  hs.insert(TestKVM<heap::monotone::ukvm::TwoLayersBucketsDLL<32>>("MM5L"));
   hs.insert(TestKVM<heap::ukvm::Binomial<unsigned>>("BNML"));
   hs.insert(TestKVM<heap::ukvm::Fibonacci<unsigned>>("FBNC"));
   hs.insert(TestKVM<TPairing<0, 0>>("PR00"));
