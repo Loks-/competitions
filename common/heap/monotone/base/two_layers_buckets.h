@@ -92,15 +92,16 @@ class TwoLayersBuckets {
 
   void ShiftPriority() {
     assert(!Empty());
-    for (;;) {
-      for (; priority < p1e; ++priority) {
-        if (!queue1[priority - p1b].empty()) return;
-      }
-      p1b = p1e;
-      p1e += fl_size;
-      for (const auto& d : queue2[p1b / fl_size])
-        queue1[d.priority - p1b].push_back(d.value);
-      queue2[p1b / fl_size].clear();
+    for (; priority < p1e; ++priority) {
+      if (!queue1[priority - p1b].empty()) return;
+    }
+    for (p1b = p1e; queue2[p1b / fl_size].empty(); ) p1b += fl_size;
+    p1e = p1b + fl_size;
+    for (const auto& d : queue2[p1b / fl_size])
+      queue1[d.priority - p1b].push_back(d.value);
+    queue2[p1b / fl_size].clear();
+    for (priority = p1b; ; ++priority) {
+      if (!queue1[priority - p1b].empty()) return;
     }
   }
 };

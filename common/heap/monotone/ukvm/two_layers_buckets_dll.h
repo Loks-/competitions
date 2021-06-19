@@ -174,24 +174,29 @@ class TwoLayersBucketsDLL {
 
   void ShiftPriority() {
     assert(!Empty());
-    for (;;) {
-      for (; top_priority < p1e; ++top_priority) {
-        auto n = PNodeQ1(top_priority);
-        if (n->next != n) return;
-      }
-      p1b = p1e;
-      p1e += fl_size;
+    for (; top_priority < p1e; ++top_priority) {
+      auto n = PNodeQ1(top_priority);
+      if (n->next != n) return;
+    }
+    for (p1b = p1e; ; p1b += fl_size) {
       auto n = PNodeQ2(p1b);
-      for (; n->next != n;) {
-        auto knode = n->next;
-        n->next = knode->next;
-        auto pnode = PNodeQ1(priorities[Key(knode)]);
-        knode->prev = pnode->prev;
-        knode->prev->next = knode;
-        pnode->prev = knode;
-        knode->next = pnode;
-      }
-      n->prev = n;
+      if (n->next != n) break;
+    }
+    p1e = p1b + fl_size;
+    auto n = PNodeQ2(p1b);
+    for (; n->next != n;) {
+      auto knode = n->next;
+      n->next = knode->next;
+      auto pnode = PNodeQ1(priorities[Key(knode)]);
+      knode->prev = pnode->prev;
+      knode->prev->next = knode;
+      pnode->prev = knode;
+      knode->next = pnode;
+    }
+    n->prev = n;
+    for (top_priority = p1b; ; ++top_priority) {
+      auto n = PNodeQ1(top_priority);
+      if (n->next != n) return;
     }
   }
 
