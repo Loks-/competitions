@@ -59,13 +59,8 @@ class BucketQueue {
   bool Empty() const { return size == 0; }
   unsigned Size() const { return size; }
   unsigned UKeySize() const { return unsigned(priority.size()); }
-
-  bool InHeap(unsigned key) const {
-    return position[key] != not_in_queue;
-  }
-
+  bool InHeap(unsigned key) const { return position[key] != not_in_queue; }
   unsigned Get(unsigned key) const { return priority[key]; }
-
   const std::vector<TValue>& GetValues() const { return priority; }
 
  public:
