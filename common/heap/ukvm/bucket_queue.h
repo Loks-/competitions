@@ -22,36 +22,34 @@ class BucketQueue {
   using TData = Data<TValue>;
   using TSelf = BucketQueue;
 
-  struct Position {
-    unsigned priority = not_in_queue;
-    unsigned index = not_in_queue;
-  };
-
  protected:
-  std::vector<Position> queue_position;
+  std::vector<unsigned> priority;
+  std::vector<unsigned> position;
   std::vector<std::vector<unsigned>> queue;
-  unsigned top_priority = not_in_queue;
-  unsigned size = 0;
-
- protected:
-  void ResetHeapPosition(unsigned ukey_size) {
-    queue_position.clear();
-    queue_position.resize(ukey_size);
-  }
+  unsigned top_priority;
+  unsigned size;
 
  public:
-  explicit BucketQueue(unsigned ukey_size) { ResetHeapPosition(ukey_size); }
+  void Reset(unsigned ukey_size) {
+    priority.clear();
+    priority.resize(ukey_size, -1u);
+    position.clear();
+    position.resize(ukey_size, -1u);
+    queue.clear();
+    top_priority = -1u;
+    size = 0;
+  }
+
+  explicit BucketQueue(unsigned ukey_size) { Reset(ukey_size); }
 
   BucketQueue(const std::vector<unsigned>& v, bool skip_heap) {
-    ResetHeapPosition(v.size());
-    if (skip_heap) {
-      for (unsigned i = 0; i < v.size(); ++i) queue_position[i].priority = v[i];
-    } else {
+    Reset(v.size());
+    priority = v;
+    if (!skip_heap) {
       for (unsigned i = 0; i < v.size(); ++i) {
         unsigned p = v[i];
         AdjustQueueSize(p);
-        queue_position[i].priority = p;
-        queue_position[i].index = queue[p].size();
+        position[i] = queue[p].size();
         queue[p].push_back(i);
       }
       size = v.size();
@@ -61,25 +59,15 @@ class BucketQueue {
 
   bool Empty() const { return size == 0; }
   unsigned Size() const { return size; }
-  unsigned UKeySize() const { return unsigned(queue_position.size()); }
-
-  bool InHeap(unsigned key) const {
-    return queue_position[key].index != not_in_queue;
-  }
-
-  unsigned Get(unsigned key) const { return queue_position[key].priority; }
-
-  std::vector<TValue> GetValues() const {
-    unsigned n = UKeySize();
-    std::vector<TValue> v(n);
-    for (unsigned i = 0; i < n; ++i) v[i] = queue_position[i].priority;
-    return v;
-  }
+  unsigned UKeySize() const { return unsigned(priority.size()); }
+  bool InHeap(unsigned key) const { return position[key] != not_in_queue; }
+  unsigned Get(unsigned key) const { return priority[key]; }
+  const std::vector<TValue>& GetValues() const { return priority; }
 
  public:
-  void AddNewKey(unsigned key, unsigned priority, bool skip_heap = false) {
+  void AddNewKey(unsigned key, unsigned _priority, bool skip_heap = false) {
     assert(!InHeap(key));
-    AddNewKeyI(key, priority, skip_heap);
+    AddNewKeyI(key, _priority, skip_heap);
   }
 
   void Set(unsigned key, unsigned new_priority) {
@@ -94,7 +82,7 @@ class BucketQueue {
   }
 
   void DecreaseValueIfLess(unsigned key, unsigned new_priority) {
-    if (new_priority < queue_position[key].priority) Set(key, new_priority);
+    if (new_priority < priority[key]) Set(key, new_priority);
   }
 
   void IncreaseValue(unsigned key, unsigned new_priority) {
@@ -128,13 +116,13 @@ class BucketQueue {
   }
 
   void DeleteKey(unsigned key) {
-    DeleteI(queue_position[key]);
-    queue_position[key].index = not_in_queue;
+    DeleteI(key);
+    position[key] = not_in_queue;
   }
 
  protected:
-  void AdjustQueueSize(unsigned k) {
-    if (queue.size() <= k) queue.resize(k + 1);
+  void AdjustQueueSize(unsigned p) {
+    if (queue.size() <= p) queue.resize(p + 1);
   }
 
   void ShiftPriority() {
@@ -150,34 +138,33 @@ class BucketQueue {
     }
   }
 
-  void AddNewKeyI(unsigned key, unsigned priority, bool skip_heap) {
-    queue_position[key].priority = priority;
+  void AddNewKeyI(unsigned key, unsigned p, bool skip_heap) {
+    priority[key] = p;
     if (!skip_heap) {
-      AdjustQueueSize(priority);
-      queue_position[key].index = queue[priority].size();
-      queue[priority].push_back(key);
+      AdjustQueueSize(p);
+      position[key] = queue[p].size();
+      queue[p].push_back(key);
       ++size;
-      top_priority = std::min(top_priority, priority);
+      top_priority = std::min(top_priority, p);
     }
   }
 
   void SetI(unsigned key, unsigned new_priority) {
-    Position old = queue_position[key];
-    if (old.priority != new_priority) {
+    if (priority[key] != new_priority) {
+      DeleteI(key);
       AddNewKeyI(key, new_priority, false);
-      DeleteI(old);
     }
   }
 
-  void DeleteI(const Position& pos) {
-    assert(pos.index != not_in_queue);
-    if (pos.index == queue[pos.priority].size() - 1) {
-      queue[pos.priority].pop_back();
-    } else {
-      queue[pos.priority][pos.index] = queue[pos.priority].back();
-      queue_position[queue[pos.priority].back()].index = pos.index;
-      queue[pos.priority].pop_back();
+  void DeleteI(unsigned key) {
+    unsigned pos = position[key];
+    assert(pos != not_in_queue);
+    auto& qp = queue[priority[key]];
+    if (pos < qp.size() - 1) {
+      qp[pos] = qp.back();
+      position[qp.back()] = pos;
     }
+    qp.pop_back();
     --size;
     if (Empty())
       top_priority = not_in_queue;
