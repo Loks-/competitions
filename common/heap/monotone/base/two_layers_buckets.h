@@ -26,7 +26,7 @@ class TwoLayersBuckets {
  protected:
   std::array<std::vector<TValue>, fl_size> queue1;
   std::vector<std::vector<TData>> queue2;
-  unsigned priority = 0, p1b = 0, p1e = fl_size;
+  unsigned top_priority = 0, p1b = 0, p1e = fl_size;
   unsigned size = 0;
 
  public:
@@ -49,28 +49,28 @@ class TwoLayersBuckets {
 
   unsigned TopPriority() {
     ShiftPriority();
-    return priority;
+    return top_priority;
   }
 
   const TValue& TopValue() {
     ShiftPriority();
-    return queue1[priority - p1b].back();
+    return queue1[top_priority - p1b].back();
   }
 
   TData Top() {
     ShiftPriority();
-    return {priority, queue1[priority - p1b].back()};
+    return {top_priority, queue1[top_priority - p1b].back()};
   }
 
   void Pop() {
     ShiftPriority();
-    queue1[priority - p1b].pop_back();
+    queue1[top_priority - p1b].pop_back();
     --size;
   }
 
   unsigned ExtractPriority() {
     Pop();
-    return priority;
+    return top_priority;
   }
 
   TValue ExtractValue() {
@@ -86,22 +86,22 @@ class TwoLayersBuckets {
   }
 
  protected:
-  void AdjustQueueSize(unsigned k) {
-    if (queue2.size() * fl_size <= k) queue2.resize(k / fl_size + 1);
+  void AdjustQueueSize(unsigned p) {
+    if (queue2.size() * fl_size <= p) queue2.resize(p / fl_size + 1);
   }
 
   void ShiftPriority() {
     assert(!Empty());
-    for (; priority < p1e; ++priority) {
-      if (!queue1[priority - p1b].empty()) return;
+    for (; top_priority < p1e; ++top_priority) {
+      if (!queue1[top_priority - p1b].empty()) return;
     }
-    for (p1b = p1e; queue2[p1b / fl_size].empty(); ) p1b += fl_size;
+    for (p1b = p1e; queue2[p1b / fl_size].empty();) p1b += fl_size;
     p1e = p1b + fl_size;
     for (const auto& d : queue2[p1b / fl_size])
       queue1[d.priority - p1b].push_back(d.value);
     queue2[p1b / fl_size].clear();
-    for (priority = p1b; ; ++priority) {
-      if (!queue1[priority - p1b].empty()) return;
+    for (top_priority = p1b;; ++top_priority) {
+      if (!queue1[top_priority - p1b].empty()) return;
     }
   }
 };

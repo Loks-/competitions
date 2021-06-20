@@ -26,11 +26,12 @@ class BucketQueue {
 
  protected:
   std::vector<std::vector<TValue>> queue;
-  unsigned priority = -1u;
+  unsigned top_priority = -1u;
   unsigned size = 0;
 
  public:
   BucketQueue() {}
+
   explicit BucketQueue(unsigned max_priority) {
     queue.resize(max_priority + 1);
   }
@@ -42,24 +43,24 @@ class BucketQueue {
     AdjustQueueSize(p);
     queue[p].push_back(value);
     ++size;
-    priority = std::min(priority, p);
+    top_priority = std::min(top_priority, p);
   }
 
-  unsigned TopPriority() const { return priority; }
+  unsigned TopPriority() const { return top_priority; }
 
   const TValue& TopValue() const {
     assert(!Empty());
-    return queue[priority].back();
+    return queue[top_priority].back();
   }
 
   TData Top() const { return {TopPriority(), TopValue()}; }
 
   void Pop() {
     assert(!Empty());
-    queue[priority].pop_back();
+    queue[top_priority].pop_back();
     --size;
     if (Empty())
-      priority = -1u;
+      top_priority = -1u;
     else
       ShiftPriority();
   }
@@ -83,12 +84,12 @@ class BucketQueue {
   }
 
  protected:
-  void AdjustQueueSize(unsigned k) {
-    if (queue.size() <= k) queue.resize(k + 1);
+  void AdjustQueueSize(unsigned p) {
+    if (queue.size() <= p) queue.resize(p + 1);
   }
 
   void ShiftPriority() {
-    for (; queue[priority].size() == 0;) ++priority;
+    for (; queue[top_priority].size() == 0;) ++top_priority;
   }
 };
 }  // namespace base

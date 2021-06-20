@@ -36,11 +36,12 @@ class BucketQueueLL {
  protected:
   NodesManager<TNode> manager;
   std::vector<TNode*> queue;
-  unsigned priority = 0;
+  unsigned top_priority = 0;
   unsigned size = 0;
 
  public:
   BucketQueueLL() {}
+
   explicit BucketQueueLL(unsigned max_priority) {
     queue.resize(max_priority + 1, nullptr);
   }
@@ -59,30 +60,30 @@ class BucketQueueLL {
 
   unsigned TopPriority() {
     ShiftPriority();
-    return priority;
+    return top_priority;
   }
 
   const TValue& TopValue() {
     ShiftPriority();
-    return queue[priority]->value;
+    return queue[top_priority]->value;
   }
 
   TData Top() {
     ShiftPriority();
-    return {priority, queue[priority]->value};
+    return {top_priority, queue[top_priority]->value};
   }
 
   void Pop() {
     ShiftPriority();
-    auto node = queue[priority];
-    queue[priority] = node->next;
+    auto node = queue[top_priority];
+    queue[top_priority] = node->next;
     manager.Release(node);
     --size;
   }
 
   unsigned ExtractPriority() {
     Pop();
-    return priority;
+    return top_priority;
   }
 
   TValue ExtractValue() {
@@ -98,13 +99,13 @@ class BucketQueueLL {
   }
 
  protected:
-  void AdjustQueueSize(unsigned k) {
-    if (queue.size() <= k) queue.resize(k + 1, nullptr);
+  void AdjustQueueSize(unsigned p) {
+    if (queue.size() <= p) queue.resize(p + 1, nullptr);
   }
 
   void ShiftPriority() {
     assert(!Empty());
-    for (; !queue[priority];) ++priority;
+    for (; !queue[top_priority];) ++top_priority;
   }
 };
 }  // namespace base

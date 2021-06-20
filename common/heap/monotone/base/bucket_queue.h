@@ -26,11 +26,12 @@ class BucketQueue {
 
  protected:
   std::vector<std::vector<TValue>> queue;
-  unsigned priority = 0;
+  unsigned top_priority = 0;
   unsigned size = 0;
 
  public:
   BucketQueue() {}
+
   explicit BucketQueue(unsigned max_priority) {
     queue.resize(max_priority + 1);
   }
@@ -46,28 +47,28 @@ class BucketQueue {
 
   unsigned TopPriority() {
     ShiftPriority();
-    return priority;
+    return top_priority;
   }
 
   const TValue& TopValue() {
     ShiftPriority();
-    return queue[priority].back();
+    return queue[top_priority].back();
   }
 
   TData Top() {
     ShiftPriority();
-    return {priority, queue[priority].back()};
+    return {top_priority, queue[top_priority].back()};
   }
 
   void Pop() {
     ShiftPriority();
-    queue[priority].pop_back();
+    queue[top_priority].pop_back();
     --size;
   }
 
   unsigned ExtractPriority() {
     Pop();
-    return priority;
+    return top_priority;
   }
 
   TValue ExtractValue() {
@@ -83,13 +84,13 @@ class BucketQueue {
   }
 
  protected:
-  void AdjustQueueSize(unsigned k) {
-    if (queue.size() <= k) queue.resize(k + 1);
+  void AdjustQueueSize(unsigned p) {
+    if (queue.size() <= p) queue.resize(p + 1);
   }
 
   void ShiftPriority() {
     assert(!Empty());
-    for (; queue[priority].size() == 0;) ++priority;
+    for (; queue[top_priority].size() == 0;) ++top_priority;
   }
 };
 }  // namespace base

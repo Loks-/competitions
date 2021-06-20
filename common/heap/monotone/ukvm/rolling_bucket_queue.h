@@ -24,47 +24,40 @@ class RollingBucketQueue {
   using TData = heap::ukvm::Data<TValue>;
   using TSelf = RollingBucketQueue;
 
-  struct Position {
-    unsigned priority = not_in_queue;
-    unsigned index = not_in_queue;
-  };
-
  protected:
-  std::vector<Position> queue_position;
+  std::vector<unsigned> priority;
+  std::vector<unsigned> position;
   std::vector<std::vector<unsigned>> queue;
-  unsigned top_priority = 0, top_priority_adj = 0;
-  unsigned size = 0;
+  unsigned top_priority, top_priority_adj;
+  unsigned size;
   unsigned window;
 
- protected:
-  void ResetHeapPosition(unsigned ukey_size) {
-    queue_position.clear();
-    queue_position.resize(ukey_size);
-  }
-
  public:
-  void SetWindow(unsigned _window) {
+  void Reset(unsigned ukey_size, unsigned _window) {
+    priority.clear();
+    priority.resize(ukey_size, -1u);
+    position.clear();
+    position.resize(ukey_size, -1u);
+    queue.clear();
+    queue.resize(_window);
+    top_priority = top_priority_adj = 0;
+    size = 0;
     window = _window;
-    queue.resize(window);
   }
 
   RollingBucketQueue(unsigned ukey_size, unsigned _window) {
-    ResetHeapPosition(ukey_size);
-    SetWindow(_window);
+    Reset(ukey_size, _window);
   }
 
   RollingBucketQueue(const std::vector<unsigned>& v, bool skip_heap,
                      unsigned _window) {
-    ResetHeapPosition(v.size());
-    SetWindow(_window);
-    if (skip_heap) {
-      for (unsigned i = 0; i < v.size(); ++i) queue_position[i].priority = v[i];
-    } else {
+    Reset(v.size(), _window);
+    priority = v;
+    if (!skip_heap) {
       for (unsigned i = 0; i < v.size(); ++i) {
         unsigned p = v[i];
         assert(p < window);
-        queue_position[i].priority = p;
-        queue_position[i].index = queue[p].size();
+        position[i] = queue[p].size();
         queue[p].push_back(i);
       }
       size = v.size();
@@ -73,32 +66,18 @@ class RollingBucketQueue {
 
   bool Empty() const { return size == 0; }
   unsigned Size() const { return size; }
-  unsigned UKeySize() const { return unsigned(queue_position.size()); }
-
-  bool InHeap(unsigned key) const {
-    return queue_position[key].index != not_in_queue;
-  }
-
-  unsigned Get(unsigned key) const { return queue_position[key].priority; }
-
-  std::vector<TValue> GetValues() const {
-    unsigned n = UKeySize();
-    std::vector<TValue> v(n);
-    for (unsigned i = 0; i < n; ++i) v[i] = queue_position[i].priority;
-    return v;
-  }
+  unsigned UKeySize() const { return unsigned(priority.size()); }
+  bool InHeap(unsigned key) const { return position[key] != not_in_queue; }
+  unsigned Get(unsigned key) const { return priority[key]; }
+  const std::vector<TValue>& GetValues() const { return priority; }
 
  public:
-  void AddNewKey(unsigned key, unsigned priority, bool skip_heap = false) {
+  void AddNewKey(unsigned key, unsigned _priority, bool skip_heap = false) {
     assert(!InHeap(key));
-    assert(skip_heap ||
-           ((top_priority <= priority) && (priority < top_priority + window)));
-    AddNewKeyI(key, priority, skip_heap);
+    AddNewKeyI(key, _priority, skip_heap);
   }
 
   void Set(unsigned key, unsigned new_priority) {
-    assert((top_priority <= new_priority) &&
-           (new_priority < top_priority + window));
     if (InHeap(key))
       SetI(key, new_priority);
     else
@@ -110,9 +89,7 @@ class RollingBucketQueue {
   }
 
   void DecreaseValueIfLess(unsigned key, unsigned new_priority) {
-    assert((top_priority <= new_priority) &&
-           (new_priority < top_priority + window));
-    if (new_priority < queue_position[key].priority) Set(key, new_priority);
+    if (new_priority < priority[key]) Set(key, new_priority);
   }
 
   void IncreaseValue(unsigned key, unsigned new_priority) {
@@ -131,20 +108,22 @@ class RollingBucketQueue {
     return top_priority;
   }
 
-  TData Top() { return {TopKey(), TopValue()}; }
+  TData Top() {
+    ShiftPriority();
+    return {queue[top_priority_adj].back(), top_priority};
+  }
 
   void Pop() { DeleteKey(TopKey()); }
 
   unsigned ExtractKey() {
-    unsigned t = TopKey();
-    Pop();
-    return t;
+    unsigned key = TopKey();
+    DeleteKey(key);
+    return key;
   }
 
   unsigned ExtractValue() {
-    unsigned t = TopValue();
     Pop();
-    return t;
+    return top_priority;
   }
 
   TData Extract() {
@@ -154,8 +133,8 @@ class RollingBucketQueue {
   }
 
   void DeleteKey(unsigned key) {
-    DeleteI(queue_position[key]);
-    queue_position[key].index = not_in_queue;
+    DeleteI(key);
+    position[key] = not_in_queue;
   }
 
  protected:
@@ -165,33 +144,31 @@ class RollingBucketQueue {
       top_priority_adj = (top_priority_adj + 1) % window;
   }
 
-  void AddNewKeyI(unsigned key, unsigned priority, bool skip_heap) {
-    queue_position[key].priority = priority;
+  void AddNewKeyI(unsigned key, unsigned p, bool skip_heap) {
+    priority[key] = p;
     if (!skip_heap) {
-      queue_position[key].index = queue[priority % window].size();
-      queue[priority % window].push_back(key);
+      position[key] = queue[p % window].size();
+      queue[p % window].push_back(key);
       ++size;
     }
   }
 
   void SetI(unsigned key, unsigned new_priority) {
-    Position old = queue_position[key];
-    if (old.priority != new_priority) {
+    if (priority[key] != new_priority) {
+      DeleteI(key);
       AddNewKeyI(key, new_priority, false);
-      DeleteI(old);
     }
   }
 
-  void DeleteI(const Position& pos) {
-    assert(pos.index != not_in_queue);
-    auto priority_adj = pos.priority % window;
-    if (pos.index == queue[priority_adj].size() - 1) {
-      queue[priority_adj].pop_back();
-    } else {
-      queue[priority_adj][pos.index] = queue[priority_adj].back();
-      queue_position[queue[priority_adj].back()].index = pos.index;
-      queue[priority_adj].pop_back();
+  void DeleteI(unsigned key) {
+    unsigned pos = position[key];
+    assert(pos != not_in_queue);
+    auto& qp = queue[priority[key] % window];
+    if (pos < qp.size() - 1) {
+      qp[pos] = qp.back();
+      position[qp.back()] = pos;
     }
+    qp.pop_back();
     --size;
   }
 };

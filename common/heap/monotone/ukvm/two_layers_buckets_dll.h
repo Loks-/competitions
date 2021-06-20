@@ -4,7 +4,6 @@
 #include "common/heap/ukvm/data.h"
 #include "common/node.h"
 #include "common/nodes_manager.h"
-#include "common/nodes_manager_fixed_size.h"
 
 #include <vector>
 
@@ -27,39 +26,37 @@ class TwoLayersBucketsDLL {
   };
 
  protected:
-  NodesManagerFixedSize<TNode> manager1;
-  NodesManager<TNode> manager2;
-  TNode *pkey0 = nullptr, *ppriority0 = nullptr;
-  std::vector<TNode*> priority_map;  // Second queue only
-  std::vector<unsigned> priorities;
-  unsigned top_priority = 0, p1b = 0, p1e = fl_size;
-  unsigned size = 0;
+  std::vector<TNode> nodes;
+  NodesManager<TNode> manager;
+  std::vector<unsigned> priority;
+  std::vector<TNode*> queue2;  // Second queue only
+  TNode *pkey0, *ppriority0;
+  unsigned top_priority, p1b, p1e;
+  unsigned size;
 
  protected:
   TNode* KNode(unsigned key) { return pkey0 + key; }
   const TNode* KNode(unsigned key) const { return pkey0 + key; }
-
-  TNode* PNodeQ1(unsigned priority) { return ppriority0 + (priority - p1b); }
-  TNode* PNodeQ2(unsigned priority) { return priority_map[priority / fl_size]; }
-
-  TNode* PNode(unsigned priority) {
-    return (priority < p1e) ? PNodeQ1(priority) : PNodeQ2(priority);
-  }
-
+  TNode* PNodeQ1(unsigned p) { return ppriority0 + (p - p1b); }
+  TNode* PNodeQ2(unsigned p) { return queue2[p / fl_size]; }
+  TNode* PNode(unsigned p) { return (p < p1e) ? PNodeQ1(p) : PNodeQ2(p); }
   unsigned Key(const TNode* node) const { return node - pkey0; }
 
  public:
   void Reset(unsigned ukey_size) {
-    manager1.Reset(ukey_size + fl_size);
-    pkey0 = manager1.NodeByRawIndex(0);
-    ppriority0 = manager1.NodeByRawIndex(ukey_size);
-    manager2.ResetNodes();
-    priority_map.clear();
-    priorities.resize(ukey_size);
-    top_priority = p1b = size = 0;
+    nodes.clear();
+    nodes.resize(ukey_size + fl_size);
+    manager.ResetNodes();
+    priority.clear();
+    priority.resize(ukey_size, -1u);
+    queue2.clear();
+    pkey0 = &(nodes[0]);
+    ppriority0 = pkey0 + ukey_size;
+    top_priority = p1b = 0;
     p1e = fl_size;
+    size = 0;
     for (unsigned i = 0; i < fl_size; ++i) {
-      auto n = PNode(i);
+      auto n = PNodeQ1(i);
       n->next = n->prev = n;
     }
   }
@@ -68,12 +65,10 @@ class TwoLayersBucketsDLL {
 
   TwoLayersBucketsDLL(const std::vector<unsigned>& v, bool skip_heap) {
     Reset(v.size());
-    if (skip_heap) {
-      for (unsigned i = 0; i < priorities.size(); ++i) priorities[i] = v[i];
-    } else {
-      for (unsigned i = 0; i < priorities.size(); ++i) {
+    priority = v;
+    if (!skip_heap) {
+      for (unsigned i = 0; i < v.size(); ++i) {
         unsigned p = v[i];
-        priorities[i] = p;
         AdjustQueueSize(p);
         auto knode = KNode(i), pnode = PNode(p);
         knode->prev = pnode->prev;
@@ -81,24 +76,21 @@ class TwoLayersBucketsDLL {
         pnode->prev = knode;
         knode->next = pnode;
       }
-      size = priorities.size();
+      size = v.size();
     }
   }
 
   bool Empty() const { return size == 0; }
   unsigned Size() const { return size; }
-  unsigned UKeySize() const { return unsigned(priorities.size()); }
-
+  unsigned UKeySize() const { return unsigned(priority.size()); }
   bool InHeap(unsigned key) const { return KNode(key)->next; }
-
-  unsigned Get(unsigned key) const { return priorities[key]; }
-
-  const std::vector<TValue>& GetValues() const { return priorities; }
+  unsigned Get(unsigned key) const { return priority[key]; }
+  const std::vector<TValue>& GetValues() const { return priority; }
 
  public:
-  void AddNewKey(unsigned key, unsigned priority, bool skip_heap = false) {
+  void AddNewKey(unsigned key, unsigned _priority, bool skip_heap = false) {
     assert(!InHeap(key));
-    AddNewKeyI(key, priority, skip_heap);
+    AddNewKeyI(key, _priority, skip_heap);
   }
 
   void Set(unsigned key, unsigned new_priority) {
@@ -113,7 +105,7 @@ class TwoLayersBucketsDLL {
   }
 
   void DecreaseValueIfLess(unsigned key, unsigned new_priority) {
-    if (new_priority < priorities[key]) Set(key, new_priority);
+    if (new_priority < priority[key]) Set(key, new_priority);
   }
 
   void IncreaseValue(unsigned key, unsigned new_priority) {
@@ -124,7 +116,7 @@ class TwoLayersBucketsDLL {
 
   unsigned TopKey() {
     ShiftPriority();
-    return Key(PNodeQ1(top_priority)->next);
+    return Key(TopNode());
   }
 
   unsigned TopValue() {
@@ -132,18 +124,21 @@ class TwoLayersBucketsDLL {
     return top_priority;
   }
 
-  TData Top() { return {TopKey(), TopValue()}; }
+  TData Top() {
+    ShiftPriority();
+    return {Key(TopNode()), top_priority};
+  }
 
   void Pop() {
     ShiftPriority();
-    RemoveNodeI(PNodeQ1(top_priority)->next);
+    RemoveNodeI(TopNode());
   }
 
   unsigned ExtractKey() {
     ShiftPriority();
-    auto n = PNodeQ1(top_priority)->next;
-    RemoveNodeI(n);
-    return Key(n);
+    auto node = TopNode();
+    RemoveNodeI(node);
+    return Key(node);
   }
 
   unsigned ExtractValue() {
@@ -160,14 +155,14 @@ class TwoLayersBucketsDLL {
   void DeleteKey(unsigned key) { RemoveNodeI(KNode(key)); }
 
  protected:
-  void AdjustQueueSize(unsigned k) {
-    unsigned s = priority_map.size();
-    if (s <= k / fl_size) {
-      priority_map.resize(k / fl_size + 1);
-      for (; s < priority_map.size(); ++s) {
-        auto n = manager2.New();
+  void AdjustQueueSize(unsigned p) {
+    unsigned s = queue2.size();
+    if (s <= p / fl_size) {
+      queue2.resize(p / fl_size + 1);
+      for (; s < queue2.size(); ++s) {
+        auto n = manager.New();
         n->next = n->prev = n;
-        priority_map[s] = n;
+        queue2[s] = n;
       }
     }
   }
@@ -178,7 +173,7 @@ class TwoLayersBucketsDLL {
       auto n = PNodeQ1(top_priority);
       if (n->next != n) return;
     }
-    for (p1b = p1e; ; p1b += fl_size) {
+    for (p1b = p1e;; p1b += fl_size) {
       auto n = PNodeQ2(p1b);
       if (n->next != n) break;
     }
@@ -187,24 +182,26 @@ class TwoLayersBucketsDLL {
     for (; n->next != n;) {
       auto knode = n->next;
       n->next = knode->next;
-      auto pnode = PNodeQ1(priorities[Key(knode)]);
+      auto pnode = PNodeQ1(priority[Key(knode)]);
       knode->prev = pnode->prev;
       knode->prev->next = knode;
       pnode->prev = knode;
       knode->next = pnode;
     }
     n->prev = n;
-    for (top_priority = p1b; ; ++top_priority) {
+    for (top_priority = p1b;; ++top_priority) {
       auto n = PNodeQ1(top_priority);
       if (n->next != n) return;
     }
   }
 
-  void AddNewKeyI(unsigned key, unsigned priority, bool skip_heap) {
-    priorities[key] = priority;
+  TNode* TopNode() { return PNodeQ1(top_priority)->next; }
+
+  void AddNewKeyI(unsigned key, unsigned p, bool skip_heap) {
+    priority[key] = p;
     if (!skip_heap) {
-      AdjustQueueSize(priority);
-      auto knode = KNode(key), pnode = PNode(priority);
+      AdjustQueueSize(p);
+      auto knode = KNode(key), pnode = PNode(p);
       knode->prev = pnode->prev;
       knode->prev->next = knode;
       pnode->prev = knode;
@@ -214,11 +211,10 @@ class TwoLayersBucketsDLL {
   }
 
   void SetI(unsigned key, unsigned new_priority) {
-    unsigned p = priorities[key];
-    priorities[key] = new_priority;
-    bool update_required = (new_priority < p1e)
-                               ? (new_priority != p)
-                               : (new_priority / fl_size != p / fl_size);
+    unsigned p = priority[key];
+    priority[key] = new_priority;
+    bool update_required = (p < p1e) ? (new_priority != p)
+                                     : (new_priority / fl_size != p / fl_size);
     if (update_required) {
       auto knode = KNode(key), pnode = PNode(new_priority);
       knode->next->prev = knode->prev;

@@ -37,7 +37,7 @@ class RollingBucketQueueLL {
  protected:
   NodesManager<TNode> manager;
   std::vector<TNode*> queue;
-  unsigned priority = 0, priority_adj = 0;
+  unsigned top_priority = 0, top_priority_adj = 0;
   unsigned size = 0;
   unsigned window;
 
@@ -54,7 +54,6 @@ class RollingBucketQueueLL {
   unsigned Size() const { return size; }
 
   void Add(unsigned p, const TValue& value) {
-    assert((priority <= p) && (p < priority + window));
     auto node = manager.New();
     node->value = value;
     node->next = queue[p % window];
@@ -64,30 +63,30 @@ class RollingBucketQueueLL {
 
   unsigned TopPriority() {
     ShiftPriority();
-    return priority;
+    return top_priority;
   }
 
   const TValue& TopValue() {
     ShiftPriority();
-    return queue[priority_adj]->value;
+    return queue[top_priority_adj]->value;
   }
 
   TData Top() {
     ShiftPriority();
-    return {priority, queue[priority_adj]->value};
+    return {top_priority, queue[top_priority_adj]->value};
   }
 
   void Pop() {
     ShiftPriority();
-    auto node = queue[priority_adj];
-    queue[priority_adj] = node->next;
+    auto node = queue[top_priority_adj];
+    queue[top_priority_adj] = node->next;
     manager.Release(node);
     --size;
   }
 
   unsigned ExtractPriority() {
     Pop();
-    return priority;
+    return top_priority;
   }
 
   TValue ExtractValue() {
@@ -105,8 +104,8 @@ class RollingBucketQueueLL {
  protected:
   void ShiftPriority() {
     assert(!Empty());
-    for (; !queue[priority_adj]; ++priority)
-      priority_adj = (priority_adj + 1) % window;
+    for (; !queue[top_priority_adj]; ++top_priority)
+      top_priority_adj = (top_priority_adj + 1) % window;
   }
 };
 }  // namespace base

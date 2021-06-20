@@ -28,7 +28,7 @@ class RollingBucketQueue {
 
  protected:
   std::vector<std::stack<TValue>> queue;
-  unsigned priority = 0, priority_adj = 0;
+  unsigned top_priority = 0, top_priority_adj = 0;
   unsigned size = 0;
   unsigned window;
 
@@ -45,35 +45,34 @@ class RollingBucketQueue {
   unsigned Size() const { return size; }
 
   void Add(unsigned p, const TValue& value) {
-    assert((priority <= p) && (p < priority + window));
     queue[p % window].push(value);
     ++size;
   }
 
   unsigned TopPriority() {
     ShiftPriority();
-    return priority;
+    return top_priority;
   }
 
   const TValue& TopValue() {
     ShiftPriority();
-    return queue[priority_adj].top();
+    return queue[top_priority_adj].top();
   }
 
   TData Top() {
     ShiftPriority();
-    return {priority, queue[priority_adj].top()};
+    return {top_priority, queue[top_priority_adj].top()};
   }
 
   void Pop() {
     ShiftPriority();
-    queue[priority_adj].pop();
+    queue[top_priority_adj].pop();
     --size;
   }
 
   unsigned ExtractPriority() {
     Pop();
-    return priority;
+    return top_priority;
   }
 
   TValue ExtractValue() {
@@ -91,8 +90,8 @@ class RollingBucketQueue {
  protected:
   void ShiftPriority() {
     assert(!Empty());
-    for (; queue[priority_adj].size() == 0; ++priority)
-      priority_adj = (priority_adj + 1) % window;
+    for (; queue[top_priority_adj].size() == 0; ++top_priority)
+      top_priority_adj = (top_priority_adj + 1) % window;
   }
 };
 }  // namespace base

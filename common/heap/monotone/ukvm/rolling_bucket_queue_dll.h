@@ -2,8 +2,6 @@
 
 #include "common/base.h"
 #include "common/heap/ukvm/data.h"
-#include "common/node.h"
-#include "common/nodes_manager_fixed_size.h"
 
 #include <vector>
 
@@ -26,32 +24,35 @@ class RollingBucketQueueDLL {
   using TData = heap::ukvm::Data<TValue>;
   using TSelf = RollingBucketQueueDLL;
 
-  class TNode : public BaseNode {
+  class TNode {
    public:
     TNode *next = nullptr, *prev = nullptr;
   };
 
  protected:
-  NodesManagerFixedSize<TNode> manager;
-  std::vector<unsigned> priorities;
-  TNode *pkey0 = nullptr, *ppriority0 = nullptr;
-  unsigned top_priority = 0, top_priority_adj = 0;
-  unsigned size = 0;
+  std::vector<TNode> nodes;
+  std::vector<unsigned> priority;
+  TNode *pkey0, *ppriority0;
+  unsigned top_priority, top_priority_adj;
+  unsigned size;
   unsigned window;
 
  protected:
   TNode* KNode(unsigned key) { return pkey0 + key; }
   const TNode* KNode(unsigned key) const { return pkey0 + key; }
-  TNode* PNode(unsigned priority) { return ppriority0 + priority; }
+  TNode* PNodeAdj(unsigned p_adj) { return ppriority0 + p_adj; }
+  TNode* PNode(unsigned p) { return ppriority0 + (p % window); }
   unsigned Key(const TNode* node) const { return node - pkey0; }
 
  public:
   void Reset(unsigned ukey_size, unsigned _window) {
     window = _window;
-    manager.Reset(ukey_size + window);
-    priorities.resize(ukey_size);
-    pkey0 = manager.NodeByRawIndex(0);
-    ppriority0 = manager.NodeByRawIndex(ukey_size);
+    nodes.clear();
+    nodes.resize(ukey_size + window);
+    priority.clear();
+    priority.resize(ukey_size, -1u);
+    pkey0 = &(nodes[0]);
+    ppriority0 = pkey0 + ukey_size;
     for (unsigned i = 0; i < window; ++i) {
       auto n = PNode(i);
       n->next = n->prev = n;
@@ -66,42 +67,35 @@ class RollingBucketQueueDLL {
   RollingBucketQueueDLL(const std::vector<unsigned>& v, bool skip_heap,
                         unsigned _window) {
     Reset(v.size(), _window);
-    for (unsigned i = 0; i < v.size(); ++i) priorities[i] = v[i];
+    priority = v;
     if (!skip_heap) {
-      for (unsigned i = 0; i < priorities.size(); ++i) {
-        unsigned p = priorities[i];
+      for (unsigned i = 0; i < v.size(); ++i) {
+        unsigned p = v[i];
         assert(p < window);
-        auto knode = KNode(i), pnode = PNode(p);
+        auto knode = KNode(i), pnode = PNodeAdj(p);
         knode->prev = pnode->prev;
         knode->prev->next = knode;
         pnode->prev = knode;
         knode->next = pnode;
       }
-      size = priorities.size();
+      size = v.size();
     }
   }
 
   bool Empty() const { return size == 0; }
   unsigned Size() const { return size; }
-  unsigned UKeySize() const { return unsigned(priorities.size()); }
-
+  unsigned UKeySize() const { return unsigned(priority.size()); }
   bool InHeap(unsigned key) const { return KNode(key)->next; }
-
-  unsigned Get(unsigned key) const { return priorities[key]; }
-
-  const std::vector<TValue>& GetValues() const { return priorities; }
+  unsigned Get(unsigned key) const { return priority[key]; }
+  const std::vector<TValue>& GetValues() const { return priority; }
 
  public:
-  void AddNewKey(unsigned key, unsigned priority, bool skip_heap = false) {
+  void AddNewKey(unsigned key, unsigned _priority, bool skip_heap = false) {
     assert(!InHeap(key));
-    assert(skip_heap ||
-           ((top_priority <= priority) && (priority < top_priority + window)));
-    AddNewKeyI(key, priority, skip_heap);
+    AddNewKeyI(key, _priority, skip_heap);
   }
 
   void Set(unsigned key, unsigned new_priority) {
-    assert((top_priority <= new_priority) &&
-           (new_priority < top_priority + window));
     if (InHeap(key))
       SetI(key, new_priority);
     else
@@ -113,9 +107,7 @@ class RollingBucketQueueDLL {
   }
 
   void DecreaseValueIfLess(unsigned key, unsigned new_priority) {
-    assert((top_priority <= new_priority) &&
-           (new_priority < top_priority + window));
-    if (new_priority < priorities[key]) Set(key, new_priority);
+    if (new_priority < priority[key]) Set(key, new_priority);
   }
 
   void IncreaseValue(unsigned key, unsigned new_priority) {
@@ -126,7 +118,7 @@ class RollingBucketQueueDLL {
 
   unsigned TopKey() {
     ShiftPriority();
-    return Key(PNode(top_priority_adj)->next);
+    return Key(TopNode());
   }
 
   unsigned TopValue() {
@@ -134,18 +126,21 @@ class RollingBucketQueueDLL {
     return top_priority;
   }
 
-  TData Top() { return {TopKey(), TopValue()}; }
+  TData Top() {
+    ShiftPriority();
+    return {Key(TopNode()), top_priority};
+  }
 
   void Pop() {
     ShiftPriority();
-    RemoveNodeI(PNode(top_priority_adj)->next);
+    RemoveNodeI(TopNode());
   }
 
   unsigned ExtractKey() {
     ShiftPriority();
-    auto n = PNode(top_priority_adj)->next;
-    RemoveNodeI(n);
-    return Key(n);
+    auto node = TopNode();
+    RemoveNodeI(node);
+    return Key(node);
   }
 
   unsigned ExtractValue() {
@@ -164,15 +159,17 @@ class RollingBucketQueueDLL {
  protected:
   void ShiftPriority() {
     assert(!Empty());
-    for (; PNode(top_priority_adj)->next == PNode(top_priority_adj);
+    for (; PNodeAdj(top_priority_adj)->next == PNodeAdj(top_priority_adj);
          ++top_priority)
       top_priority_adj = (top_priority_adj + 1) % window;
   }
 
-  void AddNewKeyI(unsigned key, unsigned priority, bool skip_heap) {
-    priorities[key] = priority;
+  TNode* TopNode() { return PNodeAdj(top_priority_adj)->next; }
+
+  void AddNewKeyI(unsigned key, unsigned p, bool skip_heap) {
+    priority[key] = p;
     if (!skip_heap) {
-      auto knode = KNode(key), pnode = PNode(priority % window);
+      auto knode = KNode(key), pnode = PNode(p);
       knode->prev = pnode->prev;
       knode->prev->next = knode;
       pnode->prev = knode;
@@ -182,8 +179,9 @@ class RollingBucketQueueDLL {
   }
 
   void SetI(unsigned key, unsigned new_priority) {
-    if (priorities[key] != new_priority) {
-      auto knode = KNode(key), pnode = PNode(new_priority % window);
+    if (priority[key] != new_priority) {
+      priority[key] = new_priority;
+      auto knode = KNode(key), pnode = PNode(new_priority);
       knode->next->prev = knode->prev;
       knode->prev->next = knode->next;
       knode->prev = pnode->prev;
