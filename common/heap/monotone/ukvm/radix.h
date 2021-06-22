@@ -36,7 +36,7 @@ class Radix {
   std::vector<unsigned> priority;
   std::vector<TNode*> queue;
   std::vector<unsigned> vfirst, vlength;
-  TNode *pkey0;
+  TNode* pkey0;
   unsigned top_priority, current_index;
   unsigned size;
 
@@ -45,7 +45,7 @@ class Radix {
   const TNode* KNode(unsigned key) const { return pkey0 + key; }
   unsigned Key(const TNode* node) const { return node - pkey0; }
   TNode* INode(unsigned index) { return queue[index]; }
-  
+
   unsigned Index(unsigned p, unsigned l) {
     for (; vfirst[l] > p;) --l;
     return l;
@@ -117,15 +117,21 @@ class Radix {
   }
 
   void DecreaseValue(unsigned key, unsigned new_priority) {
-    DecreaseI(key, new_priority);
+    if (InHeap(key))
+      DecreaseI(key, new_priority);
+    else
+      AddNewKeyI(key, new_priority, false);
   }
 
   void DecreaseValueIfLess(unsigned key, unsigned new_priority) {
-    if (new_priority < priority[key]) DecreaseI(key, new_priority);
+    if (new_priority < priority[key]) DecreaseValue(key, new_priority);
   }
 
   void IncreaseValue(unsigned key, unsigned new_priority) {
-    IncreaseI(key, new_priority);
+    if (InHeap(key))
+      IncreaseI(key, new_priority);
+    else
+      AddNewKeyI(key, new_priority, false);
   }
 
   void Add(const TData& x) { Set(x.key, x.value); }
@@ -175,7 +181,7 @@ class Radix {
     for (; vfirst.back() <= p;) {
       vlength.push_back(vlength.back() * 2);
       vfirst.push_back(vfirst.back() + vlength.back());
-      auto n = manager_priority.New();      
+      auto n = manager_priority.New();
       n->next = n->prev = n;
       queue.push_back(n);
     }
@@ -192,9 +198,8 @@ class Radix {
       return;
     }
     unsigned shift = vfirst[current_index] - vfirst[0];
-    for (unsigned i = 0; i <= current_index; ++i)
-      vfirst[i] += shift;
-    for (auto node = pnode->next; node != pnode; node = pnode->next) 
+    for (unsigned i = 0; i <= current_index; ++i) vfirst[i] += shift;
+    for (auto node = pnode->next; node != pnode; node = pnode->next)
       MoveI(node, Index(priority[Key(node)], current_index - 1));
     top_priority = vfirst[0];
     current_index = 0;
