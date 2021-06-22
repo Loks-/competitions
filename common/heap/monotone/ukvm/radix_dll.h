@@ -18,11 +18,11 @@ namespace ukvm {
 // IncV    -- O(log P)
 // Top     -- O(1) amortized
 // Pop     -- O(1) amortized
-class Radix {
+class RadixDLL {
  public:
   using TValue = unsigned;
   using TData = heap::ukvm::Data<TValue>;
-  using TSelf = Radix;
+  using TSelf = RadixDLL;
 
   class TNode : public BaseNode {
    public:
@@ -73,9 +73,9 @@ class Radix {
     size = 0;
   }
 
-  explicit Radix(unsigned ukey_size) { Reset(ukey_size); }
+  explicit RadixDLL(unsigned ukey_size) { Reset(ukey_size); }
 
-  Radix(const std::vector<unsigned>& v, bool skip_heap) {
+  RadixDLL(const std::vector<unsigned>& v, bool skip_heap) {
     Reset(v.size());
     priority = v;
     if (!skip_heap) {
