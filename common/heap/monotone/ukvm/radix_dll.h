@@ -37,7 +37,7 @@ class RadixDLL {
   std::vector<TNode*> queue;
   std::vector<unsigned> vfirst, vlength;
   TNode* pkey0;
-  unsigned top_priority, current_index;
+  unsigned current_index;
   unsigned size;
 
  protected:
@@ -72,7 +72,7 @@ class RadixDLL {
       node->next = node->prev = node;
       queue.push_back(node);
     }
-    top_priority = current_index = 0;
+    current_index = 0;
     size = 0;
   }
 
@@ -144,14 +144,11 @@ class RadixDLL {
     return Key(TopNode());
   }
 
-  unsigned TopValue() {
-    ShiftPriority();
-    return top_priority;
-  }
+  unsigned TopValue() { return priority[TopKey()]; }
 
   TData Top() {
-    ShiftPriority();
-    return {Key(TopNode()), top_priority};
+    auto key = TopKey();
+    return {key, priority[key]};
   }
 
   void Pop() {
@@ -167,14 +164,13 @@ class RadixDLL {
   }
 
   unsigned ExtractValue() {
-    Pop();
-    return top_priority;
+    unsigned key = ExtractKey();
+    return priority[key];
   }
 
   TData Extract() {
-    TData t = Top();
-    Pop();
-    return t;
+    unsigned key = ExtractKey();
+    return {key, priority[key]};
   }
 
   void DeleteKey(unsigned key) { RemoveNodeI(KNode(key)); }
@@ -193,19 +189,14 @@ class RadixDLL {
   void ShiftPriority() {
     assert(!Empty());
     for (; queue[current_index]->next == queue[current_index];) ++current_index;
-    if (current_index == 0) return;
+    if (current_index < 2) return;
     auto pnode = queue[current_index];
-    if (pnode->next == pnode->prev) {
-      // 1 element
-      top_priority = priority[Key(pnode->next)];
-      return;
-    }
+    if (pnode->next == pnode->prev) return;
     vfirst[0] = vfirst[current_index];
     for (unsigned i = 0; i < current_index; ++i)
       vfirst[i + 1] = vfirst[i] + vlength[i];
     for (auto node = pnode->next; node != pnode; node = pnode->next)
       MoveI(node, Index(priority[Key(node)], current_index - 1));
-    top_priority = vfirst[0];
     current_index = 0;
     ShiftPriority();
   }

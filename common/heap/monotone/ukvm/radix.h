@@ -29,7 +29,7 @@ class Radix {
   std::vector<unsigned> position;
   std::vector<std::vector<unsigned>> queue;
   std::vector<unsigned> vfirst, vlength;
-  unsigned top_priority, current_index;
+  unsigned current_index;
   unsigned size;
 
  protected:
@@ -55,7 +55,7 @@ class Radix {
     vfirst.push_back(1);
     vfirst.push_back(2);
     vlength.resize(2, 1);
-    top_priority = current_index = 0;
+    current_index = 0;
     size = 0;
   }
 
@@ -124,14 +124,11 @@ class Radix {
     return queue[current_index].back();
   }
 
-  unsigned TopValue() {
-    ShiftPriority();
-    return top_priority;
-  }
+  unsigned TopValue() { return priority[TopKey()]; }
 
   TData Top() {
-    ShiftPriority();
-    return {queue[current_index].back(), top_priority};
+    auto key = TopKey();
+    return {key, priority[key]};
   }
 
   void Pop() { DeleteKey(TopKey()); }
@@ -143,14 +140,13 @@ class Radix {
   }
 
   unsigned ExtractValue() {
-    Pop();
-    return top_priority;
+    unsigned key = ExtractKey();
+    return priority[key];
   }
 
   TData Extract() {
-    TData t = Top();
-    Pop();
-    return t;
+    unsigned key = ExtractKey();
+    return {key, priority[key]};
   }
 
   void DeleteKey(unsigned key) {
@@ -171,17 +167,9 @@ class Radix {
 
   void ShiftPriority() {
     assert(!Empty());
-    unsigned old_index = 0;
     for (; queue[current_index].size() == 0;) ++current_index;
-    if (current_index < 2) {
-      top_priority += (current_index - old_index);
-      return;
-    }
+    if ((current_index < 2) || (queue[current_index].size() == 1)) return;
     auto& q = queue[current_index];
-    if (q.size() == 1) {
-      top_priority = priority[q[0]];
-      return;
-    }
     unsigned minp = priority[q[0]];
     for (unsigned i = 1; i < q.size(); ++i)
       minp = std::min(minp, priority[q[i]]);
@@ -195,7 +183,6 @@ class Radix {
       queue[new_index].push_back(key);
     }
     q.clear();
-    top_priority = vfirst[0];
     current_index = 0;
     assert(queue[0].size() > 0);
   }
