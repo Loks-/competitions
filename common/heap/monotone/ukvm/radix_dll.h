@@ -61,14 +61,17 @@ class RadixDLL {
     priority.clear();
     priority.resize(ukey_size, -1u);
     queue.clear();
-    auto node = manager_priority.New();
-    node->next = node->prev = node;
-    queue.push_back(node);
     pkey0 = &(nodes_key[0]);
     vfirst.clear();
     vfirst.push_back(0);
     vfirst.push_back(1);
-    vlength.resize(1, 1);
+    vfirst.push_back(2);
+    vlength.resize(2, 1);
+    for (unsigned i = 0; i < 2; ++i) {
+      auto node = manager_priority.New();
+      node->next = node->prev = node;
+      queue.push_back(node);
+    }
     top_priority = current_index = 0;
     size = 0;
   }
@@ -197,8 +200,9 @@ class RadixDLL {
       top_priority = priority[Key(pnode->next)];
       return;
     }
-    unsigned shift = vfirst[current_index] - vfirst[0];
-    for (unsigned i = 0; i <= current_index; ++i) vfirst[i] += shift;
+    vfirst[0] = vfirst[current_index];
+    for (unsigned i = 0; i < current_index; ++i)
+      vfirst[i + 1] = vfirst[i] + vlength[i];
     for (auto node = pnode->next; node != pnode; node = pnode->next)
       MoveI(node, Index(priority[Key(node)], current_index - 1));
     top_priority = vfirst[0];
