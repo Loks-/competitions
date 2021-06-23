@@ -42,6 +42,7 @@
 #include "common/heap/monotone/ukvm/bucket_queue.h"
 #include "common/heap/monotone/ukvm/bucket_queue_dll.h"
 #include "common/heap/monotone/ukvm/radix.h"
+#include "common/heap/monotone/ukvm/radix_dll.h"
 #include "common/heap/monotone/ukvm/rolling_bucket_queue.h"
 #include "common/heap/monotone/ukvm/rolling_bucket_queue_dll.h"
 #include "common/heap/monotone/ukvm/two_layers_buckets.h"
@@ -554,7 +555,8 @@ bool TesterGraphEIDistanceUnsigned::TestAll() {
   hs.insert(TestKVM<heap::monotone::ukvm::TwoLayersBucketsDLL<8>>("MM3L"));
   hs.insert(TestKVM<heap::monotone::ukvm::TwoLayersBucketsDLL<16>>("MM4L"));
   hs.insert(TestKVM<heap::monotone::ukvm::TwoLayersBucketsDLL<32>>("MM5L"));
-  // hs.insert(TestKVM<heap::monotone::ukvm::Radix>("MRX "));
+  hs.insert(TestKVM<heap::monotone::ukvm::Radix>("MRX "));
+  hs.insert(TestKVM<heap::monotone::ukvm::RadixDLL>("MRXL"));
   hs.insert(TestKVM<heap::ukvm::Binomial<unsigned>>("BNML"));
   hs.insert(TestKVM<heap::ukvm::Fibonacci<unsigned>>("FBNC"));
   hs.insert(TestKVM<TPairing<0, 0>>("PR00"));
