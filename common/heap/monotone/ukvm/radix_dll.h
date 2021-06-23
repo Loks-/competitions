@@ -192,7 +192,11 @@ class RadixDLL {
     if (current_index < 2) return;
     auto pnode = queue[current_index];
     if (pnode->next == pnode->prev) return;
-    vfirst[0] = vfirst[current_index];
+    auto tnode = pnode->next;
+    unsigned minp = priority[Key(tnode)];
+    for (tnode = tnode->next; tnode != pnode; tnode = tnode->next)
+      minp = std::min(minp, priority[Key(tnode)]);
+    vfirst[0] = minp;
     for (unsigned i = 0; i < current_index; ++i)
       vfirst[i + 1] = vfirst[i] + vlength[i];
     for (auto node = pnode->next; node != pnode; node = pnode->next)
