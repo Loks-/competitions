@@ -4,7 +4,6 @@
 #include "common/heap/ukvm/data.h"
 #include "common/numeric/bits/ulog2.h"
 
-#include <algorithm>
 #include <vector>
 
 namespace heap {
