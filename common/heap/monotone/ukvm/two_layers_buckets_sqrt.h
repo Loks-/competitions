@@ -16,7 +16,7 @@ namespace ukvm {
 // DecV    -- O(1)
 // IncV    -- O(1)
 // Top     -- O(1 + P / N) amortized
-// Pop     -- O(1 + P / N) amortizedtemplate <unsigned first_layer_size>
+// Pop     -- O(1 + P / N) amortized
 class TwoLayersBucketsSqrt {
  public:
   static const unsigned not_in_queue = -1u;
