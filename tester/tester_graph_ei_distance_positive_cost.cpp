@@ -74,7 +74,7 @@ size_t TesterGraphEIDistancePositiveCost::TestBellmanFord() const {
     v = graph::distance::BellmanFord(g, edge_proxy, i, max_cost);
     for (uint64_t d : v) h = HashCombine(h, d);
   }
-  std::cout << "Test results  [BeFo]: " << h << "\t" << t.GetMilliseconds()
+  std::cout << "Test results  [   BF  ]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
 }
@@ -88,7 +88,7 @@ size_t TesterGraphEIDistancePositiveCost::TestBellmanFordYen() const {
     v = graph::distance::BellmanFordYen(g, edge_proxy, i, max_cost);
     for (uint64_t d : v) h = HashCombine(h, d);
   }
-  std::cout << "Test results  [BFY ]: " << h << "\t" << t.GetMilliseconds()
+  std::cout << "Test results  [   BFY ]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
 }
@@ -101,7 +101,7 @@ size_t TesterGraphEIDistancePositiveCost::TestFloydWarshall() const {
   for (unsigned i = 0; i < vv.size(); ++i) {
     for (uint64_t d : vv[i]) h = HashCombine(h, d);
   }
-  std::cout << "Test results  [FlWa]: " << h << "\t" << t.GetMilliseconds()
+  std::cout << "Test results  [A  FlWa]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
 }
@@ -115,7 +115,7 @@ size_t TesterGraphEIDistancePositiveCost::TestGoldbergRadzik() const {
     v = graph::distance::spfa::GoldbergRadzik(g, edge_proxy, i, max_cost);
     for (uint64_t d : v) h = HashCombine(h, d);
   }
-  std::cout << "Test results  [GR  ]: " << h << "\t" << t.GetMilliseconds()
+  std::cout << "Test results  [S  GR  ]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
 }
@@ -129,7 +129,7 @@ size_t TesterGraphEIDistancePositiveCost::TestGoldbergRadzikLazy() const {
     v = graph::distance::spfa::GoldbergRadzikLazy(g, edge_proxy, i, max_cost);
     for (uint64_t d : v) h = HashCombine(h, d);
   }
-  std::cout << "Test results  [GRL ]: " << h << "\t" << t.GetMilliseconds()
+  std::cout << "Test results  [S  GRL ]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
 }
@@ -143,7 +143,7 @@ size_t TesterGraphEIDistancePositiveCost::TestGoldbergRadzikPCR() const {
     v = graph::distance::spfa::GoldbergRadzikPCR(g, edge_proxy, i, max_cost);
     for (uint64_t d : v) h = HashCombine(h, d);
   }
-  std::cout << "Test results  [GRP ]: " << h << "\t" << t.GetMilliseconds()
+  std::cout << "Test results  [S  GRP ]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
 }
@@ -157,7 +157,7 @@ size_t TesterGraphEIDistancePositiveCost::TestGoldfarbHaoKai() const {
     v = graph::distance::spfa::GoldfarbHaoKai(g, edge_proxy, i, max_cost);
     for (uint64_t d : v) h = HashCombine(h, d);
   }
-  std::cout << "Test results  [GHK ]: " << h << "\t" << t.GetMilliseconds()
+  std::cout << "Test results  [S  GHK ]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
 }
@@ -170,7 +170,7 @@ size_t TesterGraphEIDistancePositiveCost::TestJohnson() const {
   for (unsigned i = 0; i < vv.size(); ++i) {
     for (uint64_t d : vv[i]) h = HashCombine(h, d);
   }
-  std::cout << "Test results  [John]: " << h << "\t" << t.GetMilliseconds()
+  std::cout << "Test results  [A  John]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
 }
@@ -184,7 +184,7 @@ size_t TesterGraphEIDistancePositiveCost::TestLevit() const {
     v = graph::distance::spfa::Levit(g, edge_proxy, i, max_cost);
     for (uint64_t d : v) h = HashCombine(h, d);
   }
-  std::cout << "Test results  [Levi]: " << h << "\t" << t.GetMilliseconds()
+  std::cout << "Test results  [S  Levi]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
 }
@@ -198,7 +198,7 @@ size_t TesterGraphEIDistancePositiveCost::TestPallottino() const {
     v = graph::distance::spfa::Pallottino(g, edge_proxy, i, max_cost);
     for (uint64_t d : v) h = HashCombine(h, d);
   }
-  std::cout << "Test results  [Pall]: " << h << "\t" << t.GetMilliseconds()
+  std::cout << "Test results  [S  Pall]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
 }
@@ -212,7 +212,7 @@ size_t TesterGraphEIDistancePositiveCost::TestSIPITQ() const {
     v = graph::distance::spfa::SIPITQ(g, edge_proxy, i, max_cost);
     for (uint64_t d : v) h = HashCombine(h, d);
   }
-  std::cout << "Test results  [ SPQ]: " << h << "\t" << t.GetMilliseconds()
+  std::cout << "Test results  [S   SPQ]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
 }
@@ -226,7 +226,7 @@ size_t TesterGraphEIDistancePositiveCost::TestSPFA() const {
     v = graph::distance::spfa::SPFA(g, edge_proxy, i, max_cost);
     for (uint64_t d : v) h = HashCombine(h, d);
   }
-  std::cout << "Test results  [SPFA]: " << h << "\t" << t.GetMilliseconds()
+  std::cout << "Test results  [S  SPFA]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
 }
@@ -240,7 +240,7 @@ size_t TesterGraphEIDistancePositiveCost::TestSPFALLL() const {
     v = graph::distance::spfa::LargeLabelLast(g, edge_proxy, i, max_cost);
     for (uint64_t d : v) h = HashCombine(h, d);
   }
-  std::cout << "Test results  [ LLL]: " << h << "\t" << t.GetMilliseconds()
+  std::cout << "Test results  [S   LLL]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
 }
@@ -254,7 +254,7 @@ size_t TesterGraphEIDistancePositiveCost::TestSPFASafe() const {
     v = graph::distance::spfa::Safe(g, edge_proxy, i, max_cost);
     for (uint64_t d : v) h = HashCombine(h, d);
   }
-  std::cout << "Test results  [Safe]: " << h << "\t" << t.GetMilliseconds()
+  std::cout << "Test results  [S  Safe]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
 }
@@ -268,7 +268,7 @@ size_t TesterGraphEIDistancePositiveCost::TestSPFASLF() const {
     v = graph::distance::spfa::SmallLabelFirst(g, edge_proxy, i, max_cost);
     for (uint64_t d : v) h = HashCombine(h, d);
   }
-  std::cout << "Test results  [ SLF]: " << h << "\t" << t.GetMilliseconds()
+  std::cout << "Test results  [S   SLF]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
 }
@@ -282,7 +282,7 @@ size_t TesterGraphEIDistancePositiveCost::TestTarjan() const {
     v = graph::distance::spfa::Tarjan(g, edge_proxy, i, max_cost);
     for (uint64_t d : v) h = HashCombine(h, d);
   }
-  std::cout << "Test results  [Ta  ]: " << h << "\t" << t.GetMilliseconds()
+  std::cout << "Test results  [S  Ta  ]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
 }
@@ -296,7 +296,7 @@ size_t TesterGraphEIDistancePositiveCost::TestTarjanPCR() const {
     v = graph::distance::spfa::TarjanPCR(g, edge_proxy, i, max_cost);
     for (uint64_t d : v) h = HashCombine(h, d);
   }
-  std::cout << "Test results  [TaP ]: " << h << "\t" << t.GetMilliseconds()
+  std::cout << "Test results  [S  TaP ]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
 }
@@ -310,7 +310,7 @@ size_t TesterGraphEIDistancePositiveCost::TestTarjanPCRTime() const {
     v = graph::distance::spfa::TarjanPCRTime(g, edge_proxy, i, max_cost);
     for (uint64_t d : v) h = HashCombine(h, d);
   }
-  std::cout << "Test results  [TaPT]: " << h << "\t" << t.GetMilliseconds()
+  std::cout << "Test results  [S  TaPT]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
 }
@@ -324,7 +324,7 @@ size_t TesterGraphEIDistancePositiveCost::TestTarjanTime() const {
     v = graph::distance::spfa::TarjanTime(g, edge_proxy, i, max_cost);
     for (uint64_t d : v) h = HashCombine(h, d);
   }
-  std::cout << "Test results  [Ta T]: " << h << "\t" << t.GetMilliseconds()
+  std::cout << "Test results  [S  Ta T]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
 }
@@ -338,7 +338,7 @@ size_t TesterGraphEIDistancePositiveCost::TestZDO() const {
     v = graph::distance::spfa::ZeroDegreesOnly(g, edge_proxy, i, max_cost);
     for (uint64_t d : v) h = HashCombine(h, d);
   }
-  std::cout << "Test results  [ZDO ]: " << h << "\t" << t.GetMilliseconds()
+  std::cout << "Test results  [S  ZDO ]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
 }
@@ -352,7 +352,7 @@ size_t TesterGraphEIDistancePositiveCost::TestZDOBase() const {
     v = graph::distance::spfa::ZeroDegreesOnlyBase(g, edge_proxy, i, max_cost);
     for (uint64_t d : v) h = HashCombine(h, d);
   }
-  std::cout << "Test results  [ZDOB]: " << h << "\t" << t.GetMilliseconds()
+  std::cout << "Test results  [S  ZDOB]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
 }
@@ -366,7 +366,7 @@ size_t TesterGraphEIDistancePositiveCost::TestZDOTime() const {
     v = graph::distance::spfa::ZeroDegreesOnlyTime(g, edge_proxy, i, max_cost);
     for (uint64_t d : v) h = HashCombine(h, d);
   }
-  std::cout << "Test results  [ZDOT]: " << h << "\t" << t.GetMilliseconds()
+  std::cout << "Test results  [S  ZDOT]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
 }
@@ -382,7 +382,7 @@ size_t TesterGraphEIDistancePositiveCost::TestHP(
     v = DistanceFromSourcePositiveCost_HP<THeap>(g, edge_proxy, i, max_cost);
     for (uint64_t d : v) h = HashCombine(h, d);
   }
-  std::cout << "Test results  [" << name << "]: " << h << "\t"
+  std::cout << "Test results  [DB" << name << "]: " << h << "\t"
             << t.GetMilliseconds() << std::endl;
   return h;
 }
@@ -398,7 +398,7 @@ size_t TesterGraphEIDistancePositiveCost::TestKPM(
     v = DistanceFromSourcePositiveCost_KPM<THeap>(g, edge_proxy, i, max_cost);
     for (uint64_t d : v) h = HashCombine(h, d);
   }
-  std::cout << "Test results  [" << name << "]: " << h << "\t"
+  std::cout << "Test results  [DE" << name << "]: " << h << "\t"
             << t.GetMilliseconds() << std::endl;
   return h;
 }
@@ -414,7 +414,7 @@ size_t TesterGraphEIDistancePositiveCost::TestKVM(
     v = DistanceFromSourcePositiveCost_KVM<THeap>(g, edge_proxy, i, max_cost);
     for (uint64_t d : v) h = HashCombine(h, d);
   }
-  std::cout << "Test results  [" << name << "]: " << h << "\t"
+  std::cout << "Test results  [DM" << name << "]: " << h << "\t"
             << t.GetMilliseconds() << std::endl;
   return h;
 }
@@ -434,27 +434,28 @@ bool TesterGraphEIDistancePositiveCost::TestAll() {
       assert(false);
   }
   std::unordered_set<size_t> hs;
-  hs.insert(TestHP<TBinaryHeap>("  BH"));
-  hs.insert(TestHP<TDHeap2>("DH 2"));
-  hs.insert(TestHP<TDHeap4>("DH 4"));
-  hs.insert(TestHP<TDHeap8>("DH 8"));
-  hs.insert(TestHP<TDHeap16>("DH16"));
-  hs.insert(TestKPM<heap::ext::DHeapUKeyPosMap<2, uint64_t>>("KPM2"));
-  hs.insert(TestKPM<heap::ext::DHeapUKeyPosMap<4, uint64_t>>("KPM4"));
-  hs.insert(TestKPM<heap::ext::DHeapUKeyPosMap<8, uint64_t>>("KPM8"));
-  hs.insert(TestKVM<heap::ukvm::DHeap<2, uint64_t>>("DM 2"));
-  hs.insert(TestKVM<heap::ukvm::DHeap<4, uint64_t>>("DM 4"));
-  hs.insert(TestKVM<heap::ukvm::DHeap<8, uint64_t>>("DM 8"));
-  hs.insert(TestKVM<heap::ukvm::DHeap<16, uint64_t>>("DM16"));
-  hs.insert(TestKVM<heap::ukvm::CompleteBinaryTree<uint64_t>>(" CBT"));
-  hs.insert(TestKVM<heap::ukvm::Binomial<uint64_t>>("BNML"));
-  hs.insert(TestKVM<heap::ukvm::Fibonacci<uint64_t>>("FBNC"));
-  hs.insert(TestKVM<TPairing<0, 0>>("PR00"));
-  hs.insert(TestKVM<TPairing<1, 0>>("PR01"));
-  hs.insert(TestKVM<TPairing<0, 1>>("PR10"));
-  hs.insert(TestKVM<TPairing<1, 1>>("PR11"));
+  hs.insert(TestHP<TBinaryHeap>("  BH "));
+  hs.insert(TestHP<TDHeap2>(" DH1 "));
+  hs.insert(TestHP<TDHeap4>(" DH2 "));
+  hs.insert(TestHP<TDHeap8>(" DH3 "));
+  hs.insert(TestHP<TDHeap16>(" DH4 "));
+  hs.insert(TestKPM<heap::ext::DHeapUKeyPosMap<2, uint64_t>>(" DH1 "));
+  hs.insert(TestKPM<heap::ext::DHeapUKeyPosMap<4, uint64_t>>(" DH2 "));
+  hs.insert(TestKPM<heap::ext::DHeapUKeyPosMap<8, uint64_t>>(" DH3 "));
+  hs.insert(TestKPM<heap::ext::DHeapUKeyPosMap<16, uint64_t>>(" DH4 "));
+  hs.insert(TestKVM<heap::ukvm::DHeap<2, uint64_t>>(" DH1 "));
+  hs.insert(TestKVM<heap::ukvm::DHeap<4, uint64_t>>(" DH2 "));
+  hs.insert(TestKVM<heap::ukvm::DHeap<8, uint64_t>>(" DH3 "));
+  hs.insert(TestKVM<heap::ukvm::DHeap<16, uint64_t>>(" DH4 "));
+  hs.insert(TestKVM<heap::ukvm::CompleteBinaryTree<uint64_t>>(" CBT "));
+  hs.insert(TestKVM<heap::ukvm::Binomial<uint64_t>>(" BNML"));
+  hs.insert(TestKVM<heap::ukvm::Fibonacci<uint64_t>>(" FBNC"));
+  hs.insert(TestKVM<TPairing<0, 0>>(" PR00"));
+  hs.insert(TestKVM<TPairing<1, 0>>(" PR01"));
+  hs.insert(TestKVM<TPairing<0, 1>>(" PR10"));
+  hs.insert(TestKVM<TPairing<1, 1>>(" PR11"));
   if (gtype != EGraphType::SPARSE)
-    hs.insert(TestKVM<heap::ukvm::UnorderedSet<uint64_t>>("USet"));
+    hs.insert(TestKVM<heap::ukvm::UnorderedSet<uint64_t>>(" USet"));
   hs.insert(TestBellmanFord());
   hs.insert(TestBellmanFordYen());
   hs.insert(TestSPFA());

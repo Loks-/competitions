@@ -58,7 +58,7 @@ size_t TesterGraphEIDistance::TestBellmanFord() const {
     v = graph::distance::BellmanFord(g, edge_proxy, i, max_cost);
     for (int64_t d : v) h = HashCombine(h, d);
   }
-  std::cout << "Test results  [  BF  ]: " << h << "\t" << t.GetMilliseconds()
+  std::cout << "Test results  [   BF  ]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
 }
@@ -72,7 +72,7 @@ size_t TesterGraphEIDistance::TestBellmanFordYen() const {
     v = graph::distance::BellmanFordYen(g, edge_proxy, i, max_cost);
     for (int64_t d : v) h = HashCombine(h, d);
   }
-  std::cout << "Test results  [  BFY ]: " << h << "\t" << t.GetMilliseconds()
+  std::cout << "Test results  [   BFY ]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
 }
@@ -85,7 +85,7 @@ size_t TesterGraphEIDistance::TestFloydWarshall() const {
   for (unsigned i = 0; i < vv.size(); ++i) {
     for (int64_t d : vv[i]) h = HashCombine(h, d);
   }
-  std::cout << "Test results  [A FlWa]: " << h << "\t" << t.GetMilliseconds()
+  std::cout << "Test results  [A  FlWa]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
 }
@@ -99,7 +99,7 @@ size_t TesterGraphEIDistance::TestGoldbergRadzik() const {
     v = graph::distance::spfa::GoldbergRadzik(g, edge_proxy, i, max_cost);
     for (int64_t d : v) h = HashCombine(h, d);
   }
-  std::cout << "Test results  [S GR  ]: " << h << "\t" << t.GetMilliseconds()
+  std::cout << "Test results  [S  GR  ]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
 }
@@ -113,7 +113,7 @@ size_t TesterGraphEIDistance::TestGoldbergRadzikLazy() const {
     v = graph::distance::spfa::GoldbergRadzikLazy(g, edge_proxy, i, max_cost);
     for (int64_t d : v) h = HashCombine(h, d);
   }
-  std::cout << "Test results  [S GRL ]: " << h << "\t" << t.GetMilliseconds()
+  std::cout << "Test results  [S  GRL ]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
 }
@@ -127,7 +127,7 @@ size_t TesterGraphEIDistance::TestGoldbergRadzikPCR() const {
     v = graph::distance::spfa::GoldbergRadzikPCR(g, edge_proxy, i, max_cost);
     for (int64_t d : v) h = HashCombine(h, d);
   }
-  std::cout << "Test results  [S GRP ]: " << h << "\t" << t.GetMilliseconds()
+  std::cout << "Test results  [S  GRP ]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
 }
@@ -141,7 +141,7 @@ size_t TesterGraphEIDistance::TestGoldfarbHaoKai() const {
     v = graph::distance::spfa::GoldfarbHaoKai(g, edge_proxy, i, max_cost);
     for (int64_t d : v) h = HashCombine(h, d);
   }
-  std::cout << "Test results  [S GHK ]: " << h << "\t" << t.GetMilliseconds()
+  std::cout << "Test results  [S  GHK ]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
 }
@@ -154,7 +154,7 @@ size_t TesterGraphEIDistance::TestJohnson() const {
   for (unsigned i = 0; i < vv.size(); ++i) {
     for (int64_t d : vv[i]) h = HashCombine(h, d);
   }
-  std::cout << "Test results  [A John]: " << h << "\t" << t.GetMilliseconds()
+  std::cout << "Test results  [A  John]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
 }
@@ -168,7 +168,7 @@ size_t TesterGraphEIDistance::TestLevit() const {
     v = graph::distance::spfa::Levit(g, edge_proxy, i, max_cost);
     for (int64_t d : v) h = HashCombine(h, d);
   }
-  std::cout << "Test results  [S Levi]: " << h << "\t" << t.GetMilliseconds()
+  std::cout << "Test results  [S  Levi]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
 }
@@ -182,7 +182,7 @@ size_t TesterGraphEIDistance::TestPallottino() const {
     v = graph::distance::spfa::Pallottino(g, edge_proxy, i, max_cost);
     for (int64_t d : v) h = HashCombine(h, d);
   }
-  std::cout << "Test results  [S Pall]: " << h << "\t" << t.GetMilliseconds()
+  std::cout << "Test results  [S  Pall]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
 }
@@ -196,7 +196,7 @@ size_t TesterGraphEIDistance::TestSIPITQ() const {
     v = graph::distance::spfa::SIPITQ(g, edge_proxy, i, max_cost);
     for (int64_t d : v) h = HashCombine(h, d);
   }
-  std::cout << "Test results  [S  SPQ]: " << h << "\t" << t.GetMilliseconds()
+  std::cout << "Test results  [S   SPQ]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
 }
@@ -210,7 +210,7 @@ size_t TesterGraphEIDistance::TestSPFA() const {
     v = graph::distance::spfa::SPFA(g, edge_proxy, i, max_cost);
     for (int64_t d : v) h = HashCombine(h, d);
   }
-  std::cout << "Test results  [S SPFA]: " << h << "\t" << t.GetMilliseconds()
+  std::cout << "Test results  [S  SPFA]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
 }
@@ -224,7 +224,7 @@ size_t TesterGraphEIDistance::TestSPFALLL() const {
     v = graph::distance::spfa::LargeLabelLast(g, edge_proxy, i, max_cost);
     for (int64_t d : v) h = HashCombine(h, d);
   }
-  std::cout << "Test results  [S  LLL]: " << h << "\t" << t.GetMilliseconds()
+  std::cout << "Test results  [S   LLL]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
 }
@@ -238,7 +238,7 @@ size_t TesterGraphEIDistance::TestSPFASafe() const {
     v = graph::distance::spfa::Safe(g, edge_proxy, i, max_cost);
     for (int64_t d : v) h = HashCombine(h, d);
   }
-  std::cout << "Test results  [S Safe]: " << h << "\t" << t.GetMilliseconds()
+  std::cout << "Test results  [S  Safe]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
 }
@@ -252,7 +252,7 @@ size_t TesterGraphEIDistance::TestSPFASLF() const {
     v = graph::distance::spfa::SmallLabelFirst(g, edge_proxy, i, max_cost);
     for (int64_t d : v) h = HashCombine(h, d);
   }
-  std::cout << "Test results  [S  SLF]: " << h << "\t" << t.GetMilliseconds()
+  std::cout << "Test results  [S   SLF]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
 }
@@ -266,7 +266,7 @@ size_t TesterGraphEIDistance::TestTarjan() const {
     v = graph::distance::spfa::Tarjan(g, edge_proxy, i, max_cost);
     for (int64_t d : v) h = HashCombine(h, d);
   }
-  std::cout << "Test results  [S Ta  ]: " << h << "\t" << t.GetMilliseconds()
+  std::cout << "Test results  [S  Ta  ]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
 }
@@ -280,7 +280,7 @@ size_t TesterGraphEIDistance::TestTarjanPCR() const {
     v = graph::distance::spfa::TarjanPCR(g, edge_proxy, i, max_cost);
     for (int64_t d : v) h = HashCombine(h, d);
   }
-  std::cout << "Test results  [S TaP ]: " << h << "\t" << t.GetMilliseconds()
+  std::cout << "Test results  [S  TaP ]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
 }
@@ -294,7 +294,7 @@ size_t TesterGraphEIDistance::TestTarjanPCRTime() const {
     v = graph::distance::spfa::TarjanPCRTime(g, edge_proxy, i, max_cost);
     for (int64_t d : v) h = HashCombine(h, d);
   }
-  std::cout << "Test results  [S TaPT]: " << h << "\t" << t.GetMilliseconds()
+  std::cout << "Test results  [S  TaPT]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
 }
@@ -308,7 +308,7 @@ size_t TesterGraphEIDistance::TestTarjanTime() const {
     v = graph::distance::spfa::TarjanTime(g, edge_proxy, i, max_cost);
     for (int64_t d : v) h = HashCombine(h, d);
   }
-  std::cout << "Test results  [S Ta T]: " << h << "\t" << t.GetMilliseconds()
+  std::cout << "Test results  [S  Ta T]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
 }
@@ -322,7 +322,7 @@ size_t TesterGraphEIDistance::TestZDO() const {
     v = graph::distance::spfa::ZeroDegreesOnly(g, edge_proxy, i, max_cost);
     for (int64_t d : v) h = HashCombine(h, d);
   }
-  std::cout << "Test results  [S ZDO ]: " << h << "\t" << t.GetMilliseconds()
+  std::cout << "Test results  [S  ZDO ]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
 }
@@ -336,7 +336,7 @@ size_t TesterGraphEIDistance::TestZDOBase() const {
     v = graph::distance::spfa::ZeroDegreesOnlyBase(g, edge_proxy, i, max_cost);
     for (int64_t d : v) h = HashCombine(h, d);
   }
-  std::cout << "Test results  [S ZDOB]: " << h << "\t" << t.GetMilliseconds()
+  std::cout << "Test results  [S  ZDOB]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
 }
@@ -350,7 +350,7 @@ size_t TesterGraphEIDistance::TestZDOTime() const {
     v = graph::distance::spfa::ZeroDegreesOnlyTime(g, edge_proxy, i, max_cost);
     for (int64_t d : v) h = HashCombine(h, d);
   }
-  std::cout << "Test results  [S ZDOT]: " << h << "\t" << t.GetMilliseconds()
+  std::cout << "Test results  [S  ZDOT]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
 }

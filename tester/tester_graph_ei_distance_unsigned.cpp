@@ -94,7 +94,7 @@ size_t TesterGraphEIDistanceUnsigned::TestBellmanFord() const {
     v = graph::distance::BellmanFord(g, edge_proxy, i, max_cost);
     for (unsigned d : v) h = HashCombine(h, d);
   }
-  std::cout << "Test results  [BeFo]: " << h << "\t" << t.GetMilliseconds()
+  std::cout << "Test results  [   BF  ]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
 }
@@ -108,7 +108,7 @@ size_t TesterGraphEIDistanceUnsigned::TestBellmanFordYen() const {
     v = graph::distance::BellmanFordYen(g, edge_proxy, i, max_cost);
     for (unsigned d : v) h = HashCombine(h, d);
   }
-  std::cout << "Test results  [BFY ]: " << h << "\t" << t.GetMilliseconds()
+  std::cout << "Test results  [   BFY ]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
 }
@@ -122,7 +122,7 @@ size_t TesterGraphEIDistanceUnsigned::TestDial() const {
     v = graph::distance::Dial(g, edge_proxy, i, max_cost, max_edge_cost);
     for (unsigned d : v) h = HashCombine(h, d);
   }
-  std::cout << "Test results  [Dial]: " << h << "\t" << t.GetMilliseconds()
+  std::cout << "Test results  [   Dial]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
 }
@@ -135,7 +135,7 @@ size_t TesterGraphEIDistanceUnsigned::TestFloydWarshall() const {
   for (unsigned i = 0; i < vv.size(); ++i) {
     for (uint64_t d : vv[i]) h = HashCombine(h, d);
   }
-  std::cout << "Test results  [FlWa]: " << h << "\t" << t.GetMilliseconds()
+  std::cout << "Test results  [A  FlWa]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
 }
@@ -149,7 +149,7 @@ size_t TesterGraphEIDistanceUnsigned::TestGoldbergRadzik() const {
     v = graph::distance::spfa::GoldbergRadzik(g, edge_proxy, i, max_cost);
     for (unsigned d : v) h = HashCombine(h, d);
   }
-  std::cout << "Test results  [GR  ]: " << h << "\t" << t.GetMilliseconds()
+  std::cout << "Test results  [S  GR  ]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
 }
@@ -163,7 +163,7 @@ size_t TesterGraphEIDistanceUnsigned::TestGoldbergRadzikLazy() const {
     v = graph::distance::spfa::GoldbergRadzikLazy(g, edge_proxy, i, max_cost);
     for (unsigned d : v) h = HashCombine(h, d);
   }
-  std::cout << "Test results  [GRL ]: " << h << "\t" << t.GetMilliseconds()
+  std::cout << "Test results  [S  GRL ]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
 }
@@ -177,7 +177,7 @@ size_t TesterGraphEIDistanceUnsigned::TestGoldbergRadzikPCR() const {
     v = graph::distance::spfa::GoldbergRadzikPCR(g, edge_proxy, i, max_cost);
     for (unsigned d : v) h = HashCombine(h, d);
   }
-  std::cout << "Test results  [GRP ]: " << h << "\t" << t.GetMilliseconds()
+  std::cout << "Test results  [S  GRP ]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
 }
@@ -191,7 +191,7 @@ size_t TesterGraphEIDistanceUnsigned::TestGoldfarbHaoKai() const {
     v = graph::distance::spfa::GoldfarbHaoKai(g, edge_proxy, i, max_cost);
     for (unsigned d : v) h = HashCombine(h, d);
   }
-  std::cout << "Test results  [GHK ]: " << h << "\t" << t.GetMilliseconds()
+  std::cout << "Test results  [S  GHK ]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
 }
@@ -204,7 +204,7 @@ size_t TesterGraphEIDistanceUnsigned::TestJohnson() const {
   for (unsigned i = 0; i < vv.size(); ++i) {
     for (uint64_t d : vv[i]) h = HashCombine(h, d);
   }
-  std::cout << "Test results  [John]: " << h << "\t" << t.GetMilliseconds()
+  std::cout << "Test results  [A  John]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
 }
@@ -218,7 +218,7 @@ size_t TesterGraphEIDistanceUnsigned::TestLevit() const {
     v = graph::distance::spfa::Levit(g, edge_proxy, i, max_cost);
     for (unsigned d : v) h = HashCombine(h, d);
   }
-  std::cout << "Test results  [Levi]: " << h << "\t" << t.GetMilliseconds()
+  std::cout << "Test results  [S  Levi]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
 }
@@ -232,7 +232,7 @@ size_t TesterGraphEIDistanceUnsigned::TestPallottino() const {
     v = graph::distance::spfa::Pallottino(g, edge_proxy, i, max_cost);
     for (unsigned d : v) h = HashCombine(h, d);
   }
-  std::cout << "Test results  [Pall]: " << h << "\t" << t.GetMilliseconds()
+  std::cout << "Test results  [S  Pall]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
 }
@@ -246,7 +246,7 @@ size_t TesterGraphEIDistanceUnsigned::TestSIPITQ() const {
     v = graph::distance::spfa::SIPITQ(g, edge_proxy, i, max_cost);
     for (unsigned d : v) h = HashCombine(h, d);
   }
-  std::cout << "Test results  [ SPQ]: " << h << "\t" << t.GetMilliseconds()
+  std::cout << "Test results  [S   SPQ]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
 }
@@ -260,7 +260,7 @@ size_t TesterGraphEIDistanceUnsigned::TestSPFA() const {
     v = graph::distance::spfa::SPFA(g, edge_proxy, i, max_cost);
     for (unsigned d : v) h = HashCombine(h, d);
   }
-  std::cout << "Test results  [SPFA]: " << h << "\t" << t.GetMilliseconds()
+  std::cout << "Test results  [S  SPFA]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
 }
@@ -274,7 +274,7 @@ size_t TesterGraphEIDistanceUnsigned::TestSPFALLL() const {
     v = graph::distance::spfa::LargeLabelLast(g, edge_proxy, i, max_cost);
     for (unsigned d : v) h = HashCombine(h, d);
   }
-  std::cout << "Test results  [ LLL]: " << h << "\t" << t.GetMilliseconds()
+  std::cout << "Test results  [S   LLL]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
 }
@@ -288,7 +288,7 @@ size_t TesterGraphEIDistanceUnsigned::TestSPFASafe() const {
     v = graph::distance::spfa::Safe(g, edge_proxy, i, max_cost);
     for (unsigned d : v) h = HashCombine(h, d);
   }
-  std::cout << "Test results  [Safe]: " << h << "\t" << t.GetMilliseconds()
+  std::cout << "Test results  [S  Safe]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
 }
@@ -302,7 +302,7 @@ size_t TesterGraphEIDistanceUnsigned::TestSPFASLF() const {
     v = graph::distance::spfa::SmallLabelFirst(g, edge_proxy, i, max_cost);
     for (unsigned d : v) h = HashCombine(h, d);
   }
-  std::cout << "Test results  [ SLF]: " << h << "\t" << t.GetMilliseconds()
+  std::cout << "Test results  [S   SLF]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
 }
@@ -316,7 +316,7 @@ size_t TesterGraphEIDistanceUnsigned::TestTarjan() const {
     v = graph::distance::spfa::Tarjan(g, edge_proxy, i, max_cost);
     for (unsigned d : v) h = HashCombine(h, d);
   }
-  std::cout << "Test results  [Ta  ]: " << h << "\t" << t.GetMilliseconds()
+  std::cout << "Test results  [S  Ta  ]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
 }
@@ -330,7 +330,7 @@ size_t TesterGraphEIDistanceUnsigned::TestTarjanPCR() const {
     v = graph::distance::spfa::TarjanPCR(g, edge_proxy, i, max_cost);
     for (unsigned d : v) h = HashCombine(h, d);
   }
-  std::cout << "Test results  [TaP ]: " << h << "\t" << t.GetMilliseconds()
+  std::cout << "Test results  [S  TaP ]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
 }
@@ -344,7 +344,7 @@ size_t TesterGraphEIDistanceUnsigned::TestTarjanPCRTime() const {
     v = graph::distance::spfa::TarjanPCRTime(g, edge_proxy, i, max_cost);
     for (unsigned d : v) h = HashCombine(h, d);
   }
-  std::cout << "Test results  [TaPT]: " << h << "\t" << t.GetMilliseconds()
+  std::cout << "Test results  [S  TaPT]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
 }
@@ -358,7 +358,7 @@ size_t TesterGraphEIDistanceUnsigned::TestTarjanTime() const {
     v = graph::distance::spfa::TarjanTime(g, edge_proxy, i, max_cost);
     for (unsigned d : v) h = HashCombine(h, d);
   }
-  std::cout << "Test results  [Ta T]: " << h << "\t" << t.GetMilliseconds()
+  std::cout << "Test results  [S  Ta T]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
 }
@@ -372,7 +372,7 @@ size_t TesterGraphEIDistanceUnsigned::TestZDO() const {
     v = graph::distance::spfa::ZeroDegreesOnly(g, edge_proxy, i, max_cost);
     for (unsigned d : v) h = HashCombine(h, d);
   }
-  std::cout << "Test results  [ZDO ]: " << h << "\t" << t.GetMilliseconds()
+  std::cout << "Test results  [S  ZDO ]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
 }
@@ -386,7 +386,7 @@ size_t TesterGraphEIDistanceUnsigned::TestZDOBase() const {
     v = graph::distance::spfa::ZeroDegreesOnlyBase(g, edge_proxy, i, max_cost);
     for (unsigned d : v) h = HashCombine(h, d);
   }
-  std::cout << "Test results  [ZDOB]: " << h << "\t" << t.GetMilliseconds()
+  std::cout << "Test results  [S  ZDOB]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
 }
@@ -400,7 +400,7 @@ size_t TesterGraphEIDistanceUnsigned::TestZDOTime() const {
     v = graph::distance::spfa::ZeroDegreesOnlyTime(g, edge_proxy, i, max_cost);
     for (unsigned d : v) h = HashCombine(h, d);
   }
-  std::cout << "Test results  [ZDOT]: " << h << "\t" << t.GetMilliseconds()
+  std::cout << "Test results  [S  ZDOT]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
 }
@@ -415,7 +415,7 @@ size_t TesterGraphEIDistanceUnsigned::TestHP(const std::string& name) const {
     v = DistanceFromSourcePositiveCost_HP<THeap>(g, edge_proxy, i, max_cost);
     for (unsigned d : v) h = HashCombine(h, d);
   }
-  std::cout << "Test results  [" << name << "]: " << h << "\t"
+  std::cout << "Test results  [DB" << name << "]: " << h << "\t"
             << t.GetMilliseconds() << std::endl;
   return h;
 }
@@ -430,7 +430,7 @@ size_t TesterGraphEIDistanceUnsigned::TestHPV(const std::string& name) const {
     v = DistanceFromSourcePositiveCost_HPV<THeap>(g, edge_proxy, i, max_cost);
     for (unsigned d : v) h = HashCombine(h, d);
   }
-  std::cout << "Test results  [" << name << "]: " << h << "\t"
+  std::cout << "Test results  [DB" << name << "]: " << h << "\t"
             << t.GetMilliseconds() << std::endl;
   return h;
 }
@@ -446,7 +446,7 @@ size_t TesterGraphEIDistanceUnsigned::TestMHPV(const std::string& name) const {
                                                    max_edge_cost, max_cost);
     for (unsigned d : v) h = HashCombine(h, d);
   }
-  std::cout << "Test results  [" << name << "]: " << h << "\t"
+  std::cout << "Test results  [DB" << name << "]: " << h << "\t"
             << t.GetMilliseconds() << std::endl;
   return h;
 }
@@ -461,7 +461,7 @@ size_t TesterGraphEIDistanceUnsigned::TestKPM(const std::string& name) const {
     v = DistanceFromSourcePositiveCost_KPM<THeap>(g, edge_proxy, i, max_cost);
     for (unsigned d : v) h = HashCombine(h, d);
   }
-  std::cout << "Test results  [" << name << "]: " << h << "\t"
+  std::cout << "Test results  [DE" << name << "]: " << h << "\t"
             << t.GetMilliseconds() << std::endl;
   return h;
 }
@@ -476,7 +476,7 @@ size_t TesterGraphEIDistanceUnsigned::TestKVM(const std::string& name) const {
     v = DistanceFromSourcePositiveCost_KVM<THeap>(g, edge_proxy, i, max_cost);
     for (unsigned d : v) h = HashCombine(h, d);
   }
-  std::cout << "Test results  [" << name << "]: " << h << "\t"
+  std::cout << "Test results  [DM" << name << "]: " << h << "\t"
             << t.GetMilliseconds() << std::endl;
   return h;
 }
@@ -492,7 +492,7 @@ size_t TesterGraphEIDistanceUnsigned::TestMKVM(const std::string& name) const {
                                                    max_edge_cost, max_cost);
     for (unsigned d : v) h = HashCombine(h, d);
   }
-  std::cout << "Test results  [" << name << "]: " << h << "\t"
+  std::cout << "Test results  [DM" << name << "]: " << h << "\t"
             << t.GetMilliseconds() << std::endl;
   return h;
 }
@@ -512,60 +512,61 @@ bool TesterGraphEIDistanceUnsigned::TestAll() {
       assert(false);
   }
   std::unordered_set<size_t> hs;
-  hs.insert(TestHP<TBinaryHeap>("  BH"));
-  hs.insert(TestHP<TDHeap2>("HP 2"));
-  hs.insert(TestHP<TDHeap4>("HP 4"));
-  hs.insert(TestHP<TDHeap8>("HP 8"));
-  hs.insert(TestHP<TDHeap16>("HP16"));
-  hs.insert(TestHPV<heap::base::BucketQueue<unsigned>>(" BQ "));
-  hs.insert(TestHPV<heap::base::BucketQueueLL<unsigned>>(" BQL"));
-  hs.insert(TestHPV<heap::monotone::base::BucketQueue<unsigned>>("MBQ "));
-  hs.insert(TestHPV<heap::monotone::base::BucketQueueLL<unsigned>>("MBQL"));
+  hs.insert(TestHP<TBinaryHeap>("  BH "));
+  hs.insert(TestHP<TDHeap2>(" DH1 "));
+  hs.insert(TestHP<TDHeap4>(" DH2 "));
+  hs.insert(TestHP<TDHeap8>(" DH3 "));
+  hs.insert(TestHP<TDHeap16>(" DH4 "));
+  hs.insert(TestHPV<heap::base::BucketQueue<unsigned>>(" BQ  "));
+  hs.insert(TestHPV<heap::base::BucketQueueLL<unsigned>>(" BQ L"));
+  hs.insert(TestHPV<heap::monotone::base::BucketQueue<unsigned>>("MBQ  "));
+  hs.insert(TestHPV<heap::monotone::base::BucketQueueLL<unsigned>>("MBQ L"));
   hs.insert(
-      TestMHPV<heap::monotone::base::RollingBucketQueue<unsigned>>("MRQ "));
+      TestMHPV<heap::monotone::base::RollingBucketQueue<unsigned>>("MRQ  "));
   hs.insert(
-      TestMHPV<heap::monotone::base::RollingBucketQueueLL<unsigned>>("MRQL"));
+      TestMHPV<heap::monotone::base::RollingBucketQueueLL<unsigned>>("MRQ L"));
   hs.insert(
-      TestHPV<heap::monotone::base::TwoLayersBuckets<4, unsigned>>("MQ2 "));
+      TestHPV<heap::monotone::base::TwoLayersBuckets<4, unsigned>>("MBQ2 "));
   hs.insert(
-      TestHPV<heap::monotone::base::TwoLayersBuckets<8, unsigned>>("MQ3 "));
+      TestHPV<heap::monotone::base::TwoLayersBuckets<8, unsigned>>("MBQ3 "));
   hs.insert(
-      TestHPV<heap::monotone::base::TwoLayersBuckets<16, unsigned>>("MQ4 "));
+      TestHPV<heap::monotone::base::TwoLayersBuckets<16, unsigned>>("MBQ4 "));
   hs.insert(
-      TestHPV<heap::monotone::base::TwoLayersBuckets<32, unsigned>>("MQ5 "));
-  hs.insert(TestKPM<heap::ext::DHeapUKeyPosMap<2, unsigned>>("KPM2"));
-  hs.insert(TestKPM<heap::ext::DHeapUKeyPosMap<4, unsigned>>("KPM4"));
-  hs.insert(TestKPM<heap::ext::DHeapUKeyPosMap<8, unsigned>>("KPM8"));
-  hs.insert(TestKVM<heap::ukvm::DHeap<2, unsigned>>("DM 2"));
-  hs.insert(TestKVM<heap::ukvm::DHeap<4, unsigned>>("DM 4"));
-  hs.insert(TestKVM<heap::ukvm::DHeap<8, unsigned>>("DM 8"));
-  hs.insert(TestKVM<heap::ukvm::DHeap<16, unsigned>>("DM16"));
-  hs.insert(TestKVM<heap::ukvm::CompleteBinaryTree<unsigned>>(" CBT"));
-  hs.insert(TestKVM<heap::ukvm::BucketQueue>(" BM "));
-  hs.insert(TestKVM<heap::ukvm::BucketQueueDLL>(" BML"));
-  hs.insert(TestKVM<heap::monotone::ukvm::BucketQueue>("MBM "));
-  hs.insert(TestKVM<heap::monotone::ukvm::BucketQueueDLL>("MBML"));
-  hs.insert(TestMKVM<heap::monotone::ukvm::RollingBucketQueue>("MRM "));
-  hs.insert(TestMKVM<heap::monotone::ukvm::RollingBucketQueueDLL>("MRML"));
-  hs.insert(TestKVM<heap::monotone::ukvm::TwoLayersBuckets<4>>("MM2 "));
-  hs.insert(TestKVM<heap::monotone::ukvm::TwoLayersBuckets<8>>("MM3 "));
-  hs.insert(TestKVM<heap::monotone::ukvm::TwoLayersBuckets<16>>("MM4 "));
-  hs.insert(TestKVM<heap::monotone::ukvm::TwoLayersBuckets<32>>("MM5 "));
-  hs.insert(TestKVM<heap::monotone::ukvm::TwoLayersBucketsDLL<4>>("MM2L"));
-  hs.insert(TestKVM<heap::monotone::ukvm::TwoLayersBucketsDLL<8>>("MM3L"));
-  hs.insert(TestKVM<heap::monotone::ukvm::TwoLayersBucketsDLL<16>>("MM4L"));
-  hs.insert(TestKVM<heap::monotone::ukvm::TwoLayersBucketsDLL<32>>("MM5L"));
-  hs.insert(TestKVM<heap::monotone::ukvm::Radix>("MRX "));
-  hs.insert(TestKVM<heap::monotone::ukvm::RadixDLL>("MRXL"));
-  hs.insert(TestKVM<heap::ukvm::Binomial<unsigned>>("BNML"));
-  hs.insert(TestKVM<heap::ukvm::Fibonacci<unsigned>>("FBNC"));
-  hs.insert(TestKVM<TPairing<0, 0>>("PR00"));
-  hs.insert(TestKVM<TPairing<1, 0>>("PR01"));
-  hs.insert(TestKVM<TPairing<0, 1>>("PR10"));
-  hs.insert(TestKVM<TPairing<1, 1>>("PR11"));
-  hs.insert(TestDial());
+      TestHPV<heap::monotone::base::TwoLayersBuckets<32, unsigned>>("MBQ5 "));
+  hs.insert(TestKPM<heap::ext::DHeapUKeyPosMap<2, unsigned>>(" DH1 "));
+  hs.insert(TestKPM<heap::ext::DHeapUKeyPosMap<4, unsigned>>(" DH2 "));
+  hs.insert(TestKPM<heap::ext::DHeapUKeyPosMap<8, unsigned>>(" DH3 "));
+  hs.insert(TestKPM<heap::ext::DHeapUKeyPosMap<16, unsigned>>(" DH4 "));
+  hs.insert(TestKVM<heap::ukvm::DHeap<2, unsigned>>(" DH1 "));
+  hs.insert(TestKVM<heap::ukvm::DHeap<4, unsigned>>(" DH2 "));
+  hs.insert(TestKVM<heap::ukvm::DHeap<8, unsigned>>(" DH3 "));
+  hs.insert(TestKVM<heap::ukvm::DHeap<16, unsigned>>(" DH4 "));
+  hs.insert(TestKVM<heap::ukvm::CompleteBinaryTree<unsigned>>(" CBT "));
+  hs.insert(TestKVM<heap::ukvm::BucketQueue>(" BQ  "));
+  hs.insert(TestKVM<heap::ukvm::BucketQueueDLL>(" BQ L"));
+  hs.insert(TestKVM<heap::ukvm::Binomial<unsigned>>(" BNML"));
+  hs.insert(TestKVM<heap::ukvm::Fibonacci<unsigned>>(" FBNC"));
+  hs.insert(TestKVM<TPairing<0, 0>>(" PR00"));
+  hs.insert(TestKVM<TPairing<1, 0>>(" PR01"));
+  hs.insert(TestKVM<TPairing<0, 1>>(" PR10"));
+  hs.insert(TestKVM<TPairing<1, 1>>(" PR11"));
   if (gtype != EGraphType::SPARSE)
-    hs.insert(TestKVM<heap::ukvm::UnorderedSet<unsigned>>("USet"));
+    hs.insert(TestKVM<heap::ukvm::UnorderedSet<unsigned>>(" USet"));
+  hs.insert(TestKVM<heap::monotone::ukvm::BucketQueue>("MBQ  "));
+  hs.insert(TestKVM<heap::monotone::ukvm::BucketQueueDLL>("MBQ L"));
+  hs.insert(TestMKVM<heap::monotone::ukvm::RollingBucketQueue>("MRQ  "));
+  hs.insert(TestMKVM<heap::monotone::ukvm::RollingBucketQueueDLL>("MRQ L"));
+  hs.insert(TestKVM<heap::monotone::ukvm::TwoLayersBuckets<4>>("MBQ2 "));
+  hs.insert(TestKVM<heap::monotone::ukvm::TwoLayersBuckets<8>>("MBQ3 "));
+  hs.insert(TestKVM<heap::monotone::ukvm::TwoLayersBuckets<16>>("MBQ4 "));
+  hs.insert(TestKVM<heap::monotone::ukvm::TwoLayersBuckets<32>>("MBQ5 "));
+  hs.insert(TestKVM<heap::monotone::ukvm::TwoLayersBucketsDLL<4>>("MBQ2L"));
+  hs.insert(TestKVM<heap::monotone::ukvm::TwoLayersBucketsDLL<8>>("MBQ3L"));
+  hs.insert(TestKVM<heap::monotone::ukvm::TwoLayersBucketsDLL<16>>("MBQ4L"));
+  hs.insert(TestKVM<heap::monotone::ukvm::TwoLayersBucketsDLL<32>>("MBQ5L"));
+  hs.insert(TestKVM<heap::monotone::ukvm::Radix>("MRDX "));
+  hs.insert(TestKVM<heap::monotone::ukvm::RadixDLL>("MRDXL"));
+  hs.insert(TestDial());
   if (gtype == EGraphType::SMALL) hs.insert(TestBellmanFord());
   if (gtype == EGraphType::SMALL) hs.insert(TestBellmanFordYen());
   hs.insert(TestSPFA());
