@@ -409,13 +409,13 @@ size_t TesterGraphEIDistanceUnsigned::TestZDOTime() const {
 }
 
 template <template <class TData> class THeap>
-size_t TesterGraphEIDistanceUnsigned::TestHP(const std::string& name) const {
+size_t TesterGraphEIDistanceUnsigned::TestDBH(const std::string& name) const {
   Timer t;
   size_t h = 0;
   unsigned max_cost = -1u;
   std::vector<unsigned> v;
   for (unsigned i = 0; i < g.Size(); ++i) {
-    v = DistanceFromSourcePositiveCost_HP<THeap>(g, edge_proxy, i, max_cost);
+    v = DistanceFromSourcePositiveCost_DBH<THeap>(g, edge_proxy, i, max_cost);
     for (unsigned d : v) h = HashCombine(h, d);
   }
   std::cout << "Test results  [DB" << name << "]: " << h << "\t"
@@ -424,13 +424,13 @@ size_t TesterGraphEIDistanceUnsigned::TestHP(const std::string& name) const {
 }
 
 template <class THeap>
-size_t TesterGraphEIDistanceUnsigned::TestHPV(const std::string& name) const {
+size_t TesterGraphEIDistanceUnsigned::TestDBHP(const std::string& name) const {
   Timer t;
   size_t h = 0;
   unsigned max_cost = -1u;
   std::vector<unsigned> v;
   for (unsigned i = 0; i < g.Size(); ++i) {
-    v = DistanceFromSourcePositiveCost_HPV<THeap>(g, edge_proxy, i, max_cost);
+    v = DistanceFromSourcePositiveCost_DBHP<THeap>(g, edge_proxy, i, max_cost);
     for (unsigned d : v) h = HashCombine(h, d);
   }
   std::cout << "Test results  [DB" << name << "]: " << h << "\t"
@@ -439,13 +439,13 @@ size_t TesterGraphEIDistanceUnsigned::TestHPV(const std::string& name) const {
 }
 
 template <class THeap>
-size_t TesterGraphEIDistanceUnsigned::TestMHPV(const std::string& name) const {
+size_t TesterGraphEIDistanceUnsigned::TestDBHPW(const std::string& name) const {
   Timer t;
   size_t h = 0;
   unsigned max_cost = -1u;
   std::vector<unsigned> v;
   for (unsigned i = 0; i < g.Size(); ++i) {
-    v = DistanceFromSourcePositiveCost_MHPV<THeap>(g, edge_proxy, i,
+    v = DistanceFromSourcePositiveCost_DBHPW<THeap>(g, edge_proxy, i,
                                                    max_edge_cost, max_cost);
     for (unsigned d : v) h = HashCombine(h, d);
   }
@@ -455,13 +455,13 @@ size_t TesterGraphEIDistanceUnsigned::TestMHPV(const std::string& name) const {
 }
 
 template <class THeap>
-size_t TesterGraphEIDistanceUnsigned::TestKPM(const std::string& name) const {
+size_t TesterGraphEIDistanceUnsigned::TestDEH(const std::string& name) const {
   Timer t;
   size_t h = 0;
   unsigned max_cost = -1u;
   std::vector<unsigned> v;
   for (unsigned i = 0; i < g.Size(); ++i) {
-    v = DistanceFromSourcePositiveCost_KPM<THeap>(g, edge_proxy, i, max_cost);
+    v = DistanceFromSourcePositiveCost_DEH<THeap>(g, edge_proxy, i, max_cost);
     for (unsigned d : v) h = HashCombine(h, d);
   }
   std::cout << "Test results  [DE" << name << "]: " << h << "\t"
@@ -470,13 +470,13 @@ size_t TesterGraphEIDistanceUnsigned::TestKPM(const std::string& name) const {
 }
 
 template <class THeap>
-size_t TesterGraphEIDistanceUnsigned::TestKVM(const std::string& name) const {
+size_t TesterGraphEIDistanceUnsigned::TestDMH(const std::string& name) const {
   Timer t;
   size_t h = 0;
   unsigned max_cost = -1u;
   std::vector<unsigned> v;
   for (unsigned i = 0; i < g.Size(); ++i) {
-    v = DistanceFromSourcePositiveCost_KVM<THeap>(g, edge_proxy, i, max_cost);
+    v = DistanceFromSourcePositiveCost_DMH<THeap>(g, edge_proxy, i, max_cost);
     for (unsigned d : v) h = HashCombine(h, d);
   }
   std::cout << "Test results  [DM" << name << "]: " << h << "\t"
@@ -485,13 +485,13 @@ size_t TesterGraphEIDistanceUnsigned::TestKVM(const std::string& name) const {
 }
 
 template <class THeap>
-size_t TesterGraphEIDistanceUnsigned::TestMKVM(const std::string& name) const {
+size_t TesterGraphEIDistanceUnsigned::TestDMHW(const std::string& name) const {
   Timer t;
   size_t h = 0;
   unsigned max_cost = -1u;
   std::vector<unsigned> v;
   for (unsigned i = 0; i < g.Size(); ++i) {
-    v = DistanceFromSourcePositiveCost_MKVM<THeap>(g, edge_proxy, i,
+    v = DistanceFromSourcePositiveCost_DMHW<THeap>(g, edge_proxy, i,
                                                    max_edge_cost, max_cost);
     for (unsigned d : v) h = HashCombine(h, d);
   }
@@ -515,64 +515,64 @@ bool TesterGraphEIDistanceUnsigned::TestAll() {
       assert(false);
   }
   std::unordered_set<size_t> hs;
-  hs.insert(TestHP<TBinaryHeap>("  BH "));
-  hs.insert(TestHP<TDHeap2>(" DH1 "));
-  hs.insert(TestHP<TDHeap4>(" DH2 "));
-  hs.insert(TestHP<TDHeap8>(" DH3 "));
-  hs.insert(TestHP<TDHeap16>(" DH4 "));
-  hs.insert(TestHPV<heap::base::BucketQueue<unsigned>>(" BQ  "));
-  hs.insert(TestHPV<heap::base::BucketQueueLL<unsigned>>(" BQ L"));
-  hs.insert(TestHPV<heap::monotone::base::BucketQueue<unsigned>>("MBQ  "));
-  hs.insert(TestHPV<heap::monotone::base::BucketQueueLL<unsigned>>("MBQ L"));
+  hs.insert(TestDBH<TBinaryHeap>("  BH "));
+  hs.insert(TestDBH<TDHeap2>(" DH1 "));
+  hs.insert(TestDBH<TDHeap4>(" DH2 "));
+  hs.insert(TestDBH<TDHeap8>(" DH3 "));
+  hs.insert(TestDBH<TDHeap16>(" DH4 "));
+  hs.insert(TestDBHP<heap::base::BucketQueue<unsigned>>(" BQ  "));
+  hs.insert(TestDBHP<heap::base::BucketQueueLL<unsigned>>(" BQ L"));
+  hs.insert(TestDBHP<heap::monotone::base::BucketQueue<unsigned>>("MBQ  "));
+  hs.insert(TestDBHP<heap::monotone::base::BucketQueueLL<unsigned>>("MBQ L"));
   hs.insert(
-      TestMHPV<heap::monotone::base::RollingBucketQueue<unsigned>>("MRQ  "));
+      TestDBHPW<heap::monotone::base::RollingBucketQueue<unsigned>>("MRQ  "));
   hs.insert(
-      TestMHPV<heap::monotone::base::RollingBucketQueueLL<unsigned>>("MRQ L"));
+      TestDBHPW<heap::monotone::base::RollingBucketQueueLL<unsigned>>("MRQ L"));
   hs.insert(
-      TestHPV<heap::monotone::base::TwoLayersBuckets<4, unsigned>>("MBQ2 "));
+      TestDBHP<heap::monotone::base::TwoLayersBuckets<4, unsigned>>("MBQ2 "));
   hs.insert(
-      TestHPV<heap::monotone::base::TwoLayersBuckets<8, unsigned>>("MBQ3 "));
+      TestDBHP<heap::monotone::base::TwoLayersBuckets<8, unsigned>>("MBQ3 "));
   hs.insert(
-      TestHPV<heap::monotone::base::TwoLayersBuckets<16, unsigned>>("MBQ4 "));
+      TestDBHP<heap::monotone::base::TwoLayersBuckets<16, unsigned>>("MBQ4 "));
   hs.insert(
-      TestHPV<heap::monotone::base::TwoLayersBuckets<32, unsigned>>("MBQ5 "));
+      TestDBHP<heap::monotone::base::TwoLayersBuckets<32, unsigned>>("MBQ5 "));
   hs.insert(
-      TestMHPV<heap::monotone::base::TwoLayersBucketsSqrt<unsigned>>("MBQA "));
-  hs.insert(TestKPM<heap::ext::DHeapUKeyPosMap<2, unsigned>>(" DH1 "));
-  hs.insert(TestKPM<heap::ext::DHeapUKeyPosMap<4, unsigned>>(" DH2 "));
-  hs.insert(TestKPM<heap::ext::DHeapUKeyPosMap<8, unsigned>>(" DH3 "));
-  hs.insert(TestKPM<heap::ext::DHeapUKeyPosMap<16, unsigned>>(" DH4 "));
-  hs.insert(TestKVM<heap::ukvm::DHeap<2, unsigned>>(" DH1 "));
-  hs.insert(TestKVM<heap::ukvm::DHeap<4, unsigned>>(" DH2 "));
-  hs.insert(TestKVM<heap::ukvm::DHeap<8, unsigned>>(" DH3 "));
-  hs.insert(TestKVM<heap::ukvm::DHeap<16, unsigned>>(" DH4 "));
-  hs.insert(TestKVM<heap::ukvm::CompleteBinaryTree<unsigned>>(" CBT "));
-  hs.insert(TestKVM<heap::ukvm::BucketQueue>(" BQ  "));
-  hs.insert(TestKVM<heap::ukvm::BucketQueueDLL>(" BQ L"));
-  hs.insert(TestKVM<heap::ukvm::Binomial<unsigned>>(" BNML"));
-  hs.insert(TestKVM<heap::ukvm::Fibonacci<unsigned>>(" FBNC"));
-  hs.insert(TestKVM<TPairing<0, 0>>(" PR00"));
-  hs.insert(TestKVM<TPairing<1, 0>>(" PR01"));
-  hs.insert(TestKVM<TPairing<0, 1>>(" PR10"));
-  hs.insert(TestKVM<TPairing<1, 1>>(" PR11"));
+      TestDBHPW<heap::monotone::base::TwoLayersBucketsSqrt<unsigned>>("MBQA "));
+  hs.insert(TestDEH<heap::ext::DHeapUKeyPosMap<2, unsigned>>(" DH1 "));
+  hs.insert(TestDEH<heap::ext::DHeapUKeyPosMap<4, unsigned>>(" DH2 "));
+  hs.insert(TestDEH<heap::ext::DHeapUKeyPosMap<8, unsigned>>(" DH3 "));
+  hs.insert(TestDEH<heap::ext::DHeapUKeyPosMap<16, unsigned>>(" DH4 "));
+  hs.insert(TestDMH<heap::ukvm::DHeap<2, unsigned>>(" DH1 "));
+  hs.insert(TestDMH<heap::ukvm::DHeap<4, unsigned>>(" DH2 "));
+  hs.insert(TestDMH<heap::ukvm::DHeap<8, unsigned>>(" DH3 "));
+  hs.insert(TestDMH<heap::ukvm::DHeap<16, unsigned>>(" DH4 "));
+  hs.insert(TestDMH<heap::ukvm::CompleteBinaryTree<unsigned>>(" CBT "));
+  hs.insert(TestDMH<heap::ukvm::BucketQueue>(" BQ  "));
+  hs.insert(TestDMH<heap::ukvm::BucketQueueDLL>(" BQ L"));
+  hs.insert(TestDMH<heap::ukvm::Binomial<unsigned>>(" BNML"));
+  hs.insert(TestDMH<heap::ukvm::Fibonacci<unsigned>>(" FBNC"));
+  hs.insert(TestDMH<TPairing<0, 0>>(" PR00"));
+  hs.insert(TestDMH<TPairing<1, 0>>(" PR01"));
+  hs.insert(TestDMH<TPairing<0, 1>>(" PR10"));
+  hs.insert(TestDMH<TPairing<1, 1>>(" PR11"));
   if (gtype != EGraphType::SPARSE)
-    hs.insert(TestKVM<heap::ukvm::UnorderedSet<unsigned>>(" USet"));
-  hs.insert(TestKVM<heap::monotone::ukvm::BucketQueue>("MBQ  "));
-  hs.insert(TestKVM<heap::monotone::ukvm::BucketQueueDLL>("MBQ L"));
-  hs.insert(TestMKVM<heap::monotone::ukvm::RollingBucketQueue>("MRQ  "));
-  hs.insert(TestMKVM<heap::monotone::ukvm::RollingBucketQueueDLL>("MRQ L"));
-  hs.insert(TestKVM<heap::monotone::ukvm::TwoLayersBuckets<4>>("MBQ2 "));
-  hs.insert(TestKVM<heap::monotone::ukvm::TwoLayersBuckets<8>>("MBQ3 "));
-  hs.insert(TestKVM<heap::monotone::ukvm::TwoLayersBuckets<16>>("MBQ4 "));
-  hs.insert(TestKVM<heap::monotone::ukvm::TwoLayersBuckets<32>>("MBQ5 "));
-  hs.insert(TestMKVM<heap::monotone::ukvm::TwoLayersBucketsSqrt>("MBQA "));
-  hs.insert(TestKVM<heap::monotone::ukvm::TwoLayersBucketsDLL<4>>("MBQ2L"));
-  hs.insert(TestKVM<heap::monotone::ukvm::TwoLayersBucketsDLL<8>>("MBQ3L"));
-  hs.insert(TestKVM<heap::monotone::ukvm::TwoLayersBucketsDLL<16>>("MBQ4L"));
-  hs.insert(TestKVM<heap::monotone::ukvm::TwoLayersBucketsDLL<32>>("MBQ5L"));
-  hs.insert(TestMKVM<heap::monotone::ukvm::TwoLayersBucketsSqrtDLL>("MBQAL"));
-  hs.insert(TestKVM<heap::monotone::ukvm::Radix>("MRDX "));
-  hs.insert(TestKVM<heap::monotone::ukvm::RadixDLL>("MRDXL"));
+    hs.insert(TestDMH<heap::ukvm::UnorderedSet<unsigned>>(" USet"));
+  hs.insert(TestDMH<heap::monotone::ukvm::BucketQueue>("MBQ  "));
+  hs.insert(TestDMH<heap::monotone::ukvm::BucketQueueDLL>("MBQ L"));
+  hs.insert(TestDMHW<heap::monotone::ukvm::RollingBucketQueue>("MRQ  "));
+  hs.insert(TestDMHW<heap::monotone::ukvm::RollingBucketQueueDLL>("MRQ L"));
+  hs.insert(TestDMH<heap::monotone::ukvm::TwoLayersBuckets<4>>("MBQ2 "));
+  hs.insert(TestDMH<heap::monotone::ukvm::TwoLayersBuckets<8>>("MBQ3 "));
+  hs.insert(TestDMH<heap::monotone::ukvm::TwoLayersBuckets<16>>("MBQ4 "));
+  hs.insert(TestDMH<heap::monotone::ukvm::TwoLayersBuckets<32>>("MBQ5 "));
+  hs.insert(TestDMHW<heap::monotone::ukvm::TwoLayersBucketsSqrt>("MBQA "));
+  hs.insert(TestDMH<heap::monotone::ukvm::TwoLayersBucketsDLL<4>>("MBQ2L"));
+  hs.insert(TestDMH<heap::monotone::ukvm::TwoLayersBucketsDLL<8>>("MBQ3L"));
+  hs.insert(TestDMH<heap::monotone::ukvm::TwoLayersBucketsDLL<16>>("MBQ4L"));
+  hs.insert(TestDMH<heap::monotone::ukvm::TwoLayersBucketsDLL<32>>("MBQ5L"));
+  hs.insert(TestDMHW<heap::monotone::ukvm::TwoLayersBucketsSqrtDLL>("MBQAL"));
+  hs.insert(TestDMH<heap::monotone::ukvm::Radix>("MRDX "));
+  hs.insert(TestDMH<heap::monotone::ukvm::RadixDLL>("MRDXL"));
   hs.insert(TestDial());
   if (gtype == EGraphType::SMALL) hs.insert(TestBellmanFord());
   if (gtype == EGraphType::SMALL) hs.insert(TestBellmanFordYen());

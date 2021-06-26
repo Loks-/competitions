@@ -372,14 +372,14 @@ size_t TesterGraphEIDistancePositiveCost::TestZDOTime() const {
 }
 
 template <template <class TData> class THeap>
-size_t TesterGraphEIDistancePositiveCost::TestHP(
+size_t TesterGraphEIDistancePositiveCost::TestDBH(
     const std::string& name) const {
   Timer t;
   size_t h = 0;
   uint64_t max_cost = -1ull;
   std::vector<uint64_t> v;
   for (unsigned i = 0; i < g.Size(); ++i) {
-    v = DistanceFromSourcePositiveCost_HP<THeap>(g, edge_proxy, i, max_cost);
+    v = DistanceFromSourcePositiveCost_DBH<THeap>(g, edge_proxy, i, max_cost);
     for (uint64_t d : v) h = HashCombine(h, d);
   }
   std::cout << "Test results  [DB" << name << "]: " << h << "\t"
@@ -388,14 +388,14 @@ size_t TesterGraphEIDistancePositiveCost::TestHP(
 }
 
 template <class THeap>
-size_t TesterGraphEIDistancePositiveCost::TestKPM(
+size_t TesterGraphEIDistancePositiveCost::TestDEH(
     const std::string& name) const {
   Timer t;
   size_t h = 0;
   uint64_t max_cost = -1ull;
   std::vector<uint64_t> v;
   for (unsigned i = 0; i < g.Size(); ++i) {
-    v = DistanceFromSourcePositiveCost_KPM<THeap>(g, edge_proxy, i, max_cost);
+    v = DistanceFromSourcePositiveCost_DEH<THeap>(g, edge_proxy, i, max_cost);
     for (uint64_t d : v) h = HashCombine(h, d);
   }
   std::cout << "Test results  [DE" << name << "]: " << h << "\t"
@@ -404,14 +404,14 @@ size_t TesterGraphEIDistancePositiveCost::TestKPM(
 }
 
 template <class THeap>
-size_t TesterGraphEIDistancePositiveCost::TestKVM(
+size_t TesterGraphEIDistancePositiveCost::TestDMH(
     const std::string& name) const {
   Timer t;
   size_t h = 0;
   uint64_t max_cost = -1ull;
   std::vector<uint64_t> v;
   for (unsigned i = 0; i < g.Size(); ++i) {
-    v = DistanceFromSourcePositiveCost_KVM<THeap>(g, edge_proxy, i, max_cost);
+    v = DistanceFromSourcePositiveCost_DMH<THeap>(g, edge_proxy, i, max_cost);
     for (uint64_t d : v) h = HashCombine(h, d);
   }
   std::cout << "Test results  [DM" << name << "]: " << h << "\t"
@@ -434,28 +434,28 @@ bool TesterGraphEIDistancePositiveCost::TestAll() {
       assert(false);
   }
   std::unordered_set<size_t> hs;
-  hs.insert(TestHP<TBinaryHeap>("  BH "));
-  hs.insert(TestHP<TDHeap2>(" DH1 "));
-  hs.insert(TestHP<TDHeap4>(" DH2 "));
-  hs.insert(TestHP<TDHeap8>(" DH3 "));
-  hs.insert(TestHP<TDHeap16>(" DH4 "));
-  hs.insert(TestKPM<heap::ext::DHeapUKeyPosMap<2, uint64_t>>(" DH1 "));
-  hs.insert(TestKPM<heap::ext::DHeapUKeyPosMap<4, uint64_t>>(" DH2 "));
-  hs.insert(TestKPM<heap::ext::DHeapUKeyPosMap<8, uint64_t>>(" DH3 "));
-  hs.insert(TestKPM<heap::ext::DHeapUKeyPosMap<16, uint64_t>>(" DH4 "));
-  hs.insert(TestKVM<heap::ukvm::DHeap<2, uint64_t>>(" DH1 "));
-  hs.insert(TestKVM<heap::ukvm::DHeap<4, uint64_t>>(" DH2 "));
-  hs.insert(TestKVM<heap::ukvm::DHeap<8, uint64_t>>(" DH3 "));
-  hs.insert(TestKVM<heap::ukvm::DHeap<16, uint64_t>>(" DH4 "));
-  hs.insert(TestKVM<heap::ukvm::CompleteBinaryTree<uint64_t>>(" CBT "));
-  hs.insert(TestKVM<heap::ukvm::Binomial<uint64_t>>(" BNML"));
-  hs.insert(TestKVM<heap::ukvm::Fibonacci<uint64_t>>(" FBNC"));
-  hs.insert(TestKVM<TPairing<0, 0>>(" PR00"));
-  hs.insert(TestKVM<TPairing<1, 0>>(" PR01"));
-  hs.insert(TestKVM<TPairing<0, 1>>(" PR10"));
-  hs.insert(TestKVM<TPairing<1, 1>>(" PR11"));
+  hs.insert(TestDBH<TBinaryHeap>("  BH "));
+  hs.insert(TestDBH<TDHeap2>(" DH1 "));
+  hs.insert(TestDBH<TDHeap4>(" DH2 "));
+  hs.insert(TestDBH<TDHeap8>(" DH3 "));
+  hs.insert(TestDBH<TDHeap16>(" DH4 "));
+  hs.insert(TestDEH<heap::ext::DHeapUKeyPosMap<2, uint64_t>>(" DH1 "));
+  hs.insert(TestDEH<heap::ext::DHeapUKeyPosMap<4, uint64_t>>(" DH2 "));
+  hs.insert(TestDEH<heap::ext::DHeapUKeyPosMap<8, uint64_t>>(" DH3 "));
+  hs.insert(TestDEH<heap::ext::DHeapUKeyPosMap<16, uint64_t>>(" DH4 "));
+  hs.insert(TestDMH<heap::ukvm::DHeap<2, uint64_t>>(" DH1 "));
+  hs.insert(TestDMH<heap::ukvm::DHeap<4, uint64_t>>(" DH2 "));
+  hs.insert(TestDMH<heap::ukvm::DHeap<8, uint64_t>>(" DH3 "));
+  hs.insert(TestDMH<heap::ukvm::DHeap<16, uint64_t>>(" DH4 "));
+  hs.insert(TestDMH<heap::ukvm::CompleteBinaryTree<uint64_t>>(" CBT "));
+  hs.insert(TestDMH<heap::ukvm::Binomial<uint64_t>>(" BNML"));
+  hs.insert(TestDMH<heap::ukvm::Fibonacci<uint64_t>>(" FBNC"));
+  hs.insert(TestDMH<TPairing<0, 0>>(" PR00"));
+  hs.insert(TestDMH<TPairing<1, 0>>(" PR01"));
+  hs.insert(TestDMH<TPairing<0, 1>>(" PR10"));
+  hs.insert(TestDMH<TPairing<1, 1>>(" PR11"));
   if (gtype != EGraphType::SPARSE)
-    hs.insert(TestKVM<heap::ukvm::UnorderedSet<uint64_t>>(" USet"));
+    hs.insert(TestDMH<heap::ukvm::UnorderedSet<uint64_t>>(" USet"));
   hs.insert(TestBellmanFord());
   hs.insert(TestBellmanFordYen());
   hs.insert(TestSPFA());

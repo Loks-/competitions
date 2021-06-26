@@ -48,13 +48,13 @@ class TesterGraphEIDistancePositiveCost {
   size_t TestZDOTime() const;
 
   template <template <class TData> class THeap>
-  size_t TestHP(const std::string& name) const;
+  size_t TestDBH(const std::string& name) const;
 
   template <class THeap>
-  size_t TestKPM(const std::string& name) const;
+  size_t TestDEH(const std::string& name) const;
 
   template <class THeap>
-  size_t TestKVM(const std::string& name) const;
+  size_t TestDMH(const std::string& name) const;
 
  public:
   bool TestAll();

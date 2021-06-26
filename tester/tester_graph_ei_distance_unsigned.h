@@ -51,22 +51,22 @@ class TesterGraphEIDistanceUnsigned {
   size_t TestZDOTime() const;
 
   template <template <class TData> class THeap>
-  size_t TestHP(const std::string& name) const;
+  size_t TestDBH(const std::string& name) const;
 
   template <class THeap>
-  size_t TestHPV(const std::string& name) const;
+  size_t TestDBHP(const std::string& name) const;
 
   template <class THeap>
-  size_t TestMHPV(const std::string& name) const;
+  size_t TestDBHPW(const std::string& name) const;
 
   template <class THeap>
-  size_t TestKPM(const std::string& name) const;
+  size_t TestDEH(const std::string& name) const;
 
   template <class THeap>
-  size_t TestKVM(const std::string& name) const;
+  size_t TestDMH(const std::string& name) const;
 
   template <class THeap>
-  size_t TestMKVM(const std::string& name) const;
+  size_t TestDMHW(const std::string& name) const;
 
  public:
   bool TestAll();

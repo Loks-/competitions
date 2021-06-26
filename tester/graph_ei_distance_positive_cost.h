@@ -9,7 +9,7 @@
 
 template <template <class TData> class THeap, class TGraph,
           class TEdgeCostFunction, class TEdgeCost>
-std::vector<TEdgeCost> DistanceFromSourcePositiveCost_HP(
+std::vector<TEdgeCost> DistanceFromSourcePositiveCost_DBH(
     const TGraph& graph, const TEdgeCostFunction& f, unsigned source,
     const TEdgeCost& max_cost) {
   using TPair = std::pair<TEdgeCost, unsigned>;
@@ -36,7 +36,7 @@ std::vector<TEdgeCost> DistanceFromSourcePositiveCost_HP(
 }
 
 template <class THeap, class TGraph, class TEdgeCostFunction, class TEdgeCost>
-std::vector<TEdgeCost> DistanceFromSourcePositiveCost_HPV(
+std::vector<TEdgeCost> DistanceFromSourcePositiveCost_DBHP(
     const TGraph& graph, const TEdgeCostFunction& f, unsigned source,
     const TEdgeCost& max_cost) {
   std::vector<TEdgeCost> vd(graph.Size(), max_cost);
@@ -62,7 +62,7 @@ std::vector<TEdgeCost> DistanceFromSourcePositiveCost_HPV(
 }
 
 template <class THeap, class TGraph, class TEdgeCostFunction, class TEdgeCost>
-std::vector<TEdgeCost> DistanceFromSourcePositiveCost_MHPV(
+std::vector<TEdgeCost> DistanceFromSourcePositiveCost_DBHPW(
     const TGraph& graph, const TEdgeCostFunction& f, unsigned source,
     const TEdgeCost& max_edge_cost, const TEdgeCost& max_cost) {
   std::vector<TEdgeCost> vd(graph.Size(), max_cost);
@@ -89,7 +89,7 @@ std::vector<TEdgeCost> DistanceFromSourcePositiveCost_MHPV(
 
 template <class TUKeyPosMap, class TGraph, class TEdgeCostFunction,
           class TEdgeCost>
-std::vector<TEdgeCost> DistanceFromSourcePositiveCost_KPM(
+std::vector<TEdgeCost> DistanceFromSourcePositiveCost_DEH(
     const TGraph& graph, const TEdgeCostFunction& f, unsigned source,
     const TEdgeCost& max_cost) {
   std::vector<TEdgeCost> vd(graph.Size(), max_cost);
@@ -112,7 +112,7 @@ std::vector<TEdgeCost> DistanceFromSourcePositiveCost_KPM(
 
 template <class TUKeyValueMap, class TGraph, class TEdgeCostFunction,
           class TEdgeCost>
-std::vector<TEdgeCost> DistanceFromSourcePositiveCost_KVM(
+std::vector<TEdgeCost> DistanceFromSourcePositiveCost_DMH(
     const TGraph& graph, const TEdgeCostFunction& f, unsigned source,
     const TEdgeCost& max_cost) {
   TUKeyValueMap q(std::vector<TEdgeCost>(graph.Size(), max_cost), true);
@@ -127,7 +127,7 @@ std::vector<TEdgeCost> DistanceFromSourcePositiveCost_KVM(
 
 template <class TUKeyValueMap, class TGraph, class TEdgeCostFunction,
           class TEdgeCost>
-std::vector<TEdgeCost> DistanceFromSourcePositiveCost_MKVM(
+std::vector<TEdgeCost> DistanceFromSourcePositiveCost_DMHW(
     const TGraph& graph, const TEdgeCostFunction& f, unsigned source,
     const TEdgeCost& max_edge_cost, const TEdgeCost& max_cost) {
   TUKeyValueMap q(std::vector<TEdgeCost>(graph.Size(), max_cost), true,
