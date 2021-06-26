@@ -39,6 +39,7 @@
 #include "common/heap/monotone/base/rolling_bucket_queue.h"
 #include "common/heap/monotone/base/rolling_bucket_queue_ll.h"
 #include "common/heap/monotone/base/two_layers_buckets.h"
+#include "common/heap/monotone/base/two_layers_buckets_sqrt.h"
 #include "common/heap/monotone/ukvm/bucket_queue.h"
 #include "common/heap/monotone/ukvm/bucket_queue_dll.h"
 #include "common/heap/monotone/ukvm/radix.h"
@@ -47,6 +48,8 @@
 #include "common/heap/monotone/ukvm/rolling_bucket_queue_dll.h"
 #include "common/heap/monotone/ukvm/two_layers_buckets.h"
 #include "common/heap/monotone/ukvm/two_layers_buckets_dll.h"
+#include "common/heap/monotone/ukvm/two_layers_buckets_sqrt.h"
+#include "common/heap/monotone/ukvm/two_layers_buckets_sqrt_dll.h"
 #include "common/heap/ukvm/binomial.h"
 #include "common/heap/ukvm/bucket_queue.h"
 #include "common/heap/ukvm/bucket_queue_dll.h"
@@ -533,6 +536,8 @@ bool TesterGraphEIDistanceUnsigned::TestAll() {
       TestHPV<heap::monotone::base::TwoLayersBuckets<16, unsigned>>("MBQ4 "));
   hs.insert(
       TestHPV<heap::monotone::base::TwoLayersBuckets<32, unsigned>>("MBQ5 "));
+  hs.insert(
+      TestMHPV<heap::monotone::base::TwoLayersBucketsSqrt<unsigned>>("MBQA "));
   hs.insert(TestKPM<heap::ext::DHeapUKeyPosMap<2, unsigned>>(" DH1 "));
   hs.insert(TestKPM<heap::ext::DHeapUKeyPosMap<4, unsigned>>(" DH2 "));
   hs.insert(TestKPM<heap::ext::DHeapUKeyPosMap<8, unsigned>>(" DH3 "));
@@ -560,10 +565,12 @@ bool TesterGraphEIDistanceUnsigned::TestAll() {
   hs.insert(TestKVM<heap::monotone::ukvm::TwoLayersBuckets<8>>("MBQ3 "));
   hs.insert(TestKVM<heap::monotone::ukvm::TwoLayersBuckets<16>>("MBQ4 "));
   hs.insert(TestKVM<heap::monotone::ukvm::TwoLayersBuckets<32>>("MBQ5 "));
+  hs.insert(TestMKVM<heap::monotone::ukvm::TwoLayersBucketsSqrt>("MBQA "));
   hs.insert(TestKVM<heap::monotone::ukvm::TwoLayersBucketsDLL<4>>("MBQ2L"));
   hs.insert(TestKVM<heap::monotone::ukvm::TwoLayersBucketsDLL<8>>("MBQ3L"));
   hs.insert(TestKVM<heap::monotone::ukvm::TwoLayersBucketsDLL<16>>("MBQ4L"));
   hs.insert(TestKVM<heap::monotone::ukvm::TwoLayersBucketsDLL<32>>("MBQ5L"));
+  hs.insert(TestMKVM<heap::monotone::ukvm::TwoLayersBucketsSqrtDLL>("MBQAL"));
   hs.insert(TestKVM<heap::monotone::ukvm::Radix>("MRDX "));
   hs.insert(TestKVM<heap::monotone::ukvm::RadixDLL>("MRDXL"));
   hs.insert(TestDial());
