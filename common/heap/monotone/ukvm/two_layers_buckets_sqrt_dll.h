@@ -47,9 +47,9 @@ class TwoLayersBucketsSqrtDLL {
   unsigned Key(const TNode* node) const { return node - pkey0; }
 
  public:
-  void Reset(unsigned ukey_size, unsigned max_priority) {
+  void Reset(unsigned ukey_size, unsigned expected_max_priority) {
     top_priority = 0;
-    lq1size = numeric::ULog2(max_priority) / 2 + 1;
+    lq1size = numeric::ULog2(expected_max_priority) / 2 + 1;
     q1size = (1u << lq1size);
     p1b = 0;
     p1e = q1size;
@@ -68,13 +68,13 @@ class TwoLayersBucketsSqrtDLL {
     }
   }
 
-  TwoLayersBucketsSqrtDLL(unsigned ukey_size, unsigned max_priority) {
-    Reset(ukey_size, max_priority);
+  TwoLayersBucketsSqrtDLL(unsigned ukey_size, unsigned expected_max_priority) {
+    Reset(ukey_size, expected_max_priority);
   }
 
   TwoLayersBucketsSqrtDLL(const std::vector<unsigned>& v, bool skip_heap,
-                          unsigned max_priority) {
-    Reset(v.size(), max_priority);
+                          unsigned expected_max_priority) {
+    Reset(v.size(), expected_max_priority);
     priority = v;
     if (!skip_heap) {
       for (unsigned i = 0; i < v.size(); ++i) {

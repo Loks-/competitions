@@ -31,8 +31,8 @@ class TwoLayersBuckets {
 
  public:
   TwoLayersBuckets() {}
-  explicit TwoLayersBuckets(unsigned max_priority) {
-    queue2.resize(max_priority / fl_size + 1);
+  explicit TwoLayersBuckets(unsigned expected_max_priority) {
+    queue2.resize(expected_max_priority / fl_size + 1);
   }
 
   bool Empty() const { return size == 0; }

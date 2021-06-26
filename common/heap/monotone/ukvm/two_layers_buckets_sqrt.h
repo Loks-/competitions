@@ -37,29 +37,29 @@ class TwoLayersBucketsSqrt {
   }
 
  public:
-  void Reset(unsigned ukey_size, unsigned max_priority) {
+  void Reset(unsigned ukey_size, unsigned expected_max_priority) {
     priority.clear();
     priority.resize(ukey_size, -1u);
     position.clear();
     position.resize(ukey_size, -1u);
     top_priority = 0;
-    lq1size = numeric::ULog2(max_priority) / 2 + 1;
+    lq1size = numeric::ULog2(expected_max_priority) / 2 + 1;
     p1b = 0;
     p1e = (1u << lq1size);
     queue1.clear();
     queue1.resize(p1e);
     queue2.clear();
-    queue2.resize(max_priority / p1e + 1);
+    queue2.resize(expected_max_priority / p1e + 1);
     size = 0;
   }
 
-  TwoLayersBucketsSqrt(unsigned ukey_size, unsigned max_priority) {
-    Reset(ukey_size, max_priority);
+  TwoLayersBucketsSqrt(unsigned ukey_size, unsigned expected_max_priority) {
+    Reset(ukey_size, expected_max_priority);
   }
 
   TwoLayersBucketsSqrt(const std::vector<unsigned>& v, bool skip_heap,
-                       unsigned max_priority) {
-    Reset(v.size(), max_priority);
+                       unsigned expected_max_priority) {
+    Reset(v.size(), expected_max_priority);
     priority = v;
     if (!skip_heap) {
       for (unsigned i = 0; i < v.size(); ++i) {

@@ -42,8 +42,8 @@ class BucketQueueLL {
  public:
   BucketQueueLL() {}
 
-  explicit BucketQueueLL(unsigned max_priority) {
-    queue.resize(max_priority + 1, nullptr);
+  explicit BucketQueueLL(unsigned expected_max_priority) {
+    queue.resize(expected_max_priority + 1, nullptr);
   }
 
   bool Empty() const { return size == 0; }

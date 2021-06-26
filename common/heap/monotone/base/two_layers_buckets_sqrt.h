@@ -32,20 +32,23 @@ class TwoLayersBucketsSqrt {
   unsigned size;
 
  public:
-  void Reset(unsigned max_priority) {
+  void Reset(unsigned expected_max_priority) {
     top_priority = 0;
-    lq1size = numeric::ULog2(max_priority) / 2 + 1;
+    lq1size = numeric::ULog2(expected_max_priority) / 2 + 1;
     p1b = 0;
     p1e = (1u << lq1size);
     queue1.clear();
     queue1.resize(p1e);
     queue2.clear();
-    queue2.resize(max_priority / p1e + 1);
+    queue2.resize(expected_max_priority / p1e + 1);
     size = 0;
   }
 
   TwoLayersBucketsSqrt() { Reset(16); }
-  explicit TwoLayersBucketsSqrt(unsigned max_priority) { Reset(max_priority); }
+
+  explicit TwoLayersBucketsSqrt(unsigned expected_max_priority) {
+    Reset(expected_max_priority);
+  }
 
   bool Empty() const { return size == 0; }
   unsigned Size() const { return size; }
