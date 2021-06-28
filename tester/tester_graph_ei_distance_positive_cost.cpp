@@ -61,9 +61,7 @@ using TPairing =
 
 TesterGraphEIDistancePositiveCost::TesterGraphEIDistancePositiveCost(
     EGraphType _gtype, unsigned graph_size, unsigned edges_per_node)
-    : gtype(_gtype),
-      g(CreateHRandomGraph<uint64_t, true>(graph_size, edges_per_node,
-                                           (1u << 30))) {}
+    :   TesterGraphEIDistanceBase(_gtype, graph_size, edges_per_node, (1u << 30), uint64_t(-1ull)) {}
 
 size_t TesterGraphEIDistancePositiveCost::TestBellmanFord() const {
   Timer t;

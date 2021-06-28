@@ -1,6 +1,7 @@
 #pragma once
 
 #include "tester/graph_type.h"
+#include "tester/tester_graph_ei_distance_base.h"
 
 #include "common/base.h"
 #include "common/graph/graph_ei.h"
@@ -9,15 +10,11 @@
 #include <string>
 #include <vector>
 
-class TesterGraphEIDistancePositiveCost {
+class TesterGraphEIDistancePositiveCost : public TesterGraphEIDistanceBase<uint64_t, true> {
  public:
-  using TGraph = graph::GraphEI<uint64_t, true>;
-  using TEdgeCostFunction = graph::EdgeCostProxy<uint64_t>;
-
- protected:
-  EGraphType gtype;
-  TGraph g;
-  TEdgeCostFunction edge_proxy;
+  using TBase = TesterGraphEIDistanceBase<unsigned, true>;
+  using TGraph = typename TBase::TGraph;
+  using TEdgeCostFunction = typename TBase::TEdgeCostFunction;
 
  public:
   TesterGraphEIDistancePositiveCost(EGraphType _gtype, unsigned graph_size,
