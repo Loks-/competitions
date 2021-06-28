@@ -12,22 +12,7 @@ TesterGraphEIDistancePositiveCost::TesterGraphEIDistancePositiveCost(
                                         (1u << 30), uint64_t(-1ull)) {}
 
 bool TesterGraphEIDistancePositiveCost::TestAll() {
-  switch (gtype) {
-    case EGraphType::SMALL:
-      std::cout << "Small:" << std::endl;
-      break;
-    case EGraphType::SPARSE:
-      std::cout << "Sparse:" << std::endl;
-      break;
-    case EGraphType::DENSE:
-      std::cout << "Dense:" << std::endl;
-      break;
-    case EGraphType::LONG_PATH:
-      std::cout << "LPath:" << std::endl;
-      break;
-    default:
-      assert(false);
-  }
+  PrintGraphType();
   TestFS(graph::DistanceFromSourcePositiveCost<TGraph, TEdgeCostFunction,
                                                TEdgeCost>,
          "   DPC ");

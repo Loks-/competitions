@@ -20,22 +20,7 @@ TesterGraphEIDistance::TesterGraphEIDistance(EGraphType _gtype,
 }
 
 bool TesterGraphEIDistance::TestAll() {
-  switch (gtype) {
-    case EGraphType::SMALL:
-      std::cout << "Small:" << std::endl;
-      break;
-    case EGraphType::SPARSE:
-      std::cout << "Sparse:" << std::endl;
-      break;
-    case EGraphType::DENSE:
-      std::cout << "Dense:" << std::endl;
-      break;
-    case EGraphType::LONG_PATH:
-      std::cout << "LPath:" << std::endl;
-      break;
-    default:
-      assert(false);
-  }
+  PrintGraphType();
   TestSPFA();
   TestAllPairs();
   return CheckHash();

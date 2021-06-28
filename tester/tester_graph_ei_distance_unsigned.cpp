@@ -51,19 +51,8 @@ void TesterGraphEIDistanceUnsigned::TestDial() {
 }
 
 bool TesterGraphEIDistanceUnsigned::TestAll() {
-  switch (gtype) {
-    case EGraphType::SMALL:
-      std::cout << "Small " << max_edge_cost << ":" << std::endl;
-      break;
-    case EGraphType::SPARSE:
-      std::cout << "Sparse " << max_edge_cost << ":" << std::endl;
-      break;
-    case EGraphType::DENSE:
-      std::cout << "Dense " << max_edge_cost << ":" << std::endl;
-      break;
-    default:
-      assert(false);
-  }
+  PrintGraphType();
+  std::cout << "\tMax Edge Cost = " << max_edge_cost << std::endl;
   TestFS(graph::DistanceFromSourcePositiveCost<TGraph, TEdgeCostFunction,
                                                TEdgeCost>,
          "   DPC ");

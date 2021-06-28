@@ -68,6 +68,25 @@ class TesterGraphEIDistanceBase {
  protected:
   bool CheckHash() const { return hs.size() == 1; }
 
+  void PrintGraphType() const {
+    switch (gtype) {
+      case EGraphType::SMALL:
+        std::cout << "Small:" << std::endl;
+        break;
+      case EGraphType::SPARSE:
+        std::cout << "Sparse:" << std::endl;
+        break;
+      case EGraphType::DENSE:
+        std::cout << "Dense:" << std::endl;
+        break;
+      case EGraphType::LONG_PATH:
+        std::cout << "LPath:" << std::endl;
+        break;
+      default:
+        assert(false);
+    }
+  }
+
   template <class TFunction>
   void TestFA(TFunction& fa, const std::string& name) {
     Timer t;
