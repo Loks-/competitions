@@ -44,12 +44,11 @@ inline std::vector<std::vector<TEdgeCost>> Johnson(const TGraph& graph,
   }
   EdgeCostProxy<TEdgeCost> fp;
   std::vector<std::vector<TEdgeCost>> vd(gsize);
-  vd.reserve(gsize);
   for (unsigned u = 0; u < gsize; ++u) {
     auto vu = distance::Dijkstra(g2, fp, u, max_cost - adjust);
     for (unsigned v = 0; v < gsize; ++v)
       vu[v] = std::min(vu[v] + vh[v] - vh[u], max_cost);
-    vd.push_back(vu);
+    vd[u] = vu;
   }
   return vd;
 }
