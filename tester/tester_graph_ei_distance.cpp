@@ -30,6 +30,9 @@ bool TesterGraphEIDistance::TestAll() {
     case EGraphType::DENSE:
       std::cout << "Dense:" << std::endl;
       break;
+    case EGraphType::LONG_PATH:
+      std::cout << "LPath:" << std::endl;
+      break;
     default:
       assert(false);
   }
@@ -41,8 +44,8 @@ bool TesterGraphEIDistance::TestAll() {
 bool TestGraphEIDistance(bool time_test) {
   if (time_test) {
     TesterGraphEIDistance t1(EGraphType::SPARSE, 5000, 4),
-        t2(EGraphType::DENSE, 1000, 400);
-    return t1.TestAll() && t2.TestAll();
+        t2(EGraphType::DENSE, 1000, 400), t3(EGraphType::LONG_PATH, 300, 500);
+    return t1.TestAll() && t2.TestAll() && t3.TestAll();
   } else {
     TesterGraphEIDistance t(EGraphType::SMALL, 10, 4);
     return t.TestAll();
