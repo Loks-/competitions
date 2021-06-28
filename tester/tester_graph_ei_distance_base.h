@@ -5,6 +5,7 @@
 #include "common/base.h"
 #include "common/graph/graph_ei.h"
 #include "common/graph/graph_ei/create_hrandom_graph.h"
+#include "common/graph/graph_ei/create_long_path_graph.h"
 #include "common/graph/graph_ei/distance/bellman_ford.h"
 #include "common/graph/graph_ei/distance/bellman_ford_yen.h"
 #include "common/graph/graph_ei/distance/floyd_warshall.h"
@@ -58,8 +59,11 @@ class TesterGraphEIDistanceBase {
       : max_edge_cost(_max_edge_cost),
         max_cost(_max_cost),
         gtype(_gtype),
-        g(CreateHRandomGraph<TTEdgeCost, _directed_edges>(
-            graph_size, edges_per_node, max_edge_cost)) {}
+        g((_gtype == EGraphType::LONG_PATH)
+              ? CreateLongPathGraph<TTEdgeCost, _directed_edges>(graph_size,
+                                                                 max_edge_cost)
+              : CreateHRandomGraph<TTEdgeCost, _directed_edges>(
+                    graph_size, edges_per_node, max_edge_cost)) {}
 
  protected:
   bool CheckHash() const { return hs.size() == 1; }

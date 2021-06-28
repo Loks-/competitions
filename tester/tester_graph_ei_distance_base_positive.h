@@ -155,11 +155,13 @@ class TesterGraphEIDistanceBasePositive
 
  protected:
   void TestDijkstraHeaps() {
-    TestDBH<TBinaryHeap>("  BH ");
-    TestDBH<TDHeap2>(" DH1 ");
-    TestDBH<TDHeap4>(" DH2 ");
-    TestDBH<TDHeap8>(" DH3 ");
-    TestDBH<TDHeap16>(" DH4 ");
+    if (TBase::gtype != EGraphType::LONG_PATH) {
+      TestDBH<TBinaryHeap>("  BH ");
+      TestDBH<TDHeap2>(" DH1 ");
+      TestDBH<TDHeap4>(" DH2 ");
+      TestDBH<TDHeap8>(" DH3 ");
+      TestDBH<TDHeap16>(" DH4 ");
+    }
     TestDEH<heap::ext::DHeapUKeyPosMap<2, TEdgeCost>>(" DH1 ");
     TestDEH<heap::ext::DHeapUKeyPosMap<4, TEdgeCost>>(" DH2 ");
     TestDEH<heap::ext::DHeapUKeyPosMap<8, TEdgeCost>>(" DH3 ");
