@@ -4,14 +4,14 @@
 
 #include "common/base.h"
 #include "common/graph/graph_ei.h"
-#include "common/graph/graph_ei/edge_cost_proxy.h"
 #include "common/graph/graph_ei/create_hrandom_graph.h"
+#include "common/graph/graph_ei/edge_cost_proxy.h"
 #include "common/timer.h"
 
 #include <string>
 #include <vector>
 
-template<class TTEdgeCost, bool _directed_edges>
+template <class TTEdgeCost, bool _directed_edges>
 class TesterGraphEIDistanceBase {
  public:
   static const bool directed_edges = _directed_edges;
@@ -27,28 +27,26 @@ class TesterGraphEIDistanceBase {
 
  public:
   TesterGraphEIDistanceBase(EGraphType _gtype, unsigned graph_size,
-                                unsigned edges_per_node,
-                                TEdgeCost _max_edge_cost,
-                                TEdgeCost _max_cost) :
-      max_edge_cost(_max_edge_cost),
-      max_cost(_max_cost),
-      gtype(_gtype),
-      g(CreateHRandomGraph<TTEdgeCost, _directed_edges>(graph_size, 
-                                           edges_per_node,
-                                           max_edge_cost)) {}
+                            unsigned edges_per_node, TEdgeCost _max_edge_cost,
+                            TEdgeCost _max_cost)
+      : max_edge_cost(_max_edge_cost),
+        max_cost(_max_cost),
+        gtype(_gtype),
+        g(CreateHRandomGraph<TTEdgeCost, _directed_edges>(
+            graph_size, edges_per_node, max_edge_cost)) {}
 
  protected:
-  template<typename TFunction>
+  template <typename TFunction>
   size_t TestFS(TFunction& fs, const std::string& name) {
     Timer t;
     size_t h = 0;
     std::vector<TEdgeCost> v;
     for (unsigned i = 0; i < g.Size(); ++i) {
-        v = fs(g, edge_proxy, i, max_cost);
-        for (TEdgeCost d : v) h = HashCombine(h, d);
+      v = fs(g, edge_proxy, i, max_cost);
+      for (TEdgeCost d : v) h = HashCombine(h, d);
     }
-    std::cout << "Test results  [" << name << "]: " << h << "\t" << t.GetMilliseconds()
-                << std::endl;
+    std::cout << "Test results  [" << name << "]: " << h << "\t"
+              << t.GetMilliseconds() << std::endl;
     return h;
   }
 

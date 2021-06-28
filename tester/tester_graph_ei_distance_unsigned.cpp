@@ -446,7 +446,7 @@ size_t TesterGraphEIDistanceUnsigned::TestDBHPW(const std::string& name) const {
   std::vector<unsigned> v;
   for (unsigned i = 0; i < g.Size(); ++i) {
     v = DistanceFromSourcePositiveCost_DBHPW<THeap>(g, edge_proxy, i,
-                                                   max_edge_cost, max_cost);
+                                                    max_edge_cost, max_cost);
     for (unsigned d : v) h = HashCombine(h, d);
   }
   std::cout << "Test results  [DB" << name << "]: " << h << "\t"

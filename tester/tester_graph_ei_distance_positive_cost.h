@@ -10,7 +10,8 @@
 #include <string>
 #include <vector>
 
-class TesterGraphEIDistancePositiveCost : public TesterGraphEIDistanceBase<uint64_t, true> {
+class TesterGraphEIDistancePositiveCost
+    : public TesterGraphEIDistanceBase<uint64_t, true> {
  public:
   using TBase = TesterGraphEIDistanceBase<unsigned, true>;
   using TGraph = typename TBase::TGraph;
