@@ -202,7 +202,6 @@ class RadixDLL {
     for (auto node = pnode->next; node != pnode; node = pnode->next)
       MoveI(node, Index(priority[Key(node)], current_index - 1));
     current_index = 0;
-    ShiftPriority();
   }
 
   TNode* TopNode() { return queue[current_index]->next; }
