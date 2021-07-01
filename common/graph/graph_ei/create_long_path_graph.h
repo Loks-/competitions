@@ -17,7 +17,7 @@ inline graph::GraphEI<TEdgeInfo, directed_edges> CreateLongPathGraph(
     unsigned cbsize = (b + 1 < nblocks) ? block_size : size - bs;
     for (unsigned i = 0; i < cbsize; ++i) {
       for (unsigned j = cbsize - 1; j > i; --j)
-        g.AddEdge(v[bs + i], v[bs + j], (j - i == 1) ? 1u : 2 * (j - i));
+        g.AddEdge(v[bs + i], v[bs + j], 2 * (j - i) - 1);
     }
     bs += cbsize;
   }
