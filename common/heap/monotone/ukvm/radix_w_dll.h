@@ -2,8 +2,6 @@
 
 #include "common/base.h"
 #include "common/heap/ukvm/data.h"
-#include "common/node.h"
-#include "common/nodes_manager.h"
 
 #include <vector>
 
@@ -24,43 +22,37 @@ class RadixWDLL {
   using TData = heap::ukvm::Data<TValue>;
   using TSelf = RadixWDLL;
 
-  class TNode : public BaseNode {
+  class TNode {
    public:
     unsigned index;
     TNode *next = nullptr, *prev = nullptr;
   };
 
  protected:
-  std::vector<TNode> nodes_key;
-  NodesManager<TNode> manager_priority;
+  std::vector<TNode> nodes;
   std::vector<unsigned> priority;
-  std::vector<TNode*> queue;
   std::vector<unsigned> vfirst, vlength;
-  TNode* pkey0;
-  unsigned current_index;
+  TNode *pkey0, *pindex0;
+  unsigned current_index, max_index;
   unsigned size;
 
  protected:
   TNode* KNode(unsigned key) { return pkey0 + key; }
   const TNode* KNode(unsigned key) const { return pkey0 + key; }
   unsigned Key(const TNode* node) const { return node - pkey0; }
-  TNode* INode(unsigned index) { return queue[index]; }
+  TNode* INode(unsigned index) { return pindex0 + index; }
 
   unsigned Index(unsigned p, unsigned l) {
     for (; vfirst[l] > p;) --l;
     return l;
   }
 
-  unsigned Index(unsigned p) { return Index(p, queue.size() - 1); }
+  unsigned Index(unsigned p) { return Index(p, max_index); }
 
  public:
   void Reset(unsigned ukey_size, unsigned window) {
-    nodes_key.clear();
-    nodes_key.resize(ukey_size);
-    manager_priority.ResetNodes();
     priority.clear();
     priority.resize(ukey_size, -1u);
-    pkey0 = &(nodes_key[0]);
     vfirst.clear();
     vfirst.push_back(0);
     vfirst.push_back(1);
@@ -70,12 +62,14 @@ class RadixWDLL {
       vfirst.push_back(vfirst.back() + vlength.back());
       vlength.push_back(vlength.back() * 2);
     }
-    queue.clear();
-    queue.resize(vlength.size());
-    for (unsigned i = 0; i < queue.size(); ++i) {
-      auto node = manager_priority.New();
+    max_index = vlength.size() - 1;
+    nodes.clear();
+    nodes.resize(ukey_size + max_index + 1);
+    pkey0 = &(nodes[0]);
+    pindex0 = pkey0 + ukey_size;
+    for (unsigned i = 0; i <= max_index; ++i) {
+      auto node = INode(i);
       node->next = node->prev = node;
-      queue[i] = node;
     }
     current_index = 0;
     size = 0;
@@ -182,10 +176,10 @@ class RadixWDLL {
  protected:
   void ShiftPriority() {
     assert(!Empty());
-    for (; queue[current_index]->next == queue[current_index];) ++current_index;
+    auto pnode = INode(current_index);
+    for (; pnode->next == pnode; ++pnode) ++current_index;
     if (current_index < 2) return;
-    auto pnode = queue[current_index];
-    if ((pnode->next == pnode->prev) && (current_index + 1 < queue.size())) return;
+    if ((pnode->next == pnode->prev) && (current_index < max_index)) return;
     auto tnode = pnode->next;
     unsigned minp = priority[Key(tnode)];
     for (tnode = tnode->next; tnode != pnode; tnode = tnode->next)
@@ -198,7 +192,7 @@ class RadixWDLL {
     current_index = 0;
   }
 
-  TNode* TopNode() { return queue[current_index]->next; }
+  TNode* TopNode() { return INode(current_index)->next; }
 
   void AddNewKeyI(unsigned key, unsigned p, bool skip_heap) {
     priority[key] = p;
