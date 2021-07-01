@@ -103,9 +103,11 @@ bool TestGraphEIDistanceUnsigned(bool time_test) {
     bool ok = true;
     for (unsigned max_cost : {10, 100, 1000}) {
       TesterGraphEIDistanceUnsigned t1(EGraphType::SPARSE, 5000, 4, max_cost),
-          t2(EGraphType::DENSE, 1000, 500, max_cost);
+          t2(EGraphType::DENSE, 1000, 500, max_cost),
+          t3(EGraphType::LONG_PATH, 1000, 500, max_cost);
       ok = t1.TestAll() && ok;
       ok = t2.TestAll() && ok;
+      ok = t3.TestAll() && ok;
     }
     return ok;
   } else {
