@@ -163,7 +163,9 @@ class RadixW {
   void ShiftPriority() {
     assert(!Empty());
     for (; queue[current_index].size() == 0;) ++current_index;
-    if ((current_index < 2) || ((queue[current_index].size() == 1) && (current_index + 1 < queue.size()))) return;
+    if ((current_index < 2) || ((queue[current_index].size() == 1) &&
+                                (current_index + 1 < queue.size())))
+      return;
     auto& q = queue[current_index];
     unsigned minp = priority[q[0]];
     for (unsigned i = 1; i < q.size(); ++i)
