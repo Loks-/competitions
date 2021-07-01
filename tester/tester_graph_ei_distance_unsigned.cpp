@@ -19,6 +19,7 @@
 #include "common/heap/monotone/ukvm/radix.h"
 #include "common/heap/monotone/ukvm/radix_dll.h"
 #include "common/heap/monotone/ukvm/radix_w.h"
+#include "common/heap/monotone/ukvm/radix_w_dll.h"
 #include "common/heap/monotone/ukvm/rolling_bucket_queue.h"
 #include "common/heap/monotone/ukvm/rolling_bucket_queue_dll.h"
 #include "common/heap/monotone/ukvm/two_layers_buckets.h"
@@ -88,6 +89,7 @@ bool TesterGraphEIDistanceUnsigned::TestAll() {
   TestDMH<heap::monotone::ukvm::Radix>("MRDX ");
   TestDMH<heap::monotone::ukvm::RadixDLL>("MRDXL");
   TestDMHW<heap::monotone::ukvm::RadixW>("MRDW ");
+  TestDMHW<heap::monotone::ukvm::RadixWDLL>("MRDWL");
   if (gtype == EGraphType::SMALL) {
     TestDijkstraHeaps();
     TestSPFA();
