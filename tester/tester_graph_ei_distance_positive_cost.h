@@ -6,7 +6,7 @@
 #include "common/base.h"
 
 class TesterGraphEIDistancePositiveCost
-    : public TesterGraphEIDistanceBasePositive<uint64_t, true> {
+    : public TesterGraphEIDistanceBasePositive<unsigned, true> {
  public:
   TesterGraphEIDistancePositiveCost(EGraphType _gtype, unsigned graph_size,
                                     unsigned edges_per_node);

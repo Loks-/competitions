@@ -3,13 +3,14 @@
 #include "tester/graph_type.h"
 
 #include "common/graph/graph_ei/distance_positive_cost.h"
+#include "common/heap/monotone/ukvm/radix_w_dll.h"
 
 #include <iostream>
 
 TesterGraphEIDistancePositiveCost::TesterGraphEIDistancePositiveCost(
     EGraphType _gtype, unsigned graph_size, unsigned edges_per_node)
     : TesterGraphEIDistanceBasePositive(_gtype, graph_size, edges_per_node,
-                                        (1u << 30), uint64_t(-1ull)) {}
+                                        (1u << 20), unsigned(-1u)) {}
 
 bool TesterGraphEIDistancePositiveCost::TestAll() {
   PrintGraphType();
@@ -17,6 +18,7 @@ bool TesterGraphEIDistancePositiveCost::TestAll() {
                                                TEdgeCost>,
          "   DPC ");
   TestDijkstraHeaps();
+  TestDMHW<heap::monotone::ukvm::RadixWDLL>("MRDWL");
   if (gtype != EGraphType::LONG_PATH) TestSPFA();
   TestAllPairs();
   return CheckHash();
