@@ -32,7 +32,7 @@ class RadixWDLL {
   std::vector<TNode> nodes;
   std::vector<unsigned> priority;
   std::vector<unsigned> vfirst, vlength;
-  TNode *pkey0, *pindex0, *pcurrent, *pmax_index;
+  TNode *pkey0, *pindex0, *pcurrent;
   unsigned max_index;
   unsigned size;
 
@@ -72,7 +72,6 @@ class RadixWDLL {
       node->next = node->prev = node;
     }
     pcurrent = INode(0);
-    pmax_index = INode(max_index);
     size = 0;
   }
 
@@ -179,7 +178,7 @@ class RadixWDLL {
     assert(!Empty());
     for (; pcurrent->next == pcurrent;) ++pcurrent;
     if (pcurrent - pindex0 < 2) return;
-    if ((pcurrent->next == pcurrent->prev) && (pcurrent < pmax_index)) return;
+    if (pcurrent->next == pcurrent->prev) return;
     auto tnode = pcurrent->next;
     unsigned minp = priority[Key(tnode)];
     for (tnode = tnode->next; tnode != pcurrent; tnode = tnode->next)
