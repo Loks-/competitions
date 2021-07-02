@@ -32,8 +32,8 @@ class RadixWDLL {
   std::vector<TNode> nodes;
   std::vector<unsigned> priority;
   std::vector<unsigned> vfirst, vlength;
-  TNode *pkey0, *pindex0;
-  unsigned current_index, max_index;
+  TNode *pkey0, *pindex0, *pcurrent, *pmax_index;
+  unsigned max_index;
   unsigned size;
 
  protected:
@@ -71,7 +71,8 @@ class RadixWDLL {
       auto node = INode(i);
       node->next = node->prev = node;
     }
-    current_index = 0;
+    pcurrent = INode(0);
+    pmax_index = INode(max_index);
     size = 0;
   }
 
@@ -176,23 +177,23 @@ class RadixWDLL {
  protected:
   void ShiftPriority() {
     assert(!Empty());
-    auto pnode = INode(current_index);
-    for (; pnode->next == pnode; ++pnode) ++current_index;
-    if (current_index < 2) return;
-    if ((pnode->next == pnode->prev) && (current_index < max_index)) return;
-    auto tnode = pnode->next;
+    for (; pcurrent->next == pcurrent;) ++pcurrent;
+    if (pcurrent - pindex0 < 2) return;
+    if ((pcurrent->next == pcurrent->prev) && (pcurrent < pmax_index)) return;
+    auto tnode = pcurrent->next;
     unsigned minp = priority[Key(tnode)];
-    for (tnode = tnode->next; tnode != pnode; tnode = tnode->next)
+    for (tnode = tnode->next; tnode != pcurrent; tnode = tnode->next)
       minp = std::min(minp, priority[Key(tnode)]);
     vfirst[0] = minp;
+    unsigned current_index = pcurrent - pindex0;
     for (unsigned i = 0; i < current_index; ++i)
       vfirst[i + 1] = vfirst[i] + vlength[i];
-    for (auto node = pnode->next; node != pnode; node = pnode->next)
+    for (auto node = pcurrent->next; node != pcurrent; node = pcurrent->next)
       MoveI(node, Index(priority[Key(node)], current_index - 1));
-    current_index = 0;
+    pcurrent = pindex0;
   }
 
-  TNode* TopNode() { return INode(current_index)->next; }
+  TNode* TopNode() { return pcurrent->next; }
 
   void AddNewKeyI(unsigned key, unsigned p, bool skip_heap) {
     priority[key] = p;
