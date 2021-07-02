@@ -64,9 +64,6 @@ class TwoLayersRadixDLL {
   }
 
   void Reset(unsigned ukey_size, unsigned window) {
-    // std::cout << "========== "
-    //           << "Reset(" << ukey_size << ", " << window << ")"
-    //           << " ==========" << std::endl;
     FindKL(window);
     priority.clear();
     priority.resize(ukey_size, -1u);
@@ -215,7 +212,6 @@ class TwoLayersRadixDLL {
     unsigned minp = priority[Key(tnode)];
     for (tnode = tnode->next; tnode != pcurrent; tnode = tnode->next)
       minp = std::min(minp, priority[Key(tnode)]);
-    // std::cout << "Shift priority(" << minp << ", " << ck << ")" << std::endl;
     vfirst[0] = minp;
     for (unsigned i = 1; i < ck; ++i) {
       vfirst[i] = vfirst[i - 1] + vlength[i - 1];
@@ -239,9 +235,6 @@ class TwoLayersRadixDLL {
     priority[key] = p;
     if (!skip_heap) {
       unsigned index = Index(p);
-      //   std::cout << "Add node " << key << "\tto block " << index << "\tp = "
-      //   << p
-      //             << std::endl;
       auto knode = KNode(key), pnode = INode(index);
       knode->index = index;
       knode->prev = pnode->prev;
@@ -254,10 +247,6 @@ class TwoLayersRadixDLL {
   }
 
   void MoveI(TNode* knode, unsigned new_index) {
-    // std::cout << "Move node " << Key(knode) << "\tfrom block " <<
-    // knode->index
-    //           << "\tto block " << new_index << "\tp = " << Get(Key(knode))
-    //           << std::endl;
     if (new_index == knode->index) {
       assert(false);
     }
@@ -288,9 +277,6 @@ class TwoLayersRadixDLL {
   }
 
   void RemoveNodeI(TNode* node) {
-    // std::cout << "Remove node " << Key(node) << "\tfrom block " <<
-    // node->index
-    //           << "\tp = " << Get(Key(node)) << std::endl;
     node->next->prev = node->prev;
     node->prev->next = node->next;
     node->prev = node->next = nullptr;
