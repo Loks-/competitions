@@ -26,6 +26,7 @@
 #include "common/heap/monotone/ukvm/two_layers_buckets_dll.h"
 #include "common/heap/monotone/ukvm/two_layers_buckets_sqrt.h"
 #include "common/heap/monotone/ukvm/two_layers_buckets_sqrt_dll.h"
+#include "common/heap/monotone/ukvm/two_layers_radix_dll.h"
 #include "common/heap/ukvm/bucket_queue.h"
 #include "common/heap/ukvm/bucket_queue_dll.h"
 #include "common/timer.h"
@@ -90,6 +91,7 @@ bool TesterGraphEIDistanceUnsigned::TestAll() {
   TestDMH<heap::monotone::ukvm::RadixDLL>("MRDXL");
   TestDMHW<heap::monotone::ukvm::RadixW>("MRDW ");
   TestDMHW<heap::monotone::ukvm::RadixWDLL>("MRDWL");
+  TestDMHW<heap::monotone::ukvm::TwoLayersRadixDLL>("MRD2L");
   if (gtype == EGraphType::SMALL) {
     TestDijkstraHeaps();
     TestSPFA();
@@ -101,7 +103,7 @@ bool TesterGraphEIDistanceUnsigned::TestAll() {
 bool TestGraphEIDistanceUnsigned(bool time_test) {
   if (time_test) {
     bool ok = true;
-    for (unsigned max_cost : {10, 100, 1000}) {
+    for (unsigned max_cost : {10, 100, 1000, 10000}) {
       TesterGraphEIDistanceUnsigned t1(EGraphType::SPARSE, 5000, 4, max_cost),
           t2(EGraphType::DENSE, 1000, 500, max_cost),
           t3(EGraphType::LONG_PATH, 1000, 500, max_cost);
