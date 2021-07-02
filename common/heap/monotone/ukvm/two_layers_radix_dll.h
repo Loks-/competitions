@@ -220,7 +220,7 @@ class TwoLayersRadixDLL {
     if (ck < k1) {
       unsigned cl = ((pcurrent - pindex0) & l1) + 1 - vshift[ck];
       vshift[ck] += cl;
-      vfirst[ck] += vlength[ck - 1] * cl;  // TODO: bit shift
+      vfirst[ck] += cl << vllength[ck];
     } else {
       vfirst[ck] = vfirst[ck - 1] + vlength[ck - 1];
     }
