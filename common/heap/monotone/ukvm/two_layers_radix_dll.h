@@ -16,7 +16,7 @@ namespace ukvm {
 // DecV    -- O(1) amortized
 // IncV    -- O(log W / log log W)
 // Top     -- O(1) amortized
-// Pop     -- O((log W / log log W)^2)
+// Pop     -- O(log W / log log W)
 class TwoLayersRadixDLL {
  public:
   using TValue = unsigned;
@@ -203,15 +203,18 @@ class TwoLayersRadixDLL {
  protected:
   void ShiftPriority() {
     assert(!Empty());
-    // Revisit search for pcurrent, this version is slow
+    unsigned ck = (pcurrent - pindex0) >> ll;
+    if (vcount[ck] == 0) {
+      for (++ck; vcount[ck] == 0;) ++ck;
+      pcurrent = INode(ck << ll);
+    }
     for (; pcurrent->next == pcurrent;) ++pcurrent;
-    if (pcurrent - pindex0 < l) return;
-    if ((pcurrent->next == pcurrent->prev) && (pcurrent < pmax_index)) return;
+    if (ck == 0) return;
+    if ((pcurrent->next == pcurrent->prev) && (ck < k1)) return;
     auto tnode = pcurrent->next;
     unsigned minp = priority[Key(tnode)];
     for (tnode = tnode->next; tnode != pcurrent; tnode = tnode->next)
       minp = std::min(minp, priority[Key(tnode)]);
-    unsigned ck = (pcurrent - pindex0) >> ll;
     // std::cout << "Shift priority(" << minp << ", " << ck << ")" << std::endl;
     vfirst[0] = minp;
     for (unsigned i = 1; i < ck; ++i) {
