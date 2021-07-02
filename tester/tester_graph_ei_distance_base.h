@@ -136,9 +136,9 @@ class TesterGraphEIDistanceBase {
            "S  Safe");
     TestFS(graph::distance::spfa::SIPITQ<TGraph, TEdgeCostFunction, TEdgeCost>,
            "S   SPQ");
-    TestFS(graph::distance::spfa::LargeLabelLast<TGraph, TEdgeCostFunction,
-                                                 TEdgeCost>,
-           "S   LLL");
+    // TestFS(graph::distance::spfa::LargeLabelLast<TGraph, TEdgeCostFunction,
+    //                                              TEdgeCost>,
+    //        "S   LLL");
     TestFS(graph::distance::spfa::SmallLabelFirst<TGraph, TEdgeCostFunction,
                                                   TEdgeCost>,
            "S   SLF");

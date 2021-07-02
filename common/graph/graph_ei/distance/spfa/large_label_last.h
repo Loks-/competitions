@@ -9,6 +9,8 @@ namespace spfa {
 // Shortest Path Faster Algorithm + Large Label Last.
 // https://en.wikipedia.org/wiki/Shortest_Path_Faster_Algorithm
 // For graphs without negative cycle.
+// It can overflow if max_path * graph.size() greater than max value for
+// TEdgeCost.
 template <class TGraph, class TEdgeCostFunction, class TEdgeCost>
 inline std::vector<TEdgeCost> LargeLabelLast(const TGraph& graph,
                                              const TEdgeCostFunction& f,
