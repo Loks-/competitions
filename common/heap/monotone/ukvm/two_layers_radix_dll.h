@@ -247,9 +247,6 @@ class TwoLayersRadixDLL {
   }
 
   void MoveI(TNode* knode, unsigned new_index) {
-    if (new_index == knode->index) {
-      assert(false);
-    }
     auto pnode = INode(new_index);
     --vcount[knode->index >> ll];
     ++vcount[new_index >> ll];
