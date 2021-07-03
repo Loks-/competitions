@@ -27,6 +27,7 @@
 #include "common/heap/monotone/ukvm/two_layers_buckets_sqrt.h"
 #include "common/heap/monotone/ukvm/two_layers_buckets_sqrt_dll.h"
 #include "common/heap/monotone/ukvm/two_layers_radix_dll.h"
+#include "common/heap/monotone/ukvm/two_layers_radix_mask_dll.h"
 #include "common/heap/ukvm/bucket_queue.h"
 #include "common/heap/ukvm/bucket_queue_dll.h"
 #include "common/timer.h"
@@ -92,6 +93,7 @@ bool TesterGraphEIDistanceUnsigned::TestAll() {
   TestDMHW<heap::monotone::ukvm::RadixW>("MRDW ");
   TestDMHW<heap::monotone::ukvm::RadixWDLL>("MRDWL");
   TestDMHW<heap::monotone::ukvm::TwoLayersRadixDLL>("MRD2L");
+  TestDMHW<heap::monotone::ukvm::TwoLayersRadixMaskDLL>("MRDML");
   if (gtype == EGraphType::SMALL) {
     TestDijkstraHeaps();
     TestSPFA();
