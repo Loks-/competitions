@@ -10,8 +10,7 @@
 * Graph
 	* Additional MST algorithms
 	* Shortest path for directed acyclic graphs
-	* Shortest path with integer costs
-	* Shortest path Thorup algorithm
+	* Shortest path Thorup algorithm for undirected graph
 * Optimization
 	* Root finding algorithms
 		* Tester
