@@ -4,8 +4,8 @@
 #include "common/heap/ext/fibonacci.h"
 #include "common/heap/ukvm/data.h"
 #include "common/nodes_manager_fixed_size.h"
-#include "common/numeric/bits/first_bit.h"
 #include "common/numeric/bits/ulog2.h"
+#include "common/numeric/utils/usqrt.h"
 
 #include <vector>
 
@@ -44,9 +44,7 @@ class TwoLayersRadixFibonacciDLL {
   std::vector<unsigned> vfirst, vlength, vllength, vshift;
   TNode *pkey0, *pindex0, *pcurrent, *pmax_index;
   TFNode* pfnode0;
-  const unsigned l = 32, l1 = 31, ll = 5;
-  // const unsigned l = 4, l1 = 3, ll = 2;
-  unsigned k, k1;
+  unsigned k, k1, l, l1, ll;
   unsigned size;
 
  protected:
@@ -66,8 +64,10 @@ class TwoLayersRadixFibonacciDLL {
  public:
   void FindKL(unsigned window) {
     unsigned lc = numeric::ULog2(window) + 1;
-    k = (lc - 1) / ll + 2;
-    k1 = k - 1;
+    k = USqrt(lc) + 2;
+    k1 = ll = k - 1;
+    l = (1u << ll);
+    l1 = l - 1;
   }
 
   void Reset(unsigned ukey_size, unsigned window) {
