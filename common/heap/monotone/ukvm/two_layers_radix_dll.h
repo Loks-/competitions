@@ -9,7 +9,7 @@
 namespace heap {
 namespace monotone {
 namespace ukvm {
-// Radix queue with double linked list
+// Two layers Radix queue with double linked list
 // P - max priority, W - window
 // Memory  -- O(N + log^2 W)
 // Add     -- O(log W / log log W)
