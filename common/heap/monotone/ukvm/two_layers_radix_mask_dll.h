@@ -2,15 +2,15 @@
 
 #include "common/base.h"
 #include "common/heap/ukvm/data.h"
-#include "common/numeric/bits/ulog2.h"
 #include "common/numeric/bits/first_bit.h"
+#include "common/numeric/bits/ulog2.h"
 
 #include <vector>
 
 namespace heap {
 namespace monotone {
 namespace ukvm {
-// Radix queue with double linked list
+// Two layers Radix queue with mask for fast minimum search
 // P - max priority, W - window
 // Memory  -- O(N + log W)
 // Add     -- O(log W)
@@ -22,7 +22,7 @@ class TwoLayersRadixMaskDLL {
  public:
   using TValue = unsigned;
   using TData = heap::ukvm::Data<TValue>;
-  using TSelf = TwoLayersRadixDLL;
+  using TSelf = TwoLayersRadixMaskDLL;
 
   class TNode {
    public:
@@ -36,7 +36,6 @@ class TwoLayersRadixMaskDLL {
   std::vector<unsigned> vfirst, vlength, vllength, vshift, vmask;
   TNode *pkey0, *pindex0, *pcurrent, *pmax_index;
   const unsigned l = 32, l1 = 31, ll = 5;
-  // const unsigned l = 4, l1 = 3, ll = 2;
   unsigned k, k1;
   unsigned size;
 
