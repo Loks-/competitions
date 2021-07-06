@@ -4,6 +4,8 @@
 
 #include "common/graph/graph_ei/distance_positive_cost.h"
 #include "common/heap/monotone/ukvm/radix_w_dll.h"
+#include "common/heap/monotone/ukvm/two_layers_radix_fibonacci_dll.h"
+#include "common/heap/monotone/ukvm/two_layers_radix_mask_dll.h"
 
 #include <iostream>
 
@@ -19,6 +21,8 @@ bool TesterGraphEIDistancePositiveCost::TestAll() {
          "   DPC ");
   TestDijkstraHeaps();
   TestDMHW<heap::monotone::ukvm::RadixWDLL>("MRDWL");
+  TestDMHW<heap::monotone::ukvm::TwoLayersRadixMaskDLL>("MRDML");
+  TestDMHW<heap::monotone::ukvm::TwoLayersRadixFibonacciDLL>("MRDFL");
   if (gtype != EGraphType::LONG_PATH) TestSPFA();
   TestAllPairs();
   return CheckHash();
