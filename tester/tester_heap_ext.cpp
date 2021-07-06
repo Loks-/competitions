@@ -1,5 +1,6 @@
 #include "tester/tester_heap_ext.h"
 
+#include "common/data_structures/van_emde_boas_tree_hash_table.h"
 #include "common/hash.h"
 #include "common/heap/base/binary.h"
 #include "common/heap/base/binomial.h"
@@ -13,6 +14,7 @@
 #include "common/heap/ukvm/dheap.h"
 #include "common/heap/ukvm/fibonacci.h"
 #include "common/heap/ukvm/pairing.h"
+#include "common/heap/ukvm/proxy_set.h"
 #include "common/timer.h"
 #include "common/vector/hrandom.h"
 
@@ -20,7 +22,6 @@
 #include <functional>
 #include <iostream>
 #include <queue>
-#include <unordered_set>
 
 using TValue = size_t;
 using TPair = std::pair<TValue, unsigned>;
@@ -34,6 +35,8 @@ TesterHeapExt::TesterHeapExt(unsigned _size, unsigned _dpm)
     std::reverse(itb, ite);
   }
 }
+
+bool TesterHeapExt::CheckHash() const { return hs.size() == 1; }
 
 size_t TesterHeapExt::TestPriorityQueue() const {
   Timer t;
@@ -176,9 +179,31 @@ size_t TesterHeapExt::TestUKVMPairing() const {
       "M PR" + std::to_string(multipass) + std::to_string(auxiliary));
 }
 
-bool TesterHeapExt::TestAll() const {
-  std::unordered_set<size_t> hs;
-  if (size * dpm < 10000000) {
+template <class THeap, class TExtra>
+size_t TesterHeapExt::TestKVME(const std::string& name, const TExtra& e) const {
+  Timer t;
+  size_t h = 0;
+  THeap heap(e, vinf, false);
+  for (unsigned j = 0; j < dpm; ++j) {
+    for (unsigned i = 0; i < size; ++i)
+      heap.DecreaseValueIfLess(i, v[i * dpm + j]);
+    h = HashCombine(h, heap.TopValue());
+  }
+  for (; !heap.Empty();) h = HashCombine(h, heap.ExtractValue());
+  std::cout << "Test results [" << name << "]: " << h << "\t"
+            << t.GetMilliseconds() << std::endl;
+  return h;
+}
+
+void TesterHeapExt::TestVEBT() {
+  ds::VanEmdeBoasTreeHashTable vebt_ht(64);
+  hs.insert(TestKVME<heap::ukvm::ProxySet<ds::VanEmdeBoasTreeHashTable>>(
+      "M VEBH", vebt_ht));
+}
+
+bool TesterHeapExt::TestAll() {
+  bool small = (size * dpm < 10000000);
+  if (small) {
     hs.insert(TestPriorityQueue());
     hs.insert(TestBase<heap::base::Binary<TPair>>("B   B "));
     hs.insert(TestBase<heap::base::DHeap<2, TPair>>("B   D2"));
@@ -208,7 +233,8 @@ bool TesterHeapExt::TestAll() const {
   hs.insert(TestUKVMPairing<1, 0>());
   hs.insert(TestUKVMPairing<0, 1>());
   hs.insert(TestUKVMPairing<1, 1>());
-  return hs.size() == 1;
+  if (small) TestVEBT();
+  return CheckHash();
 }
 
 bool TestHeapExt(bool time_test) {

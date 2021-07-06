@@ -12,8 +12,6 @@
 	* Shortest path for directed acyclic graphs
 	* Shortest path with integer costs
 	* Shortest path Thorup algorithm
-* Heap
-	* Van Emde Boas tree
 * Optimization
 	* Root finding algorithms
 		* Tester
