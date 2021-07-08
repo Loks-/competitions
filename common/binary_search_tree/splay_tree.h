@@ -74,9 +74,25 @@ class SplayTree
   }
 
   // Split tree to 2 trees.
-  // p and everything left will go to left tree (and p is root).
-  // everything right will go to right tree.
-  static TNode* Split(TNode* p) {
+  // p and everything rigth will go to the rigth tree (and p is root).
+  // everything left will go to the left tree.
+  static TNode* SplitL(TNode* p) {
+    if (!p) return nullptr;
+    action::ApplyRootToNode(p);
+    Splay(p);
+    TNode* l = p->l;
+    if (l) {
+      l->p = nullptr;
+      p->l = nullptr;
+      p->UpdateInfo();
+    }
+    return l;
+  }
+
+  // Split tree to 2 trees.
+  // p and everything left will go to the left tree (and p is root).
+  // everything right will go to the right tree.
+  static TNode* SplitR(TNode* p) {
     if (!p) return nullptr;
     action::ApplyRootToNode(p);
     Splay(p);
@@ -134,7 +150,7 @@ class SplayTree
     }
     TNode* p = FindByKey_Less(root, key);
     output_l = p;
-    output_r = (p ? Split(p) : root);
+    output_r = (p ? SplitR(p) : root);
   }
 
   static TNode* FindByOrder(TNode*& root, size_t order_index) {
@@ -157,9 +173,9 @@ class SplayTree
       output_l = root;
       output_r = nullptr;
     } else {
-      TNode* p = FindByOrder(root, lsize - 1);
-      output_l = p;
-      output_r = Split(p);
+      TNode* p = FindByOrder(root, lsize);
+      output_l = SplitL(p);
+      output_r = p;
     }
   }
 
