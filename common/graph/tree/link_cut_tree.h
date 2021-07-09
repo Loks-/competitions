@@ -122,6 +122,7 @@ class LinkCutTree {
  public:
   LinkCutTree() {}
   explicit LinkCutTree(const TreeGraph& tree) { Build(tree); }
+  explicit LinkCutTree(const std::vector<TData>& data) { Build(data); }
   LinkCutTree(const TreeGraph& tree, const std::vector<TData>& data) {
     Build(tree, data);
   }
@@ -140,6 +141,11 @@ class LinkCutTree {
     stree.Reset(tree.Size());
     for (unsigned i = 0; i < tree.Size(); ++i) stree.New(data[i]);
     BuildR(tree, tree.GetRoot(), CNone);
+  }
+
+  void Build(const std::vector<TData>& data) {
+    stree.Reset(data.size());
+    for (unsigned i = 0; i < data.size(); ++i) stree.New(data[i]);
   }
 
   void SetData(unsigned x, const TData& data) {

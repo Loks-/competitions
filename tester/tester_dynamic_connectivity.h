@@ -17,19 +17,6 @@ class TesterDynamicConnectivity {
    template<class TSolver>
    size_t Test(const std::string& name) const;
 
-//   uint64_t TestBoruvka() const;
-//   uint64_t TestKruskal() const;
-//   uint64_t TestPrimBaseBinaryHeap() const;
-
-//   template <template <class> class THeap>
-//   uint64_t TestPrimDHeap(const std::string& name) const;
-
-//   template <class THeap>
-//   uint64_t TestPrimKPM(const std::string& name) const;
-
-//   template <class THeap>
-//   uint64_t TestPrimKVM(const std::string& name) const;
-
  public:
   bool TestAll();
 };

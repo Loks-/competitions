@@ -2,6 +2,7 @@
 
 #include "common/graph/dynamic/connectivity/base.h"
 // #include "common/graph/dynamic/connectivity/spanning_tree_ett_st.h"
+#include "common/graph/dynamic/connectivity/spanning_tree_lct.h"
 #include "common/hash.h"
 #include "common/timer.h"
 #include "common/vector/hrandom.h"
@@ -61,10 +62,11 @@ bool TesterDynamicConnectivity::TestAll() {
   std::unordered_set<uint64_t> hs;
   hs.insert(Test<graph::dynamic::connectivity::Base>("Base     "));
   // hs.insert(Test<graph::dynamic::connectivity::SpanningTreeETTST>("ST ETT ST"));
+  hs.insert(Test<graph::dynamic::connectivity::SpanningTreeLCT>("ST LCT   "));
   return hs.size() == 1;
 }
 
 bool TestGraphDynamicConnectivity(bool time_test) {
-  TesterDynamicConnectivity t(time_test ? 1000 : 10, time_test ? 1000 : 5, time_test ? 1000 : 5);
+  TesterDynamicConnectivity t(time_test ? 1000 : 100, time_test ? 1000 : 100, time_test ? 1000 : 100);
   return t.TestAll();
 }
