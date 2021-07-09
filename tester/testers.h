@@ -6,6 +6,7 @@ bool TestBinarySearchTree(bool time_test);
 bool TestContinuedFractionConvergent();
 bool TestDisjointSet();
 bool TestGeneratingFunction();
+bool TestGraphDynamicConnectivity(bool time_test);
 bool TestGraphEIDistance(bool time_test);
 bool TestGraphEIDistanceUnsigned(bool time_test);
 bool TestGraphEIDistancePositiveCost(bool time_test);

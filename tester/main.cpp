@@ -29,6 +29,8 @@ int main(int nargs, char **pargs) {
       Assert(TestGraphEIDistanceUnsigned(false));
     else if (tester_mode == "graph_distance_positive_cost")
       Assert(TestGraphEIDistancePositiveCost(false));
+    else if (tester_mode == "graph_dynamic_connectivity")
+      Assert(TestGraphDynamicConnectivity(false));
     else if (tester_mode == "heap_base")
       Assert(TestHeapBase(false));
     else if (tester_mode == "heap_ext")
@@ -63,6 +65,8 @@ int main(int nargs, char **pargs) {
       Assert(TestGraphEIDistanceUnsigned(true));
     else if (tester_mode == "time_graph_distance_positive_cost")
       Assert(TestGraphEIDistancePositiveCost(true));
+    else if (tester_mode == "time_graph_dynamic_connectivity")
+      Assert(TestGraphDynamicConnectivity(true));
     else if (tester_mode == "time_heap_base")
       Assert(TestHeapBase(true));
     else if (tester_mode == "time_heap_ext")
