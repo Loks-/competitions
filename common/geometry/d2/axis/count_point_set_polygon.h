@@ -13,7 +13,7 @@ inline typename TPointSet::TWeight Count(
     (i1 ? s0 : s1) += ps.CountQ({p1.x + (ix ^ i1), p1.y + (iy ^ i1)});
     p0 = p1;
     p1 = p2;
-    p2 = p[(i + 2) % p.Size()];
+    p2 = p.MGet(i + 2);
   }
   return s1 - s0;
 }

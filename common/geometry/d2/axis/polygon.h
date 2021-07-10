@@ -33,7 +33,7 @@ class Polygon : public geometry::d2::Polygon<T> {
     nvector::UniqueS(vx);
     vvy.resize(vx.size());
     for (unsigned i = 0; i < TBase::Size(); ++i) {
-      auto p0 = (*this)[i], p1 = (*this)[(i + 1) % TBase::Size()];
+      auto p0 = TBase::v[i], p1 = TBase::MGet(i + 1);
       assert((i & 1) ? p0.x == p1.x : p0.y == p1.y);
       if (p0.x != p1.x) {
         auto i0 = std::lower_bound(vx.begin(), vx.end(), p0.x) - vx.begin();

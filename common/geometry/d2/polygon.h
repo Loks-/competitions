@@ -19,7 +19,9 @@ class Polygon {
   using TPoint = Point<T>;
   std::vector<TPoint> v;
 
+  Polygon() {}
   explicit Polygon(const std::vector<TPoint>& vp) : v(vp) { Normalize(); }
+  Polygon(const Polygon& p) : v(p.v) {}
 
   void Normalize() {
     unsigned ilowest = 0;
@@ -35,6 +37,7 @@ class Polygon {
   unsigned Size() const { return v.size(); }
 
   const TPoint& operator[](unsigned i) const { return v[i]; }
+  const TPoint& MGet(unsigned i) const { return v[i % v.size()]; }
 };
 }  // namespace d2
 }  // namespace geometry
