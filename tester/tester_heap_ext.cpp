@@ -196,9 +196,9 @@ size_t TesterHeapExt::TestKVME(const std::string& name, const TExtra& e) const {
 }
 
 void TesterHeapExt::TestVEBT() {
-  ds::VanEmdeBoasTreeHashTable vebt_ht(64);
-  hs.insert(TestKVME<heap::ukvm::ProxySet<ds::VanEmdeBoasTreeHashTable>>(
-      "M VEBH", vebt_ht));
+  // ds::VanEmdeBoasTreeHashTable vebt_ht(64);
+  // hs.insert(TestKVME<heap::ukvm::ProxySet<ds::VanEmdeBoasTreeHashTable>>(
+  //     "M VEBH", vebt_ht));
 }
 
 bool TesterHeapExt::TestAll() {

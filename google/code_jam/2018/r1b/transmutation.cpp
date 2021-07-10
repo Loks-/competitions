@@ -1,6 +1,8 @@
 #include "common/stl/base.h"
 #include "common/vector/read.h"
 
+#include <limits>
+
 int main_transmutation() {
   unsigned T;
   cin >> T;

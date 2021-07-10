@@ -25,7 +25,7 @@ class PPT {
 
   void Build(const std::vector<TValue>& v) {
     size_t n = v.size();
-    size_t k = numeric::ULog2(n);
+    size_t k = numeric::ULog2(uint64_t(n));
     vpv.resize(k + 1);
     vpv[0].resize(n);
     for (size_t i = 0; i < n; ++i) vpv[0][i] = {i, v[i]};
@@ -39,7 +39,7 @@ class PPT {
 
   TPositionValue Minimum(size_t b, size_t e) const {
     assert(b < e);
-    unsigned k = numeric::ULog2(e - b);
+    unsigned k = numeric::ULog2(uint64_t(e - b));
     return Merge(vpv[k][b], vpv[k][e - (size_t(1) << k)]);
   }
 };

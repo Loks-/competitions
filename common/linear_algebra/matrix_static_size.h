@@ -51,11 +51,9 @@ class MatrixStaticSize : public VectorStaticSize<TTValue, _rows * _columns> {
   void swap(TSelf& r) { TBase::swap(r); }
 
   void SetDiagonal(const TValue& v) {
-    const unsigned diagonal_length = std::min(rows, columns);
+    unsigned diagonal_length = std::min(rows, columns);
     unsigned shift = columns + 1;
-    for (iterator p = TBase::begin(), pend = p + diagonal_length * shift;
-         p < pend; p += shift)
-      *p = v;
+    for (iterator p = TBase::begin(); diagonal_length--; p += shift) *p = v;
   }
 
   TSelf& operator+=(const TSelf& v) {

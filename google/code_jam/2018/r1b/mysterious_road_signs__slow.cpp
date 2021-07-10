@@ -54,7 +54,7 @@ int main_mysterious_road_signs__slow() {
       for (auto& it : point2intervals[j]) it.second.push_back(make_pair(S, S));
     }
     BestIntervals best_intervals;
-    for (const auto it0 : point2intervals[0]) {
+    for (const auto& it0 : point2intervals[0]) {
       const auto& interval_list0 = it0.second;
       unordered_set<int64_t> candidates;
       for (const auto& interval : interval_list0) {
