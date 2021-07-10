@@ -82,7 +82,8 @@
         "ios": "cpp",
         "locale": "cpp",
         "queue": "cpp",
-        "stack": "cpp"
+        "stack": "cpp",
+        "version": "cpp"
     },
     "cmake.configureOnOpen": false
 }
