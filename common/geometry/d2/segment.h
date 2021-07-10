@@ -13,6 +13,7 @@ class Segment {
   Segment(const Point<T>& _p1, const Point<T>& _p2) : p1(_p1), p2(_p2) {}
 
   bool Empty() const { return p1 == p2; }
+  bool operator==(const Segment<T, closed>& r) const { return (p1 == r.p1) && (p2 == r.p2); }
 };
 }  // namespace d2
 }  // namespace geometry
