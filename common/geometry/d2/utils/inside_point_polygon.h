@@ -1,9 +1,9 @@
 #pragma once
 
-#include "common/geometry/d2/point.h"
-#include "common/geometry/d2/polygon.h"
 #include "common/geometry/d2/location/location.h"
 #include "common/geometry/d2/location/point_polygon.h"
+#include "common/geometry/d2/point.h"
+#include "common/geometry/d2/polygon.h"
 
 namespace geometry {
 namespace d2 {

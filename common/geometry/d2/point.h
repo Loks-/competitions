@@ -16,6 +16,7 @@ class Point {
   Point(const T& _x, const T& _y) : x(_x), y(_y) {}
 
   bool operator==(const TSelf& r) const { return (x == r.x) && (y == r.y); }
+  bool operator!=(const TSelf& r) const { return (x != r.x) || (y != r.y); }
 };
 }  // namespace d2
 }  // namespace geometry
