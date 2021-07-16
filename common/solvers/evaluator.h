@@ -2,7 +2,6 @@
 
 #include "common/base.h"
 
-#include <ostream>
 #include <string>
 
 namespace solvers {
@@ -23,8 +22,4 @@ class Evaluator {
     return l.score < r.score;
   }
 };
-
-inline std::ostream& operator<<(std::ostream& os, const Evaluator::Result& r) {
-  return os << (r.correct ? r.score : 0);
-}
 }  // namespace solvers

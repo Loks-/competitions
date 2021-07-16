@@ -20,9 +20,12 @@ inline Location Locate(const I2Point& p, const I2Polygon& plgn) {
     if (p2 == p) return {Location::VERTEX, i + 1};
     I2OpenSegment s(p1, p2);
     if (HasPoint(s, p)) return {Location::EDGE, i};
-    if (Intersect(s0, s)) ++cnt;
-    if ((p1.x == p.x) && (p1.y < p.y) && (p2.x < p.x)) ++cnt;
-    if ((p2.x == p.x) && (p1.y < p.y) && (p1.x < p.x)) ++cnt;
+    if ((p1.x == p.x) || (p2.x == p.x)) {
+      if ((p1.x == p.x) && (p1.y < p.y) && (p2.x < p.x)) ++cnt;
+      if ((p2.x == p.x) && (p2.y < p.y) && (p1.x < p.x)) ++cnt;
+    } else if (Intersect(s0, s)) {
+      ++cnt;
+    }
   }
   return {(cnt % 2) ? Location::INSIDE : Location::OUTSIDE, 0};
 }

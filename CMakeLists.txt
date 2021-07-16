@@ -96,6 +96,11 @@ file ( APPEND ${HACKERRANK_PROXY_C_C}
 add_executable( hackerrank_c ${HACKERRANK_C_SOURCES} ${HACKERRANK_PROXY_C_C} )
 set_target_properties( hackerrank_c PROPERTIES COMPILE_FLAGS "-Wno-unused-result" )
 
+file( GLOB_RECURSE ICFPPC_2021_SOURCES RELATIVE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/icfppc/2021/src/*.cpp" )
+add_executable( icfppc_2021 ${ICFPPC_2021_SOURCES} )
+target_link_libraries( icfppc_2021 ${CMAKE_THREAD_LIBS_INIT} )
+target_include_directories(icfppc_2021 PRIVATE "${PROJECT_SOURCE_DIR}/icfppc/2021/src" )
+
 file( GLOB_RECURSE IPCS_SOURCES RELATIVE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/ipcs/*.cpp" )
 list( SORT IPCS_SOURCES )
 set( IPCS_PROXY_H "${PROJECT_SOURCE_DIR}/ipcs/proxy_gen.h" )

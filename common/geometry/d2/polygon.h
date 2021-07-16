@@ -21,7 +21,6 @@ class Polygon {
 
   Polygon() {}
   explicit Polygon(const std::vector<TPoint>& vp) : v(vp) { Normalize(); }
-  Polygon(const Polygon& p) : v(p.v) {}
 
   void Normalize() {
     unsigned ilowest = 0;
