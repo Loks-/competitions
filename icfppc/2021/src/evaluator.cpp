@@ -15,8 +15,7 @@
 
 // TODO:
 //   Code for GLOBALIST and BREAK_A_LEG bonuses.
-Evaluator::Result Evaluator::operator()(const Problem& p,
-                                        const Solution& s) const {
+Evaluator::Result Evaluator::Apply(const Problem& p, const Solution& s) {
   auto& hole = p.Hole();
   auto g = p.Figure();
   auto bonus_type = s.GetBonusUsed().Type();
@@ -28,13 +27,13 @@ Evaluator::Result Evaluator::operator()(const Problem& p,
                                         ? g.EdgesSize()
                                     : (bonus_type == Bonus::SUPERFLEX) ? 1
                                                                        : 0;
-  if (g.Size() != points.size()) return {false, -1};
+  if (g.Size() != points.size()) return {false, -11};
   for (auto& p : points) {
     if (!geometry::d2::Inside(p, hole)) {
       std::cerr << "Point " << p << " outside of polygon." << std::endl;
       auto l = geometry::d2::location::Locate(p, hole);
       std::cerr << unsigned(l.type) << std::endl;
-      if (++outside_vertexes > max_outside_vertexes) return {false, -2};
+      if (++outside_vertexes > max_outside_vertexes) return {false, -12};
     }
   }
   for (unsigned u = 0; u < g.Size(); ++u) {
@@ -43,13 +42,13 @@ Evaluator::Result Evaluator::operator()(const Problem& p,
       auto p2 = points[e.to];
       if (geometry::d2::Inside(p1, hole) && geometry::d2::Inside(p2, hole)) {
         if (!geometry::d2::Inside(I2ClosedSegment(p1, p2), hole))
-          return {false, -3};
+          return {false, -13};
       }
       auto d2 = SquaredDistanceL2(p1, p2);
       if ((d2 < e.info.first) || (d2 > e.info.second)) {
         // std::cerr << "SL2 =\t" << e.info.first << "\t" << d2 << "\t"
         //           << e.info.second << std::endl;
-        if (++out_of_range_edges > max_out_of_range_edges) return {false, -4};
+        if (++out_of_range_edges > max_out_of_range_edges) return {false, -14};
       }
     }
   }
@@ -61,14 +60,4 @@ Evaluator::Result Evaluator::operator()(const Problem& p,
     score += min_distance;
   }
   return {true, score};
-}
-
-Evaluator::Result Evaluator::operator()(
-    const std::string& id, const std::string& problem_filename,
-    const std::string& solution_filename) const {
-  Problem p;
-  if (!p.Load(id, problem_filename)) return {false, -5};
-  Solution s;
-  if (!s.Load(id, solution_filename)) return {false, -6};
-  return operator()(p, s);
 }

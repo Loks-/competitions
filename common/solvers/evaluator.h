@@ -10,11 +10,10 @@ class Evaluator {
   struct Result {
     bool correct;
     int64_t score;
-  };
 
-  Result operator()(const std::string&, const std::string&) const {
-    return {false, 0};
-  }
+    Result() : correct(false), score(0) {}
+    Result(bool _correct, int64_t _score) : correct(_correct), score(_score) {}
+  };
 
   bool Compare(const Result& l, const Result& r) const {
     return l.correct ? r.correct ? l.score < r.score : true : false;
