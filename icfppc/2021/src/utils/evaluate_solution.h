@@ -3,4 +3,4 @@
 #include <string>
 
 // Evaluate solution from cache.
-void EvaluateSolution(const std::string& solution_name);
+void EvaluateSolution(const std::string& solver_name);

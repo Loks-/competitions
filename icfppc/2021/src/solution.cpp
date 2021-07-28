@@ -1,5 +1,6 @@
 #include "solution.h"
 
+#include "settings.h"
 #include "utils/json_point.h"
 
 #include "common/files/json.h"
@@ -8,7 +9,7 @@
 #include <string>
 #include <vector>
 
-bool Solution::Load(const std::string& _id, const std::string& filename) {
+bool Solution::LoadI(const std::string& _id, const std::string& filename) {
   id = _id;
   files::JSON json;
   if (!json.Load(filename)) return false;
@@ -24,11 +25,24 @@ bool Solution::Load(const std::string& _id, const std::string& filename) {
   return true;
 }
 
-void Solution::Save(const std::string& /* filename */) const {
+void Solution::SaveI(const std::string& /* filename */) const {
   files::JSON json, json_vertices;
   json_vertices.SetArray();
   for (auto& p : points) json_vertices.Add(ToJSON(p));
   json.SetDictionary();
   json.Add("vertices", json_vertices);
   // ...
+}
+
+std::string Solution::GetFileName(const std::string& _id,
+                                  const std::string& solver_name) {
+  return SolutionFilename(_id, solver_name);
+}
+
+bool Solution::Load(const std::string& _id, const std::string& solver_name) {
+  return LoadI(_id, GetFileName(_id, solver_name));
+}
+
+void Solution::Save(const std::string& solver_name) {
+  SaveI(GetFileName(id, solver_name));
 }

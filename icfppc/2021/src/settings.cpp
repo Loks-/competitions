@@ -11,12 +11,11 @@ std::string ProblemFilename(unsigned problem_id) {
 }
 
 std::string SolutionFilename(const std::string& problem_id,
-                             const std::string& solution_name) {
-  return path_to_root + "solutions/" + solution_name + "/" + problem_id +
-         ".json";
+                             const std::string& solver_name) {
+  return path_to_root + "solutions/" + solver_name + "/" + problem_id + ".json";
 }
 
 std::string SolutionFilename(unsigned problem_id,
-                             const std::string& solution_name) {
-  return SolutionFilename(std::to_string(problem_id), solution_name);
+                             const std::string& solver_name) {
+  return SolutionFilename(std::to_string(problem_id), solver_name);
 }

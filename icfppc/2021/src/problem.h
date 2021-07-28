@@ -25,5 +25,10 @@ class Problem : public solvers::Problem {
     return figure;
   }
 
-  bool Load(const std::string& _id, const std::string& filename);
+ protected:
+  bool LoadI(const std::string& _id, const std::string& filename);
+
+ public:
+  static std::string GetFileName(const std::string& _id);
+  bool Load(const std::string& _id);
 };

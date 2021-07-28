@@ -1,5 +1,6 @@
 #include "problem.h"
 
+#include "settings.h"
 #include "utils/json_point.h"
 
 #include "common/files/json.h"
@@ -10,7 +11,7 @@
 #include <string>
 #include <vector>
 
-bool Problem::Load(const std::string& _id, const std::string& filename) {
+bool Problem::LoadI(const std::string& _id, const std::string& filename) {
   id = _id;
   files::JSON json;
   if (!json.Load(filename)) return false;
@@ -44,4 +45,12 @@ bool Problem::Load(const std::string& _id, const std::string& filename) {
       bonuses[i].LoadFromProblem(id, json_bonuses.GetValue(i));
   }
   return true;
+}
+
+std::string Problem::GetFileName(const std::string& _id) {
+  return ProblemFilename(_id);
+}
+
+bool Problem::Load(const std::string& _id) {
+  return LoadI(_id, GetFileName(_id));
 }

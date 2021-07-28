@@ -18,9 +18,19 @@ class Solution : public solvers::Solution {
   std::vector<Bonus> bonuses;
 
  public:
+  bool Empty() const { return points.empty(); }
+
   const std::vector<I2Point>& GetPoints() const { return points; }
   const Bonus& GetBonusUsed() const { return bonus_used; }
 
-  bool Load(const std::string& _id, const std::string& filename);
-  void Save(const std::string& filename) const;
+ protected:
+  bool LoadI(const std::string& _id, const std::string& filename);
+  void SaveI(const std::string& filename) const;
+
+ public:
+  static std::string GetFileName(const std::string& _id,
+                                 const std::string& solver_name);
+
+  bool Load(const std::string& _id, const std::string& solver_name);
+  void Save(const std::string& solver_name);
 };
