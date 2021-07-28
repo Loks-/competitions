@@ -17,9 +17,7 @@ class Evaluator {
   }
 
   bool Compare(const Result& l, const Result& r) const {
-    if (!l.correct) return false;
-    if (!r.correct) return true;
-    return l.score < r.score;
+    return l.correct ? r.correct ? l.score < r.score : true : false;
   }
 };
 }  // namespace solvers
