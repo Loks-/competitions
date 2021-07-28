@@ -31,9 +31,9 @@ Evaluator::Result Evaluator::operator()(const Problem& p,
   if (g.Size() != points.size()) return {false, -1};
   for (auto& p : points) {
     if (!geometry::d2::Inside(p, hole)) {
-      std::cout << "Point " << p << " outside of polygon." << std::endl;
+      std::cerr << "Point " << p << " outside of polygon." << std::endl;
       auto l = geometry::d2::location::Locate(p, hole);
-      std::cout << unsigned(l.type) << std::endl;
+      std::cerr << unsigned(l.type) << std::endl;
       if (++outside_vertexes > max_outside_vertexes) return {false, -2};
     }
   }
@@ -47,6 +47,8 @@ Evaluator::Result Evaluator::operator()(const Problem& p,
       }
       auto d2 = SquaredDistanceL2(p1, p2);
       if ((d2 < e.info.first) || (d2 > e.info.second)) {
+        // std::cerr << "SL2 =\t" << e.info.first << "\t" << d2 << "\t"
+        //           << e.info.second << std::endl;
         if (++out_of_range_edges > max_out_of_range_edges) return {false, -4};
       }
     }
