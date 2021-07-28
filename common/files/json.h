@@ -1,11 +1,10 @@
 #pragma once
 
 #include "common/base.h"
+#include "common/files/file_to_string.h"
 
 #include <cctype>
-#include <fstream>
 #include <iostream>
-#include <sstream>
 #include <string>
 #include <unordered_map>
 #include <vector>
@@ -205,10 +204,11 @@ class JSON {
   }
 
  protected:
-  void ContextAssert(const std::string& s, unsigned pos, char expected) {
+  bool ContextAssert(const std::string& s, unsigned pos, char expected) {
     if (pos >= s.size()) {
       std::cerr << "File ended earlier that expected." << std::endl;
       assert(false);
+      return false;
     } else if (s[pos] != expected) {
       std::cerr << "Check Failed @ pos = " << pos << std::endl;
       std::cerr << "Expect " << expected << " got " << s[pos] << std::endl;
@@ -218,14 +218,16 @@ class JSON {
       std::cerr << "Text after:" << std::endl;
       std::cerr << s.substr(pos, 100) << std::endl;
       assert(false);
+      return false;
     }
+    return true;
   }
 
   void SkipSpaces(const std::string& s, unsigned& index) {
     for (; (index < s.size()) && (isspace(s[index]));) ++index;
   }
 
-  void ParseI(const std::string& s, unsigned& index) {
+  bool ParseI(const std::string& s, unsigned& index) {
     type = END;
     SkipSpaces(s, index);
     assert(index < s.size());
@@ -237,7 +239,7 @@ class JSON {
         SkipSpaces(s, index);
         for (;;) {
           if (s[index] == '}') break;
-          ContextAssert(s, index, '"');
+          if (!ContextAssert(s, index, '"')) return false;
           auto npos = s.find('"', index + 1);
           assert(npos != std::string::npos);
           std::string key = s.substr(index + 1, npos - index - 1);
@@ -246,13 +248,13 @@ class JSON {
           index = npos + 1;
           value_dictionary.insert({key, value_array.size()});
           value_array.push_back({});
-          value_array.back().ParseI(s, index);
+          if (!value_array.back().ParseI(s, index)) return false;
           SkipSpaces(s, index);
           if ((index >= s.size()) || (s[index] != ',')) break;
           ++index;
           SkipSpaces(s, index);
         }
-        ContextAssert(s, index, '}');
+        if (!ContextAssert(s, index, '}')) return false;
         ++index;
       } break;
       case '[': {
@@ -261,13 +263,13 @@ class JSON {
         SkipSpaces(s, index);
         for (;;) {
           value_array.push_back({});
-          value_array.back().ParseI(s, index);
+          if (!value_array.back().ParseI(s, index)) return false;
           SkipSpaces(s, index);
           if ((index >= s.size()) || (s[index] != ',')) break;
           ++index;
           SkipSpaces(s, index);
         }
-        ContextAssert(s, index, ']');
+        if (!ContextAssert(s, index, ']')) return false;
         ++index;
       } break;
       case '"': {
@@ -304,29 +306,26 @@ class JSON {
               value_floating = dtemp;
             } else {
               std::cerr << "Unknown value: [" << ss << "]" << std::endl;
-              ContextAssert(s, npos, '~');
+              if (!ContextAssert(s, npos, '~')) return false;
             }
           }
         }
         index = npos;
       }
     }
+    return true;
   }
 
  public:
-  void Parse(const std::string& full_json) {
+  bool Parse(const std::string& full_json) {
     unsigned index = 0;
-    ParseI(full_json, index);
+    return ParseI(full_json, index);
   }
 
   bool Load(const std::string& filename) {
-    std::ifstream f(filename);
-    if (!f.is_open()) return false;
-    std::stringstream buffer;
-    buffer << f.rdbuf();
-    std::string sjson = buffer.str();
-    Parse(sjson);
-    return true;
+    std::string sjson = FileToString(filename);
+    if (sjson.empty()) return false;
+    return Parse(sjson);
   }
 };
 }  // namespace files
