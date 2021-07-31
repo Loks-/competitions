@@ -30,5 +30,6 @@ icfppc/2019/solutions/all/
 utils/current_solution.cpp
 
 # Temp files
+temp/
 temp.in
 temp.out
