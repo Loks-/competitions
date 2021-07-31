@@ -4,8 +4,8 @@
 #include "common/solvers/ext/run_n.h"
 
 int main() {
-  // EvaluateSolution("crbm");
+  //   EvaluateSolution("best");
   src_solvers::MCTP s(10);
-  solvers::ext::RunN<src_solvers::MCTP>(s, 1, 10);
+  solvers::ext::RunN<src_solvers::MCTP>(s, 1, 132);
   return 0;
 }

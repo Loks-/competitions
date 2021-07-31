@@ -59,6 +59,8 @@ class MCTP : public Base {
 
   PSolver Clone() const override { return std::make_shared<MCTP>(*this); }
 
+  // bool SkipSolutionRead() const override { return true; }
+
   std::string Name() const override {
     return "mctp_" + std::to_string(max_time_in_seconds);
   }

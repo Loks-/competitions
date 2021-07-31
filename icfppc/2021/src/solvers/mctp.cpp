@@ -151,8 +151,8 @@ void MCTP::Run() {
     auto r = Evaluator::Apply(problem, s);
     dscore = Evaluator::DScore(r);
     if (dscore > best_score) {
-      std::cout << "New best solution: " << r.score << "\t" << nruns
-                << std::endl;
+      //   std::cout << "New best solution: " << r.score << "\t" << nruns
+      //             << std::endl;
       best_score = dscore;
       best_solution = s;
     }
