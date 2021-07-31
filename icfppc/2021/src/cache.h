@@ -24,6 +24,14 @@ class Cache {
  public:
   void Init(const Problem& problem);
 
+  unsigned Index(const I2Point& p) const {
+    return (p.x - box.p1.x) + (box.p2.x - box.p1.x + 1) * (p.y - box.p1.y);
+  }
+
+  unsigned MaxIndex() const {
+    return (box.p2.x - box.p1.x + 1) * (box.p2.y - box.p1.y + 1);
+  }
+
   const std::vector<I2Point>& GetValidPoints() const { return valid_points; }
   bool Test(const I2Point& p) const;
   bool Test(const I2ClosedSegment& s);

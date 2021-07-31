@@ -18,6 +18,9 @@ class Solution : public solvers::Solution {
   std::vector<Bonus> bonuses;
 
  public:
+  Solution() {}
+  explicit Solution(const std::vector<I2Point>& _points) : points(_points) {}
+
   bool Empty() const { return points.empty(); }
 
   const std::vector<I2Point>& GetPoints() const { return points; }

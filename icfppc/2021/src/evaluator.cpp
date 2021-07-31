@@ -11,6 +11,7 @@
 #include "common/geometry/d2/utils/inside_segment_polygon.h"
 
 #include <algorithm>
+#include <cmath>
 #include <string>
 
 // TODO:
@@ -60,4 +61,8 @@ Evaluator::Result Evaluator::Apply(const Problem& p, const Solution& s) {
     score += min_distance;
   }
   return {true, score};
+}
+
+double Evaluator::DScore(const Result& r) {
+  return r.correct ? 1.0 / sqrt(1.0 + r.score) : 0.0;
 }
