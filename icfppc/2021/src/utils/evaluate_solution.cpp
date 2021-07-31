@@ -14,6 +14,7 @@ void EvaluateSolution(const std::string& solver_name) {
     auto r = solvers::ext::Evaluate<Evaluator, Problem, Solution>(
         std::to_string(i), solver_name);
     std::cout << "Problem " << std::to_string(1000 + i).substr(1) << "\t"
-              << r.correct << "\t" << r.score << std::endl;
+              << r.correct << "\t" << r.score << "\t" << r.raw_points
+              << std::endl;
   }
 }
