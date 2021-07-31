@@ -147,7 +147,7 @@ void MCTP::Run() {
   }
   double dscore = 0.;
   if (used_vertices.Size() == gsize) {
-    Solution s{solution};
+    Solution s{problem.Id(), solution};
     auto r = Evaluator::Apply(problem, s);
     dscore = Evaluator::DScore(r);
     if (dscore > best_score) {

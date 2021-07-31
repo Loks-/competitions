@@ -19,7 +19,10 @@ class Solution : public solvers::Solution {
 
  public:
   Solution() {}
-  explicit Solution(const std::vector<I2Point>& _points) : points(_points) {}
+  Solution(const std::string& _id, const std::vector<I2Point>& _points)
+      : points(_points) {
+    id = _id;
+  }
 
   bool Empty() const { return points.empty(); }
 

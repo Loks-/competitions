@@ -5,6 +5,7 @@
 
 #include <cctype>
 #include <iostream>
+#include <sstream>
 #include <string>
 #include <unordered_map>
 #include <vector>
@@ -31,6 +32,7 @@ class JSON {
   double value_floating;
   std::string value_string;
   std::vector<JSON> value_array;
+  std::vector<std::string> value_dictionary_keys;
   std::unordered_map<std::string, unsigned> value_dictionary;
 
  public:
@@ -139,6 +141,12 @@ class JSON {
                : false;
   }
 
+  const std::string& GetKey(unsigned index) const {
+    assert(type == DICTIONARY);
+    assert(index < value_dictionary_keys.size());
+    return value_dictionary_keys[index];
+  }
+
   JSON& GetValue(const std::string& key) {
     assert(type == DICTIONARY);
     auto it = value_dictionary.find(key);
@@ -186,6 +194,7 @@ class JSON {
   void SetDictionary() {
     type = DICTIONARY;
     value_array.clear();
+    value_dictionary_keys.clear();
     value_dictionary.clear();
   }
 
@@ -200,6 +209,7 @@ class JSON {
     assert(type == DICTIONARY);
     assert(!HasKey(key));
     value_dictionary.insert({key, value_array.size()});
+    value_dictionary_keys.push_back(key);
     value_array.push_back(value);
   }
 
@@ -247,6 +257,7 @@ class JSON {
           assert(npos != std::string::npos);
           index = npos + 1;
           value_dictionary.insert({key, value_array.size()});
+          value_dictionary_keys.push_back(key);
           value_array.push_back({});
           if (!value_array.back().ParseI(s, index)) return false;
           SkipSpaces(s, index);
@@ -326,6 +337,63 @@ class JSON {
     std::string sjson = FileToString(filename);
     if (sjson.empty()) return false;
     return Parse(sjson);
+  }
+
+  void ToOStream(std::ostream& o) const {
+    switch (type) {
+      case INTEGER:
+        o << value_integer;
+        break;
+      case FLOATING:
+        o << value_floating;
+        break;
+      case STRING:
+        o << "\"" << value_string << "\"";
+        break;
+      case BOOLEAN:
+        o << (value_boolean ? "true" : "false");
+        break;
+      case ARRAY:
+        o << "[";
+        if (value_array.size() > 0) {
+          value_array[0].ToOStream(o);
+          for (unsigned i = 1; i < Size(); ++i) {
+            o << ", ";
+            value_array[i].ToOStream(o);
+          }
+        }
+        o << "]";
+        break;
+      case DICTIONARY:
+        o << "{";
+        if (value_array.size() > 0) {
+          o << "\"" << value_dictionary_keys[0] << "\": ";
+          value_array[0].ToOStream(o);
+          for (unsigned i = 1; i < Size(); ++i) {
+            o << ", \"" << value_dictionary_keys[i] << "\": ";
+            value_array[i].ToOStream(o);
+          }
+        }
+        o << "}";
+        break;
+      case EMPTY:
+        o << "null";
+        break;
+      default:
+        assert(false);
+        break;
+    }
+  }
+
+  std::string ToString() const {
+    std::ostringstream oss;
+    ToOStream(oss);
+    return oss.str();
+  }
+
+  void Save(const std::string& filename) const {
+    std::ofstream f(filename);
+    ToOStream(f);
   }
 };
 }  // namespace files

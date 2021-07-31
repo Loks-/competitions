@@ -25,13 +25,13 @@ bool Solution::LoadI(const std::string& _id, const std::string& filename) {
   return true;
 }
 
-void Solution::SaveI(const std::string& /* filename */) const {
+void Solution::SaveI(const std::string& filename) const {
   files::JSON json, json_vertices;
   json_vertices.SetArray();
   for (auto& p : points) json_vertices.Add(ToJSON(p));
   json.SetDictionary();
   json.Add("vertices", json_vertices);
-  // ...
+  json.Save(filename);
 }
 
 std::string Solution::GetFileName(const std::string& _id,
