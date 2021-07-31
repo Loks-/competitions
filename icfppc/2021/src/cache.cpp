@@ -15,9 +15,10 @@
 void Cache::Init(const Problem& problem) {
   hole = problem.Hole();
   box = Box(hole.v);
+  // Valid points
+  valid_points.clear();
   valid_points_map.clear();
   valid_points_map.resize(box.p2.x - box.p1.x + 1);
-  // Valid points
   for (unsigned i = 0; i < valid_points_map.size(); ++i) {
     valid_points_map[i].resize(box.p2.y - box.p1.y + 1, 0);
     for (unsigned j = 0; j < valid_points_map[i].size(); ++j) {
@@ -28,6 +29,7 @@ void Cache::Init(const Problem& problem) {
       }
     }
   }
+  valid_segments_map.clear();
   // Init min/max distance between vertexes for figure.
   const auto& f = problem.Figure();
   UndirectedGraphEI<int64_t> gf(f.Size());

@@ -33,6 +33,7 @@ void MCTP::InitSearch(const Problem& p) {
   }
   valid_candidates_index.clear();
   valid_candidates_index.resize(size, 0);
+  solution.clear();
   solution.resize(size);
   force_stop = false;
   location_stats.clear();

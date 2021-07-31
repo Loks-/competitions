@@ -6,6 +6,6 @@
 int main() {
   // EvaluateSolution("crbm");
   src_solvers::MCTP s(10);
-  solvers::ext::RunN<src_solvers::MCTP>(s, 2, 2);
+  solvers::ext::RunN<src_solvers::MCTP>(s, 1, 10);
   return 0;
 }
