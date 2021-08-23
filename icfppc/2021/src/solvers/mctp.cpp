@@ -160,6 +160,7 @@ void MCTP::Run() {
 }
 
 Solution MCTP::Solve(const Problem& p) {
+  std::cout << "Running MCTP::Solve for problem " << p.Id() << std::endl;
   Timer t;
   InitSearch(p);
   for (; (best_score < 1) && (t.GetSeconds() < max_time_in_seconds);) Run();
