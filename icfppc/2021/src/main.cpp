@@ -7,7 +7,8 @@ int main() {
   EvaluateSolution("best");
   // EvaluateSolution("crbm");
   // src_solvers::MCTP s(10);
-  // solvers::ext::RunN<src_solvers::MCTP>(s, 1, 132);
-  // solvers::ext::RunN<src_solvers::MCTP>(s, 97, 98);
+  // solvers::ext::RunN<src_solvers::Base>(s, 1, 132);
+  // src_solvers::MCTP s(60);
+  // solvers::ext::RunNMT<src_solvers::Base>(s, 1, 132, 4);
   return 0;
 }
