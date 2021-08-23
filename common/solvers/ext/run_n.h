@@ -1,24 +1,30 @@
 #pragma once
 
-#include "run_one.h"
-#include "run_one_thread_safe.h"
+#include "common/solvers/ext/run_one.h"
+#include "common/solvers/ext/run_one_thread_safe.h"
+#include "common/thread_pool.h"
 
 #include <string>
 
 namespace solvers {
 namespace ext {
+// Single thread version
 template <class TSolver>
 inline void RunN(TSolver& s, unsigned first_problem, unsigned last_problem) {
-  for (unsigned i = first_problem; i <= last_problem; ++i) {
+  for (unsigned i = first_problem; i <= last_problem; ++i)
     RunOne<TSolver>(s, std::to_string(i));
-  }
 }
 
+// Multi threads version
 template <class TSolver>
-inline void RunNTS(const typename TSolver::PSolver& psolver,
-                   unsigned first_problem, unsigned last_problem) {
+inline void RunNMT(TSolver& s, unsigned first_problem, unsigned last_problem,
+                   unsigned nthreads) {
+  ThreadPool tp(nthreads);
+  auto psolver = s.Clone();
   for (unsigned i = first_problem; i <= last_problem; ++i) {
-    RunOneThreadSafe<TSolver>(psolver, std::to_string(i));
+    auto t = std::make_shared<std::packaged_task<void()>>(
+        [&, i]() { RunOneThreadSafe<TSolver>(psolver, std::to_string(i)); });
+    tp.EnqueueTask(std::move(t));
   }
 }
 }  // namespace ext
