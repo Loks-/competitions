@@ -1,3 +1,4 @@
+#include "settings.h"
 #include "solvers/mctp.h"
 #include "utils/evaluate_solution.h"
 
@@ -9,6 +10,8 @@ void InitCommaneLine(files::CommandLine& cmd) {
   cmd.AddArg("solution", "best");
   cmd.AddArg("timelimit", 10);
   cmd.AddArg("nthreads", 4);
+  cmd.AddArg("first_problem", 1);
+  cmd.AddArg("last_problem", last_problem);
 }
 
 int main(int argc, char** argv) {
@@ -23,9 +26,11 @@ int main(int argc, char** argv) {
     src_solvers::MCTP s(cmd.GetInt("timelimit"));
     int nthreads = cmd.GetInt("nthreads");
     if (nthreads <= 1)
-      solvers::ext::RunN<src_solvers::Base>(s, 1, 132);
+      solvers::ext::RunN<src_solvers::Base>(s, cmd.GetInt("first_problem"),
+                                            cmd.GetInt("last_problem"));
     else
-      solvers::ext::RunNMT<src_solvers::Base>(s, 1, 132, nthreads);
+      solvers::ext::RunNMT<src_solvers::Base>(
+          s, cmd.GetInt("first_problem"), cmd.GetInt("last_problem"), nthreads);
   } else {
     std::cerr << "Unknown mode " << mode << std::endl;
   }
