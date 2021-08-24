@@ -3,7 +3,7 @@
 #include "cache.h"
 #include "problem.h"
 #include "solution.h"
-#include "solvers/base.h"
+#include "solvers/base_vct.h"
 
 #include "common/data_structures/unsigned_set.h"
 #include "common/geometry/d2/point.h"
@@ -15,9 +15,9 @@
 #include <vector>
 
 namespace src_solvers {
-class MCTP : public Base {
+class MCTP : public BaseVCT {
  public:
-  using TBase = Base;
+  using TBase = BaseVCT;
 
   class Stat {
    public:
@@ -33,13 +33,6 @@ class MCTP : public Base {
   };
 
  protected:
-  Problem problem;
-  Cache cache;
-  ds::UnsignedSet used_vertices;
-  std::vector<std::vector<std::vector<I2Point>>> valid_candidates;
-  std::vector<unsigned> valid_candidates_index;
-  std::vector<I2Point> solution;
-  bool force_stop;
   std::vector<std::vector<Stat>> points_stats;
   std::vector<Stat> location_stats;
   unsigned nruns;
@@ -50,8 +43,6 @@ class MCTP : public Base {
   void InitSearch(const Problem& p);
   void ResetSearch();
   void UpdateStat(double score);
-  void AddPoint(unsigned index, const I2Point& p);
-  void RemoveLastPoint();
   void Run();
 
  public:
