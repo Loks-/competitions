@@ -1,14 +1,34 @@
 #include "solvers/mctp.h"
 #include "utils/evaluate_solution.h"
 
+#include "common/files/command_line.h"
 #include "common/solvers/ext/run_n.h"
 
-int main() {
-  EvaluateSolution("best");
-  // EvaluateSolution("crbm");
-  // src_solvers::MCTP s(10);
-  // solvers::ext::RunN<src_solvers::Base>(s, 1, 132);
-  // src_solvers::MCTP s(60);
-  // solvers::ext::RunNMT<src_solvers::Base>(s, 1, 132, 4);
+void InitCommaneLine(files::CommandLine& cmd) {
+  cmd.AddArg("mode", "eval");
+  cmd.AddArg("solution", "best");
+  cmd.AddArg("timelimit", 10);
+  cmd.AddArg("nthreads", 4);
+}
+
+int main(int argc, char** argv) {
+  files::CommandLine cmd;
+  InitCommaneLine(cmd);
+  cmd.Parse(argc, argv);
+
+  auto mode = cmd.GetString("mode");
+  if (mode == "eval") {
+    EvaluateSolution(cmd.GetString("solution"));
+  } else if (mode == "run") {
+    src_solvers::MCTP s(cmd.GetInt("timelimit"));
+    int nthreads = cmd.GetInt("nthreads");
+    if (nthreads <= 1)
+      solvers::ext::RunN<src_solvers::Base>(s, 1, 132);
+    else
+      solvers::ext::RunNMT<src_solvers::Base>(s, 1, 132, nthreads);
+  } else {
+    std::cerr << "Unknown mode " << mode << std::endl;
+  }
+
   return 0;
 }
