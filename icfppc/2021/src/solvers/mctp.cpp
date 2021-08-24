@@ -2,9 +2,7 @@
 
 #include "evaluator.h"
 
-#include "common/base.h"
-#include "common/geometry/d2/distance/distance_l2.h"
-#include "common/geometry/d2/segment.h"
+#include "common/timer.h"
 
 #include <algorithm>
 #include <cmath>

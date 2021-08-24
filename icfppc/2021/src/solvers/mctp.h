@@ -1,14 +1,8 @@
 #pragma once
 
-#include "cache.h"
 #include "problem.h"
 #include "solution.h"
 #include "solvers/base_vct.h"
-
-#include "common/data_structures/unsigned_set.h"
-#include "common/geometry/d2/point.h"
-#include "common/solvers/solver.h"
-#include "common/timer.h"
 
 #include <memory>
 #include <string>

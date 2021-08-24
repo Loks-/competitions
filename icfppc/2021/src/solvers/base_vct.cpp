@@ -1,12 +1,11 @@
 #include "solvers/base_vct.h"
 
-#include "problem.h"
-
 #include "common/base.h"
 #include "common/geometry/d2/distance/distance_l2.h"
 #include "common/geometry/d2/segment.h"
 
 #include <algorithm>
+#include <iostream>
 
 using namespace src_solvers;
 
