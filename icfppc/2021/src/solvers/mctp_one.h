@@ -9,7 +9,8 @@
 #include <vector>
 
 namespace src_solvers {
-class MCTPScore : public MCTPBase {
+// Try to find any solution that works. It stops as soon as one found.
+class MCTPOne : public MCTPBase {
  public:
   using TBase = MCTPBase;
 
@@ -18,16 +19,14 @@ class MCTPScore : public MCTPBase {
   void Run();
 
  public:
-  MCTPScore(unsigned max_time_in_seconds) : TBase(max_time_in_seconds) {
-    use_location_stats = true;
-  }
+  MCTPOne(unsigned max_time_in_seconds) : TBase(max_time_in_seconds) {}
 
-  PSolver Clone() const override { return std::make_shared<MCTPScore>(*this); }
+  PSolver Clone() const override { return std::make_shared<MCTPOne>(*this); }
 
   // bool SkipSolutionRead() const override { return true; }
 
   std::string Name() const override {
-    return "mctp_score_" + std::to_string(max_time_in_seconds);
+    return "mctp_one_" + std::to_string(max_time_in_seconds);
   }
 
   Solution Solve(const Problem& p) override;

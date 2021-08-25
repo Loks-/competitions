@@ -46,8 +46,8 @@ void MCTPBase::Run() {
   for (; used_vertices.Size() < gsize;) {
     unsigned best_u = gsize;
     I2Point pnext;
-    double best_stat_score = 0.;
-    if (used_vertices.Size() == 0) {
+    double best_stat_score = -1e100;
+    if (use_location_stats && (used_vertices.Size() == 0)) {
       for (auto p : cache.GetValidPoints()) {
         auto index = cache.Index(p);
         double d1 = location_stats[index].Score(logn, max_score);

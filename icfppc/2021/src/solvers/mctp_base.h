@@ -34,6 +34,7 @@ class MCTPBase : public BaseVCT {
 
  protected:
   std::vector<std::vector<Stat>> points_stats;
+  bool use_location_stats;
   std::vector<Stat> location_stats;
   unsigned nruns;
   double best_score;
@@ -47,6 +48,7 @@ class MCTPBase : public BaseVCT {
   void Run();
 
  public:
-  MCTPBase(unsigned max_time_in_seconds) : TBase(max_time_in_seconds) {}
+  MCTPBase(unsigned max_time_in_seconds)
+      : TBase(max_time_in_seconds), use_location_stats(false) {}
 };
 }  // namespace src_solvers
