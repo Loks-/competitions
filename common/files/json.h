@@ -150,14 +150,14 @@ class JSON {
   JSON& GetValue(const std::string& key) {
     assert(type == DICTIONARY);
     auto it = value_dictionary.find(key);
-    assert(key != value_dictionary.end());
+    assert(it != value_dictionary.end());
     return value_array[it->second];
   }
 
   const JSON& GetValue(const std::string& key) const {
     assert(type == DICTIONARY);
     auto it = value_dictionary.find(key);
-    assert(key != value_dictionary.end());
+    assert(it != value_dictionary.end());
     return value_array[it->second];
   }
 
