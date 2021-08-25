@@ -27,7 +27,7 @@ int main(int argc, char** argv) {
     src_solvers::MCTPOne s(cmd.GetInt("timelimit"));
     // src_solvers::MCTPScore s(cmd.GetInt("timelimit"));
     int nthreads = cmd.GetInt("nthreads");
-    if (nthreads <= 1)
+    if (nthreads <= 0)
       solvers::ext::RunN<src_solvers::Base>(s, cmd.GetInt("first_problem"),
                                             cmd.GetInt("last_problem"));
     else

@@ -35,5 +35,5 @@ Solution MCTPScore::Solve(const Problem& p) {
   InitSearch(p);
   for (; (best_score < 1) && (t.GetSeconds() < max_time_in_seconds);) Run();
   std::cout << "\tBest score = " << best_score << std::endl;
-  return best_solution;
+  return (best_score >= 0) ? best_solution : Solution();
 }

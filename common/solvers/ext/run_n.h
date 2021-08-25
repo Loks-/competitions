@@ -19,12 +19,15 @@ inline void RunN(TSolver& s, unsigned first_problem, unsigned last_problem) {
 template <class TSolver>
 inline void RunNMT(TSolver& s, unsigned first_problem, unsigned last_problem,
                    unsigned nthreads) {
-  ThreadPool tp(nthreads);
   auto psolver = s.Clone();
-  for (unsigned i = first_problem; i <= last_problem; ++i) {
-    auto t = std::make_shared<std::packaged_task<void()>>(
-        [&, i]() { RunOneThreadSafe<TSolver>(psolver, std::to_string(i)); });
-    tp.EnqueueTask(std::move(t));
+  {
+    // ThreadPool desctructor should be called before destructor for psolver.
+    ThreadPool tp(nthreads);
+    for (unsigned i = first_problem; i <= last_problem; ++i) {
+      auto t = std::make_shared<std::packaged_task<void()>>(
+          [&, i]() { RunOneThreadSafe<TSolver>(psolver, std::to_string(i)); });
+      tp.EnqueueTask(std::move(t));
+    }
   }
 }
 }  // namespace ext
