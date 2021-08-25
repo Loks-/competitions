@@ -1,5 +1,5 @@
 #include "settings.h"
-#include "solvers/mctp.h"
+#include "solvers/mctp_score.h"
 #include "utils/evaluate_solution.h"
 
 #include "common/files/command_line.h"
@@ -23,7 +23,7 @@ int main(int argc, char** argv) {
   if (mode == "eval") {
     EvaluateSolution(cmd.GetString("solution"));
   } else if (mode == "run") {
-    src_solvers::MCTP s(cmd.GetInt("timelimit"));
+    src_solvers::MCTPScore s(cmd.GetInt("timelimit"));
     int nthreads = cmd.GetInt("nthreads");
     if (nthreads <= 1)
       solvers::ext::RunN<src_solvers::Base>(s, cmd.GetInt("first_problem"),

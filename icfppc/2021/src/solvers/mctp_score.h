@@ -9,7 +9,7 @@
 #include <vector>
 
 namespace src_solvers {
-class MCTP : public MCTPBase {
+class MCTPScore : public MCTPBase {
  public:
   using TBase = MCTPBase;
 
@@ -18,14 +18,14 @@ class MCTP : public MCTPBase {
   void Run();
 
  public:
-  MCTP(unsigned max_time_in_seconds) : TBase(max_time_in_seconds) {}
+  MCTPScore(unsigned max_time_in_seconds) : TBase(max_time_in_seconds) {}
 
-  PSolver Clone() const override { return std::make_shared<MCTP>(*this); }
+  PSolver Clone() const override { return std::make_shared<MCTPScore>(*this); }
 
   // bool SkipSolutionRead() const override { return true; }
 
   std::string Name() const override {
-    return "mctp_" + std::to_string(max_time_in_seconds);
+    return "mctp_score_" + std::to_string(max_time_in_seconds);
   }
 
   Solution Solve(const Problem& p) override;
