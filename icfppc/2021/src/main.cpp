@@ -1,6 +1,7 @@
 #include "settings.h"
 #include "solvers/mctp_one.h"
 #include "solvers/mctp_score.h"
+#include "solvers/mctp_vertices.h"
 #include "utils/evaluate_solution.h"
 
 #include "common/files/command_line.h"
@@ -24,8 +25,9 @@ int main(int argc, char** argv) {
   if (mode == "eval") {
     EvaluateSolution(cmd.GetString("solution"));
   } else if (mode == "run") {
-    src_solvers::MCTPOne s(cmd.GetInt("timelimit"));
+    // src_solvers::MCTPOne s(cmd.GetInt("timelimit"));
     // src_solvers::MCTPScore s(cmd.GetInt("timelimit"));
+    src_solvers::MCTPVertices s(cmd.GetInt("timelimit"));
     int nthreads = cmd.GetInt("nthreads");
     if (nthreads <= 0)
       solvers::ext::RunN<src_solvers::Base>(s, cmd.GetInt("first_problem"),

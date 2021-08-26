@@ -36,4 +36,12 @@ class Cache {
   bool Test(const I2Point& p) const;
   bool Test(const I2ClosedSegment& s);
   bool TestI(const I2ClosedSegment& s);
+
+  int64_t FigureMinDistance(unsigned u1, unsigned u2) const {
+    return figure_min_distance[u1][u2];
+  }
+
+  int64_t FigureMaxDistance(unsigned u1, unsigned u2) const {
+    return figure_max_distance[u1][u2];
+  }
 };

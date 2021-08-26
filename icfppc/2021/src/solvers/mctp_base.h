@@ -45,6 +45,7 @@ class MCTPBase : public BaseVCT {
   void InitSearch(const Problem& p);
   void ResetSearch();
   void UpdateStat(double score);
+  void RunI();
   void Run();
 
  public:

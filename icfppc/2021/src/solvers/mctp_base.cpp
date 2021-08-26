@@ -40,9 +40,7 @@ void MCTPBase::UpdateStat(double score) {
   }
 }
 
-void MCTPBase::Run() {
-  ResetSearch();
-  ++nruns;
+void MCTPBase::RunI() {
   unsigned gsize = problem.Figure().Size();
   for (; used_vertices.Size() < gsize;) {
     unsigned best_u = gsize;
@@ -95,4 +93,10 @@ void MCTPBase::Run() {
     AddPoint(best_u, pnext);
     if (force_stop) break;
   }
+}
+
+void MCTPBase::Run() {
+  ResetSearch();
+  ++nruns;
+  RunI();
 }

@@ -26,6 +26,7 @@ class BaseVCT : public Base {
   void InitSearch(const Problem& p);
   void ResetSearch();
   void AddPoint(unsigned index, const I2Point& p);
+  void AddPointFDC(unsigned index, const I2Point& p);
   void RemoveLastPoint();
 
  public:
