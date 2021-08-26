@@ -10,7 +10,10 @@
 
 using namespace src_solvers;
 
-void MCTPScore::InitSearch(const Problem& p) { TBase::InitSearch(p); }
+void MCTPScore::InitSearch(const Problem& p) {
+  TBase::InitSearch(p);
+  exploration_mult = 1e-10;
+}
 
 void MCTPScore::Run() {
   TBase::Run();
@@ -23,7 +26,7 @@ void MCTPScore::Run() {
       //             << std::endl;
       best_score = r.DScore();
       best_solution = s;
-      max_score = best_score;
+      exploration_mult = best_score;
     }
   }
   UpdateStat(dscore);

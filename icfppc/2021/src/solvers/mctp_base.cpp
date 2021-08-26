@@ -10,17 +10,18 @@
 
 using namespace src_solvers;
 
-double MCTPBase::Stat::Score(double log_n_total, double max_score) const {
+double MCTPBase::Stat::Score(double log_n_total,
+                             double exploration_mult) const {
   static const double c = sqrt(2.0);
-  if (n == 0) return (c + 1) * max_score;
-  return s / n + c * max_score * sqrt(log_n_total / n);
+  if (n == 0) return (c + 1) * exploration_mult;
+  return s / n + c * exploration_mult * sqrt(log_n_total / n);
 }
 
 void MCTPBase::InitSearch(const Problem& p) {
   TBase::InitSearch(p);
   nruns = 0;
   best_score = 0.;
-  max_score = 1e-10;
+  exploration_mult = 1.;
   location_stats.clear();
   location_stats.resize(cache.MaxIndex());
   points_stats.clear();
@@ -50,9 +51,9 @@ void MCTPBase::Run() {
     if (use_location_stats && (used_vertices.Size() == 0)) {
       for (auto p : cache.GetValidPoints()) {
         auto index = cache.Index(p);
-        double d1 = location_stats[index].Score(logn, max_score);
+        double d1 = location_stats[index].Score(logn, exploration_mult);
         for (unsigned u = 0; u < gsize; ++u) {
-          double d2 = points_stats[u][index].Score(logn, max_score);
+          double d2 = points_stats[u][index].Score(logn, exploration_mult);
           if (best_stat_score < d1 + d2) {
             best_stat_score = d1 + d2;
             best_u = u;
@@ -72,7 +73,7 @@ void MCTPBase::Run() {
       if (min_size == 0) break;
       for (auto p : valid_candidates[best_u][valid_candidates_index[best_u]]) {
         auto index = cache.Index(p);
-        double d = points_stats[best_u][index].Score(logn, max_score);
+        double d = points_stats[best_u][index].Score(logn, exploration_mult);
         if (best_stat_score < d) {
           best_stat_score = d;
           pnext = p;

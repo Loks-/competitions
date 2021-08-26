@@ -29,7 +29,7 @@ class MCTPBase : public BaseVCT {
       s += x;
     }
 
-    double Score(double log_n_total, double max_score) const;
+    double Score(double log_n_total, double exploration_mult) const;
   };
 
  protected:
@@ -38,7 +38,7 @@ class MCTPBase : public BaseVCT {
   std::vector<Stat> location_stats;
   unsigned nruns;
   double best_score;
-  double max_score;  // For Stat::Score
+  double exploration_mult;
   Solution best_solution;
 
  protected:

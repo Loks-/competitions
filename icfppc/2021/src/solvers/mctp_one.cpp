@@ -13,7 +13,6 @@ using namespace src_solvers;
 void MCTPOne::InitSearch(const Problem& p) {
   TBase::InitSearch(p);
   best_score = -double(problem.Figure().Size());
-  max_score = 1.0;
 }
 
 void MCTPOne::Run() {
