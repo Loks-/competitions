@@ -65,19 +65,33 @@ void BaseVCT::AddPoint(unsigned index, const I2Point& p) {
   }
 }
 
+void BaseVCT::RemoveLastPoint() {
+  unsigned index = used_vertices.Last();
+  for (auto e : problem.Figure().EdgesEI(index)) {
+    unsigned u = e.to;
+    if (!used_vertices.HasKey(u)) {
+      --valid_candidates_index[u];
+    }
+  }
+  used_vertices.RemoveLast();
+  force_stop = false;
+}
+
 void BaseVCT::AddPointFDC(unsigned index, const I2Point& p) {
   assert(!used_vertices.HasKey(index));
   used_vertices.Insert(index);
   solution[index] = p;
   for (unsigned u = 0; u < used_vertices.SetSize(); ++u) {
     if (u == index) continue;
+    // In current version FigureMinDistance is non-zero only for graph edges
+    bool connected = (cache.FigureMinDistance(index, u) > 0);
     if (used_vertices.HasKey(u)) {
       // Verify only
       auto p1 = solution[u];
       auto d = SquaredDistanceL2(p, p1);
       if ((d < cache.FigureMinDistance(index, u)) ||
           (d > cache.FigureMaxDistance(index, u)) ||
-          !cache.Test(I2ClosedSegment(p, p1))) {
+          (connected && !cache.Test(I2ClosedSegment(p, p1)))) {
         std::cout << "SUS!" << std::endl;
         assert(false);
       }
@@ -90,7 +104,7 @@ void BaseVCT::AddPointFDC(unsigned index, const I2Point& p) {
         auto d = SquaredDistanceL2(p, p1);
         if ((d >= cache.FigureMinDistance(index, u)) &&
             (d <= cache.FigureMaxDistance(index, u)) &&
-            cache.TestI(I2ClosedSegment(p, p1))) {
+            (!connected || cache.TestI(I2ClosedSegment(p, p1)))) {
           vnext.push_back(p1);
         }
       }
@@ -99,14 +113,10 @@ void BaseVCT::AddPointFDC(unsigned index, const I2Point& p) {
   }
 }
 
-void BaseVCT::RemoveLastPoint() {
-  unsigned index = used_vertices.Last();
-  for (auto e : problem.Figure().EdgesEI(index)) {
-    unsigned u = e.to;
-    if (!used_vertices.HasKey(u)) {
-      --valid_candidates_index[u];
-    }
-  }
+void BaseVCT::RemoveLastPointFDC() {
   used_vertices.RemoveLast();
+  for (unsigned u = 0; u < used_vertices.SetSize(); ++u) {
+    if (!used_vertices.HasKey(u)) --valid_candidates_index[u];
+  }
   force_stop = false;
 }
