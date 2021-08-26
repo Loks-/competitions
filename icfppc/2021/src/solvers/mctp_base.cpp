@@ -42,13 +42,19 @@ void MCTPBase::UpdateStat(double score) {
 
 void MCTPBase::Run() {
   ResetSearch();
-  double logn = log(double(++nruns));
+  ++nruns;
   unsigned gsize = problem.Figure().Size();
   for (; used_vertices.Size() < gsize;) {
     unsigned best_u = gsize;
     I2Point pnext;
     double best_stat_score = -1e100;
     if (use_location_stats && (used_vertices.Size() == 0)) {
+      unsigned ntotal = 0;
+      for (auto p : cache.GetValidPoints()) {
+        auto index = cache.Index(p);
+        ntotal += location_stats[index].n;
+      }
+      double logn = log(ntotal);
       for (auto p : cache.GetValidPoints()) {
         auto index = cache.Index(p);
         double d1 = location_stats[index].Score(logn, exploration_mult);
@@ -71,6 +77,12 @@ void MCTPBase::Run() {
         }
       }
       if (min_size == 0) break;
+      unsigned ntotal = 0;
+      for (auto p : valid_candidates[best_u][valid_candidates_index[best_u]]) {
+        auto index = cache.Index(p);
+        ntotal += points_stats[best_u][index].n;
+      }
+      double logn = log(ntotal);
       for (auto p : valid_candidates[best_u][valid_candidates_index[best_u]]) {
         auto index = cache.Index(p);
         double d = points_stats[best_u][index].Score(logn, exploration_mult);
