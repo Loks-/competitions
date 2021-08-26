@@ -44,4 +44,6 @@ class Cache {
   int64_t FigureMaxDistance(unsigned u1, unsigned u2) const {
     return figure_max_distance[u1][u2];
   }
+
+  unsigned SegmentsMapSize() const { return valid_segments_map.size(); }
 };
