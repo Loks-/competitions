@@ -98,7 +98,9 @@ Solution MCTPVertices::Solve(const Problem& p) {
   Timer t;
   InitSearch(p);
   unsigned target = std::min(p.Hole().Size(), p.Figure().Size());
-  for (; (best_score < target - 0.5) && (t.GetSeconds() < max_time_in_seconds);)
+  for (; (best_score < target - 0.5) &&
+         (t.GetSeconds() < max_time_in_seconds) &&
+         (cache.SegmentsMapSize() < (1u << 23));)
     Run();
   std::cout << "\tBest score = " << best_score << "\tMax possible = " << target
             << std::endl;
