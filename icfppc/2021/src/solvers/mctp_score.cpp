@@ -36,7 +36,9 @@ Solution MCTPScore::Solve(const Problem& p) {
   std::cout << "Running MCTPScore::Solve for problem " << p.Id() << std::endl;
   Timer t;
   InitSearch(p);
-  for (; (best_score < 1) && (t.GetSeconds() < max_time_in_seconds);) Run();
+  for (; (best_score < 1) && (t.GetSeconds() < max_time_in_seconds) &&
+         (cache.SegmentsMapSize() < (1u << 23));)
+    Run();
   std::cout << "\tBest score = " << best_score << std::endl;
   return (best_score >= 0) ? best_solution : Solution();
 }
