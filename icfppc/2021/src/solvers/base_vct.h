@@ -24,6 +24,7 @@ class BaseVCT : public Base {
 
  protected:
   void InitSearch(const Problem& p);
+  void ShuffleCandidatesOrder();
   void ResetSearch();
   void AddPoint(unsigned index, const I2Point& p);
   void RemoveLastPoint();

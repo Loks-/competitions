@@ -6,6 +6,7 @@
 
 #include <algorithm>
 #include <iostream>
+#include <random>
 
 using namespace src_solvers;
 
@@ -25,6 +26,13 @@ void BaseVCT::InitSearch(const Problem& p) {
   solution.clear();
   solution.resize(size);
   force_stop = false;
+}
+
+void BaseVCT::ShuffleCandidatesOrder() {
+  std::default_random_engine g(1);
+  for (auto& vci : valid_candidates) {
+    std::shuffle(vci[0].begin(), vci[0].end(), g);
+  }
 }
 
 void BaseVCT::ResetSearch() {
