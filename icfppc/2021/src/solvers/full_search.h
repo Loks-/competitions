@@ -8,7 +8,6 @@
 
 #include <memory>
 #include <string>
-#include <vector>
 
 namespace src_solvers {
 class FullSearch : public BaseVCT {

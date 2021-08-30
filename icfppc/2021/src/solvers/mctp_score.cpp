@@ -21,6 +21,7 @@ void MCTPScore::Run() {
   if (used_vertices.Size() == problem.Figure().Size()) {
     Solution s{problem.Id(), solution};
     auto r = Evaluator::Apply(problem, s);
+    assert(r.correct);
     if (r.DScore() > best_score) {
       //   std::cout << "New best solution: " << r.score << "\t" << nruns
       //             << std::endl;

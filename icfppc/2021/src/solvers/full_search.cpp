@@ -24,6 +24,7 @@ void FullSearch::Run() {
   if (used_vertices.Size() == used_vertices.SetSize()) {
     Solution s{problem.Id(), solution};
     auto r = Evaluator::Apply(problem, s);
+    assert(r.correct);
     if (r.correct && (r.score < best_score)) {
       best_score = r.score;
       best_solution = s;
