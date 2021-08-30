@@ -1,5 +1,6 @@
 #include "settings.h"
 #include "solvers/full_search.h"
+#include "solvers/full_search2.h"
 #include "solvers/mctp_one.h"
 #include "solvers/mctp_score.h"
 #include "solvers/mctp_vertices.h"
@@ -34,6 +35,8 @@ int main(int argc, char** argv) {
     auto timelimit = cmd.GetInt("timelimit");
     if (solver_name == "full_search") {
       s = std::make_shared<src_solvers::FullSearch>(timelimit);
+    } else if (solver_name == "full_search2") {
+      s = std::make_shared<src_solvers::FullSearch2>(timelimit);
     } else if (solver_name == "mctp_one") {
       s = std::make_shared<src_solvers::MCTPOne>(timelimit);
     } else if (solver_name == "mctp_score") {
