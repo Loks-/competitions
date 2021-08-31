@@ -24,7 +24,6 @@ class FullSearch2 : public BaseVCT2 {
  protected:
   void InitSearch(const Problem& p);
   bool ForceStop() const;
-  void LastStepOptimization();
   void Run();
 
  public:

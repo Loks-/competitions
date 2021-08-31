@@ -18,6 +18,7 @@ class BaseVCT2 : public BaseVCT {
   void InitSearch(const Problem& p);
   void ResetSearch();
   void AdjustNeighborsOrder(unsigned index, bool add_point);
+  void ZeroOrderOptimization();
   void AddPoint(unsigned index, const I2Point& p);
   void RemoveLastPoint();
   void AddPointFDC(unsigned index, const I2Point& p);
