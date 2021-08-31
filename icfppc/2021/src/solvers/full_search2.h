@@ -11,7 +11,7 @@
 #include <vector>
 
 namespace src_solvers {
-// Similar to Full Search but threat point with remaining order 0 differently.
+// Similar to Full Search but use ZeroOrderOptimization at final step.
 class FullSearch2 : public BaseVCT2 {
  public:
   using TBase = BaseVCT2;
