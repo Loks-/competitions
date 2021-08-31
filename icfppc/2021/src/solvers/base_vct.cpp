@@ -122,9 +122,9 @@ void BaseVCT::AddPointFDC(unsigned index, const I2Point& p) {
 }
 
 void BaseVCT::RemoveLastPointFDC() {
-  used_vertices.RemoveLast();
   for (unsigned u = 0; u < used_vertices.SetSize(); ++u) {
     if (!used_vertices.HasKey(u)) --valid_candidates_index[u];
   }
+  used_vertices.RemoveLast();
   force_stop = false;
 }

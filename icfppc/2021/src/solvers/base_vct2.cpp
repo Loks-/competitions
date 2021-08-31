@@ -44,7 +44,7 @@ void BaseVCT2::ZeroOrderOptimization() {
     assert(remaining_order[u] == 0);
     vd0.push_back(u);
   }
-  assert(vd0.size() > 0);
+  if (vd0.size() == 0) return;
   unsigned L = problem.Hole().Size(), R = vd0.size(), extra = L + R,
            source = extra + 1, sink = source + 1;
   FlowGraph<graph::flow::Edge<int64_t, int>> g(sink + 1, source, sink);
