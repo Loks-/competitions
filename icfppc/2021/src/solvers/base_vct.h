@@ -7,6 +7,8 @@
 #include "common/data_structures/unsigned_set.h"
 #include "common/geometry/d2/point.h"
 
+#include <vector>
+
 namespace src_solvers {
 // Support AddPoint / RemoveLastPoint and track valid candidates.
 class BaseVCT : public Base {
@@ -16,7 +18,8 @@ class BaseVCT : public Base {
  protected:
   Problem problem;
   Cache cache;
-  ds::UnsignedSet used_vertices;
+  ds::UnsignedSet unused_vertices;
+  std::vector<unsigned> used_vertices;
   std::vector<std::vector<std::vector<I2Point>>> valid_candidates;
   std::vector<unsigned> valid_candidates_index;
   std::vector<I2Point> solution;

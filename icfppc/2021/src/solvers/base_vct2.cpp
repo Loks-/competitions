@@ -31,7 +31,7 @@ void BaseVCT2::ResetSearch() {
 void BaseVCT2::AdjustNeighborsOrder(unsigned index, bool add_point) {
   int shift = add_point ? -1 : 1;
   for (auto u : problem.Figure().Edges(index)) {
-    if (!used_vertices.HasKey(u)) remaining_order[u] += shift;
+    if (unused_vertices.HasKey(u)) remaining_order[u] += shift;
   }
 }
 
@@ -39,8 +39,7 @@ void BaseVCT2::AdjustNeighborsOrder(unsigned index, bool add_point) {
 void BaseVCT2::ZeroOrderOptimization() {
   thread_local std::vector<unsigned> vd0;
   vd0.clear();
-  for (unsigned u = 0; u < used_vertices.SetSize(); ++u) {
-    if (used_vertices.HasKey(u)) continue;
+  for (unsigned u : unused_vertices.List()) {
     assert(remaining_order[u] == 0);
     vd0.push_back(u);
   }
@@ -51,7 +50,7 @@ void BaseVCT2::ZeroOrderOptimization() {
   for (unsigned i = 0; i < L; ++i) {
     auto p = problem.Hole()[i];
     int64_t min_distance = (1ll << 60);
-    for (unsigned u : used_vertices.List())
+    for (unsigned u : used_vertices)
       min_distance = std::min(min_distance, SquaredDistanceL2(p, solution[u]));
     g.AddDataEdge(0, source, i, 1);
     g.AddDataEdge(min_distance, i, extra, 1);
@@ -99,7 +98,7 @@ void BaseVCT2::AddPoint(unsigned index, const I2Point& p) {
 }
 
 void BaseVCT2::RemoveLastPoint() {
-  unsigned index = used_vertices.Last();
+  unsigned index = used_vertices.back();
   AdjustNeighborsOrder(index, false);
   TBase::RemoveLastPoint();
 }
@@ -110,7 +109,7 @@ void BaseVCT2::AddPointFDC(unsigned index, const I2Point& p) {
 }
 
 void BaseVCT2::RemoveLastPointFDC() {
-  unsigned index = used_vertices.Last();
+  unsigned index = used_vertices.back();
   AdjustNeighborsOrder(index, false);
   TBase::RemoveLastPointFDC();
 }

@@ -18,8 +18,7 @@ void MCTPVertices::InitSearch(const Problem& p) {
 }
 
 double MCTPVertices::DScore() const {
-  if (used_vertices.Size() < problem.Figure().Size())
-    return double(used_vertices.Size()) - double(used_vertices.SetSize());
+  if (!unused_vertices.Empty()) return -double(unused_vertices.Size());
   unsigned matched_vertices = 0;
   for (auto ph : problem.Hole().v) {
     for (auto ps : solution) {
@@ -44,8 +43,7 @@ void MCTPVertices::Run() {
       for (unsigned j = 0; j < covered_vertices.SetSize(); ++j) {
         if (covered_vertices.HasKey(j)) continue;
         auto pv = problem.Hole().v[j];
-        for (unsigned u = 0; u < used_vertices.SetSize(); ++u) {
-          if (used_vertices.HasKey(u)) continue;
+        for (unsigned u : unused_vertices.List()) {
           for (auto p : valid_candidates[u][valid_candidates_index[u]]) {
             if (p == pv) {
               auto index = cache.Index(p);
@@ -57,13 +55,12 @@ void MCTPVertices::Run() {
       if (ntotal == 0) break;
       double logn = log(ntotal);
       double best_stat_score = -1e100;
-      unsigned best_u = used_vertices.SetSize();
+      unsigned best_u = unused_vertices.SetSize();
       I2Point pnext;
       for (unsigned j = 0; j < covered_vertices.SetSize(); ++j) {
         if (covered_vertices.HasKey(j)) continue;
         auto pv = problem.Hole().v[j];
-        for (unsigned u = 0; u < used_vertices.SetSize(); ++u) {
-          if (used_vertices.HasKey(u)) continue;
+        for (unsigned u : unused_vertices.List()) {
           for (auto p : valid_candidates[u][valid_candidates_index[u]]) {
             if (p == pv) {
               auto index = cache.Index(p);
@@ -77,7 +74,7 @@ void MCTPVertices::Run() {
           }
         }
       }
-      assert(best_u < used_vertices.SetSize());
+      assert(best_u < unused_vertices.SetSize());
       AddPointFDC(best_u, pnext);
       if (force_stop) break;
     }

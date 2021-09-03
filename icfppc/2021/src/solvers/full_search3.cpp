@@ -20,24 +20,24 @@ bool FullSearch3::ForceStop() const {
          (cache.SegmentsMapSize() >= (1u << 23));
 }
 
+// Fix order and boost all nodes with csize == 1
 void FullSearch3::Run() {
   if (ForceStop()) return;
-  unsigned next_u = used_vertices.SetSize();
+  unsigned next_u = unused_vertices.SetSize();
   unsigned max_order = 0;
   unsigned min_size = 0;
-  for (unsigned u = 0; u < used_vertices.SetSize(); ++u) {
-    if (used_vertices.HasKey(u)) continue;
+  for (unsigned u : unused_vertices.List()) {
     if (remaining_order[u] == 0) continue;
     unsigned order = problem.Figure().Edges(u).size();
     unsigned csize = valid_candidates[u][valid_candidates_index[u]].size();
-    if (csize == 1) order = used_vertices.SetSize();  // Boost priority
+    if (csize == 1) order = unused_vertices.SetSize();  // Boost priority
     if ((max_order < order) || ((max_order == order) && (min_size > csize))) {
       next_u = u;
       max_order = order;
       min_size = csize;
     }
   }
-  if (next_u < used_vertices.SetSize()) {
+  if (next_u < unused_vertices.SetSize()) {
     auto& vc = valid_candidates[next_u][valid_candidates_index[next_u]];
     for (auto& p : vc) {
       AddPointFDC(next_u, p);

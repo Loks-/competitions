@@ -12,13 +12,12 @@ using namespace src_solvers;
 
 void MCTPOne::InitSearch(const Problem& p) {
   TBase::InitSearch(p);
-  best_score = -double(used_vertices.SetSize());
+  best_score = -double(unused_vertices.SetSize());
 }
 
 void MCTPOne::Run() {
   TBase::Run();
-  double dscore =
-      double(used_vertices.Size()) - double(used_vertices.SetSize());
+  double dscore = -double(unused_vertices.Size());
   UpdateStat(dscore);
   best_score = std::max(best_score, dscore);
   if (best_score >= 0) best_solution = Solution(problem.Id(), solution);

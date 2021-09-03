@@ -18,7 +18,7 @@ void MCTPScore::InitSearch(const Problem& p) {
 void MCTPScore::Run() {
   TBase::Run();
   double dscore = 0.;
-  if (used_vertices.Size() == problem.Figure().Size()) {
+  if (unused_vertices.Empty()) {
     Solution s{problem.Id(), solution};
     auto r = Evaluator::Apply(problem, s);
     assert(r.correct);

@@ -14,7 +14,9 @@ void BaseVCT::InitSearch(const Problem& p) {
   problem = p;
   cache.Init(problem);
   unsigned size = problem.Figure().Size();
-  used_vertices.Resize(size);
+  unused_vertices.Resize(size);
+  unused_vertices.InsertAll();
+  used_vertices.reserve(size);
   valid_candidates.clear();
   valid_candidates.resize(size);
   for (unsigned i = 0; i < size; ++i) {
@@ -36,18 +38,20 @@ void BaseVCT::ShuffleCandidatesOrder() {
 }
 
 void BaseVCT::ResetSearch() {
-  used_vertices.Clear();
+  unused_vertices.InsertAll();
+  used_vertices.clear();
   std::fill(valid_candidates_index.begin(), valid_candidates_index.end(), 0);
   force_stop = false;
 }
 
 void BaseVCT::AddPoint(unsigned index, const I2Point& p) {
-  assert(!used_vertices.HasKey(index));
-  used_vertices.Insert(index);
+  assert(unused_vertices.HasKey(index));
+  unused_vertices.Remove(index);
+  used_vertices.push_back(index);
   solution[index] = p;
   for (auto e : problem.Figure().EdgesEI(index)) {
     unsigned u = e.to;
-    if (used_vertices.HasKey(u)) {
+    if (!unused_vertices.HasKey(u)) {
       // Verify only
       auto p1 = solution[u];
       auto d = SquaredDistanceL2(p, p1);
@@ -74,57 +78,46 @@ void BaseVCT::AddPoint(unsigned index, const I2Point& p) {
 }
 
 void BaseVCT::RemoveLastPoint() {
-  unsigned index = used_vertices.Last();
+  unsigned index = used_vertices.back();
   for (auto e : problem.Figure().EdgesEI(index)) {
     unsigned u = e.to;
-    if (!used_vertices.HasKey(u)) {
+    if (unused_vertices.HasKey(u)) {
       --valid_candidates_index[u];
     }
   }
-  used_vertices.RemoveLast();
+  unused_vertices.Insert(index);
+  used_vertices.pop_back();
   force_stop = false;
 }
 
 void BaseVCT::AddPointFDC(unsigned index, const I2Point& p) {
-  assert(!used_vertices.HasKey(index));
-  used_vertices.Insert(index);
+  assert(unused_vertices.HasKey(index));
+  unused_vertices.Remove(index);
+  used_vertices.push_back(index);
   solution[index] = p;
-  for (unsigned u = 0; u < used_vertices.SetSize(); ++u) {
-    if (u == index) continue;
+  for (unsigned u : unused_vertices.List()) {
     // In current version FigureMinDistance is non-zero only for graph edges
     bool connected = (cache.FigureMinDistance(index, u) > 0);
-    if (used_vertices.HasKey(u)) {
-      // Verify only
-      auto p1 = solution[u];
+    // Filter points
+    auto& vcurrent = valid_candidates[u][valid_candidates_index[u]];
+    auto& vnext = valid_candidates[u][++valid_candidates_index[u]];
+    vnext.clear();
+    for (auto p1 : vcurrent) {
       auto d = SquaredDistanceL2(p, p1);
-      if ((d < cache.FigureMinDistance(index, u)) ||
-          (d > cache.FigureMaxDistance(index, u)) ||
-          (connected && !cache.Test(I2ClosedSegment(p, p1)))) {
-        std::cout << "SUS!" << std::endl;
-        assert(false);
+      if ((d >= cache.FigureMinDistance(index, u)) &&
+          (d <= cache.FigureMaxDistance(index, u)) &&
+          (!connected || cache.TestI(I2ClosedSegment(p, p1)))) {
+        vnext.push_back(p1);
       }
-    } else {
-      // Filter points
-      auto& vcurrent = valid_candidates[u][valid_candidates_index[u]];
-      auto& vnext = valid_candidates[u][++valid_candidates_index[u]];
-      vnext.clear();
-      for (auto p1 : vcurrent) {
-        auto d = SquaredDistanceL2(p, p1);
-        if ((d >= cache.FigureMinDistance(index, u)) &&
-            (d <= cache.FigureMaxDistance(index, u)) &&
-            (!connected || cache.TestI(I2ClosedSegment(p, p1)))) {
-          vnext.push_back(p1);
-        }
-      }
-      if (vnext.empty()) force_stop = true;
     }
+    if (vnext.empty()) force_stop = true;
   }
 }
 
 void BaseVCT::RemoveLastPointFDC() {
-  for (unsigned u = 0; u < used_vertices.SetSize(); ++u) {
-    if (!used_vertices.HasKey(u)) --valid_candidates_index[u];
-  }
-  used_vertices.RemoveLast();
+  unsigned index = used_vertices.back();
+  for (unsigned u : unused_vertices.List()) --valid_candidates_index[u];
+  unused_vertices.Insert(index);
+  used_vertices.pop_back();
   force_stop = false;
 }

@@ -31,22 +31,20 @@ void MCTPBase::InitSearch(const Problem& p) {
 void MCTPBase::ResetSearch() { TBase::ResetSearch(); }
 
 void MCTPBase::UpdateStat(double score) {
-  for (unsigned u = 0; u < used_vertices.SetSize(); ++u) {
-    if (used_vertices.HasKey(u)) {
-      auto index = cache.Index(solution[u]);
-      location_stats[index].Add(score);
-      points_stats[u][index].Add(score);
-    }
+  for (unsigned u : used_vertices) {
+    auto index = cache.Index(solution[u]);
+    location_stats[index].Add(score);
+    points_stats[u][index].Add(score);
   }
 }
 
 void MCTPBase::RunI() {
   unsigned gsize = problem.Figure().Size();
-  for (; used_vertices.Size() < gsize;) {
+  for (; !unused_vertices.Empty();) {
     unsigned best_u = gsize;
     I2Point pnext;
     double best_stat_score = -1e100;
-    if (use_location_stats && (used_vertices.Size() == 0)) {
+    if (use_location_stats && (used_vertices.size() == 0)) {
       unsigned ntotal = 0;
       for (auto p : cache.GetValidPoints()) {
         auto index = cache.Index(p);
@@ -67,8 +65,7 @@ void MCTPBase::RunI() {
       }
     } else {
       unsigned min_size = cache.MaxIndex() + 1;
-      for (unsigned u = 0; u < gsize; ++u) {
-        if (used_vertices.HasKey(u)) continue;
+      for (unsigned u : unused_vertices.List()) {
         if (valid_candidates[u][valid_candidates_index[u]].size() < min_size) {
           min_size = valid_candidates[u][valid_candidates_index[u]].size();
           best_u = u;

@@ -21,7 +21,7 @@ bool FullSearch::ForceStop() const {
 
 void FullSearch::Run() {
   if (ForceStop()) return;
-  if (used_vertices.Size() == used_vertices.SetSize()) {
+  if (unused_vertices.Empty()) {
     Solution s{problem.Id(), solution};
     auto r = Evaluator::Apply(problem, s);
     assert(r.correct);
@@ -31,10 +31,10 @@ void FullSearch::Run() {
     }
     return;
   }
-  unsigned next_u = used_vertices.SetSize();
-  if (used_vertices.Size() == 0) {
+  unsigned next_u = unused_vertices.SetSize();
+  if (used_vertices.size() == 0) {
     unsigned max_degree = 0;
-    for (unsigned u = 0; u < used_vertices.SetSize(); ++u) {
+    for (unsigned u = 0; u < unused_vertices.SetSize(); ++u) {
       auto d = problem.Figure().Edges(u).size();
       if (max_degree < d) {
         max_degree = d;
@@ -43,8 +43,7 @@ void FullSearch::Run() {
     }
   } else {
     unsigned min_size = cache.MaxIndex() + 1;
-    for (unsigned u = 0; u < used_vertices.SetSize(); ++u) {
-      if (used_vertices.HasKey(u)) continue;
+    for (unsigned u : unused_vertices.List()) {
       auto csize = valid_candidates[u][valid_candidates_index[u]].size();
       if (min_size > csize) {
         min_size = csize;
@@ -53,7 +52,7 @@ void FullSearch::Run() {
     }
     assert(min_size > 0);
   }
-  assert(next_u < used_vertices.SetSize());
+  assert(next_u < unused_vertices.SetSize());
   auto& vc = valid_candidates[next_u][valid_candidates_index[next_u]];
   for (auto& p : vc) {
     AddPoint(next_u, p);
