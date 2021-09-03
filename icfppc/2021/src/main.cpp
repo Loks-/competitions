@@ -4,6 +4,7 @@
 #include "solvers/full_search3.h"
 #include "solvers/mctp_one.h"
 #include "solvers/mctp_score.h"
+#include "solvers/mctp_score2.h"
 #include "solvers/mctp_vertices.h"
 #include "utils/evaluate_solution.h"
 
@@ -44,6 +45,8 @@ int main(int argc, char** argv) {
       s = std::make_shared<src_solvers::MCTPOne>(timelimit);
     } else if (solver_name == "mctp_score") {
       s = std::make_shared<src_solvers::MCTPScore>(timelimit);
+    } else if (solver_name == "mctp_score2") {
+      s = std::make_shared<src_solvers::MCTPScore2>(timelimit);
     } else if (solver_name == "mctp_vertices") {
       s = std::make_shared<src_solvers::MCTPVertices>(timelimit);
     } else {
