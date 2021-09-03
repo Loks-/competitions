@@ -1,7 +1,5 @@
 #include "solvers/mctp_vertices.h"
 
-#include "evaluator.h"
-
 #include "common/timer.h"
 
 #include <algorithm>

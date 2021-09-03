@@ -1,7 +1,5 @@
 #include "solvers/mctp_one.h"
 
-#include "evaluator.h"
-
 #include "common/timer.h"
 
 #include <algorithm>

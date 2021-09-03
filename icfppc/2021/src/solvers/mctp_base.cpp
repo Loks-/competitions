@@ -1,21 +1,6 @@
 #include "solvers/mctp_base.h"
 
-#include "evaluator.h"
-
-#include "common/timer.h"
-
-#include <algorithm>
-#include <cmath>
-#include <iostream>
-
 using namespace src_solvers;
-
-double MCTPBase::Stat::Score(double log_n_total,
-                             double exploration_mult) const {
-  static const double c = sqrt(2.0);
-  if (n == 0) return (c + 1) * exploration_mult;
-  return s / n + c * exploration_mult * sqrt(log_n_total / n);
-}
 
 void MCTPBase::InitSearch(const Problem& p) {
   TBase::InitSearch(p);
