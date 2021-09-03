@@ -10,6 +10,7 @@
 #include <algorithm>
 #include <iostream>
 #include <random>
+#include <vector>
 
 using namespace src_solvers;
 
@@ -37,58 +38,70 @@ void BaseVCT2::AdjustNeighborsOrder(unsigned index, bool add_point) {
 
 // Run MinCostFlow for approximate last step optimization.
 void BaseVCT2::ZeroOrderOptimization() {
-  thread_local std::vector<unsigned> vd0;
-  vd0.clear();
+  std::vector<unsigned> vt;
   for (unsigned u : unused_vertices.List()) {
     assert(remaining_order[u] == 0);
-    vd0.push_back(u);
-  }
-  if (vd0.size() == 0) return;
-  unsigned L = problem.Hole().Size(), R = vd0.size(), extra = L + R,
-           source = extra + 1, sink = source + 1;
-  FlowGraph<graph::flow::Edge<int64_t, int>> g(sink + 1, source, sink);
-  for (unsigned i = 0; i < L; ++i) {
-    auto p = problem.Hole()[i];
-    int64_t min_distance = (1ll << 60);
-    for (unsigned u : used_vertices)
-      min_distance = std::min(min_distance, SquaredDistanceL2(p, solution[u]));
-    g.AddDataEdge(0, source, i, 1);
-    g.AddDataEdge(min_distance, i, extra, 1);
-    for (unsigned j = 0; j < R; ++j) {
-      unsigned u = vd0[j];
-      auto& vc = valid_candidates[u][valid_candidates_index[u]];
-      min_distance = (1ll << 60);
-      for (auto pu : vc)
-        min_distance = std::min(min_distance, SquaredDistanceL2(p, pu));
-      g.AddDataEdge(min_distance, i, L + j, 1);
-    }
-  }
-  for (unsigned j = 0; j < R; ++j) g.AddDataEdge(0, L + j, sink, 1);
-  g.AddDataEdge(0, extra, sink, L);
-  MinCostFlow(g, L);
-  assert(g.Flow() == int(L));
-  for (unsigned j = 0; j < R; ++j) {
-    unsigned u = vd0[j];
     auto& vc = valid_candidates[u][valid_candidates_index[u]];
-    bool used = false;
-    for (auto& e : g.Edges(L + j)) {
-      if ((e.flow == 0) || (e.to == sink)) continue;
-      assert((e.flow == -1) && (e.to < L));
-      auto p = problem.Hole()[e.to];
-      I2Point pbest;
+    assert(vc.size() > 0);
+    if (vc.size() == 1) vt.push_back(u);
+  }
+  for (auto u : vt) {
+    solution[u] = GetFirstCandidate(u);
+    unused_vertices.Remove(u);
+    used_vertices.push_back(u);
+  }
+  if (!unused_vertices.Empty()) {
+    unsigned L = problem.Hole().Size(), R = unused_vertices.Size(),
+             extra = L + R, source = extra + 1, sink = source + 1;
+    FlowGraph<graph::flow::Edge<int64_t, int>> g(sink + 1, source, sink);
+    for (unsigned i = 0; i < L; ++i) {
+      auto p = problem.Hole()[i];
       int64_t min_distance = (1ll << 60);
-      for (auto pu : vc) {
-        auto d = SquaredDistanceL2(p, pu);
-        if (d < min_distance) {
-          min_distance = d;
-          pbest = pu;
-        }
+      for (unsigned u : used_vertices)
+        min_distance =
+            std::min(min_distance, SquaredDistanceL2(p, solution[u]));
+      g.AddDataEdge(0, source, i, 1);
+      g.AddDataEdge(min_distance, i, extra, 1);
+      for (unsigned j = 0; j < R; ++j) {
+        unsigned u = unused_vertices.List()[j];
+        auto& vc = valid_candidates[u][valid_candidates_index[u]];
+        min_distance = (1ll << 60);
+        for (auto pu : vc)
+          min_distance = std::min(min_distance, SquaredDistanceL2(p, pu));
+        g.AddDataEdge(min_distance, i, L + j, 1);
       }
-      solution[u] = pbest;
-      used = true;
-      break;
     }
-    if (!used) solution[u] = vc[0];
+    for (unsigned j = 0; j < R; ++j) g.AddDataEdge(0, L + j, sink, 1);
+    g.AddDataEdge(0, extra, sink, L);
+    MinCostFlow(g, L);
+    assert(g.Flow() == int(L));
+    for (unsigned j = 0; j < R; ++j) {
+      unsigned u = unused_vertices.List()[j];
+      auto& vc = valid_candidates[u][valid_candidates_index[u]];
+      bool used = false;
+      for (auto& e : g.Edges(L + j)) {
+        if ((e.flow == 0) || (e.to == sink)) continue;
+        assert((e.flow == -1) && (e.to < L));
+        auto p = problem.Hole()[e.to];
+        I2Point pbest;
+        int64_t min_distance = (1ll << 60);
+        for (auto pu : vc) {
+          auto d = SquaredDistanceL2(p, pu);
+          if (d < min_distance) {
+            min_distance = d;
+            pbest = pu;
+          }
+        }
+        solution[u] = pbest;
+        used = true;
+        break;
+      }
+      if (!used) solution[u] = vc[0];
+    }
+  }
+  for (auto u : vt) {
+    unused_vertices.Insert(u);
+    used_vertices.pop_back();
   }
 }
 

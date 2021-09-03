@@ -20,15 +20,14 @@ bool FullSearch3::ForceStop() const {
          (cache.SegmentsMapSize() >= (1u << 23));
 }
 
-// Fix order and boost all nodes with csize == 1
 void FullSearch3::Run() {
   if (ForceStop()) return;
   unsigned next_u = unused_vertices.SetSize();
   unsigned max_order = 0;
   unsigned min_size = 0;
   for (unsigned u : unused_vertices.List()) {
-    if (remaining_order[u] == 0) continue;
-    unsigned order = problem.Figure().Edges(u).size();
+    unsigned order = remaining_order[u];
+    if (order == 0) continue;
     unsigned csize = valid_candidates[u][valid_candidates_index[u]].size();
     if (csize == 1) order = unused_vertices.SetSize();  // Boost priority
     if ((max_order < order) || ((max_order == order) && (min_size > csize))) {

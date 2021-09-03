@@ -35,8 +35,8 @@ void FullSearch2::Run() {
   } else {
     unsigned min_size = cache.MaxIndex() + 1;
     for (unsigned u : unused_vertices.List()) {
+      if (remaining_order[u] == 0) continue;
       auto csize = valid_candidates[u][valid_candidates_index[u]].size();
-      if ((remaining_order[u] == 0) && (csize > 1)) continue;
       if (min_size > csize) {
         min_size = csize;
         next_u = u;

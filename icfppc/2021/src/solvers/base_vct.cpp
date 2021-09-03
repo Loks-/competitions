@@ -10,6 +10,12 @@
 
 using namespace src_solvers;
 
+const I2Point& BaseVCT::GetFirstCandidate(unsigned u) const {
+  auto& v = valid_candidates[u][valid_candidates_index[u]];
+  assert(!v.empty());
+  return v[0];
+}
+
 void BaseVCT::InitSearch(const Problem& p) {
   problem = p;
   cache.Init(problem);

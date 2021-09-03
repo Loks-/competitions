@@ -26,6 +26,9 @@ class BaseVCT : public Base {
   bool force_stop;
 
  protected:
+  const I2Point& GetFirstCandidate(unsigned u) const;
+
+ protected:
   void InitSearch(const Problem& p);
   void ShuffleCandidatesOrder();
   void ResetSearch();
