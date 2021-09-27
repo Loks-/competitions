@@ -26,9 +26,12 @@ class Fraction {
   }
 
   Fraction() : numerator(0), denominator(1) {}
+
   explicit Fraction(const TValue& value) : numerator(value), denominator(1) {}
+
   Fraction(const TValue& _numerator, const TValue& _denominator)
       : numerator(_numerator), denominator(_denominator) {
+    assert(denominator != TValue(0));
     Simplify();
   }
 
@@ -63,8 +66,68 @@ class Fraction {
     return TSelf(numerator * value, denominator);
   }
 
+  TSelf operator/(const TValue& value) const {
+    assert(value != TValue(0));
+    return TSelf(numerator, denominator * value);
+  }
+
   TSelf& operator*=(const TValue& value) {
     numerator *= value;
+    Simplify();
+    return *this;
+  }
+
+  TSelf& operator/=(const TValue& value) {
+    assert(value != TValue(0));
+    denominator *= value;
+    Simplify();
+    return *this;
+  }
+
+  TSelf operator*(const TSelf& value) const {
+    return TSelf(numerator * value.numerator, denominator * value.denominator);
+  }
+
+  TSelf operator/(const TSelf& value) const {
+    assert(value.numerator != TValue(0));
+    return TSelf(numerator * value.denominator, denominator * value.numerator);
+  }
+
+  TSelf& operator*=(const TSelf& value) {
+    numerator *= value.numerator;
+    denominator *= value.denominator;
+    Simplify();
+    return *this;
+  }
+
+  TSelf& operator/=(const TSelf& value) {
+    assert(value.numerator != TValue(0));
+    numerator *= value.denominator;
+    denominator *= value.numerator;
+    Simplify();
+    return *this;
+  }
+
+  TSelf operator+(const TSelf& value) const {
+    return TSelf(numerator * value.denominator + denominator * value.numerator,
+                 denominator * value.denominator);
+  }
+
+  TSelf operator-(const TSelf& value) const {
+    return TSelf(numerator * value.denominator - denominator * value.numerator,
+                 denominator * value.denominator);
+  }
+
+  TSelf& operator+=(const TSelf& value) {
+    numerator = numerator * value.denominator + denominator * value.numerator;
+    denominator *= value.denominator;
+    Simplify();
+    return *this;
+  }
+
+  TSelf& operator-=(const TSelf& value) {
+    numerator = numerator * value.denominator - denominator * value.numerator;
+    denominator *= value.denominator;
     Simplify();
     return *this;
   }
