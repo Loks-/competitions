@@ -3,7 +3,7 @@
 #include "common/numeric/utils/pow.h"
 #include "common/stl/base.h"
 
-// Time: O(K^2 * log(H + K * N))
+// Time: O(K^2 * log(H))
 // Memory: O(K)
 int main_767() {
   // uint64_t H = 16, K = 3, N = 9;
