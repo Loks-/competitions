@@ -1,0 +1,24 @@
+#include "common/modular/static/factorial.h"
+#include "common/modular_io.h"
+#include "common/numeric/utils/pow.h"
+#include "common/stl/base.h"
+
+// Time: O(K^2 * log(H + K * N))
+// Memory: O(K)
+int main_767() {
+  uint64_t H = 16, K = PowU(10ull, 5), N = PowU(10ull, 16);
+  assert((N % K) == 0);
+  TModularD m2 = 2, s = 0;
+  modular::mstatic::Factorial<TModularD> f;
+  vector<TModularD> va(K + 1);
+  for (unsigned l = 0; l <= K; ++l) {
+    if ((l & (l - 1)) == 0) cout << "\tl = " << l << endl;
+    for (unsigned i = 0; i <= l; ++i)
+      va[l] += f.BinomialCoefficient(l, i).PowU(H);
+    for (unsigned i = 0; i < l; ++i)
+      va[l] -= va[i] * f.BinomialCoefficient(l, i) * m2.PowU(l - i);
+    s += va[l] * f.BinomialCoefficient(K, l) * m2.PowU((K - l) * (N / K));
+  }
+  cout << s << endl;
+  return 0;
+}
