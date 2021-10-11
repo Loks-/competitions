@@ -33,7 +33,7 @@ inline std::vector<TModular> MultFFTConvert(const Unsigned& a) {
 }
 }  // namespace hidden
 
-// Max supported length for (a*b) is 2^26.
+// Max supported length for (a*b) is 2^25.
 template <unsigned maxn = (1u << 16)>
 inline Unsigned MultFFT(const Unsigned& a, const Unsigned& b) {
   static const uint32_t mask16 = (1u << 16) - 1;
