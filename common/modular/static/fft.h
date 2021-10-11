@@ -109,7 +109,7 @@ class FFT {
     return output;
   }
 
-  TVector Mult(const TVector& vx1, const TVector& vx2) {
+  TVector Convolution(const TVector& vx1, const TVector& vx2) {
     unsigned n = GetFFTN(unsigned(vx1.size() + vx2.size()));
     auto vf1 = Apply(n, vx1), vf2 = Apply(n, vx2);
     for (unsigned i = 0; i < n; ++i) vf1[i] *= vf2[i];

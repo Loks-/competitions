@@ -44,10 +44,10 @@ inline Unsigned MultFFT(const Unsigned& a, const Unsigned& b) {
   thread_local TFFT1 fft1(maxn);
   thread_local TFFT2 fft2(maxn);
   assert(2 * (a.Size() + b.Size()) <= (1u << 26));
-  auto r1 = fft1.Mult(hidden::MultFFTConvert<TModular1>(a),
-                      hidden::MultFFTConvert<TModular1>(b));
-  auto r2 = fft2.Mult(hidden::MultFFTConvert<TModular2>(a),
-                      hidden::MultFFTConvert<TModular2>(b));
+  auto r1 = fft1.Convolution(hidden::MultFFTConvert<TModular1>(a),
+                             hidden::MultFFTConvert<TModular1>(b));
+  auto r2 = fft2.Convolution(hidden::MultFFTConvert<TModular2>(a),
+                             hidden::MultFFTConvert<TModular2>(b));
   assert(r1.size() == r2.size());
   uint64_t t64 = 0;
   Unsigned::TData v(r1.size() / 2, 0);
