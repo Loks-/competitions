@@ -5,7 +5,7 @@
 
 // Time: O(K^2 * log(H))
 // Memory: O(K)
-int main_767() {
+int main_767__slow() {
   // uint64_t H = 16, K = 3, N = 9;
   uint64_t H = 16, K = PowU(10ull, 5), N = PowU(10ull, 16);
   assert((N % K) == 0);
