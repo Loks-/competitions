@@ -12,6 +12,7 @@ int main_longest_increasing_subsequence_arrays() {
   cin >> T;
   for (unsigned iT = 0; iT < T; ++iT) {
     cin >> m >> n;
+    f.Adjust(m);
     TModularD s = 0, k = TModularD(n - 1) / TModularD(n), p = 1;
     for (unsigned l = n; l <= m; ++l, p *= k)
       s += f.BinomialCoefficient(l - 1, n - 1) * p;

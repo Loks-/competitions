@@ -12,7 +12,10 @@ class Factorial {
   Factorial() { vf.push_back(1); }
 
   void Adjust(unsigned n) {
-    for (; vf.size() <= n;) vf.push_back(vf.size() * vf.back());
+    unsigned k = vf.size();
+    if (k > n) return;
+    vf.resize(n + 1);
+    for (unsigned i = k; i <= n; ++i) vf[i] = vf[i - 1] * i;
   }
 
   uint64_t Get(unsigned n) {

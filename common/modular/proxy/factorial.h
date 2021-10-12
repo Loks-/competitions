@@ -24,13 +24,29 @@ class Factorial {
   const TProxy& GetProxy() const { return proxy; }
 
   void Adjust(unsigned n) {
-    for (; vf.size() <= n;) {
-      vf.push_back(
-          (coprime_only && (GCD<uint64_t>(proxy.GetMod(), vf.size()) > 1))
-              ? vf.back()
-              : proxy.Mult(proxy.ApplyU(vf.size()), vf.back()));
-      if (keep_inverted) vfi.push_back(proxy.Inverse(vf.back()));
+    unsigned k = vf.size();
+    if (k > n) return;
+    vf.resize(n + 1);
+    for (unsigned i = k; i <= n; ++i)
+      vf[i] = (coprime_only && (GCD<uint64_t>(proxy.GetMod(), i) > 1))
+                  ? vf[i - 1]
+                  : proxy.Mult(proxy.ApplyU(i), vf[i - 1]);
+    if (keep_inverted) {
+      // Assume vf[i] coprime to mod.
+      vfi.resize(n + 1);
+      vfi[n] = proxy.Inverse(vf[n]);
+      for (unsigned i = n; i > k; --i)
+        vfi[i - 1] = (coprime_only && (GCD<uint64_t>(proxy.GetMod(), i) > 1))
+                         ? vfi[i]
+                         : proxy.Mult(proxy.ApplyU(i), vfi[i]);
     }
+    // for (; vf.size() <= n;) {
+    //   vf.push_back(
+    //       (coprime_only && (GCD<uint64_t>(proxy.GetMod(), vf.size()) > 1))
+    //           ? vf.back()
+    //           : proxy.Mult(proxy.ApplyU(vf.size()), vf.back()));
+    //   if (keep_inverted) vfi.push_back(proxy.Inverse(vf.back()));
+    // }
   }
 
   TValue Get(unsigned n) {

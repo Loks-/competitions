@@ -13,6 +13,7 @@ int main_lucy_and_flowers() {
   for (unsigned it = 0; it < T; ++it) {
     cin >> N;
     TModular s(0);
+    f.Adjust(N);
     for (unsigned i = 1; i <= N; ++i)
       s += (f.BinomialCoefficient(2 * i, i) -
             f.BinomialCoefficient(2 * i, i + 1)) *

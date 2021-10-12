@@ -11,6 +11,7 @@ int main_767__slow() {
   assert((N % K) == 0);
   TModularD m2 = 2, m2a = m2.PowU(N / K) - m2, s = 0;
   modular::mstatic::Factorial<TModularD> f;
+  f.Adjust(K + 1);
   vector<TModularD> va(K + 1);
   for (unsigned l = 0; l <= K; ++l) {
     if ((l & (l - 1)) == 0) cout << "\tl = " << l << endl;
