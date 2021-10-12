@@ -14,7 +14,7 @@ int main_767() {
   modular::mstatic::Factorial<TModularD> f;
   vector<TModularD> va(K + 1);
   for (unsigned l = 0; l <= K; ++l) va[l] = f.GetI(l).PowU(H);
-  auto vb = modular::mstatic::Convolution<TModularD, (1u << 18)>(va, va);
+  auto vb = modular::mstatic::Convolution<TModularD, (1u << 18)>(va);
   for (unsigned l = 0; l <= K; ++l)
     s += vb[l] * f.Get(l).PowU(H) * f.BinomialCoefficient(K, l) *
          m2a.PowU(K - l);
