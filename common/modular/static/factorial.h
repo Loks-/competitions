@@ -16,9 +16,14 @@ class Factorial {
   }
 
   void Adjust(unsigned n) {
-    for (; vf.size() <= n;) {
-      vf.push_back(TModular(vf.size()) * vf.back());
-      if (keep_inverted) vfi.push_back(vf.back().Inverse());
+    unsigned k = vf.size();
+    if (k > n) return;
+    vf.resize(n + 1);
+    for (unsigned i = k; i <= n; ++i) vf[i] = vf[i - 1] * TModular(i);
+    if (keep_inverted) {
+      vfi.resize(n + 1);
+      vfi[n] = vf[n].Inverse();
+      for (unsigned i = n; i > k; --i) vfi[i - 1] = vfi[i] * TModular(i);
     }
   }
 
