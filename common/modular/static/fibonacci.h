@@ -11,6 +11,7 @@ class Fibonacci {
 
  public:
   Fibonacci() : vf({0, 1}) {}
+  Fibonacci(const TModular& v0, const TModular& v1) : vf({v0, v1}) {}
 
   void Adjust(unsigned n) {
     unsigned i = unsigned(vf.size());

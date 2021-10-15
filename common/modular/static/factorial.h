@@ -37,6 +37,11 @@ class Factorial {
     return (keep_inverted ? vfi[n] : vf[n].Inverse());
   }
 
+  TModular Inverse(unsigned n) {
+    Adjust(n);
+    return vf[n - 1] * vfi[n];
+  }
+
   TModular operator()(unsigned n) { return Get(n); }
 
   TModular BinomialCoefficient(unsigned n, unsigned k) {
