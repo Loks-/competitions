@@ -42,7 +42,7 @@ inline Unsigned MultFFT(const Unsigned& a, const Unsigned& b) {
   using TFFT2 = modular::mstatic::FFT<TModular2>;
   thread_local TFFT1 fft1(maxn);
   thread_local TFFT2 fft2(maxn);
-  assert(2 * (a.Size() + b.Size()) <= (1u << 26));
+  assert(2 * (a.Size() + b.Size()) <= maxn);
   auto r1 = fft1.Convolution(hidden::MultFFTConvert<TModular1>(a),
                              hidden::MultFFTConvert<TModular1>(b));
   auto r2 = fft2.Convolution(hidden::MultFFTConvert<TModular2>(a),
@@ -61,9 +61,10 @@ inline Unsigned MultFFT(const Unsigned& a, const Unsigned& b) {
   return Unsigned(v);
 }
 
+template <unsigned maxn = (1u << 16)>
 inline Unsigned Mult(const Unsigned& a, const Unsigned& b) {
   return ((a.Size() < 100) || (b.Size() < 100)) ? MultBase(a, b)
-                                                : MultFFT(a, b);
+                                                : MultFFT<maxn>(a, b);
 }
 }  // namespace nlong
 }  // namespace numeric

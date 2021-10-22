@@ -35,7 +35,7 @@ inline std::vector<TModular> ConvolutionFFT(const std::vector<TModular>& a) {
   thread_local TFFT3 fft3(maxn);
   uint64_t p1 = TModular1::GetMod(), p2 = TModular2::GetMod(),
            p3 = TModular3::GetMod(), p12 = p1 * p2, p12m3 = p12 % p3;
-  assert(a.Size() <= (1u << 24));
+  assert(2 * a.size() <= maxn);
   auto r1 = fft1.Convolution(hidden::ConvolutionFFTChangeModular<TModular1>(a));
   auto r2 = fft2.Convolution(hidden::ConvolutionFFTChangeModular<TModular2>(a));
   auto r3 = fft3.Convolution(hidden::ConvolutionFFTChangeModular<TModular3>(a));
@@ -67,7 +67,7 @@ inline std::vector<TModular> ConvolutionFFT(const std::vector<TModular>& a,
   thread_local TFFT3 fft3(maxn);
   uint64_t p1 = TModular1::GetMod(), p2 = TModular2::GetMod(),
            p3 = TModular3::GetMod(), p12 = p1 * p2, p12m3 = p12 % p3;
-  assert(a.Size() + b.Size() <= (1u << 25));
+  assert(a.size() + b.size() <= maxn);
   auto r1 = fft1.Convolution(hidden::ConvolutionFFTChangeModular<TModular1>(a),
                              hidden::ConvolutionFFTChangeModular<TModular1>(b));
   auto r2 = fft2.Convolution(hidden::ConvolutionFFTChangeModular<TModular2>(a),
@@ -86,16 +86,17 @@ inline std::vector<TModular> ConvolutionFFT(const std::vector<TModular>& a,
   return v;
 }
 
-template <class TModular>
+template <class TModular, unsigned maxn = (1u << 16)>
 inline std::vector<TModular> Convolution(const std::vector<TModular>& a) {
-  return (a.size() < 100) ? numeric::ConvolutionBase(a) : ConvolutionFFT(a);
+  return (a.size() < 100) ? numeric::ConvolutionBase(a)
+                          : ConvolutionFFT<maxn>(a);
 }
 
-template <class TModular>
+template <class TModular, unsigned maxn = (1u << 16)>
 inline std::vector<TModular> Convolution(const std::vector<TModular>& a,
                                          const std::vector<TModular>& b) {
   return ((a.size() < 100) || (b.size() < 100)) ? numeric::ConvolutionBase(a, b)
-                                                : ConvolutionFFT(a, b);
+                                                : ConvolutionFFT<maxn>(a, b);
 }
 }  // namespace mstatic
 }  // namespace modular
