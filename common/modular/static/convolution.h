@@ -4,28 +4,12 @@
 #include "common/modular.h"
 #include "common/modular/static/fft.h"
 #include "common/modular/utils/merge_remainders.h"
+#include "common/numeric/convolution_base.h"
 
 #include <vector>
 
 namespace modular {
 namespace mstatic {
-template <class TModular>
-inline std::vector<TModular> ConvolutionBase(const std::vector<TModular>& a,
-                                             const std::vector<TModular>& b) {
-  if (a.empty() || b.empty()) return {};
-  std::vector<TModular> r(a.size() + b.size() - 1);
-  for (unsigned i = 0; i < a.size(); ++i) {
-    auto ai = a[i];
-    for (unsigned j = 0; j < b.size(); ++j) r[i + j] += ai * b[j];
-  }
-  return r;
-}
-
-template <class TModular>
-inline std::vector<TModular> ConvolutionBase(const std::vector<TModular>& a) {
-  return ConvolutionBase(a, a);
-}
-
 namespace hidden {
 template <class TModularNew, class TModular>
 inline std::vector<TModularNew> ConvolutionFFTChangeModular(
@@ -104,13 +88,13 @@ inline std::vector<TModular> ConvolutionFFT(const std::vector<TModular>& a,
 
 template <class TModular>
 inline std::vector<TModular> Convolution(const std::vector<TModular>& a) {
-  return (a.size() < 100) ? ConvolutionBase(a) : ConvolutionFFT(a);
+  return (a.size() < 100) ? numeric::ConvolutionBase(a) : ConvolutionFFT(a);
 }
 
 template <class TModular>
 inline std::vector<TModular> Convolution(const std::vector<TModular>& a,
                                          const std::vector<TModular>& b) {
-  return ((a.size() < 100) || (b.size() < 100)) ? ConvolutionBase(a, b)
+  return ((a.size() < 100) || (b.size() < 100)) ? numeric::ConvolutionBase(a, b)
                                                 : ConvolutionFFT(a, b);
 }
 }  // namespace mstatic
