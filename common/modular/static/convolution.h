@@ -9,9 +9,26 @@
 
 namespace modular {
 namespace mstatic {
+template <class TModular>
+inline std::vector<TModular> ConvolutionBase(const std::vector<TModular>& a,
+                                             const std::vector<TModular>& b) {
+  if (a.empty() || b.empty()) return {};
+  std::vector<TModular> r(a.size() + b.size() - 1);
+  for (unsigned i = 0; i < a.size(); ++i) {
+    auto ai = a[i];
+    for (unsigned j = 0; j < b.size(); ++j) r[i + j] += ai * b[j];
+  }
+  return r;
+}
+
+template <class TModular>
+inline std::vector<TModular> ConvolutionBase(const std::vector<TModular>& a) {
+  return ConvolutionBase(a, a);
+}
+
 namespace hidden {
 template <class TModularNew, class TModular>
-inline std::vector<TModularNew> ConvolutionChangeModular(
+inline std::vector<TModularNew> ConvolutionFFTChangeModular(
     const std::vector<TModular>& a) {
   std::vector<TModularNew> v(a.size());
   for (size_t i = 0; i < a.size(); ++i) v[i] = TModularNew(a[i].Get());
@@ -21,7 +38,7 @@ inline std::vector<TModularNew> ConvolutionChangeModular(
 
 // Max supported length for a is 2^24.
 template <class TModular, unsigned maxn = (1u << 16)>
-inline std::vector<TModular> Convolution(const std::vector<TModular>& a) {
+inline std::vector<TModular> ConvolutionFFT(const std::vector<TModular>& a) {
   using TModularA = modular::TArithmetic_P32U;
   using TModular1 = TModular_P32<2013265921>;
   using TModular2 = TModular_P32<1811939329>;
@@ -35,9 +52,9 @@ inline std::vector<TModular> Convolution(const std::vector<TModular>& a) {
   uint64_t p1 = TModular1::GetMod(), p2 = TModular2::GetMod(),
            p3 = TModular3::GetMod(), p12 = p1 * p2, p12m3 = p12 % p3;
   assert(a.Size() <= (1u << 24));
-  auto r1 = fft1.Convolution(hidden::ConvolutionChangeModular<TModular1>(a));
-  auto r2 = fft2.Convolution(hidden::ConvolutionChangeModular<TModular2>(a));
-  auto r3 = fft3.Convolution(hidden::ConvolutionChangeModular<TModular3>(a));
+  auto r1 = fft1.Convolution(hidden::ConvolutionFFTChangeModular<TModular1>(a));
+  auto r2 = fft2.Convolution(hidden::ConvolutionFFTChangeModular<TModular2>(a));
+  auto r3 = fft3.Convolution(hidden::ConvolutionFFTChangeModular<TModular3>(a));
   assert((r1.size() == r2.size()) && (r1.size() == r3.size()));
   TModular mp12(p12);
   std::vector<TModular> v(r1.size());
@@ -52,8 +69,8 @@ inline std::vector<TModular> Convolution(const std::vector<TModular>& a) {
 
 // Max supported length for (a + b) is 2^25.
 template <class TModular, unsigned maxn = (1u << 16)>
-inline std::vector<TModular> Convolution(const std::vector<TModular>& a,
-                                         const std::vector<TModular>& b) {
+inline std::vector<TModular> ConvolutionFFT(const std::vector<TModular>& a,
+                                            const std::vector<TModular>& b) {
   using TModularA = modular::TArithmetic_P32U;
   using TModular1 = TModular_P32<2013265921>;
   using TModular2 = TModular_P32<1811939329>;
@@ -67,12 +84,12 @@ inline std::vector<TModular> Convolution(const std::vector<TModular>& a,
   uint64_t p1 = TModular1::GetMod(), p2 = TModular2::GetMod(),
            p3 = TModular3::GetMod(), p12 = p1 * p2, p12m3 = p12 % p3;
   assert(a.Size() + b.Size() <= (1u << 25));
-  auto r1 = fft1.Convolution(hidden::ConvolutionChangeModular<TModular1>(a),
-                             hidden::ConvolutionChangeModular<TModular1>(b));
-  auto r2 = fft2.Convolution(hidden::ConvolutionChangeModular<TModular2>(a),
-                             hidden::ConvolutionChangeModular<TModular2>(b));
-  auto r3 = fft3.Convolution(hidden::ConvolutionChangeModular<TModular3>(a),
-                             hidden::ConvolutionChangeModular<TModular3>(b));
+  auto r1 = fft1.Convolution(hidden::ConvolutionFFTChangeModular<TModular1>(a),
+                             hidden::ConvolutionFFTChangeModular<TModular1>(b));
+  auto r2 = fft2.Convolution(hidden::ConvolutionFFTChangeModular<TModular2>(a),
+                             hidden::ConvolutionFFTChangeModular<TModular2>(b));
+  auto r3 = fft3.Convolution(hidden::ConvolutionFFTChangeModular<TModular3>(a),
+                             hidden::ConvolutionFFTChangeModular<TModular3>(b));
   assert((r1.size() == r2.size()) && (r1.size() == r3.size()));
   TModular mp12(p12);
   std::vector<TModular> v(r1.size());
@@ -83,6 +100,18 @@ inline std::vector<TModular> Convolution(const std::vector<TModular>& a,
     v[i] = mp12 * TModular(p12m) + TModular(r12);
   }
   return v;
+}
+
+template <class TModular>
+inline std::vector<TModular> Convolution(const std::vector<TModular>& a) {
+  return (a.size() < 100) ? ConvolutionBase(a) : ConvolutionFFT(a);
+}
+
+template <class TModular>
+inline std::vector<TModular> Convolution(const std::vector<TModular>& a,
+                                         const std::vector<TModular>& b) {
+  return ((a.size() < 100) || (b.size() < 100)) ? ConvolutionBase(a, b)
+                                                : ConvolutionFFT(a, b);
 }
 }  // namespace mstatic
 }  // namespace modular
