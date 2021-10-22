@@ -16,18 +16,17 @@ inline Signed MultFFT(const Signed& a, const Signed& b) {
                 MultFFT<maxn>(a.GetUnsigned(), b.GetUnsigned()));
 }
 
-inline Signed MultAuto(const Signed& a, const Signed& b) {
-  return Signed(a.Sign() == b.Sign(),
-                MultAuto(a.GetUnsigned(), b.GetUnsigned()));
+inline Signed Mult(const Signed& a, const Signed& b) {
+  return Signed(a.Sign() == b.Sign(), Mult(a.GetUnsigned(), b.GetUnsigned()));
 }
 }  // namespace nlong
 }  // namespace numeric
 
 inline LongSigned operator*(const LongSigned& l, const LongSigned& r) {
-  return numeric::nlong::MultAuto(l, r);
+  return numeric::nlong::Mult(l, r);
 }
 
 inline LongSigned& operator*=(LongSigned& l, const LongSigned& r) {
-  l = numeric::nlong::MultAuto(l, r);
+  l = numeric::nlong::Mult(l, r);
   return l;
 }

@@ -62,17 +62,17 @@ inline Unsigned MultFFT(const Unsigned& a, const Unsigned& b) {
   return Unsigned(v);
 }
 
-inline Unsigned MultAuto(const Unsigned& a, const Unsigned& b) {
+inline Unsigned Mult(const Unsigned& a, const Unsigned& b) {
   return (std::min(a.Size(), b.Size()) < 100) ? MultBase(a, b) : MultFFT(a, b);
 }
 }  // namespace nlong
 }  // namespace numeric
 
 inline LongUnsigned operator*(const LongUnsigned& l, const LongUnsigned& r) {
-  return numeric::nlong::MultAuto(l, r);
+  return numeric::nlong::Mult(l, r);
 }
 
 inline LongUnsigned& operator*=(LongUnsigned& l, const LongUnsigned& r) {
-  l = numeric::nlong::MultAuto(l, r);
+  l = numeric::nlong::Mult(l, r);
   return l;
 }
