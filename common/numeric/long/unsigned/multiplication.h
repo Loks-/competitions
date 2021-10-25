@@ -66,14 +66,14 @@ inline Unsigned Mult(const Unsigned& a, const Unsigned& b) {
   return ((a.Size() < 100) || (b.Size() < 100)) ? MultBase(a, b)
                                                 : MultFFT<maxn>(a, b);
 }
-}  // namespace nlong
-}  // namespace numeric
 
-inline LongUnsigned operator*(const LongUnsigned& l, const LongUnsigned& r) {
+inline Unsigned operator*(const Unsigned& l, const Unsigned& r) {
   return numeric::nlong::Mult(l, r);
 }
 
-inline LongUnsigned& operator*=(LongUnsigned& l, const LongUnsigned& r) {
+inline Unsigned& operator*=(Unsigned& l, const Unsigned& r) {
   l = numeric::nlong::Mult(l, r);
   return l;
 }
+}  // namespace nlong
+}  // namespace numeric

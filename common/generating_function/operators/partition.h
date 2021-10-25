@@ -51,6 +51,5 @@ inline PGeneratingFunction<TValue> MakePartition(
     PGeneratingFunction<TValue> f) {
   return std::make_shared<Partition<TValue>>(f);
 }
-
 }  // namespace operators
 }  // namespace gf
