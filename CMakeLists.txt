@@ -11,6 +11,30 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror -Wall -Wextra -Warray-bounds=0 -
 include_directories( PRIVATE "${PROJECT_SOURCE_DIR}" )
 find_package( Threads )
 
+file( GLOB_RECURSE ADVENT_SOURCES RELATIVE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/advent_of_code/*.cpp" )
+list( SORT ADVENT_SOURCES )
+set( ADVENT_PROXY_H "${PROJECT_SOURCE_DIR}/advent_of_code/proxy_gen.h" )
+set( ADVENT_PROXY_CXX "${PROJECT_SOURCE_DIR}/advent_of_code/proxy_gen.cxx" )
+file ( WRITE ${ADVENT_PROXY_H}
+	"#pragma once\n\n" )
+file ( WRITE ${ADVENT_PROXY_CXX}
+	"#include \"common/proxy_run_base.h\"\n"
+    "#include \"proxy_gen.h\"\n"
+	"\n"
+	"TSolutionsMap solutions_map {\n")
+foreach( problemsourcefile ${ADVENT_SOURCES} )
+    string( REPLACE ".cpp" "" problemfullname ${problemsourcefile} )
+    get_filename_component( problembasename ${problemfullname} NAME )
+    if ( NOT ${problembasename} MATCHES "base|main")
+        file ( APPEND ${ADVENT_PROXY_H}
+			"int main_${problembasename}();\n" )
+        file ( APPEND ${ADVENT_PROXY_CXX}
+			"\t{ \"${problembasename}\", main_${problembasename} },\n")
+    endif ( NOT ${problembasename} MATCHES "base|main")
+endforeach( problemsourcefile ${ADVENT_SOURCES} )
+file ( APPEND ${ADVENT_PROXY_CXX} "};\n" )
+add_executable( advent_of_code ${ADVENT_SOURCES} ${ADVENT_PROXY_CXX} )
+
 file( GLOB_RECURSE CODINGAME_PRACTICE_SOURCES RELATIVE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/codingame/practice/*.cpp" )
 add_executable( codingame_practice ${CODINGAME_PRACTICE_SOURCES} )
 
