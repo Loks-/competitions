@@ -12,6 +12,8 @@ Testing/
 .vs/
 
 # Project auto generated files
+advent_of_code/proxy_gen.h
+advent_of_code/proxy_gen.cxx
 google/code_jam/proxy_gen.h
 google/code_jam/proxy_gen.cxx
 hackerrank/proxy_gen.h
