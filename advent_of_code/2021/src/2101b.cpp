@@ -1,4 +1,4 @@
-#include "common/stl/full.h"
+#include "common/stl/base.h"
 #include "common/vector/read.h"
 
 int main_2101b() {
