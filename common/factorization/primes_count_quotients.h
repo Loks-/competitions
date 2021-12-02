@@ -34,7 +34,7 @@ class PrimesCountQuotients {
         }
       }
     }
-    vcq[nsqrt] = vcr[nsqrt];
+    vcq[nsqrt2] = vcr[nsqrt];
   }
 
   uint64_t GetQ(uint64_t q) const {
