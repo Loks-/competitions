@@ -1,43 +1,34 @@
 #include "common/stl/base.h"
+#include "common/string/utils/parse.h"
 #include "common/vector/read.h"
 
 int main_2103b() {
-  unsigned n;
-  cin >> n;
-  auto v = nvector::Read<string>(n);
-  unsigned l = v[0].size();
-  vector<unsigned> vx;
-  for (auto s : v) {
-    unsigned x = 0;
-    for (unsigned i = 0; i < l; ++i) {
-      x = 2 * x + (s[i] - '0');
-    }
-    vx.push_back(x);
+  unsigned n, l;
+  cin >> n >> l;
+  vector<unsigned> v;
+  for (unsigned i = 0; i < n; ++i) {
+    string s;
+    cin >> s;
+    v.push_back(Parse<unsigned>(s, 2));
   }
-  sort(vx.begin(), vx.end());
-  uint64_t a = vx[0], b = vx[0];
-  for (unsigned i = l - 1, l = 0, r = vx.size(); l + 1 < r; --i) {
-    unsigned m = (1u << i), m2 = m * 2;
-    unsigned t = (vx[l] & ~(m2 - 1)) + m;
-    auto s = lower_bound(vx.begin(), vx.end(), t) - vx.begin();
-    if (r - s >= s - l) {
-      l = s;
-      a = vx[l];
-    } else {
-      r = s;
+  sort(v.begin(), v.end());
+
+  auto Search = [&](bool major) {
+    auto x = v[0];
+    for (unsigned i = l - 1, l = 0, r = v.size(); l + 1 < r; --i) {
+      unsigned m = (1u << i), m2 = m * 2;
+      unsigned t = (v[l] & ~(m2 - 1)) + m;
+      auto s = lower_bound(v.begin(), v.end(), t) - v.begin();
+      if ((r - s >= s - l) == major) {
+        l = s;
+        x = v[l];
+      } else {
+        r = s;
+      }
     }
-  }
-  for (unsigned i = l - 1, l = 0, r = vx.size(); l + 1 < r; --i) {
-    unsigned m = (1u << i), m2 = m * 2;
-    unsigned t = (vx[l] & ~(m2 - 1)) + m;
-    auto s = lower_bound(vx.begin(), vx.end(), t) - vx.begin();
-    if (r - s >= s - l) {
-      r = s;
-    } else {
-      l = s;
-      b = vx[l];
-    }
-  }
-  cout << a * b << endl;
+    return x;
+  };
+
+  cout << Search(true) * Search(false) << endl;
   return 0;
 }

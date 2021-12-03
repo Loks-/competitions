@@ -1,23 +1,25 @@
 #include "common/stl/base.h"
+#include "common/string/utils/parse.h"
 #include "common/vector/read.h"
 
 int main_2103a() {
-  unsigned n;
-  cin >> n;
-  auto v = nvector::Read<string>(n);
-  unsigned l = v[0].size();
-  vector<unsigned> vc(l, 0);
-  for (auto s : v) {
-    for (unsigned i = 0; i < l; ++i) {
-      if (s[i] == '1') vc[i] += 1;
-    }
+  unsigned n, l;
+  cin >> n >> l;
+  vector<unsigned> v;
+  for (unsigned i = 0; i < n; ++i) {
+    string s;
+    cin >> s;
+    v.push_back(Parse<unsigned>(s, 2));
   }
-  uint64_t x = 0;
+  unsigned x = 0;
   for (unsigned i = 0; i < l; ++i) {
-    x *= 2;
-    if (vc[i] >= n / 2) x += 1;
+    unsigned m = (1u << i), c = 0;
+    for (auto u : v) {
+      if (u & m) ++c;
+    }
+    if (c >= n / 2) x |= m;
   }
-  uint64_t y = ((1ull << l) - 1) ^ x;
+  unsigned y = ((1ull << l) - 1) ^ x;
   cout << x * y << endl;
   return 0;
 }
