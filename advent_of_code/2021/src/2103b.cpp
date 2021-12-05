@@ -1,5 +1,4 @@
 #include "common/stl/base.h"
-#include "common/string/utils/parse.h"
 #include "common/vector/read.h"
 
 int main_2103b() {
@@ -9,7 +8,7 @@ int main_2103b() {
   for (unsigned i = 0; i < n; ++i) {
     string s;
     cin >> s;
-    v.push_back(Parse<unsigned>(s, 2));
+    v.push_back(stoi(s, nullptr, 2));
   }
   sort(v.begin(), v.end());
 

@@ -1,5 +1,4 @@
 #include "common/stl/base.h"
-#include "common/string/utils/parse.h"
 #include "common/vector/read.h"
 
 int main_2103a() {
@@ -9,7 +8,7 @@ int main_2103a() {
   for (unsigned i = 0; i < n; ++i) {
     string s;
     cin >> s;
-    v.push_back(Parse<unsigned>(s, 2));
+    v.push_back(stoi(s, nullptr, 2));
   }
   unsigned x = 0;
   for (unsigned i = 0; i < l; ++i) {
@@ -19,7 +18,6 @@ int main_2103a() {
     }
     if (c >= n / 2) x |= m;
   }
-  unsigned y = ((1ull << l) - 1) ^ x;
-  cout << x * y << endl;
+  cout << x * ((1u << l) - x - 1) << endl;
   return 0;
 }
