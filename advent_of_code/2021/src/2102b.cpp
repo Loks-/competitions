@@ -7,12 +7,12 @@ int main_2102b() {
   for (unsigned i = 0; i < n; ++i) {
     string s;
     cin >> s >> d;
-    if (s[0] == 'f') {
+    if (s == "forward") {
       x += d;
       y += d * a;
     }
-    if (s[0] == 'd') a += d;
-    if (s[0] == 'u') a -= d;
+    if (s == "down") a += d;
+    if (s == "up") a -= d;
   }
   cout << x * y << endl;
   return 0;

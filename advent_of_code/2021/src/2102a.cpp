@@ -7,9 +7,9 @@ int main_2102a() {
   for (unsigned i = 0; i < n; ++i) {
     string s;
     cin >> s >> d;
-    if (s[0] == 'f') x += d;
-    if (s[0] == 'd') y += d;
-    if (s[0] == 'u') y -= d;
+    if (s == "forward") x += d;
+    if (s == "down") y += d;
+    if (s == "up") y -= d;
   }
   cout << x * y << endl;
   return 0;
