@@ -1,32 +1,27 @@
-#include "common/stl/full.h"
-#include "common/string/utils/split.h"
-#include "common/vector/read.h"
+#include "common/numeric/utils/sign.h"
+#include "common/stl/base.h"
+
+#include <unordered_map>
 
 int main_2105a() {
   unsigned n, m = 1000;
   cin >> n;
-  auto vs = nvector::Read<string>(3 * n);
-  vector<vector<unsigned>> vv(m, vector<unsigned>(m, 0));
+  string s;
+  char c;
+  int x0, x1, y0, y1;
+  unordered_map<int, unsigned> mc;
   for (unsigned i = 0; i < n; ++i) {
-    auto vs1 = Split(vs[3 * i], ',');
-    auto vs2 = Split(vs[3 * i + 2], ',');
-    int x0 = stoi(vs1[0]);
-    int y0 = stoi(vs1[1]);
-    int x1 = stoi(vs2[0]);
-    int y1 = stoi(vs2[1]);
-    if (x0 == x1) {
-      if (y0 > y1) swap(y0, y1);
-      for (int y = y0; y <= y1; ++y) vv[x0][y] += 1;
-    } else if (y0 == y1) {
-      if (x0 > x1) swap(x0, x1);
-      for (int x = x0; x <= x1; ++x) vv[x][y0] += 1;
+    cin >> x0 >> c >> y0 >> s >> x1 >> c >> y1;
+    int dx = x1 - x0, dy = y1 - y0;
+    if ((dx == 0) || (dy == 0)) {
+      for (int j = 0; j <= max(abs(dx), abs(dy)); ++j)
+        mc[x0 + j * Sign(dx) + m * (y0 + j * Sign(dy))] += 1;
     }
   }
-  unsigned s = 0;
-  for (auto& v : vv) {
-    for (auto c : v)
-      if (c >= 2) ++s;
+  unsigned r = 0;
+  for (auto& p : mc) {
+    if (p.second >= 2) ++r;
   }
-  cout << s << endl;
+  cout << r << endl;
   return 0;
 }
