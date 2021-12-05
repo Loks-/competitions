@@ -1,5 +1,4 @@
 #include "common/stl/base.h"
-#include "common/vector/read.h"
 
 int main_2103b() {
   unsigned n, l;
