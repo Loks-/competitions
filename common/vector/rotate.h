@@ -15,10 +15,8 @@ inline void SwapIntervals(const TIterator& b, const TIterator& m,
 }
 
 template <class T>
-inline void RotateLeft(const std::vector<T>& v, size_t shift) {
+inline void RotateLeft(std::vector<T>& v, size_t shift) {
   size_t size = v.size();
-  if (size > 0) {
-    SwapIntervals(v.begin(), v.begin() + (shift % size), v.end());
-  }
+  if (size > 0) SwapIntervals(v.begin(), v.begin() + (shift % size), v.end());
 }
 }  // namespace nvector
