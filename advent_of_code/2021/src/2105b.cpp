@@ -1,17 +1,19 @@
 #include "common/numeric/utils/sign.h"
 #include "common/stl/base.h"
+#include "common/vector/read_lines.h"
 
+#include <sstream>
 #include <unordered_map>
 
 int main_2105b() {
-  unsigned n, m = 1000;
-  cin >> n;
-  string s;
-  char c;
-  int x0, x1, y0, y1;
+  unsigned m = 1000;
+  auto vs = nvector::ReadLines();
   unordered_map<int, unsigned> mc;
-  for (unsigned i = 0; i < n; ++i) {
-    cin >> x0 >> c >> y0 >> s >> x1 >> c >> y1;
+  for (auto& s : vs) {
+    int x0, x1, y0, y1;
+    string ss;
+    char c;
+    istringstream(s) >> x0 >> c >> y0 >> ss >> x1 >> c >> y1;
     int dx = x1 - x0, dy = y1 - y0;
     if ((dx == 0) || (dy == 0) || (abs(dx) == abs(dy))) {
       for (int j = 0; j <= max(abs(dx), abs(dy)); ++j)
