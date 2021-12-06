@@ -1,15 +1,14 @@
 #include "common/stl/base.h"
+#include "common/stl/pair_io.h"
+#include "common/vector/read_all.h"
 
 int main_2102a() {
-  unsigned n;
-  cin >> n;
-  int x = 0, y = 0, d;
-  for (unsigned i = 0; i < n; ++i) {
-    string s;
-    cin >> s >> d;
-    if (s == "forward") x += d;
-    if (s == "down") y += d;
-    if (s == "up") y -= d;
+  auto v = nvector::ReadAll<pair<string, int>>();
+  int x = 0, y = 0;
+  for (auto& p : v) {
+    if (p.first == "forward") x += p.second;
+    if (p.first == "down") y += p.second;
+    if (p.first == "up") y -= p.second;
   }
   cout << x * y << endl;
   return 0;
