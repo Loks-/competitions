@@ -4,8 +4,7 @@
 
 int main_2103b() {
   auto vs = nvector::ReadAll<string>();
-  auto v =
-      nvector::Transform(vs, [](auto& s, auto) { return stoi(s, nullptr, 2); });
+  auto v = nvector::TransformV(vs, [](auto& s) { return stoi(s, nullptr, 2); });
   sort(v.begin(), v.end());
 
   auto Search = [&](bool major) {

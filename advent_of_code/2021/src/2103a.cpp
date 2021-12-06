@@ -5,8 +5,7 @@
 int main_2103a() {
   auto vs = nvector::ReadAll<string>();
   unsigned n = vs.size(), l = vs[0].size();
-  auto v =
-      nvector::Transform(vs, [](auto& s, auto) { return stoi(s, nullptr, 2); });
+  auto v = nvector::TransformV(vs, [](auto& s) { return stoi(s, nullptr, 2); });
   unsigned x = 0;
   for (unsigned i = 0; i < l; ++i) {
     unsigned m = (1u << i), c = 0;
