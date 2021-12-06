@@ -1,21 +1,17 @@
 #include "common/stl/base.h"
+#include "common/vector/read_all.h"
+#include "common/vector/transform.h"
 
 int main_2103a() {
-  unsigned n, l;
-  cin >> n >> l;
-  vector<unsigned> v;
-  for (unsigned i = 0; i < n; ++i) {
-    string s;
-    cin >> s;
-    v.push_back(stoi(s, nullptr, 2));
-  }
+  auto vs = nvector::ReadAll<string>();
+  unsigned n = vs.size(), l = vs[0].size();
+  auto v =
+      nvector::Transform(vs, [](auto& s, auto) { return stoi(s, nullptr, 2); });
   unsigned x = 0;
   for (unsigned i = 0; i < l; ++i) {
     unsigned m = (1u << i), c = 0;
-    for (auto u : v) {
-      if (u & m) ++c;
-    }
-    if (c >= n / 2) x |= m;
+    for (auto u : v) c += u & m;
+    if (c / m >= n / 2) x |= m;
   }
   cout << x * ((1u << l) - x - 1) << endl;
   return 0;
