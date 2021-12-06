@@ -7,9 +7,8 @@
 
 int main_2105a() {
   unsigned m = 1000;
-  auto vs = nvector::ReadLines();
   unordered_map<int, unsigned> mc;
-  for (auto& s : vs) {
+  for (auto& s : nvector::ReadLines()) {
     int x0, x1, y0, y1;
     string ss;
     char c;
