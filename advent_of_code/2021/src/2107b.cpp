@@ -1,13 +1,9 @@
 #include "common/stl/base.h"
-#include "common/string/utils/split.h"
-#include "common/vector/transform.h"
+#include "common/vector/read_line.h"
 
 int main_2107b() {
-  string s;
-  cin >> s;
-  auto v = nvector::TransformV(Split(s, ','), [](auto& s) { return stoi(s); });
+  auto v = nvector::ReadLine<int>(',');
   sort(v.begin(), v.end());
-  unsigned n = v.size();
   int64_t r = 1ll << 60;
   for (int m = v[0]; m <= v.back(); ++m) {
     int64_t r0 = 0;
@@ -17,6 +13,6 @@ int main_2107b() {
     }
     r = min(r, r0);
   }
-  cout << n << " " << r << endl;
+  cout << r << endl;
   return 0;
 }
