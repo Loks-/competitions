@@ -9,7 +9,7 @@
 
 namespace nvector {
 template <class T>
-inline std::vector<T> ReadLine(char delimeter) {
+inline std::vector<T> ReadFromLine(char delimeter) {
   std::string line;
   if (!std::getline(std::cin, line)) return {};
   auto ls = Split(line, delimeter);

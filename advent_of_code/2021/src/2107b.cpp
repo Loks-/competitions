@@ -1,8 +1,8 @@
 #include "common/stl/base.h"
-#include "common/vector/read_line.h"
+#include "common/vector/read_from_line.h"
 
 int main_2107b() {
-  auto v = nvector::ReadLine<int>(',');
+  auto v = nvector::ReadFromLine<int>(',');
   sort(v.begin(), v.end());
   int64_t r = 1ll << 60;
   for (int m = v[0]; m <= v.back(); ++m) {
