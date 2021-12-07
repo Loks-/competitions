@@ -1,21 +1,13 @@
 #include "common/stl/base.h"
-#include "common/vector/read.h"
+#include "common/vector/read_all.h"
 
 int main_2001a() {
-  unsigned n, m = 2020;
-  cin >> n;
-  auto v = nvector::Read<unsigned>(n);
-  sort(v.begin(), v.end());
-  for (unsigned i = 0, j = n; i < j;) {
-    unsigned a = v[i], b = v[j - 1];
-    if (a + b < m) {
-      ++i;
-    } else if (a + b > m) {
-      --j;
-    } else {
-      cout << a << "\t" << b << endl;
-      cout << a * b << endl;
-      break;
+  auto v = nvector::ReadAll<unsigned>();
+  for (auto x : v) {
+    for (auto y : v) {
+      if (x + y == 2020) {
+        cout << x * y << endl;
+      }
     }
   }
   return 0;
