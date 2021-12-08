@@ -1,14 +1,11 @@
 #include "common/stl/base.h"
-#include "common/vector/read.h"
+#include "common/vector/read_lines.h"
 
 int main_2003a() {
-  unsigned n;
-  cin >> n;
-  auto v = nvector::Read<string>(n);
-  unsigned l = v[0].size(), s = 0;
-  for (unsigned i = 0; i < n; ++i) {
-    s += (v[i][(3 * i) % l] == '#') ? 1 : 0;
-  }
-  cout << s << endl;
+  auto vs = nvector::ReadLines();
+  unsigned l = vs[0].size(), r = 0;
+  for (unsigned i = 0; i < vs.size(); ++i)
+    r += (vs[i][(3 * i) % l] == '#') ? 1 : 0;
+  cout << r << endl;
   return 0;
 }
