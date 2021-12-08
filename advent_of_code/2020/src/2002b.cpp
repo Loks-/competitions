@@ -1,15 +1,17 @@
 #include "common/stl/base.h"
 #include "common/string/utils/split.h"
+#include "common/vector/read_lines.h"
 
 int main_2002b() {
-  unsigned n, v = 0;
-  cin >> n;
-  for (unsigned i = 0; i < n; ++i) {
-    string s1, s2, s3;
-    cin >> s1 >> s2 >> s3;
-    auto ss1 = Split(s1, '-');
-    if ((s3[stoi(ss1[0]) - 1] == s2[0]) != (s3[stoi(ss1[1]) - 1] == s2[0])) ++v;
+  auto vs = nvector::ReadLines();
+  unsigned r = 0;
+  for (auto& s : vs) {
+    auto ss = Split(s, ' ');
+    auto ss0 = Split(ss[0], '-');
+    if ((ss[2][stoi(ss0[0]) - 1] == ss[1][0]) !=
+        (ss[2][stoi(ss0[1]) - 1] == ss[1][0]))
+      ++r;
   }
-  cout << v << endl;
+  cout << r << endl;
   return 0;
 }
