@@ -1,54 +1,42 @@
-#include "common/data_structures/disjoint_set.h"
-#include "common/stl/full.h"
-#include "common/stl/pair_io.h"
-#include "common/string/utils/split.h"
-#include "common/vector/read.h"
-#include "common/vector/read_all.h"
-#include "common/vector/read_from_line.h"
+#include "common/geometry/d2/base.h"
+#include "common/geometry/d2/utils/neighbors.h"
+#include "common/stl/base.h"
 #include "common/vector/read_lines.h"
-#include "common/vector/transform.h"
-#include "common/vector/write.h"
+
+#include <unordered_map>
 
 int main_2109b() {
-  // auto v = nvector::ReadAll<int64_t>();
-  //   auto v = nvector::ReadFromLine<int64_t>(',');
   auto vs = nvector::ReadLines();
-  for (auto& s : vs) s = '9' + s + '9';
-  int l = vs[0].size();
-  string s9(l, '9');
-  vs.push_back(s9);
-  vs.insert(vs.begin(), s9);
-  int m = vs.size();
-  vector<pair<int, int>> vd{{-1, 0}, {0, -1}, {1, 0}, {0, 1}};
-  ds::DisjointSet s(l * m);
-  vector<int> vl;
-  int64_t r = 0;
-  for (int i = 1; i + 1 < m; ++i) {
-    for (int j = 1; j + 1 < l; ++j) {
-      if (vs[i][j] == '9') continue;
-      bool f = false;
-      bool ok = true;
-      for (auto d : vd) {
-        if (vs[i + d.first][j + d.second] < vs[i][j]) {
-          f = true;
-          s.Union(i * l + j, (i + d.first) * l + j + d.second);
-        }
-        if (vs[i + d.first][j + d.second] <= vs[i][j] - 1) {
-          ok = false;
+  int64_t n = vs.size(), m = vs[0].size();
+  auto Get = [&](const I2Point& p) {
+    return ((p.x < 0) || (p.x >= n) || (p.y < 0) || (p.y >= m)) ? '9'
+                                                                : vs[p.x][p.y];
+  };
+
+  I2Point p;
+  unordered_map<int64_t, unsigned> um;
+  for (p.x = 0; p.x < n; ++p.x) {
+    for (p.y = 0; p.y < m; ++p.y) {
+      if (Get(p) == '9') continue;
+      I2Point p0 = p;
+      for (bool low_point = false; !low_point;) {
+        low_point = true;
+        auto c = Get(p0);
+        for (auto d : I2NeighborsD4()) {
+          if (Get(p0 + d) < c) {
+            low_point = false;
+            p0 += d;
+            break;
+          }
         }
       }
-      if (ok) {
-        vl.push_back(i * l + j);
-      } else if (!f) {
-        cout << i << "\t" << j << endl;
-      }
+      um[p0.x * m + p0.y] += 1;
     }
   }
-  // nvector::Write(vl);
-  for (auto& x : vl) x = s.GetSize(x);
-  sort(vl.begin(), vl.end());
-  reverse(vl.begin(), vl.end());
-  cout << r << endl;
-  cout << vl[0] * vl[1] * vl[2] << endl;
+  vector<unsigned> v;
+  for (auto p : um) v.push_back(p.second);
+  sort(v.begin(), v.end());
+  reverse(v.begin(), v.end());
+  cout << v[0] * v[1] * v[2] << endl;
   return 0;
 }
