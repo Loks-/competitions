@@ -8,3 +8,9 @@ inline const std::vector<I2Vector>& I2NeighborsD4() {
   static std::vector<I2Vector> v{{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
   return v;
 }
+
+inline const std::vector<I2Vector>& I2NeighborsD8() {
+  static std::vector<I2Vector> v{{1, 0},  {1, 1},   {0, 1},  {-1, 1},
+                                 {-1, 0}, {-1, -1}, {0, -1}, {1, -1}};
+  return v;
+}
