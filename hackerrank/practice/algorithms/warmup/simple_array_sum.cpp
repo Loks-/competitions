@@ -2,13 +2,11 @@
 
 #include "common/stl/base.h"
 #include "common/vector/read.h"
-
-#include <numeric>
+#include "common/vector/sum.h"
 
 int main_simple_array_sum() {
   unsigned n;
   cin >> n;
-  vector<unsigned> v = nvector::Read<unsigned>(n);
-  cout << accumulate(v.begin(), v.end(), 0u) << endl;
+  cout << nvector::Sum(nvector::Read<unsigned>(n)) << endl;
   return 0;
 }

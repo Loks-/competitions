@@ -2,9 +2,9 @@
 
 #include "common/statistics/moment2.h"
 #include "common/stl/base.h"
+#include "common/vector/sum.h"
 
 #include <iomanip>
-#include <numeric>
 
 using TStat = stat::Moment2<>;
 
@@ -35,7 +35,7 @@ int main_dice_stats() {
     }
     vcurrent.swap(vnew);
   }
-  TStat f = accumulate(vcurrent.begin(), vcurrent.end(), TStat());
+  TStat f = nvector::Sum(vcurrent);
   cout << setprecision(6) << fixed << f.Mean() + exp_approx * N << endl
        << f.Variance() << endl;
   return 0;

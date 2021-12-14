@@ -1,8 +1,7 @@
 #include "common/stl/base.h"
 #include "common/string/utils/split.h"
 #include "common/vector/rotate.h"
-
-#include <numeric>
+#include "common/vector/sum.h"
 
 int main_2106b() {
   unsigned m = 256;
@@ -14,6 +13,6 @@ int main_2106b() {
     nvector::RotateLeft(vc, 1);
     vc[6] += vc[8];
   }
-  cout << accumulate(vc.begin(), vc.end(), 0ull) << endl;
+  cout << nvector::Sum(vc) << endl;
   return 0;
 }

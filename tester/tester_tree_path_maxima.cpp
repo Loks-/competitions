@@ -9,9 +9,9 @@
 #include "common/graph/tree_ei/tpm/tpm_pbst_fbt.h"
 #include "common/timer.h"
 #include "common/vector/hrandom_pair.h"
+#include "common/vector/sum.h"
 
 #include <iostream>
-#include <numeric>
 #include <unordered_set>
 #include <utility>
 #include <vector>
@@ -31,7 +31,7 @@ size_t TesterTreePathMaxima::TestHLD() const {
   for (const auto& t : trees) {
     auto nodes_values = graph::AssignCostToNodes(t, edge_proxy);
     v = graph::tpm::TPM_HLD(t, nodes_values, paths, true);
-    total_cost += std::accumulate(v.begin(), v.end(), size_t(0));
+    total_cost += nvector::Sum(v);
   }
   std::cout << "Test results  [HLD    ]: " << total_cost << "\t"
             << t.GetMilliseconds() << std::endl;
@@ -46,7 +46,7 @@ size_t TesterTreePathMaxima::TestHLDFBT() const {
   for (const auto& t : trees) {
     graph::tpm::FullBranchingTree(t, edge_proxy, ttemp, nodes_values);
     v = graph::tpm::TPM_HLD(ttemp, nodes_values, paths, true);
-    total_cost += std::accumulate(v.begin(), v.end(), size_t(0));
+    total_cost += nvector::Sum(v);
   }
   std::cout << "Test results  [HLD FBT]: " << total_cost << "\t"
             << t.GetMilliseconds() << std::endl;
@@ -60,7 +60,7 @@ size_t TesterTreePathMaxima::TestPBST() const {
   for (const auto& t : trees) {
     auto nodes_values = graph::AssignCostToNodes(t, edge_proxy);
     v = graph::tpm::TPM_PBST(t, nodes_values, paths, true);
-    total_cost += std::accumulate(v.begin(), v.end(), size_t(0));
+    total_cost += nvector::Sum(v);
   }
   std::cout << "Test results  [PT     ]: " << total_cost << "\t"
             << t.GetMilliseconds() << std::endl;
@@ -75,7 +75,7 @@ size_t TesterTreePathMaxima::TestPBSTFBT() const {
   for (const auto& t : trees) {
     graph::tpm::FullBranchingTree(t, edge_proxy, ttemp, nodes_values);
     v = graph::tpm::TPM_PBST(ttemp, nodes_values, paths, true);
-    total_cost += std::accumulate(v.begin(), v.end(), size_t(0));
+    total_cost += nvector::Sum(v);
   }
   std::cout << "Test results  [PT  FBT]: " << total_cost << "\t"
             << t.GetMilliseconds() << std::endl;
@@ -88,7 +88,7 @@ size_t TesterTreePathMaxima::TestPBST2() const {
   std::vector<uint64_t> v;
   for (const auto& t : trees) {
     v = graph::tpm::TPM_PBST_FBT(t, edge_proxy, paths);
-    total_cost += std::accumulate(v.begin(), v.end(), size_t(0));
+    total_cost += nvector::Sum(v);
   }
   std::cout << "Test results  [PT2    ]: " << total_cost << "\t"
             << t.GetMilliseconds() << std::endl;

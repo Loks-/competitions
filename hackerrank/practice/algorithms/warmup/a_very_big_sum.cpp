@@ -2,13 +2,11 @@
 
 #include "common/stl/base.h"
 #include "common/vector/read.h"
-
-#include <numeric>
+#include "common/vector/sum.h"
 
 int main_a_very_big_sum() {
   unsigned n;
   cin >> n;
-  vector<uint64_t> v = nvector::Read<uint64_t>(n);
-  cout << accumulate(v.begin(), v.end(), 0ull) << endl;
+  cout << nvector::Sum(nvector::Read<uint64_t>(n)) << endl;
   return 0;
 }

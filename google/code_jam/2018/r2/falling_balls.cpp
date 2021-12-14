@@ -1,7 +1,6 @@
 #include "common/stl/base.h"
 #include "common/vector/read.h"
-
-#include <numeric>
+#include "common/vector/sum.h"
 
 int main_falling_balls() {
   unsigned T;
@@ -11,7 +10,7 @@ int main_falling_balls() {
     unsigned N;
     cin >> N;
     vector<unsigned> vc = nvector::Read<unsigned>(N);
-    unsigned s = accumulate(vc.begin(), vc.end(), 0u);
+    unsigned s = nvector::Sum(vc);
     if ((s != N) || (vc[0] == 0) || (vc.back() == 0)) {
       cout << "IMPOSSIBLE" << endl;
       continue;

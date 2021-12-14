@@ -1,8 +1,7 @@
 #include "common/stl/base.h"
 #include "common/string/utils/split.h"
 #include "common/vector/read_lines.h"
-
-#include <numeric>
+#include "common/vector/sum.h"
 
 int main_2114a() {
   auto vs = nvector::ReadLines();
@@ -31,7 +30,7 @@ int main_2114a() {
   }
   vector<uint64_t> cnt;
   for (unsigned i = 0; i < l - 1; ++i) {
-    uint64_t r = accumulate(v0[i].begin(), v0[i].end(), 0ull);
+    auto r = nvector::Sum(v0[i]);
     if (r) cnt.push_back(r);
   }
   sort(cnt.begin(), cnt.end());

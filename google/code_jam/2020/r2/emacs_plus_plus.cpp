@@ -7,9 +7,9 @@
 #include "common/stl/base.h"
 #include "common/vector/enumerate.h"
 #include "common/vector/read.h"
+#include "common/vector/sum.h"
 
 #include <functional>
-#include <numeric>
 #include <stack>
 #include <string>
 
@@ -147,8 +147,7 @@ int main_emacs_plus_plus() {
     };
 
     Solve(0, K, 0, Q, true);
-    cout << "Case #" << it << ": "
-         << std::accumulate(vbest.begin(), vbest.end(), uint64_t(0)) << endl;
+    cout << "Case #" << it << ": " << nvector::Sum(vbest) << endl;
   }
   return 0;
 }

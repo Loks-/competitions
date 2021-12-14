@@ -1,8 +1,8 @@
 #include "common/cover/dlxe_minmax.h"
 #include "common/stl/base.h"
 #include "common/vector/read.h"
+#include "common/vector/sum.h"
 
-#include <numeric>
 #include <string>
 
 // Small test only.
@@ -12,8 +12,7 @@ int main_square_free__dlxe() {
   for (unsigned it = 1; it <= T; ++it) {
     cin >> R >> C;
     auto vr = nvector::Read<unsigned>(R), vc = nvector::Read<unsigned>(C);
-    if (accumulate(vr.begin(), vr.end(), 0u) !=
-        accumulate(vc.begin(), vc.end(), 0u)) {
+    if (nvector::Sum(vr) != nvector::Sum(vc)) {
       cout << "Case #" << it << ": IMPOSSIBLE" << endl;
       continue;
     }

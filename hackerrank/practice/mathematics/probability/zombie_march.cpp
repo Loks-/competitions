@@ -3,8 +3,7 @@
 #include "common/graph/graph.h"
 #include "common/stl/base.h"
 #include "common/vector/read.h"
-
-#include <numeric>
+#include "common/vector/sum.h"
 
 int main_zombie_march() {
   unsigned T;
@@ -18,7 +17,7 @@ int main_zombie_march() {
 
     // Base solution. Works only for connected non-bipartite graphs and (k >>
     // n).
-    double sa = accumulate(va.begin(), va.end(), 0.0);
+    double sa = nvector::Sum(va);
     vector<double> vf(n);
     for (unsigned i = 0; i < n; ++i)
       vf[i] = (sa / (2 * m)) * graph.Edges(i).size();

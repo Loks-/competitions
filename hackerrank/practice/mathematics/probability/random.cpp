@@ -2,17 +2,17 @@
 
 #include "common/stl/base.h"
 #include "common/vector/read.h"
+#include "common/vector/sum.h"
 
 #include <cmath>
 #include <iomanip>
-#include <numeric>
 
 int main_random() {
   cout << setprecision(6) << fixed;
   unsigned n, a, b;
   cin >> n >> a >> b;
   vector<double> v = nvector::Read<double>(n), vt(n);
-  double s = accumulate(v.begin(), v.end(), 0.), m = s / n;
+  double s = nvector::Sum(v), m = s / n;
   double w0 = pow((n - 3.0) / (n - 1.0), a);
   for (unsigned i = 0; i < n; ++i) v[i] = w0 * v[i] + (1 - w0) * m;
   for (unsigned ib = 0; ib < b; ++ib) {
