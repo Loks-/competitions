@@ -1,5 +1,5 @@
 #include "common/geometry/d2/axis/rectangle.h"
-#include "common/geometry/d2/base.h"
+#include "common/geometry/d2/point.h"
 #include "common/geometry/d2/utils/neighbors.h"
 #include "common/stl/base.h"
 #include "common/vector/read_lines.h"
