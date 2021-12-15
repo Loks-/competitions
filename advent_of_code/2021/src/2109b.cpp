@@ -21,10 +21,10 @@ int main_2109b() {
       for (bool low_point = false; !low_point;) {
         low_point = true;
         auto c = Get(p0);
-        for (auto d : I2NeighborsD4()) {
-          if (Get(p0 + d) < c) {
+        for (auto p1 : I2NeighborsD4(p0)) {
+          if (Get(p1) < c) {
             low_point = false;
-            p0 += d;
+            p0 = p1;
             break;
           }
         }

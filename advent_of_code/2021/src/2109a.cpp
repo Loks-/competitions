@@ -17,8 +17,8 @@ int main_2109a() {
       auto c = Get(p);
       if (c == '9') continue;
       bool low_point = true;
-      for (auto d : I2NeighborsD4()) {
-        if (Get(p + d) <= c) low_point = false;
+      for (auto p0 : I2NeighborsD4(p)) {
+        if (Get(p0) <= c) low_point = false;
       }
       if (low_point) r += 1 + (c - '0');
     }

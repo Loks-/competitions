@@ -30,8 +30,7 @@ int main_2111b() {
       if (v[p.x][p.y] >= 10) {
         v[p.x][p.y] = 0;
         ++r;
-        for (auto d : I2NeighborsD8()) {
-          auto p1 = p + d;
+        for (auto p1 : I2NeighborsD8(p)) {
           if (!b.Inside(p1)) continue;
           if (v[p1.x][p1.y] != 0) {
             if (++v[p1.x][p1.y] == 10) q.push(p1);
