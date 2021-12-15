@@ -19,6 +19,14 @@ class Rectangle {
     return (p1.x <= p.x) && (p.x <= p2.x) && (p1.y <= p.y) && (p.y <= p2.y);
   }
 
+  T InsideIndexXY(const Point<T>& p) const {
+    return (p.x - p1.x) * (p2.y - p1.y + 1) + (p.y - p1.y);
+  }
+
+  T InsideIndexYX(const Point<T>& p) const {
+    return (p.y - p1.y) * (p2.x - p1.x + 1) + (p.x - p1.x);
+  }
+
   bool StrictInside(const Point<T>& p) const {
     return (p1.x < p.x) && (p.x < p2.x) && (p1.y < p.y) && (p.y < p2.y);
   }
