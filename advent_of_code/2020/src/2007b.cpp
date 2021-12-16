@@ -1,10 +1,10 @@
+#include "common/graph/dag/topological_sort.h"
 #include "common/graph/graph/distance.h"
 #include "common/graph/graph_ei.h"
 #include "common/stl/base.h"
 #include "common/string/utils/split.h"
 #include "common/vector/read_lines.h"
 
-#include <queue>
 #include <unordered_map>
 #include <utility>
 
@@ -27,18 +27,15 @@ int main_2007b() {
   unsigned source = msi["shiny gold"];
   DirectedGraphEI<uint64_t> g(index);
   for (auto p : vp) g.AddEdge(std::get<0>(p), std::get<1>(p), std::get<2>(p));
-  // TODO: Use topological sort
-  vector<uint64_t> vc(index);
+  vector<uint64_t> vc(index, 0);
   vc[source] = 1;
-  queue<unsigned> q;
+  auto order = TopologicalSort(g);
   uint64_t r = 0;
-  for (q.push(source); !q.empty(); q.pop()) {
-    auto u = q.front();
+  for (auto u : order) {
     if (!vc[u]) continue;
     r += vc[u];
     for (auto e : g.EdgesEI(u)) {
       vc[e.to] += vc[u] * e.info;
-      q.push(e.to);
     }
     vc[u] = 0;
   }
