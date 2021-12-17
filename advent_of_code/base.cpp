@@ -10,12 +10,12 @@
 #include "common/vector/write.h"
 
 int main_base() {
-  auto v = nvector::ReadAll<int64_t>();
-  //   auto v = nvector::ReadFromLine<int64_t>(',');
-  //   auto vs = nvector::ReadLines();
+  // auto v = nvector::ReadAll<int64_t>();
+  // auto v = nvector::ReadFromLine<int64_t>(',');
+  auto vs = nvector::ReadLines();
   int64_t r = 0;
-  for (auto u : v) {
-    r += u;
+  for (auto u : vs) {
+    r += 1;
   }
   cout << r << endl;
   return 0;
