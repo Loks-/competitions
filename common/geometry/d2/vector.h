@@ -18,6 +18,12 @@ class Vector {
   Vector(const T& _dx, const T& _dy) : dx(_dx), dy(_dy) {}
   explicit Vector(const Point<T>& p) : dx(p.x), dy(p.y) {}
 
+  bool operator==(const TSelf& r) const { return (dx == r.dx) && (dy == r.dy); }
+  bool operator!=(const TSelf& r) const { return (dx != r.dx) || (dy != r.dy); }
+  bool operator<(const TSelf& r) const {
+    return (dx != r.dx) ? (dx < r.dx) : (dy < r.dy);
+  }
+
   Point<T> ToPoint() const { return Point<T>(dx, dy); }
   bool Empty() const { return (dx == 0) && (dy == 0); }
   T LengthSquared() const { return dx * dx + dy * dy; }
