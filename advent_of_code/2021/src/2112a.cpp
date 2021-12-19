@@ -13,7 +13,7 @@ int main_2112a() {
     vl.push_back(ss[0]);
     vl.push_back(ss[1]);
   }
-  nvector::UniqueS(vl);
+  nvector::UniqueUnsorted(vl);
   unordered_map<string, unsigned> um;
   for (unsigned i = 0; i < vl.size(); ++i) um[vl[i]] = i;
   auto fs = lower_bound(vl.begin(), vl.end(), "a") - vl.begin();

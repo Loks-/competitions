@@ -63,7 +63,7 @@ int main_the_cartesian_job() {
       if (cmp(angle_f, p.second) && cmp(p.second, angle_l))
         va.push_back(p.second);
     }
-    nvector::UniqueS(va);
+    nvector::UniqueUnsorted(va);
     auto it_f = lower_bound(va.begin(), va.end(), angle_f, cmp);
     auto it_l = lower_bound(va.begin(), va.end(), angle_l, cmp);
     assert((it_f == va.begin()) && (it_l == va.end()));

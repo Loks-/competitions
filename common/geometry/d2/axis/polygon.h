@@ -30,7 +30,7 @@ class Polygon : public geometry::d2::Polygon<T> {
     vx.clear();
     vvy.clear();
     for (auto& p : TBase::v) vx.push_back(p.x);
-    nvector::UniqueS(vx);
+    nvector::UniqueUnsorted(vx);
     vvy.resize(vx.size());
     for (unsigned i = 0; i < TBase::Size(); ++i) {
       auto p0 = TBase::v[i], p1 = TBase::MGet(i + 1);

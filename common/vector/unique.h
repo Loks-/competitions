@@ -10,7 +10,7 @@ inline void Unique(std::vector<T>& v) {
 }
 
 template <class T>
-inline void UniqueS(std::vector<T>& v) {
+inline void UniqueUnsorted(std::vector<T>& v) {
   std::sort(v.begin(), v.end());
   Unique(v);
 }
