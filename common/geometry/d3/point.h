@@ -14,6 +14,14 @@ class Point {
 
   Point() : x(), y(), z() {}
   Point(const T& _x, const T& _y, const T& _z) : x(_x), y(_y), z(_z) {}
+
+  bool operator==(const TSelf& p) const {
+    return (x == p.x) && (y == p.y) && (z == p.z);
+  }
+
+  bool operator<(const TSelf& v) const {
+    return (x != v.x) ? (x < v.x) : (y != v.y) ? (y < v.y) : (z < v.z);
+  }
 };
 }  // namespace d3
 }  // namespace geometry

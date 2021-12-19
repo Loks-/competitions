@@ -1,6 +1,7 @@
 #pragma once
 
 #include "common/base.h"
+
 #include <cmath>
 
 namespace geometry {
@@ -66,6 +67,16 @@ class Vector {
   void Normalize() {
     assert(!Empty());
     operator/=(Length());
+  }
+
+  bool operator==(const TSelf& v) const {
+    return (dx == v.dx) && (dy == v.dy) && (dz == v.dz);
+  }
+
+  bool operator<(const TSelf& v) const {
+    return (dx != v.dx)   ? (dx < v.dx)
+           : (dy != v.dy) ? (dy < v.dy)
+                          : (dz < v.dz);
   }
 };
 }  // namespace d3
