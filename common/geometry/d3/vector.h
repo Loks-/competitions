@@ -17,9 +17,30 @@ class Vector {
   Vector(const T& _dx, const T& _dy, const T& _dz)
       : dx(_dx), dy(_dy), dz(_dz) {}
 
+  Point<T> ToPoint() const { return Point<T>(dx, dy, dz); }
   bool Empty() const { return (dx == 0) && (dy == 0) && (dz == 0); }
   T LengthSquared() const { return dx * dx + dy * dy + dz * dz; }
   T Length() const { return sqrt(LengthSquared()); }
+
+  bool operator==(const TSelf& v) const {
+    return (dx == v.dx) && (dy == v.dy) && (dz == v.dz);
+  }
+
+  bool operator<(const TSelf& v) const {
+    return (dx != v.dx)   ? (dx < v.dx)
+           : (dy != v.dy) ? (dy < v.dy)
+                          : (dz < v.dz);
+  }
+
+  T& operator[](unsigned index) {
+    assert(index < 3);
+    return (index == 0) ? dx : (index == 1) ? dy : dz;
+  }
+
+  const T& operator[](unsigned index) const {
+    assert(index < 3);
+    return (index == 0) ? dx : (index == 1) ? dy : dz;
+  }
 
   TSelf& operator+=(const TSelf& r) {
     dx += r.dx;
@@ -67,16 +88,6 @@ class Vector {
   void Normalize() {
     assert(!Empty());
     operator/=(Length());
-  }
-
-  bool operator==(const TSelf& v) const {
-    return (dx == v.dx) && (dy == v.dy) && (dz == v.dz);
-  }
-
-  bool operator<(const TSelf& v) const {
-    return (dx != v.dx)   ? (dx < v.dx)
-           : (dy != v.dy) ? (dy < v.dy)
-                          : (dz < v.dz);
   }
 };
 }  // namespace d3

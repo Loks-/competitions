@@ -19,9 +19,25 @@ class Point {
     return (x == p.x) && (y == p.y) && (z == p.z);
   }
 
+  bool operator!=(const TSelf& p) const {
+    return (x != p.x) || (y != p.y) || (z != p.z);
+  }
+
   bool operator<(const TSelf& v) const {
     return (x != v.x) ? (x < v.x) : (y != v.y) ? (y < v.y) : (z < v.z);
   }
+
+  T& operator[](unsigned index) {
+    assert(index < 3);
+    return (index == 0) ? x : (index == 1) ? y : z;
+  }
+
+  const T& operator[](unsigned index) const {
+    assert(index < 3);
+    return (index == 0) ? x : (index == 1) ? y : z;
+  }
+
+  TSelf operator-() const { return TSelf(-x, -y, -z); }
 };
 }  // namespace d3
 }  // namespace geometry

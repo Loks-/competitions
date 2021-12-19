@@ -20,6 +20,8 @@ class Point {
   bool operator<(const TSelf& r) const {
     return (x != r.x) ? (x < r.x) : (y < r.y);
   }
+
+  TSelf operator-() const { return {-x, -y}; }
 };
 }  // namespace d2
 }  // namespace geometry
