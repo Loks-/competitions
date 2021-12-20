@@ -2,13 +2,14 @@
 #include "common/numeric/utils/pow.h"
 #include "common/numeric/utils/ulog.h"
 #include "common/stl/base.h"
+#include "common/vector/max.h"
 #include "common/vector/read.h"
 
 int main_roaring_years() {
   unsigned T;
   cin >> T;
   auto v = nvector::Read<uint64_t>(T);
-  auto M = *max_element(v.begin(), v.end());
+  auto M = nvector::Max(v);
   vector<uint64_t> vry;
   for (uint64_t i = 1;; ++i) {
     auto i3 = ConcatNumbers(i, ConcatNumbers(i + 1, i + 2));

@@ -3,6 +3,7 @@
 #include "common/factorization/table/eulers_totient.h"
 #include "common/modular_io.h"
 #include "common/stl/base.h"
+#include "common/vector/min.h"
 #include "common/vector/read.h"
 
 int main_hyperrectangle_gcd__totient() {
@@ -12,7 +13,7 @@ int main_hyperrectangle_gcd__totient() {
   for (unsigned iT = 0; iT < T; ++iT) {
     cin >> K;
     vector<unsigned> vnk = nvector::Read<unsigned>(K);
-    unsigned n0 = *min_element(vnk.begin(), vnk.end());
+    unsigned n0 = nvector::Min(vnk);
     TModularD s = 0;
     for (unsigned i = 1; i <= n0; ++i) {
       TModularD t = eulers_totient(i);

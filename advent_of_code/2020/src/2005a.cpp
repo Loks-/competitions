@@ -1,8 +1,7 @@
 #include "common/stl/base.h"
+#include "common/vector/max.h"
 #include "common/vector/read_lines.h"
 #include "common/vector/transform.h"
-
-#include <numeric>
 
 int main_2005a() {
   vector<string> vs = nvector::ReadLines();
@@ -11,6 +10,6 @@ int main_2005a() {
     for (char c : s) x = 2 * x + (((c == 'B') || (c == 'R')) ? 1 : 0);
     return x;
   });
-  cout << *max_element(v.begin(), v.end()) << endl;
+  cout << nvector::Max(v) << endl;
   return 0;
 }

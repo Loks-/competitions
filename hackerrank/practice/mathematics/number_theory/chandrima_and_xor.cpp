@@ -1,6 +1,7 @@
 // https://www.hackerrank.com/challenges/chandrima-and-xor
 
 #include "common/stl/base.h"
+#include "common/vector/max.h"
 #include "common/vector/read.h"
 
 int main_chandrima_and_xor() {
@@ -8,7 +9,7 @@ int main_chandrima_and_xor() {
   unsigned n;
   cin >> n;
   vector<uint64_t> va = nvector::Read<uint64_t>(n);
-  uint64_t m = *max_element(va.begin(), va.end()), r = 0;
+  uint64_t m = nvector::Max(va), r = 0;
   vector<uint64_t> vfi{1, 2}, v2p{1, 2};
   for (unsigned i = 0; vfi.back() < m; ++i) {
     vfi.push_back(vfi[i] + vfi[i + 1]);

@@ -2,6 +2,7 @@
 
 #include "common/modular_io.h"
 #include "common/stl/base.h"
+#include "common/vector/min.h"
 #include "common/vector/read.h"
 
 int main_hyperrectangle_gcd() {
@@ -11,7 +12,7 @@ int main_hyperrectangle_gcd() {
   for (unsigned iT = 0; iT < T; ++iT) {
     cin >> K;
     vector<unsigned> vnk = nvector::Read<unsigned>(K);
-    unsigned n0 = *min_element(vnk.begin(), vnk.end());
+    unsigned n0 = nvector::Min(vnk);
     for (unsigned i = 1; i <= n0; ++i) {
       v[i] = 1;
       for (unsigned nk : vnk) v[i] *= TModularD(nk / i);

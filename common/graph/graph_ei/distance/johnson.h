@@ -4,9 +4,9 @@
 #include "common/graph/graph_ei.h"
 #include "common/graph/graph_ei/distance/dijkstra.h"
 #include "common/graph/graph_ei/edge_cost_proxy.h"
+#include "common/vector/min.h"
 
 #include <algorithm>
-#include <numeric>
 #include <vector>
 
 namespace graph {
@@ -36,7 +36,7 @@ inline std::vector<std::vector<TEdgeCost>> Johnson(const TGraph& graph,
   }
   if (relaxed) return {};  // Negative cycle
   // New graph
-  TEdgeCost adjust = *std::min_element(vh.begin(), vh.end());
+  TEdgeCost adjust = nvector::Min(vh);
   GraphEI<TEdgeCost, true> g2(gsize);
   for (unsigned u = 0; u < gsize; ++u) {
     for (const auto& e : graph.EdgesEI(u))

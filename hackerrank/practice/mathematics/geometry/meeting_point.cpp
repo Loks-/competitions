@@ -4,6 +4,7 @@
 #include "common/geometry/d2/utils/rotate_pi4s_points.h"
 #include "common/stl/base.h"
 #include "common/stl/pair.h"
+#include "common/vector/min.h"
 #include "common/vector/read.h"
 
 int main_meeting_point() {
@@ -23,6 +24,6 @@ int main_meeting_point() {
     for (unsigned i = 0; i < n; ++i)
       vr[vi[i].second] += vs[n] - 2 * vs[i] + vi[i].first * int(2 * i - n);
   }
-  cout << *min_element(vr.begin(), vr.end()) / 2 << endl;
+  cout << nvector::Min(vr) / 2 << endl;
   return 0;
 }
