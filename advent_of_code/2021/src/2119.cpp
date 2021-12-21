@@ -1,4 +1,5 @@
 #include "common/geometry/d3/base.h"
+#include "common/geometry/d3/distance/distance_l0.h"
 #include "common/geometry/d3/distance/distance_l1.h"
 #include "common/numeric/utils/abs.h"
 #include "common/stl/base.h"
@@ -106,6 +107,7 @@ int main_2119() {
     }
     for (auto p1 : new_points) {
       for (auto p2 : vfp) {
+        if (DistanceL0(p1, p2) > 2000) continue;
         vfv.push_back(p1 - p2);
         vfv.push_back(p2 - p1);
       }
