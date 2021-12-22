@@ -15,4 +15,11 @@ inline T SumVV(const std::vector<std::vector<T>>& v) {
   for (auto& iv : v) s += Sum(iv);
   return s;
 }
+
+template <class T>
+inline T SumVVV(const std::vector<std::vector<std::vector<T>>>& v) {
+  T s = 0;
+  for (auto& iv : v) s += SumVV(iv);
+  return s;
+}
 }  // namespace nvector
