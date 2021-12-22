@@ -176,6 +176,15 @@ add_executable( include_headers "${PROJECT_SOURCE_DIR}/utils/include_headers.cpp
 
 enable_testing()
 
+file( GLOB_RECURSE ADVENT_OF_CODE_TESTS RELATIVE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/tests/advent_of_code/*.out" )
+list( SORT ADVENT_OF_CODE_TESTS )
+foreach( testfile_out ${ADVENT_OF_CODE_TESTS} )
+    get_filename_component( testshortname ${testfile_out} NAME_WE )
+    string( SUBSTRING ${testshortname} 0 4 solution )
+    string( SUBSTRING ${testshortname} 0 2 year )
+	add_test( NAME "aoc.${testshortname}" COMMAND advent_of_code ${solution} "advent_of_code/20${year}/input/${testshortname}.txt" ${testfile_out} WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} )
+endforeach( testfile_out ${ADVENT_OF_CODE_TESTS} )
+
 file( GLOB_RECURSE GOOGLE_CODE_JAM_TESTS RELATIVE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/tests/google/code_jam/*.in" )
 list( SORT GOOGLE_CODE_JAM_TESTS )
 foreach( testfile_in ${GOOGLE_CODE_JAM_TESTS} )
