@@ -33,6 +33,9 @@ class MDVector {
     assert(CheckSize());
   }
 
+  MDVector(const TValue& value, const TShape& shape_)
+      : MDVector(TData(SizeFromShape(shape_), value), shape_) {}
+
   size_t ShapeSize() const { return shape.size(); }
   size_t DSize(size_t dim) const { return shape[dim]; }
   size_t Size() const { return data.size(); }
@@ -102,6 +105,26 @@ class MDVector {
     return GetRI((i0 * shape[1] + i1) * shape[2] + i2);
   }
 
+  // Proxy to Get
+  TValue& operator()(const std::vector<size_t>& vindex) { return Get(vindex); }
+  const TValue& operator()(const std::vector<size_t>& vindex) const {
+    return Get(vindex);
+  }
+  TValue& operator()() { return Get(); }
+  const TValue& operator()() const { return Get(); }
+  TValue& operator()(unsigned i0) { return Get(i0); }
+  const TValue& operator()(unsigned i0) const { return Get(i0); }
+  TValue& operator()(unsigned i0, unsigned i1) { return Get(i0, i1); }
+  const TValue& operator()(unsigned i0, unsigned i1) const {
+    return Get(i0, i1);
+  }
+  TValue& operator()(unsigned i0, unsigned i1, unsigned i2) {
+    return Get(i0, i1, i2);
+  }
+  const TValue& operator()(unsigned i0, unsigned i1, unsigned i2) const {
+    return Get(i0, i1, i2);
+  }
+
   void ReshapeI(const std::vector<size_t>& new_shape) {
     assert(SizeFromShape(new_shape) == Size());
     shape = new_shape;
@@ -118,6 +141,12 @@ class MDVector {
     vo.reserve(Size());
     for (auto& v : data) vo.push_back(f(v));
     return MDVector<TOutput>(vo, shape);
+  }
+
+  TValue Sum() const {
+    TValue r(0);
+    for (auto& v : data) r += v;
+    return r;
   }
 
   void DDropI(unsigned dim) {
