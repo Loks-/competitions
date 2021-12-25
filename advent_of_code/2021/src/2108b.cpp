@@ -10,9 +10,8 @@ int main_2108b() {
   unordered_map<string, unsigned> m;
   for (unsigned i = 0; i < vi.size(); ++i) m[vi[i]] = i;
 
-  auto vs = nvector::ReadLines();
   unsigned r = 0;
-  for (auto s : vs) {
+  for (auto s : nvector::ReadLines()) {
     auto ss = Split(s, ' ');
     vector<unsigned> vp{0, 1, 2, 3, 4, 5, 6};
     for (;; next_permutation(vp.begin(), vp.end())) {
