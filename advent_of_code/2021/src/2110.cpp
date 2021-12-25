@@ -3,13 +3,15 @@
 
 #include <unordered_map>
 
-int main_2110b() {
+int main_2110() {
   string ss = "([{<)]}>";
   unordered_map<char, int> um;
   for (int i = 0; i < 8; ++i) um[ss[i]] = i;
+  vector<int64_t> vc{3, 57, 1197, 25137};
 
   vector<int64_t> v;
   auto vs = nvector::ReadLines();
+  unsigned r = 0;
   for (auto& s : vs) {
     string snew;
     bool skip = false;
@@ -19,6 +21,7 @@ int main_2110b() {
         snew += c;
       } else if (snew.empty() || (snew.back() != ss[ci - 4])) {
         skip = true;
+        r += vc[ci - 4];
         break;
       } else {
         snew.pop_back();
@@ -32,6 +35,6 @@ int main_2110b() {
     }
   }
   sort(v.begin(), v.end());
-  cout << v[v.size() / 2] << endl;
+  cout << r << endl << v[v.size() / 2] << endl;
   return 0;
 }
