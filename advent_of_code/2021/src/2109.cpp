@@ -1,20 +1,20 @@
 #include "common/geometry/d2/axis/rectangle.h"
 #include "common/geometry/d2/point.h"
+#include "common/geometry/d2/stl_hash/point.h"
 #include "common/geometry/d2/utils/neighbors.h"
 #include "common/stl/base.h"
 #include "common/vector/read_lines.h"
 
 #include <unordered_map>
 
-int main_2109b() {
+int main_2109() {
   auto vs = nvector::ReadLines();
   int64_t n = vs.size(), m = vs[0].size();
   I2ARectangle b({0, 0}, {n - 1, m - 1});
   auto Get = [&](const I2Point& p) { return b.Inside(p) ? vs[p.x][p.y] : '9'; };
 
-  I2Point p;
-  unordered_map<int64_t, unsigned> um;
-  for (p.x = 0; p.x < n; ++p.x) {
+  unordered_map<I2Point, unsigned> um;
+  for (I2Point p; p.x < n; ++p.x) {
     for (p.y = 0; p.y < m; ++p.y) {
       if (Get(p) == '9') continue;
       I2Point p0 = p;
@@ -29,13 +29,17 @@ int main_2109b() {
           }
         }
       }
-      um[p0.x * m + p0.y] += 1;
+      um[p0] += 1;
     }
   }
+  unsigned r = 0;
   vector<unsigned> v;
-  for (auto p : um) v.push_back(p.second);
+  for (auto p : um) {
+    r += Get(p.first) - '0' + 1;
+    v.push_back(p.second);
+  }
   sort(v.begin(), v.end());
   reverse(v.begin(), v.end());
-  cout << v[0] * v[1] * v[2] << endl;
+  cout << r << endl << v[0] * v[1] * v[2] << endl;
   return 0;
 }
