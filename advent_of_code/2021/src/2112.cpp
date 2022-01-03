@@ -5,7 +5,7 @@
 #include "common/vector/read_lines.h"
 #include "common/vector/unique.h"
 
-int main_2112b() {
+int main_2112() {
   auto vs = nvector::ReadLines();
   vector<string> vl;
   for (auto s : vs) {
@@ -47,6 +47,6 @@ int main_2112b() {
                                        ((1ull << g.Size()) - 1) ^ (1ull << b));
     rs += (r + rd) / 2 - r0;
   }
-  cout << rs << endl;
+  cout << r0 << endl << rs << endl;
   return 0;
 }
