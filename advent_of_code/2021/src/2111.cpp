@@ -7,7 +7,7 @@
 
 #include <queue>
 
-int main_2111a() {
+int main_2111() {
   auto vs = nvector::ReadLines();
   auto v = nvector::TransformV(vs, [](auto& s) {
     vector<unsigned> vt;
@@ -16,8 +16,9 @@ int main_2111a() {
   });
 
   I2ARectangle b({0, 0}, {9, 9});
-  unsigned r = 0;
-  for (unsigned im = 0; im < 100; ++im) {
+  unsigned ra = 0, ri;
+  for (unsigned im = 1;; ++im) {
+    ri = 0;
     queue<I2Point> q;
     I2Point p;
     for (p.x = 0; p.x < 10; ++p.x) {
@@ -29,7 +30,7 @@ int main_2111a() {
       p = q.front();
       if (v[p.x][p.y] >= 10) {
         v[p.x][p.y] = 0;
-        ++r;
+        ++ri;
         for (auto p1 : I2NeighborsD8(p)) {
           if (!b.Inside(p1)) continue;
           if (v[p1.x][p1.y] != 0) {
@@ -38,7 +39,12 @@ int main_2111a() {
         }
       }
     }
+    ra += ri;
+    if (im == 100) cout << ra << endl;
+    if (ri == 100) {
+      cout << im << endl;
+      break;
+    }
   }
-  cout << r << endl;
   return 0;
 }
