@@ -2,6 +2,7 @@
 #include "common/geometry/d2/point.h"
 #include "common/stl/base.h"
 #include "common/string/utils/split.h"
+#include "common/vector/make.h"
 #include "common/vector/read_lines.h"
 
 int main_2113b() {
@@ -21,7 +22,7 @@ int main_2113b() {
       if (z > l) z = 2 * l - z;
     }
   }
-  vector<vector<unsigned>> vv(6, vector<unsigned>(40, 0));
+  auto vv = nvector::Make<unsigned>(6, 40, 0);
   for (auto p : vp) vv[p.y][p.x] = 1;
   for (auto& v : vv) {
     for (auto u : v) cout << (u ? '#' : '.');
