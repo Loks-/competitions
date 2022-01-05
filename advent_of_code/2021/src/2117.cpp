@@ -1,7 +1,6 @@
 #include "common/geometry/d2/axis/rectangle.h"
 #include "common/geometry/d2/base.h"
 #include "common/stl/base.h"
-#include "common/stl/pair.h"
 #include "common/string/utils/split.h"
 #include "common/vector/read_lines.h"
 
