@@ -44,7 +44,6 @@ int main_2116() {
       auto n = ReadU(15);
       auto index_end = index + n;
       for (; index < index_end;) vm.push_back(Solve());
-      if (index != index_end) cout << "Ops" << endl;
     }
     if (type == 0) {
       return nvector::Sum(vm);
@@ -61,13 +60,11 @@ int main_2116() {
     } else if (type == 7) {
       return (vm[0] == vm[1]) ? 1 : 0;
     } else {
-      cout << "Ops" << endl;
       return 0;
     }
   };
 
   auto r = Solve();
-  cout << index << " / " << vd.size() << endl;
   cout << versions_sum << endl;
   cout << r << endl;
   return 0;
