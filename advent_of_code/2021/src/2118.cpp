@@ -1,36 +1,20 @@
-#include "common/binary_search_tree/action/none.h"
 #include "common/binary_search_tree/base/deep.h"
 #include "common/binary_search_tree/base/left.h"
 #include "common/binary_search_tree/base/next_leaf.h"
-#include "common/binary_search_tree/base/node.h"
 #include "common/binary_search_tree/base/prev_leaf.h"
+#include "common/binary_search_tree/base_tree.h"
 #include "common/binary_search_tree/info/none.h"
-#include "common/nodes_manager.h"
 #include "common/stl/base.h"
 #include "common/vector/read_lines.h"
 
 #include <functional>
 
-using TNode =
-    bst::base::Node<unsigned, bst::info::None, bst::action::None, false, true>;
+using TTree = bst::BaseTree<true, unsigned, bst::info::None>;
+using TNode = TTree::TNode;
 
 int main_2118() {
-  NodesManager<TNode> nodes_manager;
+  TTree tree(128);
   TNode* root = nullptr;
-
-  auto New = [&](unsigned x) {
-    auto n = nodes_manager.New();
-    n->data = x;
-    return n;
-  };
-
-  std::function<void(TNode*)> Release = [&](TNode* node) {
-    if (node) {
-      Release(node->l);
-      Release(node->r);
-      nodes_manager.Release(node);
-    }
-  };
 
   std::function<TNode*(string)> Parse = [&](string s) -> TNode* {
     if (s[0] == '[') {
@@ -40,7 +24,7 @@ int main_2118() {
         if (s[i] == '[') ++d;
         if (s[i] == ']') --d;
         if ((s[i] == ',') && (d == 0)) {
-          auto n = New(0);
+          auto n = tree.New(0);
           n->SetL(Parse(s.substr(0, i)));
           n->SetR(Parse(s.substr(i + 1)));
           return n;
@@ -48,7 +32,7 @@ int main_2118() {
       }
       return nullptr;
     } else {
-      return New(stoi(s));
+      return tree.New(stoi(s));
     }
   };
 
@@ -57,15 +41,15 @@ int main_2118() {
     auto l0 = bst::base::PrevLeaf(p->l), r0 = bst::base::NextLeaf(p->r);
     if (l0) l0->data += p->l->data;
     if (r0) r0->data += p->r->data;
-    nodes_manager.Release(p->l);
-    nodes_manager.Release(p->r);
+    tree.Release(p->l);
+    tree.Release(p->r);
     p->SetL(nullptr);
     p->SetR(nullptr);
   };
 
   auto Split = [&](TNode* n) {
-    n->SetL(New(n->data / 2));
-    n->SetR(New((n->data + 1) / 2));
+    n->SetL(tree.New(n->data / 2));
+    n->SetR(tree.New((n->data + 1) / 2));
     n->data = 0;
   };
 
@@ -98,7 +82,7 @@ int main_2118() {
   for (auto s : vs) {
     auto n = Parse(s);
     if (root) {
-      auto new_root = New(0);
+      auto new_root = tree.New(0);
       new_root->SetL(root);
       new_root->SetR(n);
       root = new_root;
@@ -113,8 +97,8 @@ int main_2118() {
   for (auto s1 : vs) {
     for (auto s2 : vs) {
       if (s1 == s2) continue;
-      Release(root->l);
-      Release(root->r);
+      tree.ReleaseTree(root->l);
+      tree.ReleaseTree(root->r);
       root->SetL(Parse(s1));
       root->SetR(Parse(s2));
       CompressAll();
