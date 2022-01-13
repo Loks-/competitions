@@ -13,7 +13,7 @@ using TTree = bst::BaseTree<true, unsigned, bst::info::None>;
 using TNode = TTree::TNode;
 
 int main_2118() {
-  TTree tree(128);
+  TTree tree(64);
   TNode* root = nullptr;
 
   std::function<TNode*(string)> Parse = [&](string s) -> TNode* {
@@ -45,6 +45,7 @@ int main_2118() {
     tree.Release(p->r);
     p->SetL(nullptr);
     p->SetR(nullptr);
+    return p;
   };
 
   auto Split = [&](TNode* n) {
@@ -54,23 +55,18 @@ int main_2118() {
   };
 
   auto Compress = [&]() {
-    for (auto n = bst::base::Left(root); n; n = bst::base::NextLeaf(n)) {
-      if (bst::base::Deep(n) > 5) {
-        Explode(n);
-        return true;
+    for (bool b = true; b;) {
+      b = false;
+      for (auto n = bst::base::Left(root); n; n = bst::base::NextLeaf(n)) {
+        if (bst::base::Deep(n) > 5) n = Explode(n);
       }
-    }
-    for (auto n = bst::base::Left(root); n; n = bst::base::NextLeaf(n)) {
-      if (n->data > 9) {
-        Split(n);
-        return true;
+      for (auto n = bst::base::Left(root); n; n = bst::base::NextLeaf(n)) {
+        if (n->data > 9) {
+          b = true;
+          Split(n);
+          break;
+        }
       }
-    }
-    return false;
-  };
-
-  auto CompressAll = [&]() {
-    while (Compress()) {
     }
   };
 
@@ -86,7 +82,7 @@ int main_2118() {
       new_root->SetL(root);
       new_root->SetR(n);
       root = new_root;
-      CompressAll();
+      Compress();
     } else {
       root = n;
     }
@@ -101,7 +97,7 @@ int main_2118() {
       tree.ReleaseTree(root->r);
       root->SetL(Parse(s1));
       root->SetR(Parse(s2));
-      CompressAll();
+      Compress();
       auto m = Mag(root);
       r = max(r, m);
     }
