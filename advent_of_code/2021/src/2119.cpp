@@ -1,9 +1,9 @@
 #include "common/geometry/d3/affine_transformation.h"
 #include "common/geometry/d3/base.h"
 #include "common/geometry/d3/distance/distance_l1.h"
+#include "common/geometry/d3/distance/distance_l2.h"
 #include "common/numeric/utils/abs.h"
 #include "common/stl/base.h"
-#include "common/stl/hash/vector.h"
 #include "common/string/utils/split.h"
 #include "common/vector/intersection.h"
 #include "common/vector/read_lines.h"
@@ -26,9 +26,8 @@ int main_2119() {
     }
   }
 
-  hash<vector<int64_t>> hv;
-  vector<vector<size_t>> vsh(vvp.size());
-  vector<vector<vector<size_t>>> vph(vvp.size());
+  vector<vector<int64_t>> vsh(vvp.size());
+  vector<vector<vector<int64_t>>> vph(vvp.size());
   for (unsigned i = 0; i < vvp.size(); ++i) {
     auto& vp = vvp[i];
     auto& sh = vsh[i];
@@ -36,11 +35,7 @@ int main_2119() {
     ph.resize(vp.size());
     for (unsigned j1 = 0; j1 < vp.size(); ++j1) {
       for (unsigned j2 = j1 + 1; j2 < vp.size(); ++j2) {
-        auto d = vp[j1] - vp[j2];
-        vector<int64_t> vd;
-        for (unsigned l = 0; l < 3; ++l) vd.push_back(Abs(d[l]));
-        sort(vd.begin(), vd.end());
-        auto h = hv(vd);
+        auto h = SquaredDistanceL2(vp[j1], vp[j2]);
         sh.push_back(h);
         ph[j1].push_back(h);
         ph[j2].push_back(h);
