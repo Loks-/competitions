@@ -14,10 +14,10 @@ int main_2119() {
     if (s.empty()) continue;
     if (s[1] == '-') {
       vvp.push_back({});
-      continue;
+    } else {
+      auto ss = Split(s, ',');
+      vvp.back().push_back({stoi(ss[0]), stoi(ss[1]), stoi(ss[2])});
     }
-    auto ss = Split(s, ',');
-    vvp.back().push_back({stoi(ss[0]), stoi(ss[1]), stoi(ss[2])});
   }
 
   vector<vector<vector<I3Point>>> vsrp(vvp.size());
