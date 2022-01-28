@@ -9,6 +9,7 @@ class Point {
  public:
   using T = TValue;
   using TSelf = Point<T>;
+  static const unsigned dim = 2;
 
   T x, y;
 

@@ -7,10 +7,12 @@
 
 namespace geometry {
 namespace d3 {
-template <class T>
+template <class TValue>
 class Vector {
  public:
+  using T = TValue;
   using TSelf = Vector<T>;
+  static const unsigned dim = 3;
 
   T dx, dy, dz;
 
