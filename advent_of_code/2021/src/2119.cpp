@@ -1,13 +1,19 @@
+#include "common/geometry/d3/affine_transformation.h"
 #include "common/geometry/d3/base.h"
-#include "common/geometry/d3/distance/distance_l0.h"
 #include "common/geometry/d3/distance/distance_l1.h"
 #include "common/numeric/utils/abs.h"
 #include "common/stl/base.h"
+#include "common/stl/hash/vector.h"
 #include "common/string/utils/split.h"
 #include "common/vector/intersection.h"
 #include "common/vector/read_lines.h"
+#include "common/vector/unique.h"
+
+#include <queue>
 
 int main_2119() {
+  const unsigned min_points = 12,
+                 min_pairs = (min_points * (min_points - 1)) / 2;
   auto vs = nvector::ReadLines();
   vector<vector<I3Point>> vvp;
   for (auto& s : vs) {
@@ -20,107 +26,91 @@ int main_2119() {
     }
   }
 
-  vector<vector<vector<I3Point>>> vsrp(vvp.size());
-  for (unsigned is = 0; is < vvp.size(); ++is) {
-    vsrp[is].resize(24);
-    vector<unsigned> vp{0, 1, 2};
-    for (unsigned ip = 0; ip < 6; ++ip) {
-      for (unsigned bm = 0; bm < 4; ++bm) {
-        unsigned index = ip * 4 + bm;
-        auto& vip = vsrp[is][index];
-        for (auto& p : vvp[is]) {
-          I3Point pnew;
-          for (unsigned d = 0; d < 3; ++d)
-            pnew[d] = p[vp[d]] * (1 - int(2 * ((bm >> d) & 1)));
-          vip.push_back(pnew);
-        }
-        sort(vip.begin(), vip.end());
+  hash<vector<int64_t>> hv;
+  vector<vector<size_t>> vsh(vvp.size());
+  vector<vector<vector<size_t>>> vph(vvp.size());
+  for (unsigned i = 0; i < vvp.size(); ++i) {
+    auto& vp = vvp[i];
+    auto& sh = vsh[i];
+    auto& ph = vph[i];
+    ph.resize(vp.size());
+    for (unsigned j1 = 0; j1 < vp.size(); ++j1) {
+      for (unsigned j2 = j1 + 1; j2 < vp.size(); ++j2) {
+        auto d = vp[j1] - vp[j2];
+        vector<int64_t> vd;
+        for (unsigned l = 0; l < 3; ++l) vd.push_back(Abs(d[l]));
+        sort(vd.begin(), vd.end());
+        auto h = hv(vd);
+        sh.push_back(h);
+        ph[j1].push_back(h);
+        ph[j2].push_back(h);
       }
-      next_permutation(vp.begin(), vp.end());
     }
-  }
-  vector<vector<vector<I3Vector>>> vsrv(vsrp.size());
-  for (unsigned i = 0; i < vsrp.size(); ++i) {
-    vsrv[i].resize(vsrp[i].size());
-    for (unsigned j = 0; j < vsrp[i].size(); ++j) {
-      auto& vp = vsrp[i][j];
-      auto& vv = vsrv[i][j];
-      for (auto& p1 : vp) {
-        for (auto& p2 : vp) {
-          if (p1 == p2) continue;
-          vv.push_back(p1 - p2);
-        }
-      }
-      sort(vv.begin(), vv.end());
-    }
+    sort(sh.begin(), sh.end());
+    for (auto& vh : ph) sort(vh.begin(), vh.end());
   }
 
-  vector<I3Point> vfp = vsrp[0][0];
-  vector<I3Vector> vfv = vsrv[0][0];
-  vector<unsigned> vused(vsrp.size(), 0);
-  vused[0] = 1;
-  vector<I3Point> vloc(1, {0, 0, 0});
-  for (unsigned u = 1; u < vused.size(); ++u) {
-    unsigned best_match = 0, best_index1 = 0, best_index2 = 0, best_is = 0;
-    for (unsigned i1 = 0; i1 < vused.size(); ++i1) {
-      if (vused[i1]) continue;
-      for (unsigned i2 = 0; i2 < vsrv[i1].size(); ++i2) {
-        auto c = nvector::Intersection(vfv, vsrv[i1][i2]);
-        if (best_match < c) {
-          best_match = c;
-          best_index1 = i1;
-          best_index2 = i2;
+  vector<unsigned> vfound(vvp.size());
+  vfound[0] = 1;
+  vector<I3AffineTransformation> vat(vvp.size());
+  queue<unsigned> q;
+  for (q.push(0); !q.empty(); q.pop()) {
+    auto i1 = q.front();
+    for (unsigned i2 = 0; i2 < vsh.size(); ++i2) {
+      if (vfound[i2]) continue;
+      if (nvector::Intersection(vsh[i1], vsh[i2]) >= min_pairs) {
+        vfound[i2] = 1;
+        q.push(i2);
+        auto &ph1 = vph[i1], &ph2 = vph[i2];
+        vector<pair<unsigned, unsigned>> vp;
+        for (unsigned j1 = 0; j1 < ph1.size(); ++j1) {
+          for (unsigned j2 = 0; j2 < ph2.size(); ++j2) {
+            if (nvector::Intersection(ph1[j1], ph2[j2]) >= min_points - 1) {
+              vp.push_back({j1, j2});
+              break;
+            }
+          }
         }
-      }
-    }
-    best_match = 0;
-    I3Vector best_shift;
-    for (unsigned is = 0; is < 2; ++is) {
-      auto vp = vsrp[best_index1][best_index2];
-      if (is == 1) {
-        for (auto& p : vp) p = -p;
-        reverse(vp.begin(), vp.end());
-      }
-      for (auto p1 : vp) {
-        for (auto p2 : vfp) {
-          auto shift = p2 - p1;
-          vector<I3Point> vtemp;
-          for (auto p : vp) vtemp.push_back(p + shift);
-          auto c = nvector::Intersection(vfp, vtemp);
-          if (best_match < c) {
-            best_match = c;
-            best_is = is;
-            best_shift = shift;
+        for (unsigned j1 = 0; j1 < vp.size(); ++j1) {
+          for (unsigned j2 = j1 + 1; j2 < vp.size(); ++j2) {
+            unsigned k1 = vp[j1].first, k2 = vp[j2].first;
+            auto d1 = vvp[i1][k1] - vvp[i1][k2];
+            vector<int64_t> vd(0);
+            for (unsigned l = 0; l < 3; ++l) vd.push_back(Abs(d1[l]));
+            sort(vd.begin(), vd.end());
+            if ((vd[0] == 0) || (vd[1] == vd[0]) || (vd[2] == vd[1])) continue;
+            // restore transformation
+            unsigned l1 = vp[j1].second, l2 = vp[j2].second;
+            auto d2 = vvp[i2][l1] - vvp[i2][l2];
+            I3AffineTransformation at;
+            for (unsigned m1 = 0; m1 < 3; ++m1) {
+              for (unsigned m2 = 0; m2 < 3; ++m2) {
+                auto x1 = d1[m1], x2 = d2[m2];
+                at.Get(m1, m2) = (x1 == x2) ? 1 : (x1 == -x2) ? -1 : 0;
+              }
+            }
+            auto d3 = vvp[i1][k1] - at(vvp[i2][l1]);
+            for (unsigned m = 0; m < 3; ++m) at.Get(m, 3) = d3[m];
+            vat[i2] = vat[i1] * at;
+            j1 = j2 = vp.size();  // break
           }
         }
       }
     }
-    vloc.push_back(best_shift.ToPoint());
-    auto vp = vsrp[best_index1][best_index2];
-    if (best_is == 1) {
-      for (auto& p : vp) p = -p;
-    }
-    for (auto& p : vp) p = p + best_shift;
-    vector<I3Point> new_points;
-    for (auto& p : vp) {
-      if (!binary_search(vfp.begin(), vfp.end(), p)) new_points.push_back(p);
-    }
-    for (auto p1 : new_points) {
-      for (auto p2 : vfp) {
-        if (DistanceL0(p1, p2) > 2000) continue;
-        vfv.push_back(p1 - p2);
-        vfv.push_back(p2 - p1);
-      }
-      vfp.push_back(p1);
-    }
-    sort(vfp.begin(), vfp.end());
-    sort(vfv.begin(), vfv.end());
-    vused[best_index1] = 1;
   }
+
+  vector<I3Point> vfp, vfs;
+  for (unsigned i = 0; i < vvp.size(); ++i) {
+    auto& at = vat[i];
+    for (auto& p : vvp[i]) vfp.push_back(at(p));
+    vfs.push_back({at.Get(0, 3), at.Get(1, 3), at.Get(2, 3)});
+  }
+  nvector::UniqueUnsorted(vfp);
   cout << vfp.size() << endl;
+
   int64_t max_dist = 0;
-  for (auto p1 : vloc) {
-    for (auto p2 : vloc) max_dist = max(max_dist, DistanceL1(p1, p2));
+  for (auto& p1 : vfs) {
+    for (auto& p2 : vfs) max_dist = max(max_dist, DistanceL1(p1, p2));
   }
   cout << max_dist << endl;
   return 0;
