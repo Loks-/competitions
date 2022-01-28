@@ -18,16 +18,28 @@ class Vector {
   Vector(const T& _dx, const T& _dy) : dx(_dx), dy(_dy) {}
   explicit Vector(const Point<T>& p) : dx(p.x), dy(p.y) {}
 
+  Point<T> ToPoint() const { return Point<T>(dx, dy); }
+  bool Empty() const { return (dx == 0) && (dy == 0); }
+  T LengthSquared() const { return dx * dx + dy * dy; }
+  T Length() const { return sqrt(LengthSquared()); }
+
   bool operator==(const TSelf& r) const { return (dx == r.dx) && (dy == r.dy); }
   bool operator!=(const TSelf& r) const { return (dx != r.dx) || (dy != r.dy); }
   bool operator<(const TSelf& r) const {
     return (dx != r.dx) ? (dx < r.dx) : (dy < r.dy);
   }
 
-  Point<T> ToPoint() const { return Point<T>(dx, dy); }
-  bool Empty() const { return (dx == 0) && (dy == 0); }
-  T LengthSquared() const { return dx * dx + dy * dy; }
-  T Length() const { return sqrt(LengthSquared()); }
+  T& operator[](unsigned index) {
+    assert(index < 2);
+    return (index == 0) ? dx : dy;
+  }
+
+  const T& operator[](unsigned index) const {
+    assert(index < 2);
+    return (index == 0) ? dx : dy;
+  }
+
+  TSelf operator-() const { return TSelf(-dx, -dy); }
 
   TSelf& operator*=(const T& r) {
     dx *= r;
@@ -43,7 +55,6 @@ class Vector {
 
   TSelf operator*(const T& r) const { return TSelf(dx * r, dy * r); }
   TSelf operator/(const T& r) const { return TSelf(dx / r, dy / r); }
-  TSelf operator-() const { return TSelf(-dx, -dy); }
 
   TSelf& operator+=(const TSelf& r) {
     dx += r.dx;

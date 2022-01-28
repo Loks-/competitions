@@ -21,6 +21,16 @@ class Point {
     return (x != r.x) ? (x < r.x) : (y < r.y);
   }
 
+  T& operator[](unsigned index) {
+    assert(index < 2);
+    return (index == 0) ? x : y;
+  }
+
+  const T& operator[](unsigned index) const {
+    assert(index < 2);
+    return (index == 0) ? x : y;
+  }
+
   TSelf operator-() const { return {-x, -y}; }
 };
 }  // namespace d2
