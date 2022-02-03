@@ -10,11 +10,12 @@ inline auto Make(unsigned d1, const T& value) {
 
 template <class T>
 inline auto Make(unsigned d1, unsigned d2, const T& value) {
-  return std::vector<std::vector<T>>(d1, Make<T>(d2, value));
+  return std::vector<decltype(Make<T>(d2, value))>(d1, Make<T>(d2, value));
 }
 
 template <class T>
 inline auto Make(unsigned d1, unsigned d2, unsigned d3, const T& value) {
-  return std::vector<std::vector<std::vector<T>>>(d1, Make<T>(d2, d3, value));
+  return std::vector<decltype(Make<T>(d2, d3, value))>(d1,
+                                                       Make<T>(d2, d3, value));
 }
 }  // namespace nvector
