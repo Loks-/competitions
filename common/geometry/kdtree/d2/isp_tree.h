@@ -2,7 +2,7 @@
 
 #include "common/geometry/d3/point.h"
 #include "common/geometry/kdtree/action/none.h"
-#include "common/geometry/kdtree/d2/point_proxy.h"
+#include "common/geometry/kdtree/d2/under.h"
 #include "common/geometry/kdtree/idata/none.h"
 #include "common/geometry/kdtree/info/none.h"
 #include "common/geometry/kdtree/isp_tree.h"

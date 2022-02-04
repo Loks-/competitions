@@ -5,6 +5,7 @@
 
 namespace geometry {
 namespace kdtree {
+namespace base {
 template <bool use_parent, class TSelf>
 class TNodeProxyParent {};
 
@@ -87,5 +88,6 @@ class Node
     ClearAction();
   }
 };
+}  // namespace base
 }  // namespace kdtree
 }  // namespace geometry

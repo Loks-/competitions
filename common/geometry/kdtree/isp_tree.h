@@ -1,9 +1,10 @@
 #pragma once
 
 #include "common/base.h"
+#include "common/geometry/kdtree/base/dset.h"
+#include "common/geometry/kdtree/base/node.h"
+#include "common/geometry/kdtree/base/under.h"
 #include "common/geometry/kdtree/info/update_node_to_root.h"
-#include "common/geometry/kdtree/node.h"
-#include "common/geometry/kdtree/point_proxy.h"
 #include "common/nodes_manager.h"
 #include "common/template.h"
 
@@ -11,19 +12,18 @@ namespace geometry {
 namespace kdtree {
 template <unsigned _dim, class TTPoint, class TTLData, class TTIData,
           class TTInfo, class TTAction>
-class ISPTree : NodesManager<Node<typename TTPoint::T, TTLData, TTIData, TTInfo,
-                                  TTAction, true, false>> {
+class ISPTree : NodesManager<base::Node<typename TTPoint::T, TTLData, TTIData,
+                                        TTInfo, TTAction, true, false>> {
  public:
   static const unsigned dim = _dim;
 
   using TPoint = TTPoint;
-  using TPProxy = PointProxy<TPoint>;
   using TValue = typename TPoint::T;
   using TLData = TTLData;
   using TIData = TTIData;
   using TInfo = TTInfo;
   using TAction = TTAction;
-  using TNode = Node<TValue, TLData, TIData, TInfo, TAction, true, false>;
+  using TNode = base::Node<TValue, TLData, TIData, TInfo, TAction, true, false>;
   using TNodesManager = NodesManager<TNode>;
 
  public:
@@ -47,7 +47,7 @@ class ISPTree : NodesManager<Node<typename TTPoint::T, TTLData, TTIData, TTInfo,
 
   void Init(const TPoint& pb, const TPoint& pe, const TValue& v = TValue()) {
     Clear();
-    assert(TPProxy::StrictUnder(pb, pe));
+    assert(base::StrictUnder(pb, pe));
     sb = pb;
     se = pe;
     root = New(v, pb, pe);
@@ -65,7 +65,7 @@ class ISPTree : NodesManager<Node<typename TTPoint::T, TTLData, TTIData, TTInfo,
 
   bool PossibleToSplit(const TPoint& pb, const TPoint& pe) {
     for (unsigned i = 0; i < dim; ++i) {
-      if (TPProxy::DGet(i, pe) > TPProxy::DGet(i, pb) + 1) return true;
+      if (pe[i] > pb[i] + 1) return true;
     }
     return false;
   }
@@ -76,16 +76,16 @@ class ISPTree : NodesManager<Node<typename TTPoint::T, TTLData, TTIData, TTInfo,
     unsigned d = dim;
     TValue md = TValue(0);
     for (unsigned i = 0; i < dim; ++i) {
-      auto l = TPProxy::DGet(i, pe) - TPProxy::DGet(i, pb);
+      auto l = pe[i] - pb[i];
       if (md < l) {
         md = l;
         d = i;
       }
     }
     assert(d < dim);
-    auto v = (TPProxy::DGet(d, pe) + TPProxy::DGet(d, pb)) / 2;
-    p->SetL(New(p->ldata, pb, TPProxy::DSetCopy(d, pe, v)));
-    p->SetR(New(p->ldata, TPProxy::DSetCopy(d, pb, v), pe));
+    auto v = (pb[d] + pe[d]) / 2;
+    p->SetL(New(p->ldata, pb, base::DSet(d, pe, v)));
+    p->SetR(New(p->ldata, base::DSet(d, pb, v), pe));
     p->split_dim = d;
     p->split_value = v;
   }
@@ -97,7 +97,7 @@ class ISPTree : NodesManager<Node<typename TTPoint::T, TTLData, TTIData, TTInfo,
 
   static TLData Get(TNode* p, const TPoint& pp) {
     for (p->ApplyAction(); !p->IsLeaf(); p->ApplyAction())
-      p = (TPProxy::DGet(p->split_dim, pp) < p->split_value) ? p->l : p->r;
+      p = (pp[p->split_dim] < p->split_value) ? p->l : p->r;
     return p->ldata;
   }
 
@@ -108,22 +108,22 @@ class ISPTree : NodesManager<Node<typename TTPoint::T, TTLData, TTIData, TTInfo,
     auto p = root;
     auto pb = sb, pe = se;
     for (p->ApplyAction(); !p->IsLeaf(); p->ApplyAction()) {
-      if (TPProxy::DGet(p->split_dim, pp) < p->split_value) {
-        TPProxy::DSet(p->split_dim, pe, p->split_value);
+      if (pp[p->split_dim] < p->split_value) {
+        pe[p->split_dim] = p->split_value;
         p = p->l;
       } else {
-        TPProxy::DSet(p->split_dim, pb, p->split_value);
+        pb[p->split_dim] = p->split_value;
         p = p->r;
       }
     }
     if (p->ldata == ldata) return;
     for (; PossibleToSplit(pb, pe);) {
       SplitNode(p, pb, pe);
-      if (TPProxy::DGet(p->split_dim, pp) < p->split_value) {
-        TPProxy::DSet(p->split_dim, pe, p->split_value);
+      if (pp[p->split_dim] < p->split_value) {
+        pe[p->split_dim] = p->split_value;
         p = p->l;
       } else {
-        TPProxy::DSet(p->split_dim, pb, p->split_value);
+        pb[p->split_dim] = p->split_value;
         p = p->r;
       }
     }
@@ -134,11 +134,11 @@ class ISPTree : NodesManager<Node<typename TTPoint::T, TTLData, TTIData, TTInfo,
   void SetI(const TPoint& pp, const TLData& ldata, TFakeTrue) {
     auto p = root;
     for (p->ApplyAction(); !p->IsLeaf(); p->ApplyAction())
-      p = (TPProxy::DGet(p->split_dim, pp) < p->split_value) ? p->l : p->r;
+      p = (pp[p->split_dim] < p->split_value) ? p->l : p->r;
     if (p->ldata == ldata) return;
     for (; PossibleToSplit(p->idata.b, p->idata.e);) {
       SplitNode(p);
-      p = (TPProxy::DGet(p->split_dim, pp) < p->split_value) ? p->l : p->r;
+      p = (pp[p->split_dim] < p->split_value) ? p->l : p->r;
     }
     p->ldata = ldata;
     info::UpdateNodeToRoot(p);
@@ -153,24 +153,26 @@ class ISPTree : NodesManager<Node<typename TTPoint::T, TTLData, TTIData, TTInfo,
 
  protected:
   // Get info in rectangle
+  // Current version is incorrect is requested rectangle is smaller than leaf
+  // node.
   static TInfo GetInfoI(TNode* p, TPoint rb, TPoint re, const TPoint& pb,
                         const TPoint& pe) {
     p->ApplyAction();
-    if (TPProxy::Under(pb, rb) && TPProxy::Under(re, pe)) return p->info;
+    if (base::Under(pb, rb) && base::Under(re, pe)) return p->info;
     TInfo r;
     for (; !p->IsLeaf(); p->ApplyAction()) {
       unsigned d = p->split_dim;
       const TValue& v = p->split_value;
-      if (TPProxy::DGet(d, pb) >= v) {
+      if (pb[d] >= v) {
         p = p->r;
-        TPProxy::DSet(d, rb, v);
-      } else if (TPProxy::DGet(d, pe) <= v) {
+        rb[d] = v;
+      } else if (pe[d] <= v) {
         p = p->l;
-        TPProxy::DSet(d, re, v);
+        re[d] = v;
       } else {
-        r.Merge(GetInfoI(p->l, rb, TPProxy::DSetCopy(d, re, v), pb, pe));
+        r.Merge(GetInfoI(p->l, rb, base::DSet(d, re, v), pb, pe));
         p = p->r;
-        TPProxy::DSet(d, rb, v);
+        rb[d] = v;
       }
     }
     r.Merge(p->info);
@@ -179,7 +181,7 @@ class ISPTree : NodesManager<Node<typename TTPoint::T, TTLData, TTIData, TTInfo,
 
  public:
   TInfo GetInfo(const TPoint& pb, const TPoint& pe) {
-    if (!TPProxy::StrictUnder(pb, pe)) return {};
+    if (!base::StrictUnder(pb, pe)) return {};
     return GetInfoI(root, sb, se, pb, pe);
   }
 
