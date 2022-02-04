@@ -3,6 +3,7 @@
 #include "common/base.h"
 
 #include <algorithm>
+#include <cstdarg>
 #include <vector>
 
 namespace ds {
@@ -49,6 +50,7 @@ class MDVector {
   TValue& operator[](size_t raw_index) { return GetRI(raw_index); }
   const TValue& operator[](size_t raw_index) const { return GetRI(raw_index); }
 
+  // Get
   TValue& Get(const std::vector<size_t>& vindex) {
     assert(vindex.size() == ShapeSize());
     size_t raw_index = 0;
@@ -95,34 +97,35 @@ class MDVector {
     return GetRI(i0 * shape[1] + i1);
   }
 
-  TValue& Get(unsigned i0, unsigned i1, unsigned i2) {
-    assert(ShapeSize() == 3);
-    return GetRI((i0 * shape[1] + i1) * shape[2] + i2);
+  TValue& Get(unsigned i0, ...) {
+    unsigned ri = i0, ss = ShapeSize();
+    std::va_list args;
+    va_start(args, i0);
+    for (unsigned j = 1; j < ss; ++j)
+      ri = shape[j] * ri + va_arg(args, unsigned);
+    va_end(args);
+    return GetRI(ri);
   }
 
-  const TValue& Get(unsigned i0, unsigned i1, unsigned i2) const {
-    assert(ShapeSize() == 3);
-    return GetRI((i0 * shape[1] + i1) * shape[2] + i2);
+  const TValue& Get(unsigned i0, ...) const {
+    unsigned ri = i0, ss = ShapeSize();
+    std::va_list args;
+    va_start(args, i0);
+    for (unsigned j = 1; j < ss; ++j)
+      ri = shape[j] * ri + va_arg(args, unsigned);
+    va_end(args);
+    return GetRI(ri);
   }
 
   // Proxy to Get
-  TValue& operator()(const std::vector<size_t>& vindex) { return Get(vindex); }
-  const TValue& operator()(const std::vector<size_t>& vindex) const {
-    return Get(vindex);
+  template <typename... TArgs>
+  TValue& operator()(const TArgs&... args) {
+    return Get(args...);
   }
-  TValue& operator()() { return Get(); }
-  const TValue& operator()() const { return Get(); }
-  TValue& operator()(unsigned i0) { return Get(i0); }
-  const TValue& operator()(unsigned i0) const { return Get(i0); }
-  TValue& operator()(unsigned i0, unsigned i1) { return Get(i0, i1); }
-  const TValue& operator()(unsigned i0, unsigned i1) const {
-    return Get(i0, i1);
-  }
-  TValue& operator()(unsigned i0, unsigned i1, unsigned i2) {
-    return Get(i0, i1, i2);
-  }
-  const TValue& operator()(unsigned i0, unsigned i1, unsigned i2) const {
-    return Get(i0, i1, i2);
+
+  template <typename... TArgs>
+  const TValue& operator()(const TArgs&... args) const {
+    return Get(args...);
   }
 
   void ReshapeI(const std::vector<size_t>& new_shape) {
@@ -161,6 +164,21 @@ class MDVector {
     return TSelf(data, new_shape);
   }
 
+  TSelf DProject(unsigned dim, unsigned index) const {
+    assert(index < shape[dim]);
+    TShape new_shape = shape;
+    new_shape[dim] = 1;
+    TData new_data(SizeFromShape(new_shape));
+    size_t ml = 1, mh = 1;
+    for (unsigned i = 0; i < dim; ++i) ml *= shape[i];
+    for (unsigned i = dim + 1; i < shape.size(); ++i) mh *= shape[i];
+    for (size_t i = 0, rnew = 0, rold = index * mh; i < ml;
+         ++i, rold += mh * (shape[dim] - 1)) {
+      for (size_t j = 0; j < mh; ++j) new_data[rnew++] = data[rold++];
+    }
+    return TSelf(new_data, new_shape);
+  }
+
   TSelf DMin(unsigned dim) const {
     TShape new_shape = shape;
     new_shape[dim] = 1;
@@ -168,9 +186,9 @@ class MDVector {
     size_t ml = 1, mh = 1;
     for (unsigned i = 0; i < dim; ++i) ml *= shape[i];
     for (unsigned i = dim + 1; i < shape.size(); ++i) mh *= shape[i];
-    for (unsigned i = 0; i < ml; ++i) {
-      for (unsigned j = 0; j < shape[dim]; ++j) {
-        for (unsigned k = 0; k < mh; ++k) {
+    for (size_t i = 0; i < ml; ++i) {
+      for (size_t j = 0; j < shape[dim]; ++j) {
+        for (size_t k = 0; k < mh; ++k) {
           size_t rnew = i * mh + k, rold = (i * shape[dim] + j) * mh + k;
           if ((j == 0) || (data[rold] < new_data[rnew]))
             new_data[rnew] = data[rold];
@@ -187,9 +205,9 @@ class MDVector {
     size_t ml = 1, mh = 1;
     for (unsigned i = 0; i < dim; ++i) ml *= shape[i];
     for (unsigned i = dim + 1; i < shape.size(); ++i) mh *= shape[i];
-    for (unsigned i = 0; i < ml; ++i) {
-      for (unsigned j = 0; j < shape[dim]; ++j) {
-        for (unsigned k = 0; k < mh; ++k) {
+    for (size_t i = 0; i < ml; ++i) {
+      for (size_t j = 0; j < shape[dim]; ++j) {
+        for (size_t k = 0; k < mh; ++k) {
           size_t rnew = i * mh + k, rold = (i * shape[dim] + j) * mh + k;
           if ((j == 0) || (new_data[rnew] < data[rold]))
             new_data[rnew] = data[rold];
