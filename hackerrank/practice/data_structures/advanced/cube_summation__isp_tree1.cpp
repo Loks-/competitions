@@ -15,7 +15,7 @@ using TTree = geometry::kdtree::D3ISPTree<
     unsigned, int64_t, geometry::kdtree::idata::None,
     geometry::kdtree::info::SumV1<int64_t, geometry::kdtree::info::None>>;
 
-int main_cube_summation__isp_tree() {
+int main_cube_summation__isp_tree1() {
   unsigned T, N, M;
   TPoint p1, p2;
   TVector v1(1, 1, 1);
