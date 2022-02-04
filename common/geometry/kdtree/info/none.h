@@ -13,6 +13,9 @@ class None {
 
   template <class TNode>
   void Update(const TNode*) {}
+
+  template <class TNode, class TPoint>
+  void UpdateLeaf(const TNode*, const TPoint&, const TPoint&) {}
 };
 }  // namespace info
 }  // namespace kdtree

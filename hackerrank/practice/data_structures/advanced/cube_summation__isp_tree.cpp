@@ -4,7 +4,7 @@
 #include "common/geometry/d3/point_io.h"
 #include "common/geometry/d3/vector.h"
 #include "common/geometry/kdtree/d3/isp_tree.h"
-#include "common/geometry/kdtree/info/sum_v1.h"
+#include "common/geometry/kdtree/info/sum.h"
 #include "common/stl/base.h"
 
 #include <string>
@@ -13,7 +13,7 @@ using TPoint = geometry::d3::Point<unsigned>;
 using TVector = geometry::d3::Vector<unsigned>;
 using TTree = geometry::kdtree::D3ISPTree<
     unsigned, int64_t, geometry::kdtree::idata::None,
-    geometry::kdtree::info::SumV1<int64_t, geometry::kdtree::info::None>>;
+    geometry::kdtree::info::Sum<int64_t, geometry::kdtree::info::None>>;
 
 int main_cube_summation__isp_tree() {
   unsigned T, N, M;
@@ -33,7 +33,7 @@ int main_cube_summation__isp_tree() {
         tree.Set(p1, v);
       } else if (s == "QUERY") {
         cin >> p1 >> p2;
-        cout << tree.GetInfo(p1, p2 + v1).sum_v1 << endl;
+        cout << tree.GetInfo(p1, p2 + v1).sum << endl;
       }
     }
   }

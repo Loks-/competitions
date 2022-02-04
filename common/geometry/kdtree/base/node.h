@@ -71,6 +71,13 @@ class Node
 
   void ClearAction() { action.Clear(); }
   void UpdateInfo() { info.Update(this); }
+
+  template <class TPoint>
+  void UpdateLeafInfo(const TPoint& pb, const TPoint& pe) {
+    idata.SetBox(pb, pe);
+    info.UpdateLeaf(this, pb, pe);
+  }
+
   template <class TActionValue>
   void AddAction(const TActionValue& value) {
     action.Add(this, value);

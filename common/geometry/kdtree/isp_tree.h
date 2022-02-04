@@ -58,8 +58,7 @@ class ISPTree : NodesManager<base::Node<typename TTPoint::T, TTLData, TTIData,
   TNode* New(const TLData& ldata, const TPoint& pb, const TPoint& pe) {
     auto p = New();
     p->ldata = ldata;
-    p->idata.SetBox(pb, pe);
-    p->UpdateInfo();
+    p->UpdateLeafInfo(pb, pe);
     return p;
   }
 
@@ -128,7 +127,8 @@ class ISPTree : NodesManager<base::Node<typename TTPoint::T, TTLData, TTIData,
       }
     }
     p->ldata = ldata;
-    info::UpdateNodeToRoot(p);
+    p->UpdateLeafInfo(pb, pe);
+    info::UpdateNodeToRoot(p->p);
   }
 
   void SetI(const TPoint& pp, const TLData& ldata, TFakeTrue) {
@@ -141,7 +141,8 @@ class ISPTree : NodesManager<base::Node<typename TTPoint::T, TTLData, TTIData,
       p = (pp[p->split_dim] < p->split_value) ? p->l : p->r;
     }
     p->ldata = ldata;
-    info::UpdateNodeToRoot(p);
+    p->UpdateLeafInfo(p->idata.b, p->idata.e);
+    info::UpdateNodeToRoot(p->p);
   }
 
  public:
@@ -153,8 +154,8 @@ class ISPTree : NodesManager<base::Node<typename TTPoint::T, TTLData, TTIData,
 
  protected:
   // Get info in rectangle
-  // Current version is incorrect is requested rectangle is smaller than leaf
-  // node.
+  // Current version going to the leaf unless first node is already inside.
+  // It's possible to stop earlier (check before going to both subtrees).
   static TInfo GetInfoI(TNode* p, TPoint rb, TPoint re, const TPoint& pb,
                         const TPoint& pe) {
     p->ApplyAction();

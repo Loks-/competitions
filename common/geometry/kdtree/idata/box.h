@@ -1,5 +1,6 @@
 #pragma once
 
+#include "common/geometry/kdtree/base/volume.h"
 #include "common/geometry/kdtree/idata/none.h"
 
 namespace geometry {
@@ -13,6 +14,7 @@ class Box : public None {
   using TPoint = TTPoint;
   using TSelf = Box<TPoint>;
   using TBase = None;
+  using TValue = typename TPoint::T;
 
  public:
   TPoint b, e;
@@ -23,6 +25,8 @@ class Box : public None {
     b = pb;
     e = pe;
   }
+
+  TValue Volume() const { return base::Volume(b, e); }
 };
 }  // namespace idata
 }  // namespace kdtree
