@@ -153,39 +153,72 @@ class ISPTree : NodesManager<base::Node<typename TTPoint::T, TTLData, TTIData,
   void Add(const TPoint& pp, const TLData& ldata) { Set(pp, ldata + Get(pp)); }
 
  protected:
-  void SetRI(TNode* p, const TPoint& rb, const TPoint& re, const TPoint& pb,
-             const TPoint& pe, const TLData& ldata, unsigned dd) {
-    p->ApplyAction();
-    if (dd == 0) {
-      auto pp = p->p;
-      auto pnew = New(ldata, pb, pe);
-      if (!pp) {
-        root = pnew;
-      } else if (pp->l == p) {
-        pp->SetL(pnew);
-      } else {
-        pp->SetR(pnew);
-      }
-      ReleaseSubtree(p);
+  void SetRIReplace(TNode* p, const TPoint& pb, const TPoint& pe,
+                    const TLData& ldata) {
+    auto pp = p->p;
+    auto pnew = New(ldata, pb, pe);
+    if (!pp) {
+      root = pnew;
+    } else if (pp->l == p) {
+      pp->SetL(pnew);
     } else {
-      if (p->IsLeaf() && (p->ldata == ldata)) return;  // No changes
-      if (p->IsLeaf()) SplitNode(p, rb, re);
-      unsigned d = p->split_dim;
-      const TValue& v = p->split_value;
-      if (pb[d] >= v) {
-        SetRI(p->r, base::DSet(d, rb, v), re, pb, pe, ldata,
-              dd - ((pb[d] == v) ? 1u : 0u));
-      } else if (pe[d] <= v) {
-        SetRI(p->l, rb, base::DSet(d, re, v), pb, pe, ldata,
-              dd - ((pe[d] == v) ? 1u : 0u));
-      } else {
-        SetRI(p->l, rb, base::DSet(d, re, v), pb, base::DSet(d, pe, v), ldata,
-              dd - ((re[d] == pe[d]) ? 0u : 1u));
-        SetRI(p->r, base::DSet(d, rb, v), re, base::DSet(d, pb, v), pe, ldata,
-              dd - ((rb[d] == pb[d]) ? 0u : 1u));
-      }
-      p->UpdateInfo();
+      pp->SetR(pnew);
     }
+    ReleaseSubtree(p);
+  }
+
+  void SetRIF(TNode* p, const TPoint& rb, const TPoint& re, const TPoint& pb,
+              const TPoint& pe, const TLData& ldata, unsigned dd) {
+    p->ApplyAction();
+    if (dd == 0) return SetRIReplace(p, pb, pe, ldata);
+    if (p->IsLeaf() && (p->ldata == ldata)) return;  // No changes
+    if (p->IsLeaf()) SplitNode(p, rb, re);
+    unsigned d = p->split_dim;
+    const TValue& v = p->split_value;
+    if (pb[d] >= v) {
+      SetRIF(p->r, base::DSet(d, rb, v), re, pb, pe, ldata,
+             dd - ((pb[d] == v) ? 1u : 0u));
+    } else if (pe[d] <= v) {
+      SetRIF(p->l, rb, base::DSet(d, re, v), pb, pe, ldata,
+             dd - ((pe[d] == v) ? 1u : 0u));
+    } else {
+      SetRIF(p->l, rb, base::DSet(d, re, v), pb, base::DSet(d, pe, v), ldata,
+             dd - ((re[d] == pe[d]) ? 0u : 1u));
+      SetRIF(p->r, base::DSet(d, rb, v), re, base::DSet(d, pb, v), pe, ldata,
+             dd - ((rb[d] == pb[d]) ? 0u : 1u));
+    }
+    p->UpdateInfo();
+  }
+
+  void SetRIT(TNode* p, const TPoint& pb, const TPoint& pe, const TLData& ldata,
+              unsigned dd) {
+    p->ApplyAction();
+    if (dd == 0) return SetRIReplace(p, pb, pe, ldata);
+    if (p->IsLeaf() && (p->ldata == ldata)) return;  // No changes
+    if (p->IsLeaf()) SplitNode(p);
+    unsigned d = p->split_dim;
+    const TValue& v = p->split_value;
+    if (pb[d] >= v) {
+      SetRIT(p->r, pb, pe, ldata, dd - ((pb[d] == v) ? 1u : 0u));
+    } else if (pe[d] <= v) {
+      SetRIT(p->l, pb, pe, ldata, dd - ((pe[d] == v) ? 1u : 0u));
+    } else {
+      SetRIT(p->l, pb, base::DSet(d, pe, v), ldata,
+             dd - ((p->idata.e[d] == pe[d]) ? 0u : 1u));
+      SetRIT(p->r, base::DSet(d, pb, v), pe, ldata,
+             dd - ((p->idata.b[d] == pb[d]) ? 0u : 1u));
+    }
+    p->UpdateInfo();
+  }
+
+  void SetRI(TNode* p, const TPoint& pb, const TPoint& pe, const TLData& ldata,
+             unsigned dd, TFakeFalse) {
+    SetRIF(p, sb, se, pb, pe, ldata, dd);
+  }
+
+  void SetRI(TNode* p, const TPoint& pb, const TPoint& pe, const TLData& ldata,
+             unsigned dd, TFakeTrue) {
+    SetRIT(p, pb, pe, ldata, dd);
   }
 
  public:
@@ -193,7 +226,7 @@ class ISPTree : NodesManager<base::Node<typename TTPoint::T, TTLData, TTIData,
     unsigned dd = 0;
     for (unsigned i = 0; i < dim; ++i)
       dd += ((sb[i] == pb[i]) ? 0u : 1u) + ((se[i] == pe[i]) ? 0u : 1u);
-    SetRI(root, sb, se, pb, pe, ldata, dd);
+    SetRI(root, pb, pe, ldata, dd, TFakeBool<TIData::support_box>());
   }
 
  protected:

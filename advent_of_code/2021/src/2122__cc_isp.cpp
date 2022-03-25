@@ -14,6 +14,8 @@ using TTree = geometry::kdtree::D3ISPTree<
     geometry::kdtree::idata::Box<geometry::d3::Point<size_t>>>;
 using TNode = TTree::TNode;
 
+// TODO:
+//   2. Remove boxes from solution
 int main_2122__cc_isp() {
   struct Input {
     unsigned v;
