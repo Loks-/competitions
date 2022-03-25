@@ -2,24 +2,26 @@
 #include "common/geometry/d3/axis/rectangle.h"
 #include "common/geometry/d3/base.h"
 #include "common/geometry/kdtree/d3/isp_tree.h"
-#include "common/geometry/kdtree/idata/box.h"
 #include "common/stl/base.h"
 #include "common/string/utils/split.h"
 #include "common/vector/read_lines.h"
 
 #include <queue>
 
-using TTree = geometry::kdtree::D3ISPTree<
-    size_t, unsigned,
-    geometry::kdtree::idata::Box<geometry::d3::Point<size_t>>>;
+using TTree = geometry::kdtree::D3ISPTree<size_t, unsigned>;
 using TNode = TTree::TNode;
+using geometry::kdtree::base::DSet;
 
-// TODO:
-//   2. Remove boxes from solution
 int main_2122__cc_isp() {
   struct Input {
     unsigned v;
     I3Point p1, p2;
+  };
+
+  struct QNode {
+    TNode* p;
+    TTree::TPoint b;
+    TTree::TPoint e;
   };
 
   const int maxv = 50;
@@ -57,18 +59,17 @@ int main_2122__cc_isp() {
       tree.Set({x0, y0, z0}, {x1, y1, z1}, s.v);
     }
     int64_t r = 0;
-    queue<TNode*> q;
-    for (q.push(tree.root); !q.empty(); q.pop()) {
+    queue<QNode> q;
+    for (q.push({tree.root, tree.sb, tree.se}); !q.empty(); q.pop()) {
       auto p = q.front();
-      if (p->IsLeaf()) {
-        auto b = p->idata.b, e = p->idata.e;
-        int64_t rp = p->ldata;
+      if (p.p->IsLeaf()) {
+        int64_t rp = p.p->ldata;
         for (unsigned i = 0; i < 3; ++i)
-          rp *= vcc[i].GetOld(e[i]) - vcc[i].GetOld(b[i]);
+          rp *= vcc[i].GetOld(p.e[i]) - vcc[i].GetOld(p.b[i]);
         r += rp;
       } else {
-        q.push(p->l);
-        q.push(p->r);
+        q.push({p.p->l, p.b, DSet(p.p->split_dim, p.e, p.p->split_value)});
+        q.push({p.p->r, DSet(p.p->split_dim, p.b, p.p->split_value), p.e});
       }
     }
     cout << r << endl;
