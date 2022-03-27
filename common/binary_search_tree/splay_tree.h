@@ -123,7 +123,7 @@ class SplayTree
     return node;
   }
 
-  static TNode* FindByKey_Less(TNode*& root, const TKey& key) {
+  static TNode* FindByKeyLess(TNode*& root, const TKey& key) {
     static_assert(use_key, "use_key should be true");
     TNode *last_less = nullptr, *last_node = root;
     for (TNode* node = root; node;) {
@@ -148,7 +148,7 @@ class SplayTree
       output_l = output_r = nullptr;
       return;
     }
-    TNode* p = FindByKey_Less(root, key);
+    TNode* p = FindByKeyLess(root, key);
     output_l = p;
     output_r = (p ? SplitR(p) : root);
   }
