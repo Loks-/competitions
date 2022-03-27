@@ -3,6 +3,7 @@
 #include "common/data_structures/unsigned_set.h"
 #include "common/graph/graph.h"
 #include "common/graph/graph/connected_components.h"
+#include "common/graph/graph/expand_components.h"
 #include "common/stl/base.h"
 
 int main_toll_cost_digits() {
@@ -18,7 +19,7 @@ int main_toll_cost_digits() {
   }
   ds::UnsignedSet us(n);
   vector<uint64_t> vd(10), vdc(10);
-  auto gcc = ConnectedComponents(g);
+  auto gcc = ExpandComponents(ConnectedComponents(g));
   for (const auto& gc : gcc) {
     fill(vdc.begin(), vdc.end(), 0);
     for (unsigned u : gc) {

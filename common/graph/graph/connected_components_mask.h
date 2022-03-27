@@ -2,9 +2,11 @@
 
 #include "common/base.h"
 #include "common/graph/graph.h"
+
 #include <stack>
 #include <vector>
 
+// Each value in the output vector is the mask for set of vertexes in component.
 inline std::vector<uint64_t> ConnectedComponentsMask(
     const UndirectedGraph& graph, uint64_t mask = -1ull) {
   std::vector<uint64_t> components;
