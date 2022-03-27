@@ -5,6 +5,7 @@ void FindPrimesForModularFFT(unsigned count);
 bool TestBinarySearchTree(bool time_test);
 bool TestContinuedFractionConvergent();
 bool TestDisjointSet();
+bool TestFixedUniverseSuccessor(bool time_test);
 bool TestGeneratingFunction();
 bool TestGraphDynamicConnectivity(bool time_test);
 bool TestGraphEIDistance(bool time_test);

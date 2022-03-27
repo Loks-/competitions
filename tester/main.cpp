@@ -21,6 +21,8 @@ int main(int nargs, char **pargs) {
       Assert(TestContinuedFractionConvergent());
     else if (tester_mode == "find_primes_for_modular_fft")
       FindPrimesForModularFFT(10);
+    else if (tester_mode == "fixed_universe_successor")
+      Assert(TestFixedUniverseSuccessor(false));
     else if (tester_mode == "generating_function")
       Assert(TestGeneratingFunction());
     else if (tester_mode == "graph_distance")
@@ -59,6 +61,8 @@ int main(int nargs, char **pargs) {
       Assert(TestBinarySearchTree(true));
     else if (tester_mode == "time_disjoint_set")
       Assert(TestDisjointSet());
+    else if (tester_mode == "time_fixed_universe_successor")
+      Assert(TestFixedUniverseSuccessor(true));
     else if (tester_mode == "time_graph_distance")
       Assert(TestGraphEIDistance(true));
     else if (tester_mode == "time_graph_distance_unsigned")
