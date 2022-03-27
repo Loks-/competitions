@@ -1,7 +1,7 @@
 // https://www.hackerrank.com/challenges/torque-and-development
 
 #include "common/graph/graph.h"
-#include "common/graph/graph/connected_components.h"
+#include "common/graph/graph/connected_components_count.h"
 #include "common/stl/base.h"
 
 int main_roads_and_libraries() {
@@ -14,7 +14,7 @@ int main_roads_and_libraries() {
     cr = min(cr, cl);
     UndirectedGraph g(n);
     g.ReadEdges(m);
-    unsigned gcc = unsigned(ConnectedComponents(g).size());
+    unsigned gcc = ConnectedComponentsCount(g);
     cout << gcc * cl + (n - gcc) * cr << endl;
   }
   return 0;
