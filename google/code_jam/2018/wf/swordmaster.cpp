@@ -1,5 +1,9 @@
 #include "common/data_structures/unsigned_set.h"
+#include "common/graph/graph.h"
+#include "common/graph/graph/expand_components.h"
+#include "common/graph/graph/strongly_connected_components.h"
 #include "common/stl/base.h"
+#include "common/vector/intersection.h"
 #include "common/vector/read.h"
 
 int main_swordmaster() {
@@ -42,27 +46,57 @@ int main_swordmaster() {
       }
     }
     if (!usd.Empty()) possible = false;
-    // Check D (small test only)
-    vector<unsigned> va0(p + 1);
-    for (auto a : va[0]) va0[a] = 1;
-    usd.InsertAll();
-    usd.Remove(0);
-    for (unsigned i = 0; i < va[0].size(); ++i) {
-      auto a = va[0][i];
-      auto vl = usd.List();
-      for (auto u : vl) {
-        if (!binary_search(vd[u].begin(), vd[u].end(), a)) {
-          usd.Remove(u);
-          for (auto anew : va[u]) {
-            if (va0[anew] == 0) {
-              va0[anew] = 1;
-              va[0].push_back(anew);
-            }
+    // Check D
+    DirectedGraph g(n);
+    for (unsigned u = 0; u < n; ++u) {
+      for (unsigned v = 0; v < n; ++v) {
+        if (v == u) continue;
+        for (auto a : va[v]) {
+          if (!binary_search(vd[u].begin(), vd[u].end(), a)) {
+            g.AddEdge(u, v);
+            break;
           }
         }
       }
     }
-    if (!usd.Empty()) possible = false;
+    auto scc = StronglyConnectedComponents(g);
+    auto ecc = ExpandComponents(scc);
+    for (unsigned c = 0; c < ecc.size(); ++c) {
+      if (scc[0] == c) continue;
+      bool leaf = true;
+      for (auto u : ecc[c]) {
+        for (auto v : g.Edges(u)) {
+          if (scc[v] != c) {
+            leaf = false;
+            break;
+          }
+        }
+        if (!leaf) break;
+      }
+      if (leaf) {
+        auto vcd = vd[ecc[c][0]];
+        for (unsigned i = 1; i < ecc[c].size(); ++i)
+          vcd = nvector::IntersectionV(vcd, vd[ecc[c][i]]);
+        bool block = true;
+        for (auto u : ecc[c]) {
+          bool f = false;
+          for (auto a : va[u]) {
+            if (binary_search(vcd.begin(), vcd.end(), a)) {
+              f = true;
+              break;
+            }
+          }
+          if (!f) {
+            block = false;
+            break;
+          }
+        }
+        if (block) {
+          possible = false;
+          break;
+        }
+      }
+    }
     cout << "Case #" << it << ": " << (possible ? "YES" : "NO") << endl;
   }
   return 0;
