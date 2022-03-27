@@ -153,6 +153,11 @@ class SplayTree
     output_r = (p ? SplitR(p) : root);
   }
 
+  static size_t Order(TNode* node) {
+    Splay(node);
+    return node->l ? 1 + node->l->info.size : 0;
+  }
+
   static TNode* FindByOrder(TNode*& root, size_t order_index) {
     static_assert(TInfo::has_size, "info should contain size");
     auto node = TTree::FindByOrder(root, order_index);
