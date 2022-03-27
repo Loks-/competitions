@@ -1,5 +1,7 @@
 #pragma once
 
+#include "common/data_structures/fixed_universe_successor/empty.h"
+
 #include <algorithm>
 #include <vector>
 
@@ -17,28 +19,27 @@ class VectorPrecomputed {
  protected:
   std::vector<size_t> vnext, vprev;
   size_t size;
-  const size_t missed = -size_t(1);
 
  public:
   void Clear() {
-    std::fill(vnext.begin(), vnext.end(), missed);
-    std::fill(vprev.begin(), vprev.end(), missed);
+    std::fill(vnext.begin(), vnext.end(), Empty);
+    std::fill(vprev.begin(), vprev.end(), Empty);
     size = 0;
   }
 
   void Init(size_t u) {
     vnext.clear();
-    vnext.resize(u, missed);
+    vnext.resize(u, Empty);
     vprev.clear();
-    vprev.resize(u, missed);
+    vprev.resize(u, Empty);
     size = 0;
   }
 
   void Insert(size_t x) {
     if (!Has(x)) {
       auto xp = Predecessor(x), xn = Successor(x);
-      for (auto y = ((xp == missed) ? 0 : xp); y < x; ++y) vnext[y] = x;
-      for (auto y = x + 1, z = ((xn == missed) ? vprev.size() : xn + 1); y < z;
+      for (auto y = ((xp == Empty) ? 0 : xp); y < x; ++y) vnext[y] = x;
+      for (auto y = x + 1, z = ((xn == Empty) ? vprev.size() : xn + 1); y < z;
            ++y)
         vprev[y] = x;
       ++size;
@@ -52,8 +53,8 @@ class VectorPrecomputed {
   void Delete(size_t x) {
     if (Has(x)) {
       auto xp = Predecessor(x), xn = Successor(x);
-      for (auto y = ((xp == missed) ? 0 : xp); y < x; ++y) vnext[y] = xn;
-      for (auto y = x + 1, z = ((xn == missed) ? vprev.size() : xn + 1); y < z;
+      for (auto y = ((xp == Empty) ? 0 : xp); y < x; ++y) vnext[y] = xn;
+      for (auto y = x + 1, z = ((xn == Empty) ? vprev.size() : xn + 1); y < z;
            ++y)
         vprev[y] = xp;
       --size;

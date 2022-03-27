@@ -1,5 +1,7 @@
 #pragma once
 
+#include "common/data_structures/fixed_universe_successor/empty.h"
+
 #include <algorithm>
 #include <vector>
 
@@ -17,7 +19,6 @@ class VectorSet {
  protected:
   std::vector<unsigned> vs;
   size_t size;
-  const size_t missed = -size_t(1);
 
  public:
   void Clear() {
@@ -54,14 +55,14 @@ class VectorSet {
     for (++x; x < vs.size(); ++x) {
       if (vs[x]) return x;
     }
-    return missed;
+    return Empty;
   }
 
   size_t Predecessor(size_t x) const {
     for (--x; x < vs.size(); --x) {
       if (vs[x]) return x;
     }
-    return missed;
+    return Empty;
   }
 };
 }  // namespace fus

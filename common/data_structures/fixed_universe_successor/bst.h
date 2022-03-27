@@ -3,6 +3,7 @@
 #include "common/binary_search_tree/base/find_by_key_greater.h"
 #include "common/binary_search_tree/base/find_by_key_less.h"
 #include "common/binary_search_tree/red_black_tree.h"
+#include "common/data_structures/fixed_universe_successor/empty.h"
 #include "common/nodes_manager.h"
 
 namespace ds {
@@ -23,7 +24,6 @@ class BST {
   TTree tree;
   TNode* root;
   size_t usize;
-  const size_t missed = -size_t(1);
 
  public:
   BST() : tree(0), root(nullptr), usize(0) {}
@@ -56,12 +56,12 @@ class BST {
 
   size_t Successor(size_t x) const {
     auto node = bst::base::FindByKeyGreater(root, x + 1);
-    return node ? node->key : missed;
+    return node ? node->key : Empty;
   }
 
   size_t Predecessor(size_t x) const {
     auto node = bst::base::FindByKeyLess(root, x - 1);
-    return node ? node->key : missed;
+    return node ? node->key : Empty;
   }
 };
 }  // namespace fus
