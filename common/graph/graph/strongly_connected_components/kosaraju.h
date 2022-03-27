@@ -36,6 +36,5 @@ inline std::vector<unsigned> Kosaraju(const DirectedGraph& graph) {
   }
   return components;
 }
-
 }  // namespace scc
 }  // namespace graph

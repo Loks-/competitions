@@ -46,6 +46,5 @@ inline std::vector<unsigned> Tarjan(const DirectedGraph& graph) {
   }
   return components;
 }
-
 }  // namespace scc
 }  // namespace graph
