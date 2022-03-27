@@ -1,6 +1,8 @@
 #include "tester/tester_fixed_universe_successor.h"
 
 #include "common/data_structures/fixed_universe_successor/bst.h"
+#include "common/data_structures/fixed_universe_successor/sqrt_decomposition.h"
+#include "common/data_structures/fixed_universe_successor/vector_multiset.h"
 #include "common/data_structures/fixed_universe_successor/vector_precomputed.h"
 #include "common/data_structures/fixed_universe_successor/vector_set.h"
 #include "common/hash.h"
@@ -44,7 +46,9 @@ size_t TesterFixedUniverseSuccessor::TestBase(const std::string& name) const {
 bool TesterFixedUniverseSuccessor::TestAll() const {
   std::unordered_set<size_t> hs;
   hs.insert(TestBase<ds::fus::VectorSet>("VSet  "));
+  hs.insert(TestBase<ds::fus::VectorMultiset>("VMSet "));
   hs.insert(TestBase<ds::fus::VectorPrecomputed>("VPreC "));
+  hs.insert(TestBase<ds::fus::SqrtDecomposition>("SqrtD "));
   hs.insert(TestBase<ds::fus::BST>("BST   "));
   return hs.size() == 1;
 }

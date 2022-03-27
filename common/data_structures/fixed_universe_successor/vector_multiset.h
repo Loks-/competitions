@@ -15,7 +15,7 @@ namespace fus {
 // Size        -- O(1)
 // Successor   -- O(U)
 // Predecessor -- O(U)
-class VectorSet {
+class VectorMultiset {
  protected:
   std::vector<unsigned> vs;
   size_t size;
@@ -33,17 +33,15 @@ class VectorSet {
   }
 
   void Insert(size_t x) {
-    if (vs[x] == 0) {
-      vs[x] = 1;
-      ++size;
-    }
+    ++vs[x];
+    ++size;
   }
 
   bool Has(size_t x) const { return vs[x]; }
 
   void Delete(size_t x) {
-    if (vs[x] == 1) {
-      vs[x] = 0;
+    if (vs[x]) {
+      --vs[x];
       --size;
     }
   }
@@ -64,15 +62,6 @@ class VectorSet {
     }
     return Empty;
   }
-
-  size_t First() const {
-    for (size_t x = 0; x < vs.size(); ++x) {
-      if (vs[x]) return x;
-    }
-    return Empty;
-  }
-
-  size_t Last() const { return Predecessor(vs.size()); }
 };
 }  // namespace fus
 }  // namespace ds
