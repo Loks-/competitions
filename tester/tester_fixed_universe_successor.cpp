@@ -32,7 +32,7 @@ size_t TesterFixedUniverseSuccessor::TestBase(const std::string& name) const {
     //           << std::endl;
     h = HashCombine(h, fus.Successor(x));
     h = HashCombine(h, fus.Predecessor(x));
-    if (fus.Has(x)) {
+    if (fus.HasKey(x)) {
       fus.Delete(x);
     } else {
       fus.Insert(x);

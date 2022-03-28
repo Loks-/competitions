@@ -10,7 +10,7 @@ namespace fus {
 // Memory      -- O(U)
 // Init        -- O(U)
 // Insert      -- O(U)
-// Has         -- O(1)
+// HasKey      -- O(1)
 // Delete      -- O(U)
 // Size        -- O(1)
 // Successor   -- O(1)
@@ -36,7 +36,7 @@ class VectorPrecomputed {
   }
 
   void Insert(size_t x) {
-    if (!Has(x)) {
+    if (!HasKey(x)) {
       auto xp = Predecessor(x), xn = Successor(x);
       for (auto y = ((xp == Empty) ? 0 : xp); y < x; ++y) vnext[y] = x;
       for (auto y = x + 1, z = ((xn == Empty) ? vprev.size() : xn + 1); y < z;
@@ -46,12 +46,12 @@ class VectorPrecomputed {
     }
   }
 
-  bool Has(size_t x) const {
+  bool HasKey(size_t x) const {
     return (x ? (vnext[x - 1] == x) : (vprev[1] == 0));
   }
 
   void Delete(size_t x) {
-    if (Has(x)) {
+    if (HasKey(x)) {
       auto xp = Predecessor(x), xn = Successor(x);
       for (auto y = ((xp == Empty) ? 0 : xp); y < x; ++y) vnext[y] = xn;
       for (auto y = x + 1, z = ((xn == Empty) ? vprev.size() : xn + 1); y < z;

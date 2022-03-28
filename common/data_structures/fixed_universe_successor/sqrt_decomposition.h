@@ -13,7 +13,7 @@ namespace fus {
 // Memory      -- O(U)
 // Init        -- O(U)
 // Insert      -- O(1)
-// Has         -- O(1)
+// HasKey      -- O(1)
 // Delete      -- O(1)
 // Size        -- O(1)
 // Successor   -- O(sqrt U)
@@ -45,19 +45,19 @@ class SqrtDecomposition {
 
   void Insert(size_t x) {
     auto xh = x / usize_sqrt, xl = x % usize_sqrt;
-    if (!Has(xh, xl)) {
+    if (!HasKey(xh, xl)) {
       vhigh.Insert(xh);
       vlow[xh].Insert(xl);
     }
   }
 
-  bool Has(size_t xh, size_t xl) const { return vlow[xh].Has(xl); }
+  bool HasKey(size_t xh, size_t xl) const { return vlow[xh].HasKey(xl); }
 
-  bool Has(size_t x) const { return Has(x / usize_sqrt, x % usize_sqrt); }
+  bool HasKey(size_t x) const { return HasKey(x / usize_sqrt, x % usize_sqrt); }
 
   void Delete(size_t x) {
     auto xh = x / usize_sqrt, xl = x % usize_sqrt;
-    if (Has(xh, xl)) {
+    if (HasKey(xh, xl)) {
       vhigh.Delete(xh);
       vlow[xh].Delete(xl);
     }

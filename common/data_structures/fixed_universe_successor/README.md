@@ -2,7 +2,7 @@
 * Set with supported operations:
     * Init(U)
     * Insert(x), x \in U
-    * Has(x), x \in U
+    * HasKey(x), x \in U
     * Delete(x), x \in S
     * Size()
     * Successor(x), x \in U : find smallest y \in S, that y > x

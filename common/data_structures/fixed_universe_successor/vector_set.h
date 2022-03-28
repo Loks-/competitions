@@ -10,7 +10,7 @@ namespace fus {
 // Memory      -- O(U)
 // Init        -- O(U)
 // Insert      -- O(1)
-// Has         -- O(1)
+// HasKey      -- O(1)
 // Delete      -- O(1)
 // Size        -- O(1)
 // Successor   -- O(U)
@@ -39,7 +39,7 @@ class VectorSet {
     }
   }
 
-  bool Has(size_t x) const { return vs[x]; }
+  bool HasKey(size_t x) const { return vs[x]; }
 
   void Delete(size_t x) {
     if (vs[x] == 1) {

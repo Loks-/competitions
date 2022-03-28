@@ -11,7 +11,7 @@ namespace fus {
 // Memory      -- O(S)
 // Init        -- O(1)
 // Insert      -- O(log S)
-// Has         -- O(log S)
+// HasKey      -- O(log S)
 // Delete      -- O(log S)
 // Size        -- O(1)
 // Successor   -- O(log S)
@@ -40,11 +40,11 @@ class BST {
   }
 
   void Insert(size_t x) {
-    if (Has(x)) return;
+    if (HasKey(x)) return;
     root = tree.InsertNewNode(root, TEmpty(), x);
   }
 
-  bool Has(size_t x) const { return tree.FindByKey(root, x); }
+  bool HasKey(size_t x) const { return tree.FindByKey(root, x); }
 
   void Delete(size_t x) {
     auto node = tree.FindByKey(root, x);
