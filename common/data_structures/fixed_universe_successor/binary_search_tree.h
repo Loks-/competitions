@@ -16,7 +16,7 @@ namespace fus {
 // Size        -- O(1)
 // Successor   -- O(log S)
 // Predecessor -- O(log S)
-class BST {
+class BinarySearchTree {
  protected:
   using TTree = bst::RedBlackTree<TEmpty, bst::info::None, bst::action::None,
                                   size_t, NodesManager>;
@@ -26,8 +26,8 @@ class BST {
   size_t usize;
 
  public:
-  BST() : tree(0), root(nullptr), usize(0) {}
-  BST(size_t u) : tree(u), root(nullptr), usize(u) {}
+  BinarySearchTree() : tree(0), root(nullptr), usize(0) {}
+  BinarySearchTree(size_t u) : tree(u), root(nullptr), usize(u) {}
 
   void Clear() {
     tree.ReleaseTree(root);
