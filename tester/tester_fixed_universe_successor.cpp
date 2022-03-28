@@ -1,6 +1,7 @@
 #include "tester/tester_fixed_universe_successor.h"
 
 #include "common/data_structures/fixed_universe_successor/binary_search_tree.h"
+#include "common/data_structures/fixed_universe_successor/implicit_binary_tree.h"
 #include "common/data_structures/fixed_universe_successor/sqrt_decomposition.h"
 #include "common/data_structures/fixed_universe_successor/two_layers_u64.h"
 #include "common/data_structures/fixed_universe_successor/vector_multiset.h"
@@ -52,6 +53,7 @@ bool TesterFixedUniverseSuccessor::TestAll() const {
   hs.insert(TestBase<ds::fus::TwoLayersU64>("L2U64 "));
   hs.insert(TestBase<ds::fus::SqrtDecomposition>("SqrtD "));
   hs.insert(TestBase<ds::fus::BinarySearchTree>("BST   "));
+  hs.insert(TestBase<ds::fus::ImplicitBinaryTree>("IBT   "));
   return hs.size() == 1;
 }
 
