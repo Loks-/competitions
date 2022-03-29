@@ -5,6 +5,7 @@
 #include "common/data_structures/fixed_universe_successor/sqrt_decomposition.h"
 #include "common/data_structures/fixed_universe_successor/two_layers_u64.h"
 #include "common/data_structures/fixed_universe_successor/van_emde_boas_tree_full.h"
+#include "common/data_structures/fixed_universe_successor/van_emde_boas_tree_full_static_size.h"
 #include "common/data_structures/fixed_universe_successor/van_emde_boas_tree_hash_table_temp.h"
 #include "common/data_structures/fixed_universe_successor/vector_multiset.h"
 #include "common/data_structures/fixed_universe_successor/vector_precomputed.h"
@@ -61,7 +62,14 @@ bool TesterFixedUniverseSuccessor::TestAll() const {
   hs.insert(TestBase<ds::fus::SqrtDecomposition>("SqrtD "));
   hs.insert(TestBase<ds::fus::BinarySearchTree>("BST   "));
   hs.insert(TestBase<ds::fus::ImplicitBinaryTree>("IBT   "));
-  hs.insert(TestBase<ds::fus::VanEmdeBoasTreeFull>("VEBTF "));
+  if (usize < (1ull << 27)) {
+    hs.insert(TestBase<ds::fus::VanEmdeBoasTreeFull>("VEBTF "));
+  }
+  if (small_test) {
+    hs.insert(TestBase<ds::fus::VanEmdeBoasTreeFullStaticSize<20>>("VEBTFS"));
+  } else if (usize < (1ull << 27)) {
+    hs.insert(TestBase<ds::fus::VanEmdeBoasTreeFullStaticSize<27>>("VEBTFS"));
+  }
   hs.insert(TestBase<ds::fus::VanEmdeBoasTreeHashTableTemp>("VEBTHT"));
   return hs.size() == 1;
 }
