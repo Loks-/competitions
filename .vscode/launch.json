@@ -10,18 +10,18 @@
             "request": "launch",
             // "program": "${workspaceFolder}/debug/build/google_code_jam",
             // "program": "${workspaceFolder}/debug/build/hackerrank",
-            "program": "${workspaceFolder}/debug/build/project_euler",
-            // "program": "${workspaceFolder}/debug/build/tester",
+            //"program": "${workspaceFolder}/debug/build/project_euler",
+            "program": "${workspaceFolder}/debug/build/tester",
             "args": [
                 // "binary_search_tree"
-                // "minimum_spanning_tree"
+                "fixed_universe_successor"
                 // "palindromic_subsets__treap",
                 // "p1"
                 // "tests/google/code_jam/2019/r2/p3.in"
                 // "tests/hackerrank/practice/data_structures/advanced/palindromic_subsets.1.in"
                 // "-threads",
                 // "1"
-                "695"
+                // "695"
             ],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}/debug/",

@@ -16,12 +16,14 @@ class U64Set {
   uint64_t mask;
 
  public:
+  U64Set() { Clear(); }
   void Clear() { mask = 0; }
   void Init(size_t) { mask = 0; }
   void Insert(size_t x) { mask |= (1ull << x); }
   bool HasKey(size_t x) const { return (mask >> x) & 1ull; }
   void Delete(size_t x) { mask &= ~(1ull << x); }
 
+  size_t IsEmpty() const { return (mask == 0ull); }
   size_t Size() const { return numeric::BitsCount(mask); }
   size_t USize() const { return 64; }
 

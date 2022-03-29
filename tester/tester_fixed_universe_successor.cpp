@@ -4,6 +4,7 @@
 #include "common/data_structures/fixed_universe_successor/implicit_binary_tree.h"
 #include "common/data_structures/fixed_universe_successor/sqrt_decomposition.h"
 #include "common/data_structures/fixed_universe_successor/two_layers_u64.h"
+#include "common/data_structures/fixed_universe_successor/van_emde_boas_tree_full.h"
 #include "common/data_structures/fixed_universe_successor/van_emde_boas_tree_hash_table_temp.h"
 #include "common/data_structures/fixed_universe_successor/vector_multiset.h"
 #include "common/data_structures/fixed_universe_successor/vector_precomputed.h"
@@ -49,20 +50,24 @@ size_t TesterFixedUniverseSuccessor::TestBase(const std::string& name) const {
 }
 
 bool TesterFixedUniverseSuccessor::TestAll() const {
+  bool small_test = (vdata.size() < 10000) && (usize <= 1000000);
   std::unordered_set<size_t> hs;
-  hs.insert(TestBase<ds::fus::VectorSet>("VSet  "));
-  hs.insert(TestBase<ds::fus::VectorMultiset>("VMSet "));
-  hs.insert(TestBase<ds::fus::VectorPrecomputed>("VPreC "));
+  if (small_test) {
+    hs.insert(TestBase<ds::fus::VectorSet>("VSet  "));
+    hs.insert(TestBase<ds::fus::VectorMultiset>("VMSet "));
+    hs.insert(TestBase<ds::fus::VectorPrecomputed>("VPreC "));
+  }
   hs.insert(TestBase<ds::fus::TwoLayersU64>("L2U64 "));
   hs.insert(TestBase<ds::fus::SqrtDecomposition>("SqrtD "));
   hs.insert(TestBase<ds::fus::BinarySearchTree>("BST   "));
   hs.insert(TestBase<ds::fus::ImplicitBinaryTree>("IBT   "));
+  hs.insert(TestBase<ds::fus::VanEmdeBoasTreeFull>("VEBTF "));
   hs.insert(TestBase<ds::fus::VanEmdeBoasTreeHashTableTemp>("VEBTHT"));
   return hs.size() == 1;
 }
 
 bool TestFixedUniverseSuccessor(bool time_test) {
   TesterFixedUniverseSuccessor tfus(time_test ? 100000000 : 10000,
-                                    time_test ? 100000 : 1000);
+                                    time_test ? 1000000 : 1000);
   return tfus.TestAll();
 }
