@@ -16,6 +16,8 @@ namespace fus {
 // HasKey      -- O(1)
 // Delete      -- O(1)
 // Size        -- O(1)
+// Min         -- O(sqrt U)
+// Max         -- O(sqrt U)
 // Successor   -- O(sqrt U)
 // Predecessor -- O(sqrt U)
 class SqrtDecomposition {
@@ -66,12 +68,22 @@ class SqrtDecomposition {
   size_t Size() const { return vhigh.Size(); }
   size_t USize() const { return usize; }
 
+  size_t Min() const {
+    auto xh = vhigh.Min();
+    return (xh == Empty) ? Empty : xh * usize_sqrt + vlow[xh].Min();
+  }
+
+  size_t Max() const {
+    auto xh = vhigh.Max();
+    return (xh == Empty) ? Empty : xh * usize_sqrt + vlow[xh].Max();
+  }
+
   size_t Successor(size_t x) const {
     auto xh = x / usize_sqrt, xl = x % usize_sqrt;
     auto rl = vlow[xh].Successor(xl);
     if (rl != Empty) return xh * usize_sqrt + rl;
     xh = vhigh.Successor(xh);
-    return (xh == Empty) ? Empty : xh * usize_sqrt + vlow[xh].First();
+    return (xh == Empty) ? Empty : xh * usize_sqrt + vlow[xh].Min();
   }
 
   size_t Predecessor(size_t x) const {
@@ -79,7 +91,7 @@ class SqrtDecomposition {
     auto rl = vlow[xh].Predecessor(xl);
     if (rl != Empty) return xh * usize_sqrt + rl;
     xh = vhigh.Predecessor(xh);
-    return (xh == Empty) ? Empty : xh * usize_sqrt + vlow[xh].Last();
+    return (xh == Empty) ? Empty : xh * usize_sqrt + vlow[xh].Max();
   }
 };
 }  // namespace fus

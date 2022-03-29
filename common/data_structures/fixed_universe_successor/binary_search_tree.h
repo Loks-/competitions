@@ -2,6 +2,8 @@
 
 #include "common/binary_search_tree/base/find_by_key_greater.h"
 #include "common/binary_search_tree/base/find_by_key_less.h"
+#include "common/binary_search_tree/base/left.h"
+#include "common/binary_search_tree/base/right.h"
 #include "common/binary_search_tree/red_black_tree.h"
 #include "common/data_structures/fixed_universe_successor/empty.h"
 #include "common/nodes_manager.h"
@@ -14,6 +16,8 @@ namespace fus {
 // HasKey      -- O(log S)
 // Delete      -- O(log S)
 // Size        -- O(1)
+// Min         -- O(log S)
+// Max         -- O(log S)
 // Successor   -- O(log S)
 // Predecessor -- O(log S)
 class BinarySearchTree {
@@ -53,6 +57,9 @@ class BinarySearchTree {
 
   size_t Size() const { return tree.Used(); }
   size_t USize() const { return usize; }
+
+  size_t Min() const { return root ? bst::base::Left(root)->key : Empty; }
+  size_t Max() const { return root ? bst::base::Right(root)->key : Empty; }
 
   size_t Successor(size_t x) const {
     auto node = bst::base::FindByKeyGreater(root, x + 1);

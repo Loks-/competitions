@@ -16,6 +16,8 @@ namespace fus {
 // HasKey      -- O(1)
 // Delete      -- O(1)
 // Size        -- O(1)
+// Min         -- O(U)
+// Max         -- O(U)
 // Successor   -- O(U)
 // Predecessor -- O(U)
 class TwoLayersU64 {
@@ -65,12 +67,22 @@ class TwoLayersU64 {
   size_t Size() const { return vhigh.Size(); }
   size_t USize() const { return usize; }
 
+  size_t Min() const {
+    auto xh = vhigh.Min();
+    return (xh == Empty) ? Empty : (xh << 6) + vlow[xh].Min();
+  }
+
+  size_t Max() const {
+    auto xh = vhigh.Max();
+    return (xh == Empty) ? Empty : (xh << 6) + vlow[xh].Max();
+  }
+
   size_t Successor(size_t x) const {
     auto xh = x >> 6, xl = x & 63;
     auto rl = vlow[xh].Successor(xl);
     if (rl != Empty) return (xh << 6) + rl;
     xh = vhigh.Successor(xh);
-    return (xh == Empty) ? Empty : (xh << 6) + vlow[xh].First();
+    return (xh == Empty) ? Empty : (xh << 6) + vlow[xh].Min();
   }
 
   size_t Predecessor(size_t x) const {
@@ -78,7 +90,7 @@ class TwoLayersU64 {
     auto rl = vlow[xh].Predecessor(xl);
     if (rl != Empty) return (xh << 6) + rl;
     xh = vhigh.Predecessor(xh);
-    return (xh == Empty) ? Empty : (xh << 6) + vlow[xh].Last();
+    return (xh == Empty) ? Empty : (xh << 6) + vlow[xh].Max();
   }
 };
 }  // namespace fus

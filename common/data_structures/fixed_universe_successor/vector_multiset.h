@@ -13,6 +13,8 @@ namespace fus {
 // HasKey      -- O(1)
 // Delete      -- O(1)
 // Size        -- O(1)
+// Min         -- O(U)
+// Max         -- O(U)
 // Successor   -- O(U)
 // Predecessor -- O(U)
 class VectorMultiset {
@@ -48,6 +50,15 @@ class VectorMultiset {
 
   size_t Size() const { return size; }
   size_t USize() const { return vs.size(); }
+
+  size_t Min() const {
+    for (size_t x = 0; x < vs.size(); ++x) {
+      if (vs[x]) return x;
+    }
+    return Empty;
+  }
+
+  size_t Max() const { return Predecessor(vs.size()); }
 
   size_t Successor(size_t x) const {
     for (++x; x < vs.size(); ++x) {

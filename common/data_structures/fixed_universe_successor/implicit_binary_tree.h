@@ -15,6 +15,8 @@ namespace fus {
 // HasKey      -- O(1)
 // Delete      -- O(log U)
 // Size        -- O(1)
+// Min         -- O(log U)
+// Max         -- O(log U)
 // Successor   -- O(log U)
 // Predecessor -- O(log U)
 class ImplicitBinaryTree {
@@ -52,7 +54,7 @@ class ImplicitBinaryTree {
   size_t USize() const { return usize; }
 
  protected:
-  size_t FirstI(size_t x) const {
+  size_t MinI(size_t x) const {
     for (; x < usize_adj;) {
       x *= 2;
       if (!vs[x]) ++x;
@@ -60,7 +62,7 @@ class ImplicitBinaryTree {
     return x - usize_adj;
   }
 
-  size_t LastI(size_t x) const {
+  size_t MaxI(size_t x) const {
     for (; x < usize_adj;) {
       x = 2 * x + 1;
       if (!vs[x]) --x;
@@ -69,10 +71,13 @@ class ImplicitBinaryTree {
   }
 
  public:
+  size_t Min() const { return Size() ? MinI(1) : Empty; }
+  size_t Max() const { return Size() ? MaxI(1) : Empty; }
+
   size_t Successor(size_t x) const {
     x += usize_adj + 1;
     for (; x & (x - 1);) {
-      if (vs[x]) return FirstI(x);
+      if (vs[x]) return MinI(x);
       x = x / 2 + (x & 1);
     }
     return Empty;
@@ -81,15 +86,11 @@ class ImplicitBinaryTree {
   size_t Predecessor(size_t x) const {
     x += usize_adj - 1;
     for (; x & (x + 1);) {
-      if (vs[x]) return LastI(x);
+      if (vs[x]) return MaxI(x);
       x = x / 2 + (x & 1) - 1;
     }
     return Empty;
   }
-
-  size_t First() const { return Size() ? FirstI(1) : Empty; }
-
-  size_t Last() const { return Size() ? LastI(1) : Empty; }
 };
 }  // namespace fus
 }  // namespace ds

@@ -1,6 +1,6 @@
 #include "tester/tester_heap_ext.h"
 
-#include "common/data_structures/van_emde_boas_tree_hash_table.h"
+// #include "common/data_structures/van_emde_boas_tree_hash_table.h"
 #include "common/hash.h"
 #include "common/heap/base/binary.h"
 #include "common/heap/base/binomial.h"
