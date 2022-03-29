@@ -32,6 +32,8 @@ size_t TesterFixedUniverseSuccessor::TestBase(const std::string& name) const {
   for (size_t x : vdata) {
     // std::cout << x << " " << fus.Successor(x) << " " << fus.Predecessor(x)
     //           << std::endl;
+    h = HashCombine(h, fus.Min());
+    h = HashCombine(h, fus.Max());
     h = HashCombine(h, fus.Successor(x));
     h = HashCombine(h, fus.Predecessor(x));
     if (fus.HasKey(x)) {
