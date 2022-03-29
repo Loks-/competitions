@@ -8,16 +8,17 @@
 #include <unordered_map>
 
 namespace ds {
+namespace fus {
 // Van Emde Boas tree with hash table for children
 // N - number of elements, M - max value in set, m = log(M)
 // Space - O(N log M)
 // Insert / Remove - O(log log M)
 // Next / Prev - O(log log M)
 // Min / Max - O(1)
-class VanEmdeBoasTreeHashTable {
+class VanEmdeBoasTreeHashTableTemp {
  public:
   using TValue = uint64_t;
-  using TSelf = VanEmdeBoasTreeHashTable;
+  using TSelf = VanEmdeBoasTreeHashTableTemp;
   using PSelf = std::shared_ptr<TSelf>;
 
  protected:
@@ -35,7 +36,7 @@ class VanEmdeBoasTreeHashTable {
   static PSelf Make(unsigned _m) { return std::make_shared<TSelf>(_m); }
 
  public:
-  VanEmdeBoasTreeHashTable(unsigned _m) {
+  VanEmdeBoasTreeHashTableTemp(unsigned _m) {
     m = _m;
     mh = m / 2;
     mask_low = (1ull << mh) - 1;
@@ -146,4 +147,5 @@ class VanEmdeBoasTreeHashTable {
     }
   }
 };
+}  // namespace fus
 }  // namespace ds
