@@ -4,6 +4,7 @@
 #include "common/data_structures/fixed_universe_successor/implicit_binary_tree.h"
 #include "common/data_structures/fixed_universe_successor/sqrt_decomposition.h"
 #include "common/data_structures/fixed_universe_successor/two_layers_u64.h"
+#include "common/data_structures/fixed_universe_successor/van_emde_boas_tree_hash_table_temp.h"
 #include "common/data_structures/fixed_universe_successor/vector_multiset.h"
 #include "common/data_structures/fixed_universe_successor/vector_precomputed.h"
 #include "common/data_structures/fixed_universe_successor/vector_set.h"
@@ -56,6 +57,7 @@ bool TesterFixedUniverseSuccessor::TestAll() const {
   hs.insert(TestBase<ds::fus::SqrtDecomposition>("SqrtD "));
   hs.insert(TestBase<ds::fus::BinarySearchTree>("BST   "));
   hs.insert(TestBase<ds::fus::ImplicitBinaryTree>("IBT   "));
+  hs.insert(TestBase<ds::fus::VanEmdeBoasTreeHashTableTemp>("VEBTHT"));
   return hs.size() == 1;
 }
 

@@ -1,7 +1,9 @@
 #pragma once
 
 #include "common/base.h"
+#include "common/data_structures/fixed_universe_successor/empty.h"
 #include "common/numeric/bits/first_bit.h"
+#include "common/numeric/bits/ulog2.h"
 
 #include <algorithm>
 #include <memory>
@@ -23,12 +25,12 @@ class VanEmdeBoasTreeHashTableTemp {
 
  protected:
   unsigned m, mh;
-  uint64_t mask_low;
+  size_t mask_low;
   uint64_t aux_mask;
   PSelf aux_tree;
-  uint64_t size;
-  uint64_t min_value, max_value;
-  std::unordered_map<uint64_t, PSelf> children;
+  size_t size;
+  size_t min_value, max_value;
+  std::unordered_map<size_t, PSelf> children;
 
  protected:
   bool Flat() const { return m <= 6; }
@@ -36,32 +38,38 @@ class VanEmdeBoasTreeHashTableTemp {
   static PSelf Make(unsigned _m) { return std::make_shared<TSelf>(_m); }
 
  public:
-  VanEmdeBoasTreeHashTableTemp(unsigned _m) {
+  VanEmdeBoasTreeHashTableTemp() {}
+  VanEmdeBoasTreeHashTableTemp(unsigned _m) { InitL(_m); }
+
+  void InitL(unsigned _m) {
     m = _m;
     mh = m / 2;
     mask_low = (1ull << mh) - 1;
     aux_mask = 0;
     if (!Flat()) aux_tree = Make(m - mh);
     size = 0;
+    min_value = max_value = Empty;
   }
 
-  bool Empty() const { return size == 0; }
-  unsigned Size() const { return size; }
-  uint64_t MinValue() const { return min_value; }
-  uint64_t MaxValue() const { return max_value; }
+  void Init(size_t u) { InitL(u ? numeric::ULog2(u - 1) + 1 : 1); }
 
-  bool HasKey(uint64_t x) const {
+  size_t Size() const { return size; }
+
+  size_t Min() const { return min_value; }
+  size_t Max() const { return max_value; }
+
+  bool HasKey(size_t x) const {
     if (Flat()) {
       return aux_mask & (1ull << x);
     } else {
-      uint64_t x1 = (x >> mh), x2 = (x & mask_low);
+      size_t x1 = (x >> mh), x2 = (x & mask_low);
       auto it = children.find(x1);
       return (it != children.end()) ? it->second->HasKey(x2) : false;
     }
   }
 
-  void Insert(uint64_t x) {
-    if (Empty()) {
+  void Insert(size_t x) {
+    if (!Size()) {
       min_value = max_value = x;
     } else {
       min_value = std::min(min_value, x);
@@ -83,7 +91,7 @@ class VanEmdeBoasTreeHashTableTemp {
     assert(Flat() || (children.size() == aux_tree->Size()));
   }
 
-  void Remove(uint64_t x) {
+  void Delete(size_t x) {
     if (Flat()) {
       aux_mask &= ~(1ull << x);
     } else {
@@ -92,58 +100,58 @@ class VanEmdeBoasTreeHashTableTemp {
       assert(it != children.end());
       if (it->second->Size() == 1) {
         children.erase(it);
-        aux_tree->Remove(x1);
+        aux_tree->Delete(x1);
       } else {
-        it->second->Remove(x2);
+        it->second->Delete(x2);
       }
     }
     --size;
     assert(Flat() || (children.size() == aux_tree->Size()));
-    if (Empty()) return;
+    if (!Size()) return;
     if (x == min_value) {
       if (Flat()) {
         min_value = numeric::Lowest0Bits(aux_mask);
       } else {
-        uint64_t x1 = aux_tree->MinValue();
-        min_value = (x1 << mh) + children[x1]->MinValue();
+        size_t x1 = aux_tree->Min();
+        min_value = (x1 << mh) + children[x1]->Min();
       }
     }
     if (x == max_value) {
       if (Flat()) {
         max_value = 63 - numeric::Highest0Bits(aux_mask);
       } else {
-        uint64_t x1 = aux_tree->MaxValue();
-        max_value = (x1 << mh) + children[x1]->MaxValue();
+        size_t x1 = aux_tree->Max();
+        max_value = (x1 << mh) + children[x1]->Max();
       }
     }
   }
 
-  uint64_t Next(uint64_t x) {
-    if (x >= MaxValue()) return MaxValue();
+  size_t Successor(size_t x) {
+    if ((x >= max_value) || (max_value == Empty)) return Empty;
     if (Flat()) {
       return numeric::Lowest0Bits(aux_mask &
                                   ~uint64_t(((1ull << (x + 1)) - 1)));
     } else {
-      uint64_t x1 = (x >> mh), x2 = (x & mask_low);
+      size_t x1 = (x >> mh), x2 = (x & mask_low);
       auto it = children.find(x1);
-      if ((it != children.end()) && (it->second->MaxValue() > x2))
-        return (x1 << mh) + it->second->Next(x2);
-      x1 = aux_tree->Next(x1);
-      return (x1 << mh) + children[x1]->MinValue();
+      if ((it != children.end()) && (it->second->Max() > x2))
+        return (x1 << mh) + it->second->Successor(x2);
+      x1 = aux_tree->Successor(x1);
+      return (x1 << mh) + children[x1]->Min();
     }
   }
 
-  uint64_t Prev(uint64_t x) {
-    if (x <= MinValue()) return MinValue();
+  size_t Predecessor(size_t x) {
+    if (x <= min_value) return Empty;
     if (Flat()) {
       return 63 - numeric::Highest0Bits(aux_mask & uint64_t(((1ull << x) - 1)));
     } else {
-      uint64_t x1 = (x >> mh), x2 = (x & mask_low);
+      size_t x1 = (x >> mh), x2 = (x & mask_low);
       auto it = children.find(x1);
-      if ((it != children.end()) && (it->second->MinValue() < x2))
-        return (x1 << mh) + it->second->Prev(x2);
-      x1 = aux_tree->Prev(x1);
-      return (x1 << mh) + children[x1]->MaxValue();
+      if ((it != children.end()) && (it->second->Min() < x2))
+        return (x1 << mh) + it->second->Predecessor(x2);
+      x1 = aux_tree->Predecessor(x1);
+      return (x1 << mh) + children[x1]->Max();
     }
   }
 };
