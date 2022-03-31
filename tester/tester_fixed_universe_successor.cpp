@@ -4,6 +4,7 @@
 #include "common/data_structures/fixed_universe_successor/implicit_binary_tree.h"
 #include "common/data_structures/fixed_universe_successor/sqrt_decomposition.h"
 #include "common/data_structures/fixed_universe_successor/two_layers_u64.h"
+#include "common/data_structures/fixed_universe_successor/van_emde_boas_tree_compact.h"
 #include "common/data_structures/fixed_universe_successor/van_emde_boas_tree_full.h"
 #include "common/data_structures/fixed_universe_successor/van_emde_boas_tree_full_static_size.h"
 #include "common/data_structures/fixed_universe_successor/van_emde_boas_tree_hash_table_temp.h"
@@ -70,6 +71,7 @@ bool TesterFixedUniverseSuccessor::TestAll() const {
   } else if (usize < (1ull << 27)) {
     hs.insert(TestBase<ds::fus::VanEmdeBoasTreeFullStaticSize<27>>("VEBTFS"));
   }
+  hs.insert(TestBase<ds::fus::VanEmdeBoasTreeCompact>("VEBTC "));
   hs.insert(TestBase<ds::fus::VanEmdeBoasTreeHashTableTemp>("VEBTHT"));
   return hs.size() == 1;
 }
