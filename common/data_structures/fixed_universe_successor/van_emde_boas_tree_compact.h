@@ -96,7 +96,7 @@ class VanEmdeBoasTreeCompact {
           aux_tree = Make(m - mh, x1);
         children[x1] = Make(mh, x2);
       } else {
-        children[x1]->Insert(x2);
+        it->second->Insert(x2);
       }
     }
   }
