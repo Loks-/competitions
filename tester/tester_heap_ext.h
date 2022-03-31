@@ -47,8 +47,6 @@ class TesterHeapExt {
   template <class THeap, class TExtra>
   size_t TestKVME(const std::string& name, const TExtra& e) const;
 
-  void TestVEBT();
-
  public:
   bool TestAll();
 };

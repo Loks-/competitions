@@ -1,6 +1,5 @@
 #include "tester/tester_heap_ext.h"
 
-// #include "common/data_structures/van_emde_boas_tree_hash_table.h"
 #include "common/hash.h"
 #include "common/heap/base/binary.h"
 #include "common/heap/base/binomial.h"
@@ -195,12 +194,6 @@ size_t TesterHeapExt::TestKVME(const std::string& name, const TExtra& e) const {
   return h;
 }
 
-void TesterHeapExt::TestVEBT() {
-  // ds::VanEmdeBoasTreeHashTable vebt_ht(64);
-  // hs.insert(TestKVME<heap::ukvm::ProxySet<ds::VanEmdeBoasTreeHashTable>>(
-  //     "M VEBH", vebt_ht));
-}
-
 bool TesterHeapExt::TestAll() {
   bool small = (size * dpm < 10000000);
   if (small) {
@@ -233,7 +226,6 @@ bool TesterHeapExt::TestAll() {
   hs.insert(TestUKVMPairing<1, 0>());
   hs.insert(TestUKVMPairing<0, 1>());
   hs.insert(TestUKVMPairing<1, 1>());
-  if (small) TestVEBT();
   return CheckHash();
 }
 

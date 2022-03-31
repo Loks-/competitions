@@ -8,7 +8,6 @@
 #include "common/data_structures/fixed_universe_successor/van_emde_boas_tree_compact_static_size.h"
 #include "common/data_structures/fixed_universe_successor/van_emde_boas_tree_full.h"
 #include "common/data_structures/fixed_universe_successor/van_emde_boas_tree_full_static_size.h"
-#include "common/data_structures/fixed_universe_successor/van_emde_boas_tree_hash_table_temp.h"
 #include "common/data_structures/fixed_universe_successor/vector_multiset.h"
 #include "common/data_structures/fixed_universe_successor/vector_precomputed.h"
 #include "common/data_structures/fixed_universe_successor/vector_set.h"
@@ -80,7 +79,6 @@ bool TesterFixedUniverseSuccessor::TestAll() const {
     hs.insert(
         TestBase<ds::fus::VanEmdeBoasTreeCompactStaticSize<27>>("VEBTCS"));
   }
-  hs.insert(TestBase<ds::fus::VanEmdeBoasTreeHashTableTemp>("VEBTHT"));
   return hs.size() == 1;
 }
 
