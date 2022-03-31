@@ -31,7 +31,6 @@ class VanEmdeBoasTreeCompact {
   size_t mask_low;
 
   U64Set leaf;
-  uint64_t aux_mask;
   PSelf aux_tree;
   std::unordered_map<size_t, PSelf> children;
 
@@ -54,7 +53,6 @@ class VanEmdeBoasTreeCompact {
     if (!Flat()) {
       mh = m / 2;
       mask_low = (1ull << mh) - 1;
-      aux_mask = 0;
       aux_tree = 0;
       min_value = max_value = x;
     } else if (x != Empty) {

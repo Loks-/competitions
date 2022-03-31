@@ -31,7 +31,6 @@ class VanEmdeBoasTreeFull {
   size_t mask_low;
 
   U64Set leaf;
-  uint64_t aux_mask;
   PSelf aux_tree;
   std::vector<TSelf> children;
 
@@ -52,7 +51,6 @@ class VanEmdeBoasTreeFull {
     if (!Flat()) {
       mh = m / 2;
       mask_low = (1ull << mh) - 1;
-      aux_mask = 0;
       aux_tree = Make(m - mh);
       children.resize((1ull << (m - mh)));
       for (auto& c : children) c.InitL(mh);
