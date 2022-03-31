@@ -18,7 +18,6 @@ namespace fus {
 // Insert      -- O(log log U)
 // HasKey      -- O(log log U)
 // Delete      -- O(log log U)
-// Size        -- O(1)
 // Min         -- O(1)
 // Max         -- O(1)
 // Successor   -- O(log log U)
@@ -37,7 +36,7 @@ class VanEmdeBoasTreeFull {
   PSelf aux_tree;
   std::vector<TSelf> children;
 
-  size_t size, min_value, max_value;
+  size_t min_value, max_value;
 
  protected:
   bool Flat() const { return m <= 6; }
@@ -58,7 +57,6 @@ class VanEmdeBoasTreeFull {
       aux_tree = Make(m - mh);
       children.resize((1ull << (m - mh)));
       for (auto& c : children) c.InitL(mh);
-      size = 0;
       min_value = max_value = Empty;
     }
   }
@@ -66,22 +64,23 @@ class VanEmdeBoasTreeFull {
  public:
   void Init(size_t u) { InitL(u ? numeric::ULog2(u - 1) + 1 : 1); }
 
-  bool IsEmpty() const { return Flat() ? leaf.IsEmpty() : (size == 0); }
-  size_t Size() const { return Flat() ? leaf.Size() : size; }
+  bool IsEmpty() const {
+    return Flat() ? leaf.IsEmpty() : (min_value == Empty);
+  }
 
   size_t Min() const { return Flat() ? leaf.Min() : min_value; }
   size_t Max() const { return Flat() ? leaf.Max() : max_value; }
 
   bool HasKey(size_t x) const {
     if (Flat()) return leaf.HasKey(x);
-    if (size == 0) return false;
+    if (x < min_value) return false;
     if (x == min_value) return true;
     return children[x >> mh].HasKey(x & mask_low);
   }
 
   void Insert(size_t x) {
     if (Flat()) return leaf.Insert(x);
-    if (size == 0) {
+    if (min_value == Empty) {
       min_value = max_value = x;
     } else {
       if (x < min_value)
@@ -94,14 +93,12 @@ class VanEmdeBoasTreeFull {
       }
       children[x1].Insert(x2);
     }
-    ++size;
   }
 
   void Delete(size_t x) {
     if (Flat()) return leaf.Delete(x);
-    --size;
     if (x == min_value) {
-      if (size == 0) {
+      if (min_value == max_value) {
         min_value = max_value = Empty;
         return;
       }
@@ -113,7 +110,7 @@ class VanEmdeBoasTreeFull {
     children[x1].Delete(x2);
     if (children[x1].IsEmpty()) aux_tree->Delete(x1);
     if (x == max_value) {
-      if (size == 1) {
+      if (aux_tree->IsEmpty()) {
         max_value = min_value;
       } else {
         auto y1 = aux_tree->Max();

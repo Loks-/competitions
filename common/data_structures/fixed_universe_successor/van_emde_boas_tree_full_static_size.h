@@ -17,7 +17,6 @@ namespace fus {
 // Insert      -- O(log log U)
 // HasKey      -- O(log log U)
 // Delete      -- O(log log U)
-// Size        -- O(1)
 // Min         -- O(1)
 // Max         -- O(1)
 // Successor   -- O(log log U)
