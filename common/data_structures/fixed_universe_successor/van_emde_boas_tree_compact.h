@@ -13,7 +13,7 @@
 namespace ds {
 namespace fus {
 // Van Emde Boas tree (hash table for children). Use U64Set class on low level.
-// Memory      -- O(S log log U)
+// Memory      -- O(S)
 // Init        -- O(1)
 // Insert      -- O(log log U)
 // HasKey      -- O(log log U)
@@ -41,26 +41,30 @@ class VanEmdeBoasTreeCompact {
  protected:
   bool Flat() const { return m <= 6; }
 
-  static PSelf Make(unsigned _m) { return std::make_shared<TSelf>(_m); }
+  static PSelf Make(unsigned _m, size_t x) {
+    return std::make_shared<TSelf>(_m, x);
+  }
 
  public:
   VanEmdeBoasTreeCompact() {}
-  VanEmdeBoasTreeCompact(unsigned _m) { InitL(_m); }
+  VanEmdeBoasTreeCompact(unsigned _m, size_t x) { InitL(_m, x); }
 
  protected:
-  void InitL(unsigned _m) {
+  void InitL(unsigned _m, size_t x) {
     m = _m;
     if (!Flat()) {
       mh = m / 2;
       mask_low = (1ull << mh) - 1;
       aux_mask = 0;
-      aux_tree = Make(m - mh);
-      min_value = max_value = Empty;
+      aux_tree = 0;
+      min_value = max_value = x;
+    } else if (x != Empty) {
+      leaf.Insert(x);
     }
   }
 
  public:
-  void Init(size_t u) { InitL(u ? numeric::ULog2(u - 1) + 1 : 1); }
+  void Init(size_t u) { InitL(u ? numeric::ULog2(u - 1) + 1 : 1, Empty); }
 
   bool IsEmpty() const {
     return Flat() ? leaf.IsEmpty() : (min_value == Empty);
@@ -89,10 +93,14 @@ class VanEmdeBoasTreeCompact {
       size_t x1 = (x >> mh), x2 = (x & mask_low);
       auto it = children.find(x1);
       if (it == children.end()) {
-        aux_tree->Insert(x1);
-        children[x1] = Make(mh);
+        if (aux_tree)
+          aux_tree->Insert(x1);
+        else
+          aux_tree = Make(m - mh, x1);
+        children[x1] = Make(mh, x2);
+      } else {
+        children[x1]->Insert(x2);
       }
-      children[x1]->Insert(x2);
     }
   }
 
@@ -103,6 +111,7 @@ class VanEmdeBoasTreeCompact {
         min_value = max_value = Empty;
         return;
       }
+      assert(aux_tree);
       auto x1 = aux_tree->Min();
       x = (x1 << mh) + children[x1]->Min();
       min_value = x;
@@ -112,11 +121,15 @@ class VanEmdeBoasTreeCompact {
     if (it1 == children.end()) return;  // No element to remove
     it1->second->Delete(x2);
     if (it1->second->IsEmpty()) {
+      assert(aux_tree);
       aux_tree->Delete(x1);
+      if (aux_tree->IsEmpty()) {
+        aux_tree = nullptr;
+      }
       children.erase(x1);
     }
     if (x == max_value) {
-      if (aux_tree->IsEmpty()) {
+      if (!aux_tree || aux_tree->IsEmpty()) {
         max_value = min_value;
       } else {
         auto y1 = aux_tree->Max();
@@ -133,6 +146,7 @@ class VanEmdeBoasTreeCompact {
     auto it1 = children.find(x1);
     if ((it1 != children.end()) && (x2 < it1->second->Max()))
       return (x1 << mh) + it1->second->Successor(x2);
+    assert(aux_tree);
     x1 = aux_tree->Successor(x1);
     return (x1 << mh) + children[x1]->Min();
   }
@@ -145,6 +159,7 @@ class VanEmdeBoasTreeCompact {
     auto it1 = children.find(x1);
     if ((it1 != children.end()) && (x2 > it1->second->Min()))
       return (x1 << mh) + it1->second->Predecessor(x2);
+    assert(aux_tree);
     x1 = aux_tree->Predecessor(x1);
     return (x1 == Empty) ? min_value : (x1 << mh) + children[x1]->Max();
   }
