@@ -3,7 +3,6 @@
 #include "common/base.h"
 #include "common/data_structures/fixed_universe_successor/empty.h"
 #include "common/data_structures/fixed_universe_successor/u64_set.h"
-#include "common/numeric/bits/first_bit.h"
 #include "common/numeric/bits/ulog2.h"
 
 #include <algorithm>
