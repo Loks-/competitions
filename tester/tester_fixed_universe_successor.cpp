@@ -1,5 +1,6 @@
 #include "tester/tester_fixed_universe_successor.h"
 
+#include "common/data_structures/fixed_universe_successor/b64_trie.h"
 #include "common/data_structures/fixed_universe_successor/binary_search_tree.h"
 #include "common/data_structures/fixed_universe_successor/implicit_binary_tree.h"
 #include "common/data_structures/fixed_universe_successor/sqrt_decomposition.h"
@@ -52,8 +53,7 @@ size_t TesterFixedUniverseSuccessor::TestBase(const std::string& name) const {
   return h;
 }
 
-bool TesterFixedUniverseSuccessor::TestAll() const {
-  bool small_test = (vdata.size() < 10000) && (usize <= 1000000);
+bool TesterFixedUniverseSuccessor::TestAll(bool small_test) const {
   std::unordered_set<size_t> hs;
   if (small_test) {
     hs.insert(TestBase<ds::fus::VectorSet>("VSet  "));
@@ -64,6 +64,7 @@ bool TesterFixedUniverseSuccessor::TestAll() const {
   hs.insert(TestBase<ds::fus::SqrtDecomposition>("SqrtD "));
   hs.insert(TestBase<ds::fus::BinarySearchTree>("BST   "));
   hs.insert(TestBase<ds::fus::ImplicitBinaryTree>("IBT   "));
+  hs.insert(TestBase<ds::fus::B64Trie>("B64T  "));
   if (usize < (1ull << 27)) {
     hs.insert(TestBase<ds::fus::VanEmdeBoasTreeFull>("VEBTF "));
   }
@@ -88,6 +89,6 @@ bool TesterFixedUniverseSuccessor::TestAll() const {
 
 bool TestFixedUniverseSuccessor(bool time_test) {
   TesterFixedUniverseSuccessor tfus(time_test ? 100000000 : 10000,
-                                    time_test ? 1000000 : 1000);
-  return tfus.TestAll();
+                                    time_test ? 1000000 : 10);
+  return tfus.TestAll(!time_test);
 }

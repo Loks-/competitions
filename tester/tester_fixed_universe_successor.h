@@ -18,5 +18,5 @@ class TesterFixedUniverseSuccessor {
   size_t TestBase(const std::string& name) const;
 
  public:
-  bool TestAll() const;
+  bool TestAll(bool small_test) const;
 };
