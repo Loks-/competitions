@@ -39,7 +39,7 @@ class XFastTrie {
 
  protected:
   static uint64_t HXToKey(unsigned h, size_t x) {
-    return (~((1ull << h) - 1) & x) + (uint64_t(h) << 58);
+    return (x >> h) + (uint64_t(h) << 58);
   }
 
   static unsigned KeyToH(uint64_t key) { return unsigned(key >> 58); }
@@ -125,14 +125,15 @@ class XFastTrie {
     noder->l = node;
     m[x] = node;
     auto last_node = node;
-    unsigned h = 1;
-    for (;; ++h) {
-      auto key = HXToKey(h, x);
+    uint64_t h = 1;
+    auto xh = x;
+    for (;; ++h, xh >>= 1) {
+      auto key = (h << 58) + (xh >> 1);
       auto it = m.find(key);
       if (it == m.end()) {
         auto hnode = node_manager.New();
         hnode->value = key;
-        if ((x >> (h - 1)) & 1) {
+        if (xh & 1) {
           hnode->l = node;
           hnode->r = last_node;
         } else {
@@ -143,7 +144,7 @@ class XFastTrie {
         last_node = hnode;
       } else {
         auto hnode = it->second;
-        if ((x >> (h - 1)) & 1) {
+        if (xh & 1) {
           hnode->r = last_node;
         } else {
           hnode->l = last_node;
@@ -151,16 +152,25 @@ class XFastTrie {
         break;
       }
     }
-    // Temp slow version
-    for (++h; h < maxh; ++h) {
-      auto key = HXToKey(h, x);
-      auto hnode = m[key];
-      assert(hnode);
-      if (KeyToH(hnode->l->value) == 0) {
-        if (hnode->l->value > x) hnode->l = node;
+    if (xh & 1) {
+      for (++h, xh >>= 1; h < maxh; ++h, xh >>= 1) {
+        if (~xh & 1) {
+          auto hnode = m[(h << 58) + (xh >> 1)];
+          if (hnode->r == nodel)
+            hnode->r = node;
+          else
+            break;
+        }
       }
-      if (KeyToH(hnode->r->value) == 0) {
-        if (hnode->r->value < x) hnode->r = node;
+    } else {
+      for (++h, xh >>= 1; h < maxh; ++h, xh >>= 1) {
+        if (xh & 1) {
+          auto hnode = m[(h << 58) + (xh >> 1)];
+          if (hnode->l == noder)
+            hnode->l = node;
+          else
+            break;
+        }
       }
     }
   }
