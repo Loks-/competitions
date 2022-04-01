@@ -21,7 +21,7 @@ namespace fus {
 // Successor   -- O(log log U)
 // Predecessor -- O(log log U)
 class XFastTrie {
- public:
+ protected:
   class Node : public BaseNode {
    public:
     size_t value;
