@@ -11,6 +11,7 @@
 #include "common/data_structures/fixed_universe_successor/vector_multiset.h"
 #include "common/data_structures/fixed_universe_successor/vector_precomputed.h"
 #include "common/data_structures/fixed_universe_successor/vector_set.h"
+#include "common/data_structures/fixed_universe_successor/x_fast_trie.h"
 #include "common/hash.h"
 #include "common/timer.h"
 #include "common/vector/hrandom.h"
@@ -78,6 +79,9 @@ bool TesterFixedUniverseSuccessor::TestAll() const {
   } else if (usize < (1ull << 27)) {
     hs.insert(
         TestBase<ds::fus::VanEmdeBoasTreeCompactStaticSize<27>>("VEBTCS"));
+  }
+  if (small_test) {
+    hs.insert(TestBase<ds::fus::XFastTrie>("XFTrie"));
   }
   return hs.size() == 1;
 }
