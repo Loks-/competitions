@@ -57,7 +57,6 @@ class XFastTrie {
       }
     }
     auto r = m[HXToKey(h0, x)];
-    assert(r);
     return r;
   }
 
@@ -125,8 +124,7 @@ class XFastTrie {
     noder->l = node;
     m[x] = node;
     auto last_node = node;
-    uint64_t h = 1;
-    auto xh = x;
+    uint64_t h = 1, xh = x;
     for (;; ++h, xh >>= 1) {
       auto key = (h << 58) + (xh >> 1);
       auto it = m.find(key);
@@ -144,11 +142,7 @@ class XFastTrie {
         last_node = hnode;
       } else {
         auto hnode = it->second;
-        if (xh & 1) {
-          hnode->r = last_node;
-        } else {
-          hnode->l = last_node;
-        }
+        ((xh & 1) ? hnode->r : hnode->l) = last_node;
         break;
       }
     }
@@ -184,15 +178,14 @@ class XFastTrie {
     nodel->r = noder;
     noder->l = nodel;
     m.erase(x);
-    unsigned h = 1;
-    for (;; ++h) {
-      auto hkey = HXToKey(h, x), skey = HXToKey(h - 1, x ^ (1ull << (h - 1)));
+    uint64_t h = 1, xh = x;
+    for (;; ++h, xh >>= 1) {
+      auto hkey = (h << 58) + (xh >> 1), skey = ((h - 1) << 58) + (xh ^ 1);
       auto hnode = m[hkey];
-      auto sit = m.find(skey);
-      if (sit == m.end()) {
+      if (m.find(skey) == m.end()) {
         m.erase(hkey);
       } else {
-        if ((x >> (h - 1)) & 1) {
+        if (xh & 1) {
           hnode->r = nodel;
         } else {
           hnode->l = noder;
@@ -200,13 +193,26 @@ class XFastTrie {
         break;
       }
     }
-    // Temp slow version
-    for (++h; h < maxh; ++h) {
-      auto hkey = HXToKey(h, x);
-      auto hnode = m[hkey];
-      assert(hnode);
-      if (hnode->l == node) hnode->l = noder;
-      if (hnode->r == node) hnode->r = nodel;
+    if (xh & 1) {
+      for (++h, xh >>= 1; h < maxh; ++h, xh >>= 1) {
+        if (~xh & 1) {
+          auto hnode = m[(h << 58) + (xh >> 1)];
+          if (hnode->r == node)
+            hnode->r = nodel;
+          else
+            break;
+        }
+      }
+    } else {
+      for (++h, xh >>= 1; h < maxh; ++h, xh >>= 1) {
+        if (xh & 1) {
+          auto hnode = m[(h << 58) + (xh >> 1)];
+          if (hnode->l == node)
+            hnode->l = noder;
+          else
+            break;
+        }
+      }
     }
   }
 
