@@ -1,5 +1,6 @@
 #pragma once
 
+#include "common/base.h"
 #include "common/binary_search_tree/action/none.h"
 #include "common/binary_search_tree/base/balanced_tree.h"
 #include "common/binary_search_tree/base/node.h"
@@ -21,10 +22,21 @@ class BaseTree
   using TBTree = base::BalancedTree<NodesManagerFixedSize<TNode>, TSelf>;
   friend TBTree;
 
+  static const bool support_join = true;
+
  public:
   explicit BaseTree(size_t max_nodes) : TBTree(max_nodes) {}
 
  protected:
   static TNode* FixBalance(TNode* node) { return node; }
+
+ public:
+  static TNode* Join3(TNode* l, TNode* m1, TNode* r) {
+    assert(m1 && !m1->l && !m1->r);
+    m1->SetL(l);
+    m1->SetR(r);
+    m1->UpdateInfo();
+    return m1;
+  }
 };
 }  // namespace bst

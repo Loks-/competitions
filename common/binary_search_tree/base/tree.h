@@ -30,7 +30,7 @@ class Tree : public TTNodesManager {
   static const bool support_remove = use_parent;
   static const bool support_remove_by_node = use_parent && TMe::support_remove;
   static const bool support_join = false;
-  static const bool support_split = false;
+  static const bool support_split = TMe::support_join;
   static const bool support_insert_by_order =
       !use_key && TInfo::has_size && TMe::support_join && TMe::support_split;
 
@@ -171,14 +171,15 @@ class Tree : public TTNodesManager {
     return new_root;
   }
 
-  static TNode* Join(TNode* l, TNode* r);
+  static TNode* Join(TNode* l, TNode* r) { return TMe::JoinI(l, r); }
 
-  static TNode* Join3(TNode* l, TNode* m1, TNode* r) {
-    return TMe::Join(l, TMe::Join(m1, r));
-  }
+  static TNode* Join3(TNode* l, TNode* m1, TNode* r);
 
   static void SplitByKey(TNode* root, const TKey& key, TNode*& output_l,
-                         TNode*& output_r);
+                         TNode*& output_r) {
+    TMe::SplitByKeyI(root, key, output_l, output_r);
+  }
+
   static void SplitBySize(TNode* root, size_t lsize, TNode*& output_l,
                           TNode*& output_r);
 
@@ -217,6 +218,43 @@ class Tree : public TTNodesManager {
   }
 
   static TNode* RemoveByNodeI(TNode* node);
+
+  static TNode* JoinI(TNode* l, TNode* r) {
+    static_assert(TMe::support_join, "Join should be supported");
+    static_assert(TMe::support_remove_by_node,
+                  "Remove by node should be supported");
+    if (!l) return r;
+    if (!r) return l;
+    auto node = l;
+    for (; node->r; node = node->r) node->ApplyAction();
+    node->ApplyAction();
+    l = TMe::RemoveByNode(node);
+    return TMe::Join3(l, node, r);
+  }
+
+  static void SplitByKeyI(TNode* root, const TKey& key, TNode*& output_l,
+                          TNode*& output_r) {
+    static_assert(use_key, "use_key should be true");
+    static_assert(TMe::support_join, "Join should be supported");
+    static_assert(TMe::support_split, "Split should be supported");
+    if (!root) {
+      output_l = output_r = nullptr;
+      return;
+    }
+    root->ApplyAction();
+    TNode *l = root->l, *r = root->r, *m = nullptr;
+    root->SetL(nullptr);
+    root->SetR(nullptr);
+    if (l) l->SetP(nullptr);
+    if (r) r->SetP(nullptr);
+    if (root->key < key) {
+      SplitByKeyI(r, key, m, output_r);
+      output_l = TMe::Join3(l, root, m);
+    } else {
+      SplitByKeyI(l, key, output_l, m);
+      output_r = TMe::Join3(m, root, r);
+    }
+  }
 };
 }  // namespace base
 }  // namespace bst

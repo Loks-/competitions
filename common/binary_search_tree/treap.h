@@ -90,6 +90,10 @@ class Treap
     return !l ? r : !r ? l : JoinI(l, r);
   }
 
+  static TNode* Join3(TNode* l, TNode* m1, TNode* r) {
+    return Join(l, Join(m1, r));
+  }
+
  protected:
   static void SplitByKeyI(TNode* p, const TKey& key, TNode*& output_l,
                           TNode*& output_r) {
