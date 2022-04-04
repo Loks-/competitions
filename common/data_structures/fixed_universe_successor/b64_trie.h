@@ -11,7 +11,7 @@
 
 namespace ds {
 namespace fus {
-// Memory      -- O(S)
+// Memory      -- O(S log U)
 // Init        -- O(1)
 // Insert      -- O(log U)
 // HasKey      -- O(log U)
