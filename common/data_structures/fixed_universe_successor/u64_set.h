@@ -5,13 +5,13 @@
 #include "common/numeric/bits/bits_count.h"
 #include "common/numeric/bits/first_bit.h"
 
-#include <algorithm>
-#include <vector>
-
 namespace ds {
 namespace fus {
 // U = 64
 class U64Set {
+ public:
+  static const unsigned nbits = 6;
+
  protected:
   uint64_t mask;
 
@@ -19,6 +19,7 @@ class U64Set {
   U64Set() { Clear(); }
   void Clear() { mask = 0; }
   void Init(size_t) { mask = 0; }
+  void Set1(size_t x) { mask = (1ull << x); }
   void Insert(size_t x) { mask |= (1ull << x); }
   bool HasKey(size_t x) const { return (mask >> x) & 1ull; }
   void Delete(size_t x) { mask &= ~(1ull << x); }
@@ -44,6 +45,11 @@ class U64Set {
     uint64_t t = mask & ((1ull << x) - 1ull);
     return t ? 63 - numeric::Highest0Bits(t) : Empty;
   }
+
+ public:
+  // Assume mask != 0.
+  size_t MinI() const { return numeric::Lowest0Bits(mask); }
+  size_t MaxI() const { return 63 - numeric::Highest0Bits(mask); }
 };
 }  // namespace fus
 }  // namespace ds

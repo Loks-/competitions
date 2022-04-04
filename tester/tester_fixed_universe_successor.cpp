@@ -3,8 +3,11 @@
 #include "common/data_structures/fixed_universe_successor/b64_trie.h"
 #include "common/data_structures/fixed_universe_successor/binary_search_tree.h"
 #include "common/data_structures/fixed_universe_successor/implicit_binary_tree.h"
+#include "common/data_structures/fixed_universe_successor/multi_search_tree.h"
 #include "common/data_structures/fixed_universe_successor/sqrt_decomposition.h"
 #include "common/data_structures/fixed_universe_successor/two_layers_u64.h"
+#include "common/data_structures/fixed_universe_successor/u256_set.h"
+#include "common/data_structures/fixed_universe_successor/u64_set.h"
 #include "common/data_structures/fixed_universe_successor/van_emde_boas_tree_compact.h"
 #include "common/data_structures/fixed_universe_successor/van_emde_boas_tree_compact_static_size.h"
 #include "common/data_structures/fixed_universe_successor/van_emde_boas_tree_full.h"
@@ -68,6 +71,8 @@ bool TesterFixedUniverseSuccessor::TestAll(bool small_test) const {
   }
   hs.insert(TestBase<ds::fus::BinarySearchTree>("BST   "));
   hs.insert(TestBase<ds::fus::B64Trie>("B64T  "));
+  hs.insert(TestBase<ds::fus::MultiSearchTree<ds::fus::U64Set>>("MST 64"));
+  hs.insert(TestBase<ds::fus::MultiSearchTree<ds::fus::U64Set>>("MST256"));
   if (usize <= (1ull << 27)) {
     hs.insert(TestBase<ds::fus::VanEmdeBoasTreeFull>("VEBTF "));
   }
