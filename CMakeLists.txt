@@ -262,6 +262,7 @@ foreach( testfile_in ${TIMUS_TESTS} )
 endforeach( testfile_in ${TIMUS_TESTS} )
 
 add_test( NAME tester_binary_search_tree COMMAND tester binary_search_tree )
+add_test( NAME tester_bst_split_join COMMAND tester bst_split_join )
 add_test( NAME tester_convergent COMMAND tester convergent )
 add_test( NAME tester_generating_function COMMAND tester generating_function )
 add_test( NAME tester_fixed_universe_successor COMMAND tester fixed_universe_successor )

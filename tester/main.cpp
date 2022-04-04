@@ -17,6 +17,8 @@ int main(int nargs, char **pargs) {
   try {
     if (tester_mode == "binary_search_tree")
       Assert(TestBinarySearchTree(false));
+    else if (tester_mode == "bst_split_join")
+      Assert(TestBinarySearchTreeSplitJoin(false));
     else if (tester_mode == "convergent")
       Assert(TestContinuedFractionConvergent());
     else if (tester_mode == "find_primes_for_modular_fft")
@@ -59,6 +61,8 @@ int main(int nargs, char **pargs) {
       Assert(TestRangeMinimumQuery(false));
     else if (tester_mode == "time_binary_search_tree")
       Assert(TestBinarySearchTree(true));
+    else if (tester_mode == "time_bst_split_join")
+      Assert(TestBinarySearchTreeSplitJoin(true));
     else if (tester_mode == "time_disjoint_set")
       Assert(TestDisjointSet());
     else if (tester_mode == "time_fixed_universe_successor")

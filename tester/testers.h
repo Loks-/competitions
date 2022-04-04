@@ -3,6 +3,7 @@
 void FindPrimesForModularFFT(unsigned count);
 
 bool TestBinarySearchTree(bool time_test);
+bool TestBinarySearchTreeSplitJoin(bool time_test);
 bool TestContinuedFractionConvergent();
 bool TestDisjointSet();
 bool TestFixedUniverseSuccessor(bool time_test);
