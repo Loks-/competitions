@@ -275,7 +275,7 @@ class MultiSearchTree {
 
   size_t Successor(size_t x) {
     if (root.IsEmpty() || (x >= root.max_value)) return Empty;
-    Node *node = &root, *next_node;
+    Node *node = &root, *next_node = nullptr;
     for (size_t depth = max_depth;; --depth) {
       assert(x < node->max_value);
       if (!node->IsSplit()) {
@@ -303,7 +303,7 @@ class MultiSearchTree {
 
   size_t Predecessor(size_t x) {
     if (root.IsEmpty() || (x <= root.min_value)) return Empty;
-    Node *node = &root, *next_node;
+    Node *node = &root, *next_node = nullptr;
     for (size_t depth = max_depth;; --depth) {
       assert(x > node->min_value);
       if (!node->IsSplit()) {
