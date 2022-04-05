@@ -54,6 +54,7 @@ class MultiSearchTree {
 
   size_t GetHKey(size_t x, size_t depth) const {
     return GetHighBits(x, depth) + depth;
+    // return GetHighBits(x, depth) + depth + 1;
   }
 
   size_t GetHash(size_t x) const {
@@ -124,23 +125,20 @@ class MultiSearchTree {
     }
   }
 
-  // Check
   void DeleteSubtree(Node *node, size_t x, size_t depth) {
     bool needRecursion = node->IsSplit();
     node->count = 0;
+    // node->key = 0;
     --nodes_used;
-    if (depth == 0 || !needRecursion) {
-      return;
-    }
+    if (depth == 0 || !needRecursion) return;
     size_t highX = GetHighBits(x, depth);
-    size_t idx;
-    while (!node->mask.IsEmpty()) {
-      idx = node->mask.MinI();
-      node->mask.Delete(idx);
+    for (size_t idx = node->mask.Min(); idx != Empty;
+         idx = node->mask.Successor(idx)) {
       size_t bitX = highX + (idx << (depth * bits_per_level));
       Node *subNode = FindNode(bitX, depth - 1);
       DeleteSubtree(subNode, bitX, depth - 1);
     }
+    // node->mask.Clear();
   }
 
   void MakeSingleValueNode(Node *node, size_t x, size_t depth) {
@@ -231,7 +229,7 @@ class MultiSearchTree {
         // Unsplit node
         size_t x2 = node->max_value + node->min_value - x;
         DeleteSubtree(node, x, depth);
-        ++nodes_used;  // Why ++?
+        ++nodes_used;
         MakeSingleValueNode(node, x2, depth);
       } else {
         --node->count;
