@@ -216,7 +216,7 @@ class MultiSearchTree {
     Node *node = &root;
     size_t prev_idx = 0;
     size_t depth = max_depth;
-    for (;;) {
+    for (;; node = FindNode(x, --depth)) {
       path[depth] = node;
       if (node->count == 1) {
         assert(!node->IsSplit());
@@ -227,14 +227,12 @@ class MultiSearchTree {
           assert(prev_node->mask.HasKey(prev_idx));
           prev_node->mask.Delete(prev_idx);
         }
-        break;
       } else if (node->count == 2) {
-        // unsplit node
+        // Unsplit node
         size_t x2 = node->max_value + node->min_value - x;
         DeleteSubtree(node, x, depth);
         ++nodes_used;  // Why ++?
         MakeSingleValueNode(node, x2, depth);
-        break;
       } else {
         --node->count;
         prev_idx = CalcLevelIndex(x, depth);
@@ -246,18 +244,16 @@ class MultiSearchTree {
           } else if (node->max_value == x) {
             node->max_value = GetHighBits(x, depth) + node->mask.MaxI();
           }
-          break;
         } else {
           prev_node = node;
-          node = FindNode(x, --depth);
+          continue;
         }
       }
+      break;
     }
     for (++depth; depth <= max_depth; ++depth) {
       node = path[depth];
       if (node->min_value == x) {
-        assert(node->max_value !=
-               x);  // possible if multiple copies of same value allowed
         size_t minIdx = node->mask.MinI();
         size_t keyX =
             GetHighBits(x, depth) + (minIdx << (depth * bits_per_level));
@@ -278,97 +274,59 @@ class MultiSearchTree {
   size_t Min() const { return root.min_value; }
   size_t Max() const { return root.max_value; }
 
-  // Check
   size_t Successor(size_t x) {
-    if (root.IsEmpty()) {
-      return Empty;
-    }
-    Node *node = &root;
-    size_t depth = max_depth;
-    for (;;) {
+    if (root.IsEmpty() || (x >= root.max_value)) return Empty;
+    Node *node = &root, *next_node;
+    for (size_t depth = max_depth;; --depth) {
+      assert(x < node->max_value);
       if (!node->IsSplit()) {
         assert(node->count == 1);
-        if (node->min_value > x) {
-          return node->min_value;
-        } else {
-          ++depth;
-          break;
-        }
+        return node->max_value;
       }
-      path[depth] = node;
       size_t idx = CalcLevelIndex(x, depth);
-      if (!node->mask.HasKey(idx)) {
-        break;
+      if (depth == 0) return GetHighBits(x, depth) + node->mask.Successor(idx);
+      bool stop = true;
+      if (node->mask.HasKey(idx)) {
+        next_node = FindNode(x, depth - 1);
+        if (x < next_node->max_value) stop = false;
       }
-      if (depth == 0) {
-        break;
-      }
-      --depth;
-      node = FindNode(x, depth);
-    }
-    for (; depth <= max_depth; ++depth) {
-      node = path[depth];
-      size_t idx = CalcLevelIndex(x, depth);
-      //   size_t minIdx;
-      //   if (node->mask.GetLowestBitAfter(idx, &minIdx)) {
-      size_t minIdx = node->mask.Successor(idx);
-      if (minIdx != Empty) {
+      if (stop) {
+        auto idx2 = node->mask.Successor(idx);
+        assert(idx2 != Empty);
         size_t keyX =
-            GetHighBits(x, depth) + (minIdx << (depth * bits_per_level));
-        if (depth > 0) {
-          const Node *nextNode = FindNode(keyX, depth - 1);
-          return nextNode->min_value;
-        } else {
-          return keyX;
-        }
+            GetHighBits(x, depth) + (idx2 << (depth * bits_per_level));
+        return FindNode(keyX, depth - 1)->min_value;
       }
+      node = next_node;
     }
     return Empty;
   }
 
-  // Check
   size_t Predecessor(size_t x) {
-    if (root.IsEmpty()) {
-      return Empty;
-    }
-    Node *node = &root;
-    size_t depth = max_depth;
-    for (;;) {
+    if (root.IsEmpty() || (x <= root.min_value)) return Empty;
+    Node *node = &root, *next_node;
+    for (size_t depth = max_depth;; --depth) {
+      assert(x > node->min_value);
       if (!node->IsSplit()) {
         assert(node->count == 1);
-        if (node->min_value < x) {
-          return node->min_value;
-        } else {
-          ++depth;
-          break;
-        }
+        return node->min_value;
       }
       size_t idx = CalcLevelIndex(x, depth);
-      if (!node->mask.HasKey(idx)) {
-        break;
+      if (depth == 0)
+        return GetHighBits(x, depth) + node->mask.Predecessor(idx);
+      bool stop = true;
+      if (node->mask.HasKey(idx)) {
+        next_node = FindNode(x, depth - 1);
+        if (x > next_node->min_value) stop = false;
       }
-      if (depth == 0) {
-        break;
-      }
-      --depth;
-      node = FindNode(x, depth);
-    }
-    for (; depth <= max_depth; ++depth) {
-      node = path[depth];
-      size_t idx = CalcLevelIndex(x, depth);
-      //   size_t maxIdx;
-      //   if (node->mask.GetHighestBitBefore(idx, &maxIdx)) {
-      size_t maxIdx = node->mask.Predecessor(idx);
-      if (maxIdx != Empty) {
+      if (stop) {
+        auto idx2 = node->mask.Predecessor(idx);
+        assert(idx2 != Empty);
         size_t keyX =
-            GetHighBits(x, depth) + (maxIdx << (depth * bits_per_level));
-        if (depth > 0) {
-          const Node *prev_node = FindNode(keyX, depth - 1);
-          return prev_node->max_value;
-        } else {
-          return keyX;
-        }
+            GetHighBits(x, depth) + (idx2 << (depth * bits_per_level));
+        return FindNode(keyX, depth - 1)->max_value;
       }
+      node = next_node;
     }
     return Empty;
   }
