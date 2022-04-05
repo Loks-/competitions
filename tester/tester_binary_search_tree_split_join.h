@@ -15,7 +15,7 @@ class TesterBinarySearchTreeSplitJoin {
   using TAction = bst::action::AddEachKeySumKeys<TKey>;
 
  protected:
-  static const TKey max_key = (1ll << 30);
+  const TKey max_key = (1ll << 30);
   std::vector<TKey> vkeys;
   std::vector<TKey> vshift;
 
