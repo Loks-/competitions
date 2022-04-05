@@ -20,48 +20,52 @@ namespace fus {
 // Predecessor -- O(log U)
 template <class TMask>
 class MultiSearchTree {
+ protected:
+  static const unsigned bits_per_level = TMask::nbits;
+  static const size_t level_mask = (size_t(1) << bits_per_level) - 1;
+
   struct Node {
     size_t key = 0;
     size_t count = 0;
-    size_t min_value = 0;
-    size_t max_value = 0;
+    size_t min_value = Empty;
+    size_t max_value = Empty;
     TMask mask;
 
     bool IsEmpty() const { return count == 0; }
     bool IsSplit() const { return count > 1; }
   };
-  enum { LEVEL_BITS = TMask::nbits, LEVEL_MASK = (1ull << LEVEL_BITS) - 1 };
-  std::vector<Node> Nodes;
+
+ protected:
+  std::vector<Node> nodes;
   Node root;
+  size_t usize;
   size_t hash_shift = 0;
   size_t node_ptr_mask = 0;
   size_t nodes_used = 0;
   size_t max_depth = 0;
   std::vector<Node *> path;
 
-  // depth - level of current split
-  size_t CalcHighBits(size_t x, size_t depth) const {
-    if (depth >= max_depth) {
-      return 0;
-    }
-    size_t maskLowBits = (1ull << ((depth + 1) * LEVEL_BITS)) - 1;
-    return (x & ~maskLowBits);
+ protected:
+  size_t GetHighBits(size_t x, size_t depth) const {
+    if (depth >= max_depth) return 0;
+    size_t mask_low_bits = (1ull << ((depth + 1) * bits_per_level)) - 1;
+    return (x & ~mask_low_bits);
   }
 
-  size_t CalcKey(size_t x, size_t depth) const {
-    return CalcHighBits(x, depth) + depth;
+  size_t GetHKey(size_t x, size_t depth) const {
+    return GetHighBits(x, depth) + depth;
   }
 
-  size_t CalcHash(size_t x) const {
-    const size_t MAGIC_MULT = 0x4906ba494954cb65ull;
-    return (x * MAGIC_MULT) >> hash_shift;
+  size_t GetHash(size_t x) const {
+    const size_t m = 0x4906ba494954cb65ull;
+    return (x * m) >> hash_shift;
   }
 
   size_t CalcLevelIndex(size_t x, size_t depth) const {
-    size_t idx = (x >> (depth * LEVEL_BITS)) & LEVEL_MASK;
-    return idx;
+    return (x >> (depth * bits_per_level)) & level_mask;
   }
 
+  // Check
   void ResizeHash(size_t count) {
     // invalidates all pointers
     size_t nodeCountLn = 2;
@@ -75,9 +79,9 @@ class MultiSearchTree {
     newNodes.resize(nodeCount);
     node_ptr_mask = nodeCount - 1;
     if (nodes_used > 0) {
-      for (const Node &x : Nodes) {
+      for (const Node &x : nodes) {
         if (x.count > 0) {
-          for (size_t idx = CalcHash(x.key);; ++idx) {
+          for (size_t idx = GetHash(x.key);; ++idx) {
             size_t ptr = idx & node_ptr_mask;
             if (newNodes[ptr].IsEmpty()) {
               newNodes[ptr] = x;
@@ -87,41 +91,40 @@ class MultiSearchTree {
         }
       }
     }
-    Nodes.swap(newNodes);
+    nodes.swap(newNodes);
   }
 
   size_t FindNodeIndex(size_t key) const {
-    for (size_t idx = CalcHash(key);; ++idx) {
+    for (size_t idx = GetHash(key);; ++idx) {
       size_t ptr = idx & node_ptr_mask;
-      if (Nodes[ptr].key == key) {
+      if (nodes[ptr].key == key) {
         return ptr;
       }
     }
   }
 
   Node *FindNode(size_t x, size_t depth) {
-    size_t key = CalcKey(x, depth);
-    return &Nodes[FindNodeIndex(key)];
+    return &nodes[FindNodeIndex(GetHKey(x, depth))];
   }
 
   const Node *FindNode(size_t x, size_t depth) const {
-    size_t key = CalcKey(x, depth);
-    return &Nodes[FindNodeIndex(key)];
+    return &nodes[FindNodeIndex(GetHKey(x, depth))];
   }
 
   Node *AddNode(size_t x, size_t depth) {
     ++nodes_used;
-    size_t key = CalcKey(x, depth);
-    for (size_t idx = CalcHash(key);; ++idx) {
+    size_t key = GetHKey(x, depth);
+    for (size_t idx = GetHash(key);; ++idx) {
       size_t ptr = idx & node_ptr_mask;
-      if (Nodes[ptr].IsEmpty()) {
-        Nodes[ptr].key = key;
-        return &Nodes[ptr];
+      if (nodes[ptr].IsEmpty()) {
+        nodes[ptr].key = key;
+        return &nodes[ptr];
       }
-      assert(Nodes[ptr].key != key);  // inserting same key twice
+      assert(nodes[ptr].key != key);  // Key is already in hash table
     }
   }
 
+  // Check
   void DeleteSubtree(Node *node, size_t x, size_t depth) {
     bool needRecursion = node->IsSplit();
     node->count = 0;
@@ -129,12 +132,12 @@ class MultiSearchTree {
     if (depth == 0 || !needRecursion) {
       return;
     }
-    size_t highX = CalcHighBits(x, depth);
+    size_t highX = GetHighBits(x, depth);
     size_t idx;
     while (!node->mask.IsEmpty()) {
       idx = node->mask.MinI();
       node->mask.Delete(idx);
-      size_t bitX = highX + (idx << (depth * LEVEL_BITS));
+      size_t bitX = highX + (idx << (depth * bits_per_level));
       Node *subNode = FindNode(bitX, depth - 1);
       DeleteSubtree(subNode, bitX, depth - 1);
     }
@@ -149,42 +152,70 @@ class MultiSearchTree {
 
  public:
   MultiSearchTree() { Init(64); }
-  void Init(size_t maxValue) {
+
+  void Init(size_t u) {
+    usize = u;
     root.count = 0;
-    root.min_value = 0;
-    root.max_value = 0;
+    root.min_value = Empty;
+    root.max_value = Empty;
     root.mask.Clear();
     max_depth = 0;
     for (;; ++max_depth) {
-      size_t bits = (max_depth + 1) * LEVEL_BITS;
-      if (bits >= 64) {
-        break;
-      }
-      if ((1ull << bits) >= maxValue) {
-        break;
-      }
+      size_t bits = (max_depth + 1) * bits_per_level;
+      if ((bits >= 64) || ((1ull << bits) >= usize)) break;
     }
     path.resize(max_depth + 1);
-    ResizeHash(1000);
+    ResizeHash(1000);  // ???
   }
 
-  size_t Min() const {
-    if (root.IsEmpty()) {
-      return ds::fus::Empty;
+  bool HasKey(size_t x) const {
+    if (root.IsEmpty()) return false;
+    const Node *node = &root;
+    for (size_t depth = max_depth;; node = FindNode(x, --depth)) {
+      if (!node->IsSplit()) return x == node->min_value;
+      if (!node->mask.HasKey(CalcLevelIndex(x, depth))) return false;
+      if (depth == 0) return true;
     }
-    return root.min_value;
   }
 
-  size_t Max() const {
-    if (root.IsEmpty()) {
-      return ds::fus::Empty;
+  // Adding same element twice will destroy internal counters.
+  void Insert(size_t x) {
+    // assert(!HasKey(x));
+    if (nodes_used * 3 > node_ptr_mask) ResizeHash(4 * (node_ptr_mask + 1));
+    Node *node = &root;
+    for (size_t depth = max_depth;;) {
+      if (node->count == 0) return MakeSingleValueNode(node, x, depth);
+      if (node->count == 1) {
+        // Split the node
+        if (depth > 0) {
+          size_t sx = node->min_value;
+          Node *sn = AddNode(sx, depth - 1);
+          MakeSingleValueNode(sn, sx, depth - 1);
+        }
+      }
+      ++node->count;
+      node->min_value = std::min(node->min_value, x);
+      node->max_value = std::max(node->max_value, x);
+      size_t idx = CalcLevelIndex(x, depth);
+      if (node->mask.HasKey(idx)) {
+        assert(depth);  // If depth == 0 we are adding same element.
+        if (depth == 0) return;
+        node = FindNode(x, --depth);
+      } else {
+        node->mask.Insert(idx);
+        if (depth == 0) return;
+        node = AddNode(x, --depth);
+      }
     }
-    return root.max_value;
   }
 
+  size_t Min() const { return root.min_value; }
+  size_t Max() const { return root.max_value; }
+
+  // Check
   size_t Successor(size_t x) {
     if (root.IsEmpty()) {
-      return ds::fus::Empty;
+      return Empty;
     }
     Node *node = &root;
     size_t depth = max_depth;
@@ -216,7 +247,8 @@ class MultiSearchTree {
       //   if (node->mask.GetLowestBitAfter(idx, &minIdx)) {
       size_t minIdx = node->mask.Successor(idx);
       if (minIdx != Empty) {
-        size_t keyX = CalcHighBits(x, depth) + (minIdx << (depth * LEVEL_BITS));
+        size_t keyX =
+            GetHighBits(x, depth) + (minIdx << (depth * bits_per_level));
         if (depth > 0) {
           const Node *nextNode = FindNode(keyX, depth - 1);
           return nextNode->min_value;
@@ -225,12 +257,13 @@ class MultiSearchTree {
         }
       }
     }
-    return ds::fus::Empty;
+    return Empty;
   }
 
+  // Check
   size_t Predecessor(size_t x) {
     if (root.IsEmpty()) {
-      return ds::fus::Empty;
+      return Empty;
     }
     Node *node = &root;
     size_t depth = max_depth;
@@ -261,7 +294,8 @@ class MultiSearchTree {
       //   if (node->mask.GetHighestBitBefore(idx, &maxIdx)) {
       size_t maxIdx = node->mask.Predecessor(idx);
       if (maxIdx != Empty) {
-        size_t keyX = CalcHighBits(x, depth) + (maxIdx << (depth * LEVEL_BITS));
+        size_t keyX =
+            GetHighBits(x, depth) + (maxIdx << (depth * bits_per_level));
         if (depth > 0) {
           const Node *prevNode = FindNode(keyX, depth - 1);
           return prevNode->max_value;
@@ -270,35 +304,10 @@ class MultiSearchTree {
         }
       }
     }
-    return ds::fus::Empty;
+    return Empty;
   }
 
-  bool HasKey(size_t x) const {
-    if (root.IsEmpty()) {
-      return false;
-    }
-    const Node *node = &root;
-    for (size_t depth = max_depth;;) {
-      if (!node->IsSplit()) {
-        assert(node->count == 1);
-        if (node->min_value == x) {
-          return true;
-        } else {
-          return false;
-        }
-      }
-      size_t idx = CalcLevelIndex(x, depth);
-      if (!node->mask.HasKey(idx)) {
-        return false;
-      }
-      if (depth == 0) {
-        return true;
-      }
-      --depth;
-      node = FindNode(x, depth);
-    }
-  }
-
+  // Check
   void Delete(size_t x) {
     // assert(HasKey(x));
     Node *prevNode = nullptr;
@@ -334,10 +343,10 @@ class MultiSearchTree {
           prevNode->mask.Delete(prevIdx);
           if (prevNode->min_value == x) {
             size_t minIdx = prevNode->mask.MinI();
-            prevNode->min_value = CalcHighBits(x, depth) + minIdx;
+            prevNode->min_value = GetHighBits(x, depth) + minIdx;
           } else if (prevNode->max_value == x) {
             size_t maxIdx = prevNode->mask.MaxI();
-            prevNode->max_value = CalcHighBits(x, depth) + maxIdx;
+            prevNode->max_value = GetHighBits(x, depth) + maxIdx;
           }
           break;
         } else {
@@ -353,12 +362,14 @@ class MultiSearchTree {
         assert(node->max_value !=
                x);  // possible if multiple copies of same value allowed
         size_t minIdx = node->mask.MinI();
-        size_t keyX = CalcHighBits(x, depth) + (minIdx << (depth * LEVEL_BITS));
+        size_t keyX =
+            GetHighBits(x, depth) + (minIdx << (depth * bits_per_level));
         Node *minNode = FindNode(keyX, depth - 1);
         node->min_value = minNode->min_value;
       } else if (node->max_value == x) {
         size_t maxIdx = node->mask.MaxI();
-        size_t keyX = CalcHighBits(x, depth) + (maxIdx << (depth * LEVEL_BITS));
+        size_t keyX =
+            GetHighBits(x, depth) + (maxIdx << (depth * bits_per_level));
         Node *maxNode = FindNode(keyX, depth - 1);
         node->max_value = maxNode->max_value;
       } else {
@@ -367,72 +378,6 @@ class MultiSearchTree {
     }
     // assert(!HasKey(x));
   }
-
-  void Insert(size_t x) {
-    // assert(!HasKey(x));
-    const size_t SPARSITY = 3;
-    const size_t GROWTH = 4;
-    if (nodes_used * SPARSITY > node_ptr_mask) {
-      ResizeHash(GROWTH * (node_ptr_mask + 1));
-    }
-    // printf("insert %d\n", (int)x);
-    Node *node = &root;
-    for (size_t depth = max_depth;;) {
-      if (node->count == 0) {
-        MakeSingleValueNode(node, x, depth);
-        return;
-      } else {
-        if (node->count == 1) {
-          // split the node
-          if (depth > 0) {
-            size_t sx = node->min_value;
-            Node *sn = AddNode(sx, depth - 1);
-            MakeSingleValueNode(sn, sx, depth - 1);
-          }
-        }
-        // add to the splitted node
-        ++node->count;  // could try to avoid these writes
-        node->min_value = std::min(node->min_value, x);
-        node->max_value = std::max(node->max_value, x);
-        size_t idx = CalcLevelIndex(x, depth);
-        if (node->mask.HasKey(idx)) {
-          if (depth == 0) {
-            assert(false);  // duplicate values not supported
-            return;
-          }
-          --depth;
-          node = FindNode(x, depth);
-        } else {
-          node->mask.Insert(idx);
-          if (depth == 0) {
-            return;
-          }
-          --depth;
-          node = AddNode(x, depth);
-        }
-      }
-    }
-  }
 };
-
-// struct TReferenceST
-// {
-//     yhash_map<size_t, bool, I64Hash> Vals;
-
-//     void Init(yint) {}
-//     bool HasKey(size_t x)
-//     {
-//         return Vals.find(x) != Vals.end();
-//     }
-//     void Delete(size_t x)
-//     {
-//         auto it = Vals.find(x);
-//         Vals.erase(it);
-//     }
-//     void Insert(size_t x)
-//     {
-//         Vals[x];
-//     }
-// };
 }  // namespace fus
 }  // namespace ds
