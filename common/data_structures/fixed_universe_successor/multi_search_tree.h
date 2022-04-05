@@ -209,6 +209,72 @@ class MultiSearchTree {
     }
   }
 
+  // Deleting element not in tree will destroy internal counters.
+  void Delete(size_t x) {
+    // assert(HasKey(x));
+    Node *prev_node = nullptr;
+    Node *node = &root;
+    size_t prev_idx = 0;
+    size_t depth = max_depth;
+    for (;;) {
+      path[depth] = node;
+      if (node->count == 1) {
+        assert(!node->IsSplit());
+        node->count = 0;
+        assert(node->min_value == x);
+        if (prev_node) {
+          --nodes_used;
+          assert(prev_node->mask.HasKey(prev_idx));
+          prev_node->mask.Delete(prev_idx);
+        }
+        break;
+      } else if (node->count == 2) {
+        // unsplit node
+        size_t x2 = node->max_value + node->min_value - x;
+        DeleteSubtree(node, x, depth);
+        ++nodes_used;  // Why ++?
+        MakeSingleValueNode(node, x2, depth);
+        break;
+      } else {
+        --node->count;
+        prev_idx = CalcLevelIndex(x, depth);
+        assert(node->mask.HasKey(prev_idx));
+        if (depth == 0) {
+          node->mask.Delete(prev_idx);
+          if (node->min_value == x) {
+            node->min_value = GetHighBits(x, depth) + node->mask.MinI();
+          } else if (node->max_value == x) {
+            node->max_value = GetHighBits(x, depth) + node->mask.MaxI();
+          }
+          break;
+        } else {
+          prev_node = node;
+          node = FindNode(x, --depth);
+        }
+      }
+    }
+    for (++depth; depth <= max_depth; ++depth) {
+      node = path[depth];
+      if (node->min_value == x) {
+        assert(node->max_value !=
+               x);  // possible if multiple copies of same value allowed
+        size_t minIdx = node->mask.MinI();
+        size_t keyX =
+            GetHighBits(x, depth) + (minIdx << (depth * bits_per_level));
+        Node *minNode = FindNode(keyX, depth - 1);
+        node->min_value = minNode->min_value;
+      } else if (node->max_value == x) {
+        size_t maxIdx = node->mask.MaxI();
+        size_t keyX =
+            GetHighBits(x, depth) + (maxIdx << (depth * bits_per_level));
+        Node *maxNode = FindNode(keyX, depth - 1);
+        node->max_value = maxNode->max_value;
+      } else {
+        break;
+      }
+    }
+  }
+
   size_t Min() const { return root.min_value; }
   size_t Max() const { return root.max_value; }
 
@@ -297,86 +363,14 @@ class MultiSearchTree {
         size_t keyX =
             GetHighBits(x, depth) + (maxIdx << (depth * bits_per_level));
         if (depth > 0) {
-          const Node *prevNode = FindNode(keyX, depth - 1);
-          return prevNode->max_value;
+          const Node *prev_node = FindNode(keyX, depth - 1);
+          return prev_node->max_value;
         } else {
           return keyX;
         }
       }
     }
     return Empty;
-  }
-
-  // Check
-  void Delete(size_t x) {
-    // assert(HasKey(x));
-    Node *prevNode = nullptr;
-    Node *node = &root;
-    size_t prevIdx = 0;
-    size_t depth = max_depth;
-    for (;;) {
-      path[depth] = node;
-      if (node->count == 1) {
-        assert(!node->IsSplit());
-        node->count = 0;
-        assert(node->min_value == x);
-        if (prevNode) {
-          --nodes_used;
-          assert(prevNode->mask.HasKey(prevIdx));
-          prevNode->mask.Delete(prevIdx);
-        }
-        break;
-      } else if (node->count == 2) {
-        // unsplit node
-        size_t otherX =
-            (x == node->min_value) ? node->max_value : node->min_value;
-        DeleteSubtree(node, x, depth);
-        ++nodes_used;
-        MakeSingleValueNode(node, otherX, depth);
-        break;
-      } else {
-        --node->count;
-        prevIdx = CalcLevelIndex(x, depth);
-        prevNode = node;
-        assert(prevNode->mask.HasKey(prevIdx));
-        if (depth == 0) {
-          prevNode->mask.Delete(prevIdx);
-          if (prevNode->min_value == x) {
-            size_t minIdx = prevNode->mask.MinI();
-            prevNode->min_value = GetHighBits(x, depth) + minIdx;
-          } else if (prevNode->max_value == x) {
-            size_t maxIdx = prevNode->mask.MaxI();
-            prevNode->max_value = GetHighBits(x, depth) + maxIdx;
-          }
-          break;
-        } else {
-          --depth;
-          node = FindNode(x, depth);
-        }
-      }
-    }
-    ++depth;
-    for (; depth <= max_depth; ++depth) {
-      node = path[depth];
-      if (node->min_value == x) {
-        assert(node->max_value !=
-               x);  // possible if multiple copies of same value allowed
-        size_t minIdx = node->mask.MinI();
-        size_t keyX =
-            GetHighBits(x, depth) + (minIdx << (depth * bits_per_level));
-        Node *minNode = FindNode(keyX, depth - 1);
-        node->min_value = minNode->min_value;
-      } else if (node->max_value == x) {
-        size_t maxIdx = node->mask.MaxI();
-        size_t keyX =
-            GetHighBits(x, depth) + (maxIdx << (depth * bits_per_level));
-        Node *maxNode = FindNode(keyX, depth - 1);
-        node->max_value = maxNode->max_value;
-      } else {
-        break;
-      }
-    }
-    // assert(!HasKey(x));
   }
 };
 }  // namespace fus
