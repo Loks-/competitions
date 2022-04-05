@@ -25,14 +25,14 @@ class MultiSearchTree {
   static const size_t level_mask = (size_t(1) << bits_per_level) - 1;
 
   struct Node {
-    size_t key = 0;
     size_t count = 0;
+    size_t key = 0;
     size_t min_value = Empty;
     size_t max_value = Empty;
     TMask mask;
 
-    bool IsEmpty() const { return count == 0; }
-    bool IsSplit() const { return count > 1; }
+    bool IsEmpty() const { return min_value == Empty; }
+    bool IsSplit() const { return min_value != max_value; }
   };
 
  protected:
@@ -81,7 +81,7 @@ class MultiSearchTree {
     node_ptr_mask = nodeCount - 1;
     if (nodes_used > 0) {
       for (const Node &x : nodes) {
-        if (x.count > 0) {
+        if (!x.IsEmpty()) {
           for (size_t idx = GetHash(x.key);; ++idx) {
             size_t ptr = idx & node_ptr_mask;
             if (newNodes[ptr].IsEmpty()) {
@@ -127,6 +127,7 @@ class MultiSearchTree {
 
   void DeleteSubtree(Node *node, size_t x, size_t depth) {
     bool needRecursion = node->IsSplit();
+    node->min_value = node->max_value = Empty;  // Move to different function?
     node->count = 0;
     // node->key = 0;
     --nodes_used;
@@ -182,8 +183,8 @@ class MultiSearchTree {
     if (nodes_used * 3 > node_ptr_mask) ResizeHash(4 * (node_ptr_mask + 1));
     Node *node = &root;
     for (size_t depth = max_depth;;) {
-      if (node->count == 0) return MakeSingleValueNode(node, x, depth);
-      if (node->count == 1) {
+      if (node->IsEmpty()) return MakeSingleValueNode(node, x, depth);
+      if (!node->IsSplit()) {
         // Split the node
         if (depth > 0) {
           size_t sx = node->min_value;
@@ -216,10 +217,10 @@ class MultiSearchTree {
     size_t depth = max_depth;
     for (;; node = FindNode(x, --depth)) {
       path[depth] = node;
-      if (node->count == 1) {
-        assert(!node->IsSplit());
+      if (!node->IsSplit()) {
         node->count = 0;
         assert(node->min_value == x);
+        node->min_value = node->max_value = Empty;
         if (prev_node) {
           --nodes_used;
           assert(prev_node->mask.HasKey(prev_idx));
