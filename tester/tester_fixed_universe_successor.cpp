@@ -60,40 +60,40 @@ bool TesterFixedUniverseSuccessor::TestAll(bool small_test) const {
   std::cout << "USize = " << usize << std::endl;
   std::unordered_set<size_t> hs;
   if (small_test) {
-    hs.insert(TestBase<ds::fus::VectorSet>("VSet  "));
-    hs.insert(TestBase<ds::fus::VectorMultiset>("VMSet "));
-    hs.insert(TestBase<ds::fus::VectorPrecomputed>("VPreC "));
+    hs.insert(TestBase<ds::fus::VectorSet>("VSet   "));
+    hs.insert(TestBase<ds::fus::VectorMultiset>("VMSet  "));
+    hs.insert(TestBase<ds::fus::VectorPrecomputed>("VPreC  "));
   }
   if (usize <= (1ull << 30)) {
-    hs.insert(TestBase<ds::fus::TwoLayersU64>("L2U64 "));
-    hs.insert(TestBase<ds::fus::SqrtDecomposition>("SqrtD "));
-    hs.insert(TestBase<ds::fus::ImplicitBinaryTree>("IBT   "));
+    hs.insert(TestBase<ds::fus::TwoLayersU64>("L2 U64 "));
+    hs.insert(TestBase<ds::fus::SqrtDecomposition>("SqrtD  "));
+    hs.insert(TestBase<ds::fus::ImplicitBinaryTree>("IBT    "));
   }
-  hs.insert(TestBase<ds::fus::BinarySearchTree>("BST   "));
-  hs.insert(TestBase<ds::fus::B64Trie>("B64T  "));
-  hs.insert(TestBase<ds::fus::MultiSearchTree<ds::fus::U64Set>>("MST 64"));
-  hs.insert(TestBase<ds::fus::MultiSearchTree<ds::fus::U64Set>>("MST256"));
+  hs.insert(TestBase<ds::fus::BinarySearchTree>("BST    "));
+  hs.insert(TestBase<ds::fus::B64Trie>("B64Trie"));
+  hs.insert(TestBase<ds::fus::MultiSearchTree<ds::fus::U64Set>>("MST  64"));
+  hs.insert(TestBase<ds::fus::MultiSearchTree<ds::fus::U64Set>>("MST 256"));
   if (usize <= (1ull << 27)) {
-    hs.insert(TestBase<ds::fus::VanEmdeBoasTreeFull>("VEBTF "));
+    hs.insert(TestBase<ds::fus::VanEmdeBoasTreeFull>("VEBTF  "));
   }
   if (usize <= (1ull << 20)) {
-    hs.insert(TestBase<ds::fus::VanEmdeBoasTreeFullStaticSize<20>>("VEBTFS"));
+    hs.insert(TestBase<ds::fus::VanEmdeBoasTreeFullStaticSize<20>>("VEBTFS "));
   } else if (usize <= (1ull << 27)) {
-    hs.insert(TestBase<ds::fus::VanEmdeBoasTreeFullStaticSize<27>>("VEBTFS"));
+    hs.insert(TestBase<ds::fus::VanEmdeBoasTreeFullStaticSize<27>>("VEBTFS "));
   }
-  hs.insert(TestBase<ds::fus::VanEmdeBoasTreeCompact>("VEBTC "));
+  hs.insert(TestBase<ds::fus::VanEmdeBoasTreeCompact>("VEBTC  "));
   if (usize <= (1ull << 20)) {
     hs.insert(
-        TestBase<ds::fus::VanEmdeBoasTreeCompactStaticSize<20>>("VEBTCS"));
+        TestBase<ds::fus::VanEmdeBoasTreeCompactStaticSize<20>>("VEBTCS "));
   } else if (usize <= (1ull << 27)) {
     hs.insert(
-        TestBase<ds::fus::VanEmdeBoasTreeCompactStaticSize<27>>("VEBTCS"));
+        TestBase<ds::fus::VanEmdeBoasTreeCompactStaticSize<27>>("VEBTCS "));
   } else {
     hs.insert(
-        TestBase<ds::fus::VanEmdeBoasTreeCompactStaticSize<64>>("VEBTCS"));
+        TestBase<ds::fus::VanEmdeBoasTreeCompactStaticSize<64>>("VEBTCS "));
   }
   if (small_test) {
-    hs.insert(TestBase<ds::fus::XFastTrie>("XFTrie"));
+    hs.insert(TestBase<ds::fus::XFastTrie>("XFTrie "));
   }
   return hs.size() == 1;
 }
