@@ -67,7 +67,7 @@ class BinarySearchTree {
   }
 
   size_t Predecessor(size_t x) const {
-    auto node = bst::base::FindByKeyLess(root, x - 1);
+    auto node = x ? bst::base::FindByKeyLess(root, x - 1) : nullptr;
     return node ? node->key : Empty;
   }
 };

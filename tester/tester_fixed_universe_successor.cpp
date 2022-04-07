@@ -105,7 +105,8 @@ bool TestFixedUniverseSuccessor(bool time_test) {
     // return tfus2.TestAll(false);
     return tfus1.TestAll(false) && tfus2.TestAll(false);
   } else {
-    TesterFixedUniverseSuccessor tfus(10000, 1000);
-    return tfus.TestAll(true);
+    TesterFixedUniverseSuccessor tfus1(100, 1000);
+    TesterFixedUniverseSuccessor tfus2(10000, 1000);
+    return tfus1.TestAll(true) && tfus2.TestAll(true);
   }
 }

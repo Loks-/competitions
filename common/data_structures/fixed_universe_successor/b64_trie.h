@@ -69,7 +69,7 @@ class B64Trie {
   void Init(size_t u) {
     Clear();
     usize = u;
-    maxh = (u > 64) ? (numeric::ULog2(u - 1) - 1) / 6 + 1 : 1;
+    maxh = (u > 64) ? numeric::ULog2(u - 1) / 6 + 1 : 1;
   }
 
   bool HasKey(size_t x) const {
