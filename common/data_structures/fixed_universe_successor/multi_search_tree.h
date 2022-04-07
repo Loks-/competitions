@@ -18,6 +18,7 @@ namespace fus {
 // Max         -- O(log U)
 // Successor   -- O(log U)
 // Predecessor -- O(log U)
+// TODO: Move hash table code to a new class.
 template <class TMask>
 class MultiSearchTree {
  protected:
@@ -53,8 +54,7 @@ class MultiSearchTree {
   }
 
   size_t GetHKey(size_t x, size_t depth) const {
-    return GetHighBits(x, depth) + depth;
-    // return GetHighBits(x, depth) + depth + 1;
+    return GetHighBits(x, depth) + depth + 1;
   }
 
   size_t GetHash(size_t x) const {
@@ -67,32 +67,28 @@ class MultiSearchTree {
   }
 
   // Check
-  void ResizeHash(size_t count) {
+  void ResizeHash(size_t new_size) {
     // invalidates all pointers
-    size_t nodeCountLn = 2;
-    while ((1ull << nodeCountLn) < count * 2) {
-      ++nodeCountLn;
-    }
-    hash_shift = 64 - nodeCountLn;
-    size_t nodeCount = 1ull << nodeCountLn;
-    std::vector<Node> newNodes;
-    // ClearPodArray(&newNodes, nodeCount);
-    newNodes.resize(nodeCount);
-    node_ptr_mask = nodeCount - 1;
+    size_t ln_size = 2;
+    for (; (1ull << ln_size) < new_size * 2;) ++ln_size;
+    hash_shift = 64 - ln_size;
+    new_size = 1ull << ln_size;
+    std::vector<Node> new_nodes;
+    new_nodes.resize(new_size);
+    node_ptr_mask = new_size - 1;
     if (nodes_used > 0) {
       for (const Node &x : nodes) {
-        if (!x.IsEmpty()) {
-          for (size_t idx = GetHash(x.key);; ++idx) {
-            size_t ptr = idx & node_ptr_mask;
-            if (newNodes[ptr].IsEmpty()) {
-              newNodes[ptr] = x;
-              break;
-            }
+        if (x.IsEmpty()) continue;
+        for (size_t idx = GetHash(x.key);; ++idx) {
+          size_t ptr = idx & node_ptr_mask;
+          if (new_nodes[ptr].IsEmpty()) {
+            new_nodes[ptr] = x;
+            break;
           }
         }
       }
     }
-    nodes.swap(newNodes);
+    nodes.swap(new_nodes);
   }
 
   size_t FindNodeIndex(size_t key) const {
