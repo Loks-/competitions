@@ -1,7 +1,7 @@
 #pragma once
 
 #include "common/base.h"
-#include "common/binary_indexed_tree/bit.h"
+#include "common/data_structures/binary_indexed_tree/bit.h"
 #include "common/factorization/table/mobius.h"
 #include "common/factorization/table/pi.h"
 #include "common/numeric/bits/ulog2.h"
@@ -44,7 +44,7 @@ inline uint64_t PrimesCount(uint64_t n) {
   // S3
   uint64_t vs_size = std::max(y, ny) + 1;
   std::vector<unsigned> vs(vs_size, 1);
-  BIT<int64_t> bit(vs_size);
+  ds::BIT<int64_t> bit(vs_size);
   for (uint64_t b = 0; b < pn4; ++b) {
     uint64_t p = primes[b], np = n / p;
     for (uint64_t ns = y / p + 1; ns <= y; ++ns) {

@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <vector>
 
+namespace ds {
 // Binary Indexed Tree (same as Fenwick tree)
 template <class TValue = int64_t>
 class BIT {
@@ -39,3 +40,4 @@ class BIT {
 
   TValue Get(size_t index) const { return Sum(index, index + 1); }
 };
+}  // namespace ds

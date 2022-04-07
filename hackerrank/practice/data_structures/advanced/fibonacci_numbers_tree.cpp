@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/fibonacci-numbers-tree
 
-#include "common/binary_indexed_tree/bit.h"
+#include "common/data_structures/binary_indexed_tree/bit.h"
 #include "common/graph/tree.h"
 #include "common/graph/tree/lca.h"
 #include "common/graph/tree/nodes_info.h"
@@ -8,7 +8,7 @@
 #include "common/modular_io.h"
 #include "common/stl/base.h"
 
-using TBIT = BIT<TModularD>;
+using TBIT = ds::BIT<TModularD>;
 using TFibonacci = modular::mstatic::FibonacciMatrix<TModularD>;
 
 int main_fibonacci_numbers_tree() {

@@ -1,12 +1,12 @@
 // https://www.hackerrank.com/challenges/subsequence-weighting
 
-#include "common/binary_indexed_tree/bit_sparse.h"
+#include "common/data_structures/binary_indexed_tree/bit_sparse.h"
 #include "common/proxy/max.h"
 #include "common/stl/base.h"
 #include "common/vector/read.h"
 
 using TProxy = proxy::Max<uint64_t>;
-using TBIT = BITSparse<TProxy>;
+using TBIT = ds::BITSparse<TProxy>;
 
 int main_subsequence_weighting__bit_sparse() {
   uint64_t max_size = (1u << 31);

@@ -4,6 +4,7 @@
 
 #include <unordered_map>
 
+namespace ds {
 template <class TValue = int64_t>
 class BITSparse {
  protected:
@@ -39,3 +40,4 @@ class BITSparse {
 
   TValue Get(uint64_t index) const { return Sum(index, index + 1); }
 };
+}  // namespace ds

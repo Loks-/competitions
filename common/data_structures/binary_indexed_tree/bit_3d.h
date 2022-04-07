@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <vector>
 
+namespace ds {
 template <class TValue = int64_t>
 class BIT_3D {
  protected:
@@ -63,3 +64,4 @@ class BIT_3D {
     return Sum(index1, index2, index3, index1 + 1, index2 + 1, index3 + 1);
   }
 };
+}  // namespace ds

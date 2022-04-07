@@ -1,12 +1,12 @@
 // https://www.hackerrank.com/challenges/lazy-white-falcon
 
-#include "common/binary_indexed_tree/bit.h"
+#include "common/data_structures/binary_indexed_tree/bit.h"
 #include "common/graph/tree.h"
 #include "common/graph/tree/lca.h"
 #include "common/graph/tree/nodes_info.h"
 #include "common/stl/base.h"
 
-using TBIT = BIT<>;
+using TBIT = ds::BIT<>;
 
 int main_lazy_white_falcon() {
   unsigned N, Q;

@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/cube-summation
 
-#include "common/binary_indexed_tree/bit_3d.h"
+#include "common/data_structures/binary_indexed_tree/bit_3d.h"
 #include "common/stl/base.h"
 
 #include <string>
@@ -8,7 +8,7 @@
 int main_cube_summation() {
   unsigned T, N, M;
   cin >> T;
-  BIT_3D<int64_t> bit(0, 0, 0);
+  ds::BIT_3D<int64_t> bit(0, 0, 0);
   for (unsigned it = 0; it < T; ++it) {
     cin >> N >> M;
     ++N;

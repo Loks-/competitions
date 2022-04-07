@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/direct-connections
 
-#include "common/binary_indexed_tree/bit_sparse.h"
+#include "common/data_structures/binary_indexed_tree/bit_sparse.h"
 #include "common/modular_io.h"
 #include "common/stl/base.h"
 #include "common/stl/pair.h"
@@ -12,7 +12,7 @@ int main_direct_connections__bit_sparse() {
   unsigned T, N;
   cin >> T;
   for (unsigned it = 0; it < T; ++it) {
-    BITSparse<TPair> bit(1000000001);
+    ds::BITSparse<TPair> bit(1000000001);
     cin >> N;
     vector<uint64_t> vx = nvector::Read<uint64_t>(N);
     vector<uint64_t> vp = nvector::Read<uint64_t>(N);

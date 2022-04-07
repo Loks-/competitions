@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/direct-connections
 
-#include "common/binary_indexed_tree/bit.h"
+#include "common/data_structures/binary_indexed_tree/bit.h"
 #include "common/data_structures/coordinate_compression.h"
 #include "common/modular_io.h"
 #include "common/stl/base.h"
@@ -20,7 +20,7 @@ int main_direct_connections__coordinate_compression() {
     for (unsigned i = 0; i < N; ++i) vpx.push_back({vp[i], vx[i]});
     sort(vpx.begin(), vpx.end());
     ds::CoordinateCompression<uint64_t> cc(vx);
-    BIT<TPair> bit(cc.Size());
+    ds::BIT<TPair> bit(cc.Size());
     TPair sum;
     TModularD total = 0;
     for (auto px : vpx) {

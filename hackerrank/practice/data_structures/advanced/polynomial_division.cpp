@@ -1,11 +1,11 @@
 // https://www.hackerrank.com/challenges/polynomial-division
 
-#include "common/binary_indexed_tree/bit.h"
+#include "common/data_structures/binary_indexed_tree/bit.h"
 #include "common/modular.h"
 #include "common/stl/base.h"
 #include "common/vector/read.h"
 
-using TBIT = BIT<TModularD>;
+using TBIT = ds::BIT<TModularD>;
 
 int main_polynomial_division() {
   unsigned n, a, b, q, c;

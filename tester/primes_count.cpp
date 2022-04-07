@@ -1,7 +1,7 @@
 #include "tester/primes_count.h"
 
 #include "common/assert_exception.h"
-#include "common/binary_indexed_tree/bit.h"
+#include "common/data_structures/binary_indexed_tree/bit.h"
 #include "common/factorization/primes_count_quotients.h"
 #include "common/factorization/primes_generator.h"
 #include "common/factorization/primes_range.h"
@@ -190,7 +190,7 @@ uint64_t PrimesCount_LagariasMillerOdlyzko(uint64_t n) {
   for (uint64_t i = 1; i <= ncbrt; ++i) s += mobius(i) * (n / i);
 
   std::vector<unsigned> vs(ncbrt2 + 1, 1);
-  BIT<int64_t> bit(ncbrt2 + 1);
+  ds::BIT<int64_t> bit(ncbrt2 + 1);
   for (uint64_t b = 0; b < k; ++b) {
     uint64_t p = primes[b], np = n / p;
     for (uint64_t ns = ncbrt / p + 1; ns <= ncbrt; ++ns) {
@@ -229,7 +229,7 @@ uint64_t PrimesCount_LagariasMillerOdlyzkoY(uint64_t n) {
 
   uint64_t vs_size = std::max(y, y2) + 1;
   std::vector<unsigned> vs(vs_size, 1);
-  BIT<int64_t> bit(vs_size);
+  ds::BIT<int64_t> bit(vs_size);
   for (uint64_t b = 0; b < k; ++b) {
     uint64_t p = primes[b], np = n / p;
     for (uint64_t ns = y / p + 1; ns <= y; ++ns) {
@@ -280,7 +280,7 @@ uint64_t PrimesCount_DelegliseRivat(uint64_t n) {
   // S3
   uint64_t vs_size = std::max(y, ny) + 1;
   std::vector<unsigned> vs(vs_size, 1);
-  BIT<int64_t> bit(vs_size);
+  ds::BIT<int64_t> bit(vs_size);
   for (uint64_t b = 0; b < pn4; ++b) {
     uint64_t p = primes[b], np = n / p;
     for (uint64_t ns = y / p + 1; ns <= y; ++ns) {
