@@ -125,7 +125,7 @@ class MultiSearchTree {
 
   void Set1(Node *node, size_t x, size_t depth) {
     node->min_value = node->max_value = x;
-    node->mask.Set1(CalcLevelIndex(x, depth));
+    node->mask.Set1I(CalcLevelIndex(x, depth));
   }
 
  public:

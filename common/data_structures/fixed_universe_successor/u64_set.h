@@ -50,6 +50,9 @@ class U64Set {
   // Assume mask != 0.
   size_t MinI() const { return numeric::Lowest0Bits(mask); }
   size_t MaxI() const { return 63 - numeric::Highest0Bits(mask); }
+
+  // Assume mask == 0.
+  void Set1I(size_t x) { Set1(x); }
 };
 }  // namespace fus
 }  // namespace ds

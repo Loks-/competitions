@@ -32,6 +32,9 @@ class U256Set {
     vmask[x >> 6] = (1ull << (x & 63));
   }
 
+  // Assume mask == 0.
+  void Set1I(size_t x) { vmask[x >> 6] = (1ull << (x & 63)); }
+
   void Insert(size_t x) { vmask[x >> 6] |= (1ull << (x & 63)); }
   bool HasKey(size_t x) const { return (vmask[x >> 6] >> (x & 63)) & 1ull; }
   void Delete(size_t x) { vmask[x >> 6] &= ~(1ull << (x & 63)); }
