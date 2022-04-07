@@ -26,7 +26,6 @@ class MultiSearchTree {
   static const size_t level_mask = (size_t(1) << bits_per_level) - 1;
 
   struct Node {
-    size_t count = 0;
     size_t key = 0;
     size_t min_value = Empty;
     size_t max_value = Empty;
@@ -34,6 +33,11 @@ class MultiSearchTree {
 
     bool IsEmpty() const { return min_value == Empty; }
     bool IsSplit() const { return min_value != max_value; }
+
+    void Clear() {
+      min_value = max_value = Empty;
+      mask.Clear();
+    }
   };
 
  protected:
@@ -66,9 +70,7 @@ class MultiSearchTree {
     return (x >> (depth * bits_per_level)) & level_mask;
   }
 
-  // Check
   void ResizeHash(size_t new_size) {
-    // invalidates all pointers
     size_t ln_size = 2;
     for (; (1ull << ln_size) < new_size * 2;) ++ln_size;
     hash_shift = 64 - ln_size;
@@ -121,25 +123,7 @@ class MultiSearchTree {
     }
   }
 
-  void DeleteSubtree(Node *node, size_t x, size_t depth) {
-    bool needRecursion = node->IsSplit();
-    node->min_value = node->max_value = Empty;  // Move to different function?
-    node->count = 0;
-    // node->key = 0;
-    --nodes_used;
-    if (depth == 0 || !needRecursion) return;
-    size_t highX = GetHighBits(x, depth);
-    for (size_t idx = node->mask.Min(); idx != Empty;
-         idx = node->mask.Successor(idx)) {
-      size_t bitX = highX + (idx << (depth * bits_per_level));
-      Node *subNode = FindNode(bitX, depth - 1);
-      DeleteSubtree(subNode, bitX, depth - 1);
-    }
-    // node->mask.Clear();
-  }
-
   void MakeSingleValueNode(Node *node, size_t x, size_t depth) {
-    node->count = 1;
     node->min_value = x;
     node->max_value = x;
     node->mask.Set1(CalcLevelIndex(x, depth));
@@ -150,17 +134,14 @@ class MultiSearchTree {
 
   void Init(size_t u) {
     usize = u;
-    root.count = 0;
-    root.min_value = Empty;
-    root.max_value = Empty;
-    root.mask.Clear();
+    root.Clear();
     max_depth = 0;
     for (;; ++max_depth) {
       size_t bits = (max_depth + 1) * bits_per_level;
       if ((bits >= 64) || ((1ull << bits) >= usize)) break;
     }
     path.resize(max_depth + 1);
-    ResizeHash(1000);  // ???
+    ResizeHash(1000);
   }
 
   bool HasKey(size_t x) const {
@@ -188,7 +169,6 @@ class MultiSearchTree {
           MakeSingleValueNode(sn, sx, depth - 1);
         }
       }
-      ++node->count;
       node->min_value = std::min(node->min_value, x);
       node->max_value = std::max(node->max_value, x);
       size_t idx = CalcLevelIndex(x, depth);
@@ -214,22 +194,14 @@ class MultiSearchTree {
     for (;; node = FindNode(x, --depth)) {
       path[depth] = node;
       if (!node->IsSplit()) {
-        node->count = 0;
         assert(node->min_value == x);
-        node->min_value = node->max_value = Empty;
+        node->Clear();
         if (prev_node) {
           --nodes_used;
           assert(prev_node->mask.HasKey(prev_idx));
           prev_node->mask.Delete(prev_idx);
         }
-      } else if (node->count == 2) {
-        // Unsplit node
-        size_t x2 = node->max_value + node->min_value - x;
-        DeleteSubtree(node, x, depth);
-        ++nodes_used;
-        MakeSingleValueNode(node, x2, depth);
       } else {
-        --node->count;
         prev_idx = CalcLevelIndex(x, depth);
         assert(node->mask.HasKey(prev_idx));
         if (depth == 0) {
@@ -263,6 +235,13 @@ class MultiSearchTree {
       } else {
         break;
       }
+      if (node->min_value == node->max_value) {
+        // Unsplit node
+        Node *child = FindNode(node->min_value, depth - 1);
+        assert(child);
+        --nodes_used;
+        child->Clear();
+      }
     }
   }
 
@@ -275,7 +254,6 @@ class MultiSearchTree {
     for (size_t depth = max_depth;; --depth) {
       assert(x < node->max_value);
       if (!node->IsSplit()) {
-        assert(node->count == 1);
         return node->max_value;
       }
       size_t idx = CalcLevelIndex(x, depth);
@@ -303,7 +281,6 @@ class MultiSearchTree {
     for (size_t depth = max_depth;; --depth) {
       assert(x > node->min_value);
       if (!node->IsSplit()) {
-        assert(node->count == 1);
         return node->min_value;
       }
       size_t idx = CalcLevelIndex(x, depth);
