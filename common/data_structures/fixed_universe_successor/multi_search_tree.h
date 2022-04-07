@@ -8,7 +8,7 @@
 namespace ds {
 namespace fus {
 // Based on A.G. code.
-// Memory      -- O(S)
+// Memory      -- O(S log U)
 // Init        -- O(1)
 // Insert      -- O(log U)
 // HasKey      -- O(log U)
