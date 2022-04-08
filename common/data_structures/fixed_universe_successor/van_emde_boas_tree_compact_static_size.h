@@ -141,7 +141,7 @@ class VanEmdeBoasTreeCompactStaticSizeI {
     }
   }
 
-  size_t Successor(size_t x) {
+  size_t Successor(size_t x) const {
     if (x < min_value) return min_value;
     if (x >= max_value) return Empty;
     size_t x1 = (x >> nbits_low), x2 = (x & mask_low);
@@ -153,7 +153,7 @@ class VanEmdeBoasTreeCompactStaticSizeI {
     return (x1 << nbits_low) + children[x1]->Min();
   }
 
-  size_t Predecessor(size_t x) {
+  size_t Predecessor(size_t x) const {
     if (x > max_value) return max_value;
     if (x <= min_value) return Empty;
     size_t x1 = (x >> nbits_low), x2 = (x & mask_low);

@@ -135,7 +135,7 @@ class VanEmdeBoasTreeCompact {
     }
   }
 
-  size_t Successor(size_t x) {
+  size_t Successor(size_t x) const {
     if (Flat()) return leaf.Successor(x);
     if (x < min_value) return min_value;
     if (x >= max_value) return Empty;
@@ -145,10 +145,11 @@ class VanEmdeBoasTreeCompact {
       return (x1 << mh) + it1->second->Successor(x2);
     assert(aux_tree);
     x1 = aux_tree->Successor(x1);
-    return (x1 << mh) + children[x1]->Min();
+    it1 = children.find(x1);
+    return (x1 << mh) + it1->second->Min();
   }
 
-  size_t Predecessor(size_t x) {
+  size_t Predecessor(size_t x) const {
     if (Flat()) return leaf.Predecessor(x);
     if (x > max_value) return max_value;
     if (x <= min_value) return Empty;
@@ -158,7 +159,8 @@ class VanEmdeBoasTreeCompact {
       return (x1 << mh) + it1->second->Predecessor(x2);
     assert(aux_tree);
     x1 = aux_tree->Predecessor(x1);
-    return (x1 == Empty) ? min_value : (x1 << mh) + children[x1]->Max();
+    it1 = children.find(x1);
+    return (x1 == Empty) ? min_value : (x1 << mh) + it1->second->Max();
   }
 };
 }  // namespace fus

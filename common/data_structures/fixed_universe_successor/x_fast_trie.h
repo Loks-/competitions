@@ -60,6 +60,21 @@ class XFastTrie {
     return r;
   }
 
+  const Node *Find(size_t x) const {
+    if (IsEmpty()) return empty_node;
+    unsigned h0 = 0u, h1 = maxh;
+    for (; h1 - h0 > 1;) {
+      auto h = (h0 + h1) / 2;
+      auto key = HXToKey(h - 1, x);
+      if (m.find(key) == m.end()) {
+        h0 = h;
+      } else {
+        h1 = h;
+      }
+    }
+    return m.find(HXToKey(h0, x))->second;
+  }
+
  public:
   XFastTrie() {}
   XFastTrie(size_t u) { Init(u); }
@@ -217,14 +232,14 @@ class XFastTrie {
   }
 
  protected:
-  Node *SuccessorI(size_t x) {
+  Node *SuccessorI(size_t x) const {
     if (IsEmpty()) return empty_node;
     auto hnode = Find(x);
     auto h = KeyToH(hnode->value);
     return h ? ((x >> (h - 1)) & 1) ? hnode->r->r : hnode->l : hnode->r;
   }
 
-  Node *PredecessorI(size_t x) {
+  Node *PredecessorI(size_t x) const {
     if (IsEmpty()) return empty_node;
     auto hnode = Find(x);
     auto h = KeyToH(hnode->value);
@@ -232,8 +247,8 @@ class XFastTrie {
   }
 
  public:
-  size_t Successor(size_t x) { return SuccessorI(x)->value; }
-  size_t Predecessor(size_t x) { return PredecessorI(x)->value; }
+  size_t Successor(size_t x) const { return SuccessorI(x)->value; }
+  size_t Predecessor(size_t x) const { return PredecessorI(x)->value; }
 };
 }  // namespace fus
 }  // namespace ds

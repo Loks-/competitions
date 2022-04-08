@@ -116,7 +116,7 @@ class VanEmdeBoasTreeFull {
     }
   }
 
-  size_t Successor(size_t x) {
+  size_t Successor(size_t x) const {
     if (Flat()) return leaf.Successor(x);
     if (x < min_value) return min_value;
     if (x >= max_value) return Empty;
@@ -127,7 +127,7 @@ class VanEmdeBoasTreeFull {
     return (x1 << mh) + children[x1].Min();
   }
 
-  size_t Predecessor(size_t x) {
+  size_t Predecessor(size_t x) const {
     if (Flat()) return leaf.Predecessor(x);
     if (x > max_value) return max_value;
     if (x <= min_value) return Empty;
