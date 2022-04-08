@@ -10,7 +10,7 @@
 
 namespace ds {
 namespace fus {
-// Static Van Emde Boas tree (full). Use U64Set class on low level.
+// Static Van Emde Boas tree (full). Use FLS6 class on low level.
 // Memory      -- O(U)
 // Init        -- O(U)
 // Insert      -- O(log log U)

@@ -11,7 +11,7 @@
 
 namespace ds {
 namespace fus {
-// Van Emde Boas tree (hash table for children). Use U64Set class on low level.
+// Van Emde Boas tree (hash table for children). Use FLS6B class on low level.
 // Memory      -- O(S)
 // Init        -- O(1)
 // Insert      -- O(log log U)
