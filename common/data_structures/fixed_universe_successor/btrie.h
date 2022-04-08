@@ -1,7 +1,6 @@
 #pragma once
 
 #include "common/data_structures/fixed_universe_successor/empty.h"
-#include "common/data_structures/fixed_universe_successor/fixed_length_set_6b.h"
 #include "common/node.h"
 #include "common/nodes_manager.h"
 #include "common/numeric/bits/ulog2.h"
@@ -21,11 +20,16 @@ namespace fus {
 // Max         -- O(log U)
 // Successor   -- O(log U)
 // Predecessor -- O(log U)
-class B64Trie {
+template <class TFLS>
+class BTrie {
  protected:
+  static const unsigned bits_per_level = TFLS::nbits;
+  static const size_t level_mask = (size_t(1) << bits_per_level) - 1;
+  static const size_t level_size = (size_t(1) << bits_per_level);
+
   class Node : public BaseNode {
    public:
-    FLSetB6 mask;
+    TFLS mask;
     Node* p;
     std::vector<Node*> children;
   };
@@ -55,10 +59,9 @@ class B64Trie {
   }
 
  public:
-  B64Trie() {
+  BTrie() {
     root = manager1.New();
     root->p = nullptr;
-    root->children.resize(64, nullptr);
   }
 
   void Clear() {
@@ -69,26 +72,27 @@ class B64Trie {
   void Init(size_t u) {
     Clear();
     usize = u;
-    maxh = (u > 64) ? numeric::ULog2(u - 1) / 6 + 1 : 1;
+    maxh = (u > level_size) ? numeric::ULog2(u - 1) / bits_per_level + 1 : 1;
+    root->children.resize(maxh > 1 ? level_size : 0, nullptr);
   }
 
   bool HasKey(size_t x) const {
     auto node = root;
     for (unsigned h = 1; node && (h < maxh); ++h) {
-      node = node->children[(x >> (6 * (maxh - h))) & 63];
+      node = node->children[(x >> (bits_per_level * (maxh - h))) & level_mask];
     }
-    return node ? node->mask.HasKey(x & 63) : false;
+    return node ? node->mask.HasKey(x & level_mask) : false;
   }
 
   void Insert(size_t x) {
     auto node = root;
     for (unsigned h = 1; h < maxh; ++h) {
-      auto v = (x >> (6 * (maxh - h))) & 63;
+      auto v = (x >> (bits_per_level * (maxh - h))) & level_mask;
       if (!node->children[v]) {
         Node* nodec = nullptr;
         if ((h + 1) < maxh) {
           nodec = manager1.New();
-          nodec->children.resize(64, nullptr);
+          nodec->children.resize(level_size, nullptr);
         } else {
           nodec = manager2.New();
         }
@@ -98,24 +102,25 @@ class B64Trie {
       }
       node = node->children[v];
     }
-    if (!node->mask.HasKey(x & 63)) {
+    if (!node->mask.HasKey(x & level_mask)) {
       ++size;
-      node->mask.Insert(x & 63);
+      node->mask.Insert(x & level_mask);
     }
   }
 
   void Delete(size_t x) {
     auto node = root;
     for (unsigned h = 1; node && (h < maxh); ++h) {
-      node = node->children[(x >> (6 * (maxh - h))) & 63];
+      node = node->children[(x >> (bits_per_level * (maxh - h))) & level_mask];
     }
-    if (!node || !node->mask.HasKey(x & 63)) return;  // No element to remove
+    if (!node || !node->mask.HasKey(x & level_mask))
+      return;  // No element to remove
     --size;
-    node->mask.Delete(x & 63);
+    node->mask.Delete(x & level_mask);
     for (; node->mask.IsEmpty() && (node != root);) {
       node = node->p;
-      x >>= 6;
-      auto v = x & 63;
+      x >>= bits_per_level;
+      auto v = x & level_mask;
       node->mask.Delete(v);
       ReleaseNode(node->children[v]);
       node->children[v] = nullptr;
@@ -130,20 +135,20 @@ class B64Trie {
     if (node->mask.IsEmpty()) return Empty;
     for (; !node->children.empty();) {
       auto v = node->mask.Min();
-      x = (x << 6) + v;
+      x = (x << bits_per_level) + v;
       node = node->children[v];
     }
-    return (x << 6) + node->mask.Min();
+    return (x << bits_per_level) + node->mask.Min();
   }
 
   size_t MaxI(Node* node, size_t x) const {
     if (node->mask.IsEmpty()) return Empty;
     for (; !node->children.empty();) {
       auto v = node->mask.Max();
-      x = (x << 6) + v;
+      x = (x << bits_per_level) + v;
       node = node->children[v];
     }
-    return (x << 6) + node->mask.Max();
+    return (x << bits_per_level) + node->mask.Max();
   }
 
  public:
@@ -154,15 +159,15 @@ class B64Trie {
     auto node = root;
     unsigned h = 1;
     for (; h < maxh; ++h) {
-      auto v = (x >> (6 * (maxh - h))) & 63;
+      auto v = (x >> (bits_per_level * (maxh - h))) & level_mask;
       if (!node->children[v]) break;
       node = node->children[v];
     }
     for (; node; --h) {
-      auto v = (x >> (6 * (maxh - h))) & 63;
+      auto v = (x >> (bits_per_level * (maxh - h))) & level_mask;
       auto v1 = node->mask.Successor(v);
       if (v1 != Empty) {
-        auto xa = (x >> (6 * (maxh - h))) - v + v1;
+        auto xa = (x >> (bits_per_level * (maxh - h))) - v + v1;
         return node->children.empty() ? xa : MinI(node->children[v1], xa);
       }
       node = node->p;
@@ -174,15 +179,15 @@ class B64Trie {
     auto node = root;
     unsigned h = 1;
     for (; h < maxh; ++h) {
-      auto v = (x >> (6 * (maxh - h))) & 63;
+      auto v = (x >> (bits_per_level * (maxh - h))) & level_mask;
       if (!node->children[v]) break;
       node = node->children[v];
     }
     for (; node; --h) {
-      auto v = (x >> (6 * (maxh - h))) & 63;
+      auto v = (x >> (bits_per_level * (maxh - h))) & level_mask;
       auto v1 = node->mask.Predecessor(v);
       if (v1 != Empty) {
-        auto xa = (x >> (6 * (maxh - h))) - v + v1;
+        auto xa = (x >> (bits_per_level * (maxh - h))) - v + v1;
         return node->children.empty() ? xa : MaxI(node->children[v1], xa);
       }
       node = node->p;
