@@ -2,7 +2,6 @@
 
 #include "common/base.h"
 #include "common/data_structures/fixed_universe_successor/empty.h"
-#include "common/data_structures/fixed_universe_successor/fixed_length_set_6b.h"
 #include "common/numeric/bits/ulog2.h"
 
 #include <algorithm>
@@ -11,7 +10,7 @@
 
 namespace ds {
 namespace fus {
-// Van Emde Boas tree (full). Use U64Set class on low level.
+// Van Emde Boas tree (full). Use TFLS class on low level.
 // Memory      -- O(U)
 // Init        -- O(U)
 // Insert      -- O(log log U)
@@ -21,23 +20,24 @@ namespace fus {
 // Max         -- O(1)
 // Successor   -- O(log log U)
 // Predecessor -- O(log log U)
+template <class TFLS>
 class VanEmdeBoasTreeFull {
  public:
-  using TSelf = VanEmdeBoasTreeFull;
+  using TSelf = VanEmdeBoasTreeFull<TFLS>;
   using PSelf = std::shared_ptr<TSelf>;
 
  protected:
   unsigned m, mh;
   size_t mask_low;
 
-  FLSetB6 leaf;
+  TFLS leaf;
   PSelf aux_tree;
   std::vector<TSelf> children;
 
   size_t min_value, max_value;
 
  protected:
-  bool Flat() const { return m <= 6; }
+  bool Flat() const { return m <= TFLS::nbits; }
 
   static PSelf Make(unsigned _m) { return std::make_shared<TSelf>(_m); }
 

@@ -77,7 +77,10 @@ bool TesterFixedUniverseSuccessor::TestAll(bool small_test) const {
   hs.insert(TestBase<ds::fus::MultiSearchTree<ds::fus::FLSetB6>>("MST  B6"));
   hs.insert(TestBase<ds::fus::MultiSearchTree<ds::fus::FLSetB8>>("MST  B8"));
   if (usize <= (1ull << 27)) {
-    hs.insert(TestBase<ds::fus::VanEmdeBoasTreeFull>("VEBTF  "));
+    hs.insert(
+        TestBase<ds::fus::VanEmdeBoasTreeFull<ds::fus::FLSetB6>>("VEBTF 6"));
+    hs.insert(
+        TestBase<ds::fus::VanEmdeBoasTreeFull<ds::fus::FLSetB8>>("VEBTF 8"));
   }
   if (usize <= (1ull << 20)) {
     hs.insert(TestBase<ds::fus::VanEmdeBoasTreeFullStaticSize<20>>("VEBTFS "));
