@@ -88,6 +88,8 @@ bool TesterFixedUniverseSuccessor::TestAll(bool small_test) const {
     hs.insert(TestBase<VanEmdeBoasTreeFullStaticSize<27>>("VEBTFS "));
   }
   hs.insert(TestBase<VanEmdeBoasTreeCompact>("VEBTC  "));
+  hs.insert(TestBase<VanEmdeBoasTreeCompact2<FLSetB6>>("VEBT2 6"));
+  hs.insert(TestBase<VanEmdeBoasTreeCompact2<FLSetB8>>("VEBT2 8"));
   if (usize <= (1ull << 20)) {
     hs.insert(TestBase<VanEmdeBoasTreeCompactStaticSize<20>>("VEBTCS "));
   } else if (usize <= (1ull << 27)) {
