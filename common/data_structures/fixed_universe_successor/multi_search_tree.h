@@ -19,17 +19,17 @@ namespace fus {
 // Successor   -- O(log U)
 // Predecessor -- O(log U)
 // TODO: Move hash table code to a new class.
-template <class TMask>
+template <class TFLS>
 class MultiSearchTree {
  protected:
-  static const unsigned bits_per_level = TMask::nbits;
+  static const unsigned bits_per_level = TFLS::nbits;
   static const size_t level_mask = (size_t(1) << bits_per_level) - 1;
 
   struct Node {
     size_t key = 0;
     size_t min_value = Empty;
     size_t max_value = Empty;
-    TMask mask;
+    TFLS mask;
 
     bool IsEmpty() const { return min_value == Empty; }
     bool IsSplit() const { return min_value != max_value; }
