@@ -237,7 +237,7 @@ class MultiSearchTree {
 
   size_t Successor(size_t x) const {
     if (root.IsEmpty() || (x >= root.max_value)) return Empty;
-    Node *node = &root;
+    const Node *node = &root;
     for (size_t depth = max_depth;; --depth) {
       if (!node->IsSplit()) return node->max_value;
       size_t idx = CalcLevelIndex(x, depth);
@@ -258,7 +258,7 @@ class MultiSearchTree {
 
   size_t Predecessor(size_t x) const {
     if (root.IsEmpty() || (x <= root.min_value)) return Empty;
-    Node *node = &root;
+    const Node *node = &root;
     for (size_t depth = max_depth;; --depth) {
       if (!node->IsSplit()) return node->min_value;
       size_t idx = CalcLevelIndex(x, depth);
