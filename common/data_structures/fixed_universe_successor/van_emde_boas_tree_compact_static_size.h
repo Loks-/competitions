@@ -2,7 +2,7 @@
 
 #include "common/base.h"
 #include "common/data_structures/fixed_universe_successor/empty.h"
-#include "common/data_structures/fixed_universe_successor/u64_set.h"
+#include "common/data_structures/fixed_universe_successor/fixed_length_set_6b.h"
 
 #include <algorithm>
 #include <memory>
@@ -24,22 +24,22 @@ template <unsigned nbits>
 class VanEmdeBoasTreeCompactStaticSize;
 
 template <>
-class VanEmdeBoasTreeCompactStaticSize<1> : public U64Set {};
+class VanEmdeBoasTreeCompactStaticSize<1> : public FLSetB6 {};
 
 template <>
-class VanEmdeBoasTreeCompactStaticSize<2> : public U64Set {};
+class VanEmdeBoasTreeCompactStaticSize<2> : public FLSetB6 {};
 
 template <>
-class VanEmdeBoasTreeCompactStaticSize<3> : public U64Set {};
+class VanEmdeBoasTreeCompactStaticSize<3> : public FLSetB6 {};
 
 template <>
-class VanEmdeBoasTreeCompactStaticSize<4> : public U64Set {};
+class VanEmdeBoasTreeCompactStaticSize<4> : public FLSetB6 {};
 
 template <>
-class VanEmdeBoasTreeCompactStaticSize<5> : public U64Set {};
+class VanEmdeBoasTreeCompactStaticSize<5> : public FLSetB6 {};
 
 template <>
-class VanEmdeBoasTreeCompactStaticSize<6> : public U64Set {};
+class VanEmdeBoasTreeCompactStaticSize<6> : public FLSetB6 {};
 
 template <unsigned nbits_high, unsigned nbits_low>
 class VanEmdeBoasTreeCompactStaticSizeI {

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "common/data_structures/fixed_universe_successor/empty.h"
-#include "common/data_structures/fixed_universe_successor/u64_set.h"
+#include "common/data_structures/fixed_universe_successor/fixed_length_set_6b.h"
 #include "common/node.h"
 #include "common/nodes_manager.h"
 #include "common/numeric/bits/ulog2.h"
@@ -25,7 +25,7 @@ class B64Trie {
  protected:
   class Node : public BaseNode {
    public:
-    U64Set mask;
+    FLSetB6 mask;
     Node* p;
     std::vector<Node*> children;
   };

@@ -2,7 +2,7 @@
 
 #include "common/base.h"
 #include "common/data_structures/fixed_universe_successor/empty.h"
-#include "common/data_structures/fixed_universe_successor/u64_set.h"
+#include "common/data_structures/fixed_universe_successor/fixed_length_set_6b.h"
 
 #include <algorithm>
 #include <vector>
@@ -23,22 +23,22 @@ template <unsigned nbits>
 class VanEmdeBoasTreeFullStaticSize;
 
 template <>
-class VanEmdeBoasTreeFullStaticSize<1> : public U64Set {};
+class VanEmdeBoasTreeFullStaticSize<1> : public FLSetB6 {};
 
 template <>
-class VanEmdeBoasTreeFullStaticSize<2> : public U64Set {};
+class VanEmdeBoasTreeFullStaticSize<2> : public FLSetB6 {};
 
 template <>
-class VanEmdeBoasTreeFullStaticSize<3> : public U64Set {};
+class VanEmdeBoasTreeFullStaticSize<3> : public FLSetB6 {};
 
 template <>
-class VanEmdeBoasTreeFullStaticSize<4> : public U64Set {};
+class VanEmdeBoasTreeFullStaticSize<4> : public FLSetB6 {};
 
 template <>
-class VanEmdeBoasTreeFullStaticSize<5> : public U64Set {};
+class VanEmdeBoasTreeFullStaticSize<5> : public FLSetB6 {};
 
 template <>
-class VanEmdeBoasTreeFullStaticSize<6> : public U64Set {};
+class VanEmdeBoasTreeFullStaticSize<6> : public FLSetB6 {};
 
 template <unsigned nbits_high, unsigned nbits_low>
 class VanEmdeBoasTreeFullStaticSizeI {

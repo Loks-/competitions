@@ -2,7 +2,7 @@
 
 #include "common/base.h"
 #include "common/data_structures/fixed_universe_successor/empty.h"
-#include "common/data_structures/fixed_universe_successor/u64_set.h"
+#include "common/data_structures/fixed_universe_successor/fixed_length_set_6b.h"
 #include "common/data_structures/fixed_universe_successor/vector_multiset.h"
 #include "common/numeric/utils/usqrt.h"
 
@@ -23,7 +23,7 @@ namespace fus {
 class TwoLayersU64 {
  protected:
   using THigh = VectorMultiset;
-  using TLow = U64Set;
+  using TLow = FLSetB6;
 
   size_t usize;
   THigh vhigh;

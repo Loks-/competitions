@@ -8,7 +8,7 @@
 namespace ds {
 namespace fus {
 // U = 64
-class U64Set {
+class FLSetB6 {
  public:
   static const unsigned nbits = 6;
 
@@ -16,7 +16,7 @@ class U64Set {
   uint64_t mask;
 
  public:
-  U64Set() { Clear(); }
+  FLSetB6() { Clear(); }
   void Clear() { mask = 0; }
   void Init(size_t) { mask = 0; }
   void Set1(size_t x) { mask = (1ull << x); }

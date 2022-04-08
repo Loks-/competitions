@@ -2,7 +2,7 @@
 
 #include "common/base.h"
 #include "common/data_structures/fixed_universe_successor/empty.h"
-#include "common/data_structures/fixed_universe_successor/u64_set.h"
+#include "common/data_structures/fixed_universe_successor/fixed_length_set_6b.h"
 #include "common/numeric/bits/ulog2.h"
 
 #include <algorithm>
@@ -30,7 +30,7 @@ class VanEmdeBoasTreeFull {
   unsigned m, mh;
   size_t mask_low;
 
-  U64Set leaf;
+  FLSetB6 leaf;
   PSelf aux_tree;
   std::vector<TSelf> children;
 

@@ -10,16 +10,16 @@
 namespace ds {
 namespace fus {
 // U = 256
-class U256Set {
+class FLSetB8 {
  public:
   static const unsigned nbits = 8;
   static const unsigned length = 4;
 
  protected:
-  std::array<uint64_t, 4> vmask;
+  std::array<uint64_t, length> vmask;
 
  public:
-  U256Set() { Clear(); }
+  FLSetB8() { Clear(); }
 
   void Clear() {
     for (auto& mask : vmask) mask = 0;
@@ -33,7 +33,10 @@ class U256Set {
   }
 
   // Assume mask == 0.
-  void Set1I(size_t x) { vmask[x >> 6] = (1ull << (x & 63)); }
+  void Set1I(size_t x) {
+    Clear();
+    vmask[x >> 6] = (1ull << (x & 63));
+  }
 
   void Insert(size_t x) { vmask[x >> 6] |= (1ull << (x & 63)); }
   bool HasKey(size_t x) const { return (vmask[x >> 6] >> (x & 63)) & 1ull; }
