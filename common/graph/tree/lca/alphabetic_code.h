@@ -128,12 +128,11 @@ class AlphabeticCode {
     } else {
       kx = vk[x].Adjust();
     }
-    unsigned fb = numeric::Highest0Bits(ld | 1);
-    uint64_t ml = ~((uint64_t(1) << (64 - fb)) - 1), kt = kx & ml;
+    uint64_t ml = ~((uint64_t(1) << (numeric::HighestBit(ld | 1) + 1)) - 1),
+             kt = kx & ml;
     if (!numeric::BitsParity(kt)) {
       uint64_t kx0 = kx ^ kt;
-      unsigned fbk = numeric::Highest0Bits(kx0);
-      kt |= (uint64_t(1) << (63 - fbk));
+      kt |= (uint64_t(1) << numeric::HighestBit(kx0));
     }
     uint64_t km = ~((kt ^ (kt - 1)) >> 1), l = lx & km;
     auto it = mc2v.find(l);
