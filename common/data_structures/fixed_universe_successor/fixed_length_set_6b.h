@@ -33,7 +33,7 @@ class FLSetB6 {
     return p ? p - 1 : Empty;
   }
 
-  size_t Max() const { return mask ? 63 - numeric::Highest0Bits(mask) : Empty; }
+  size_t Max() const { return mask ? numeric::HighestBit(mask) : Empty; }
 
   size_t Successor(size_t x) const {
     if (x == 63) return Empty;
@@ -43,13 +43,13 @@ class FLSetB6 {
 
   size_t Predecessor(size_t x) const {
     uint64_t t = mask & ((1ull << x) - 1ull);
-    return t ? 63 - numeric::Highest0Bits(t) : Empty;
+    return t ? numeric::HighestBit(t) : Empty;
   }
 
  public:
   // Assume mask != 0.
   size_t MinI() const { return numeric::Lowest0Bits(mask); }
-  size_t MaxI() const { return 63 - numeric::Highest0Bits(mask); }
+  size_t MaxI() const { return numeric::HighestBit(mask); }
 
   // Assume mask == 0.
   void Set1I(size_t x) { Set1(x); }

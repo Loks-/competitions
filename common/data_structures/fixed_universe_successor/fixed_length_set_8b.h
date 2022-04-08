@@ -33,10 +33,7 @@ class FLSetB8 {
   }
 
   // Assume mask == 0.
-  void Set1I(size_t x) {
-    Clear();
-    vmask[x >> 6] = (1ull << (x & 63));
-  }
+  void Set1I(size_t x) { vmask[x >> 6] = (1ull << (x & 63)); }
 
   void Insert(size_t x) { vmask[x >> 6] |= (1ull << (x & 63)); }
   bool HasKey(size_t x) const { return (vmask[x >> 6] >> (x & 63)) & 1ull; }
@@ -67,7 +64,7 @@ class FLSetB8 {
   size_t Max() const {
     for (unsigned i = length; i > 0;) {
       auto mask = vmask[--i];
-      if (mask) return (i << 6) + 63 - numeric::Highest0Bits(mask);
+      if (mask) return (i << 6) + numeric::HighestBit(mask);
     }
     return Empty;
   }
@@ -89,9 +86,9 @@ class FLSetB8 {
   size_t Predecessor(size_t x) const {
     unsigned i = (x >> 6);
     uint64_t lmask = vmask[i] & ((1ull << (x & 63)) - 1);
-    if (lmask) return (i << 6) + numeric::Highest0Bits(lmask);
+    if (lmask) return (i << 6) + numeric::HighestBit(lmask);
     for (--i; i < length; --i) {
-      if (vmask[i]) return (i << 6) + numeric::Highest0Bits(vmask[i]);
+      if (vmask[i]) return (i << 6) + numeric::HighestBit(vmask[i]);
     }
     return Empty;
   }

@@ -17,4 +17,9 @@ inline unsigned Lowest0Bits(uint64_t u) { return __builtin_ctzll(u); }
 // bit position. If x is 0, the result is undefined.
 inline unsigned Highest0Bits(uint32_t u) { return __builtin_clz(u); }
 inline unsigned Highest0Bits(uint64_t u) { return __builtin_clzll(u); }
+
+// Returns the index of the most significant 1-bits in x. If x is 0, the result
+// is undefined.
+inline unsigned HighestBit(uint32_t u) { return 31 - Highest0Bits(u); }
+inline unsigned HighestBit(uint64_t u) { return 63 - Highest0Bits(u); }
 }  // namespace numeric
