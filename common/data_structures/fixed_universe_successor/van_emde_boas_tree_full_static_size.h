@@ -3,6 +3,7 @@
 #include "common/base.h"
 #include "common/data_structures/fixed_universe_successor/empty.h"
 #include "common/data_structures/fixed_universe_successor/fixed_length_set_6b.h"
+#include "common/data_structures/fixed_universe_successor/fixed_length_set_8b.h"
 
 #include <algorithm>
 #include <vector>
@@ -39,6 +40,12 @@ class VanEmdeBoasTreeFullStaticSize<5> : public FLSetB6 {};
 
 template <>
 class VanEmdeBoasTreeFullStaticSize<6> : public FLSetB6 {};
+
+template <>
+class VanEmdeBoasTreeFullStaticSize<7> : public FLSetB8 {};
+
+template <>
+class VanEmdeBoasTreeFullStaticSize<8> : public FLSetB8 {};
 
 template <unsigned nbits_high, unsigned nbits_low>
 class VanEmdeBoasTreeFullStaticSizeI {
@@ -128,6 +135,38 @@ class VanEmdeBoasTreeFullStaticSizeI {
     return (x1 == Empty) ? min_value : (x1 << nbits_low) + children[x1].Max();
   }
 };
+
+template <>
+class VanEmdeBoasTreeFullStaticSize<9>
+    : public VanEmdeBoasTreeFullStaticSizeI<3, 6> {};
+
+template <>
+class VanEmdeBoasTreeFullStaticSize<10>
+    : public VanEmdeBoasTreeFullStaticSizeI<4, 6> {};
+
+template <>
+class VanEmdeBoasTreeFullStaticSize<11>
+    : public VanEmdeBoasTreeFullStaticSizeI<5, 6> {};
+
+template <>
+class VanEmdeBoasTreeFullStaticSize<12>
+    : public VanEmdeBoasTreeFullStaticSizeI<6, 6> {};
+
+template <>
+class VanEmdeBoasTreeFullStaticSize<13>
+    : public VanEmdeBoasTreeFullStaticSizeI<7, 6> {};
+
+template <>
+class VanEmdeBoasTreeFullStaticSize<14>
+    : public VanEmdeBoasTreeFullStaticSizeI<8, 6> {};
+
+template <>
+class VanEmdeBoasTreeFullStaticSize<15>
+    : public VanEmdeBoasTreeFullStaticSizeI<7, 8> {};
+
+template <>
+class VanEmdeBoasTreeFullStaticSize<16>
+    : public VanEmdeBoasTreeFullStaticSizeI<8, 8> {};
 
 template <unsigned dim>
 class VanEmdeBoasTreeFullStaticSize
