@@ -25,6 +25,8 @@
 #include <iostream>
 #include <unordered_set>
 
+using namespace ds::fus;
+
 TesterFixedUniverseSuccessor::TesterFixedUniverseSuccessor(size_t _usize,
                                                            size_t ssize)
     : usize(_usize) {
@@ -61,45 +63,40 @@ bool TesterFixedUniverseSuccessor::TestAll(bool small_test) const {
   std::cout << "USize = " << usize << std::endl;
   std::unordered_set<size_t> hs;
   if (small_test) {
-    hs.insert(TestBase<ds::fus::VectorSet>("VSet   "));
-    hs.insert(TestBase<ds::fus::VectorMultiset>("VMSet  "));
-    hs.insert(TestBase<ds::fus::VectorPrecomputed>("VPreC  "));
+    hs.insert(TestBase<VectorSet>("VSet   "));
+    hs.insert(TestBase<VectorMultiset>("VMSet  "));
+    hs.insert(TestBase<VectorPrecomputed>("VPreC  "));
   }
   if (usize <= (1ull << 30)) {
-    hs.insert(TestBase<ds::fus::TwoLayers<ds::fus::FLSetB6>>("L2   B6"));
-    hs.insert(TestBase<ds::fus::TwoLayers<ds::fus::FLSetB8>>("L2   B8"));
-    hs.insert(TestBase<ds::fus::SqrtDecomposition>("SqrtD  "));
-    hs.insert(TestBase<ds::fus::ImplicitBinaryTree>("IBT    "));
+    hs.insert(TestBase<TwoLayers<FLSetB6>>("L2   B6"));
+    hs.insert(TestBase<TwoLayers<FLSetB8>>("L2   B8"));
+    hs.insert(TestBase<SqrtDecomposition>("SqrtD  "));
+    hs.insert(TestBase<ImplicitBinaryTree>("IBT    "));
   }
-  hs.insert(TestBase<ds::fus::BinarySearchTree>("BST    "));
-  hs.insert(TestBase<ds::fus::BTrie<ds::fus::FLSetB6>>("BTrie 6"));
-  hs.insert(TestBase<ds::fus::BTrie<ds::fus::FLSetB8>>("BTrie 8"));
-  hs.insert(TestBase<ds::fus::MultiSearchTree<ds::fus::FLSetB6>>("MST  B6"));
-  hs.insert(TestBase<ds::fus::MultiSearchTree<ds::fus::FLSetB8>>("MST  B8"));
+  hs.insert(TestBase<BinarySearchTree>("BST    "));
+  hs.insert(TestBase<BTrie<FLSetB6>>("BTrie 6"));
+  hs.insert(TestBase<BTrie<FLSetB8>>("BTrie 8"));
+  hs.insert(TestBase<MultiSearchTree<FLSetB6>>("MST  B6"));
+  hs.insert(TestBase<MultiSearchTree<FLSetB8>>("MST  B8"));
   if (usize <= (1ull << 27)) {
-    hs.insert(
-        TestBase<ds::fus::VanEmdeBoasTreeFull<ds::fus::FLSetB6>>("VEBTF 6"));
-    hs.insert(
-        TestBase<ds::fus::VanEmdeBoasTreeFull<ds::fus::FLSetB8>>("VEBTF 8"));
+    hs.insert(TestBase<VanEmdeBoasTreeFull<FLSetB6>>("VEBTF 6"));
+    hs.insert(TestBase<VanEmdeBoasTreeFull<FLSetB8>>("VEBTF 8"));
   }
   if (usize <= (1ull << 20)) {
-    hs.insert(TestBase<ds::fus::VanEmdeBoasTreeFullStaticSize<20>>("VEBTFS "));
+    hs.insert(TestBase<VanEmdeBoasTreeFullStaticSize<20>>("VEBTFS "));
   } else if (usize <= (1ull << 27)) {
-    hs.insert(TestBase<ds::fus::VanEmdeBoasTreeFullStaticSize<27>>("VEBTFS "));
+    hs.insert(TestBase<VanEmdeBoasTreeFullStaticSize<27>>("VEBTFS "));
   }
-  hs.insert(TestBase<ds::fus::VanEmdeBoasTreeCompact>("VEBTC  "));
+  hs.insert(TestBase<VanEmdeBoasTreeCompact>("VEBTC  "));
   if (usize <= (1ull << 20)) {
-    hs.insert(
-        TestBase<ds::fus::VanEmdeBoasTreeCompactStaticSize<20>>("VEBTCS "));
+    hs.insert(TestBase<VanEmdeBoasTreeCompactStaticSize<20>>("VEBTCS "));
   } else if (usize <= (1ull << 27)) {
-    hs.insert(
-        TestBase<ds::fus::VanEmdeBoasTreeCompactStaticSize<27>>("VEBTCS "));
+    hs.insert(TestBase<VanEmdeBoasTreeCompactStaticSize<27>>("VEBTCS "));
   } else {
-    hs.insert(
-        TestBase<ds::fus::VanEmdeBoasTreeCompactStaticSize<64>>("VEBTCS "));
+    hs.insert(TestBase<VanEmdeBoasTreeCompactStaticSize<64>>("VEBTCS "));
   }
   if (small_test) {
-    hs.insert(TestBase<ds::fus::XFastTrie>("XFTrie "));
+    hs.insert(TestBase<XFastTrie>("XFTrie "));
   }
   return hs.size() == 1;
 }
