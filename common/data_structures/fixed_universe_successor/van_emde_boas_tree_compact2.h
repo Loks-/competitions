@@ -30,12 +30,12 @@ class VanEmdeBoasTreeCompact2 {
   // TODO:
   // 1. Drop h
   // 2. Split Node based on h to Node1 and NodeI
-  // 3. aux_tree link in the node instead of hash_table?
   class Node : public BaseNode {
    public:
     unsigned h;  // Not needed but simplify code
     TFLS leaf;
     size_t min_value, max_value;
+    Node* aux_tree = nullptr;
 
    public:
     bool Flat() const { return h == 1; }
@@ -103,12 +103,16 @@ class VanEmdeBoasTreeCompact2 {
     return FindNode(HKey(x0, h0, h));
   }
 
-  void Make1(uint64_t hkey, size_t x, unsigned h) {
-    assert(nodes.find(hkey) == nodes.end());
+  Node* Make1(size_t x, unsigned h) {
     auto node = nodes_manager.New();
     node->h = h;
     node->Set1(x);
-    nodes[hkey] = node;
+    return node;
+  }
+
+  void Make1(uint64_t hkey, size_t x, unsigned h) {
+    assert(nodes.find(hkey) == nodes.end());
+    nodes[hkey] = Make1(x, h);
   }
 
   void DeleteNode(uint64_t hkey, Node* node) {
@@ -167,13 +171,13 @@ class VanEmdeBoasTreeCompact2 {
       auto child = FindNode(child_hkey);
       if (!child) {
         Make1(child_hkey, x & ((1ull << (bits_per_level * hl)) - 1), hl);
-        auto parent_hkey = HKey(x0, h0 + hl, h - hl);
-        auto parent = FindNode(parent_hkey);
-        if (!parent)
-          return Make1(parent_hkey, x >> (bits_per_level * hl), h - hl);
+        if (!node->aux_tree) {
+          node->aux_tree = Make1(x >> (bits_per_level * hl), h - hl);
+          return;
+        }
         x >>= (bits_per_level * hl);
         h0 += hl;
-        node = parent;
+        node = node->aux_tree;
       } else {
         x &= (1ull << (bits_per_level * hl)) - 1;
         node = child;
@@ -186,19 +190,17 @@ class VanEmdeBoasTreeCompact2 {
   void DeleteI(Node* node, size_t x0, size_t x, unsigned h0) {
     if (node->Flat()) return node->leaf.Delete(x);
     auto h = node->h, hl = h / 2;
-    auto parent_key = HKey(x0, h0 + hl, h - hl);
     if (x == node->min_value) {
       if (node->min_value == node->max_value) {
         node->min_value = node->max_value = Empty;
         return;
       }
-      auto parent = FindNode(parent_key);
-      assert(parent);
-      x0 = Replace(x0, parent->Min(), h0 + hl, h - hl);
+      assert(node->aux_tree);
+      x0 = Replace(x0, node->aux_tree->Min(), h0 + hl, h - hl);
       auto child = FindNode(x0, h0, hl);
       assert(child);
       x0 += (child->Min() << (bits_per_level * h0));
-      x = (parent->Min() << ((bits_per_level * hl))) + child->Min();
+      x = (node->aux_tree->Min() << ((bits_per_level * hl))) + child->Min();
       node->min_value = x;
     }
     auto child_key = HKey(x0, h0, hl);
@@ -210,20 +212,19 @@ class VanEmdeBoasTreeCompact2 {
     }
     DeleteI(child, x0, x & ((1ull << (bits_per_level * hl)) - 1), h0);
     if (child->IsEmpty()) {
-      auto parent = FindNode(parent_key);
-      DeleteI(parent, x0, x >> (bits_per_level * hl), h0 + hl);
-      if (parent->IsEmpty()) {
-        DeleteNode(parent_key, parent);
+      DeleteI(node->aux_tree, x0, x >> (bits_per_level * hl), h0 + hl);
+      if (node->aux_tree->IsEmpty()) {
+        nodes_manager.Release(node->aux_tree);
+        node->aux_tree = 0;
       }
       DeleteNode(child_key, child);
     }
     if (x == node->max_value) {
-      auto parent = FindNode(parent_key);
-      if (!parent) {
+      if (!node->aux_tree) {
         node->max_value = node->min_value;
       } else {
-        assert(!parent->IsEmpty());
-        auto y = parent->Max();
+        assert(!node->aux_tree->IsEmpty());
+        auto y = node->aux_tree->Max();
         auto child = FindNode(Replace(x0, y, h0 + hl, h - hl), h0, hl);
         assert(child);
         node->max_value = (y << (bits_per_level * hl)) + child->Max();
@@ -241,9 +242,8 @@ class VanEmdeBoasTreeCompact2 {
     auto child = FindNode(x0, h0, hl);
     if (child && (x2 < child->Max()))
       return x - x2 + SuccessorI(child, x0, x2, h0);
-    auto parent = FindNode(x0, h0 + hl, h - hl);
-    assert(parent);
-    x1 = SuccessorI(parent, x0, x1, h0 + hl);
+    assert(node->aux_tree);
+    x1 = SuccessorI(node->aux_tree, x0, x1, h0 + hl);
     child = FindNode(Replace(x0, x1, h0 + hl, h - hl), h0, hl);
     assert(child);
     return (x1 << (bits_per_level * hl)) + child->Min();
@@ -260,9 +260,8 @@ class VanEmdeBoasTreeCompact2 {
     auto child = FindNode(x0, h0, hl);
     if (child && (x2 > child->Min()))
       return x - x2 + PredecessorI(child, x0, x2, h0);
-    auto parent = FindNode(x0, h0 + hl, h - hl);
-    assert(parent);
-    x1 = PredecessorI(parent, x0, x1, h0 + hl);
+    assert(node->aux_tree);
+    x1 = PredecessorI(node->aux_tree, x0, x1, h0 + hl);
     if (x1 == Empty) return node->min_value;
     child = FindNode(Replace(x0, x1, h0 + hl, h - hl), h0, hl);
     assert(child);
