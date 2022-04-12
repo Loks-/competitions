@@ -62,6 +62,26 @@ class Fraction {
     return numerator * r.denominator >= r.numerator * denominator;
   }
 
+  bool operator==(const TValue& r) const {
+    return (numerator == r) && (denominator == 1);
+  }
+
+  bool operator!=(const TValue& r) const {
+    return (numerator != r) || (denominator != 1);
+  }
+
+  bool operator<(const TValue& r) const { return numerator < r * denominator; }
+
+  bool operator<=(const TValue& r) const {
+    return numerator <= r * denominator;
+  }
+
+  bool operator>(const TValue& r) const { return numerator > r * denominator; }
+
+  bool operator>=(const TValue& r) const {
+    return numerator >= r * denominator;
+  }
+
   TSelf operator*(const TValue& value) const {
     return TSelf(numerator * value, denominator);
   }
