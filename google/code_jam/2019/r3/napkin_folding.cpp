@@ -5,13 +5,15 @@
 #include "common/geometry/d2/reflection.h"
 #include "common/geometry/d2/reflection/apply_polygon.h"
 #include "common/geometry/d2/segment.h"
+#include "common/geometry/d2/stl_hash/point.h"
 #include "common/geometry/d2/triangle.h"
 #include "common/geometry/d2/utils/inside_segment_polygon.h"
 #include "common/geometry/d2/utils/subtraction_polygon.h"
 #include "common/numeric/fraction_io.h"
+#include "common/numeric/stl_hash/fraction.h"
 #include "common/stl/base.h"
 
-#include "common/vector/write.h"
+#include <unordered_map>
 
 using namespace geometry::d2;
 using namespace geometry::d2::location;
@@ -51,9 +53,11 @@ int main_napkin_folding() {
       auto v = plgn0.MGet(i + 1) - p;
       for (unsigned j = 0; j < l; ++j) vpe.push_back(p + v * vpp[j]);
     }
+    unordered_map<TPoint, unsigned> mpoints;
+    for (unsigned i = 0; i < vpe.size(); ++i) mpoints[vpe[i]] = i;
 
     vector<pair<TPoint, TPoint>> vsol;
-    vector<TPolygon> vplgn_s, vplgn_l;
+    vector<pair<TPolygon, TPolygon>> vtasks;
     for (unsigned i = 0; (i < vpe.size()) && vsol.empty(); ++i) {
       auto acurrent = TIFraction(0);
       auto pi = vpe[i];
@@ -75,51 +79,47 @@ int main_napkin_folding() {
               vc.push_back(vpe[k]);
             for (unsigned k = l * (j / l + 1); k < i + vpe.size(); k += l)
               vl.push_back(vpe[k % vpe.size()]);
-            vplgn_s.clear();
-            vplgn_l.clear();
-            vplgn_s.push_back(TPolygon(vc));
-            vplgn_l.push_back(TPolygon(vl));
-            for (unsigned is = 0; eok && (is < vplgn_s.size());) {
-              // cout << "\tStep " << vsol.size() << endl;
-              // for (unsigned ii = is; ii < vplgn_s.size(); ++ii) {
-              //   cout << "\tC " << ii << " = ";
-              //   nvector::Write(vplgn_s[ii].v);
-              // }
-              // for (unsigned ii = 0; ii < vplgn_l.size(); ++ii) {
-              //   cout << "\tL " << ii << " = ";
-              //   nvector::Write(vplgn_l[ii].v);
-              // }
-              auto& plgn_s = vplgn_s[is];
+            vtasks.clear();
+            vtasks.push_back({TPolygon(vl), TPolygon(vc)});
+            for (; eok && !vtasks.empty();) {
+              TPolygon plgn_l = vtasks.back().first,
+                       plgn_s = vtasks.back().second;
+              vtasks.pop_back();
               bool found = false;
-              for (unsigned il = 0; !found && (il < vplgn_l.size()); ++il) {
-                auto& plgn_l = vplgn_l[il];
-                for (unsigned k = 0; k < plgn_s.Size(); ++k) {
-                  auto &pk0 = plgn_s[k], &pk1 = plgn_s.MGet(k + 1);
-                  auto l0 = Locate(pk0, plgn_l);
-                  assert(l0.type != Location::INSIDE);
-                  if (l0.type == Location::OUTSIDE) continue;
-                  auto l1 = Locate(pk1, plgn_l);
-                  assert(l1.type != Location::INSIDE);
-                  if (l1.type == Location::OUTSIDE) continue;
-                  if (!Inside(TSegment(pk0, pk1), plgn_l)) continue;
-                  // Reflection needed
-                  found = true;
-                  vsol.push_back({pk1, pk0});
-                  TReflection r(pk0, pk1);
-                  auto plgn_sr = Apply(r, plgn_s);
-                  if (plgn_sr != plgn_l) {
-                    auto vnew = Subtraction(plgn_l, plgn_sr);
-                    if (vnew.empty()) eok = false;
-                    for (auto& plgn : vnew) vplgn_l.push_back(plgn);
-                  }
-                  vplgn_s.push_back(plgn_sr);
-                  vplgn_l.erase(vplgn_l.begin() + il);
+              for (unsigned k = 0; k < plgn_s.Size(); ++k) {
+                auto &pk0 = plgn_s[k], &pk1 = plgn_s.MGet(k + 1);
+                auto l0 = Locate(pk0, plgn_l);
+                if (l0.type == Location::OUTSIDE) continue;
+                auto l1 = Locate(pk1, plgn_l);
+                if (l1.type == Location::OUTSIDE) continue;
+                if ((l0.type == Location::INSIDE) ||
+                    (l1.type == Location::INSIDE)) {
+                  eok = false;
                   break;
                 }
+                if (!Inside(TSegment(pk0, pk1), plgn_l)) continue;
+                // Reflection needed
+                vsol.push_back({pk1, pk0});
+                TReflection r(pk0, pk1);
+                auto plgn_sr = Apply(r, plgn_s);
+                // Check that all points are on border
+                for (auto& p : plgn_sr.v) {
+                  if (mpoints.find(p) == mpoints.end()) {
+                    eok = false;
+                    break;
+                  }
+                }
+                if (eok && (plgn_sr != plgn_l)) {
+                  auto vnew = Subtraction(plgn_l, plgn_sr);
+                  if (vnew.empty()) eok = false;
+                  for (auto& plgn : vnew) vtasks.push_back({plgn, plgn_sr});
+                }
+                found = true;
+                break;
               }
-              is += found ? 0 : 1;
+              if (!found) eok = false;
             }
-            if (eok && vplgn_l.empty()) break;
+            if (eok) break;
             vsol.clear();
           }
         }
