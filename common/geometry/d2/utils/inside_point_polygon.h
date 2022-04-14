@@ -7,7 +7,8 @@
 
 namespace geometry {
 namespace d2 {
-inline bool Inside(const I2Point& p, const I2Polygon& plgn) {
+template <class T>
+inline bool Inside(const Point<T>& p, const Polygon<T>& plgn) {
   return location::Locate(p, plgn).type != location::Location::OUTSIDE;
 }
 }  // namespace d2

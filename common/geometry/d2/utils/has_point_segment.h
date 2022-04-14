@@ -12,5 +12,5 @@ inline bool HasPoint(const geometry::d2::Segment<T, closed>& s,
   auto vs = s.p2 - s.p1, vp = p - s.p1;
   if (vs % vp != 0) return false;
   auto x = vs * vp;
-  return (0 < x) && (x < vs * vs);
+  return (x > 0) && (x < vs * vs);
 }

@@ -17,6 +17,8 @@ template <class T>
 class Polygon {
  public:
   using TPoint = Point<T>;
+  using TSelf = Polygon<T>;
+
   std::vector<TPoint> v;
 
   Polygon() {}
@@ -33,10 +35,23 @@ class Polygon {
       std::reverse(v.begin() + 1, v.end());
   }
 
+  bool operator==(const TSelf& r) const { return v == r.v; }
+  bool operator!=(const TSelf& r) const { return v != r.v; }
+
   unsigned Size() const { return v.size(); }
 
   const TPoint& operator[](unsigned i) const { return v[i]; }
   const TPoint& MGet(unsigned i) const { return v[i % v.size()]; }
+
+  T DoubleArea() const {
+    if (Size() < 3) return {};
+    auto a = T();
+    auto& p0 = v[0];
+    for (unsigned i = 2; i < v.size(); ++i) a += (v[i - 1] - p0) % (v[i] - p0);
+    return a;
+  }
+
+  T Area() const { return DoubleArea() / 2; }
 };
 }  // namespace d2
 }  // namespace geometry

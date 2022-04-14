@@ -11,14 +11,14 @@ template <class T, template <class TT> class TObject>
 inline bool IntersectSegment(const geometry::d2::Segment<T, false>& s,
                              const TObject<T>& o) {
   T v1 = o(s.p1), v2 = o(s.p2);
-  return ((v1 < 0) && (0 < v2)) || ((v2 < 0) && (0 < v1));
+  return ((v1 < 0) && (v2 > 0)) || ((v2 < 0) && (v1 > 0));
 }
 
 template <class T, template <class TT> class TObject>
 inline bool IntersectSegment(const geometry::d2::Segment<T, true>& s,
                              const TObject<T>& o) {
   T v1 = o(s.p1), v2 = o(s.p2);
-  return ((v1 <= 0) && (0 <= v2)) || ((v2 <= 0) && (0 <= v1));
+  return ((v1 <= 0) && (v2 >= 0)) || ((v2 <= 0) && (v1 >= 0));
 }
 
 template <class T, bool closed1, bool closed2>
@@ -32,7 +32,7 @@ inline bool Intersect(const geometry::d2::Segment<T, closed1>& s1,
   auto t0 = v0 * v0, t1 = v1 * v0, t2 = v2 * v0;
   if (t2 < t1) std::swap(t1, t2);
   if (closed1 && closed2)
-    return (0 <= t2) && (t1 <= t0);
+    return (t2 >= 0) && (t1 <= t0);
   else
-    return (0 < t2) && (t1 < t0);
+    return (t2 > 0) && (t1 < t0);
 }

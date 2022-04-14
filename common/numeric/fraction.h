@@ -38,6 +38,8 @@ class Fraction {
   const TValue& GetN() const { return numerator; }
   const TValue& GetD() const { return denominator; }
 
+  TSelf operator-() const { return TSelf(-numerator, denominator); }
+
   bool operator==(const TSelf& r) const {
     return (numerator == r.numerator) && (denominator == r.denominator);
   }

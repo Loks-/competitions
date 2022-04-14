@@ -19,4 +19,9 @@ inline void RotateLeft(std::vector<T>& v, size_t shift) {
   size_t size = v.size();
   if (size > 0) SwapIntervals(v.begin(), v.begin() + (shift % size), v.end());
 }
+
+template <class T>
+inline void RotateRight(std::vector<T>& v, size_t shift) {
+  RotateLeft(v, v.size() - (shift % v.size()));
+}
 }  // namespace nvector
