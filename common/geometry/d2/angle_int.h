@@ -18,7 +18,7 @@ class IAngle : public Angle<T, IAngle<T>> {
 
   void Normalize() {
     assert(TBase::Valid());
-    T g = GCDSafe<T>(TBase::dx, TBase::dy);
+    T g = GCDSafe(TBase::dx, TBase::dy);
     TBase::dx /= g;
     TBase::dy /= g;
   }

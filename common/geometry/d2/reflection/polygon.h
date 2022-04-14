@@ -10,11 +10,11 @@ namespace d2 {
 namespace reflection {
 // Assume no angles are equal to pi.
 template <class T>
-inline bool Symmetric(const Polygon<T>& pl) {
-  unsigned s = pl.Size();
+inline bool Symmetric(const Polygon<T>& plgn) {
+  unsigned s = plgn.Size();
   std::vector<Point<T>> vnew;
   for (unsigned i = 0; i < s; ++i) {
-    auto &p1 = pl[i], &p2 = pl.MGet(i + 1);
+    auto &p1 = plgn[i], &p2 = plgn.MGet(i + 1);
     vnew.push_back({p1.x + p1.x, p1.y + p1.y});
     vnew.push_back({p1.x + p2.x, p1.y + p2.y});
   }
@@ -36,11 +36,11 @@ inline bool Symmetric(const Polygon<T>& pl) {
 // Assume no angles are equal to pi.
 // All coordinates should be even if T is integer.
 template <class T>
-inline LinePV<T> LineOfSymmetry(const Polygon<T>& pl) {
-  unsigned s = pl.Size();
+inline LinePV<T> LineOfSymmetry(const Polygon<T>& plgn) {
+  unsigned s = plgn.Size();
   std::vector<Point<T>> vnew;
   for (unsigned i = 0; i < s; ++i) {
-    auto &p1 = pl[i], &p2 = pl.MGet(i + 1);
+    auto &p1 = plgn[i], &p2 = plgn.MGet(i + 1);
     vnew.push_back(p1);
     vnew.push_back(MidPoint(p1, p2));
   }

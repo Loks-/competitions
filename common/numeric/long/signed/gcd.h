@@ -4,12 +4,10 @@
 #include "common/numeric/long/unsigned/gcd.h"
 #include "common/numeric/utils/gcd.h"
 
-template <>
-inline LongSigned GCD<LongSigned>(LongSigned a, LongSigned b) {
+inline LongSigned GCD(const LongSigned& a, const LongSigned& b) {
   return LongSigned(GCD(a.GetUnsigned(), b.GetUnsigned()));
 }
 
-template <>
-inline LongSigned GCDSafe<LongSigned>(LongSigned a, LongSigned b) {
+inline LongSigned GCDSafe(const LongSigned& a, const LongSigned& b) {
   return LongSigned(GCD(a.GetUnsigned(), b.GetUnsigned()));
 }

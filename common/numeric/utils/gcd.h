@@ -3,16 +3,17 @@
 #include "common/numeric/utils/abs.h"
 
 template <class T>
-inline T GCD(T x, T y) {
-  for (; y;) {
-    T z = x % y;
-    x = y;
-    y = z;
+inline T GCD(const T& x, const T& y) {
+  auto xx(x), yy(y);
+  for (; yy;) {
+    T z = xx % yy;
+    xx = yy;
+    yy = z;
   }
-  return x;
+  return xx;
 }
 
 template <class T>
-inline T GCDSafe(T x, T y) {
-  return GCD<T>(Abs(x), Abs(y));
+inline T GCDSafe(const T& x, const T& y) {
+  return GCD(Abs(x), Abs(y));
 }
