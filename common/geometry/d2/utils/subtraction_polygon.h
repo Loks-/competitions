@@ -23,7 +23,7 @@ inline std::vector<Polygon<T>> Subtraction(const Polygon<T>& plgn_large,
   }
   std::vector<Point<T>> vp;
   std::vector<Polygon<T>> vr;
-  for (unsigned i = 0, j; i < vl.size(); i = j) {
+  for (unsigned i = 0, j = 0; i < vl.size(); i = j) {
     if (vl[i].type == location::Location::INSIDE) continue;
     for (j = i + 1; vl[j % vl.size()].type == location::Location::INSIDE;) ++j;
     if (j == i + vl.size()) continue;
