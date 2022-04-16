@@ -6,6 +6,7 @@
 #include "common/data_structures/fixed_universe_successor/fixed_length_set_8b.h"
 #include "common/data_structures/fixed_universe_successor/implicit_binary_tree.h"
 #include "common/data_structures/fixed_universe_successor/multi_search_tree.h"
+#include "common/data_structures/fixed_universe_successor/multi_search_tree_hash_table.h"
 #include "common/data_structures/fixed_universe_successor/sqrt_decomposition.h"
 #include "common/data_structures/fixed_universe_successor/two_layers.h"
 #include "common/data_structures/fixed_universe_successor/van_emde_boas_tree_compact.h"
@@ -78,6 +79,8 @@ bool TesterFixedUniverseSuccessor::TestAll(bool small_test) const {
   hs.insert(TestBase<BTrie<FLSetB8>>("BTrie 8"));
   hs.insert(TestBase<MultiSearchTree<FLSetB6>>("MST  B6"));
   hs.insert(TestBase<MultiSearchTree<FLSetB8>>("MST  B8"));
+  hs.insert(TestBase<MultiSearchTreeHashTable<FLSetB6>>("MSTH B6"));
+  hs.insert(TestBase<MultiSearchTreeHashTable<FLSetB8>>("MSTH B8"));
   if (usize <= (1ull << 27)) {
     hs.insert(TestBase<VanEmdeBoasTreeFull<FLSetB6>>("VEBTF 6"));
     hs.insert(TestBase<VanEmdeBoasTreeFull<FLSetB8>>("VEBTF 8"));
