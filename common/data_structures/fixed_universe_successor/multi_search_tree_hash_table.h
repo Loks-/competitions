@@ -14,13 +14,13 @@ namespace fus {
 // Memory      -- O(S log U)
 // Init        -- O(1)
 // Insert      -- O(log U)
-// HasKey      -- O(log U)
+// HasKey      -- O(log log U)
 // Delete      -- O(log U)
 // Size        -- O(1)
-// Min         -- O(log U)
-// Max         -- O(log U)
-// Successor   -- O(log U)
-// Predecessor -- O(log U)
+// Min         -- O(1)
+// Max         -- O(1)
+// Successor   -- O(log log U)
+// Predecessor -- O(log log U)
 template <class TFLS>
 class MultiSearchTreeHashTable {
  protected:
@@ -114,13 +114,18 @@ class MultiSearchTreeHashTable {
   size_t USize() const { return usize; }
 
   bool HasKey(size_t x) const {
-    if (root.IsEmpty()) return false;
-    const Node *node = &root;
-    for (size_t depth = max_depth;; node = FindNode(x, --depth)) {
-      if (!node->IsSplit()) return x == node->min_value;
-      if (!node->mask.HasKey(CalcLevelIndex(x, depth))) return false;
-      if (depth == 0) return true;
+    if (max_depth == 0) return root.mask.HasKey(x);
+    unsigned d0 = 0, d1 = max_depth;
+    for (; d0 < d1;) {
+      unsigned d = (d0 + d1) / 2;
+      if (FindNode(x, d))
+        d1 = d;
+      else
+        d0 = d + 1;
     }
+    auto node = (d0 == max_depth) ? &root : FindNode(x, d0);
+    return (d0 == 0) ? node->mask.HasKey(CalcLevelIndex(x, 0))
+                     : (x == node->min_value);
   }
 
   void Insert(size_t x) {
@@ -197,45 +202,45 @@ class MultiSearchTreeHashTable {
   size_t Max() const { return root.max_value; }
 
   size_t Successor(size_t x) const {
+    if (max_depth == 0) return root.mask.Successor(x);
     if (root.IsEmpty() || (x >= root.max_value)) return Empty;
-    const Node *node = &root;
-    for (size_t depth = max_depth;; --depth) {
-      if (!node->IsSplit()) return node->max_value;
-      size_t idx = CalcLevelIndex(x, depth);
-      if (depth == 0) return x - idx + node->mask.Successor(idx);
-      if (node->mask.HasKey(idx)) {
-        auto next_node = FindNode(x, depth - 1);
-        if (x < next_node->max_value) {
-          node = next_node;
-          continue;
-        }
-      }
-      auto idx2 = node->mask.Successor(idx);
-      return FindNode(x + ((idx2 - idx) << (depth * bits_per_level)), depth - 1)
-          ->min_value;
+    unsigned d0 = 0, d1 = max_depth;
+    for (; d0 < d1;) {
+      unsigned d = (d0 + d1) / 2;
+      auto node = FindNode(x, d);
+      if (node && (x < node->max_value))
+        d1 = d;
+      else
+        d0 = d + 1;
     }
-    return Empty;
+    auto node = (d0 == max_depth) ? &root : FindNode(x, d0);
+    size_t idx = CalcLevelIndex(x, d0);
+    if (d0 == 0) return x - idx + node->mask.Successor(idx);
+    if (!node->IsSplit()) return node->max_value;
+    auto idx2 = node->mask.Successor(idx);
+    return FindNode(x + ((idx2 - idx) << (d0 * bits_per_level)), d0 - 1)
+        ->min_value;
   }
 
   size_t Predecessor(size_t x) const {
+    if (max_depth == 0) return root.mask.Predecessor(x);
     if (root.IsEmpty() || (x <= root.min_value)) return Empty;
-    const Node *node = &root;
-    for (size_t depth = max_depth;; --depth) {
-      if (!node->IsSplit()) return node->min_value;
-      size_t idx = CalcLevelIndex(x, depth);
-      if (depth == 0) return x - idx + node->mask.Predecessor(idx);
-      if (node->mask.HasKey(idx)) {
-        auto next_node = FindNode(x, depth - 1);
-        if (x > next_node->min_value) {
-          node = next_node;
-          continue;
-        }
-      }
-      auto idx2 = node->mask.Predecessor(idx);
-      return FindNode(x - ((idx - idx2) << (depth * bits_per_level)), depth - 1)
-          ->max_value;
+    unsigned d0 = 0, d1 = max_depth;
+    for (; d0 < d1;) {
+      unsigned d = (d0 + d1) / 2;
+      auto node = FindNode(x, d);
+      if (node && (x > node->min_value))
+        d1 = d;
+      else
+        d0 = d + 1;
     }
-    return Empty;
+    auto node = (d0 == max_depth) ? &root : FindNode(x, d0);
+    size_t idx = CalcLevelIndex(x, d0);
+    if (d0 == 0) return x - idx + node->mask.Predecessor(idx);
+    if (!node->IsSplit()) return node->min_value;
+    auto idx2 = node->mask.Predecessor(idx);
+    return FindNode(x - ((idx - idx2) << (d0 * bits_per_level)), d0 - 1)
+        ->max_value;
   }
 };
 }  // namespace fus
