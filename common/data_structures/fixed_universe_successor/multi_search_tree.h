@@ -14,8 +14,8 @@ namespace fus {
 // HasKey      -- O(log U)
 // Delete      -- O(log U)
 // Size        -- O(1)
-// Min         -- O(log U)
-// Max         -- O(log U)
+// Min         -- O(1)
+// Max         -- O(1)
 // Successor   -- O(log U)
 // Predecessor -- O(log U)
 // TODO: Move hash table code to a new class.
