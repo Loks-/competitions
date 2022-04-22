@@ -2,6 +2,7 @@
 
 #include "common/base.h"
 
+#include <algorithm>
 #include <deque>
 #include <stack>
 
