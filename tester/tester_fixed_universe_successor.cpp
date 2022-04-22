@@ -1,6 +1,7 @@
 #include "tester/tester_fixed_universe_successor.h"
 
 #include "common/data_structures/fixed_universe_successor/binary_search_tree.h"
+#include "common/data_structures/fixed_universe_successor/btree.h"
 #include "common/data_structures/fixed_universe_successor/btrie.h"
 #include "common/data_structures/fixed_universe_successor/fixed_length_set_6b.h"
 #include "common/data_structures/fixed_universe_successor/fixed_length_set_8b.h"
@@ -77,6 +78,8 @@ bool TesterFixedUniverseSuccessor::TestAll(bool small_test) const {
   hs.insert(TestBase<BinarySearchTree>("BST    "));
   hs.insert(TestBase<BTrie<FLSetB6>>("BTrie 6"));
   hs.insert(TestBase<BTrie<FLSetB8>>("BTrie 8"));
+  hs.insert(TestBase<BTree<FLSetB6>>("BTree 6"));
+  hs.insert(TestBase<BTree<FLSetB8>>("BTree 8"));
   hs.insert(TestBase<MultiSearchTree<FLSetB6>>("MST  B6"));
   hs.insert(TestBase<MultiSearchTree<FLSetB8>>("MST  B8"));
   hs.insert(TestBase<MultiSearchTreeHashTable<FLSetB6>>("MSTH B6"));
@@ -110,7 +113,6 @@ bool TestFixedUniverseSuccessor(bool time_test) {
   if (time_test) {
     TesterFixedUniverseSuccessor tfus1(100000000, 1000000);
     TesterFixedUniverseSuccessor tfus2((1ull << 60), 1000000);
-    // return tfus2.TestAll(false);
     return tfus1.TestAll(false) && tfus2.TestAll(false);
   } else {
     TesterFixedUniverseSuccessor tfus1(100, 1000);
