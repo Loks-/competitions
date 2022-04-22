@@ -1,8 +1,8 @@
 #pragma once
 
 #include "common/base.h"
-#include "common/node.h"
-#include "common/nodes_manager.h"
+#include "common/memory/node.h"
+#include "common/memory/nodes_manager.h"
 
 #include <functional>
 
@@ -14,14 +14,14 @@ namespace base {
 // Pop     -- O(log N)
 // Union   -- O(log N)
 template <class TTData, class TTCompare = std::less<TTData>,
-          template <class TNode> class TTNodesManager = NodesManager>
+          template <class TNode> class TTNodesManager = memory::NodesManager>
 class Binomial {
  public:
   using TData = TTData;
   using TCompare = TTCompare;
   using TSelf = Binomial<TData, TCompare, TTNodesManager>;
 
-  class Node : public BaseNode {
+  class Node : public memory::Node {
    public:
     TData value;
     Node *l, *s;

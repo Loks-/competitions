@@ -7,12 +7,12 @@
 #include "common/binary_search_tree/base/rotate.h"
 #include "common/binary_search_tree/base/tree.h"
 #include "common/binary_search_tree/info/size.h"
-#include "common/nodes_manager_fixed_size.h"
+#include "common/memory/nodes_manager_fixed_size.h"
 
 namespace bst {
 template <bool use_key, class TData, class TInfo = info::Size,
           class TAction = action::None, class TKey = int64_t,
-          template <class> class TTNodesManager = NodesManagerFixedSize>
+          template <class> class TTNodesManager = memory::NodesManagerFixedSize>
 class SplayTree
     : public base::Tree<
           TTNodesManager<

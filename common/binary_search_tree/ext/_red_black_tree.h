@@ -13,7 +13,7 @@
 #include "common/binary_search_tree/info/size.h"
 #include "common/binary_search_tree/node.h"
 #include "common/binary_search_tree/tree.h"
-#include "common/nodes_manager_fixed_size.h"
+#include "common/memory/nodes_manager_fixed_size.h"
 
 #include <algorithm>
 #include <utility>

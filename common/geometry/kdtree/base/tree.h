@@ -5,7 +5,7 @@
 #include "common/geometry/kdtree/base/node.h"
 #include "common/geometry/kdtree/base/under.h"
 #include "common/geometry/kdtree/info/update_node_to_root.h"
-#include "common/nodes_manager.h"
+#include "common/memory/nodes_manager.h"
 #include "common/template.h"
 
 namespace geometry {
@@ -13,9 +13,9 @@ namespace kdtree {
 namespace base {
 template <unsigned _dim, class TTPoint, class TTLData, class TTIData,
           class TTInfo, class TTAction>
-class Tree
-    : protected NodesManager<base::Node<typename TTPoint::T, TTLData, TTIData,
-                                        TTInfo, TTAction, true, false>> {
+class Tree : protected memory::NodesManager<
+                 base::Node<typename TTPoint::T, TTLData, TTIData, TTInfo,
+                            TTAction, true, false>> {
  public:
   static const unsigned dim = _dim;
 
@@ -26,7 +26,7 @@ class Tree
   using TInfo = TTInfo;
   using TAction = TTAction;
   using TNode = base::Node<TValue, TLData, TIData, TInfo, TAction, true, false>;
-  using TNodesManager = NodesManager<TNode>;
+  using TNodesManager = memory::NodesManager<TNode>;
 
  public:
   TPoint sb, se;

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "common/base.h"
-#include "common/node.h"
+#include "common/memory/node.h"
 #include "common/segment_tree/info/update.h"
 #include "common/segment_tree/sinfo/update.h"
 
@@ -10,7 +10,7 @@ template <bool use_parent, class TSelf>
 class TNodeProxyParent {};
 
 template <class TSelf>
-class TNodeProxyParent<false, TSelf> : public BaseNode {
+class TNodeProxyParent<false, TSelf> : public memory::Node {
  public:
   TSelf *l = nullptr, *r = nullptr;
 
@@ -21,7 +21,7 @@ class TNodeProxyParent<false, TSelf> : public BaseNode {
 };
 
 template <class TSelf>
-class TNodeProxyParent<true, TSelf> : public BaseNode {
+class TNodeProxyParent<true, TSelf> : public memory::Node {
  public:
   TSelf *l = nullptr, *r = nullptr, *p = nullptr;
 

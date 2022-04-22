@@ -1,8 +1,8 @@
 #pragma once
 
 #include "common/data_structures/fixed_universe_successor/empty.h"
-#include "common/node.h"
-#include "common/nodes_manager.h"
+#include "common/memory/node.h"
+#include "common/memory/nodes_manager.h"
 
 #include <algorithm>
 #include <unordered_map>
@@ -27,7 +27,7 @@ class MultiSearchTreeHashTable {
   static const unsigned bits_per_level = TFLS::nbits;
   static const size_t level_mask = (size_t(1) << bits_per_level) - 1;
 
-  class Node : public BaseNode {
+  class Node : public memory::Node {
    public:
     size_t min_value = Empty;
     size_t max_value = Empty;
@@ -43,7 +43,7 @@ class MultiSearchTreeHashTable {
   };
 
  protected:
-  NodesManager<Node> nodes_manager;
+  memory::NodesManager<Node> nodes_manager;
   Node root;
   std::unordered_map<size_t, Node *> hash_table;
   size_t usize;

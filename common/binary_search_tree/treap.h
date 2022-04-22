@@ -7,7 +7,7 @@
 #include "common/binary_search_tree/info/size.h"
 #include "common/binary_search_tree/info/treap_height.h"
 #include "common/binary_search_tree/info/update_node_to_root.h"
-#include "common/nodes_manager_fixed_size.h"
+#include "common/memory/nodes_manager_fixed_size.h"
 
 #include <stack>
 #include <vector>
@@ -15,7 +15,7 @@
 namespace bst {
 template <bool use_key, bool use_parent, class TData, class TTInfo = info::Size,
           class TAction = action::None, class TKey = int64_t,
-          template <class> class TTNodesManager = NodesManagerFixedSize>
+          template <class> class TTNodesManager = memory::NodesManagerFixedSize>
 class Treap
     : public base::Tree<
           TTNodesManager<base::Node<TData, info::TreapHeight<unsigned, TTInfo>,

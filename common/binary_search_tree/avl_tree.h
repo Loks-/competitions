@@ -7,21 +7,22 @@
 #include "common/binary_search_tree/base/rotate.h"
 #include "common/binary_search_tree/info/height.h"
 #include "common/binary_search_tree/info/size.h"
-#include "common/nodes_manager_fixed_size.h"
+#include "common/memory/nodes_manager_fixed_size.h"
 
 namespace bst {
 template <bool use_parent, class TData, class TInfo = info::Size,
           class TAction = action::None, class TKey = int64_t>
 class AVLTree
     : public base::BalancedTree<
-          NodesManagerFixedSize<base::Node<TData, info::Height<TInfo>, TAction,
-                                           true, use_parent, TKey>>,
+          memory::NodesManagerFixedSize<base::Node<
+              TData, info::Height<TInfo>, TAction, true, use_parent, TKey>>,
           AVLTree<use_parent, TData, TInfo, TAction, TKey>> {
  public:
   using TNode =
       base::Node<TData, info::Height<TInfo>, TAction, true, use_parent, TKey>;
   using TSelf = AVLTree<use_parent, TData, TInfo, TAction, TKey>;
-  using TBTree = base::BalancedTree<NodesManagerFixedSize<TNode>, TSelf>;
+  using TBTree =
+      base::BalancedTree<memory::NodesManagerFixedSize<TNode>, TSelf>;
   using TTree = typename TBTree::TTree;
   friend TBTree;
   friend TTree;

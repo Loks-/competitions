@@ -159,15 +159,15 @@ size_t TesterHeapExt::TestKVM(const std::string& name) const {
 
 template <bool multipass, bool auxiliary>
 size_t TesterHeapExt::TestBasePairing() const {
-  return TestBase<heap::base::Pairing<TPair, std::less<TPair>, NodesManager,
-                                      multipass, auxiliary>>(
+  return TestBase<heap::base::Pairing<
+      TPair, std::less<TPair>, memory::NodesManager, multipass, auxiliary>>(
       "B PR" + std::to_string(multipass) + std::to_string(auxiliary));
 }
 
 template <bool multipass, bool auxiliary>
 size_t TesterHeapExt::TestExtPairing() const {
   return TestExtNodesManager<heap::ext::Pairing<
-      size_t, std::less<size_t>, NodesManager, multipass, auxiliary>>(
+      size_t, std::less<size_t>, memory::NodesManager, multipass, auxiliary>>(
       "E PR" + std::to_string(multipass) + std::to_string(auxiliary));
 }
 

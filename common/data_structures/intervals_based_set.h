@@ -5,7 +5,7 @@
 #include "common/binary_search_tree/base/traversal.h"
 #include "common/binary_search_tree/info/size.h"
 #include "common/binary_search_tree/treap.h"
-#include "common/nodes_manager.h"
+#include "common/memory/nodes_manager.h"
 
 #include <algorithm>
 #include <vector>
@@ -46,7 +46,7 @@ class IntervalsBasedSet {
   };
 
   using TTree = bst::Treap<true, true, Interval, Info, bst::action::None,
-                           TValue, NodesManager>;
+                           TValue, memory::NodesManager>;
   using TNode = typename TTree::TNode;
 
  protected:

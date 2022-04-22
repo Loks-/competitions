@@ -1,11 +1,11 @@
 #pragma once
 
-#include "common/node.h"
+#include "common/memory/node.h"
 
 namespace graph {
 namespace dynamic {
 template <class TTData>
-class Edge : public BaseNode {
+class Edge : public memory::Node {
  public:
   using TData = TTData;
   using TSelf = Edge<TData>;

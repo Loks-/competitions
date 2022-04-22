@@ -1,7 +1,7 @@
 #pragma once
 
 #include "common/base.h"
-#include "common/node.h"
+#include "common/memory/node.h"
 
 #include <random>
 
@@ -12,10 +12,10 @@ template <bool use_height, class THeight>
 class TNodeProxyHeight {};
 
 template <class THeight>
-class TNodeProxyHeight<false, THeight> : public BaseNode {};
+class TNodeProxyHeight<false, THeight> : public memory::Node {};
 
 template <class THeight>
-class TNodeProxyHeight<true, THeight> : public BaseNode {
+class TNodeProxyHeight<true, THeight> : public memory::Node {
  public:
   THeight height;
 

@@ -6,7 +6,7 @@
 #include "common/binary_search_tree/base/right.h"
 #include "common/binary_search_tree/red_black_tree.h"
 #include "common/data_structures/fixed_universe_successor/empty.h"
-#include "common/nodes_manager.h"
+#include "common/memory/nodes_manager.h"
 
 namespace ds {
 namespace fus {
@@ -23,7 +23,7 @@ namespace fus {
 class BinarySearchTree {
  protected:
   using TTree = bst::RedBlackTree<TEmpty, bst::info::None, bst::action::None,
-                                  size_t, NodesManager>;
+                                  size_t, memory::NodesManager>;
   using TNode = TTree::TNode;
   TTree tree;
   TNode* root;

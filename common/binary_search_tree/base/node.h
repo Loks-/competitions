@@ -1,7 +1,7 @@
 #pragma once
 
 #include "common/base.h"
-#include "common/node.h"
+#include "common/memory/node.h"
 
 namespace bst {
 namespace base {
@@ -9,10 +9,10 @@ template <bool use_key, class TKey>
 class TNodeProxyKey {};
 
 template <class TKey>
-class TNodeProxyKey<false, TKey> : public BaseNode {};
+class TNodeProxyKey<false, TKey> : public memory::Node {};
 
 template <class TKey>
-class TNodeProxyKey<true, TKey> : public BaseNode {
+class TNodeProxyKey<true, TKey> : public memory::Node {
  public:
   TKey key;
 };

@@ -13,14 +13,14 @@
 #include "common/binary_search_tree/info/rbt_color.h"
 #include "common/binary_search_tree/info/size.h"
 #include "common/binary_search_tree/info/update_node_to_root.h"
-#include "common/nodes_manager_fixed_size.h"
+#include "common/memory/nodes_manager_fixed_size.h"
 
 #include <vector>
 
 namespace bst {
 template <class TData, class TInfo = info::Size, class TAction = action::None,
           class TKey = int64_t,
-          template <class> class TTNodesManager = NodesManagerFixedSize>
+          template <class> class TTNodesManager = memory::NodesManagerFixedSize>
 class RedBlackTree
     : public base::Tree<
           TTNodesManager<base::Node<TData, info::RBTColor<TInfo>, TAction, true,

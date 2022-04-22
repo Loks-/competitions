@@ -6,7 +6,7 @@
 #include "common/binary_search_tree/info/none.h"
 #include "common/graph/tree.h"
 #include "common/graph/tree/lca.h"
-#include "common/nodes_manager_fixed_size.h"
+#include "common/memory/nodes_manager_fixed_size.h"
 #include "common/vector/rmq/position_value.h"
 
 #include <stack>
@@ -37,7 +37,7 @@ class LCA {
     vv = v;
     size_t n = v.size();
     // Build Cartesian Tree
-    NodesManagerFixedSize<TNode> m(n);
+    memory::NodesManagerFixedSize<TNode> m(n);
     TNode *proot = m.New(), *plast = proot, *p0 = proot;
     proot->data = v[0];
     std::stack<TNode*> s;

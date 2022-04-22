@@ -1,8 +1,8 @@
 #pragma once
 
 #include "common/data_structures/fixed_universe_successor/empty.h"
-#include "common/node.h"
-#include "common/nodes_manager.h"
+#include "common/memory/node.h"
+#include "common/memory/nodes_manager.h"
 #include "common/numeric/bits/ulog2.h"
 
 #include <algorithm>
@@ -27,14 +27,14 @@ class BTrie {
   static const size_t level_mask = (size_t(1) << bits_per_level) - 1;
   static const size_t level_size = (size_t(1) << bits_per_level);
 
-  class Node : public BaseNode {
+  class Node : public memory::Node {
    public:
     TFLS mask;
     Node* p;
     std::vector<Node*> children;
   };
 
-  using TNodeManager = NodesManager<Node>;
+  using TNodeManager = memory::NodesManager<Node>;
 
  protected:
   TNodeManager manager1, manager2;

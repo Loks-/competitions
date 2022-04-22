@@ -3,7 +3,7 @@
 #include "common/base.h"
 #include "common/graph/tree.h"
 #include "common/graph/tree/lcte/node.h"
-#include "common/nodes_manager_fixed_size.h"
+#include "common/memory/nodes_manager_fixed_size.h"
 
 #include <stack>
 #include <vector>
@@ -23,8 +23,8 @@ class LCTE {
   using TSelf = LCTE<TData, TPInfo, TVInfo, TAction>;
 
  protected:
-  NodesManagerFixedSize<TPNode> pmanager;
-  NodesManagerFixedSize<TVNode> vmanager;
+  memory::NodesManagerFixedSize<TPNode> pmanager;
+  memory::NodesManagerFixedSize<TVNode> vmanager;
 
  public:
   template <class TNode>
@@ -205,9 +205,8 @@ class LCTE {
   TPNode* TreeParent(TPNode* node) {
     assert(node);
     ApplyActionRootToNode(node);
-    return node->l    ? node->l->GetRR()
-           : node->vp ? node->vp->GetRP()->vp
-                      : nullptr;
+    return node->l ? node->l->GetRR() : node->vp ? node->vp->GetRP()->vp
+                                                 : nullptr;
   }
 
   void SelectNode(TPNode* node) {

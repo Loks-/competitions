@@ -3,7 +3,7 @@
 #include "common/base.h"
 #include "common/heap/ext/fibonacci.h"
 #include "common/heap/ukvm/data.h"
-#include "common/nodes_manager_fixed_size.h"
+#include "common/memory/nodes_manager_fixed_size.h"
 
 #include <functional>
 #include <vector>
@@ -18,12 +18,13 @@ namespace ukvm {
 // Pop     -- O(log N) amortized
 // Union   -- O(1)
 template <class TTValue, class TCompare = std::less<TTValue>>
-class Fibonacci
-    : public heap::ext::Fibonacci<TTValue, TCompare, NodesManagerFixedSize> {
+class Fibonacci : public heap::ext::Fibonacci<TTValue, TCompare,
+                                              memory::NodesManagerFixedSize> {
  public:
   using TValue = TTValue;
   using TData = Data<TValue>;
-  using TBase = heap::ext::Fibonacci<TValue, TCompare, NodesManagerFixedSize>;
+  using TBase =
+      heap::ext::Fibonacci<TValue, TCompare, memory::NodesManagerFixedSize>;
   using TSelf = Fibonacci<TValue, TCompare>;
   using TNode = typename TBase::Node;
   using TNodesManager = typename TBase::TNodesManager;

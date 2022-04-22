@@ -1,8 +1,8 @@
 #pragma once
 
 #include "common/base.h"
-#include "common/node.h"
-#include "common/nodes_manager.h"
+#include "common/memory/node.h"
+#include "common/memory/nodes_manager.h"
 #include "common/template.h"
 
 #include <functional>
@@ -16,7 +16,7 @@ namespace base {
 // Pop     -- O(log N) amortized
 // Union   -- O(1)
 template <class TTData, class TTCompare = std::less<TTData>,
-          template <class TNode> class TTNodesManager = NodesManager,
+          template <class TNode> class TTNodesManager = memory::NodesManager,
           bool _multipass = false, bool _auxiliary = false>
 class Pairing {
  public:
@@ -26,7 +26,7 @@ class Pairing {
   using TCompare = TTCompare;
   using TSelf = Pairing<TData, TCompare, TTNodesManager, multipass, auxiliary>;
 
-  class Node : public BaseNode {
+  class Node : public memory::Node {
    public:
     TData value;
     Node *l, *r;

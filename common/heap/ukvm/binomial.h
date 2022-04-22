@@ -2,8 +2,8 @@
 
 #include "common/base.h"
 #include "common/heap/ukvm/data.h"
-#include "common/node.h"
-#include "common/nodes_manager_fixed_size.h"
+#include "common/memory/node.h"
+#include "common/memory/nodes_manager_fixed_size.h"
 
 #include <functional>
 
@@ -26,7 +26,7 @@ class Binomial {
 
   struct TPositionValue;
 
-  class Node : public BaseNode {
+  class Node : public memory::Node {
    public:
     TPositionValue* pv;
     Node *p, *l, *s;
@@ -43,7 +43,7 @@ class Binomial {
     void ClearReuse() { d = 0; }
   };
 
-  using TNodesManager = NodesManagerFixedSize<Node>;
+  using TNodesManager = memory::NodesManagerFixedSize<Node>;
 
   struct TPositionValue {
     Node* heap_position;

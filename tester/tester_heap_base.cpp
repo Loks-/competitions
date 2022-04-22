@@ -13,6 +13,7 @@
 #include "common/heap/ukvm/dheap.h"
 #include "common/heap/ukvm/fibonacci.h"
 #include "common/heap/ukvm/pairing.h"
+#include "common/memory/nodes_manager.h"
 #include "common/timer.h"
 #include "common/vector/hrandom.h"
 
@@ -92,15 +93,15 @@ size_t TesterHeapBase::TestKVM(const std::string& name) const {
 
 template <bool multipass, bool auxiliary>
 size_t TesterHeapBase::TestBasePairing() const {
-  return TestBase<heap::base::Pairing<size_t, std::less<size_t>, NodesManager,
-                                      multipass, auxiliary>>(
+  return TestBase<heap::base::Pairing<
+      size_t, std::less<size_t>, memory::NodesManager, multipass, auxiliary>>(
       "B PR" + std::to_string(multipass) + std::to_string(auxiliary));
 }
 
 template <bool multipass, bool auxiliary>
 size_t TesterHeapBase::TestExtPairing() const {
   return TestNodesManager<heap::ext::Pairing<
-      size_t, std::less<size_t>, NodesManager, multipass, auxiliary>>(
+      size_t, std::less<size_t>, memory::NodesManager, multipass, auxiliary>>(
       "E PR" + std::to_string(multipass) + std::to_string(auxiliary));
 }
 

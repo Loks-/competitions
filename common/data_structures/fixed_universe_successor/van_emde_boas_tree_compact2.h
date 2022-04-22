@@ -2,8 +2,8 @@
 
 #include "common/base.h"
 #include "common/data_structures/fixed_universe_successor/empty.h"
-#include "common/node.h"
-#include "common/nodes_manager.h"
+#include "common/memory/node.h"
+#include "common/memory/nodes_manager.h"
 #include "common/numeric/bits/ulog2.h"
 
 #include <algorithm>
@@ -40,7 +40,7 @@ class VanEmdeBoasTreeCompact2 {
     }
   };
 
-  class Node : public BaseNode {
+  class Node : public memory::Node {
    public:
     union {
       TFLS leaf;
@@ -80,7 +80,7 @@ class VanEmdeBoasTreeCompact2 {
   };
 
  protected:
-  NodesManager<Node> nodes_manager;
+  memory::NodesManager<Node> nodes_manager;
   Node* root;
   std::unordered_map<uint64_t, Node*> nodes;
   unsigned maxh;

@@ -2,8 +2,8 @@
 
 #include "common/base.h"
 #include "common/heap/ukvm/data.h"
-#include "common/node.h"
-#include "common/nodes_manager.h"
+#include "common/memory/node.h"
+#include "common/memory/nodes_manager.h"
 
 #include <algorithm>
 #include <unordered_map>
@@ -19,7 +19,7 @@ class ProxySet {
   using TData = Data<TValue>;
   using TSelf = ProxySet<TSet>;
 
-  class TNode : public BaseNode {
+  class TNode : public memory::Node {
    public:
     TNode *next = nullptr, *prev = nullptr;
   };
@@ -27,7 +27,7 @@ class ProxySet {
  protected:
   TSet s;
   std::vector<TNode> nodes_key;
-  NodesManager<TNode> manager_priority;
+  memory::NodesManager<TNode> manager_priority;
   std::vector<TValue> priority;
   std::unordered_map<TValue, TNode*> queue;
   TNode* pkey0;

@@ -2,8 +2,8 @@
 
 #include "common/base.h"
 #include "common/data_structures/fixed_universe_successor/empty.h"
-#include "common/node.h"
-#include "common/nodes_manager.h"
+#include "common/memory/node.h"
+#include "common/memory/nodes_manager.h"
 #include "common/numeric/bits/ulog2.h"
 
 #include <unordered_map>
@@ -22,13 +22,13 @@ namespace fus {
 // Predecessor -- O(log log U)
 class XFastTrie {
  protected:
-  class Node : public BaseNode {
+  class Node : public memory::Node {
    public:
     size_t value;
     Node *l, *r;
   };
 
-  using TNodeManager = NodesManager<Node>;
+  using TNodeManager = memory::NodesManager<Node>;
 
  protected:
   Node *empty_node;

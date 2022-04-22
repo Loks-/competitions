@@ -1,7 +1,7 @@
 #pragma once
 
 #include "common/graph/dynamic/edge.h"
-#include "common/nodes_manager.h"
+#include "common/memory/nodes_manager.h"
 
 #include <vector>
 
@@ -13,7 +13,7 @@ class Graph {
   static const bool directed_edges = _directed_edges;
   using TEdgeData = TTEdgeData;
   using TEdge = Edge<TEdgeData>;
-  using TManager = NodesManager<TEdge>;
+  using TManager = memory::NodesManager<TEdge>;
   using TSelf = Graph<TEdgeData, directed_edges>;
 
  protected:
@@ -46,9 +46,7 @@ class Graph {
 
   std::vector<TEdge*>& Edges(unsigned from) { return edges[from]; }
 
-  const std::vector<TEdge*>& Edges(unsigned from) const {
-    return edges[from];
-  }
+  const std::vector<TEdge*>& Edges(unsigned from) const { return edges[from]; }
 
   std::vector<std::vector<TEdge*>>& InvertedEdges() { return inverted_edges; }
 
@@ -93,9 +91,7 @@ class Graph {
     return e1;
   }
 
-  TEdge* AddEdge(unsigned from, unsigned to) {
-    return AddEdge(from, to, {});
-  }
+  TEdge* AddEdge(unsigned from, unsigned to) { return AddEdge(from, to, {}); }
 
  protected:
   void DeleteEdgeI(TEdge* edge, bool inverted) {

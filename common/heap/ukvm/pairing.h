@@ -3,7 +3,7 @@
 #include "common/base.h"
 #include "common/heap/ext/pairing.h"
 #include "common/heap/ukvm/data.h"
-#include "common/nodes_manager_fixed_size.h"
+#include "common/memory/nodes_manager_fixed_size.h"
 
 #include <functional>
 #include <vector>
@@ -19,14 +19,15 @@ namespace ukvm {
 // Union   -- O(1)
 template <class TTValue, class TCompare = std::less<TTValue>,
           bool multipass = false, bool auxiliary = false>
-class Pairing
-    : public heap::ext::Pairing<TTValue, TCompare, NodesManagerFixedSize,
-                                multipass, auxiliary> {
+class Pairing : public heap::ext::Pairing<TTValue, TCompare,
+                                          memory::NodesManagerFixedSize,
+                                          multipass, auxiliary> {
  public:
   using TValue = TTValue;
   using TData = Data<TValue>;
-  using TBase = heap::ext::Pairing<TValue, TCompare, NodesManagerFixedSize,
-                                   multipass, auxiliary>;
+  using TBase =
+      heap::ext::Pairing<TValue, TCompare, memory::NodesManagerFixedSize,
+                         multipass, auxiliary>;
   using TSelf = Pairing<TValue, TCompare, multipass, auxiliary>;
   using TNode = typename TBase::Node;
   using TNodesManager = typename TBase::TNodesManager;

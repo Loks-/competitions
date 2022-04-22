@@ -7,7 +7,7 @@
 #include "common/binary_search_tree/info/treap_height.h"
 #include "common/binary_search_tree/info/update_node_to_root.h"
 #include "common/binary_search_tree/persistent/tree.h"
-#include "common/nodes_manager.h"
+#include "common/memory/nodes_manager.h"
 
 #include <stack>
 #include <vector>
@@ -19,7 +19,7 @@ template <bool use_key, bool use_parent, class TData,
           class TKey = int64_t>
 class Treap
     : public bst::persistent::Tree<
-          NodesManager<
+          memory::NodesManager<
               bst::base::Node<TData, bst::info::TreapHeight<unsigned, TTInfo>,
                               TAction, use_key, use_parent, TKey>>,
           Treap<use_key, use_parent, TData, TTInfo, TAction, TKey>> {
@@ -33,8 +33,8 @@ class Treap
   using TNode =
       bst::base::Node<TData, TInfo, TAction, use_key, use_parent, TKey>;
   using TSelf = Treap<use_key, use_parent, TData, TTInfo, TAction, TKey>;
-  using TBase = bst::persistent::Tree<NodesManager<TNode>, TSelf>;
-  using TTree = bst::base::Tree<NodesManager<TNode>, TSelf>;
+  using TBase = bst::persistent::Tree<memory::NodesManager<TNode>, TSelf>;
+  using TTree = bst::base::Tree<memory::NodesManager<TNode>, TSelf>;
   friend TTree;
 
  protected:

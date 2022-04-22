@@ -1,6 +1,6 @@
 #pragma once
 
-#include "common/node.h"
+#include "common/memory/node.h"
 
 namespace graph {
 namespace lcte {
@@ -12,7 +12,7 @@ class VNode;
 
 template <class TTData, class TTPInfo, class TTVInfo, class TTAction,
           class TTSelf, class TTDual>
-class CNode : public BaseNode {
+class CNode : public memory::Node {
  public:
   using TData = TTData;
   using TPInfo = TTPInfo;

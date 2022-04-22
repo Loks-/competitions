@@ -1,8 +1,8 @@
 #pragma once
 
 #include "common/base.h"
-#include "common/node.h"
-#include "common/nodes_manager.h"
+#include "common/memory/node.h"
+#include "common/memory/nodes_manager.h"
 
 #include <vector>
 
@@ -28,14 +28,14 @@ class RollingBucketQueueLL {
     TValue value;
   };
 
-  class TNode : public BaseNode {
+  class TNode : public memory::Node {
    public:
     TValue value;
     TNode* next = nullptr;
   };
 
  protected:
-  NodesManager<TNode> manager;
+  memory::NodesManager<TNode> manager;
   std::vector<TNode*> queue;
   unsigned top_priority = 0, top_priority_adj = 0;
   unsigned size = 0;

@@ -2,8 +2,8 @@
 
 #include "common/base.h"
 #include "common/heap/ukvm/data.h"
-#include "common/node.h"
-#include "common/nodes_manager.h"
+#include "common/memory/node.h"
+#include "common/memory/nodes_manager.h"
 
 #include <vector>
 
@@ -24,7 +24,7 @@ class RadixDLL {
   using TData = heap::ukvm::Data<TValue>;
   using TSelf = RadixDLL;
 
-  class TNode : public BaseNode {
+  class TNode : public memory::Node {
    public:
     unsigned index;
     TNode *next = nullptr, *prev = nullptr;
@@ -32,7 +32,7 @@ class RadixDLL {
 
  protected:
   std::vector<TNode> nodes_key;
-  NodesManager<TNode> manager_priority;
+  memory::NodesManager<TNode> manager_priority;
   std::vector<unsigned> priority;
   std::vector<TNode*> queue;
   std::vector<unsigned> vfirst, vlength;

@@ -2,8 +2,8 @@
 
 #include "common/base.h"
 #include "common/heap/ukvm/data.h"
-#include "common/node.h"
-#include "common/nodes_manager.h"
+#include "common/memory/node.h"
+#include "common/memory/nodes_manager.h"
 #include "common/numeric/bits/ulog2.h"
 
 #include <vector>
@@ -24,14 +24,14 @@ class TwoLayersBucketsSqrtDLL {
   using TData = heap::ukvm::Data<TValue>;
   using TSelf = TwoLayersBucketsSqrtDLL;
 
-  class TNode : public BaseNode {
+  class TNode : public memory::Node {
    public:
     TNode *next = nullptr, *prev = nullptr;
   };
 
  protected:
   std::vector<TNode> nodes;
-  NodesManager<TNode> manager;
+  memory::NodesManager<TNode> manager;
   std::vector<unsigned> priority;
   std::vector<TNode*> queue2;  // Second queue only
   TNode *pkey0, *ppriority0;

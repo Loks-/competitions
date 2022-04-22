@@ -8,21 +8,22 @@
 #include "common/binary_search_tree/base/sibling.h"
 #include "common/binary_search_tree/info/size.h"
 #include "common/binary_search_tree/info/wavl_rank.h"
-#include "common/nodes_manager_fixed_size.h"
+#include "common/memory/nodes_manager_fixed_size.h"
 
 namespace bst {
 template <bool use_parent, class TData, class TInfo = info::Size,
           class TAction = action::None, class TKey = int64_t>
 class WAVLTree
     : public base::BalancedTree<
-          NodesManagerFixedSize<base::Node<TData, info::WAVLRank<TInfo>,
-                                           TAction, true, use_parent, TKey>>,
+          memory::NodesManagerFixedSize<base::Node<
+              TData, info::WAVLRank<TInfo>, TAction, true, use_parent, TKey>>,
           WAVLTree<use_parent, TData, TInfo, TAction, TKey>> {
  public:
   using TNode =
       base::Node<TData, info::WAVLRank<TInfo>, TAction, true, use_parent, TKey>;
   using TSelf = WAVLTree<use_parent, TData, TInfo, TAction, TKey>;
-  using TBTree = base::BalancedTree<NodesManagerFixedSize<TNode>, TSelf>;
+  using TBTree =
+      base::BalancedTree<memory::NodesManagerFixedSize<TNode>, TSelf>;
   using TTree = typename TBTree::TTree;
   friend TBTree;
   friend TTree;
