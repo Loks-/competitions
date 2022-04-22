@@ -7,6 +7,7 @@
 #include <vector>
 
 namespace memory {
+// TNode should be based on memory::Node class.
 template <class TTNode>
 class NodesManagerFixedSize {
  public:
