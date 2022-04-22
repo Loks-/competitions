@@ -51,14 +51,14 @@ class MultiSearchTreeHashTable {
   std::vector<Node *> path;
 
  protected:
-  size_t GetHighBits(size_t x, size_t depth) const {
+  size_t HBits(size_t x, size_t depth) const {
     if (depth >= max_depth) return 0;
     size_t mask_low_bits = (1ull << ((depth + 1) * bits_per_level)) - 1;
     return (x & ~mask_low_bits);
   }
 
-  size_t GetHKey(size_t x, size_t depth) const {
-    return GetHighBits(x, depth) + depth + 1;
+  size_t HKey(size_t x, size_t depth) const {
+    return HBits(x, depth) + depth + 1;
   }
 
   size_t Index(size_t x, size_t depth) const {
@@ -66,13 +66,13 @@ class MultiSearchTreeHashTable {
   }
 
   Node *FindNode(size_t x, size_t depth) {
-    auto key = GetHKey(x, depth);
+    auto key = HKey(x, depth);
     auto it = hash_table.find(key);
     return (it == hash_table.end()) ? nullptr : it->second;
   }
 
   const Node *FindNode(size_t x, size_t depth) const {
-    auto key = GetHKey(x, depth);
+    auto key = HKey(x, depth);
     auto it = hash_table.find(key);
     return (it == hash_table.end()) ? nullptr : it->second;
   }
@@ -84,12 +84,12 @@ class MultiSearchTreeHashTable {
 
   void AddNode(size_t x, size_t depth) {
     auto node = nodes_manager.New();
-    hash_table[GetHKey(x, depth)] = node;
+    hash_table[HKey(x, depth)] = node;
     Set1(node, x, depth);
   }
 
   void DeleteNode(size_t x, size_t depth) {
-    auto key = GetHKey(x, depth);
+    auto key = HKey(x, depth);
     auto it = hash_table.find(key);
     if (it != hash_table.end()) {
       nodes_manager.Release(it->second);
@@ -182,12 +182,12 @@ class MultiSearchTreeHashTable {
     for (++depth; depth <= max_depth; ++depth) {
       node = path[depth];
       if (node->min_value == x) {
-        auto x2 = GetHighBits(x, depth) +
-                  (node->mask.MinI() << (depth * bits_per_level));
+        auto x2 =
+            HBits(x, depth) + (node->mask.MinI() << (depth * bits_per_level));
         node->min_value = FindNode(x2, depth - 1)->min_value;
       } else if (node->max_value == x) {
-        auto x2 = GetHighBits(x, depth) +
-                  (node->mask.MaxI() << (depth * bits_per_level));
+        auto x2 =
+            HBits(x, depth) + (node->mask.MaxI() << (depth * bits_per_level));
         node->max_value = FindNode(x2, depth - 1)->max_value;
       } else {
         break;
