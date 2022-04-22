@@ -38,11 +38,15 @@ class BTrie {
 
  protected:
   TNodeManager manager1, manager2;
-  Node* root;
+  Node root;
   unsigned maxh;
   size_t usize, size;
 
  protected:
+  size_t Index(size_t x, size_t h) const {
+    return (x >> (h * bits_per_level)) & level_mask;
+  }
+
   void ReleaseNode(Node* node) {
     (node->children.empty() ? manager2 : manager1).Release(node);
   }
@@ -59,48 +63,44 @@ class BTrie {
   }
 
  public:
-  BTrie() {
-    root = manager1.New();
-    root->p = nullptr;
-  }
+  BTrie() { root.p = nullptr; }
 
   void Clear() {
     size = 0;
-    ReleaseR(root);
+    ReleaseR(&root);
   }
 
   void Init(size_t u) {
     Clear();
     usize = u;
-    maxh = (u > level_size) ? numeric::ULog2(u - 1) / bits_per_level + 1 : 1;
-    root->children.resize(maxh > 1 ? level_size : 0, nullptr);
+    maxh = (u > level_size) ? numeric::ULog2(u - 1) / bits_per_level : 0;
+    root.children.resize(maxh > 0 ? level_size : 0, nullptr);
   }
 
   bool HasKey(size_t x) const {
-    auto node = root;
-    for (unsigned h = 1; node && (h < maxh); ++h) {
-      node = node->children[(x >> (bits_per_level * (maxh - h))) & level_mask];
-    }
+    auto node = &root;
+    for (unsigned h = maxh; node && (h > 0); --h)
+      node = node->children[Index(x, h)];
     return node ? node->mask.HasKey(x & level_mask) : false;
   }
 
   void Insert(size_t x) {
-    auto node = root;
-    for (unsigned h = 1; h < maxh; ++h) {
-      auto v = (x >> (bits_per_level * (maxh - h))) & level_mask;
-      if (!node->children[v]) {
-        Node* nodec = nullptr;
-        if ((h + 1) < maxh) {
-          nodec = manager1.New();
-          nodec->children.resize(level_size, nullptr);
+    auto node = &root;
+    for (unsigned h = maxh; h; --h) {
+      size_t idx = Index(x, h);
+      if (!node->children[idx]) {
+        Node* child = nullptr;
+        if (h > 1) {
+          child = manager1.New();
+          child->children.resize(level_size, nullptr);
         } else {
-          nodec = manager2.New();
+          child = manager2.New();
         }
-        node->children[v] = nodec;
-        nodec->p = node;
-        node->mask.Insert(v);
+        node->children[idx] = child;
+        child->p = node;
+        node->mask.Insert(idx);
       }
-      node = node->children[v];
+      node = node->children[idx];
     }
     if (!node->mask.HasKey(x & level_mask)) {
       ++size;
@@ -109,15 +109,13 @@ class BTrie {
   }
 
   void Delete(size_t x) {
-    auto node = root;
-    for (unsigned h = 1; node && (h < maxh); ++h) {
-      node = node->children[(x >> (bits_per_level * (maxh - h))) & level_mask];
-    }
+    auto node = &root;
+    for (unsigned h = maxh; h; --h) node = node->children[Index(x, h)];
     if (!node || !node->mask.HasKey(x & level_mask))
       return;  // No element to remove
     --size;
     node->mask.Delete(x & level_mask);
-    for (; node->mask.IsEmpty() && (node != root);) {
+    for (; node->mask.IsEmpty() && (node != &root);) {
       node = node->p;
       x >>= bits_per_level;
       auto v = x & level_mask;
@@ -131,7 +129,7 @@ class BTrie {
   size_t USize() const { return usize; }
 
  protected:
-  size_t MinI(Node* node, size_t x) const {
+  size_t MinI(const Node* node, size_t x) const {
     if (node->mask.IsEmpty()) return Empty;
     for (; !node->children.empty();) {
       auto v = node->mask.Min();
@@ -141,7 +139,7 @@ class BTrie {
     return (x << bits_per_level) + node->mask.Min();
   }
 
-  size_t MaxI(Node* node, size_t x) const {
+  size_t MaxI(const Node* node, size_t x) const {
     if (node->mask.IsEmpty()) return Empty;
     for (; !node->children.empty();) {
       auto v = node->mask.Max();
@@ -152,23 +150,23 @@ class BTrie {
   }
 
  public:
-  size_t Min() const { return MinI(root, 0); }
-  size_t Max() const { return MaxI(root, 0); }
+  size_t Min() const { return MinI(&root, 0); }
+  size_t Max() const { return MaxI(&root, 0); }
 
   size_t Successor(size_t x) const {
-    auto node = root;
-    unsigned h = 1;
-    for (; h < maxh; ++h) {
-      auto v = (x >> (bits_per_level * (maxh - h))) & level_mask;
-      if (!node->children[v]) break;
-      node = node->children[v];
+    auto node = &root;
+    unsigned h = maxh;
+    for (; h; --h) {
+      auto idx = Index(x, h);
+      if (!node->children[idx]) break;
+      node = node->children[idx];
     }
-    for (; node; --h) {
-      auto v = (x >> (bits_per_level * (maxh - h))) & level_mask;
-      auto v1 = node->mask.Successor(v);
-      if (v1 != Empty) {
-        auto xa = (x >> (bits_per_level * (maxh - h))) - v + v1;
-        return node->children.empty() ? xa : MinI(node->children[v1], xa);
+    for (; node; ++h) {
+      auto idx = Index(x, h);
+      auto idx1 = node->mask.Successor(idx);
+      if (idx1 != Empty) {
+        auto xa = (x >> (bits_per_level * h)) - idx + idx1;
+        return node->children.empty() ? xa : MinI(node->children[idx1], xa);
       }
       node = node->p;
     }
@@ -176,19 +174,19 @@ class BTrie {
   }
 
   size_t Predecessor(size_t x) const {
-    auto node = root;
-    unsigned h = 1;
-    for (; h < maxh; ++h) {
-      auto v = (x >> (bits_per_level * (maxh - h))) & level_mask;
-      if (!node->children[v]) break;
-      node = node->children[v];
+    auto node = &root;
+    unsigned h = maxh;
+    for (; h; --h) {
+      auto idx = Index(x, h);
+      if (!node->children[idx]) break;
+      node = node->children[idx];
     }
-    for (; node; --h) {
-      auto v = (x >> (bits_per_level * (maxh - h))) & level_mask;
-      auto v1 = node->mask.Predecessor(v);
-      if (v1 != Empty) {
-        auto xa = (x >> (bits_per_level * (maxh - h))) - v + v1;
-        return node->children.empty() ? xa : MaxI(node->children[v1], xa);
+    for (; node; ++h) {
+      auto idx = Index(x, h);
+      auto idx1 = node->mask.Predecessor(idx);
+      if (idx1 != Empty) {
+        auto xa = (x >> (bits_per_level * h)) - idx + idx1;
+        return node->children.empty() ? xa : MaxI(node->children[idx1], xa);
       }
       node = node->p;
     }
