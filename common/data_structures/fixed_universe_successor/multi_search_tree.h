@@ -47,27 +47,25 @@ class MultiSearchTree {
   size_t hash_shift = 0;
   size_t node_ptr_mask = 0;
   size_t nodes_used = 0;
-  size_t max_depth = 0;
+  size_t maxh = 0;
   std::vector<Node *> path;
 
  protected:
-  size_t HBits(size_t x, size_t depth) const {
-    if (depth >= max_depth) return 0;
-    size_t mask_low_bits = (1ull << ((depth + 1) * bits_per_level)) - 1;
+  size_t HBits(size_t x, size_t h) const {
+    if (h >= maxh) return 0;
+    size_t mask_low_bits = (1ull << ((h + 1) * bits_per_level)) - 1;
     return (x & ~mask_low_bits);
   }
 
-  size_t HKey(size_t x, size_t depth) const {
-    return HBits(x, depth) + depth + 1;
-  }
+  size_t HKey(size_t x, size_t h) const { return HBits(x, h) + h + 1; }
 
   size_t GetHash(size_t x) const {
     const size_t m = 0x4906ba494954cb65ull;
     return (x * m) >> hash_shift;
   }
 
-  size_t Index(size_t x, size_t depth) const {
-    return (x >> (depth * bits_per_level)) & level_mask;
+  size_t Index(size_t x, size_t h) const {
+    return (x >> (h * bits_per_level)) & level_mask;
   }
 
   void ResizeHash(size_t new_size) {
@@ -102,17 +100,17 @@ class MultiSearchTree {
     }
   }
 
-  Node *FindNode(size_t x, size_t depth) {
-    return &nodes[FindNodeIndex(HKey(x, depth))];
+  Node *FindNode(size_t x, size_t h) {
+    return &nodes[FindNodeIndex(HKey(x, h))];
   }
 
-  const Node *FindNode(size_t x, size_t depth) const {
-    return &nodes[FindNodeIndex(HKey(x, depth))];
+  const Node *FindNode(size_t x, size_t h) const {
+    return &nodes[FindNodeIndex(HKey(x, h))];
   }
 
-  Node *AddNode(size_t x, size_t depth) {
+  Node *AddNode(size_t x, size_t h) {
     ++nodes_used;
-    size_t key = HKey(x, depth);
+    size_t key = HKey(x, h);
     for (size_t idx = GetHash(key);; ++idx) {
       size_t ptr = idx & node_ptr_mask;
       if (nodes[ptr].IsEmpty()) {
@@ -123,9 +121,9 @@ class MultiSearchTree {
     }
   }
 
-  void Set1(Node *node, size_t x, size_t depth) {
+  void Set1(Node *node, size_t x, size_t h) {
     node->min_value = node->max_value = x;
-    node->mask.Set1I(Index(x, depth));
+    node->mask.Set1I(Index(x, h));
   }
 
  public:
@@ -134,12 +132,12 @@ class MultiSearchTree {
   void Init(size_t u) {
     usize = u;
     root.Clear();
-    max_depth = 0;
-    for (;; ++max_depth) {
-      size_t bits = (max_depth + 1) * bits_per_level;
+    maxh = 0;
+    for (;; ++maxh) {
+      size_t bits = (maxh + 1) * bits_per_level;
       if ((bits >= 64) || ((1ull << bits) >= usize)) break;
     }
-    path.resize(max_depth + 1);
+    path.resize(maxh + 1);
     ResizeHash(1000);
   }
 
@@ -148,42 +146,42 @@ class MultiSearchTree {
   bool HasKey(size_t x) const {
     if (root.IsEmpty()) return false;
     const Node *node = &root;
-    for (size_t depth = max_depth;; node = FindNode(x, --depth)) {
+    for (size_t h = maxh;; node = FindNode(x, --h)) {
       if (!node->IsSplit()) return x == node->min_value;
-      if (!node->mask.HasKey(Index(x, depth))) return false;
-      if (depth == 0) return true;
+      if (!node->mask.HasKey(Index(x, h))) return false;
+      if (h == 0) return true;
     }
   }
 
   void Insert(size_t x) {
     if (nodes_used * 3 > node_ptr_mask) ResizeHash(4 * (node_ptr_mask + 1));
     Node *node = &root;
-    for (size_t depth = max_depth;;) {
-      if (node->IsEmpty()) return Set1(node, x, depth);
+    for (size_t h = maxh;;) {
+      if (node->IsEmpty()) return Set1(node, x, h);
       // Split node if needed
-      if (!node->IsSplit() && (depth > 0)) {
+      if (!node->IsSplit() && (h > 0)) {
         if (node->min_value == x) return;  // Adding same value
-        Set1(AddNode(node->min_value, depth - 1), node->min_value, depth - 1);
+        Set1(AddNode(node->min_value, h - 1), node->min_value, h - 1);
       }
       node->min_value = std::min(node->min_value, x);
       node->max_value = std::max(node->max_value, x);
-      size_t idx = Index(x, depth);
+      size_t idx = Index(x, h);
       if (node->mask.HasKey(idx)) {
-        if (depth == 0) return;
-        node = FindNode(x, --depth);
+        if (h == 0) return;
+        node = FindNode(x, --h);
       } else {
         node->mask.Insert(idx);
-        if (depth == 0) return;
-        node = AddNode(x, --depth);
+        if (h == 0) return;
+        node = AddNode(x, --h);
       }
     }
   }
 
   void Delete(size_t x) {
     Node *prev_node = nullptr, *node = &root;
-    size_t prev_idx = 0, depth = max_depth;
-    for (;; node = FindNode(x, --depth)) {
-      path[depth] = node;
+    size_t prev_idx = 0, h = maxh;
+    for (;; node = FindNode(x, --h)) {
+      path[h] = node;
       if (!node->IsSplit()) {
         if (node->min_value != x) return;  // Removing missing element
         node->Clear();
@@ -193,9 +191,9 @@ class MultiSearchTree {
           prev_node->mask.Delete(prev_idx);
         }
       } else {
-        prev_idx = Index(x, depth);
+        prev_idx = Index(x, h);
         if (!node->mask.HasKey(prev_idx)) return;  // Removing missing element
-        if (depth == 0) {
+        if (h == 0) {
           node->mask.Delete(prev_idx);
           if (node->min_value == x) {
             node->min_value = x - prev_idx + node->mask.MinI();
@@ -209,22 +207,20 @@ class MultiSearchTree {
       }
       break;
     }
-    for (++depth; depth <= max_depth; ++depth) {
-      node = path[depth];
+    for (++h; h <= maxh; ++h) {
+      node = path[h];
       if (node->min_value == x) {
-        auto x2 =
-            HBits(x, depth) + (node->mask.MinI() << (depth * bits_per_level));
-        node->min_value = FindNode(x2, depth - 1)->min_value;
+        auto x2 = HBits(x, h) + (node->mask.MinI() << (h * bits_per_level));
+        node->min_value = FindNode(x2, h - 1)->min_value;
       } else if (node->max_value == x) {
-        auto x2 =
-            HBits(x, depth) + (node->mask.MaxI() << (depth * bits_per_level));
-        node->max_value = FindNode(x2, depth - 1)->max_value;
+        auto x2 = HBits(x, h) + (node->mask.MaxI() << (h * bits_per_level));
+        node->max_value = FindNode(x2, h - 1)->max_value;
       } else {
         break;
       }
       if (node->min_value == node->max_value) {
         // Unsplit node
-        Node *child = FindNode(node->min_value, depth - 1);
+        Node *child = FindNode(node->min_value, h - 1);
         assert(child);
         --nodes_used;
         child->Clear();
@@ -238,19 +234,19 @@ class MultiSearchTree {
   size_t Successor(size_t x) const {
     if (root.IsEmpty() || (x >= root.max_value)) return Empty;
     const Node *node = &root;
-    for (size_t depth = max_depth;; --depth) {
+    for (size_t h = maxh;; --h) {
       if (!node->IsSplit()) return node->max_value;
-      size_t idx = Index(x, depth);
-      if (depth == 0) return x - idx + node->mask.Successor(idx);
+      size_t idx = Index(x, h);
+      if (h == 0) return x - idx + node->mask.Successor(idx);
       if (node->mask.HasKey(idx)) {
-        auto next_node = FindNode(x, depth - 1);
+        auto next_node = FindNode(x, h - 1);
         if (x < next_node->max_value) {
           node = next_node;
           continue;
         }
       }
       auto idx2 = node->mask.Successor(idx);
-      return FindNode(x + ((idx2 - idx) << (depth * bits_per_level)), depth - 1)
+      return FindNode(x + ((idx2 - idx) << (h * bits_per_level)), h - 1)
           ->min_value;
     }
     return Empty;
@@ -259,19 +255,19 @@ class MultiSearchTree {
   size_t Predecessor(size_t x) const {
     if (root.IsEmpty() || (x <= root.min_value)) return Empty;
     const Node *node = &root;
-    for (size_t depth = max_depth;; --depth) {
+    for (size_t h = maxh;; --h) {
       if (!node->IsSplit()) return node->min_value;
-      size_t idx = Index(x, depth);
-      if (depth == 0) return x - idx + node->mask.Predecessor(idx);
+      size_t idx = Index(x, h);
+      if (h == 0) return x - idx + node->mask.Predecessor(idx);
       if (node->mask.HasKey(idx)) {
-        auto next_node = FindNode(x, depth - 1);
+        auto next_node = FindNode(x, h - 1);
         if (x > next_node->min_value) {
           node = next_node;
           continue;
         }
       }
       auto idx2 = node->mask.Predecessor(idx);
-      return FindNode(x - ((idx - idx2) << (depth * bits_per_level)), depth - 1)
+      return FindNode(x - ((idx - idx2) << (h * bits_per_level)), h - 1)
           ->max_value;
     }
     return Empty;
