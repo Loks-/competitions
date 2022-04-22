@@ -61,7 +61,7 @@ class MultiSearchTreeHashTable {
     return GetHighBits(x, depth) + depth + 1;
   }
 
-  size_t CalcLevelIndex(size_t x, size_t depth) const {
+  size_t Index(size_t x, size_t depth) const {
     return (x >> (depth * bits_per_level)) & level_mask;
   }
 
@@ -79,7 +79,7 @@ class MultiSearchTreeHashTable {
 
   void Set1(Node *node, size_t x, size_t depth) {
     node->min_value = node->max_value = x;
-    node->mask.Set1(CalcLevelIndex(x, depth));
+    node->mask.Set1(Index(x, depth));
   }
 
   void AddNode(size_t x, size_t depth) {
@@ -124,8 +124,7 @@ class MultiSearchTreeHashTable {
         d0 = d + 1;
     }
     auto node = (d0 == max_depth) ? &root : FindNode(x, d0);
-    return (d0 == 0) ? node->mask.HasKey(CalcLevelIndex(x, 0))
-                     : (x == node->min_value);
+    return (d0 == 0) ? node->mask.HasKey(Index(x, 0)) : (x == node->min_value);
   }
 
   void Insert(size_t x) {
@@ -139,7 +138,7 @@ class MultiSearchTreeHashTable {
       }
       node->min_value = std::min(node->min_value, x);
       node->max_value = std::max(node->max_value, x);
-      size_t idx = CalcLevelIndex(x, depth);
+      size_t idx = Index(x, depth);
       if (node->mask.HasKey(idx)) {
         if (depth == 0) return;
         node = FindNode(x, --depth);
@@ -164,7 +163,7 @@ class MultiSearchTreeHashTable {
           prev_node->mask.Delete(prev_idx);
         }
       } else {
-        prev_idx = CalcLevelIndex(x, depth);
+        prev_idx = Index(x, depth);
         if (!node->mask.HasKey(prev_idx)) return;  // Removing missing element
         if (depth == 0) {
           node->mask.Delete(prev_idx);
@@ -214,7 +213,7 @@ class MultiSearchTreeHashTable {
         d0 = d + 1;
     }
     auto node = (d0 == max_depth) ? &root : FindNode(x, d0);
-    size_t idx = CalcLevelIndex(x, d0);
+    size_t idx = Index(x, d0);
     if (d0 == 0) return x - idx + node->mask.Successor(idx);
     if (!node->IsSplit()) return node->max_value;
     auto idx2 = node->mask.Successor(idx);
@@ -235,7 +234,7 @@ class MultiSearchTreeHashTable {
         d0 = d + 1;
     }
     auto node = (d0 == max_depth) ? &root : FindNode(x, d0);
-    size_t idx = CalcLevelIndex(x, d0);
+    size_t idx = Index(x, d0);
     if (d0 == 0) return x - idx + node->mask.Predecessor(idx);
     if (!node->IsSplit()) return node->min_value;
     auto idx2 = node->mask.Predecessor(idx);

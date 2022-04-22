@@ -66,7 +66,7 @@ class MultiSearchTree {
     return (x * m) >> hash_shift;
   }
 
-  size_t CalcLevelIndex(size_t x, size_t depth) const {
+  size_t Index(size_t x, size_t depth) const {
     return (x >> (depth * bits_per_level)) & level_mask;
   }
 
@@ -125,7 +125,7 @@ class MultiSearchTree {
 
   void Set1(Node *node, size_t x, size_t depth) {
     node->min_value = node->max_value = x;
-    node->mask.Set1I(CalcLevelIndex(x, depth));
+    node->mask.Set1I(Index(x, depth));
   }
 
  public:
@@ -150,7 +150,7 @@ class MultiSearchTree {
     const Node *node = &root;
     for (size_t depth = max_depth;; node = FindNode(x, --depth)) {
       if (!node->IsSplit()) return x == node->min_value;
-      if (!node->mask.HasKey(CalcLevelIndex(x, depth))) return false;
+      if (!node->mask.HasKey(Index(x, depth))) return false;
       if (depth == 0) return true;
     }
   }
@@ -167,7 +167,7 @@ class MultiSearchTree {
       }
       node->min_value = std::min(node->min_value, x);
       node->max_value = std::max(node->max_value, x);
-      size_t idx = CalcLevelIndex(x, depth);
+      size_t idx = Index(x, depth);
       if (node->mask.HasKey(idx)) {
         if (depth == 0) return;
         node = FindNode(x, --depth);
@@ -193,7 +193,7 @@ class MultiSearchTree {
           prev_node->mask.Delete(prev_idx);
         }
       } else {
-        prev_idx = CalcLevelIndex(x, depth);
+        prev_idx = Index(x, depth);
         if (!node->mask.HasKey(prev_idx)) return;  // Removing missing element
         if (depth == 0) {
           node->mask.Delete(prev_idx);
@@ -240,7 +240,7 @@ class MultiSearchTree {
     const Node *node = &root;
     for (size_t depth = max_depth;; --depth) {
       if (!node->IsSplit()) return node->max_value;
-      size_t idx = CalcLevelIndex(x, depth);
+      size_t idx = Index(x, depth);
       if (depth == 0) return x - idx + node->mask.Successor(idx);
       if (node->mask.HasKey(idx)) {
         auto next_node = FindNode(x, depth - 1);
@@ -261,7 +261,7 @@ class MultiSearchTree {
     const Node *node = &root;
     for (size_t depth = max_depth;; --depth) {
       if (!node->IsSplit()) return node->min_value;
-      size_t idx = CalcLevelIndex(x, depth);
+      size_t idx = Index(x, depth);
       if (depth == 0) return x - idx + node->mask.Predecessor(idx);
       if (node->mask.HasKey(idx)) {
         auto next_node = FindNode(x, depth - 1);
