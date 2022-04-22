@@ -81,7 +81,7 @@ class VanEmdeBoasTreeCompact2 {
 
  protected:
   memory::NodesManager<Node> nodes_manager;
-  Node* root;
+  Node root;
   std::unordered_map<uint64_t, Node*> nodes;
   unsigned maxh;
   size_t usize;
@@ -142,8 +142,7 @@ class VanEmdeBoasTreeCompact2 {
   void Clear() {
     nodes_manager.ResetNodes();
     nodes.clear();
-    root = nodes_manager.New();
-    root->Clear(maxh);
+    root.Clear(maxh);
   }
 
   void Init(size_t u) {
@@ -152,14 +151,14 @@ class VanEmdeBoasTreeCompact2 {
     Clear();
   }
 
-  bool IsEmpty() const { return root->IsEmpty(maxh); }
-  size_t Min() const { return root->Min(maxh); }
-  size_t Max() const { return root->Max(maxh); }
+  bool IsEmpty() const { return root.IsEmpty(maxh); }
+  size_t Min() const { return root.Min(maxh); }
+  size_t Max() const { return root.Max(maxh); }
 
   bool HasKey(size_t x) const {
     size_t x0 = x;
     unsigned h = maxh;
-    for (const Node* node = root; node; node = FindNode(x0, 0, h)) {
+    for (const Node* node = &root; node; node = FindNode(x0, 0, h)) {
       if (h == 1) return node->leaf.HasKey(x);
       if (x < node->node.min_value) return false;
       if (x == node->node.min_value) return true;
@@ -170,10 +169,10 @@ class VanEmdeBoasTreeCompact2 {
   }
 
   void Insert(size_t x) {
-    if (IsEmpty()) return root->Set1(x, maxh);
+    if (IsEmpty()) return root.Set1(x, maxh);
     size_t x0 = x;
     unsigned h0 = 0, h = maxh;
-    for (Node* node = root; node;) {
+    for (Node* node = &root; node;) {
       if (h == 1) return node->leaf.Insert(x);
       if (x < node->node.min_value) {
         x0 += (node->node.min_value - x) << (bits_per_level * h0);
@@ -284,12 +283,12 @@ class VanEmdeBoasTreeCompact2 {
   }
 
  public:
-  void Delete(size_t x) { DeleteI(root, x, x, 0, maxh); }
+  void Delete(size_t x) { DeleteI(&root, x, x, 0, maxh); }
 
-  size_t Successor(size_t x) const { return SuccessorI(root, x, x, 0, maxh); }
+  size_t Successor(size_t x) const { return SuccessorI(&root, x, x, 0, maxh); }
 
   size_t Predecessor(size_t x) const {
-    return PredecessorI(root, x, x, 0, maxh);
+    return PredecessorI(&root, x, x, 0, maxh);
   }
 };
 }  // namespace fus
