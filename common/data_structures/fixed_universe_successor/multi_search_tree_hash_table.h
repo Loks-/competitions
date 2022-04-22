@@ -10,7 +10,7 @@
 
 namespace ds {
 namespace fus {
-// Similar to MultiSearchTree but with defaul hash table.
+// Similar to MultiSearchTree but with default hash table.
 // Memory      -- O(S log U)
 // Init        -- O(1)
 // Insert      -- O(log U)
