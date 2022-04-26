@@ -10,7 +10,7 @@ inline uint64_t RotateBitsR(uint64_t x, unsigned shift) {
 }
 
 inline uint64_t RotateBitsL(uint64_t x, unsigned shift) {
-  return RotateBitsR(x, 64 - shift & 63);
+  return RotateBitsR(x, 64 - (shift & 63));
 }
 
 inline uint64_t RotateBitsR(uint64_t x, unsigned shift, unsigned length) {
