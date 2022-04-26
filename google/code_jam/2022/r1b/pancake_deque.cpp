@@ -9,13 +9,9 @@ int main_pancake_deque() {
     cin >> n;
     auto v = nvector::Read<unsigned>(n);
     for (unsigned i = 0, j = n - 1; i <= j;) {
-      if (v[i] <= v[j]) {
-        s += (v[i] >= m) ? 1 : 0;
-        m = max(m, v[i++]);
-      } else {
-        s += (v[j] >= m) ? 1 : 0;
-        m = max(m, v[j--]);
-      }
+      auto sij = (v[i] <= v[j]) ? v[i++] : v[j--];
+      s += (sij >= m) ? 1 : 0;
+      m = max(m, sij);
     }
     cout << "Case #" << it << ": " << s << endl;
   }
