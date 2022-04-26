@@ -46,7 +46,6 @@ int main_asedatab() {
   unsigned T;
   cin >> T;
   for (unsigned it = 1; it <= T; ++it) {
-    int in = 0;
     unsigned n = 0, l = 0;
     vector<unsigned> vc0, vc1, ve(L + 1);
     for (unsigned u = 0; u < M; ++u) {
@@ -63,9 +62,7 @@ int main_asedatab() {
       assert(best < M);
       for (unsigned j = 0; j < L; ++j) cout << ((l >> (7 - j)) & 1u);
       cout << endl;
-      cin >> in;
-      if (in < 0) return 0;
-      n = in;
+      cin >> n;
       if (n == 0) break;
       vc1.clear();
       for (unsigned u : vc0) {
