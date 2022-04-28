@@ -7,6 +7,7 @@
 #include "common/numeric/bits/ulog2.h"
 
 #include <unordered_map>
+#include <vector>
 
 namespace ds {
 namespace fus {
@@ -33,47 +34,9 @@ class XFastTrie {
  protected:
   Node *empty_node;
   TNodeManager node_manager;
-  std::unordered_map<uint64_t, Node *> m;
-  size_t usize;
+  std::vector<std::unordered_map<uint64_t, Node *>> vm;
+  size_t size, usize;
   unsigned maxh;
-
- protected:
-  static uint64_t HXToKey(unsigned h, size_t x) {
-    return (x >> h) + (uint64_t(h) << 58);
-  }
-
-  static unsigned KeyToH(uint64_t key) { return unsigned(key >> 58); }
-
-  Node *Find(size_t x) {
-    if (IsEmpty()) return empty_node;
-    unsigned h0 = 0u, h1 = maxh;
-    for (; h1 - h0 > 1;) {
-      auto h = (h0 + h1) / 2;
-      auto key = HXToKey(h - 1, x);
-      if (m.find(key) == m.end()) {
-        h0 = h;
-      } else {
-        h1 = h;
-      }
-    }
-    auto r = m[HXToKey(h0, x)];
-    return r;
-  }
-
-  const Node *Find(size_t x) const {
-    if (IsEmpty()) return empty_node;
-    unsigned h0 = 0u, h1 = maxh;
-    for (; h1 - h0 > 1;) {
-      auto h = (h0 + h1) / 2;
-      auto key = HXToKey(h - 1, x);
-      if (m.find(key) == m.end()) {
-        h0 = h;
-      } else {
-        h1 = h;
-      }
-    }
-    return m.find(HXToKey(h0, x))->second;
-  }
 
  public:
   XFastTrie() {}
@@ -81,10 +44,11 @@ class XFastTrie {
 
   void Clear() {
     node_manager.ResetNodes();
-    m.clear();
+    vm.clear();
     empty_node = node_manager.New();
     empty_node->value = Empty;
     empty_node->l = empty_node->r = empty_node;
+    size = 0;
   }
 
  public:
@@ -92,13 +56,13 @@ class XFastTrie {
     static_assert(sizeof(size_t) == sizeof(uint64_t));
     Clear();
     usize = u;
-    maxh = u ? numeric::ULog2(u - 1) + 2 : 1;
-    assert(maxh < 58);
+    maxh = u ? numeric::ULog2(u - 1) + 1 : 0;
+    vm.resize(maxh + 1);
   }
 
-  bool IsEmpty() const { return m.empty(); }
-
-  bool HasKey(size_t x) const { return m.find(HXToKey(0, x)) != m.end(); }
+  bool IsEmpty() const { return vm.back().empty(); }
+  size_t Size() const { return size; }
+  bool HasKey(size_t x) const { return vm[0].find(x) != vm[0].end(); }
   size_t Min() const { return empty_node->r->value; }
   size_t Max() const { return empty_node->l->value; }
 
@@ -108,11 +72,11 @@ class XFastTrie {
     node->value = x;
     node->l = node->r = empty_node;
     empty_node->l = empty_node->r = node;
-    m[x] = node;
+    vm[0][x] = node;
     auto last_node = node;
-    for (unsigned h = 1; h < maxh; ++h) {
+    for (unsigned h = 1; h <= maxh; ++h) {
       auto hnode = node_manager.New();
-      hnode->value = HXToKey(h, x);
+      hnode->value = (x >> h);
       if ((x >> (h - 1)) & 1) {
         hnode->l = node;
         hnode->r = last_node;
@@ -120,7 +84,7 @@ class XFastTrie {
         hnode->l = last_node;
         hnode->r = node;
       }
-      m[hnode->value] = hnode;
+      vm[h][hnode->value] = hnode;
       last_node = hnode;
     }
   }
@@ -128,6 +92,7 @@ class XFastTrie {
  public:
   void Insert(size_t x) {
     if (HasKey(x)) return;
+    ++size;
     if (IsEmpty()) return InsertFirstNode(x);
     auto noder = SuccessorI(x);
     auto nodel = noder->l;
@@ -137,15 +102,15 @@ class XFastTrie {
     node->r = noder;
     nodel->r = node;
     noder->l = node;
-    m[x] = node;
+    vm[0][x] = node;
     auto last_node = node;
-    uint64_t h = 1, xh = x;
+    unsigned h = 1;
+    uint64_t xh = x;
     for (;; ++h, xh >>= 1) {
-      auto key = (h << 58) + (xh >> 1);
-      auto it = m.find(key);
-      if (it == m.end()) {
+      auto it = vm[h].find(xh >> 1);
+      if (it == vm[h].end()) {
         auto hnode = node_manager.New();
-        hnode->value = key;
+        hnode->value = (xh >> 1);
         if (xh & 1) {
           hnode->l = node;
           hnode->r = last_node;
@@ -153,7 +118,7 @@ class XFastTrie {
           hnode->l = last_node;
           hnode->r = node;
         }
-        m[hnode->value] = hnode;
+        vm[h][hnode->value] = hnode;
         last_node = hnode;
       } else {
         auto hnode = it->second;
@@ -162,9 +127,9 @@ class XFastTrie {
       }
     }
     if (xh & 1) {
-      for (++h, xh >>= 1; h < maxh; ++h, xh >>= 1) {
+      for (++h, xh >>= 1; h <= maxh; ++h, xh >>= 1) {
         if (~xh & 1) {
-          auto hnode = m[(h << 58) + (xh >> 1)];
+          auto hnode = vm[h][xh >> 1];
           if (hnode->r == nodel)
             hnode->r = node;
           else
@@ -172,9 +137,9 @@ class XFastTrie {
         }
       }
     } else {
-      for (++h, xh >>= 1; h < maxh; ++h, xh >>= 1) {
+      for (++h, xh >>= 1; h <= maxh; ++h, xh >>= 1) {
         if (xh & 1) {
-          auto hnode = m[(h << 58) + (xh >> 1)];
+          auto hnode = vm[h][xh >> 1];
           if (hnode->l == noder)
             hnode->l = node;
           else
@@ -185,20 +150,31 @@ class XFastTrie {
   }
 
   void Delete(size_t x) {
-    auto it = m.find(x);
-    if (it == m.end()) return;  // No element to remove
+    auto it = vm[0].find(x);
+    if (it == vm[0].end()) return;  // No element to remove
+    --size;
     auto node = it->second;
     auto nodel = node->l, noder = node->r;
-    if (nodel == noder) return Clear();  // Last element
     nodel->r = noder;
     noder->l = nodel;
-    m.erase(x);
-    uint64_t h = 1, xh = x;
+    vm[0].erase(x);
+    node_manager.Release(node);
+    if (nodel == noder) {
+      // Last element, fast loop
+      for (unsigned h = 1; h <= maxh; ++h) {
+        auto it = vm[h].find(x >> h);
+        node_manager.Release(it->second);
+        vm[h].erase(it);
+      }
+      return;
+    }
+    unsigned h = 1;
+    uint64_t xh = x;
     for (;; ++h, xh >>= 1) {
-      auto hkey = (h << 58) + (xh >> 1), skey = ((h - 1) << 58) + (xh ^ 1);
-      auto hnode = m[hkey];
-      if (m.find(skey) == m.end()) {
-        m.erase(hkey);
+      auto hnode = vm[h][xh >> 1];
+      if (vm[h - 1].find(xh ^ 1) == vm[h - 1].end()) {
+        vm[h].erase(xh >> 1);
+        node_manager.Release(hnode);
       } else {
         if (xh & 1) {
           hnode->r = nodel;
@@ -209,9 +185,9 @@ class XFastTrie {
       }
     }
     if (xh & 1) {
-      for (++h, xh >>= 1; h < maxh; ++h, xh >>= 1) {
+      for (++h, xh >>= 1; h <= maxh; ++h, xh >>= 1) {
         if (~xh & 1) {
-          auto hnode = m[(h << 58) + (xh >> 1)];
+          auto hnode = vm[h][xh >> 1];
           if (hnode->r == node)
             hnode->r = nodel;
           else
@@ -219,9 +195,9 @@ class XFastTrie {
         }
       }
     } else {
-      for (++h, xh >>= 1; h < maxh; ++h, xh >>= 1) {
+      for (++h, xh >>= 1; h <= maxh; ++h, xh >>= 1) {
         if (xh & 1) {
-          auto hnode = m[(h << 58) + (xh >> 1)];
+          auto hnode = vm[h][xh >> 1];
           if (hnode->l == node)
             hnode->l = noder;
           else
@@ -234,16 +210,32 @@ class XFastTrie {
  protected:
   Node *SuccessorI(size_t x) const {
     if (IsEmpty()) return empty_node;
-    auto hnode = Find(x);
-    auto h = KeyToH(hnode->value);
-    return h ? ((x >> (h - 1)) & 1) ? hnode->r->r : hnode->l : hnode->r;
+    unsigned h0 = 0u, h1 = maxh;
+    for (; h1 > h0;) {
+      auto h = (h0 + h1 + 1) / 2 - 1;
+      if (vm[h].find(x >> h) == vm[h].end()) {
+        h0 = h + 1;
+      } else {
+        h1 = h;
+      }
+    }
+    auto hnode = vm[h1].find(x >> h1)->second;
+    return h1 ? ((x >> (h1 - 1)) & 1) ? hnode->r->r : hnode->l : hnode->r;
   }
 
   Node *PredecessorI(size_t x) const {
     if (IsEmpty()) return empty_node;
-    auto hnode = Find(x);
-    auto h = KeyToH(hnode->value);
-    return h ? ((x >> (h - 1)) & 1) ? hnode->r : hnode->l->l : hnode->l;
+    unsigned h0 = 0u, h1 = maxh;
+    for (; h1 > h0;) {
+      auto h = (h0 + h1 + 1) / 2 - 1;
+      if (vm[h].find(x >> h) == vm[h].end()) {
+        h0 = h + 1;
+      } else {
+        h1 = h;
+      }
+    }
+    auto hnode = vm[h1].find(x >> h1)->second;
+    return h1 ? ((x >> (h1 - 1)) & 1) ? hnode->r : hnode->l->l : hnode->l;
   }
 
  public:
