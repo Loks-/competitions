@@ -75,7 +75,6 @@ class XFastTrie {
     auto last_node = node;
     for (unsigned h = 1; h <= maxh; ++h) {
       auto hnode = node_manager.New();
-      hnode->value = (x >> h);
       if ((x >> (h - 1)) & 1) {
         hnode->l = node;
         hnode->r = last_node;
@@ -83,7 +82,7 @@ class XFastTrie {
         hnode->l = last_node;
         hnode->r = node;
       }
-      vm[h][hnode->value] = hnode;
+      vm[h][x >> h] = hnode;
       last_node = hnode;
     }
   }
@@ -108,7 +107,6 @@ class XFastTrie {
       auto it = vm[h].find(xh >> 1);
       if (it == vm[h].end()) {
         auto hnode = node_manager.New();
-        hnode->value = (xh >> 1);
         if (xh & 1) {
           hnode->l = node;
           hnode->r = last_node;
@@ -116,7 +114,7 @@ class XFastTrie {
           hnode->l = last_node;
           hnode->r = node;
         }
-        vm[h][hnode->value] = hnode;
+        vm[h][xh >> 1] = hnode;
         last_node = hnode;
       } else {
         auto hnode = it->second;
