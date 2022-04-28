@@ -32,46 +32,45 @@ class XFastTrie {
   using TNodeManager = memory::NodesManager<Node>;
 
  protected:
-  Node *empty_node;
+  Node empty_node;
   TNodeManager node_manager;
   std::vector<std::unordered_map<uint64_t, Node *>> vm;
   size_t size, usize;
   unsigned maxh;
 
  public:
-  XFastTrie() {}
-  XFastTrie(size_t u) { Init(u); }
+  XFastTrie() { Clear(); }
+
+  XFastTrie(size_t u) : XFastTrie() { Init(u); }
 
   void Clear() {
-    node_manager.ResetNodes();
-    vm.clear();
-    empty_node = node_manager.New();
-    empty_node->value = Empty;
-    empty_node->l = empty_node->r = empty_node;
     size = 0;
+    empty_node.value = Empty;
+    empty_node.l = empty_node.r = &empty_node;
+    node_manager.ResetNodes();
+    for (auto &m : vm) m.clear();
   }
 
  public:
   void Init(size_t u) {
-    static_assert(sizeof(size_t) == sizeof(uint64_t));
     Clear();
     usize = u;
     maxh = u ? numeric::ULog2(u - 1) + 1 : 0;
     vm.resize(maxh + 1);
   }
 
-  bool IsEmpty() const { return vm.back().empty(); }
+  bool IsEmpty() const { return size == 0; }
   size_t Size() const { return size; }
   bool HasKey(size_t x) const { return vm[0].find(x) != vm[0].end(); }
-  size_t Min() const { return empty_node->r->value; }
-  size_t Max() const { return empty_node->l->value; }
+  size_t Min() const { return empty_node.r->value; }
+  size_t Max() const { return empty_node.l->value; }
 
  protected:
   void InsertFirstNode(size_t x) {
     auto node = node_manager.New();
     node->value = x;
-    node->l = node->r = empty_node;
-    empty_node->l = empty_node->r = node;
+    node->l = node->r = &empty_node;
+    empty_node.l = empty_node.r = node;
     vm[0][x] = node;
     auto last_node = node;
     for (unsigned h = 1; h <= maxh; ++h) {
@@ -92,9 +91,8 @@ class XFastTrie {
  public:
   void Insert(size_t x) {
     if (HasKey(x)) return;
-    ++size;
-    if (IsEmpty()) return InsertFirstNode(x);
-    auto noder = SuccessorI(x);
+    if (++size == 1) return InsertFirstNode(x);
+    auto noder = (Node *)SuccessorI(x);
     auto nodel = noder->l;
     auto node = node_manager.New();
     node->value = x;
@@ -151,23 +149,14 @@ class XFastTrie {
 
   void Delete(size_t x) {
     auto it = vm[0].find(x);
-    if (it == vm[0].end()) return;  // No element to remove
-    --size;
+    if (it == vm[0].end()) return;    // No element to remove
+    if (--size == 0) return Clear();  // Last element
     auto node = it->second;
     auto nodel = node->l, noder = node->r;
     nodel->r = noder;
     noder->l = nodel;
     vm[0].erase(x);
     node_manager.Release(node);
-    if (nodel == noder) {
-      // Last element, fast loop
-      for (unsigned h = 1; h <= maxh; ++h) {
-        auto it = vm[h].find(x >> h);
-        node_manager.Release(it->second);
-        vm[h].erase(it);
-      }
-      return;
-    }
     unsigned h = 1;
     uint64_t xh = x;
     for (;; ++h, xh >>= 1) {
@@ -208,8 +197,8 @@ class XFastTrie {
   }
 
  protected:
-  Node *SuccessorI(size_t x) const {
-    if (IsEmpty()) return empty_node;
+  const Node *SuccessorI(size_t x) const {
+    if (IsEmpty()) return &empty_node;
     unsigned h0 = 0u, h1 = maxh;
     for (; h1 > h0;) {
       auto h = (h0 + h1 + 1) / 2 - 1;
@@ -223,8 +212,8 @@ class XFastTrie {
     return h1 ? ((x >> (h1 - 1)) & 1) ? hnode->r->r : hnode->l : hnode->r;
   }
 
-  Node *PredecessorI(size_t x) const {
-    if (IsEmpty()) return empty_node;
+  const Node *PredecessorI(size_t x) const {
+    if (IsEmpty()) return &empty_node;
     unsigned h0 = 0u, h1 = maxh;
     for (; h1 > h0;) {
       auto h = (h0 + h1 + 1) / 2 - 1;
