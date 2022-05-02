@@ -41,7 +41,7 @@ class XFastTrie {
  public:
   XFastTrie() { Clear(); }
 
-  XFastTrie(size_t u) : XFastTrie() { Init(u); }
+  XFastTrie(size_t u) { Init(u); }
 
   void Clear() {
     size = 0;
