@@ -18,6 +18,7 @@
 #include "common/data_structures/fixed_universe_successor/vector_multiset.h"
 #include "common/data_structures/fixed_universe_successor/vector_precomputed.h"
 #include "common/data_structures/fixed_universe_successor/vector_set.h"
+#include "common/data_structures/fixed_universe_successor/x_fast_tree.h"
 #include "common/data_structures/fixed_universe_successor/x_fast_trie.h"
 #include "common/hash.h"
 #include "common/timer.h"
@@ -106,6 +107,7 @@ bool TesterFixedUniverseSuccessor::TestAll(bool small_test) const {
   if (small_test) {
     hs.insert(TestBase<XFastTrie>("XFTrie "));
   }
+  hs.insert(TestBase<XFastTree>("XFTree "));
   return hs.size() == 1;
 }
 
