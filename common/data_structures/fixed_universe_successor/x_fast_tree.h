@@ -109,26 +109,27 @@ class XFastTree {
     noder->l = node;
     lm[x] = node;
     auto h0 = numeric::HighestBit(x ^ sx);
-    vm[h0][x >> h0] = node;
+    auto xh = x >> h0;
+    vm[h0][xh] = node;
     if (vm[h0].find(sx >> h0) == vm[h0].end()) vm[h0][sx >> h0] = snode;
     if (x < sx) {
-      for (++h0; h0 < h1; ++h0)
-        vm[h0][x >> h0] = ((x >> (h0 - 1)) & 1) ? node : snode;
-      for (; h1 <= maxh; ++h1) {
-        if (((x >> (h1 - 1)) & 1) == 1) {
-          if (vm[h1][x >> h1] == snode)
-            vm[h1][x >> h1] = node;
+      for (++h0; h0 < h1; ++h0, xh >>= 1)
+        vm[h0][xh >> 1] = (xh & 1) ? node : snode;
+      for (; h1 <= maxh; ++h1, xh >>= 1) {
+        if ((xh & 1) == 1) {
+          if (vm[h1][xh >> 1] == snode)
+            vm[h1][xh >> 1] = node;
           else
             break;
         }
       }
     } else {
-      for (++h0; h0 < h1; ++h0)
-        vm[h0][x >> h0] = ((x >> (h0 - 1)) & 1) ? snode : node;
-      for (; h1 <= maxh; ++h1) {
-        if (((x >> (h1 - 1)) & 1) == 0) {
-          if (vm[h1][x >> h1] == snode)
-            vm[h1][x >> h1] = node;
+      for (++h0; h0 < h1; ++h0, xh >>= 1)
+        vm[h0][xh >> 1] = (xh & 1) ? snode : node;
+      for (; h1 <= maxh; ++h1, xh >>= 1) {
+        if ((xh & 1) == 0) {
+          if (vm[h1][xh >> 1] == snode)
+            vm[h1][xh >> 1] = node;
           else
             break;
         }
@@ -147,10 +148,10 @@ class XFastTree {
     lm.erase(it);
     node_manager.Release(node);
     auto h1 = FindH(x);
-    for (; vm[h1].find((x >> h1) ^ 1) == vm[h1].end(); ++h1)
-      vm[h1].erase(x >> h1);
-    vm[h1].erase(x >> h1);
     auto xh = x >> h1;
+    for (; vm[h1].find(xh ^ 1) == vm[h1].end(); ++h1, xh >>= 1)
+      vm[h1].erase(xh);
+    vm[h1].erase(xh);
     if (xh & 1) {
       xh >>= 1;
       vm[++h1][xh] = nodel;
