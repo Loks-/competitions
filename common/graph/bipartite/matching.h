@@ -79,6 +79,9 @@ class BipartiteMatching {
     }
     return matched;
   }
+
+  const std::vector<unsigned>& Get() const { return vpair; }
+  unsigned operator[](unsigned u) const { return vpair[u]; }
 };
 }  // namespace graph
 
