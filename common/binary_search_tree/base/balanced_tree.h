@@ -72,8 +72,7 @@ class BalancedTree : public Tree<TTNodesManager, TTMe> {
     }
   }
 
- protected:
-  static TNode* JoinI(TNode* l, TNode* r) {
+  static TNode* Join(TNode* l, TNode* r) {
     static_assert(TMe::support_join, "Join should be supported");
     if (!l) return r;
     if (!r) return l;
