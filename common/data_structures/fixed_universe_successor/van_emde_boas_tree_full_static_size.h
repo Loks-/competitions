@@ -50,7 +50,7 @@ class VanEmdeBoasTreeFullStaticSize<8> : public FLSetB8 {};
 template <unsigned nbits_high, unsigned nbits_low>
 class VanEmdeBoasTreeFullStaticSizeI {
  protected:
-  static const uint64_t mask_low = (1ull << nbits_low) - 1;
+  static const size_t mask_low = (size_t(1) << nbits_low) - 1;
   VanEmdeBoasTreeFullStaticSize<nbits_high> aux_tree;
   std::vector<VanEmdeBoasTreeFullStaticSize<nbits_low>> children;
 

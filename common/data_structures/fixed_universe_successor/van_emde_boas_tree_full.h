@@ -59,7 +59,7 @@ class VanEmdeBoasTreeFull {
   }
 
  public:
-  void Init(size_t u) { InitL(u ? numeric::ULog2(u - 1) + 1 : 1); }
+  void Init(size_t u) { InitL(u ? numeric::ULog2(uint64_t(u - 1)) + 1 : 1); }
 
   bool IsEmpty() const {
     return Flat() ? leaf.IsEmpty() : (min_value == Empty);

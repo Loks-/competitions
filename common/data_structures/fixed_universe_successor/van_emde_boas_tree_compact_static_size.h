@@ -44,7 +44,7 @@ class VanEmdeBoasTreeCompactStaticSize<6> : public FLSetB6 {};
 template <unsigned nbits_high, unsigned nbits_low>
 class VanEmdeBoasTreeCompactStaticSizeI {
  protected:
-  static const uint64_t mask_low = (1ull << nbits_low) - 1;
+  static const size_t mask_low = (size_t(1) << nbits_low) - 1;
 
   std::shared_ptr<VanEmdeBoasTreeCompactStaticSize<nbits_high>> aux_tree;
   std::unordered_map<

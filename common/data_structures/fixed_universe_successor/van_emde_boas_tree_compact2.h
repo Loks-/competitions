@@ -147,7 +147,7 @@ class VanEmdeBoasTreeCompact2 {
 
   void Init(size_t u) {
     usize = u;
-    maxh = u ? numeric::ULog2(u - 1) / bits_per_level + 1 : 1;
+    maxh = u ? numeric::ULog2(uint64_t(u - 1)) / bits_per_level + 1 : 1;
     Clear();
   }
 

@@ -58,7 +58,7 @@ class XFastTree {
   void Init(size_t u) {
     Clear();
     usize = u;
-    maxh = u ? numeric::ULog2(u - 1) + 1 : 0;
+    maxh = u ? numeric::ULog2(uint64_t(u - 1)) + 1 : 0;
     vm.resize(maxh + 1);
   }
 
@@ -108,7 +108,7 @@ class XFastTree {
     nodel->r = node;
     noder->l = node;
     lm[x] = node;
-    auto h0 = numeric::HighestBit(x ^ sx);
+    auto h0 = numeric::HighestBit(uint64_t(x ^ sx));
     auto xh = x >> h0;
     vm[h0][xh] = node;
     if (vm[h0].find(sx >> h0) == vm[h0].end()) vm[h0][sx >> h0] = snode;

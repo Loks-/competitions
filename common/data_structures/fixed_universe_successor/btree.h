@@ -86,7 +86,8 @@ class BTree {
   void Init(size_t u) {
     Clear();
     usize = u;
-    maxh = (u > level_size) ? numeric::ULog2(u - 1) / bits_per_level : 0;
+    maxh =
+        (u > level_size) ? numeric::ULog2(uint64_t(u - 1)) / bits_per_level : 0;
     path.resize(maxh + 1);
   }
 

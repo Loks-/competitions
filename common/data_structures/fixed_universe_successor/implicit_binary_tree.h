@@ -29,7 +29,7 @@ class ImplicitBinaryTree {
 
   void Init(size_t u) {
     usize = u;
-    usize_adj = u ? (1ull << (numeric::ULog2(u - 1) + 1)) : 1ull;
+    usize_adj = u ? (1ull << (numeric::ULog2(uint64_t(u - 1)) + 1)) : 1ull;
     vs.clear();
     vs.resize(2 * usize_adj, 0);
   }

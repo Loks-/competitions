@@ -55,7 +55,7 @@ class XFastTrie {
   void Init(size_t u) {
     Clear();
     usize = u;
-    maxh = u ? numeric::ULog2(u - 1) + 1 : 0;
+    maxh = u ? numeric::ULog2(uint64_t(u - 1)) + 1 : 0;
     vm.resize(maxh + 1);
   }
 
