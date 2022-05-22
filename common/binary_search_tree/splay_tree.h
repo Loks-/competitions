@@ -21,6 +21,7 @@ class SplayTree
  public:
   static const bool support_remove = true;
   static const bool support_join = true;
+  static const bool support_join3 = true;
   static const bool support_split = true;
 
   using TNode = base::Node<TData, TInfo, TAction, use_key, true, TKey>;

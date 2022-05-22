@@ -22,7 +22,7 @@ class PerfectTree
  public:
   static const bool support_insert = false;
   static const bool support_remove = false;
-  static const bool support_join = false;
+  static const bool support_join3 = false;
   static const bool support_split = false;
 
   using TNode = base::Node<TData, TInfo, TAction, true, use_parent, TKey>;

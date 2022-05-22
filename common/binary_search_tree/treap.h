@@ -25,6 +25,7 @@ class Treap
  public:
   static const bool support_remove = true;
   static const bool support_join = true;
+  static const bool support_join3 = true;
   static const bool support_split = true;
 
   using TInfo = info::TreapHeight<unsigned, TTInfo>;

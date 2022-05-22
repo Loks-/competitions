@@ -23,7 +23,7 @@ class BaseTree
       base::BalancedTree<memory::NodesManagerFixedSize<TNode>, TSelf>;
   friend TBTree;
 
-  static const bool support_join = true;
+  static const bool support_join3 = true;
 
  public:
   explicit BaseTree(size_t max_nodes) : TBTree(max_nodes) {}

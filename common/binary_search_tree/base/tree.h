@@ -29,10 +29,12 @@ class Tree : public TTNodesManager {
   static const bool support_insert = true;
   static const bool support_remove = use_parent;
   static const bool support_remove_by_node = use_parent && TMe::support_remove;
-  static const bool support_join = false;
-  static const bool support_split = TMe::support_join;
+  static const bool support_join3 = false;
+  static const bool support_join =
+      TMe::support_join3 && TMe::support_remove_by_node;
+  static const bool support_split = TMe::support_join3;
   static const bool support_insert_by_order =
-      !use_key && TInfo::has_size && TMe::support_join && TMe::support_split;
+      !use_key && TInfo::has_size && TMe::support_join3 && TMe::support_split;
 
   static const bool is_persistent = false;
 
@@ -235,7 +237,7 @@ class Tree : public TTNodesManager {
   static void SplitByKeyI(TNode* root, const TKey& key, TNode*& output_l,
                           TNode*& output_r) {
     static_assert(use_key, "use_key should be true");
-    static_assert(TMe::support_join, "Join should be supported");
+    static_assert(TMe::support_join3, "Join3 should be supported");
     static_assert(TMe::support_split, "Split should be supported");
     if (!root) {
       output_l = output_r = nullptr;
