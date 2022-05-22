@@ -13,6 +13,8 @@ class BalancedTree : public Tree<TTNodesManager, TTMe> {
   using TMe = TTMe;
   friend TTree;
 
+  static const bool support_join = TMe::support_join3;
+
  public:
   explicit BalancedTree(size_t max_nodes) : TTree(max_nodes) {}
 
@@ -51,6 +53,33 @@ class BalancedTree : public Tree<TTNodesManager, TTMe> {
       }
     }
     return TMe::FixBalanceRemove(fcn);
+  }
+
+ public:
+  static TNode* RemoveRight(TNode* root, TNode*& removed_node) {
+    assert(root);
+    root->ApplyAction();
+    if (root->r) {
+      root->SetR(RemoveRight(root->r, removed_node));
+      root->UpdateInfo();
+      return TMe::FixBalanceRemove(root);
+    } else {
+      removed_node = root;
+      TNode* node = root->l;
+      if (node) node->SetP(nullptr);
+      root->ResetLinksAndUpdateInfo();
+      return node;
+    }
+  }
+
+ protected:
+  static TNode* JoinI(TNode* l, TNode* r) {
+    static_assert(TMe::support_join, "Join should be supported");
+    if (!l) return r;
+    if (!r) return l;
+    TNode* node = nullptr;
+    l = TMe::RemoveRight(l, node);
+    return TMe::Join3(l, node, r);
   }
 };
 }  // namespace base
