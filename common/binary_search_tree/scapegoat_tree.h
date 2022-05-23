@@ -28,8 +28,13 @@ class ScapegoatTree
   using TTree = typename TBTree::TTree;
   friend TBTree;
 
+  // Split/Join is supported but it's slow.
+  static const bool support_join3 = true;
+
  public:
   explicit ScapegoatTree(size_t max_nodes) : TBTree(max_nodes) {}
+
+  static size_t Size(const TNode* root) { return root ? root->info.size : 0; }
 
  protected:
   static void TraverseInorder(TNode* node, std::vector<TNode*>& output) {
@@ -49,10 +54,44 @@ class ScapegoatTree
 
   static TNode* FixBalance(TNode* node) {
     assert(node);
-    return ((node->l && node->l->info.size > alpha * node->info.size) ||
-            (node->r && node->r->info.size > alpha * node->info.size))
-               ? RebuildSubtree(node)
-               : node;
+    auto s = size_t(alpha * Size(node));
+    return ((Size(node->l) > s) || (Size(node->r) > s)) ? RebuildSubtree(node)
+                                                        : node;
+  }
+
+  static TNode* Join3L(TNode* l, TNode* m1, TNode* r, size_t rsize) {
+    if (l) l->ApplyAction();
+    if (Size(l) > 2 * rsize) {
+      l->SetR(Join3L(l->r, m1, r, rsize));
+      l->UpdateInfo();
+      return FixBalance(l);
+    } else {
+      m1->SetL(l);
+      m1->SetR(r);
+      m1->UpdateInfo();
+      return m1;
+    }
+  }
+
+  static TNode* Join3R(TNode* l, TNode* m1, TNode* r, size_t lsize) {
+    if (r) r->ApplyAction();
+    if (Size(r) > 2 * lsize) {
+      r->SetL(Join3R(l, m1, r->l, lsize));
+      r->UpdateInfo();
+      return FixBalance(r);
+    } else {
+      m1->SetL(l);
+      m1->SetR(r);
+      m1->UpdateInfo();
+      return m1;
+    }
+  }
+
+ public:
+  static TNode* Join3(TNode* l, TNode* m1, TNode* r) {
+    assert(m1 && !m1->l && !m1->r);
+    size_t lsize = Size(l), rsize = Size(r);
+    return lsize >= rsize ? Join3L(l, m1, r, rsize) : Join3R(l, m1, r, lsize);
   }
 };
 }  // namespace bst

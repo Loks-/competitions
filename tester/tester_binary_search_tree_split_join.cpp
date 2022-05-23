@@ -3,10 +3,10 @@
 // #include "common/binary_search_tree/avl_tree.h"
 // #include "common/binary_search_tree/perfect_tree.h"
 // #include "common/binary_search_tree/red_black_tree.h"
-// #include "common/binary_search_tree/scapegoat_tree.h"
 // #include "common/binary_search_tree/wavl_tree.h"
 
 #include "common/binary_search_tree/base_tree.h"
+#include "common/binary_search_tree/scapegoat_tree.h"
 #include "common/binary_search_tree/splay_tree.h"
 #include "common/binary_search_tree/treap.h"
 #include "common/hash.h"
@@ -62,9 +62,12 @@ size_t TesterBinarySearchTreeSplitJoin::TestBase(
 
 bool TesterBinarySearchTreeSplitJoin::TestAll(bool small_test) const {
   std::unordered_set<size_t> hs;
-  if (small_test)
+  if (small_test) {
     hs.insert(TestBase<bst::BaseTree<true, TEmpty, TInfo, TAction, TKey>>(
-        "Base     "));
+        "Base  UPT"));
+    hs.insert(TestBase<bst::ScapegoatTree<true, TEmpty, TInfo, TAction, TKey>>(
+        "Scape UPT"));
+  }
   hs.insert(TestBase<bst::SplayTree<true, TEmpty, TInfo, TAction, TKey>>(
       "Splay    "));
   hs.insert(TestBase<bst::Treap<true, false, TEmpty, TInfo, TAction, TKey>>(
