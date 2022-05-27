@@ -1,11 +1,11 @@
 // https://www.hackerrank.com/challenges/fibonacci-numbers-tree
 
+#include "common/data_structures/segment_tree/action/add_each.h"
 #include "common/graph/tree.h"
 #include "common/graph/tree/lca.h"
 #include "common/graph/tree/sto.h"
 #include "common/modular/static/fibonacci_matrix.h"
 #include "common/modular_io.h"
-#include "common/segment_tree/action/add_each.h"
 #include "common/stl/base.h"
 
 using TFibonacci = modular::mstatic::FibonacciMatrix<TModularD>;
@@ -37,7 +37,8 @@ int main_fibonacci_numbers_tree__sto() {
   cin >> N >> Q;
   TreeGraph tree(N);
   tree.ReadTreeEdges();
-  graph::STO<FData, st::info::None, st::action::AddEach<FData>> sto(tree);
+  graph::STO<FData, ds::st::info::None, ds::st::action::AddEach<FData>> sto(
+      tree);
   graph::LCA lca(tree);
 
   auto Calc = [&](unsigned from) {

@@ -1,9 +1,9 @@
 // https://www.hackerrank.com/challenges/subtrees-and-paths
 
+#include "common/data_structures/segment_tree/action/add_each__max.h"
+#include "common/data_structures/segment_tree/info/max.h"
 #include "common/graph/tree.h"
 #include "common/graph/tree/hld.h"
-#include "common/segment_tree/action/add_each__max.h"
-#include "common/segment_tree/info/max.h"
 #include "common/stl/base.h"
 
 #include <string>
@@ -13,7 +13,8 @@ int main_subtrees_and_paths() {
   cin >> N;
   TreeGraph tree(N);
   tree.ReadEdges();
-  graph::HLD<int64_t, st::info::Max<int64_t>, st::action::AddEachMax<int64_t>>
+  graph::HLD<int64_t, ds::st::info::Max<int64_t>,
+             ds::st::action::AddEachMax<int64_t>>
       hld(tree);
 
   cin >> Q;

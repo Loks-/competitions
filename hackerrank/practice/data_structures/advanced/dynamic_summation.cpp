@@ -1,5 +1,10 @@
 // https://www.hackerrank.com/challenges/dynamic-summation
 
+#include "common/data_structures/segment_tree/action/add_each__sum.h"
+#include "common/data_structures/segment_tree/base/add_action_to_segment.h"
+#include "common/data_structures/segment_tree/base/get_segment_info.h"
+#include "common/data_structures/segment_tree/info/sum.h"
+#include "common/data_structures/segment_tree/segment_tree.h"
 #include "common/factorization/base.h"
 #include "common/factorization/primes_list.h"
 #include "common/factorization/utils/eulers_totient.h"
@@ -7,18 +12,14 @@
 #include "common/graph/tree/nodes_info.h"
 #include "common/numeric/long/modular.h"
 #include "common/numeric/long/unsigned.h"
-#include "common/segment_tree/action/add_each__sum.h"
-#include "common/segment_tree/base/add_action_to_segment.h"
-#include "common/segment_tree/base/get_segment_info.h"
-#include "common/segment_tree/info/sum.h"
-#include "common/segment_tree/segment_tree.h"
 #include "common/stl/base.h"
 
 static const unsigned M = 101;
 using TData = LongUnsigned;
 using TModular = numeric::nlong::Modular<false>;
-using TSTTree = st::SegmentTree<TData, st::info::Sum<TData, st::info::None>,
-                                st::action::AddEachSum<TData>>;
+using TSTTree =
+    ds::st::SegmentTree<TData, ds::st::info::Sum<TData, ds::st::info::None>,
+                        ds::st::action::AddEachSum<TData>>;
 
 int main_dynamic_summation() {
   unsigned N, Q;
@@ -90,14 +91,14 @@ int main_dynamic_summation() {
       if (r == t) {
         d = root->info.sum;
       } else if (!nodes_info.InsideSubtree(t, r)) {
-        d = st::GetSegmentInfo(
+        d = ds::st::GetSegmentInfo(
                 root, nodes_info.preorder[t],
                 nodes_info.preorder[t] + nodes_info.subtree_size[t] - 1)
                 .sum;
       } else {
         auto c = ChildWithNode(t, r);
-        d = st::GetSegmentInfo(root, 0, nodes_info.preorder[c] - 1).sum +
-            st::GetSegmentInfo(
+        d = ds::st::GetSegmentInfo(root, 0, nodes_info.preorder[c] - 1).sum +
+            ds::st::GetSegmentInfo(
                 root, nodes_info.preorder[c] + nodes_info.subtree_size[c],
                 N - 1)
                 .sum;
@@ -109,13 +110,13 @@ int main_dynamic_summation() {
       if (r == t) {
         root->AddAction(d);
       } else if (!nodes_info.InsideSubtree(t, r)) {
-        st::AddActionToSegment(
+        ds::st::AddActionToSegment(
             root, nodes_info.preorder[t],
             nodes_info.preorder[t] + nodes_info.subtree_size[t] - 1, d);
       } else {
         auto c = ChildWithNode(t, r);
-        st::AddActionToSegment(root, 0, nodes_info.preorder[c] - 1, d);
-        st::AddActionToSegment(
+        ds::st::AddActionToSegment(root, 0, nodes_info.preorder[c] - 1, d);
+        ds::st::AddActionToSegment(
             root, nodes_info.preorder[c] + nodes_info.subtree_size[c], N - 1,
             d);
       }

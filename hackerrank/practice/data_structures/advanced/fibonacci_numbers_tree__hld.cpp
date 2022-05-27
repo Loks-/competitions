@@ -1,11 +1,11 @@
 // https://www.hackerrank.com/challenges/fibonacci-numbers-tree
 
+#include "common/data_structures/segment_tree/action/none.h"
+#include "common/data_structures/segment_tree/info/sum.h"
 #include "common/graph/tree.h"
 #include "common/graph/tree/hld.h"
 #include "common/modular/static/fibonacci_matrix.h"
 #include "common/modular_io.h"
-#include "common/segment_tree/action/none.h"
-#include "common/segment_tree/info/sum.h"
 #include "common/stl/base.h"
 #include "common/stl/pair.h"
 
@@ -21,7 +21,7 @@ class FData {
   }
 };
 
-class ActionAdd : public st::action::None {
+class ActionAdd : public ds::st::action::None {
  public:
   using TData = std::pair<TModularD, TModularD>;
   static const bool modify_data = true;
@@ -58,7 +58,7 @@ int main_fibonacci_numbers_tree__hld() {
   cin >> N >> Q;
   TreeGraph tree(N);
   tree.ReadTreeEdges();
-  graph::HLD<FData, st::info::Sum<FData>, ActionAdd> hld(tree);
+  graph::HLD<FData, ds::st::info::Sum<FData>, ActionAdd> hld(tree);
 
   for (unsigned i = 0; i < N; ++i) {
     auto p = TFibonacci::GetPU(hld.Deep(i));

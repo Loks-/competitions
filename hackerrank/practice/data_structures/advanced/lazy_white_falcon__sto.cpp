@@ -1,9 +1,9 @@
 // https://www.hackerrank.com/challenges/lazy-white-falcon
 
+#include "common/data_structures/segment_tree/action/add_each.h"
 #include "common/graph/tree.h"
 #include "common/graph/tree/lca.h"
 #include "common/graph/tree/sto.h"
-#include "common/segment_tree/action/add_each.h"
 #include "common/stl/base.h"
 
 int main_lazy_white_falcon__sto() {
@@ -11,7 +11,8 @@ int main_lazy_white_falcon__sto() {
   cin >> N >> Q;
   TreeGraph tree(N);
   tree.ReadEdges(true);
-  graph::STO<int64_t, st::info::None, st::action::AddEach<int64_t>> sto(tree);
+  graph::STO<int64_t, ds::st::info::None, ds::st::action::AddEach<int64_t>> sto(
+      tree);
   graph::LCA lca(tree);
   vector<int64_t> current_values(N, 0);
 

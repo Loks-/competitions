@@ -1,10 +1,10 @@
 // https://www.hackerrank.com/challenges/recalling-early-days-gp-with-trees
 
+#include "common/data_structures/segment_tree/action/none.h"
+#include "common/data_structures/segment_tree/info/sum.h"
 #include "common/graph/tree.h"
 #include "common/graph/tree/hld.h"
 #include "common/modular_io.h"
-#include "common/segment_tree/action/none.h"
-#include "common/segment_tree/info/sum.h"
 #include "common/stl/base.h"
 #include "common/stl/pair.h"
 
@@ -20,7 +20,7 @@ class FData {
   }
 };
 
-class ActionAdd : public st::action::None {
+class ActionAdd : public ds::st::action::None {
  public:
   using TData = std::pair<TModular, TModular>;
   static const bool modify_data = true;
@@ -57,7 +57,7 @@ int main_recalling_early_days_gp_with_trees__hld() {
   cin >> N >> R;
   TreeGraph tree(N);
   tree.ReadEdges();
-  graph::HLD<FData, st::info::Sum<FData>, ActionAdd> hld(tree);
+  graph::HLD<FData, ds::st::info::Sum<FData>, ActionAdd> hld(tree);
 
   TModular r(R), ri = (r ? r.Inverse() : 0);
   for (unsigned i = 0; i < N; ++i) {

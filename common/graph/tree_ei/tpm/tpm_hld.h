@@ -1,9 +1,9 @@
 #pragma once
 
 #include "common/base.h"
+#include "common/data_structures/segment_tree/info/max.h"
 #include "common/graph/tree.h"
 #include "common/graph/tree/hld.h"
-#include "common/segment_tree/info/max.h"
 
 #include <algorithm>
 #include <utility>
@@ -19,7 +19,7 @@ inline std::vector<TValue> TPM_HLD(
     bool ignore_lca = false) {
   assert(tree.Size() == nodes_values.size());
   std::vector<TValue> output;
-  graph::HLD<TValue, st::info::Max<TValue>> hld(tree);
+  graph::HLD<TValue, ds::st::info::Max<TValue>> hld(tree);
   for (unsigned i = 0; i < tree.Size(); ++i) hld.SetData(i, nodes_values[i]);
   for (auto& p : paths) {
     if (ignore_lca) {
