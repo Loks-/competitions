@@ -144,6 +144,30 @@ endforeach( problemsourcefile ${IPCS_SOURCES} )
 file ( APPEND ${IPCS_PROXY_CXX} "};\n" )
 add_executable( ipcs ${IPCS_SOURCES} ${IPCS_PROXY_CXX} )
 
+file( GLOB_RECURSE LEETCODE_SOURCES RELATIVE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/leetcode/*.cpp" )
+list( SORT LEETCODE_SOURCES )
+set( LEETCODE_PROXY_H "${PROJECT_SOURCE_DIR}/leetcode/proxy_gen.h" )
+set( LEETCODE_PROXY_CXX "${PROJECT_SOURCE_DIR}/leetcode/proxy_gen.cxx" )
+file ( WRITE ${LEETCODE_PROXY_H}
+	"#pragma once\n\n" )
+file ( WRITE ${LEETCODE_PROXY_CXX}
+	"#include \"common/proxy_run_base.h\"\n"
+    "#include \"proxy_gen.h\"\n"
+	"\n"
+	"TSolutionsMap solutions_map {\n")
+foreach( problemsourcefile ${LEETCODE_SOURCES} )
+    string( REPLACE ".cpp" "" problemfullname ${problemsourcefile} )
+    get_filename_component( problembasename ${problemfullname} NAME )
+    if ( NOT ${problembasename} MATCHES "base|main")
+        file ( APPEND ${LEETCODE_PROXY_H}
+			"int main_${problembasename}();\n" )
+        file ( APPEND ${LEETCODE_PROXY_CXX}
+			"\t{ \"${problembasename}\", main_${problembasename} },\n")
+    endif ( NOT ${problembasename} MATCHES "base|main")
+endforeach( problemsourcefile ${LEETCODE_SOURCES} )
+file ( APPEND ${LEETCODE_PROXY_CXX} "};\n" )
+add_executable( leetcode ${LEETCODE_SOURCES} ${LEETCODE_PROXY_CXX} )
+
 file( GLOB_RECURSE TIMUS_SOURCES RELATIVE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/timus/*.cpp" )
 list( SORT TIMUS_SOURCES )
 set( TIMUS_PROXY_H "${PROJECT_SOURCE_DIR}/timus/proxy_gen.h" )
@@ -252,6 +276,14 @@ foreach( testfile_in ${HACKERRANK_LANGUAGE_C_TESTS} )
     get_filename_component( solution ${testshortname} NAME_WE )
 	add_test( NAME ${testshortname} COMMAND hackerrank_c ${solution} ${testfile_in} ${testfile_out} WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} )
 endforeach( testfile_in ${HACKERRANK_LANGUAGE_C_TESTS} )
+
+file( GLOB_RECURSE LEETCODE_TESTS RELATIVE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/leetcode/problems/*.cpp" )
+list( SORT LEETCODE_TESTS )
+foreach( solution_cpp ${LEETCODE_TESTS} )
+    string( REPLACE ".cpp" "" solution_path ${solution_cpp} )
+    get_filename_component( id ${solution_path} NAME )
+	add_test( NAME "leetcode.${id}" COMMAND leetcode ${id} WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} )
+endforeach( solution_cpp ${LEETCODE_TESTS} )
 
 file( GLOB_RECURSE TIMUS_TESTS RELATIVE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/tests/timus/*.in" )
 list( SORT TIMUS_TESTS )
