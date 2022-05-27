@@ -42,7 +42,7 @@ class STO {
     std::vector<TNode*> nodes_in_order(n, nullptr);
     for (unsigned i = 0; i < n; ++i) {
       unsigned p = tni.preorder[i];
-      nodes[i] = stree.NewLeaf(TData(), p);
+      nodes[i] = stree.NewLeaf(TData(), p, p + 1);
       nodes_in_order[p] = nodes[i];
     }
     stroot = stree.BuildTree(nodes_in_order);
@@ -55,7 +55,7 @@ class STO {
 
   TSegment Subtree(unsigned x) {
     return ds::st::GetSegment(stroot, tni.preorder[x],
-                              tni.preorder[x] + tni.subtree_size[x] - 1);
+                              tni.preorder[x] + tni.subtree_size[x]);
   }
 
   const TData& GetData(unsigned x) {

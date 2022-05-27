@@ -39,7 +39,7 @@ class SegmentTree {
 
   TPositionValue Minimum(size_t b, size_t e) const {
     assert(b < e);
-    auto s = ds::st::GetSegmentInfo(root, b, e - 1);
+    auto s = ds::st::GetSegmentInfo(root, b, e);
     return {s.min_coordinate, s.min};
   }
 };

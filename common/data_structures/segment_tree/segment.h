@@ -32,6 +32,7 @@ class Segment {
   }
 
   void Reverse() { std::reverse(nodes.begin(), nodes.end()); }
+
   TSelf Reversed() const {
     TSelf t(*this);
     t.Reverse();

@@ -17,8 +17,12 @@ class Position : public None {
 
   TCoordinate left, right;
 
-  void SetCoordinate(const TCoordinate& x) { left = right = x; }
-  TCoordinate Size() const { return right - left + 1; }
+  void SetCoordinate(const TCoordinate& l, const TCoordinate& r) {
+    left = l;
+    right = r;
+  }
+
+  TCoordinate Size() const { return right - left; }
 
   void UpdateLR(const TSelf& l, const TSelf& r) {
     TBase::UpdateLR(l, r);

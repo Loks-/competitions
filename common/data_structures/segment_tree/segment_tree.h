@@ -64,16 +64,21 @@ class SegmentTree {
     return &(nodes[used_nodes++]);
   }
 
-  TNode* NewLeaf(const TData& d = TData(),
-                 const TCoordinate& x = TCoordinate()) {
+  TNode* NewLeaf(const TData& d, const TCoordinate& l, const TCoordinate& r) {
     TNode* node = NewNode();
     assert(used_data < data.size());
     node->SetPData(&(data[used_data]));
     data[used_data++] = d;
-    node->sinfo.SetCoordinate(x);
+    node->sinfo.SetCoordinate(l, r);
     node->UpdateSInfo();
     node->UpdateInfo();
     return node;
+  }
+
+  TNode* NewLeaf(const TData& d = TData()) {
+    static_assert(TNode::TSInfo::has_coordinate,
+                  "has_coordinate should be false");
+    return NewLeaf(d, {}, {});
   }
 
  protected:
@@ -85,7 +90,7 @@ class SegmentTree {
       assert(used_data < data.size());
       root->SetPData(&(data[used_data]));
       data[used_data++] = vdata[first];
-      root->sinfo.SetCoordinate(vx[first]);
+      root->sinfo.SetCoordinate(vx[first], vx[first + 1]);
     } else {
       unsigned m = (first + last) / 2;
       root->SetL(BuildTreeI(vdata, vx, first, m));
@@ -110,16 +115,16 @@ class SegmentTree {
 
  public:
   TNode* BuildTree(const std::vector<TData>& vdata) {
-    if (vdata.size() == 0) return 0;
+    if (vdata.size() == 0) return nullptr;
     std::vector<TCoordinate> vx =
-        nvector::Enumerate<TCoordinate>(0, TCoordinate(vdata.size()));
+        nvector::Enumerate<TCoordinate>(0, TCoordinate(vdata.size() + 1));
     return BuildTreeI(vdata, vx, 0, unsigned(vdata.size()) - 1);
   }
 
   TNode* BuildTree(const std::vector<TData>& vdata,
                    const std::vector<TCoordinate>& vx) {
-    assert(vdata.size() == vx.size());
-    if (vdata.size() == 0) return 0;
+    assert(vdata.size() + 1 == vx.size());
+    if (vdata.size() == 0) return nullptr;
     return BuildTreeI(vdata, vx, 0, unsigned(vdata.size()) - 1);
   }
 

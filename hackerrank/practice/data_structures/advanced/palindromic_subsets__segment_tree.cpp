@@ -31,10 +31,10 @@ int main_palindromic_subsets__segment_tree() {
     cin >> t;
     if (t == 1) {
       cin >> a >> b >> c;
-      ds::st::AddActionToSegment<TNode>(root, a, b, c);
+      ds::st::AddActionToSegment<TNode>(root, a, b + 1, c);
     } else if (t == 2) {
       cin >> a >> b;
-      TTree::TInfo info = ds::st::GetSegmentInfo<TNode>(root, a, b);
+      TTree::TInfo info = ds::st::GetSegmentInfo<TNode>(root, a, b + 1);
       unsigned nsum = 0, nnonzero = 0;
       for (unsigned j = 0; j < 26; ++j) {
         if (info.sum(j)) {

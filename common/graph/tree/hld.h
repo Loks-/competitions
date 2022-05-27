@@ -3,6 +3,7 @@
 #include "common/base.h"
 #include "common/data_structures/segment_tree/action/apply_root_to_node.h"
 #include "common/data_structures/segment_tree/base/get_segment.h"
+#include "common/data_structures/segment_tree/base/get_segment_with_holes.h"
 #include "common/data_structures/segment_tree/info/update_node_to_root.h"
 #include "common/data_structures/segment_tree/info/update_tree.h"
 #include "common/data_structures/segment_tree/node.h"
@@ -80,7 +81,8 @@ class HLD {
     std::vector<TNode*> nodes;
     for (auto x : cv) {
       vertexes[x].chain = chain_index;
-      vertexes[x].node = stree.NewLeaf(TData(), cp + tni.deep[x]);
+      vertexes[x].node =
+          stree.NewLeaf(TData(), cp + tni.deep[x], cp + tni.deep[x] + 1);
       nodes.push_back(vertexes[x].node);
     }
     chains[chain_index].node = stree.BuildTree(nodes);
@@ -163,12 +165,12 @@ class HLD {
     for (; xc != ac; xc = Chain(x)) {
       ds::st::action::ApplyRootToNode(chains[xc].node);
       s.AddBackReversed(
-          ds::st::GetSegment(chains[xc].node, STX(x) & ~mask, STX(x)));
+          ds::st::GetSegment(chains[xc].node, STX(x) & ~mask, STX(x) + 1));
       x = chains[xc].parent;
     }
     ds::st::action::ApplyRootToNode(chains[ac].node);
     s.AddBackReversed(ds::st::GetSegment(
-        chains[ac].node, STX(a) + (skip_ancestor ? 1 : 0), STX(x)));
+        chains[ac].node, STX(a) + (skip_ancestor ? 1 : 0), STX(x) + 1));
     s.Reverse();
     return s;
   }
@@ -190,8 +192,9 @@ class HLD {
     uint64_t l0 = tni.preorder[x], l1 = l0 + tni.subtree_size[x];
     auto node = chains[vertexes[x].chain].node;
     ds::st::action::ApplyRootToNode(node);
-    return TSegment(ds::st::GetSegment(node, STX(x), STX(x) | mask),
-                    ds::st::GetSegment(stroot, (l0 + 1) << 32, (l1 << 32) - 1));
+    return TSegment(
+        ds::st::GetSegment(node, STX(x), (STX(x) | mask) + 1),
+        ds::st::GetSegmentWithHoles(stroot, (l0 + 1) << 32, l1 << 32));
   }
 };
 }  // namespace graph

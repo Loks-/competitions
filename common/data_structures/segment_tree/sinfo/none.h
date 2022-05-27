@@ -12,7 +12,7 @@ class None {
   static const bool use_data = false;
   static const bool has_coordinate = false;
 
-  void SetCoordinate(const TCoordinate&) {}
+  void SetCoordinate(const TCoordinate&, const TCoordinate&) {}
 
   template <class TData>
   void UpdateData(const TData&) {}

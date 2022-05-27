@@ -8,13 +8,13 @@ inline TNode* FindLeaf(TNode* root, const typename TNode::TCoordinate& x) {
   for (TNode* node = root; node != nullptr;) {
     node->ApplyAction();
     if (node->IsLeaf()) {
-      if ((node->sinfo.left == x) && (node->sinfo.right == x))
+      if ((node->sinfo.left <= x) && (x < node->sinfo.right))
         return node;
       else
         return nullptr;
     } else if (node->r->sinfo.left <= x) {
       node = node->r;
-    } else if (x <= node->l->sinfo.right) {
+    } else if (x < node->l->sinfo.right) {
       node = node->l;
     } else {
       return nullptr;

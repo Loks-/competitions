@@ -15,9 +15,9 @@ inline void AddActionToSegmentI(TNode* root,
   } else {
     assert(!root->IsLeaf());
     root->ApplyAction();
-    if (l <= root->l->sinfo.right)
+    if (l < root->l->sinfo.right)
       AddActionToSegmentI(root->l, l, r, action_value);
-    if (r >= root->r->sinfo.left)
+    if (r > root->r->sinfo.left)
       AddActionToSegmentI(root->r, l, r, action_value);
     root->UpdateInfo();
   }
@@ -30,8 +30,8 @@ inline void AddActionToSegment(TNode* root,
                                const typename TNode::TCoordinate& r,
                                const TActionValue& action_value) {
   static_assert(TNode::TSInfo::has_coordinate, "has_coordinate should be true");
-  if (!root || (r < l)) return;
-  if ((r < root->sinfo.left) || (l > root->sinfo.right)) return;
+  if (!root || (r <= l)) return;
+  if ((r <= root->sinfo.left) || (l >= root->sinfo.right)) return;
   hidden::AddActionToSegmentI(root, l, r, action_value);
 }
 }  // namespace st

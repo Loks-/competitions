@@ -93,14 +93,13 @@ int main_dynamic_summation() {
       } else if (!nodes_info.InsideSubtree(t, r)) {
         d = ds::st::GetSegmentInfo(
                 root, nodes_info.preorder[t],
-                nodes_info.preorder[t] + nodes_info.subtree_size[t] - 1)
+                nodes_info.preorder[t] + nodes_info.subtree_size[t])
                 .sum;
       } else {
         auto c = ChildWithNode(t, r);
-        d = ds::st::GetSegmentInfo(root, 0, nodes_info.preorder[c] - 1).sum +
+        d = ds::st::GetSegmentInfo(root, 0, nodes_info.preorder[c]).sum +
             ds::st::GetSegmentInfo(
-                root, nodes_info.preorder[c] + nodes_info.subtree_size[c],
-                N - 1)
+                root, nodes_info.preorder[c] + nodes_info.subtree_size[c], N)
                 .sum;
       }
       cout << d % m << endl;
@@ -112,13 +111,12 @@ int main_dynamic_summation() {
       } else if (!nodes_info.InsideSubtree(t, r)) {
         ds::st::AddActionToSegment(
             root, nodes_info.preorder[t],
-            nodes_info.preorder[t] + nodes_info.subtree_size[t] - 1, d);
+            nodes_info.preorder[t] + nodes_info.subtree_size[t], d);
       } else {
         auto c = ChildWithNode(t, r);
-        ds::st::AddActionToSegment(root, 0, nodes_info.preorder[c] - 1, d);
+        ds::st::AddActionToSegment(root, 0, nodes_info.preorder[c], d);
         ds::st::AddActionToSegment(
-            root, nodes_info.preorder[c] + nodes_info.subtree_size[c], N - 1,
-            d);
+            root, nodes_info.preorder[c] + nodes_info.subtree_size[c], N, d);
       }
     }
   }

@@ -27,9 +27,10 @@ int main_subsequence_weighting__segment_tree() {
                      vw = nvector::Read<uint64_t>(N);
     set<uint64_t> s(va.begin(), va.end());
     vector<uint64_t> vaus(s.begin(), s.end());
-    TNode* root = tree.BuildTree(vector<uint64_t>(vaus.size(), 0), vaus);
+    vaus.push_back(vaus.back() + 1);
+    TNode* root = tree.BuildTree(vector<uint64_t>(s.size(), 0), vaus);
     for (unsigned i = 0; i < N; ++i) {
-      TInfo info = ds::st::GetSegmentInfo<TNode>(root, 0, va[i] - 1);
+      TInfo info = ds::st::GetSegmentInfo<TNode>(root, 0, va[i]);
       TNode* node = ds::st::FindLeaf(root, va[i]);
       assert(node && node->IsLeaf());
       node->GetData() = std::max(node->GetData(), info.max + vw[i]);
