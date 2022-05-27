@@ -22,8 +22,8 @@ hackerrank/practice/language/c/proxy_gen.h
 hackerrank/practice/language/c/proxy_gen.c
 ipcs/proxy_gen.h
 ipcs/proxy_gen.cxx
-project_euler/proxy_gen.h
-project_euler/proxy_gen.cxx
+leetcode/proxy_gen.h
+leetcode/proxy_gen.cxx
 timus/proxy_gen.h
 timus/proxy_gen.cxx
 
