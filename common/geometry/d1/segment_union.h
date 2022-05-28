@@ -1,9 +1,13 @@
 #pragma once
 
 #include "common/base.h"
-#include "common/stl/pair.h"
+#include "common/data_structures/segment_tree/action/add_each__lsum0.h"
+#include "common/data_structures/segment_tree/base/add_action_to_segment.h"
+#include "common/data_structures/segment_tree/info/lsum0.h"
+#include "common/data_structures/segment_tree/segment_tree.h"
+#include "common/data_structures/segment_tree/sinfo/position.h"
+#include "common/template.h"
 
-#include <algorithm>
 #include <vector>
 
 namespace geometry {
@@ -12,41 +16,41 @@ template <class TValue>
 class SegmentUnion {
  public:
   using T = TValue;
+  using TTree = ds::st::SegmentTree<TEmpty, ds::st::info::LSum0<int, TValue>,
+                                    ds::st::action::AddEachLSum0<int>,
+                                    ds::st::sinfo::Position<TValue>, false>;
+  using TNode = typename TTree::TNode;
 
  protected:
-  std::vector<std::pair<TValue, TValue>> vp;
+  TTree tree;
+  TNode* root;
+  T l;
 
  public:
-  void Clear() { vp.clear(); }
+  SegmentUnion() { Clear(); }
 
-  TValue Length() const {
-    TValue s{};
-    if (vp.empty()) return s;
-    auto l = vp[0].first, r = l;
-    for (auto& p : vp) {
-      if (p.first <= r) {
-        r = std::max(r, p.second);
-      } else {
-        s += r - l;
-        l = p.first;
-        r = p.second;
-      }
-    }
-    s += r - l;
-    return s;
+  void Clear() {
+    root = nullptr;
+    l = T();
   }
 
-  void Add(const TValue& l, const TValue& r) {
-    auto p = std::make_pair(l, r);
-    auto it = std::lower_bound(vp.begin(), vp.end(), p);
-    vp.insert(it, p);
+  // Sorted list of possible values
+  void Init(const std::vector<TValue>& v) {
+    assert(!v.empty());
+    Clear();
+    tree.ResetNodes(v.size());
+    root = tree.BuildTree(std::vector<TEmpty>(v.size() - 1), v);
+    l = v.back() - v[0];
   }
 
-  void Remove(const TValue& l, const TValue& r) {
-    auto p = std::make_pair(l, r);
-    auto it = std::find(vp.begin(), vp.end(), p);
-    vp.erase(it);
+  TValue Length() const { return l - root->info.lsum0; }
+
+  void Adjust(const TValue& l, const TValue& r, int count) {
+    ds::st::AddActionToSegment(root, l, r, count);
   }
+
+  void Add(const TValue& l, const TValue& r) { Adjust(l, r, 1); }
+  void Remove(const TValue& l, const TValue& r) { Adjust(l, r, -1); }
 };
 }  // namespace d1
 }  // namespace geometry
