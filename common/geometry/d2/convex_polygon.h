@@ -2,7 +2,7 @@
 
 #include "common/geometry/d2/base.h"
 #include "common/geometry/d2/compare/vector_angle.h"
-#include "common/geometry/d2/polygon_static_size.h"
+#include "common/geometry/d2/polygon.h"
 #include "common/geometry/d2/segment.h"
 #include "common/geometry/d2/triangle_positive_area.h"
 #include "common/geometry/d2/utils/has_point_segment.h"
@@ -11,17 +11,19 @@
 
 namespace geometry {
 namespace d2 {
-template <class T, unsigned size>
-class ConvexPolygonStaticSize : public PolygonStaticSize<T, size> {
+// Vertexes are saved in counterclockwise order
+template <class T>
+class ConvexPolygon : public Polygon<T> {
  public:
-  using TBase = PolygonStaticSize<T, size>;
+  using TBase = Polygon<T>;
+  using TSelf = ConvexPolygon<T>;
   using TPoint = typename TBase::TPoint;
 
-  explicit ConvexPolygonStaticSize(const std::array<TPoint, size>& vp)
-      : TBase(vp) {}
+  ConvexPolygon() {}
 
-  ConvexPolygonStaticSize(const std::array<TPoint, size>& vp,
-                          bool skip_normalization)
+  explicit ConvexPolygon(const std::vector<TPoint>& vp) : TBase(vp) {}
+
+  ConvexPolygon(const std::vector<TPoint>& vp, bool skip_normalization)
       : TBase(vp, skip_normalization) {}
 
   bool Inside(const TPoint& p) const {
@@ -40,3 +42,6 @@ class ConvexPolygonStaticSize : public PolygonStaticSize<T, size> {
 };
 }  // namespace d2
 }  // namespace geometry
+
+using D2CPolygon = geometry::d2::ConvexPolygon<double>;
+using I2CPolygon = geometry::d2::ConvexPolygon<int64_t>;

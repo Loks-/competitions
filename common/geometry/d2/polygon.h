@@ -22,7 +22,12 @@ class Polygon {
   std::vector<TPoint> v;
 
   Polygon() {}
+
   explicit Polygon(const std::vector<TPoint>& vp) : v(vp) { Normalize(); }
+
+  Polygon(const std::vector<TPoint>& vp, bool skip_normalization) : v(vp) {
+    if (!skip_normalization) Normalize();
+  }
 
   void Normalize() {
     unsigned ilowest = 0;

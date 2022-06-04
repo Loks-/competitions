@@ -28,6 +28,11 @@ class PolygonStaticSize {
     Normalize();
   }
 
+  PolygonStaticSize(const std::array<TPoint, size>& vp, bool skip_normalization)
+      : v(vp) {
+    if (!skip_normalization) Normalize();
+  }
+
   void Normalize() {
     unsigned ilowest = 0;
     for (unsigned i = 1; i < size; ++i) {
