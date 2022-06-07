@@ -256,6 +256,9 @@ add_test( NAME minimum_sort COMMAND python3 tests/google/code_jam/2020/interacti
 # add_test( NAME twisty_little_passages COMMAND python3 tests/google/code_jam/2020/interactive_runner.py python3 tests/google/code_jam/2022/qr/twisty_little_passages.py -- ./release/build/google_code_jam twisty_little_passages WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} )
 add_test( NAME equal_sum COMMAND python3 tests/google/code_jam/2020/interactive_runner.py python3 tests/google/code_jam/2022/r1a/equal_sum.py -- ./release/build/google_code_jam equal_sum WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} )
 add_test( NAME asedatab COMMAND python3 tests/google/code_jam/2020/interactive_runner.py python3 tests/google/code_jam/2022/r1b/asedatab.py -- ./release/build/google_code_jam asedatab WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} )
+# add_test( NAME revenge_of_gorosort.0 COMMAND python3 tests/google/code_jam/2020/interactive_runner.py python3 tests/google/code_jam/2022/r3/revenge_of_gorosort.py 0 -- ./release/build/google_code_jam revenge_of_gorosort WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} )
+# add_test( NAME revenge_of_gorosort.1 COMMAND python3 tests/google/code_jam/2020/interactive_runner.py python3 tests/google/code_jam/2022/r3/revenge_of_gorosort.py 1 -- ./release/build/google_code_jam revenge_of_gorosort WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} )
+# add_test( NAME revenge_of_gorosort.2 COMMAND python3 tests/google/code_jam/2020/interactive_runner.py python3 tests/google/code_jam/2022/r3/revenge_of_gorosort.py 2 -- ./release/build/google_code_jam revenge_of_gorosort WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} )
 
 file( GLOB_RECURSE HACKERRANK_TESTS RELATIVE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/tests/hackerrank/*.in" )
 list( SORT HACKERRANK_TESTS )
