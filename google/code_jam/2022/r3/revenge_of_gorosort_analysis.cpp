@@ -1,10 +1,6 @@
 #include "common/assert_exception.h"
-#include "common/numeric/factorial.h"
-#include "common/permutation/permutation.h"
 #include "common/stl/base.h"
 #include "common/stl/hash/vector.h"
-#include "common/stl/pair.h"
-#include "common/vector/enumerate.h"
 #include "common/vector/munion.h"
 
 #include <functional>
@@ -41,11 +37,13 @@ int main_revenge_of_gorosort_analysis() {
 
   unsigned L = 40;
   unordered_map<vector<unsigned>, double> mexp;
-  vector<Transitions> vsplit0, vsplit;
+  vector<Transitions> vsplit0(2, Transitions(1)), vsplit = vsplit0;
   mexp[{}] = 0;
 
-  auto Solve = [&](const vector<unsigned>& v) {
-    assert(!v.empty());
+  std::function<double(const vector<unsigned>&)> Get =
+      [&](const vector<unsigned>& v) -> double {
+    auto it = mexp.find(v);
+    if (it != mexp.end()) return it->second;
     Transitions t(1);
     for (auto u : v) t *= vsplit[u];
     double p0 = 0, exp = 1;
@@ -53,19 +51,12 @@ int main_revenge_of_gorosort_analysis() {
       if (p.first == v) {
         p0 += p.second;
       } else {
-        auto it = mexp.find(p.first);
-        Assert(it != mexp.end());
-        exp += p.second * it->second;
+        exp += p.second * Get(p.first);
       }
     }
     auto expf = exp / (1 - p0);
-    if (v.size() == 1) {
-      cout << "[";
-      for (auto u : v) cout << u << " ";
-      // cout << "] -> (" << p0 << "\t" << exp << "\t" << expf << ")" << endl;
-      cout << "]\t-> " << expf << endl;
-    }
     mexp[v] = expf;
+    return expf;
   };
 
   auto Init0 = [&](unsigned l) {
@@ -90,39 +81,12 @@ int main_revenge_of_gorosort_analysis() {
     Init0(l);
     if (vsplit.size() <= l) vsplit.resize(l + 1);
     vsplit[l] = vsplit0[l];
+    auto f = Get({l});
+    cout << "[" << l << "]\t-> " << f << endl;
   };
 
-  vsplit0.resize(2, Transitions(1));
-  vsplit = vsplit0;
+  for (unsigned i = 2; i <= L; ++i) Init1(i);
+  cout << "MExp size = " << mexp.size() << endl;
 
-  vector<pair<uint64_t, vector<unsigned>>> vallsplits;
-  pair<uint64_t, vector<unsigned>> pvcurrent{0ull, {}};
-
-  std::function<void(unsigned)> AddAll = [&](unsigned l) {
-    vallsplits.push_back(pvcurrent);
-    for (unsigned i = pvcurrent.second.back(); i <= l; ++i) {
-      pvcurrent.first += i * i;
-      pvcurrent.second.push_back(i);
-      AddAll(l - i);
-      pvcurrent.second.pop_back();
-      pvcurrent.first -= i * i;
-    }
-  };
-
-  pvcurrent.second.resize(1);
-  for (unsigned i = 2; i <= L; ++i) {
-    pvcurrent.first = i * i;
-    pvcurrent.second[0] = i;
-    AddAll(L - i);
-  }
-  sort(vallsplits.begin(), vallsplits.end());
-  cout << "Total splits = " << vallsplits.size() << endl;
-
-  for (auto& ps : vallsplits) {
-    if (ps.second.size() == 1) Init1(ps.second[0]);
-    Solve(ps.second);
-  }
-
-  //   for (unsigned i = 2; i <= L; ++i) Init1(i);
   return 0;
 }
