@@ -13,11 +13,8 @@ int main_revenge_of_gorosort_analysis() {
     unordered_map<vector<unsigned>, double> m;
 
     Transitions() {}
-
-    Transitions(int x) {
-      Assert(x == 1, "Only x = 1 is supported.");
-      m[{}] = 1.0;
-    }
+    Transitions(double x) { m[{}] = x; }
+    Transitions(const vector<unsigned>& v, double x) { m[v] = x; }
 
     void Compress(double eps = 1e-12) {
       for (auto it = m.begin(); it != m.end();) {
@@ -26,6 +23,22 @@ int main_revenge_of_gorosort_analysis() {
         else
           ++it;
       }
+    }
+
+    double VSum() const {
+      double s = 0;
+      for (auto& p : m) s += p.second;
+      return s;
+    }
+
+    Transitions& operator+=(const Transitions& r) {
+      for (auto& p : r.m) m[p.first] += p.second;
+      return *this;
+    }
+
+    Transitions& operator*=(double x) {
+      for (auto& p : m) p.second *= x;
+      return *this;
     }
 
     Transitions operator*(const Transitions& r) const {
@@ -52,10 +65,9 @@ int main_revenge_of_gorosort_analysis() {
   vector<Transitions> vsplit0(2, Transitions(1)), vsplit = vsplit0;
   mexp[{}] = 0;
 
-  std::function<double(const vector<unsigned>&)> Get =
-      [&](const vector<unsigned>& v) -> double {
-    auto it = mexp.find(v);
-    if (it != mexp.end()) return it->second;
+  std::function<double(const vector<unsigned>&)> Get;
+
+  auto Calc = [&](const vector<unsigned>& v) {
     Transitions t(1);
     for (auto u : v) t *= vsplit[u];
     double p0 = 0, exp = 1;
@@ -66,7 +78,13 @@ int main_revenge_of_gorosort_analysis() {
         exp += p.second * Get(p.first);
       }
     }
-    auto expf = exp / (1 - p0);
+    return exp / (1 - p0);
+  };
+
+  Get = [&](const vector<unsigned>& v) -> double {
+    auto it = mexp.find(v);
+    if (it != mexp.end()) return it->second;
+    auto expf = Calc(v);
     mexp[v] = expf;
     return expf;
   };
@@ -90,12 +108,51 @@ int main_revenge_of_gorosort_analysis() {
   };
 
   auto Init1 = [&](unsigned l) {
-    // First version use one color for whole loop
+    // One loop
     Init0(l);
     if (vsplit.size() <= l) vsplit.resize(l + 1);
     vsplit[l] = vsplit0[l];
-    auto f = Get({l});
-    cout << "[" << l << "]\t-> " << f << "\t[" << mexp.size() << "]" << endl;
+    Transitions best_transition = vsplit0[l];
+    double base_value = Calc({l}), best_value = base_value;
+    // Multiple loops
+    {
+      vector<Transitions> vt0, vt1;
+      for (unsigned k = 2; k < l / 2; ++k) {
+        auto l0 = l / k, l1 = l0 + 1;
+        auto m1 = l - (l0 * k), m0 = k - m1;
+        vector<unsigned> vk(m0, l0);
+        vk.insert(vk.end(), m1, l1);
+        vt0.clear();
+        vt0.push_back(Transitions(1.));
+        for (auto u : vk) {
+          vt1.clear();
+          vt1.resize(vt0.size() + u);
+          for (unsigned i = 1; i <= u; ++i) {
+            for (unsigned j = 0; j < vt0.size(); ++j) {
+              vt1[i + j] += vt0[j] * vsplit0[u - i];
+            }
+          }
+          for (auto& t : vt1) t *= 1.0 / double(u);
+          vt0.swap(vt1);
+        }
+        Transitions tcurrent;
+        for (unsigned j = k; j < vt0.size(); ++j)
+          tcurrent += vt0[j] * Transitions({j}, 1.);
+        tcurrent.Compress();
+        vsplit[l] = tcurrent;
+        auto v = Calc({l});
+        if (v < best_value) {
+          best_value = v;
+          best_transition = tcurrent;
+          cout << "New best value: [" << base_value << "\t->" << best_value
+               << "]\t{" << k << "}" << endl;
+        }
+      }
+    }
+    cout << "[" << l << "]\t-> " << best_value << "\t" << base_value - 1
+         << "\t[" << mexp.size() << "]" << endl;
+    vsplit[l] = best_transition;
+    mexp[{l}] = best_value;
   };
 
   for (unsigned i = 2; i <= L; ++i) Init1(i);
