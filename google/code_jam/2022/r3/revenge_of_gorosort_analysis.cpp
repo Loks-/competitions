@@ -1,6 +1,7 @@
 #include "common/assert_exception.h"
 #include "common/stl/base.h"
 #include "common/stl/hash/vector.h"
+#include "common/timer.h"
 #include "common/vector/munion.h"
 
 #include <functional>
@@ -18,13 +19,24 @@ int main_revenge_of_gorosort_analysis() {
       m[{}] = 1.0;
     }
 
+    void Compress(double eps = 1e-12) {
+      for (auto it = m.begin(); it != m.end();) {
+        if (it->second < eps * m.size())
+          it = m.erase(it);
+        else
+          ++it;
+      }
+    }
+
     Transitions operator*(const Transitions& r) const {
       Transitions t;
       for (auto& p1 : m) {
         for (auto& p2 : r.m) {
+          // if (p1.second * p2.second < 1e-12) continue;
           t.m[nvector::MUnionV(p1.first, p2.first)] += p1.second * p2.second;
         }
       }
+      // t.Compress();
       return t;
     }
 
@@ -74,6 +86,7 @@ int main_revenge_of_gorosort_analysis() {
     }
     if (vsplit0.size() <= l) vsplit0.resize(l + 1);
     vsplit0[l].m.swap(mvc);
+    vsplit0[l].Compress();
   };
 
   auto Init1 = [&](unsigned l) {
@@ -82,7 +95,7 @@ int main_revenge_of_gorosort_analysis() {
     if (vsplit.size() <= l) vsplit.resize(l + 1);
     vsplit[l] = vsplit0[l];
     auto f = Get({l});
-    cout << "[" << l << "]\t-> " << f << endl;
+    cout << "[" << l << "]\t-> " << f << "\t[" << mexp.size() << "]" << endl;
   };
 
   for (unsigned i = 2; i <= L; ++i) Init1(i);
