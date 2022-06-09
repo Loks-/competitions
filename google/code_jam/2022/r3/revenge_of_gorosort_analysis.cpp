@@ -1,8 +1,11 @@
 #include "common/assert_exception.h"
+#include "common/numeric/factorial.h"
 #include "common/stl/base.h"
 #include "common/stl/hash/vector.h"
 #include "common/timer.h"
+#include "common/vector/enumerate.h"
 #include "common/vector/munion.h"
+#include "common/vector/sum.h"
 
 #include <functional>
 #include <unordered_map>
@@ -117,7 +120,7 @@ int main_revenge_of_gorosort_analysis() {
     // Multiple loops
     {
       vector<Transitions> vt0, vt1;
-      for (unsigned k = 2; k < l / 2; ++k) {
+      for (unsigned k = 2; k <= l / 2; ++k) {
         auto l0 = l / k, l1 = l0 + 1;
         auto m1 = l - (l0 * k), m0 = k - m1;
         vector<unsigned> vk(m0, l0);
@@ -151,30 +154,78 @@ int main_revenge_of_gorosort_analysis() {
         }
       }
     }
-    // External loop length 2
-    // double value_ell2 = base_value;
+    // External loop
+    // TODO: Use split0/split instead of permutations
     if (l > 3) {
-      Transitions tcurrent;
-      auto l0 = l / 2 - 1, l1 = l - l0 - 2;
-      for (unsigned i0 = 1; i0 <= l0; ++i0) {
-        Transitions t00 = vsplit0[l0 - i0] * (1.0 / l0);
-        Transitions t01 = t00 * Transitions({i0 + 1}, 1.0);
-        for (unsigned i1 = 1; i1 <= l1; ++i1) {
-          Transitions t10 = vsplit0[l1 - i1] * (1.0 / l1);
-          Transitions t11 = t10 * Transitions({i1 + 1}, 1.0);
-          tcurrent += t01 * t11;
-          tcurrent += t00 * t10 * Transitions({i0 + i1 + 2}, 1.0);
+      double last = base_value;
+      for (unsigned k = 2; k <= l / 2; ++k) {
+        auto kf = GetFactorial(k);
+        auto l0 = l / k;
+        auto m1 = l - (l0 * k), m0 = k - m1;
+        vector<Transitions> vl0, vl1;
+        for (unsigned il = 0; il < (m1 ? 2 : 1); ++il) {
+          auto li = l0 + il - 1;
+          auto& vl = (il ? vl1 : vl0);
+          vl.resize(li + 2);
+          // split0 -> split
+          for (auto& p : vsplit[li].m) {
+            auto v = p.first;
+            for (unsigned i = 0; i < v.size(); ++i) {
+              auto u = v[i];
+              v.erase(v.begin() + i);
+              vl[u + 1] += Transitions(v, p.second * u / li);
+              v.insert(v.begin() + i, u);
+            }
+            auto m = li - nvector::Sum(v);
+            if (m > 0) vl[2] += Transitions(v, p.second * m / li);
+          }
         }
-      }
-      tcurrent *= .5;
-      vsplit[l] = tcurrent;
-      auto v = Calc({l});
-      // value_ell2 = v;
-      if (v < best_value) {
-        best_value = v;
-        best_transition = tcurrent;
-        cout << "New best value: [" << base_value << "\t->" << best_value
-             << "]\t{E2}" << endl;
+
+        Transitions tcurrent;
+        vector<Transitions> vt0, vt1;
+        auto ve = nvector::Enumerate(0u, k);
+        vector<unsigned> vu(k);
+        for (uint64_t ikf = 0; ikf < kf; ++ikf) {
+          Transitions t1(1.0);
+          fill(vu.begin(), vu.end(), 0);
+          for (unsigned i = 0; i < k; ++i) {
+            if (vu[i]) continue;
+            vu[i] = 1;
+            vt0 = (i < m0) ? vl0 : vl1;
+            for (unsigned j = ve[i]; j != i; j = ve[j]) {
+              vu[j] = 1;
+              const auto& vj = (j < m0) ? vl0 : vl1;
+              vt1.clear();
+              vt1.resize(vt0.size() + vj.size() - 1);
+              for (unsigned i0 = 0; i0 < vt0.size(); ++i0) {
+                for (unsigned ij = 0; ij < vj.size(); ++ij) {
+                  vt1[i0 + ij] += vt0[i0] * vj[ij];
+                }
+              }
+              vt0.swap(vt1);
+            }
+            Transitions t0;
+            for (unsigned i0 = 2; i0 < vt0.size(); ++i0)
+              t0 += vt0[i0] * Transitions({i0}, 1.);
+            t1 *= t0;
+          }
+          tcurrent += t1;
+          next_permutation(ve.begin(), ve.end());
+        }
+        tcurrent *= (1.0 / kf);
+        tcurrent.Compress();
+        vsplit[l] = tcurrent;
+        auto v = Calc({l});
+        if (v < best_value) {
+          best_value = v;
+          best_transition = tcurrent;
+          cout << "New best value: [" << base_value << "\t->" << best_value
+               << "]\t{E" << k << "}" << endl;
+        } else if (v < last) {
+          last = v;
+        } else {
+          break;
+        }
       }
     }
     cout << "[" << l << "]\t-> " << best_value << "\t" << base_value - 1
