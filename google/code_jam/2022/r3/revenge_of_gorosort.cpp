@@ -1,28 +1,49 @@
-#include "common/numeric/utils/usqrt.h"
 #include "common/permutation/permutation.h"
 #include "common/stl/base.h"
 #include "common/vector/read.h"
 #include "common/vector/write.h"
 
+#include <functional>
+
+// Solution under 10k.
 int main_revenge_of_gorosort() {
-  unsigned T, N, K, R, L = 2;
+  unsigned T, N, K, R;
   cin >> T >> N >> K;
   vector<unsigned> vc(N);
   for (unsigned it = 1; it <= T;) {
     auto vi = nvector::Read<unsigned>(N);
     permutation::Permutation p(vi, true);
-    auto pc = p.Cycles();
     fill(vc.begin(), vc.end(), 0);
     unsigned g = 0;
-    for (unsigned i = 0; i < pc.size(); ++i) {
-      auto& pi = pc[i];
-      auto l = (pi.size() >= L * L) ? USqrt(pi.size()) : size_t(1);
-      for (unsigned j = 0; j < l; ++j) {
+
+    function<void(const vector<unsigned>&)> Apply =
+        [&](const vector<unsigned>& v) -> void {
+      unsigned s = v.size();
+      if (s < 6) {
         ++g;
-        for (unsigned k = j * pi.size() / l; k < (j + 1) * pi.size() / l; ++k)
-          vc[pi[k]] = g;
+        for (auto u : v) vc[u] = g;
+      } else if (s == 6) {
+        for (unsigned i = 0; i < s; ++i) vc[v[i]] = g + 1 + (i / 3);
+        g += 2;
+      } else if (((s >= 11) && (s <= 14)) || ((s >= 27) && (s <= 33))) {
+        // Split 3 (about .2 * T operations saved against Split 2 only)
+        auto l1 = s / 3;
+        auto l2 = (2 * s) / 3;
+        vc[v[0]] = vc[v[l1]] = vc[v[l2]] = ++g;
+        Apply({v.begin() + 1, v.begin() + l1});
+        Apply({v.begin() + l1 + 1, v.begin() + l2});
+        Apply({v.begin() + l2 + 1, v.end()});
+      } else {
+        // Split 2
+        auto l = s / 2;
+        vc[v[0]] = vc[v[l]] = ++g;
+        Apply({v.begin() + 1, v.begin() + l});
+        Apply({v.begin() + l + 1, v.end()});
       }
-    }
+    };
+
+    for (auto& c : p.Cycles()) Apply(c);
+
     for (unsigned i = 0; i < N; ++i) {
       if (vc[i] == 0) vc[i] = ++g;
     }
