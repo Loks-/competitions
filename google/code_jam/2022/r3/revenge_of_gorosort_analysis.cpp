@@ -146,7 +146,35 @@ int main_revenge_of_gorosort_analysis() {
           best_transition = tcurrent;
           cout << "New best value: [" << base_value << "\t->" << best_value
                << "]\t{" << k << "}" << endl;
+        } else {
+          break;
         }
+      }
+    }
+    // External loop length 2
+    // double value_ell2 = base_value;
+    if (l > 3) {
+      Transitions tcurrent;
+      auto l0 = l / 2 - 1, l1 = l - l0 - 2;
+      for (unsigned i0 = 1; i0 <= l0; ++i0) {
+        Transitions t00 = vsplit0[l0 - i0] * (1.0 / l0);
+        Transitions t01 = t00 * Transitions({i0 + 1}, 1.0);
+        for (unsigned i1 = 1; i1 <= l1; ++i1) {
+          Transitions t10 = vsplit0[l1 - i1] * (1.0 / l1);
+          Transitions t11 = t10 * Transitions({i1 + 1}, 1.0);
+          tcurrent += t01 * t11;
+          tcurrent += t00 * t10 * Transitions({i0 + i1 + 2}, 1.0);
+        }
+      }
+      tcurrent *= .5;
+      vsplit[l] = tcurrent;
+      auto v = Calc({l});
+      // value_ell2 = v;
+      if (v < best_value) {
+        best_value = v;
+        best_transition = tcurrent;
+        cout << "New best value: [" << base_value << "\t->" << best_value
+             << "]\t{E2}" << endl;
       }
     }
     cout << "[" << l << "]\t-> " << best_value << "\t" << base_value - 1
