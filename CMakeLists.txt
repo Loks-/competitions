@@ -259,6 +259,8 @@ add_test( NAME asedatab COMMAND python3 tests/google/code_jam/2020/interactive_r
 # add_test( NAME revenge_of_gorosort.0 COMMAND python3 tests/google/code_jam/2020/interactive_runner.py python3 tests/google/code_jam/2022/r3/revenge_of_gorosort.py 0 -- ./release/build/google_code_jam revenge_of_gorosort WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} )
 # add_test( NAME revenge_of_gorosort.1 COMMAND python3 tests/google/code_jam/2020/interactive_runner.py python3 tests/google/code_jam/2022/r3/revenge_of_gorosort.py 1 -- ./release/build/google_code_jam revenge_of_gorosort WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} )
 # add_test( NAME revenge_of_gorosort.2 COMMAND python3 tests/google/code_jam/2020/interactive_runner.py python3 tests/google/code_jam/2022/r3/revenge_of_gorosort.py 2 -- ./release/build/google_code_jam revenge_of_gorosort WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} )
+# add_test( NAME win_as_second.0 COMMAND python3 tests/google/code_jam/2020/interactive_runner.py python3 tests/google/code_jam/2022/r3/win_as_second.py 0 -- ./release/build/google_code_jam win_as_second WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} )
+# add_test( NAME win_as_second.1 COMMAND python3 tests/google/code_jam/2020/interactive_runner.py python3 tests/google/code_jam/2022/r3/win_as_second.py 1 -- ./release/build/google_code_jam win_as_second WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} )
 
 file( GLOB_RECURSE HACKERRANK_TESTS RELATIVE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/tests/hackerrank/*.in" )
 list( SORT HACKERRANK_TESTS )
