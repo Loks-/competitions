@@ -1,6 +1,7 @@
 #pragma once
 
 #include "common/geometry/d2/base.h"
+#include "common/geometry/d2/compare/point_yx.h"
 #include "common/geometry/d2/convex_polygon.h"
 #include "common/geometry/d2/point.h"
 
@@ -24,7 +25,6 @@ inline ConvexPolygon<T> GrahamScanWCP(const std::vector<Point<T>>& vpoints) {
               return (p2 - v[0]) % (p1 - v[0]) < 0;
             });
 
-  vh.resize(v.size());
   vh[0] = v[0];
   unsigned i = 1, j = 0;
   for (; i < v.size(); ++i) {
