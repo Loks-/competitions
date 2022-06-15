@@ -3,6 +3,7 @@
 #include "common/base.h"
 #include "common/linear_algebra/rows/sub_m.h"
 #include "common/linear_algebra/rows/swap.h"
+#include "common/linear_algebra/vector.h"
 
 #include <algorithm>
 #include <cmath>
@@ -107,6 +108,20 @@ class LUPDecomposition {
         output_x(i) = sum / lu(i, i);
       }
     }
+    return true;
+  }
+
+  bool Inverse(TMatrix& output) {
+    unsigned size = lu.Rows();
+    la::Vector<TValue> b(size, 0), x(size);
+    TMatrix m(size);
+    for (unsigned i = 0; i < size; ++i) {
+      b(i) = 1.0;
+      if (!Solve(b, x)) return false;
+      b(i) = 0.0;
+      for (unsigned j = 0; j < size; ++j) m(j, i) = x(j);
+    }
+    output.swap(m);
     return true;
   }
 };
