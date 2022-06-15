@@ -1,11 +1,11 @@
 // https://www.hackerrank.com/challenges/white-falcon-and-tree
 
+#include "common/data_structures/segment_tree/action/none.h"
+#include "common/data_structures/segment_tree/info/none.h"
 #include "common/graph/tree.h"
 #include "common/graph/tree/hld.h"
 #include "common/linear_algebra/matrix_static_size.h"
 #include "common/modular_io.h"
-#include "common/segment_tree/action/none.h"
-#include "common/segment_tree/info/none.h"
 #include "common/stl/base.h"
 
 namespace {
@@ -14,9 +14,9 @@ class FData {
   TModularD a, b, br;
 };
 
-class FInfo : public st::info::None {
+class FInfo : public ds::st::info::None {
  public:
-  using TBase = st::info::None;
+  using TBase = ds::st::info::None;
   using TSelf = FInfo;
 
   static const bool is_none = false;
@@ -39,7 +39,7 @@ class FInfo : public st::info::None {
   }
 };
 
-class FActionSet : public st::action::None {
+class FActionSet : public ds::st::action::None {
  public:
   static const bool modify_data = true;
 

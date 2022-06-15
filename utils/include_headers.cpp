@@ -34,9 +34,14 @@ static std::string JoinPath(const std::string& sdir, const std::string& sfile) {
 
 static void AddFile(const std::string& input_filename, std::ofstream& output,
                     bool ignore_local, bool silent = false) {
+  bool mode_leetcode = false;
   std::ifstream input(input_filename);
   std::string line;
   while (std::getline(input, line)) {
+    if (line == "#include \"leetcode/test.h\"") {
+      mode_leetcode = true;
+      continue;
+    }
     if (line == "#pragma once") {
       if (used_files.find(input_filename) != used_files.end()) return;
       used_files.insert(input_filename);
@@ -84,6 +89,14 @@ static void AddFile(const std::string& input_filename, std::ofstream& output,
         assert(line.back() == '>');
         if (used_stl_files.find(line) != used_stl_files.end()) continue;
         used_stl_files.insert(line);
+      }
+    }
+    if (mode_leetcode) {
+      if (line == "namespace {") continue;
+      if (line == "}  // namespace") break;
+      if (line.substr(0, 14) == "class Solution") {
+        output << "class Solution {" << std::endl;
+        continue;
       }
     }
     if (line.substr(0, 8) == "int main") {

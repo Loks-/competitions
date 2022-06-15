@@ -1,28 +1,28 @@
 #pragma once
 
+#include "common/data_structures/segment_tree/action/apply_root_to_node.h"
+#include "common/data_structures/segment_tree/base/get_segment.h"
+#include "common/data_structures/segment_tree/info/update_node_to_root.h"
+#include "common/data_structures/segment_tree/segment.h"
+#include "common/data_structures/segment_tree/segment_tree.h"
 #include "common/graph/tree.h"
 #include "common/graph/tree/nodes_info.h"
-#include "common/segment_tree/action/apply_root_to_node.h"
-#include "common/segment_tree/base/get_segment.h"
-#include "common/segment_tree/info/update_node_to_root.h"
-#include "common/segment_tree/segment.h"
-#include "common/segment_tree/segment_tree.h"
 
 #include <vector>
 
 namespace graph {
 // Subtree Operations
-template <class TTData, class TTInfo = st::info::None,
-          class TTAction = st::action::None,
-          class TTSInfo = st::sinfo::Position<unsigned>>
+template <class TTData, class TTInfo = ds::st::info::None,
+          class TTAction = ds::st::action::None,
+          class TTSInfo = ds::st::sinfo::Position<unsigned>>
 class STO {
   using TData = TTData;
   using TInfo = TTInfo;
   using TAction = TTAction;
   using TSInfo = TTSInfo;
-  using TSTree = st::SegmentTree<TData, TInfo, TAction, TSInfo, true>;
+  using TSTree = ds::st::SegmentTree<TData, TInfo, TAction, TSInfo, true>;
   using TNode = typename TSTree::TNode;
-  using TSegment = st::Segment<TNode>;
+  using TSegment = ds::st::Segment<TNode>;
 
  protected:
   TSTree stree;
@@ -42,7 +42,7 @@ class STO {
     std::vector<TNode*> nodes_in_order(n, nullptr);
     for (unsigned i = 0; i < n; ++i) {
       unsigned p = tni.preorder[i];
-      nodes[i] = stree.NewLeaf(TData(), p);
+      nodes[i] = stree.NewLeaf(TData(), p, p + 1);
       nodes_in_order[p] = nodes[i];
     }
     stroot = stree.BuildTree(nodes_in_order);
@@ -54,21 +54,21 @@ class STO {
   const TNode* Node(unsigned x) const { return nodes[x]; }
 
   TSegment Subtree(unsigned x) {
-    return st::GetSegment(stroot, tni.preorder[x],
-                          tni.preorder[x] + tni.subtree_size[x] - 1);
+    return ds::st::GetSegment(stroot, tni.preorder[x],
+                              tni.preorder[x] + tni.subtree_size[x]);
   }
 
   const TData& GetData(unsigned x) {
     auto node = Node(x);
-    st::action::ApplyRootToNode(node);
+    ds::st::action::ApplyRootToNode(node);
     return node->GetData();
   }
 
   void SetData(unsigned x, const TData& data) {
     auto node = Node(x);
-    st::action::ApplyRootToNode(node);
+    ds::st::action::ApplyRootToNode(node);
     node->GetData() = data;
-    st::info::UpdateNodeToRoot(node);
+    ds::st::info::UpdateNodeToRoot(node);
   }
 };
 }  // namespace graph

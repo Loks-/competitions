@@ -18,7 +18,7 @@ inline bool Symmetric(const Polygon<T>& plgn) {
     vnew.push_back({p1.x + p1.x, p1.y + p1.y});
     vnew.push_back({p1.x + p2.x, p1.y + p2.y});
   }
-  Polygon<T> pnew(vnew);
+  Polygon<T> pnew(vnew, true);
   for (unsigned i = 0; i < s; ++i) {
     LinePV<T> l(pnew[i], pnew[i + s]);
     bool good = true;
@@ -44,7 +44,7 @@ inline LinePV<T> LineOfSymmetry(const Polygon<T>& plgn) {
     vnew.push_back(p1);
     vnew.push_back(MidPoint(p1, p2));
   }
-  Polygon<T> pnew(vnew);
+  Polygon<T> pnew(vnew, true);
   for (unsigned i = 0; i < s; ++i) {
     LinePV<T> l(pnew[i], pnew[i + s]);
     bool good = true;

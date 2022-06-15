@@ -1,8 +1,8 @@
 // https://www.hackerrank.com/challenges/lazy-white-falcon
 
+#include "common/data_structures/segment_tree/info/sum.h"
 #include "common/graph/tree.h"
 #include "common/graph/tree/hld.h"
-#include "common/segment_tree/info/sum.h"
 #include "common/stl/base.h"
 
 int main_lazy_white_falcon__hld() {
@@ -10,7 +10,7 @@ int main_lazy_white_falcon__hld() {
   cin >> N >> Q;
   TreeGraph tree(N);
   tree.ReadEdges(true);
-  graph::HLD<unsigned, st::info::Sum<unsigned>> hld(tree);
+  graph::HLD<unsigned, ds::st::info::Sum<unsigned>> hld(tree);
 
   for (unsigned iQ = 0; iQ < Q; ++iQ) {
     unsigned t, u, x;

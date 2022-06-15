@@ -3,7 +3,9 @@
 #include "common/geometry/d2/base.h"
 #include "common/geometry/d2/compare/vector_angle.h"
 #include "common/geometry/d2/polygon_static_size.h"
-#include "common/geometry/d2/triangle.h"
+#include "common/geometry/d2/segment.h"
+#include "common/geometry/d2/triangle_positive_area.h"
+#include "common/geometry/d2/utils/has_point_segment.h"
 
 #include <algorithm>
 
@@ -18,6 +20,10 @@ class ConvexPolygonStaticSize : public PolygonStaticSize<T, size> {
   explicit ConvexPolygonStaticSize(const std::array<TPoint, size>& vp)
       : TBase(vp) {}
 
+  ConvexPolygonStaticSize(const std::array<TPoint, size>& vp,
+                          bool skip_normalization)
+      : TBase(vp, skip_normalization) {}
+
   bool Inside(const TPoint& p) const {
     if (p == TBase::v[0]) return true;
     auto it = std::lower_bound(TBase::v.begin() + 1, TBase::v.end(), p,
@@ -26,7 +32,9 @@ class ConvexPolygonStaticSize : public PolygonStaticSize<T, size> {
                                                            r - TBase::v[0]);
                                });
     if (it == TBase::v.end()) return false;
-    Triangle<T> t(TBase::v[0], *(it - 1), *it);
+    if (it == TBase::v.begin() + 1)
+      return HasPoint(Segment<T, true>(TBase::v[0], TBase::v[1]), p);
+    TrianglePA<T> t(TBase::v[0], *(it - 1), *it);
     return t.Inside(p);
   }
 };

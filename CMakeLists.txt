@@ -144,6 +144,30 @@ endforeach( problemsourcefile ${IPCS_SOURCES} )
 file ( APPEND ${IPCS_PROXY_CXX} "};\n" )
 add_executable( ipcs ${IPCS_SOURCES} ${IPCS_PROXY_CXX} )
 
+file( GLOB_RECURSE LEETCODE_SOURCES RELATIVE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/leetcode/*.cpp" )
+list( SORT LEETCODE_SOURCES )
+set( LEETCODE_PROXY_H "${PROJECT_SOURCE_DIR}/leetcode/proxy_gen.h" )
+set( LEETCODE_PROXY_CXX "${PROJECT_SOURCE_DIR}/leetcode/proxy_gen.cxx" )
+file ( WRITE ${LEETCODE_PROXY_H}
+	"#pragma once\n\n" )
+file ( WRITE ${LEETCODE_PROXY_CXX}
+	"#include \"common/proxy_run_base.h\"\n"
+    "#include \"proxy_gen.h\"\n"
+	"\n"
+	"TSolutionsMap solutions_map {\n")
+foreach( problemsourcefile ${LEETCODE_SOURCES} )
+    string( REPLACE ".cpp" "" problemfullname ${problemsourcefile} )
+    get_filename_component( problembasename ${problemfullname} NAME )
+    if ( NOT ${problembasename} MATCHES "base|main")
+        file ( APPEND ${LEETCODE_PROXY_H}
+			"int main_${problembasename}();\n" )
+        file ( APPEND ${LEETCODE_PROXY_CXX}
+			"\t{ \"${problembasename}\", main_${problembasename} },\n")
+    endif ( NOT ${problembasename} MATCHES "base|main")
+endforeach( problemsourcefile ${LEETCODE_SOURCES} )
+file ( APPEND ${LEETCODE_PROXY_CXX} "};\n" )
+add_executable( leetcode ${LEETCODE_SOURCES} ${LEETCODE_PROXY_CXX} )
+
 file( GLOB_RECURSE TIMUS_SOURCES RELATIVE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/timus/*.cpp" )
 list( SORT TIMUS_SOURCES )
 set( TIMUS_PROXY_H "${PROJECT_SOURCE_DIR}/timus/proxy_gen.h" )
@@ -232,6 +256,11 @@ add_test( NAME minimum_sort COMMAND python3 tests/google/code_jam/2020/interacti
 # add_test( NAME twisty_little_passages COMMAND python3 tests/google/code_jam/2020/interactive_runner.py python3 tests/google/code_jam/2022/qr/twisty_little_passages.py -- ./release/build/google_code_jam twisty_little_passages WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} )
 add_test( NAME equal_sum COMMAND python3 tests/google/code_jam/2020/interactive_runner.py python3 tests/google/code_jam/2022/r1a/equal_sum.py -- ./release/build/google_code_jam equal_sum WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} )
 add_test( NAME asedatab COMMAND python3 tests/google/code_jam/2020/interactive_runner.py python3 tests/google/code_jam/2022/r1b/asedatab.py -- ./release/build/google_code_jam asedatab WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} )
+# add_test( NAME revenge_of_gorosort.0 COMMAND python3 tests/google/code_jam/2020/interactive_runner.py python3 tests/google/code_jam/2022/r3/revenge_of_gorosort.py 0 -- ./release/build/google_code_jam revenge_of_gorosort WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} )
+# add_test( NAME revenge_of_gorosort.1 COMMAND python3 tests/google/code_jam/2020/interactive_runner.py python3 tests/google/code_jam/2022/r3/revenge_of_gorosort.py 1 -- ./release/build/google_code_jam revenge_of_gorosort WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} )
+# add_test( NAME revenge_of_gorosort.2 COMMAND python3 tests/google/code_jam/2020/interactive_runner.py python3 tests/google/code_jam/2022/r3/revenge_of_gorosort.py 2 -- ./release/build/google_code_jam revenge_of_gorosort WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} )
+# add_test( NAME win_as_second.0 COMMAND python3 tests/google/code_jam/2020/interactive_runner.py python3 tests/google/code_jam/2022/r3/win_as_second.py 0 -- ./release/build/google_code_jam win_as_second WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} )
+# add_test( NAME win_as_second.1 COMMAND python3 tests/google/code_jam/2020/interactive_runner.py python3 tests/google/code_jam/2022/r3/win_as_second.py 1 -- ./release/build/google_code_jam win_as_second WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} )
 
 file( GLOB_RECURSE HACKERRANK_TESTS RELATIVE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/tests/hackerrank/*.in" )
 list( SORT HACKERRANK_TESTS )
@@ -252,6 +281,14 @@ foreach( testfile_in ${HACKERRANK_LANGUAGE_C_TESTS} )
     get_filename_component( solution ${testshortname} NAME_WE )
 	add_test( NAME ${testshortname} COMMAND hackerrank_c ${solution} ${testfile_in} ${testfile_out} WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} )
 endforeach( testfile_in ${HACKERRANK_LANGUAGE_C_TESTS} )
+
+file( GLOB_RECURSE LEETCODE_TESTS RELATIVE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/leetcode/problems/*.cpp" )
+list( SORT LEETCODE_TESTS )
+foreach( solution_cpp ${LEETCODE_TESTS} )
+    string( REPLACE ".cpp" "" solution_path ${solution_cpp} )
+    get_filename_component( id ${solution_path} NAME )
+	add_test( NAME "leetcode.${id}" COMMAND leetcode ${id} WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} )
+endforeach( solution_cpp ${LEETCODE_TESTS} )
 
 file( GLOB_RECURSE TIMUS_TESTS RELATIVE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/tests/timus/*.in" )
 list( SORT TIMUS_TESTS )
