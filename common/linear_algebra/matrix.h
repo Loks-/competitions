@@ -1,6 +1,7 @@
 #pragma once
 
 #include "common/linear_algebra/vector.h"
+
 #include <algorithm>
 
 namespace la {
@@ -10,6 +11,7 @@ class Matrix : public Vector<TTValue> {
   using TValue = TTValue;
   using TSelf = Matrix<TValue>;
   using TBase = Vector<TValue>;
+  using TVector = Vector<TValue>;
 
   using iterator = typename TBase::iterator;
   using const_iterator = typename TBase::const_iterator;
@@ -112,7 +114,7 @@ class Matrix : public Vector<TTValue> {
     }
   }
 
-  void MultAx(const TBase& x, TBase& output) const {
+  void MultAx(const TVector& x, TVector& output) const {
     assert((x.Size() == columns) && (output.Size() == rows));
     output.Clear();
     const_iterator pA = begin(), pBbegin = x.begin(), pBend = x.end();
@@ -121,8 +123,8 @@ class Matrix : public Vector<TTValue> {
     }
   }
 
-  TBase operator*(const TBase& x) const {
-    TBase t(rows);
+  TVector operator*(const TVector& x) const {
+    TVector t(rows);
     MultAx(x, t);
     return t;
   }
@@ -152,7 +154,7 @@ class Matrix : public Vector<TTValue> {
     return ans;
   }
 
-  void AddXXT(const TBase& x) {
+  void AddXXT(const TVector& x) {
     assert((x.Size() == rows) && (rows == columns));
     iterator p = begin();
     for (const_iterator pxr = x.begin(), px_end = x.end(); pxr < px_end;
