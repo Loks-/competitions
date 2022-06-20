@@ -2,7 +2,7 @@
 
 #include "common/base.h"
 #include "common/linear_algebra/matrix.h"
-#include "common/linear_algebra/real/lup_decomposition.h"
+#include "common/linear_algebra/real/cholesky_decomposition.h"
 #include "common/linear_algebra/vector.h"
 #include "common/optimization/model/linear.h"
 #include "common/optimization/model/trainer/datapoint.h"
@@ -22,7 +22,7 @@ class XTX : public Trainer {
   DMatrix xtx, temp;
   DVector xty;
   double y2;
-  la::real::LUPDecomposition<DMatrix> d;
+  la::real::CholeskyDecomposition<DMatrix> d;
   Linear m;
 
  public:
