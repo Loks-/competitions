@@ -1,4 +1,4 @@
-#include "common/cover/latin_square.h"
+#include "common/data_structures/cover/latin_square.h"
 #include "common/linear_algebra/utils/write.h"
 #include "common/stl/base.h"
 
@@ -7,7 +7,7 @@
 int main_indicium() {
   unsigned T, N, K;
   vector<size_t> rows;
-  cover::LatinSquare ls;
+  ds::cover::LatinSquare ls;
 
   std::function<bool(size_t, size_t, size_t)> SearchAny =
       [&](size_t trace_left, size_t index, size_t value) -> bool {

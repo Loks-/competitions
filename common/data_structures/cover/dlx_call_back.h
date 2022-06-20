@@ -2,6 +2,7 @@
 
 #include <vector>
 
+namespace ds {
 namespace cover {
 class IDLXCallBack {
   // If output true, the main algorithm stops.
@@ -9,3 +10,4 @@ class IDLXCallBack {
   bool operator()(const std::vector<size_t>& rows);
 };
 }  // namespace cover
+}  // namespace ds

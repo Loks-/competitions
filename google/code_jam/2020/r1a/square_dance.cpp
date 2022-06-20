@@ -1,8 +1,8 @@
-#include "common/cover/dlvmatrix.h"
+#include "common/data_structures/cover/dlvmatrix.h"
 #include "common/data_structures/unsigned_set.h"
 #include "common/stl/base.h"
 
-using DLMatrix = cover::DLVMatrix<unsigned>;
+using DLMatrix = ds::cover::DLVMatrix<unsigned>;
 using Node = DLMatrix::Node;
 
 int main_square_dance() {

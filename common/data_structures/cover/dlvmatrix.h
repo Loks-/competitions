@@ -1,9 +1,11 @@
 #pragma once
 
 #include "common/base.h"
+
 #include <deque>
 #include <vector>
 
+namespace ds {
 namespace cover {
 template <class TTValue>
 class DLVMatrix {
@@ -147,3 +149,4 @@ class DLVMatrix {
   }
 };
 }  // namespace cover
+}  // namespace ds

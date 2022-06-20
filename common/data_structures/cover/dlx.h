@@ -1,11 +1,12 @@
 #pragma once
 
 #include "common/base.h"
-#include "common/cover/dlmatrix.h"
+#include "common/data_structures/cover/dlmatrix.h"
 
 #include <stack>
 #include <vector>
 
+namespace ds {
 namespace cover {
 class DLX : public DLMatrix {
  public:
@@ -113,3 +114,4 @@ class DLX : public DLMatrix {
   }
 };
 }  // namespace cover
+}  // namespace ds

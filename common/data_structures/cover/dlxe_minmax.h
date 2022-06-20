@@ -1,7 +1,7 @@
 #pragma once
 
 #include "common/base.h"
-#include "common/cover/dlmatrix.h"
+#include "common/data_structures/cover/dlmatrix.h"
 #include "common/data_structures/unsigned_set.h"
 
 #include <algorithm>
@@ -9,6 +9,7 @@
 #include <utility>
 #include <vector>
 
+namespace ds {
 namespace cover {
 // Extended DLX with support integer cover (min and max) for each column.
 class DLXEMinMax : public DLMatrix {
@@ -178,3 +179,4 @@ class DLXEMinMax : public DLMatrix {
   }
 };
 }  // namespace cover
+}  // namespace ds

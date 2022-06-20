@@ -1,9 +1,11 @@
 #pragma once
 
 #include "common/base.h"
+
 #include <deque>
 #include <vector>
 
+namespace ds {
 namespace cover {
 class DLMatrix {
  public:
@@ -140,3 +142,4 @@ class DLMatrix {
   }
 };
 }  // namespace cover
+}  // namespace ds

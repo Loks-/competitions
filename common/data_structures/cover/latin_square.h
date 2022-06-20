@@ -1,9 +1,10 @@
 #pragma once
 
 #include "common/base.h"
-#include "common/cover/dlx.h"
+#include "common/data_structures/cover/dlx.h"
 #include "common/linear_algebra/matrix.h"
 
+namespace ds {
 namespace cover {
 class LatinSquare {
  protected:
@@ -48,3 +49,4 @@ class LatinSquare {
   }
 };
 }  // namespace cover
+}  // namespace ds
