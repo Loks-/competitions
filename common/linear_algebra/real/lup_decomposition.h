@@ -74,6 +74,8 @@ class LUPDecomposition {
     return true;
   }
 
+  unsigned Size() const { return lu.Rows(); }
+
   double Det() const {
     double det = det_sign;
     for (unsigned i = 0; i < lu.Rows(); ++i) det *= lu(i, i);
@@ -82,7 +84,7 @@ class LUPDecomposition {
 
   // Solve Ax = b
   template <class TVector>
-  bool Solve(const TVector& b, TVector& output_x) {
+  bool Solve(const TVector& b, TVector& output_x) const {
     unsigned n = lu.Rows();
     assert(b.Size() == n);
     output_x = b;
@@ -108,20 +110,6 @@ class LUPDecomposition {
         output_x(i) = sum / lu(i, i);
       }
     }
-    return true;
-  }
-
-  bool Inverse(TMatrix& output) {
-    unsigned size = lu.Rows();
-    la::Vector<TValue> b(size, 0), x(size);
-    TMatrix m(size);
-    for (unsigned i = 0; i < size; ++i) {
-      b(i) = 1.0;
-      if (!Solve(b, x)) return false;
-      b(i) = 0.0;
-      for (unsigned j = 0; j < size; ++j) m(j, i) = x(j);
-    }
-    output.swap(m);
     return true;
   }
 };
