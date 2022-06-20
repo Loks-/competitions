@@ -4,6 +4,8 @@
 #include "common/optimization/minimum.h"
 
 namespace opt {
+// Local minimum for continuous function.
+// Global minimum for unimodal function.
 template <class TFunction>
 inline D2Point Minimum2D(TFunction& f, double xl, double xr, double yl,
                          double yr, double eps) {
