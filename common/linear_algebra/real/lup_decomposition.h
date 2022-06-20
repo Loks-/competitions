@@ -78,16 +78,16 @@ class LUPDecomposition {
 
   double Det() const {
     double det = det_sign;
-    for (unsigned i = 0; i < lu.Rows(); ++i) det *= lu(i, i);
+    for (unsigned i = 0; i < Size(); ++i) det *= lu(i, i);
     return det;
   }
 
   // Solve Ax = b
   template <class TVector>
   bool Solve(const TVector& b, TVector& output_x) const {
-    unsigned n = lu.Rows();
+    unsigned n = Size();
     assert(b.Size() == n);
-    output_x = b;
+    if (&output_x != &b) output_x = b;
     unsigned ii = 0;
     for (unsigned i = 0; i < n; ++i) {
       unsigned ip = p[i];
