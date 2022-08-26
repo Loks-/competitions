@@ -70,7 +70,7 @@ class AVLTree
   }
 
   static TNode* Join3R(TNode* l, TNode* m1, TNode* r, int hl) {
-    if (Height(r) > 1 + hl) {
+    if (Height(r) > hl + 1) {
       r->ApplyAction();
       r->SetL(Join3R(l, m1, r->l, hl));
       r->UpdateInfo();
