@@ -33,11 +33,7 @@ class BaseTree
 
  public:
   static TNode* Join3(TNode* l, TNode* m1, TNode* r) {
-    assert(m1 && !m1->l && !m1->r);
-    m1->SetL(l);
-    m1->SetR(r);
-    m1->UpdateInfo();
-    return m1;
+    return TBTree::Join3IBase(l, m1, r);
   }
 };
 }  // namespace bst

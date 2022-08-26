@@ -234,6 +234,13 @@ class Tree : public TTNodesManager {
     return TMe::Join3(l, node, r);
   }
 
+  static TNode* Join3IBase(TNode* l, TNode* m1, TNode* r) {
+    m1->SetL(l);
+    m1->SetR(r);
+    m1->UpdateInfo();
+    return m1;
+  }
+
   static void SplitByKeyI(TNode* root, const TKey& key, TNode*& output_l,
                           TNode*& output_r) {
     static_assert(use_key, "use_key should be true");

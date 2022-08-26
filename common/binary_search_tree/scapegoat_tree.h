@@ -66,10 +66,7 @@ class ScapegoatTree
       l->UpdateInfo();
       return FixBalance(l);
     } else {
-      m1->SetL(l);
-      m1->SetR(r);
-      m1->UpdateInfo();
-      return m1;
+      return TTree::Join3IBase(l, m1, r);
     }
   }
 
@@ -80,10 +77,7 @@ class ScapegoatTree
       r->UpdateInfo();
       return FixBalance(r);
     } else {
-      m1->SetL(l);
-      m1->SetR(r);
-      m1->UpdateInfo();
-      return m1;
+      return TTree::Join3IBase(l, m1, r);
     }
   }
 

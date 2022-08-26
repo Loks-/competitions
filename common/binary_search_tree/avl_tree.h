@@ -27,6 +27,8 @@ class AVLTree
   friend TBTree;
   friend TTree;
 
+  static const bool support_join3 = true;
+
  public:
   explicit AVLTree(size_t max_nodes) : TBTree(max_nodes) {}
 
@@ -54,6 +56,37 @@ class AVLTree
       return child;
     }
     return root;
+  }
+
+  static TNode* Join3L(TNode* l, TNode* m1, TNode* r, int hr) {
+    if (Height(l) > hr + 1) {
+      l->ApplyAction();
+      l->SetR(Join3L(l->r, m1, r, hr));
+      l->UpdateInfo();
+      return l;
+    } else {
+      return TTree::Join3IBase(l, m1, r);
+    }
+  }
+
+  static TNode* Join3R(TNode* l, TNode* m1, TNode* r, int hl) {
+    if (Height(r) > 1 + hl) {
+      r->ApplyAction();
+      r->SetL(Join3R(l, m1, r->l, hl));
+      r->UpdateInfo();
+      return r;
+    } else {
+      return TTree::Join3IBase(l, m1, r);
+    }
+  }
+
+ public:
+  static TNode* Join3(TNode* l, TNode* m1, TNode* r) {
+    assert(m1 && !m1->l && !m1->r);
+    auto hl = Height(l), hr = Height(r), hd = hl - hr;
+    return (hd > 1)    ? Join3L(l, m1, r, hr)
+           : (hd < -1) ? Join3R(l, m1, r, hl)
+                       : TTree::Join3IBase(l, m1, r);
   }
 };
 }  // namespace bst

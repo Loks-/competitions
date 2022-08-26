@@ -1,10 +1,10 @@
 #include "tester/tester_binary_search_tree_split_join.h"
 
-// #include "common/binary_search_tree/avl_tree.h"
 // #include "common/binary_search_tree/perfect_tree.h"
 // #include "common/binary_search_tree/red_black_tree.h"
 // #include "common/binary_search_tree/wavl_tree.h"
 
+#include "common/binary_search_tree/avl_tree.h"
 #include "common/binary_search_tree/base_tree.h"
 #include "common/binary_search_tree/scapegoat_tree.h"
 #include "common/binary_search_tree/splay_tree.h"
@@ -68,6 +68,8 @@ bool TesterBinarySearchTreeSplitJoin::TestAll(bool small_test) const {
     hs.insert(TestBase<bst::ScapegoatTree<true, TEmpty, TInfo, TAction, TKey>>(
         "Scape UPT"));
   }
+  hs.insert(
+      TestBase<bst::AVLTree<true, TEmpty, TInfo, TAction, TKey>>("AVL   UPT"));
   hs.insert(TestBase<bst::SplayTree<true, TEmpty, TInfo, TAction, TKey>>(
       "Splay    "));
   hs.insert(TestBase<bst::Treap<true, false, TEmpty, TInfo, TAction, TKey>>(
