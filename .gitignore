@@ -32,6 +32,8 @@ icfppc/2019/solutions/all/
 utils/current_solution.cpp
 
 # Temp files
+.DS_Store
+*/.DS_Store
 temp/
 temp.in
 temp.out
