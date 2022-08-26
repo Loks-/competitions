@@ -28,6 +28,8 @@ class WAVLTree
   friend TBTree;
   friend TTree;
 
+  static const bool support_join3 = true;
+
  public:
   explicit WAVLTree(size_t max_nodes) : TBTree(max_nodes) {}
 
@@ -35,6 +37,10 @@ class WAVLTree
   static int Rank(TNode* node) { return node ? int(node->info.rank) : -1; }
 
   static int RankDiff(TNode* p, TNode* c) { return p ? Rank(p) - Rank(c) : 1; }
+
+  static void UpdateRank(TNode* p) {
+    p->info.rank = std::max(Rank(p->l), Rank(p->r)) + 1;
+  }
 
   static TNode* BuildTreeI(const std::vector<TNode*>& vnodes, size_t first,
                            size_t last) {
@@ -44,7 +50,7 @@ class WAVLTree
     root->SetL(BuildTreeI(vnodes, first, m));
     root->SetR(BuildTreeI(vnodes, m + 1, last));
     root->UpdateInfo();
-    root->info.rank = std::max(Rank(root->l), Rank(root->r)) + 1;
+    UpdateRank(root);
     return root;
   }
 
@@ -61,7 +67,7 @@ class WAVLTree
     --parent->info.rank;
     --child->info.rank;
     ++gchild->info.rank;
-    base::Rotate<TNode, false, false>(gchild, child, parent);
+    base::Rotate<TNode, false, true>(gchild, child, parent);
     base::Rotate<TNode, true, false>(gchild, parent, nullptr);
     return gchild;
   }
@@ -115,9 +121,9 @@ class WAVLTree
       root->info.rank = 0;
       return root;
     }
-    TNode* child = (RankDiff(root, root->l) > 2)
-                       ? root->l
-                       : (RankDiff(root, root->r) > 2) ? root->r : root;
+    TNode* child = (RankDiff(root, root->l) > 2)   ? root->l
+                   : (RankDiff(root, root->r) > 2) ? root->r
+                                                   : root;
     if (child == root) return root;
     assert(RankDiff(root, child) == 3);
     TNode* sibling = base::Sibling(child, root);
@@ -144,6 +150,45 @@ class WAVLTree
         return FixBalanceRemoveRotate2(sibling->r, sibling, root);
       }
     }
+  }
+
+  static TNode* Join3IBase(TNode* l, TNode* m1, TNode* r) {
+    TTree::Join3IBase(l, m1, r);
+    UpdateRank(m1);
+    return m1;
+  }
+
+  static TNode* Join3L(TNode* l, TNode* m1, TNode* r, int hr) {
+    if (Rank(l) > hr + 1) {
+      l->ApplyAction();
+      l->SetR(Join3L(l->r, m1, r, hr));
+      l->UpdateInfo();
+      assert(Rank(l) >= Rank(l->r));
+      return FixBalanceInsert(l);
+    } else {
+      return Join3IBase(l, m1, r);
+    }
+  }
+
+  static TNode* Join3R(TNode* l, TNode* m1, TNode* r, int hl) {
+    if (Rank(r) > hl + 1) {
+      r->ApplyAction();
+      r->SetL(Join3R(l, m1, r->l, hl));
+      r->UpdateInfo();
+      assert(Rank(r) >= Rank(r->l));
+      return FixBalanceInsert(r);
+    } else {
+      return Join3IBase(l, m1, r);
+    }
+  }
+
+ public:
+  static TNode* Join3(TNode* l, TNode* m1, TNode* r) {
+    assert(m1 && !m1->l && !m1->r);
+    auto hl = Rank(l), hr = Rank(r), hd = hl - hr;
+    return (hd > 1)    ? Join3L(l, m1, r, hr)
+           : (hd < -1) ? Join3R(l, m1, r, hl)
+                       : Join3IBase(l, m1, r);
   }
 };
 }  // namespace bst
