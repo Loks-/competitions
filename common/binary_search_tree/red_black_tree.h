@@ -33,6 +33,13 @@ class RedBlackTree
   using TTree = base::Tree<TTNodesManager<TNode>, TSelf>;
   friend TTree;
 
+  static const bool support_join3 = true;
+  static const bool support_join = support_join3;
+
+ protected:
+  static bool IsBlack(const TNode* node) { return !node || node->info.black; }
+  static bool IsRed(const TNode* node) { return node && !node->info.black; }
+
  public:
   explicit RedBlackTree(size_t max_nodes) : TTree(max_nodes) {}
 
@@ -78,7 +85,7 @@ class RedBlackTree
       if (parent->info.black) return root;
       TNode* gparent = parent->p;
       TNode* uncle = base::Sibling(parent, gparent);
-      if (!uncle || uncle->info.black) {
+      if (IsBlack(uncle)) {
         bool rotate_required = ((gparent->l == parent) != (parent->l == node));
         if (rotate_required) {
           base::RotateUp<TNode, false, false>(node);
@@ -119,7 +126,7 @@ class RedBlackTree
     // Fix colors
     if (!black) return (parent ? base::Root(parent) : child);
     for (;;) {
-      if (child && !child->info.black) {
+      if (IsRed(child)) {
         child->info.black = true;
         return base::Root(child);
       }
@@ -136,28 +143,25 @@ class RedBlackTree
         sibling->ApplyAction();
       }
       assert(sibling && sibling->info.black);
-      if (parent->info.black && (!sibling->l || sibling->l->info.black) &&
-          (!sibling->r || sibling->r->info.black)) {
+      if (parent->info.black && IsBlack(sibling->l) && IsBlack(sibling->r)) {
         sibling->info.black = false;
         child = parent;
         parent = child->p;
         continue;
       }
-      if (!parent->info.black && (!sibling->l || sibling->l->info.black) &&
-          (!sibling->r || sibling->r->info.black)) {
+      if (!parent->info.black && IsBlack(sibling->l) && IsBlack(sibling->r)) {
         sibling->info.black = false;
         parent->info.black = true;
         return base::Root(parent);
       }
-      if ((parent->l == child) && (!sibling->r || sibling->r->info.black)) {
-        assert(sibling->l && !sibling->l->info.black);
+      if ((parent->l == child) && IsBlack(sibling->r)) {
+        assert(IsRed(sibling->l));
         base::RotateUp<TNode, false, true>(sibling->l);
         sibling->info.black = false;
         sibling = sibling->p;
         sibling->info.black = true;
-      } else if ((parent->r == child) &&
-                 (!sibling->l || sibling->l->info.black)) {
-        assert(sibling->r && !sibling->r->info.black);
+      } else if ((parent->r == child) && IsBlack(sibling->l)) {
+        assert(IsRed(sibling->r));
         base::RotateUp<TNode, false, true>(sibling->r);
         sibling->info.black = false;
         sibling = sibling->p;
@@ -174,6 +178,80 @@ class RedBlackTree
     }
     assert(false);
     return nullptr;
+  }
+
+ public:
+  static TNode* RemoveRight(TNode* root, TNode*& removed_node) {
+    assert(root);
+    auto node = root;
+    for (node->ApplyAction(); node->r; node->ApplyAction()) node = node->r;
+    removed_node = node;
+    return RemoveByNodeI(removed_node);
+  }
+
+  static TNode* Join(TNode* l, TNode* r) {
+    if (!l) return r;
+    if (!r) return l;
+    TNode* node = nullptr;
+    l = RemoveRight(l, node);
+    return Join3(l, node, r);
+  }
+
+ protected:
+  static int BHeight(TNode* root) {
+    int h = 0;
+    for (; root; root = root->l) {
+      root->ApplyAction();
+      if (root->info.black) ++h;
+    }
+    return h;
+  }
+
+  static TNode* Join3IBase(TNode* l, TNode* m1, TNode* r) {
+    TTree::Join3IBase(l, m1, r);
+    m1->info.black = false;
+    return m1;
+  }
+
+  static TNode* Join3L(TNode* l, TNode* m1, TNode* r, int hd) {
+    if (IsBlack(l) && (hd == 0)) return Join3IBase(l, m1, r);
+    l->ApplyAction();
+    l->SetR(Join3L(l->r, m1, r, hd - (l->info.black ? 1 : 0)));
+    r = l->r;
+    if (l->info.black && !r->info.black && IsRed(r->r)) {
+      r->r->info.black = true;
+      base::Rotate<TNode, true, false>(r, l, l->p);
+      return r;
+    } else {
+      l->UpdateInfo();
+      return l;
+    }
+  }
+
+  static TNode* Join3R(TNode* l, TNode* m1, TNode* r, int hd) {
+    if (IsBlack(r) && (hd == 0)) return Join3IBase(l, m1, r);
+    r->ApplyAction();
+    r->SetL(Join3R(l, m1, r->l, hd - (r->info.black ? 1 : 0)));
+    l = r->l;
+    if (r->info.black && !l->info.black && IsRed(l->l)) {
+      l->l->info.black = true;
+      base::Rotate<TNode, true, false>(l, r, r->p);
+      return l;
+    } else {
+      r->UpdateInfo();
+      return r;
+    }
+  }
+
+ public:
+  static TNode* Join3(TNode* l, TNode* m1, TNode* r) {
+    assert(m1 && !m1->l && !m1->r);
+    auto hl = BHeight(l), hr = BHeight(r), hd = hl - hr;
+    auto root = (hd > 0)   ? Join3L(l, m1, r, hd)
+                : (hd < 0) ? Join3R(l, m1, r, -hd)
+                           : Join3IBase(l, m1, r);
+    root->info.black = true;
+    return root;
   }
 };
 }  // namespace bst
