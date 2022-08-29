@@ -83,7 +83,11 @@
         "locale": "cpp",
         "queue": "cpp",
         "stack": "cpp",
-        "version": "cpp"
+        "version": "cpp",
+        "__bits": "cpp",
+        "compare": "cpp",
+        "concepts": "cpp",
+        "variant": "cpp"
     },
     "cmake.configureOnOpen": false
 }
