@@ -1,5 +1,6 @@
 #include "tester/tester_binary_search_tree_split_join.h"
 
+#include "common/assert_exception.h"
 #include "common/binary_search_tree/avl_tree.h"
 #include "common/binary_search_tree/base_tree.h"
 #include "common/binary_search_tree/red_black_tree.h"
@@ -8,6 +9,7 @@
 #include "common/binary_search_tree/treap.h"
 #include "common/binary_search_tree/wavl_tree.h"
 #include "common/hash.h"
+#include "common/modular/proxy/proxy.h"
 #include "common/template.h"
 #include "common/timer.h"
 #include "common/vector/hrandom.h"
@@ -22,8 +24,6 @@ TesterBinarySearchTreeSplitJoin::TesterBinarySearchTreeSplitJoin(
   vkeys.insert(vkeys.end(), vkeys.begin(), vkeys.end());
   std::random_shuffle(vkeys.begin(), vkeys.end());
   vshift = nvector::HRandom<TKey>(test_size * 2, 0, max_key);
-  // TODO:
-  //   Adjust values in vkeys so they will cancel out after shift.
 }
 
 template <class TTree, class TNode>
@@ -41,18 +41,23 @@ size_t TesterBinarySearchTreeSplitJoin::TestBase(
     const std::string& name) const {
   using TNode = typename TTree::TNode;
   Timer t;
-  size_t h = 0;
-  TTree tree(vkeys.size());  // TODO: half
+  modular::proxy::Proxy<false, true> mp(max_key);
+  int64_t shift = 0;
+  TTree tree(vkeys.size());
   TNode* root = nullptr;
+  size_t h = 0;
   for (unsigned i = 0; i < vkeys.size(); ++i) {
     Rotate(tree, root, vshift[i]);
-    if (tree.FindByKey(root, vkeys[i])) {
-      root = tree.RemoveAndReleaseByKey(root, vkeys[i]);
+    shift += vshift[i];
+    int64_t key = mp.ApplyS(vkeys[i] - shift);
+    if (tree.FindByKey(root, key)) {
+      root = tree.RemoveAndReleaseByKey(root, key);
     } else {
-      root = tree.InsertNewNode(root, {}, vkeys[i]);
+      root = tree.InsertNewNode(root, {}, key);
     }
     h = HashCombine(h, root ? root->info.sum_keys : 0);
   }
+  Assert(!root);
   std::cout << "Test results [" << name << "]: " << h << "\t"
             << t.GetMilliseconds() << std::endl;
   return h;
@@ -82,6 +87,6 @@ bool TesterBinarySearchTreeSplitJoin::TestAll(bool small_test) const {
 }
 
 bool TestBinarySearchTreeSplitJoin(bool time_test) {
-  return TesterBinarySearchTreeSplitJoin(time_test ? 1000000 : 10000)
+  return TesterBinarySearchTreeSplitJoin(time_test ? 1000000 : 1000)
       .TestAll(!time_test);
 }
