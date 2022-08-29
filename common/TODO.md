@@ -3,9 +3,9 @@
 	* Binarized 2-3 trees
 	* Leaning 2-3 trees
 	* Leaning Red Black Trees
-	* Tester for Join / Split
 	* Add insert by order id to balanced trees
 	* Add insert by order id to Red Black Trees
+	* Ext trees with one pass for add/remove
 * Graph
 	* Additional MST algorithms
 	* Shortest path for directed acyclic graphs
