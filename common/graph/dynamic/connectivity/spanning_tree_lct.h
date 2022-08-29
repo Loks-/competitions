@@ -12,9 +12,6 @@
 #include <stack>
 #include <unordered_set>
 
-#include <iostream>
-#include "common/binary_search_tree/base/traversal.h"
-
 namespace graph {
 namespace dynamic {
 namespace connectivity {
@@ -33,10 +30,14 @@ class SpanningTreeLCT {
   unsigned ncomponents;
   std::unordered_set<TEdge*> lct_edges;
   ds::UnsignedSet uset;
+  std::stack<unsigned> s;
 
  public:
-  SpanningTreeLCT(unsigned size) : g(size), lct(nvector::Enumerate<unsigned>(0, size)), 
-                                   ncomponents(size), uset(size) {}
+  SpanningTreeLCT(unsigned size)
+      : g(size),
+        lct(nvector::Enumerate<unsigned>(0, size)),
+        ncomponents(size),
+        uset(size) {}
 
   TNode* Node(unsigned index) { return lct.Node(index); }
 
@@ -45,11 +46,9 @@ class SpanningTreeLCT {
   }
 
   TEdgeID InsertEdge(unsigned from, unsigned to) {
-    // std::cout << "Insert Edge " << from << "\t" << to << std::endl;
     auto e = g.AddEdge(from, to);
     auto n1 = Node(from), n2 = Node(to);
     if (!SameTree(n1, n2)) {
-      // std::cout << "\tNew edge for ETT " << from << "\t" << to << std::endl;
       --ncomponents;
       lct.SetRoot(n1);
       lct.Link(n1, n2);
@@ -60,8 +59,6 @@ class SpanningTreeLCT {
   }
 
   void RemoveEdge(TEdgeID edge) {
-    // std::cout << "Remove Edge " << edge->from << "\t" << edge->to << std::endl;
-    g.DeleteEdge(edge);
     auto it = lct_edges.find(edge);
     if (it != lct_edges.end()) {
       // std::cout << "\tEdge was used in ETT" << std::endl;
@@ -69,13 +66,14 @@ class SpanningTreeLCT {
       lct_edges.erase(edge->reversed_edge);
       auto u1 = edge->from, u2 = edge->to;
       auto n1 = Node(u1), n2 = Node(u2);
+      g.DeleteEdge(edge);
       lct.SetRoot(n1);
       lct.Cut(n2);
       assert(lct.FindRoot(n2) == n2);
       bool found = false;
       uset.Clear();
       uset.Insert(u1);
-      thread_local std::stack<unsigned> s;
+      for (; !s.empty();) s.pop();
       for (s.push(u1); !found && !s.empty();) {
         unsigned u = s.top();
         s.pop();
@@ -83,7 +81,6 @@ class SpanningTreeLCT {
           if (uset.HasKey(e->to)) continue;
           auto r = lct.FindRoot(Node(e->to));
           if (r != n1) {
-            // std::cout << "\tNew edge for ETT " << node->data << "\t" << e->to << std::endl;
             assert(r == n2);
             found = true;
             auto nu = Node(u);
@@ -98,8 +95,9 @@ class SpanningTreeLCT {
           }
         }
       }
-      for (; !s.empty();) s.pop();
       if (!found) ++ncomponents;
+    } else {
+      g.DeleteEdge(edge);
     }
   }
 
