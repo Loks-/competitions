@@ -205,8 +205,9 @@ class LCTE {
   TPNode* TreeParent(TPNode* node) {
     assert(node);
     ApplyActionRootToNode(node);
-    return node->l ? node->l->GetRR() : node->vp ? node->vp->GetRP()->vp
-                                                 : nullptr;
+    return node->l    ? node->l->GetRR()
+           : node->vp ? node->vp->GetRP()->vp
+                      : nullptr;
   }
 
   void SelectNode(TPNode* node) {
@@ -242,6 +243,10 @@ class LCTE {
  public:
   LCTE() {}
 
+  explicit LCTE(unsigned size) { BuildEmpty(std::vector<TData>(size)); }
+
+  explicit LCTE(const std::vector<TData>& data) { BuildEmpty(data); }
+
   explicit LCTE(const TreeGraph& tree) {
     Build(tree, std::vector<TData>(tree.Size()));
   }
@@ -253,13 +258,11 @@ class LCTE {
   TPNode* Node(unsigned x) { return pmanager.NodeByRawIndex(x); }
   const TPNode* Node(unsigned x) const { return pmanager.NodeByRawIndex(x); }
 
-  //   void Build(const TreeGraph& tree) {
-  //     pmanager.Reset(tree.Size());
-  //     vmanager.Reset(tree.Size());
-  //     for (unsigned i = 0; i < tree.Size(); ++i) pmanager.New();
-  //     BuildR(tree, tree.GetRoot(), CNone);
-  //     UpdateTreeInfo(Node(tree.GetRoot()));
-  //   }
+  void BuildEmpty(const std::vector<TData>& data) {
+    pmanager.Reset(data.size());
+    vmanager.Reset(data.size());
+    for (unsigned i = 0; i < data.size(); ++i) PNew(data[i])->UpdateInfo();
+  }
 
   void Build(const TreeGraph& tree, const std::vector<TData>& data) {
     assert(tree.Size() == data.size());

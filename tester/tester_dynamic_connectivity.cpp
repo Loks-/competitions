@@ -2,6 +2,7 @@
 
 #include "common/graph/dynamic/connectivity/base.h"
 // #include "common/graph/dynamic/connectivity/spanning_tree_ett_st.h"
+#include "common/graph/dynamic/connectivity/holm_lcte.h"
 #include "common/graph/dynamic/connectivity/spanning_tree_lct.h"
 #include "common/hash.h"
 #include "common/timer.h"
@@ -12,7 +13,9 @@
 #include <unordered_set>
 #include <vector>
 
-TesterDynamicConnectivity::TesterDynamicConnectivity(unsigned _gsize, unsigned _max_edges, unsigned _main_loop) {
+TesterDynamicConnectivity::TesterDynamicConnectivity(unsigned _gsize,
+                                                     unsigned _max_edges,
+                                                     unsigned _main_loop) {
   gsize = _gsize;
   max_edges = _max_edges;
   main_loop = _main_loop;
@@ -29,7 +32,7 @@ TesterDynamicConnectivity::TesterDynamicConnectivity(unsigned _gsize, unsigned _
   }
 }
 
-template<class TSolver>
+template <class TSolver>
 size_t TesterDynamicConnectivity::Test(const std::string& name) const {
   Timer t;
   TSolver s(gsize);
@@ -61,12 +64,16 @@ size_t TesterDynamicConnectivity::Test(const std::string& name) const {
 bool TesterDynamicConnectivity::TestAll() {
   std::unordered_set<uint64_t> hs;
   hs.insert(Test<graph::dynamic::connectivity::Base>("Base     "));
-  // hs.insert(Test<graph::dynamic::connectivity::SpanningTreeETTST>("ST ETT ST"));
+  // hs.insert(Test<graph::dynamic::connectivity::SpanningTreeETTST>("ST ETT
+  // ST"));
   hs.insert(Test<graph::dynamic::connectivity::SpanningTreeLCT>("ST LCT   "));
+  hs.insert(Test<graph::dynamic::connectivity::HolmLCTE>("Holm LCTE"));
   return hs.size() == 1;
 }
 
 bool TestGraphDynamicConnectivity(bool time_test) {
-  TesterDynamicConnectivity t(time_test ? 1000 : 100, time_test ? 1000 : 100, time_test ? 1000 : 100);
+  TesterDynamicConnectivity t(time_test ? 10000 : 1000,
+                              time_test ? 10000 : 1000,
+                              time_test ? 10000 : 2000);
   return t.TestAll();
 }

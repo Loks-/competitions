@@ -110,6 +110,22 @@ class Graph {
     manager.Release(edge->reversed_edge);
     manager.Release(edge);
   }
+
+ protected:
+  void MoveEdgeI(TEdge* edge, unsigned new_from, unsigned new_to,
+                 bool inverted) {
+    edge->to = new_to;
+    if (edge->from == new_from) return;
+    DeleteEdgeI(edge, inverted);
+    edge->from = new_from;
+    AddEdgeI(edge, inverted);
+  }
+
+ public:
+  void MoveEdge(TEdge* edge, unsigned new_from, unsigned new_to) {
+    MoveEdgeI(edge, new_from, new_to, false);
+    MoveEdgeI(edge->reversed_edge, new_to, new_from, directed_edges);
+  }
 };
 }  // namespace dynamic
 }  // namespace graph

@@ -53,7 +53,7 @@ class CNode : public memory::Node {
   }
 
   TSelf *GetRL() {
-    TSelf *node = this;
+    TSelf *node = static_cast<TSelf *>(this);
     for (node->ApplyAction(); node->l; node->ApplyAction()) node = node->l;
     return node;
   }
