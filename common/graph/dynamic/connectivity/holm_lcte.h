@@ -51,22 +51,19 @@ class HolmLCTE {
   ds::UnsignedSet uset;
 
  protected:
-  void LCTEAddEdge(TNode* from, TNode* to) {
-    // std::cout << "\tLCTE_Add " << from->data << " " << to->data << std::endl;
-    lcte.SetRoot(from);
-    lcte.Link(from, to);
+  void LCTEAddEdge(TNode* node1, TNode* node2) {
+    lcte.SetRoot(node1);
+    lcte.Link(node1, node2);
   }
 
-  void LCTEAddEdge(unsigned from, unsigned to) {
-    // std::cout << "\tLCTE Add " << from << " " << to << std::endl;
-    LCTEAddEdge(lcte.Node(from), lcte.Node(to));
+  void LCTEAddEdge(unsigned u1, unsigned u2) {
+    LCTEAddEdge(lcte.Node(u1), lcte.Node(u2));
   }
 
-  void LCTERemoveEdge(unsigned from, unsigned to) {
-    // std::cout << "\tLCTE Rem " << from << " " << to << std::endl;
-    lcte.SetRoot(lcte.Node(from));
-    lcte.Cut(lcte.Node(to));
-    assert(lcte.FindRoot(lcte.Node(to)) == lcte.Node(to));
+  void LCTERemoveEdge(unsigned u1, unsigned u2) {
+    lcte.SetRoot(lcte.Node(u1));
+    lcte.Cut(lcte.Node(u2));
+    assert(lcte.FindRoot(lcte.Node(u2)) == lcte.Node(u2));
   }
 
  public:
@@ -80,18 +77,18 @@ class HolmLCTE {
 
   TNode* Node(unsigned index) { return lcte.Node(index); }
 
-  bool SameTree(TNode* node0, TNode* node1) {
-    return lcte.FindRoot(node0) == lcte.FindRoot(node1);
+  bool SameTree(TNode* node1, TNode* node2) {
+    return lcte.FindRoot(node1) == lcte.FindRoot(node2);
   }
 
-  TEdgeID InsertEdge(unsigned from, unsigned to) {
+  TEdgeID InsertEdge(unsigned u1, unsigned u2) {
     // std::cout << "Insert Edge " << from << "\t" << to << std::endl;
-    assert(from != to);
-    auto e = g.AddEdge(from, to);
-    auto n1 = Node(from), n2 = Node(to);
+    assert(u1 != u2);
+    auto e = g.AddEdge(u1, u2);
+    auto n1 = Node(u1), n2 = Node(u2);
     if (!SameTree(n1, n2)) {
       --ncomponents;
-      e->data.level = e->reversed_edge->data.level = 1;
+      e->data.level = 1;
       LCTEAddEdge(n1, n2);
     }
     return e;
@@ -102,9 +99,9 @@ class HolmLCTE {
     // std::endl;
     if (edge->data.level & 1) {
       unsigned l = edge->data.level / 2;
-      unsigned u1 = edge->from, u2 = edge->to;
+      unsigned u1 = edge->u1, u2 = edge->u2;
       for (auto e = edge; e;) {
-        LCTERemoveEdge(e->from, e->to);
+        LCTERemoveEdge(e->u1, e->u2);
         auto enext = static_cast<TEdgeID>(e->data.prev_edge);
         g.DeleteEdge(e);
         e = enext;
@@ -128,18 +125,18 @@ class HolmLCTE {
           s.pop();
           for (unsigned j = 0; j < g.Edges(u).size(); ++j) {
             auto e = g.Edges(u)[j];
-            if ((e->data.level & 1) && !uset.HasKey(e->to)) {
-              uset.Insert(e->to);
-              s.push(e->to);
+            auto u2 = e->Other(u);
+            if ((e->data.level & 1) && !uset.HasKey(u2)) {
+              uset.Insert(u2);
+              s.push(u2);
               if (e->data.level / 2 == l) {
                 --j;
-                e->reversed_edge->data.level = (e->data.level += 2);
-                g.MoveEdge(e, e->from + size, e->to + size);
-                LCTEAddEdge(e->from, e->to);
-                auto enew = g.AddEdge(e->from - size, e->to - size,
+                e->data.level += 2;
+                g.MoveEdge(e, e->u1 + size, e->u2 + size);
+                LCTEAddEdge(e->u1, e->u2);
+                auto enew = g.AddEdge(e->u1 - size, e->u2 - size,
                                       {2 * L + 3, e->data.prev_edge});
-                e->reversed_edge->data.prev_edge = e->data.prev_edge =
-                    static_cast<void*>(enew);
+                e->data.prev_edge = static_cast<void*>(enew);
               }
             }
           }
@@ -150,25 +147,24 @@ class HolmLCTE {
           for (unsigned j = 0; j < g.Edges(u).size(); ++j) {
             auto e = g.Edges(u)[j];
             if (e->data.level & 1) continue;
-            auto v = e->to;
+            auto v = e->Other(u);
             auto rootv = lcte.FindRoot(lcte.Node(v));
             if (rootv == root1) {
               // Push level
-              e->reversed_edge->data.level = (e->data.level += 2);
+              e->data.level += 2;
               g.MoveEdge(e, u + size, v + size);
               --j;
             } else {
               assert(rootv == lcte.FindRoot(node2));
               found = true;
               --ncomponents;
-              e->reversed_edge->data.level = (e->data.level |= 1);
-              LCTEAddEdge(e->from, e->to);
-              for (auto eprev = e; eprev->from >= size;) {
-                auto enext = g.AddEdge(eprev->from - size, eprev->to - size,
+              e->data.level |= 1;
+              LCTEAddEdge(e->u1, e->u2);
+              for (auto eprev = e; eprev->u1 >= size;) {
+                auto enext = g.AddEdge(eprev->u1 - size, eprev->u2 - size,
                                        {2 * L + 3, nullptr});
-                eprev->reversed_edge->data.prev_edge = eprev->data.prev_edge =
-                    enext;
-                LCTEAddEdge(enext->from, enext->to);
+                eprev->data.prev_edge = enext;
+                LCTEAddEdge(enext->u1, enext->u2);
                 eprev = enext;
               }
               break;

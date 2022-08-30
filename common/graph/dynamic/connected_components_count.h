@@ -9,7 +9,7 @@ namespace graph {
 namespace dynamic {
 // Time: O(V + E)
 template <class TData>
-inline unsigned ConnectedComponentsCount(const Graph<TData, false>& graph) {
+inline unsigned ConnectedComponentsCount(const Graph<TData>& graph) {
   unsigned n = graph.Size(), r = 0;
   std::vector<unsigned> visited(n, 0);
   std::stack<unsigned> s;
@@ -21,7 +21,7 @@ inline unsigned ConnectedComponentsCount(const Graph<TData, false>& graph) {
         unsigned j = s.top();
         s.pop();
         for (auto& e : graph.Edges(j)) {
-          unsigned c = e->to; 
+          unsigned c = e->Other(j);
           if (visited[c] == 0) {
             visited[c] = 1;
             s.push(c);

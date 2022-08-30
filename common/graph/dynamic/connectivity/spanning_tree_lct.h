@@ -41,19 +41,18 @@ class SpanningTreeLCT {
 
   TNode* Node(unsigned index) { return lct.Node(index); }
 
-  bool SameTree(TNode* node0, TNode* node1) {
-    return lct.FindRoot(node0) == lct.FindRoot(node1);
+  bool SameTree(TNode* node1, TNode* node2) {
+    return lct.FindRoot(node1) == lct.FindRoot(node2);
   }
 
-  TEdgeID InsertEdge(unsigned from, unsigned to) {
-    auto e = g.AddEdge(from, to);
-    auto n1 = Node(from), n2 = Node(to);
+  TEdgeID InsertEdge(unsigned u1, unsigned u2) {
+    auto e = g.AddEdge(u1, u2);
+    auto n1 = Node(u1), n2 = Node(u2);
     if (!SameTree(n1, n2)) {
       --ncomponents;
       lct.SetRoot(n1);
       lct.Link(n1, n2);
       lct_edges.insert(e);
-      lct_edges.insert(e->reversed_edge);
     }
     return e;
   }
@@ -61,10 +60,8 @@ class SpanningTreeLCT {
   void RemoveEdge(TEdgeID edge) {
     auto it = lct_edges.find(edge);
     if (it != lct_edges.end()) {
-      // std::cout << "\tEdge was used in ETT" << std::endl;
       lct_edges.erase(it);
-      lct_edges.erase(edge->reversed_edge);
-      auto u1 = edge->from, u2 = edge->to;
+      auto u1 = edge->u1, u2 = edge->u2;
       auto n1 = Node(u1), n2 = Node(u2);
       g.DeleteEdge(edge);
       lct.SetRoot(n1);
@@ -78,20 +75,20 @@ class SpanningTreeLCT {
         unsigned u = s.top();
         s.pop();
         for (auto& e : g.Edges(u)) {
-          if (uset.HasKey(e->to)) continue;
-          auto r = lct.FindRoot(Node(e->to));
+          auto v = e->Other(u);
+          if (uset.HasKey(v)) continue;
+          auto r = lct.FindRoot(Node(v));
           if (r != n1) {
             assert(r == n2);
             found = true;
             auto nu = Node(u);
             lct.SetRoot(nu);
-            lct.Link(nu, Node(e->to));
+            lct.Link(nu, Node(v));
             lct_edges.insert(e);
-            lct_edges.insert(e->reversed_edge);
             break;
           } else {
-            uset.Insert(e->to);
-            s.push(e->to);
+            uset.Insert(v);
+            s.push(v);
           }
         }
       }

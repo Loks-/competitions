@@ -1,5 +1,6 @@
 #pragma once
 
+#include "common/base.h"
 #include "common/graph/dynamic/edge.h"
 #include "common/memory/nodes_manager.h"
 
@@ -7,34 +8,30 @@
 
 namespace graph {
 namespace dynamic {
-template <class TTEdgeData, bool _directed_edges = false>
+template <class TTEdgeData>
 class Graph {
  public:
-  static const bool directed_edges = _directed_edges;
   using TEdgeData = TTEdgeData;
   using TEdge = Edge<TEdgeData>;
   using TManager = memory::NodesManager<TEdge>;
-  using TSelf = Graph<TEdgeData, directed_edges>;
+  using TSelf = Graph<TEdgeData>;
 
  protected:
   unsigned nvertices;
   TManager manager;
   std::vector<std::vector<TEdge*>> edges;
-  std::vector<std::vector<TEdge*>> inverted_edges;
 
  public:
   void Clear() {
     nvertices = 0;
     manager.ResetNodes();
     edges.clear();
-    inverted_edges.clear();
   }
 
   void Resize(unsigned _nvertices) {
     Clear();
     nvertices = _nvertices;
     edges.resize(nvertices);
-    if (directed_edges) inverted_edges.resize(nvertices);
   }
 
   explicit Graph(unsigned _nvertices = 0) { Resize(_nvertices); }
@@ -48,83 +45,68 @@ class Graph {
 
   const std::vector<TEdge*>& Edges(unsigned from) const { return edges[from]; }
 
-  std::vector<std::vector<TEdge*>>& InvertedEdges() { return inverted_edges; }
-
-  const std::vector<std::vector<TEdge*>>& InvertedEdges() const {
-    return inverted_edges;
-  }
-
-  std::vector<TEdge*>& InvertedEdges(unsigned from) {
-    return inverted_edges[from];
-  }
-
-  const std::vector<TEdge*>& InvertedEdges(unsigned from) const {
-    return inverted_edges[from];
-  }
-
   unsigned EdgesSize() const {
     size_t total = 0;
     for (unsigned i = 0; i < nvertices; ++i) total += edges[i].size();
-    return (directed_edges ? total : total / 2);
+    return total / 2;
   }
 
  protected:
   void AddEdgeI(TEdge* edge, bool inverted) {
-    auto& v = (inverted ? inverted_edges : edges)[edge->from];
-    edge->from_index = v.size();
+    auto& v = edges[inverted ? edge->u2 : edge->u1];
+    (inverted ? edge->index_u2 : edge->index_u1) = v.size();
     v.push_back(edge);
   }
 
- public:
-  TEdge* AddEdge(unsigned from, unsigned to, const TEdgeData& data) {
-    auto e1 = manager.New(), e2 = manager.New();
-    e1->from = from;
-    e1->to = to;
-    e1->reversed_edge = e2;
-    e1->data = data;
-    e2->from = to;
-    e2->to = from;
-    e2->reversed_edge = e1;
-    e2->data = data;
-    AddEdgeI(e1, false);
-    AddEdgeI(e2, directed_edges);
-    return e1;
+  void AddEdgeI(TEdge* edge) {
+    AddEdgeI(edge, false);
+    AddEdgeI(edge, true);
   }
 
-  TEdge* AddEdge(unsigned from, unsigned to) { return AddEdge(from, to, {}); }
+ public:
+  TEdge* AddEdge(unsigned u1, unsigned u2, const TEdgeData& data) {
+    auto e = manager.New();
+    e->u1 = u1;
+    e->u2 = u2;
+    e->data = data;
+    AddEdgeI(e);
+    return e;
+  }
+
+  TEdge* AddEdge(unsigned u1, unsigned u2) {
+    assert(u1 != u2);
+    return AddEdge(u1, u2, {});
+  }
 
  protected:
   void DeleteEdgeI(TEdge* edge, bool inverted) {
-    auto& v = (inverted ? inverted_edges : edges)[edge->from];
-    if (edge->from_index + 1 != v.size()) {
-      v.back()->from_index = edge->from_index;
-      v[edge->from_index] = v.back();
+    auto u = (inverted ? edge->u2 : edge->u1);
+    auto index = (inverted ? edge->index_u2 : edge->index_u1);
+    auto& v = edges[u];
+    if (index + 1 != v.size()) {
+      auto e2 = v.back();
+      ((e2->u1 == u) ? e2->index_u1 : e2->index_u2) = index;
+      v[index] = e2;
     }
     v.pop_back();
   }
 
+  void DeleteEdgeI(TEdge* edge) {
+    DeleteEdgeI(edge, false);
+    DeleteEdgeI(edge, true);
+  }
+
  public:
   void DeleteEdge(TEdge* edge) {
-    DeleteEdgeI(edge, false);
-    DeleteEdgeI(edge->reversed_edge, directed_edges);
-    manager.Release(edge->reversed_edge);
+    DeleteEdgeI(edge);
     manager.Release(edge);
   }
 
- protected:
-  void MoveEdgeI(TEdge* edge, unsigned new_from, unsigned new_to,
-                 bool inverted) {
-    edge->to = new_to;
-    if (edge->from == new_from) return;
-    DeleteEdgeI(edge, inverted);
-    edge->from = new_from;
-    AddEdgeI(edge, inverted);
-  }
-
- public:
-  void MoveEdge(TEdge* edge, unsigned new_from, unsigned new_to) {
-    MoveEdgeI(edge, new_from, new_to, false);
-    MoveEdgeI(edge->reversed_edge, new_to, new_from, directed_edges);
+  void MoveEdge(TEdge* edge, unsigned new_u1, unsigned new_u2) {
+    DeleteEdgeI(edge);
+    edge->u1 = new_u1;
+    edge->u2 = new_u2;
+    AddEdgeI(edge);
   }
 };
 }  // namespace dynamic

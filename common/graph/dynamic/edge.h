@@ -10,11 +10,11 @@ class Edge : public memory::Node {
   using TData = TTData;
   using TSelf = Edge<TData>;
 
-  unsigned from;
-  unsigned to;
-  unsigned from_index;
-  TSelf* reversed_edge;
+  unsigned u1, u2;
+  unsigned index_u1, index_u2;
   TTData data;
+
+  unsigned Other(unsigned u0) const { return u1 + u2 - u0; }
 };
 }  // namespace dynamic
 }  // namespace graph

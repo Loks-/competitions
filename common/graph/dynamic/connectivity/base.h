@@ -1,7 +1,7 @@
 #pragma once
 
-#include "common/graph/dynamic/graph.h"
 #include "common/graph/dynamic/connected_components_count.h"
+#include "common/graph/dynamic/graph.h"
 #include "common/template.h"
 
 namespace graph {
@@ -21,17 +21,11 @@ class Base {
  public:
   Base(unsigned size) : g(size) {}
 
-  TEdgeID InsertEdge(unsigned from, unsigned to) {
-    return g.AddEdge(from, to);
-  }
+  TEdgeID InsertEdge(unsigned u1, unsigned u2) { return g.AddEdge(u1, u2); }
 
-  void RemoveEdge(TEdgeID edge) {
-    g.DeleteEdge(edge);
-  }
+  void RemoveEdge(TEdgeID edge) { g.DeleteEdge(edge); }
 
-  unsigned Components() const {
-    return ConnectedComponentsCount(g);
-  }
+  unsigned Components() const { return ConnectedComponentsCount(g); }
 };
 }  // namespace connectivity
 }  // namespace dynamic
