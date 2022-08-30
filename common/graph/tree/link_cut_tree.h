@@ -122,6 +122,7 @@ class LinkCutTree {
  public:
   LinkCutTree() {}
   explicit LinkCutTree(const TreeGraph& tree) { Build(tree); }
+  explicit LinkCutTree(unsigned size) { Build(std::vector<TData>(size)); }
   explicit LinkCutTree(const std::vector<TData>& data) { Build(data); }
   LinkCutTree(const TreeGraph& tree, const std::vector<TData>& data) {
     Build(tree, data);

@@ -6,7 +6,6 @@
 #include "common/graph/dynamic/graph.h"
 #include "common/graph/tree/link_cut_tree.h"
 #include "common/template.h"
-#include "common/vector/enumerate.h"
 
 #include <algorithm>
 #include <stack>
@@ -21,7 +20,7 @@ class SpanningTreeLCT {
   using TGraph = graph::dynamic::Graph<TEmpty>;
   using TEdge = typename TGraph::TEdge;
   using TEdgeID = TEdge*;
-  using TLCT = graph::LinkCutTree<unsigned, bst::info::None>;
+  using TLCT = graph::LinkCutTree<TEmpty, bst::info::None>;
   using TNode = typename TLCT::TNode;
 
  protected:
@@ -34,10 +33,7 @@ class SpanningTreeLCT {
 
  public:
   SpanningTreeLCT(unsigned size)
-      : g(size),
-        lct(nvector::Enumerate<unsigned>(0, size)),
-        ncomponents(size),
-        uset(size) {}
+      : g(size), lct(size), ncomponents(size), uset(size) {}
 
   TNode* Node(unsigned index) { return lct.Node(index); }
 
