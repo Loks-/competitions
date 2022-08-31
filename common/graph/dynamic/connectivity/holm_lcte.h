@@ -1,17 +1,17 @@
 #pragma once
 
 #include "common/base.h"
-#include "common/data_structures/unsigned_set.h"
 #include "common/graph/dynamic/graph.h"
 #include "common/graph/tree/lcte/action/none.h"
 #include "common/graph/tree/lcte/info/size.h"
 #include "common/graph/tree/lcte/lcte.h"
 #include "common/numeric/bits/ulog2.h"
-#include "common/vector/enumerate.h"
+#include "common/template.h"
 
 #include <algorithm>
 #include <iostream>
-#include <stack>
+#include <utility>
+#include <vector>
 
 namespace graph {
 namespace dynamic {
@@ -26,20 +26,83 @@ class HolmLCTE {
  public:
   class EdgeData {
    public:
-    unsigned level = 0;
-    void* prev_edge = nullptr;
+    unsigned level;
 
-    EdgeData() {}
-    EdgeData(unsigned _level, void* _prev_edge)
-        : level(_level), prev_edge(_prev_edge) {}
+    EdgeData() : level(0) {}
   };
 
   using TGraph = graph::dynamic::Graph<EdgeData>;
   using TEdge = typename TGraph::TEdge;
   using TEdgeID = TEdge*;
-  using TLCTE =
-      graph::lcte::LCTE<unsigned, graph::lcte::info::PSize,
-                        graph::lcte::info::VSize, graph::lcte::action::None>;
+
+  class LCTENodeData {
+   public:
+    std::vector<TEdgeID> tree_edges;
+    std::vector<TEdgeID> graph_edges;
+  };
+
+  class LCTEPInfo : public graph::lcte::info::PSize {
+   public:
+    using TBase = graph::lcte::info::PSize;
+
+    TEdgeID dedge;
+    TEdgeID tedge;
+
+    template <class TNode>
+    void DUpdate(TNode* node) {
+      if (!node->data.tree_edges.empty()) {
+        dedge = node->data.tree_edges.back();
+      } else if (!node->data.graph_edges.empty()) {
+        dedge = node->data.graph_edges.back();
+      } else {
+        dedge = nullptr;
+      }
+    }
+
+    template <class TNode>
+    void PUpdate(TNode* node) {
+      TBase::PUpdate(node);
+      DUpdate(node);
+      tedge = dedge;
+      if (node->l && node->l->info.tedge) {
+        if (!tedge || (tedge->data.level < node->l->info.tedge->data.level))
+          tedge = node->l->info.tedge;
+      }
+      if (node->r && node->r->info.tedge) {
+        if (!tedge || (tedge->data.level < node->r->info.tedge->data.level))
+          tedge = node->r->info.tedge;
+      }
+      if (node->vc && node->vc->info.tedge) {
+        if (!tedge || (tedge->data.level < node->vc->info.tedge->data.level))
+          tedge = node->vc->info.tedge;
+      }
+    }
+  };
+
+  class LCTEVInfo : public graph::lcte::info::VSize {
+   public:
+    using TBase = graph::lcte::info::VSize;
+
+    TEdgeID tedge;
+
+    template <class TNode>
+    void VUpdate(TNode* node) {
+      TBase::VUpdate(node);
+      assert(node->vc);
+      tedge = node->vc->info.tedge;
+      if (node->l && node->l->info.tedge) {
+        if (!tedge || (tedge->data.level < node->l->info.tedge->data.level))
+          tedge = node->l->info.tedge;
+      }
+      if (node->r && node->r->info.tedge) {
+        if (!tedge || (tedge->data.level < node->r->info.tedge->data.level))
+          tedge = node->r->info.tedge;
+      }
+    }
+  };
+
+  using TLCTE = graph::lcte::LCTE<LCTENodeData, LCTEPInfo, LCTEVInfo,
+                                  graph::lcte::action::None>;
   using TNode = typename TLCTE::TPNode;
 
  protected:
@@ -48,135 +111,211 @@ class HolmLCTE {
   TGraph g;
   TLCTE lcte;
   unsigned ncomponents;
-  ds::UnsignedSet uset;
 
  protected:
-  void LCTEAddEdge(TNode* node1, TNode* node2) {
+  void LCTEUpdateInfo(TNode* node) {
+    // lcte.UpdateNodeToRoot(node);
+    lcte.Access(node);
+    // node->UpdateInfo();
+  }
+
+  void LCTEAddTreeEdge(TEdgeID edge, TNode* node1, TNode* node2) {
+    // std::cout << "\tATE:\t" << edge->u1 << "\t" << edge->u2 << "\t"
+    //           << edge->data.level << std::endl;
+    node1->data.tree_edges.push_back(edge);
+    node2->data.tree_edges.push_back(edge);  // Do we need this?
+    LCTEUpdateInfo(node1);
+    LCTEUpdateInfo(node2);
+  }
+
+  void LCTEAddGraphEdge(TEdgeID edge, TNode* node1, TNode* node2) {
+    // std::cout << "\tAGE:\t" << edge->u1 << "\t" << edge->u2 << "\t"
+    //           << edge->data.level << std::endl;
+    node1->data.graph_edges.push_back(edge);
+    node2->data.graph_edges.push_back(edge);
+    LCTEUpdateInfo(node1);
+    LCTEUpdateInfo(node2);
+  }
+
+  void LCTEAddTreeEdge(TEdgeID edge) {
+    unsigned l = edge->data.level / 2;
+    LCTEAddTreeEdge(edge, Node(edge->u1, l), Node(edge->u2, l));
+  }
+
+  void LCTEAddGraphEdge(TEdgeID edge) {
+    unsigned l = edge->data.level / 2;
+    LCTEAddGraphEdge(edge, Node(edge->u1, l), Node(edge->u2, l));
+  }
+
+  void LCTERemoveTreeEdge(TEdgeID edge, TNode* node1, TNode* node2) {
+    // std::cout << "\tRTE:\t" << edge->u1 << "\t" << edge->u2 << "\t"
+    //           << edge->data.level << std::endl;
+    for (auto node : {node1, node2}) {
+      std::vector<TEdgeID>& edges = node->data.tree_edges;
+      bool found = false;
+      for (unsigned i = 0; i < edges.size(); ++i) {
+        if (edges[i] == edge) {
+          found = true;
+          if (i + 1 < edges.size()) {
+            edges[i] = edges.back();
+            // ...
+          }
+          edges.pop_back();
+          LCTEUpdateInfo(node);
+          break;
+        }
+      }
+      FakeUse(found);
+      assert(found);
+    }
+  }
+
+  void LCTERemoveGraphEdge(TEdgeID edge, TNode* node1, TNode* node2) {
+    // std::cout << "\tRGE:\t" << edge->u1 << "\t" << edge->u2 << "\t"
+    //           << edge->data.level << std::endl;
+    for (auto node : {node1, node2}) {
+      std::vector<TEdgeID>& edges = node->data.graph_edges;
+      bool found = false;
+      for (unsigned i = 0; i < edges.size(); ++i) {
+        if (edges[i] == edge) {
+          found = true;
+          if (i + 1 < edges.size()) {
+            edges[i] = edges.back();
+            // ...
+          }
+          edges.pop_back();
+          LCTEUpdateInfo(node);
+          break;
+        }
+      }
+      FakeUse(found);
+      assert(found);
+    }
+  }
+
+  void LCTERemoveTreeEdge(TEdgeID edge) {
+    unsigned l = edge->data.level / 2;
+    LCTERemoveTreeEdge(edge, Node(edge->u1, l), Node(edge->u2, l));
+  }
+
+  void LCTERemoveGraphEdge(TEdgeID edge) {
+    unsigned l = edge->data.level / 2;
+    LCTERemoveGraphEdge(edge, Node(edge->u1, l), Node(edge->u2, l));
+  }
+
+  void LCTELinkEdge(TNode* node1, TNode* node2) {
     lcte.SetRoot(node1);
     lcte.Link(node1, node2);
   }
 
-  void LCTEAddEdge(unsigned u1, unsigned u2) {
-    LCTEAddEdge(lcte.Node(u1), lcte.Node(u2));
-  }
-
-  void LCTERemoveEdge(unsigned u1, unsigned u2) {
-    lcte.SetRoot(lcte.Node(u1));
-    lcte.Cut(lcte.Node(u2));
-    assert(lcte.FindRoot(lcte.Node(u2)) == lcte.Node(u2));
+  void LCTECutEdge(TNode* node1, TNode* node2) {
+    lcte.SetRoot(node1);
+    lcte.Cut(node2);
+    assert(lcte.FindRoot(node2) == node2);
   }
 
  public:
   HolmLCTE(unsigned _size)
       : size(_size),
         L(numeric::ULog2(size) + 2),
-        g(L * size),
-        lcte(nvector::Enumerate<unsigned>(0, L * size)),
-        ncomponents(size),
-        uset(L * size) {}
+        g(size),
+        lcte(L * size),
+        ncomponents(size) {}
 
   TNode* Node(unsigned index) { return lcte.Node(index); }
+
+  TNode* Node(unsigned index, unsigned level) {
+    return Node(index + size * level);
+  }
 
   bool SameTree(TNode* node1, TNode* node2) {
     return lcte.FindRoot(node1) == lcte.FindRoot(node2);
   }
 
   TEdgeID InsertEdge(unsigned u1, unsigned u2) {
-    // std::cout << "Insert Edge " << from << "\t" << to << std::endl;
+    // std::cout << "Insert Edge " << u1 << "\t" << u2 << std::endl;
     assert(u1 != u2);
     auto e = g.AddEdge(u1, u2);
     auto n1 = Node(u1), n2 = Node(u2);
-    if (!SameTree(n1, n2)) {
+    if (SameTree(n1, n2)) {
+      LCTEAddGraphEdge(e, n1, n2);
+    } else {
       --ncomponents;
       e->data.level = 1;
-      LCTEAddEdge(n1, n2);
+      LCTELinkEdge(n1, n2);
+      LCTEAddTreeEdge(e, n1, n2);
     }
     return e;
   }
 
   void RemoveEdge(TEdgeID edge) {
-    // std::cout << "Remove Edge " << edge->from << "\t" << edge->to <<
-    // std::endl;
+    // std::cout << "Remove Edge " << edge->u1 << "\t" << edge->u2 << std::endl;
     if (edge->data.level & 1) {
       unsigned l = edge->data.level / 2;
       unsigned u1 = edge->u1, u2 = edge->u2;
-      for (auto e = edge; e;) {
-        LCTERemoveEdge(e->u1, e->u2);
-        auto enext = static_cast<TEdgeID>(e->data.prev_edge);
-        g.DeleteEdge(e);
-        e = enext;
-      }
+      for (unsigned i = 0; i <= l; ++i)
+        LCTECutEdge(Node(edge->u1, i), Node(edge->u2, i));
+      LCTERemoveTreeEdge(edge);
+      g.DeleteEdge(edge);
       ++ncomponents;
       for (++l; l-- > 0;) {
         bool found = false;
-        auto node1 = lcte.Node(u1), node2 = lcte.Node(u2);
+        auto node1 = Node(u1, l), node2 = Node(u2, l);
         lcte.Access(node1);
         lcte.Access(node2);
+        // std::cout << "\t\tRE:\t" << u1 << "\t" << u2 << "\t" << l << "\t"
+        //           << node1->info.tsize << "\t" << node2->info.tsize
+        //           << std::endl;
         if (node1->info.tsize > node2->info.tsize) {
-          std::swap(u1, u2);
           std::swap(node1, node2);
         }
-        uset.Clear();
-        uset.Insert(u1);
-        // Push ST edges up
-        thread_local std::stack<unsigned> s;
-        for (s.push(u1); !s.empty();) {
-          auto u = s.top();
-          s.pop();
-          for (unsigned j = 0; j < g.Edges(u).size(); ++j) {
-            auto e = g.Edges(u)[j];
-            auto u2 = e->Other(u);
-            if ((e->data.level & 1) && !uset.HasKey(u2)) {
-              uset.Insert(u2);
-              s.push(u2);
-              if (e->data.level / 2 == l) {
-                --j;
-                e->data.level += 2;
-                g.MoveEdge(e, e->u1 + size, e->u2 + size);
-                LCTEAddEdge(e->u1, e->u2);
-                auto enew = g.AddEdge(e->u1 - size, e->u2 - size,
-                                      {2 * L + 3, e->data.prev_edge});
-                e->data.prev_edge = static_cast<void*>(enew);
-              }
-            }
-          }
-        }
-        // Check other edges
-        auto root1 = lcte.FindRoot(node1);
-        for (auto u : uset.List()) {
-          for (unsigned j = 0; j < g.Edges(u).size(); ++j) {
-            auto e = g.Edges(u)[j];
-            if (e->data.level & 1) continue;
-            auto v = e->Other(u);
-            auto rootv = lcte.FindRoot(lcte.Node(v));
-            if (rootv == root1) {
-              // Push level
+        lcte.SetRoot(node1);
+        auto root2 = lcte.FindRoot(node2);
+        FakeUse(root2);
+        assert(root2 != node1);
+        for (; node1->info.tedge; lcte.Access(node1)) {
+          auto e = node1->info.tedge;
+          // if (e->data.level / 2 != l) {
+          //   std::cout << "WRONG.\tL = " << l << "\tEL = " << e->data.level
+          //             << "\tS = " << node1->info.tsize
+          //             << "\tI = " << node1 - Node(0) << std::endl;
+          //   // node1->UpdateInfo();
+          //   lcte.UpdateTreeInfo(node1);
+          //   auto e2 = node1->info.tedge;
+          //   if (e2) std::cout << "\tE2L = " << e2->data.level << std::endl;
+          // }
+          if (e->data.level & 1) {
+            // Push tree edge up
+            LCTERemoveTreeEdge(e);
+            e->data.level += 2;
+            auto n1 = Node(e->u1, l + 1), n2 = Node(e->u2, l + 1);
+            LCTELinkEdge(n1, n2);
+            LCTEAddTreeEdge(e, n1, n2);
+          } else {
+            auto n1 = Node(e->u1, l), n2 = Node(e->u2, l);
+            auto r1 = lcte.FindRoot(n1), r2 = lcte.FindRoot(n2);
+            if (r1 == r2) {
+              assert(r1 == node1);
+              LCTERemoveGraphEdge(e, n1, n2);
               e->data.level += 2;
-              g.MoveEdge(e, u + size, v + size);
-              --j;
+              LCTEAddGraphEdge(e);
             } else {
-              assert(rootv == lcte.FindRoot(node2));
+              assert(r1 - node1 + r2 == root2);
               found = true;
               --ncomponents;
-              e->data.level |= 1;
-              LCTEAddEdge(e->u1, e->u2);
-              for (auto eprev = e; eprev->u1 >= size;) {
-                auto enext = g.AddEdge(eprev->u1 - size, eprev->u2 - size,
-                                       {2 * L + 3, nullptr});
-                eprev->data.prev_edge = enext;
-                LCTEAddEdge(enext->u1, enext->u2);
-                eprev = enext;
-              }
+              LCTERemoveGraphEdge(e, n1, n2);
+              e->data.level += 1;
+              for (unsigned i = 0; i <= l; ++i)
+                LCTELinkEdge(Node(e->u1, i), Node(e->u2, i));
+              LCTEAddTreeEdge(e);
               break;
             }
           }
-          if (found) break;
         }
         if (found) break;
-        u1 -= size;
-        u2 -= size;
       }
     } else {
+      LCTERemoveGraphEdge(edge);
       g.DeleteEdge(edge);
     }
   }
