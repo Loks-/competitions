@@ -3,6 +3,7 @@
 #include "common/base.h"
 #include "common/graph/dynamic/graph.h"
 #include "common/graph/tree/lcte/action/none.h"
+#include "common/graph/tree/lcte/info/max.h"
 #include "common/graph/tree/lcte/info/size.h"
 #include "common/graph/tree/lcte/lcte.h"
 #include "common/numeric/bits/ulog2.h"
@@ -36,155 +37,104 @@ class HolmLCTE {
   using TEdge = typename TGraph::TEdge;
   using TEdgeID = TEdge*;
 
-  class LCTENodeData {
+  class LEdges {
    public:
     std::vector<TEdgeID> tree_edges;
     std::vector<TEdgeID> graph_edges;
   };
 
-  class LCTEPInfo : public graph::lcte::info::PSize {
-   public:
-    using TBase = graph::lcte::info::PSize;
-
-    TEdgeID dedge;
-    TEdgeID tedge;
-
-    template <class TNode>
-    void DUpdate(TNode* node) {
-      if (!node->data.tree_edges.empty()) {
-        dedge = node->data.tree_edges.back();
-      } else if (!node->data.graph_edges.empty()) {
-        dedge = node->data.graph_edges.back();
-      } else {
-        dedge = nullptr;
-      }
-    }
-
-    template <class TNode>
-    void PUpdate(TNode* node) {
-      TBase::PUpdate(node);
-      tedge = dedge;
-      if (node->l && node->l->info.tedge) {
-        if (!tedge || (tedge->data.level < node->l->info.tedge->data.level))
-          tedge = node->l->info.tedge;
-      }
-      if (node->r && node->r->info.tedge) {
-        if (!tedge || (tedge->data.level < node->r->info.tedge->data.level))
-          tedge = node->r->info.tedge;
-      }
-      if (node->vc && node->vc->info.tedge) {
-        if (!tedge || (tedge->data.level < node->vc->info.tedge->data.level))
-          tedge = node->vc->info.tedge;
-      }
-    }
-  };
-
-  class LCTEVInfo : public graph::lcte::info::VSize {
-   public:
-    using TBase = graph::lcte::info::VSize;
-
-    TEdgeID tedge;
-
-    template <class TNode>
-    void VUpdate(TNode* node) {
-      TBase::VUpdate(node);
-      assert(node->vc);
-      tedge = node->vc->info.tedge;
-      if (node->l && node->l->info.tedge) {
-        if (!tedge || (tedge->data.level < node->l->info.tedge->data.level))
-          tedge = node->l->info.tedge;
-      }
-      if (node->r && node->r->info.tedge) {
-        if (!tedge || (tedge->data.level < node->r->info.tedge->data.level))
-          tedge = node->r->info.tedge;
-      }
-    }
-  };
-
-  using TLCTE = graph::lcte::LCTE<LCTENodeData, LCTEPInfo, LCTEVInfo,
+  using TLCTE = graph::lcte::LCTE<unsigned,
+                                  graph::lcte::info::PMax<unsigned, graph::lcte::info::PSize>,
+                                  graph::lcte::info::VMax<unsigned, graph::lcte::info::VSize>,
                                   graph::lcte::action::None>;
   using TNode = typename TLCTE::TPNode;
 
  protected:
   unsigned size;
   unsigned L;
+  unsigned lsize;
   TGraph g;
   TLCTE lcte;
+  std::vector<LEdges> vledges;
   unsigned ncomponents;
 
  protected:
-  void LCTEUpdateInfo(TNode* node) {
-    node->info.DUpdate(node);
+  void LCTEUpdateInfo(unsigned lu, TNode* node) {
+    const auto& ledges = vledges[lu];
+    node->data = (!ledges.tree_edges.empty() ? 2 * lsize + lu :
+                  !ledges.graph_edges.empty()? lsize + lu : 0u);
     lcte.Access(node);
   }
 
-  void LCTEAddTreeEdge(TEdgeID edge, TNode* node1) {
-    edge->data.index1 = node1->data.tree_edges.size();
-    node1->data.tree_edges.push_back(edge);
-    if (node1->data.tree_edges.size() == 1)
-      LCTEUpdateInfo(node1);
+  void LCTEAddTreeEdge(TEdgeID edge, unsigned lu1, TNode* node1) {
+    auto& ledges = vledges[lu1];
+    edge->data.index1 = ledges.tree_edges.size();
+    ledges.tree_edges.push_back(edge);
+    if (ledges.tree_edges.size() == 1)
+      LCTEUpdateInfo(lu1, node1);
   }
 
-  void LCTEAddGraphEdge(TEdgeID edge, TNode* node1, TNode* node2) {
-    edge->data.index1 = node1->data.graph_edges.size();
-    node1->data.graph_edges.push_back(edge);
-    if (node1->data.tree_edges.empty() && (node1->data.graph_edges.size() == 1))
-      LCTEUpdateInfo(node1);
-    edge->data.index2 = node2->data.graph_edges.size();
-    node2->data.graph_edges.push_back(edge);
-    if (node2->data.tree_edges.empty() && (node2->data.graph_edges.size() == 1))
-      LCTEUpdateInfo(node2);
+  void LCTEAddGraphEdge(TEdgeID edge, unsigned lu1, TNode* node1, bool b12) {
+    auto& ledges = vledges[lu1];
+    (b12 ? edge->data.index1 : edge->data.index2) = ledges.graph_edges.size();
+    ledges.graph_edges.push_back(edge);
+    if (ledges.tree_edges.empty() && (ledges.graph_edges.size() == 1))
+      LCTEUpdateInfo(lu1, node1);
   }
 
   void LCTEAddTreeEdge(TEdgeID edge) {
     unsigned l = edge->data.level / 2;
-    LCTEAddTreeEdge(edge, Node(edge->u1, l));
+    unsigned lu1 = LIndex(edge->u1, l);
+    LCTEAddTreeEdge(edge, lu1, Node(lu1));
   }
 
   void LCTEAddGraphEdge(TEdgeID edge) {
     unsigned l = edge->data.level / 2;
-    LCTEAddGraphEdge(edge, Node(edge->u1, l), Node(edge->u2, l));
+    unsigned lu1 = LIndex(edge->u1, l), lu2 = LIndex(edge->u2, l);
+    LCTEAddGraphEdge(edge, lu1, Node(lu1), true);
+    LCTEAddGraphEdge(edge, lu2, Node(lu2), false);
   }
 
-  void LCTERemoveTreeEdge(TEdgeID edge, TNode* node1) {
-    auto& edges = node1->data.tree_edges;
-    auto index1 = edge->data.index1;
-    assert(edges[index1] == edge);
-    if (index1 + 1 < edges.size()) {
-      edges[index1] = edges.back();
-      edges[index1]->data.index1 = index1;
+  void LCTERemoveTreeEdge(TEdgeID edge, unsigned lu1, TNode* node1) {
+    auto& ledges = vledges[lu1];
+    auto& edges = ledges.tree_edges;
+    auto index = edge->data.index1;
+    assert(edges[index] == edge);
+    if (index + 1 < edges.size()) {
+      edges[index] = edges.back();
+      edges[index]->data.index1 = index;
     }
     edges.pop_back();
-    if (node1->info.dedge == edge)
-      LCTEUpdateInfo(node1);
+    if (edges.empty())
+      LCTEUpdateInfo(lu1, node1);
   }
 
-  void LCTERemoveGraphEdge(TEdgeID edge, TNode* node1, TNode* node2) {
-    for (unsigned i = 0; i < 2; ++i) {
-      auto u = i ? edge->u2 : edge->u1;
-      auto node = i ? node2 : node1;
-      auto& edges = node->data.graph_edges;
-      auto index = i ? edge->data.index2 : edge->data.index1;
-      assert(edges[index] == edge);
-      if (index + 1 < edges.size()) {
-        auto enew = edges.back();
-        edges[index] = enew;
-        ((enew->u1 == u) ? enew->data.index1 : enew->data.index2) = index;
-      }
-      edges.pop_back();
-      if (node->info.dedge == edge)
-        LCTEUpdateInfo(node);
+  void LCTERemoveGraphEdge(TEdgeID edge, unsigned lu1, TNode* node1, bool b12) {
+    auto& ledges = vledges[lu1];
+    auto& edges = ledges.graph_edges;
+    auto index = (b12 ? edge->data.index1 : edge->data.index2);
+    assert(edges[index] == edge);
+    if (index + 1 < edges.size()) {
+      auto enew = edges.back();
+      edges[index] = enew;
+      ((enew->u1 == (lu1 % size)) ? enew->data.index1 : enew->data.index2) = index;
     }
+    edges.pop_back();
+    if (ledges.tree_edges.empty() && edges.empty())
+      LCTEUpdateInfo(lu1, node1);
   }
 
   void LCTERemoveTreeEdge(TEdgeID edge) {
     unsigned l = edge->data.level / 2;
-    LCTERemoveTreeEdge(edge, Node(edge->u1, l));
+    unsigned lu1 = LIndex(edge->u1, l);
+    LCTERemoveTreeEdge(edge, lu1, Node(lu1));
   }
 
   void LCTERemoveGraphEdge(TEdgeID edge) {
     unsigned l = edge->data.level / 2;
-    LCTERemoveGraphEdge(edge, Node(edge->u1, l), Node(edge->u2, l));
+    unsigned lu1 = LIndex(edge->u1, l), lu2 = LIndex(edge->u2, l);
+    LCTERemoveGraphEdge(edge, lu1, Node(lu1), true);
+    LCTERemoveGraphEdge(edge, lu2, Node(lu2), false);
   }
 
   void LCTELinkEdge(TNode* node1, TNode* node2) {
@@ -202,14 +152,20 @@ class HolmLCTE {
   HolmLCTE(unsigned _size)
       : size(_size),
         L(numeric::ULog2(size) + 2),
+        lsize(L * size),
         g(size),
-        lcte(L * size),
+        lcte(lsize),
+        vledges(lsize),
         ncomponents(size) {}
 
-  TNode* Node(unsigned index) { return lcte.Node(index); }
+  unsigned LIndex(unsigned u, unsigned level) const {
+    return u + size * level;
+  }
 
-  TNode* Node(unsigned index, unsigned level) {
-    return Node(index + size * level);
+  TNode* Node(unsigned lindex) { return lcte.Node(lindex); }
+
+  TNode* Node(unsigned u, unsigned level) {
+    return Node(LIndex(u, level));
   }
 
   bool SameTree(TNode* node1, TNode* node2) {
@@ -221,12 +177,13 @@ class HolmLCTE {
     auto e = g.AddEdge(u1, u2);
     auto n1 = Node(u1), n2 = Node(u2);
     if (SameTree(n1, n2)) {
-      LCTEAddGraphEdge(e, n1, n2);
+      LCTEAddGraphEdge(e, u1, n1, true);
+      LCTEAddGraphEdge(e, u2, n2, false);
     } else {
       --ncomponents;
       e->data.level = 1;
       LCTELinkEdge(n1, n2);
-      LCTEAddTreeEdge(e, n1);
+      LCTEAddTreeEdge(e, u1, n1);
     }
     return e;
   }
@@ -252,34 +209,60 @@ class HolmLCTE {
         auto root2 = lcte.FindRoot(node2);
         FakeUse(root2);
         assert(root2 != node1);
-        for (; node1->info.tedge; lcte.Access(node1)) {
-          auto e = node1->info.tedge;
-          if (e->data.level & 1) {
-            // Push tree edge up
-            LCTERemoveTreeEdge(e);
-            e->data.level += 2;
-            auto n1 = Node(e->u1, l + 1), n2 = Node(e->u2, l + 1);
-            LCTELinkEdge(n1, n2);
-            LCTEAddTreeEdge(e, n1);
-          } else {
-            // Check graph edge
-            auto n1 = Node(e->u1, l), n2 = Node(e->u2, l);
-            auto r1 = lcte.FindRoot(n1), r2 = lcte.FindRoot(n2);
-            if (r1 == r2) {
-              assert(r1 == node1);
-              LCTERemoveGraphEdge(e, n1, n2);
+        for (; !found && node1->info.tmax; lcte.Access(node1)) {
+          auto value = node1->info.tmax;
+          auto u = value % lsize;
+          if (value >= 2 * lsize) {
+            // Push up tree edges
+            auto& edges = vledges[u].tree_edges;
+            for (auto e : edges) {
               e->data.level += 2;
-              LCTEAddGraphEdge(e);
-            } else {
-              assert(r1 - node1 + r2 == root2);
-              found = true;
-              --ncomponents;
-              LCTERemoveGraphEdge(e, n1, n2);
-              e->data.level += 1;
-              for (unsigned i = 0; i <= l; ++i)
-                LCTELinkEdge(Node(e->u1, i), Node(e->u2, i));
-              LCTEAddTreeEdge(e);
-              break;
+              auto u1 = LIndex(e->u1, l + 1), u2 = LIndex(e->u2, l + 1);
+              auto n1 = Node(u1), n2 = Node(u2);
+              LCTELinkEdge(n1, n2);
+              LCTEAddTreeEdge(e, u1, n1);
+            }
+            edges.clear();
+            LCTEUpdateInfo(u, Node(u));
+          } else {
+            // Test graph edges
+            // auto u0 = u % size;
+            auto& edges = vledges[u].graph_edges;
+            for (unsigned j = edges.size(); j-- > 0;) {
+              auto e = edges[j];
+              auto n1 = Node(e->u1, l), n2 = Node(e->u2, l);
+              auto r1 = lcte.FindRoot(n1), r2 = lcte.FindRoot(n2);
+              if (r1 == r2) {
+                assert(r1 == node1);
+                LCTERemoveGraphEdge(e);
+                // if (e->u1 == u0) {
+                //   LCTERemoveGraphEdge(e, e->u2, n2, false);
+                // } else {
+                //   LCTERemoveGraphEdge(e, e->u1, n1, true);
+                // }
+                e->data.level += 2;
+                LCTEAddGraphEdge(e);
+              } else {
+                assert(r1 - node1 + r2 == root2);
+                found = true;
+                --ncomponents;
+                LCTERemoveGraphEdge(e);
+                // if (e->u1 == u0) {
+                //   LCTERemoveGraphEdge(e, e->u2, n2, false);
+                // } else {
+                //   LCTERemoveGraphEdge(e, e->u1, n1, true);
+                // }
+                // edges.resize(j);
+                e->data.level += 1;
+                for (unsigned i = 0; i <= l; ++i)
+                  LCTELinkEdge(Node(e->u1, i), Node(e->u2, i));
+                LCTEAddTreeEdge(e);
+                break;
+              }
+            }
+            if (!found) {
+              edges.clear();
+              LCTEUpdateInfo(u, Node(u));
             }
           }
         }
