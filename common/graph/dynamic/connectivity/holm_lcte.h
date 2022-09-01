@@ -43,10 +43,10 @@ class HolmLCTE {
     std::vector<TEdgeID> graph_edges;
   };
 
-  using TLCTE = graph::lcte::LCTE<unsigned,
-                                  graph::lcte::info::PMax<unsigned, graph::lcte::info::PSize>,
-                                  graph::lcte::info::VMax<unsigned, graph::lcte::info::VSize>,
-                                  graph::lcte::action::None>;
+  using TLCTE = graph::lcte::LCTE<
+      unsigned, graph::lcte::info::PMax<unsigned, graph::lcte::info::PSize>,
+      graph::lcte::info::VMax<unsigned, graph::lcte::info::VSize>,
+      graph::lcte::action::None>;
   using TNode = typename TLCTE::TPNode;
 
  protected:
@@ -61,8 +61,9 @@ class HolmLCTE {
  protected:
   void LCTEUpdateInfo(unsigned lu, TNode* node) {
     const auto& ledges = vledges[lu];
-    node->data = (!ledges.tree_edges.empty() ? 2 * lsize + lu :
-                  !ledges.graph_edges.empty()? lsize + lu : 0u);
+    node->data = (!ledges.tree_edges.empty()    ? 2 * lsize + lu
+                  : !ledges.graph_edges.empty() ? lsize + lu
+                                                : 0u);
     lcte.Access(node);
   }
 
@@ -70,8 +71,7 @@ class HolmLCTE {
     auto& ledges = vledges[lu1];
     edge->data.index1 = ledges.tree_edges.size();
     ledges.tree_edges.push_back(edge);
-    if (ledges.tree_edges.size() == 1)
-      LCTEUpdateInfo(lu1, node1);
+    if (ledges.tree_edges.size() == 1) LCTEUpdateInfo(lu1, node1);
   }
 
   void LCTEAddGraphEdge(TEdgeID edge, unsigned lu1, TNode* node1, bool b12) {
@@ -105,8 +105,7 @@ class HolmLCTE {
       edges[index]->data.index1 = index;
     }
     edges.pop_back();
-    if (edges.empty())
-      LCTEUpdateInfo(lu1, node1);
+    if (edges.empty()) LCTEUpdateInfo(lu1, node1);
   }
 
   void LCTERemoveGraphEdge(TEdgeID edge, unsigned lu1, TNode* node1, bool b12) {
@@ -117,11 +116,11 @@ class HolmLCTE {
     if (index + 1 < edges.size()) {
       auto enew = edges.back();
       edges[index] = enew;
-      ((enew->u1 == (lu1 % size)) ? enew->data.index1 : enew->data.index2) = index;
+      ((enew->u1 == (lu1 % size)) ? enew->data.index1 : enew->data.index2) =
+          index;
     }
     edges.pop_back();
-    if (ledges.tree_edges.empty() && edges.empty())
-      LCTEUpdateInfo(lu1, node1);
+    if (ledges.tree_edges.empty() && edges.empty()) LCTEUpdateInfo(lu1, node1);
   }
 
   void LCTERemoveTreeEdge(TEdgeID edge) {
@@ -158,15 +157,11 @@ class HolmLCTE {
         vledges(lsize),
         ncomponents(size) {}
 
-  unsigned LIndex(unsigned u, unsigned level) const {
-    return u + size * level;
-  }
+  unsigned LIndex(unsigned u, unsigned level) const { return u + size * level; }
 
   TNode* Node(unsigned lindex) { return lcte.Node(lindex); }
 
-  TNode* Node(unsigned u, unsigned level) {
-    return Node(LIndex(u, level));
-  }
+  TNode* Node(unsigned u, unsigned level) { return Node(LIndex(u, level)); }
 
   bool SameTree(TNode* node1, TNode* node2) {
     return lcte.FindRoot(node1) == lcte.FindRoot(node2);
@@ -226,33 +221,32 @@ class HolmLCTE {
             LCTEUpdateInfo(u, Node(u));
           } else {
             // Test graph edges
-            // auto u0 = u % size;
             auto& edges = vledges[u].graph_edges;
             for (unsigned j = edges.size(); j-- > 0;) {
               auto e = edges[j];
-              auto n1 = Node(e->u1, l), n2 = Node(e->u2, l);
+              auto eu1 = LIndex(e->u1, l), eu2 = LIndex(e->u2, l);
+              auto n1 = Node(eu1), n2 = Node(eu2);
               auto r1 = lcte.FindRoot(n1), r2 = lcte.FindRoot(n2);
               if (r1 == r2) {
                 assert(r1 == node1);
-                LCTERemoveGraphEdge(e);
-                // if (e->u1 == u0) {
-                //   LCTERemoveGraphEdge(e, e->u2, n2, false);
-                // } else {
-                //   LCTERemoveGraphEdge(e, e->u1, n1, true);
-                // }
+                if (eu1 == u) {
+                  LCTERemoveGraphEdge(e, eu2, n2, false);
+                } else {
+                  LCTERemoveGraphEdge(e, eu1, n1, true);
+                }
                 e->data.level += 2;
                 LCTEAddGraphEdge(e);
               } else {
                 assert(r1 - node1 + r2 == root2);
                 found = true;
                 --ncomponents;
-                LCTERemoveGraphEdge(e);
-                // if (e->u1 == u0) {
-                //   LCTERemoveGraphEdge(e, e->u2, n2, false);
-                // } else {
-                //   LCTERemoveGraphEdge(e, e->u1, n1, true);
-                // }
-                // edges.resize(j);
+                if (eu1 == u) {
+                  LCTERemoveGraphEdge(e, eu2, n2, false);
+                } else {
+                  LCTERemoveGraphEdge(e, eu1, n1, true);
+                }
+                edges.resize(j);
+                if (j == 0) LCTEUpdateInfo(u, Node(u));
                 e->data.level += 1;
                 for (unsigned i = 0; i <= l; ++i)
                   LCTELinkEdge(Node(e->u1, i), Node(e->u2, i));
