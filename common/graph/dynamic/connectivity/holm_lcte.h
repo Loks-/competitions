@@ -27,6 +27,8 @@ class HolmLCTE {
   class EdgeData {
    public:
     unsigned level;
+    unsigned index1;
+    unsigned index2;
 
     EdgeData() : level(0) {}
   };
@@ -122,6 +124,7 @@ class HolmLCTE {
   void LCTEAddTreeEdge(TEdgeID edge, TNode* node1) {
     // std::cout << "\tATE:\t" << edge->u1 << "\t" << edge->u2 << "\t"
     //           << edge->data.level << std::endl;
+    edge->data.index1 = node1->data.tree_edges.size();
     node1->data.tree_edges.push_back(edge);
     if (node1->data.tree_edges.size() == 1)
       LCTEUpdateInfo(node1);
@@ -130,10 +133,12 @@ class HolmLCTE {
   void LCTEAddGraphEdge(TEdgeID edge, TNode* node1, TNode* node2) {
     // std::cout << "\tAGE:\t" << edge->u1 << "\t" << edge->u2 << "\t"
     //           << edge->data.level << std::endl;
+    edge->data.index1 = node1->data.graph_edges.size();
     node1->data.graph_edges.push_back(edge);
-    node2->data.graph_edges.push_back(edge);
     if (node1->data.tree_edges.empty() && (node1->data.graph_edges.size() == 1))
       LCTEUpdateInfo(node1);
+    edge->data.index2 = node2->data.graph_edges.size();
+    node2->data.graph_edges.push_back(edge);
     if (node2->data.tree_edges.empty() && (node2->data.graph_edges.size() == 1))
       LCTEUpdateInfo(node2);
   }
@@ -151,46 +156,35 @@ class HolmLCTE {
   void LCTERemoveTreeEdge(TEdgeID edge, TNode* node1) {
     // std::cout << "\tRTE:\t" << edge->u1 << "\t" << edge->u2 << "\t"
     //           << edge->data.level << std::endl;
-    std::vector<TEdgeID>& edges = node1->data.tree_edges;
-    bool found = false;
-    for (unsigned i = 0; i < edges.size(); ++i) {
-      if (edges[i] == edge) {
-        found = true;
-        if (i + 1 < edges.size()) {
-          edges[i] = edges.back();
-          // ...
-        }
-        edges.pop_back();
-        if (node1->info.dedge == edge)
-          LCTEUpdateInfo(node1);
-        break;
-      }
+    auto& edges = node1->data.tree_edges;
+    auto index1 = edge->data.index1;
+    assert(edges[index1] == edge);
+    if (index1 + 1 < edges.size()) {
+      edges[index1] = edges.back();
+      edges[index1]->data.index1 = index1;
     }
-    FakeUse(found);
-    assert(found);
+    edges.pop_back();
+    if (node1->info.dedge == edge)
+      LCTEUpdateInfo(node1);
   }
 
   void LCTERemoveGraphEdge(TEdgeID edge, TNode* node1, TNode* node2) {
     // std::cout << "\tRGE:\t" << edge->u1 << "\t" << edge->u2 << "\t"
     //           << edge->data.level << std::endl;
-    for (auto node : {node1, node2}) {
-      std::vector<TEdgeID>& edges = node->data.graph_edges;
-      bool found = false;
-      for (unsigned i = 0; i < edges.size(); ++i) {
-        if (edges[i] == edge) {
-          found = true;
-          if (i + 1 < edges.size()) {
-            edges[i] = edges.back();
-            // ...
-          }
-          edges.pop_back();
-          if (node->info.dedge == edge)
-            LCTEUpdateInfo(node);
-          break;
-        }
+    for (unsigned i = 0; i < 2; ++i) {
+      auto u = i ? edge->u2 : edge->u1;
+      auto node = i ? node2 : node1;
+      auto& edges = node->data.graph_edges;
+      auto index = i ? edge->data.index2 : edge->data.index1;
+      assert(edges[index] == edge);
+      if (index + 1 < edges.size()) {
+        auto enew = edges.back();
+        edges[index] = enew;
+        ((enew->u1 == u) ? enew->data.index1 : enew->data.index2) = index;
       }
-      FakeUse(found);
-      assert(found);
+      edges.pop_back();
+      if (node->info.dedge == edge)
+        LCTEUpdateInfo(node);
     }
   }
 
