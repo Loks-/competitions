@@ -62,7 +62,6 @@ class HolmLCTE {
     template <class TNode>
     void PUpdate(TNode* node) {
       TBase::PUpdate(node);
-      DUpdate(node);
       tedge = dedge;
       if (node->l && node->l->info.tedge) {
         if (!tedge || (tedge->data.level < node->l->info.tedge->data.level))
@@ -115,6 +114,7 @@ class HolmLCTE {
  protected:
   void LCTEUpdateInfo(TNode* node) {
     // lcte.UpdateNodeToRoot(node);
+    node->info.DUpdate(node);
     lcte.Access(node);
     // node->UpdateInfo();
   }
@@ -123,7 +123,8 @@ class HolmLCTE {
     // std::cout << "\tATE:\t" << edge->u1 << "\t" << edge->u2 << "\t"
     //           << edge->data.level << std::endl;
     node1->data.tree_edges.push_back(edge);
-    LCTEUpdateInfo(node1);
+    if (node1->data.tree_edges.size() == 1)
+      LCTEUpdateInfo(node1);
   }
 
   void LCTEAddGraphEdge(TEdgeID edge, TNode* node1, TNode* node2) {
@@ -131,8 +132,10 @@ class HolmLCTE {
     //           << edge->data.level << std::endl;
     node1->data.graph_edges.push_back(edge);
     node2->data.graph_edges.push_back(edge);
-    LCTEUpdateInfo(node1);
-    LCTEUpdateInfo(node2);
+    if (node1->data.tree_edges.empty() && (node1->data.graph_edges.size() == 1))
+      LCTEUpdateInfo(node1);
+    if (node2->data.tree_edges.empty() && (node2->data.graph_edges.size() == 1))
+      LCTEUpdateInfo(node2);
   }
 
   void LCTEAddTreeEdge(TEdgeID edge) {
@@ -158,7 +161,8 @@ class HolmLCTE {
           // ...
         }
         edges.pop_back();
-        LCTEUpdateInfo(node1);
+        if (node1->info.dedge == edge)
+          LCTEUpdateInfo(node1);
         break;
       }
     }
@@ -180,7 +184,8 @@ class HolmLCTE {
             // ...
           }
           edges.pop_back();
-          LCTEUpdateInfo(node);
+          if (node->info.dedge == edge)
+            LCTEUpdateInfo(node);
           break;
         }
       }
