@@ -119,13 +119,11 @@ class HolmLCTE {
     // node->UpdateInfo();
   }
 
-  void LCTEAddTreeEdge(TEdgeID edge, TNode* node1, TNode* node2) {
+  void LCTEAddTreeEdge(TEdgeID edge, TNode* node1) {
     // std::cout << "\tATE:\t" << edge->u1 << "\t" << edge->u2 << "\t"
     //           << edge->data.level << std::endl;
     node1->data.tree_edges.push_back(edge);
-    node2->data.tree_edges.push_back(edge);  // Do we need this?
     LCTEUpdateInfo(node1);
-    LCTEUpdateInfo(node2);
   }
 
   void LCTEAddGraphEdge(TEdgeID edge, TNode* node1, TNode* node2) {
@@ -139,7 +137,7 @@ class HolmLCTE {
 
   void LCTEAddTreeEdge(TEdgeID edge) {
     unsigned l = edge->data.level / 2;
-    LCTEAddTreeEdge(edge, Node(edge->u1, l), Node(edge->u2, l));
+    LCTEAddTreeEdge(edge, Node(edge->u1, l));
   }
 
   void LCTEAddGraphEdge(TEdgeID edge) {
@@ -147,27 +145,25 @@ class HolmLCTE {
     LCTEAddGraphEdge(edge, Node(edge->u1, l), Node(edge->u2, l));
   }
 
-  void LCTERemoveTreeEdge(TEdgeID edge, TNode* node1, TNode* node2) {
+  void LCTERemoveTreeEdge(TEdgeID edge, TNode* node1) {
     // std::cout << "\tRTE:\t" << edge->u1 << "\t" << edge->u2 << "\t"
     //           << edge->data.level << std::endl;
-    for (auto node : {node1, node2}) {
-      std::vector<TEdgeID>& edges = node->data.tree_edges;
-      bool found = false;
-      for (unsigned i = 0; i < edges.size(); ++i) {
-        if (edges[i] == edge) {
-          found = true;
-          if (i + 1 < edges.size()) {
-            edges[i] = edges.back();
-            // ...
-          }
-          edges.pop_back();
-          LCTEUpdateInfo(node);
-          break;
+    std::vector<TEdgeID>& edges = node1->data.tree_edges;
+    bool found = false;
+    for (unsigned i = 0; i < edges.size(); ++i) {
+      if (edges[i] == edge) {
+        found = true;
+        if (i + 1 < edges.size()) {
+          edges[i] = edges.back();
+          // ...
         }
+        edges.pop_back();
+        LCTEUpdateInfo(node1);
+        break;
       }
-      FakeUse(found);
-      assert(found);
     }
+    FakeUse(found);
+    assert(found);
   }
 
   void LCTERemoveGraphEdge(TEdgeID edge, TNode* node1, TNode* node2) {
@@ -195,7 +191,7 @@ class HolmLCTE {
 
   void LCTERemoveTreeEdge(TEdgeID edge) {
     unsigned l = edge->data.level / 2;
-    LCTERemoveTreeEdge(edge, Node(edge->u1, l), Node(edge->u2, l));
+    LCTERemoveTreeEdge(edge, Node(edge->u1, l));
   }
 
   void LCTERemoveGraphEdge(TEdgeID edge) {
@@ -243,7 +239,7 @@ class HolmLCTE {
       --ncomponents;
       e->data.level = 1;
       LCTELinkEdge(n1, n2);
-      LCTEAddTreeEdge(e, n1, n2);
+      LCTEAddTreeEdge(e, n1);
     }
     return e;
   }
@@ -290,7 +286,7 @@ class HolmLCTE {
             e->data.level += 2;
             auto n1 = Node(e->u1, l + 1), n2 = Node(e->u2, l + 1);
             LCTELinkEdge(n1, n2);
-            LCTEAddTreeEdge(e, n1, n2);
+            LCTEAddTreeEdge(e, n1);
           } else {
             auto n1 = Node(e->u1, l), n2 = Node(e->u2, l);
             auto r1 = lcte.FindRoot(n1), r2 = lcte.FindRoot(n2);
