@@ -21,7 +21,7 @@ class Solver {
   explicit Solver(unsigned _max_time) : max_time_in_seconds(_max_time) {}
 
   virtual ~Solver() {}
-  virtual PSolver Clone() const { return 0; }
+  virtual PSolver Clone() const { return nullptr; }
 
   virtual bool SkipSolutionRead() const { return false; }
   virtual bool SkipSolutionWrite() const { return false; }
