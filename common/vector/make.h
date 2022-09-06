@@ -37,4 +37,16 @@ template <class T>
 inline auto Make(unsigned d0, unsigned d1, unsigned d2, const T& value) {
   return DVector<T, 3>(d0, Make<T>(d1, d2, value));
 }
+
+template <class T>
+inline auto Make(unsigned d0, unsigned d1, unsigned d2, unsigned d3,
+                 const T& value) {
+  return DVector<T, 4>(d0, Make<T>(d1, d2, d3, value));
+}
+
+template <class T>
+inline auto Make(unsigned d0, unsigned d1, unsigned d2, unsigned d3,
+                 unsigned d4, const T& value) {
+  return DVector<T, 5>(d0, Make<T>(d1, d2, d3, d4, value));
+}
 }  // namespace nvector
