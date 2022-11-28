@@ -16,9 +16,9 @@ int main_2118() {
   TTree tree(64);
   TNode* root = nullptr;
 
-  std::function<TNode*(string)> Parse = [&](string s) -> TNode* {
-    if (s[0] == '[') {
-      s = s.substr(1, s.size() - 2);
+  std::function<TNode*(string)> Parse = [&](const string& ss) -> TNode* {
+    if (ss[0] == '[') {
+      auto s = ss.substr(1, ss.size() - 2);
       unsigned d = 0;
       for (unsigned i = 0; i < s.size(); ++i) {
         if (s[i] == '[') ++d;
@@ -32,7 +32,7 @@ int main_2118() {
       }
       return nullptr;
     } else {
-      return tree.New(stoi(s));
+      return tree.New(stoi(ss));
     }
   };
 
