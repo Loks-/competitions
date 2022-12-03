@@ -2,6 +2,7 @@
 #include "common/stl/full.h"
 #include "common/stl/pair_io.h"
 #include "common/string/utils/split.h"
+#include "common/string/utils/to_vector.h"
 #include "common/vector/read.h"
 #include "common/vector/read_all.h"
 #include "common/vector/read_from_line.h"
