@@ -6,6 +6,7 @@
 #include "common/vector/read.h"
 #include "common/vector/read_all.h"
 #include "common/vector/read_from_line.h"
+#include "common/vector/read_from_string.h"
 #include "common/vector/read_lines.h"
 #include "common/vector/transform.h"
 #include "common/vector/write.h"
