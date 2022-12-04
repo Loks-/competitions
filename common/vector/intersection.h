@@ -52,6 +52,6 @@ inline std::vector<T> IntersectionVUnsorted(std::vector<T>& v1,
                                             std::vector<T>& v2) {
   std::sort(v1.begin(), v1.end());
   std::sort(v2.begin(), v2.end());
-  return Intersection(v1, v2);
+  return IntersectionV(v1, v2);
 }
 }  // namespace nvector
