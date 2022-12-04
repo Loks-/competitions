@@ -20,6 +20,7 @@
 #include "common/data_structures/fixed_universe_successor/vector_set.h"
 #include "common/data_structures/fixed_universe_successor/x_fast_tree.h"
 #include "common/data_structures/fixed_universe_successor/x_fast_trie.h"
+#include "common/data_structures/fixed_universe_successor/y_fast_trie_proxy.h"
 #include "common/hash.h"
 #include "common/timer.h"
 #include "common/vector/hrandom.h"
