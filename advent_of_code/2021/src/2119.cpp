@@ -7,6 +7,7 @@
 #include "common/string/utils/split.h"
 #include "common/vector/intersection.h"
 #include "common/vector/read_lines.h"
+#include "common/vector/split_empty_string.h"
 #include "common/vector/unique.h"
 
 #include <queue>
@@ -14,14 +15,14 @@
 int main_2119() {
   const unsigned min_points = 12,
                  min_pairs = (min_points * (min_points - 1)) / 2;
+
   auto vs = nvector::ReadLines();
+  auto vvs = nvector::SplitEmptyString(vs);
   vector<vector<I3Point>> vvp;
-  for (auto& s : vs) {
-    if (s.empty()) continue;
-    if (s[1] == '-') {
-      vvp.push_back({});
-    } else {
-      auto ss = Split(s, ',');
+  for (auto& vsi : vvs) {
+    vvp.push_back({});
+    for (unsigned i = 1; i < vsi.size(); ++i) {
+      auto ss = Split(vsi[i], ',');
       vvp.back().push_back({stoi(ss[0]), stoi(ss[1]), stoi(ss[2])});
     }
   }
