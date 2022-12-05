@@ -34,14 +34,12 @@ int main_2122__cc_isp() {
     vector<vector<int>> vv3(3);
     vector<Input> vi;
     for (auto& s : vs) {
-      auto ss = Split(s, ' ');
+      auto ss = Split(s, " =.xyz");
       unsigned v = (ss[0] == "on" ? 1 : 0);
-      auto ss1 = Split(ss[1], ',');
       I3Point p1, p2;
       for (unsigned i = 0; i < 3; ++i) {
-        auto ss2 = Split(ss1[i].substr(2), '.');
-        p1[i] = stoi(ss2[0]);
-        p2[i] = stoi(ss2[2]) + 1;
+        p1[i] = stoi(ss[2 * i + 1]);
+        p2[i] = stoi(ss[2 * i + 2]) + 1;
         vv3[i].push_back(p1[i]);
         vv3[i].push_back(p2[i]);
       }
