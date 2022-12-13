@@ -1,3 +1,4 @@
+#include "common/files/json.h"
 #include "common/stl/base.h"
 #include "common/vector/read_lines.h"
 #include "common/vector/split_empty_string.h"
@@ -5,60 +6,47 @@
 #include <functional>
 
 int main_2213() {
-  auto vs = nvector::ReadLines();
-  auto vvs = nvector::SplitEmptyString(vs);
+  using Json = files::JSON;
 
-  auto SplitI = [](const std::string& s) {
-    vector<string> vs;
-    if (s.size() == 2) return vs;
-    int d = 0;
-    unsigned l = 1;
-    for (unsigned i = 1; i < s.size(); ++i) {
-      if (s[i] == '[') {
-        ++d;
-      } else if (s[i] == ']') {
-        --d;
-      } else if ((s[i] == ',') && (d == 0)) {
-        vs.push_back(s.substr(l, i - l));
-        l = i + 1;
-      }
+  function<int(const Json& j1, const Json& j2)> JCmp =
+      [&](const Json& j1, const Json& j2) -> int {
+    if ((j1.Type() == Json::INTEGER) && (j2.Type() == Json::INTEGER))
+      return j1.GetInteger() - j2.GetInteger();
+    if (j1.Type() == Json::INTEGER) {
+      Json t1;
+      t1.SetArray(vector<Json>{j1});
+      return JCmp(t1, j2);
     }
-    vs.push_back(s.substr(l, s.size() - l - 1));
-    return vs;
-  };
-
-  function<int(const string& s1, const string& s2)> Cmp =
-      [&](const string& s1, const string& s2) -> int {
-    if ((s1[0] != '[') && (s2[0] != '[')) return stoi(s1) - stoi(s2);
-    if (s1[0] != '[') return Cmp("[" + s1 + "]", s2);
-    if (s2[0] != '[') return Cmp(s1, "[" + s2 + "]");
-    auto v1 = SplitI(s1), v2 = SplitI(s2);
-    unsigned k = min(v1.size(), v2.size());
+    if (j2.Type() == Json::INTEGER) return -JCmp(j2, j1);
+    unsigned k = min(j1.Size(), j2.Size());
     for (unsigned i = 0; i < k; ++i) {
-      auto x = Cmp(v1[i], v2[i]);
+      auto x = JCmp(j1.GetValue(i), j2.GetValue(i));
       if (x) return x;
     }
-    return int(v1.size()) - int(v2.size());
+    return int(j1.Size()) - int(j2.Size());
   };
 
-  int64_t r1 = 0;
-  for (unsigned i = 0; i < vvs.size(); ++i) {
-    if (Cmp(vvs[i][0], vvs[i][1]) < 0) r1 += (i + 1);
-  }
-  cout << r1 << endl;
+  auto JCmpB = [&](const Json& j1, const Json& j2) { return JCmp(j1, j2) < 0; };
 
-  vector<string> vs2;
-  vs2.push_back("[[2]]");
-  vs2.push_back("[[6]]");
+  auto vs = nvector::ReadLines();
+  vector<Json> vj;
   for (auto& s : vs) {
-    if (!s.empty()) vs2.push_back("[" + s + "]");
+    if (!s.empty()) {
+      vj.push_back({});
+      vj.back().Parse(s);
+    }
   }
-  sort(vs2.begin(), vs2.end(),
-       [&](const string& s1, const string& s2) { return Cmp(s1, s2) < 0; });
-  unsigned r2 = 1;
-  for (unsigned i = 0; i < vs2.size(); ++i) {
-    if ((vs2[i] == "[[2]]") || (vs2[i] == "[[6]]")) r2 *= (i + 1);
+  unsigned jr1 = 0, jr2 = 1;
+  for (unsigned i = 0; i < vj.size(); i += 2) {
+    if (JCmpB(vj[i], vj[i + 1])) jr1 += i / 2 + 1;
   }
-  cout << r2 << endl;
+  vector<Json> vje(2);
+  vje[0].Parse("[[2]]");
+  vje[1].Parse("[[6]]");
+  vj.insert(vj.end(), vje.begin(), vje.end());
+  sort(vj.begin(), vj.end(), JCmpB);
+  for (const auto& j : vje)
+    jr2 *= upper_bound(vj.begin(), vj.end(), j, JCmpB) - vj.begin();
+  cout << jr1 << endl << jr2 << endl;
   return 0;
 }

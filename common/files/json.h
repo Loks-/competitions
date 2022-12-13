@@ -395,5 +395,7 @@ class JSON {
     std::ofstream f(filename);
     ToOStream(f);
   }
+
+  bool operator==(const JSON& r) const { return ToString() == r.ToString(); }
 };
 }  // namespace files
