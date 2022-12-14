@@ -27,19 +27,15 @@ int main_2214() {
   for (int64_t x = x0 - (maxy + 2); x <= x0 + (maxy + 2); ++x)
     ps.insert(I2Point(x, maxy + 2));
   bool first = true;
-  I2Vector v0(0, 1), v1(-1, 1), v2(1, 1);
+  vector<I2Vector> vd{{0, 1}, {-1, 1}, {1, 1}, {0, 0}};
   for (;;) {
     I2Point p(500, 0);
-    for (;;) {
-      if (Test(p + v0)) {
-        p += v0;
-      } else if (Test(p + v1)) {
-        p += v1;
-      } else if (Test(p + v2)) {
-        p += v2;
-      } else {
-        break;
+    for (I2Vector d;;) {
+      for (auto dt : vd) {
+        if (Test(p + (d = dt))) break;
       }
+      if (d.dy == 0) break;
+      p += d;
     }
     if (first && (p.y > maxy)) {
       cout << count << endl;
