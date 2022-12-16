@@ -8,7 +8,7 @@
 #include <functional>
 #include <unordered_map>
 
-int main_2216__base() {
+int main_2216__a() {
   class Valve {
    public:
     unsigned index;
