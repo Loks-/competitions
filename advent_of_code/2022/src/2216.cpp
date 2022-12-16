@@ -1,6 +1,7 @@
 #include "common/graph/graph.h"
 #include "common/graph/graph/distance.h"
 #include "common/numeric/bits/bits_count.h"
+#include "common/numeric/bits/first_bit.h"
 #include "common/stl/base.h"
 #include "common/stl/hash/pair.h"
 #include "common/string/utils/split.h"
@@ -46,18 +47,19 @@ int main_2216() {
   unordered_map<Key, unsigned> cache;
   std::function<unsigned(unsigned, unsigned, uint64_t)> Solve =
       [&](unsigned time, unsigned index, uint64_t mask) {
+        if (mask == 0) return 0u;
         Key key{(time << 16) + index, mask};
         auto it = cache.find(key);
         if (it != cache.end()) return it->second;
         unsigned best = 0;
-        for (unsigned i = 0; i < vv.size(); ++i) {
-          if (vvd[index][i] + 1 >= time) continue;
+        for (uint64_t tmask = mask; tmask;) {
+          auto i = numeric::FirstBit(tmask) - 1;
           auto b = (1ull << i);
-          if (b & mask) {
-            auto time2 = time - vvd[index][i] - 1;
-            unsigned current = vv[i].flow * time2 + Solve(time2, i, mask & ~b);
-            best = max(best, current);
-          }
+          tmask &= ~b;
+          if (vvd[index][i] + 1 >= time) continue;
+          auto time2 = time - vvd[index][i] - 1;
+          unsigned current = vv[i].flow * time2 + Solve(time2, i, mask & ~b);
+          best = max(best, current);
         }
         cache[key] = best;
         return best;
