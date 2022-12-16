@@ -63,7 +63,8 @@ int main_2216() {
         return best;
       };
 
-  cout << Solve(30, vm["AA"], bmask) << endl;
+  auto si = vm["AA"];
+  cout << Solve(30, si, bmask) << endl;
   unsigned r2 = 0;
   for (uint64_t p1 = 0; p1 < (1ull << nbits) / 2; ++p1) {
     uint64_t bm0 = 0, bm1 = 0;
@@ -73,7 +74,7 @@ int main_2216() {
         (((1ull << (j++)) & p1) ? bm0 : bm1) |= b;
       }
     }
-    auto current = Solve(26, vm["AA"], bm0) + Solve(26, vm["AA"], bm1);
+    auto current = Solve(26, si, bm0) + Solve(26, si, bm1);
     r2 = max(r2, current);
   }
   cout << r2 << endl;
