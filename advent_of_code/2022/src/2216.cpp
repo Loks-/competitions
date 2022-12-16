@@ -1,9 +1,7 @@
 #include "common/graph/graph.h"
 #include "common/graph/graph/distance.h"
-#include "common/numeric/bits/bits_count.h"
 #include "common/numeric/bits/first_bit.h"
 #include "common/stl/base.h"
-#include "common/stl/hash/pair.h"
 #include "common/string/utils/split.h"
 #include "common/vector/read_lines.h"
 
@@ -20,8 +18,6 @@ int main_2216() {
   };
 
   vector<Valve> vv;
-  unordered_map<string, unsigned> vm;
-  uint64_t bmask = 0;
   auto vs = nvector::ReadLines();
   for (auto s : vs) {
     auto ss = Split(s, " =;,");
@@ -30,11 +26,15 @@ int main_2216() {
     v.name = ss[1];
     v.flow = stoi(ss[5]);
     for (unsigned i = 10; i < ss.size(); ++i) v.dir.push_back(ss[i]);
-    vm[v.name] = v.index;
     vv.push_back(v);
-    if (v.flow) bmask |= (1ull << v.index);
   }
-  unsigned nbits = numeric::BitsCount(bmask);
+  sort(vv.begin(), vv.end(), [](auto& l, auto& r) { return l.flow > r.flow; });
+  unordered_map<string, unsigned> vm;
+  unsigned nbits = 0;
+  for (unsigned i = 0; i < vv.size(); ++i) {
+    vm[vv[i].name] = i;
+    if (vv[i].flow) ++nbits;
+  }
   DirectedGraph g(vv.size());
   for (unsigned i = 0; i < vv.size(); ++i) {
     for (auto s : vv[i].dir) g.AddEdge(i, vm[s]);
@@ -43,12 +43,11 @@ int main_2216() {
   for (unsigned i = 0; i < g.Size(); ++i)
     vvd.push_back(DistanceFromSource(g, i));
 
-  using Key = pair<unsigned, uint64_t>;
-  unordered_map<Key, unsigned> cache;
+  unordered_map<uint64_t, unsigned> cache;
   std::function<unsigned(unsigned, unsigned, uint64_t)> Solve =
       [&](unsigned time, unsigned index, uint64_t mask) {
         if (mask == 0) return 0u;
-        Key key{(time << 16) + index, mask};
+        auto key = (time << 16) + index + (mask << 32);
         auto it = cache.find(key);
         if (it != cache.end()) return it->second;
         unsigned best = 0;
@@ -66,17 +65,11 @@ int main_2216() {
       };
 
   auto si = vm["AA"];
-  cout << Solve(30, si, bmask) << endl;
+  uint64_t mask = (1ull << nbits) - 1ull;
+  cout << Solve(30, si, (1ull << nbits) - 1ull) << endl;
   unsigned r2 = 0;
-  for (uint64_t p1 = 0; p1 < (1ull << nbits) / 2; ++p1) {
-    uint64_t bm0 = 0, bm1 = 0;
-    for (unsigned i = 0, j = 0; i < vv.size(); ++i) {
-      auto b = (1ull << i);
-      if (b & bmask) {
-        (((1ull << (j++)) & p1) ? bm0 : bm1) |= b;
-      }
-    }
-    auto current = Solve(26, si, bm0) + Solve(26, si, bm1);
+  for (uint64_t p1 = 0; p1 < (1ull << (nbits - 1)); ++p1) {
+    auto current = Solve(26, si, p1) + Solve(26, si, mask & ~p1);
     r2 = max(r2, current);
   }
   cout << r2 << endl;
