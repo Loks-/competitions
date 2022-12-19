@@ -1,71 +1,77 @@
+#include "common/hash.h"
+#include "common/heap.h"
+#include "common/linear_algebra/utils/all_values_compare.h"
+#include "common/linear_algebra/vector_static_size.h"
 #include "common/stl/base.h"
-#include "common/string/utils/split.h"
 #include "common/vector/extract_int.h"
-#include "common/vector/make.h"
 #include "common/vector/read_lines.h"
-#include "common/vector/unique.h"
 
 int main_2219() {
-  auto Solve = [](string s, unsigned n) {
+  using TVector = la::VectorStaticSize<int, 4>;
+
+  class State {
+   public:
+    unsigned t;
+    TVector v1, v2;
+    int eval;
+
+    void Eval() {
+      eval = v2(3) + t * v1(3);
+      eval += (t * (t - 1)) / 2;
+    }
+
+    bool operator<(const State& r) const { return eval < r.eval; }
+    bool operator>(const State& r) const { return eval > r.eval; }
+
+    size_t Hash() const {
+      size_t h = t;
+      for (unsigned i = 0; i < 4; ++i)
+        h = HashCombine(HashCombine(h, v1(i)), v2(i));
+      return h;
+    }
+  };
+
+  auto Solve = [](string s, unsigned t) {
+    vector<TVector> vcost(4);
     auto vt = nvector::ExtractInt<unsigned>(s, " ");
-    auto vcost = nvector::Make<unsigned>(4, 4, 0u);
-    // TODO: simplify
-    vcost[0][0] = vt[0];
-    vcost[1][0] = vt[1];
-    vcost[2][0] = vt[2];
-    vcost[2][1] = vt[3];
-    vcost[3][0] = vt[4];
-    vcost[3][2] = vt[5];
-    vector<unsigned> vm{max(max(vcost[1][0], vcost[2][0]), vcost[3][0]),
-                        vcost[2][1], vcost[3][2], n};
-    vector<vector<unsigned>> vv1, vv2;
-    vv2.push_back({1, 0, 0, 0, 0, 0, 0, 0});
-    for (unsigned t = 0; t < n; ++t) {
-      vv1.clear();
-      for (const auto& v : vv2) {
-        bool ok = true;
-        for (const auto& v2 : vv2) {
-          if (v == v2) continue;
-          bool ok2 = false;
-          for (unsigned i = 0; i < 8; ++i) {
-            if (v[i] > v2[i]) {
-              ok2 = true;
-              break;
-            }
-          }
-          if (!ok2) {
-            ok = false;
-            break;
-          }
-        }
-        if (ok) vv1.push_back(v);
+    swap(vt[3], vt[4]);
+    for (unsigned i = 0; i < 4; ++i) vcost[i](0) = vt[i];
+    vcost[2](1) = vt[4];
+    vcost[3](2) = vt[5];
+    int m0 = max(max(vcost[1](0), vcost[2](0)), vcost[3](0));
+    State s0;
+    s0.t = t;
+    s0.v1(0) = 1;
+    s0.Eval();
+    HeapMaxOnTop<State> h;
+    unordered_set<size_t> sh;
+    int best = 0;
+    for (h.Add(s0); !h.Empty();) {
+      auto st = h.Extract();
+      if (st.eval <= best) break;
+      if (st.t == 0) {
+        best = max(best, st.v2(3));
+        continue;
       }
-      nvector::UniqueUnsorted(vv1);
-      vv2.clear();
-      for (const auto& v : vv1) {
-        for (unsigned i = 0; i <= 4; ++i) {
-          auto vv = v;
-          if (i < 4) {
-            bool enough = (vv[i] < vm[i]);
-            for (unsigned j = 0; j < 4; ++j) {
-              if (vv[j + 4] < vcost[i][j]) enough = false;
-            }
-            if (!enough) continue;
-            for (unsigned j = 0; j < 4; ++j) {
-              vv[j + 4] -= vcost[i][j];
-            }
-            vv[i] += 1;
-            vv[i + 4] -= 1;
-          }
-          for (unsigned j = 0; j < 4; ++j) {
-            vv[j + 4] += vv[j];
-          }
-          vv2.push_back(vv);
+      for (unsigned i = 0; i <= 4; ++i) {
+        auto st2 = st;
+        if (i < 4) {
+          if (!la::AVLessOrEqual(vcost[i], st2.v2)) continue;
+          if ((i == 0) && (st2.v1(0) >= m0)) continue;
+          st2.v2 -= vcost[i];
+          st2.v1(i) += 1;
+          st2.v2(i) -= 1;
         }
+        st2.t -= 1;
+        st2.v2 += st2.v1;
+        st2.Eval();
+        auto hh = st2.Hash();
+        if (sh.find(hh) != sh.end()) continue;
+        sh.insert(hh);
+        h.Add(st2);
       }
     }
-    unsigned best = 0;
-    for (auto& v : vv2) best = max(best, v[7]);
+    // cout << h.Size() << endl;
     return best;
   };
 
