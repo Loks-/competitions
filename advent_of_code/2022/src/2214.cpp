@@ -2,7 +2,7 @@
 #include "common/geometry/d2/stl_hash/point.h"
 #include "common/geometry/d2/utils/sign.h"
 #include "common/stl/base.h"
-#include "common/string/utils/split.h"
+#include "common/vector/extract_int.h"
 #include "common/vector/read_lines.h"
 
 #include <unordered_set>
@@ -14,11 +14,11 @@ int main_2214() {
   auto Test = [&](const I2Point& p) { return ps.find(p) == ps.end(); };
 
   for (auto& s : vs) {
-    auto ss = Split(s, " ->,");
-    I2Point p(stoi(ss[0]), stoi(ss[1]));
+    auto ss = nvector::ExtractInt<int64_t>(s, " ,");
+    I2Point p(ss[0], ss[1]);
     maxy = max(maxy, p.y);
     for (unsigned i = 2; i < ss.size(); i += 2) {
-      I2Point p2(stoi(ss[i]), stoi(ss[i + 1]));
+      I2Point p2(ss[i], ss[i + 1]);
       maxy = max(maxy, p2.y);
       for (auto d = Sign(p2 - p); p != p2; p += d) ps.insert(p);
     }

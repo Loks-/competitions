@@ -1,11 +1,10 @@
 #include "common/stl/base.h"
 #include "common/string/utils/split.h"
+#include "common/vector/extract_int.h"
 #include "common/vector/read_lines.h"
 #include "common/vector/split_empty_string.h"
 
 int main_2211() {
-  auto vs = nvector::ReadLines();
-  auto vvs = nvector::SplitEmptyString(vs);
   class Monkey {
    public:
     uint64_t count;
@@ -15,19 +14,20 @@ int main_2211() {
     int div;
     unsigned j1, j2;
   };
+
+  auto vs = nvector::ReadLines();
+  auto vvs = nvector::SplitEmptyString(vs);
   int64_t M = 1;
   vector<Monkey> vm0(vvs.size());
   for (unsigned j = 0; j < vvs.size(); ++j) {
     auto& v = vvs[j];
-    auto ss1 = Split(v[1], ", ");
-    for (unsigned i = 2; i < ss1.size(); ++i)
-      vm0[j].items.push_back(stoi(ss1[i]));
+    vm0[j].items = nvector::ExtractInt<int64_t>(v[1], ", ");
     auto ss2 = Split(v[2], " ");
     vm0[j].mult = ss2[4] == "*";
     vm0[j].v2 = (ss2[5] == "old") ? 0 : stoi(ss2[5]);
-    vm0[j].div = stoi(Split(v[3], " ").back());
-    vm0[j].j1 = stoi(Split(v[4], " ").back());
-    vm0[j].j2 = stoi(Split(v[5], " ").back());
+    vm0[j].div = nvector::ExtractInt<int>(v[3])[0];
+    vm0[j].j1 = nvector::ExtractInt<unsigned>(v[4])[0];
+    vm0[j].j2 = nvector::ExtractInt<unsigned>(v[5])[0];
     M *= vm0[j].div;
   }
 
