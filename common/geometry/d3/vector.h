@@ -25,17 +25,18 @@ class Vector {
   T LengthSquared() const { return dx * dx + dy * dy + dz * dz; }
   T Length() const { return sqrt(LengthSquared()); }
 
-  bool operator==(const TSelf& v) const {
-    return (dx == v.dx) && (dy == v.dy) && (dz == v.dz);
+  bool operator==(const TSelf& r) const {
+    return (dx == r.dx) && (dy == r.dy) && (dz == r.dz);
   }
 
-  bool operator!=(const TSelf& v) const {
-    return (dx != v.dx) || (dy != v.dy) || (dz != v.dz);
+  bool operator!=(const TSelf& r) const {
+    return (dx != r.dx) || (dy != r.dy) || (dz != r.dz);
   }
 
-  bool operator<(const TSelf& v) const {
-    return (dx != v.dx) ? (dx < v.dx) : (dy != v.dy) ? (dy < v.dy)
-                                                     : (dz < v.dz);
+  bool operator<(const TSelf& r) const {
+    return (dx != r.dx)   ? (dx < r.dx)
+           : (dy != r.dy) ? (dy < r.dy)
+                          : (dz < r.dz);
   }
 
   T& operator[](unsigned index) {

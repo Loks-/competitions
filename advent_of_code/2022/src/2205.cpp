@@ -1,6 +1,6 @@
 #include "common/stl/base.h"
 #include "common/string/utils/split.h"
-#include "common/vector/read.h"
+#include "common/vector/extract_int.h"
 #include "common/vector/read_lines.h"
 
 int main_2205() {
@@ -18,8 +18,8 @@ int main_2205() {
       }
     }
     for (unsigned i = l + 1; i < vs.size(); ++i) {
-      auto ss = Split(vs[i], " ");
-      unsigned n = stoi(ss[1]), f = stoi(ss[3]), t = stoi(ss[5]);
+      auto vi = nvector::ExtractInt<unsigned>(vs[i], " ");
+      unsigned n = vi[0], f = vi[1], t = vi[2];
       if ((vv[f].size() < n) || (f == t)) cout << "X" << endl;
       if (ab)
         vv[t].insert(vv[t].end(), vv[f].end() - n, vv[f].end());
