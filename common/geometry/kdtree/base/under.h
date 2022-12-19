@@ -14,7 +14,7 @@ inline bool Under(const TPoint& l, const TPoint& r) {
 template <class TPoint>
 inline bool StrictUnder(const TPoint& l, const TPoint& r) {
   for (unsigned i = 0; i < TPoint::dim; ++i) {
-    if (l[i] > r[i]) return false;
+    if (l[i] >= r[i]) return false;
   }
   return true;
 }
