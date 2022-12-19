@@ -15,9 +15,26 @@ int main_2219() {
     TVector v1, v2;
     int eval;
 
-    void Eval() {
-      eval = v2(3) + t * v1(3);
-      eval += (t * (t - 1)) / 2;
+    void Eval(const vector<TVector>& vcost) {
+      static vector<TVector> vv(40);
+      for (unsigned it = 0; it <= t; ++it) vv[it] = v1 * int(it) + v2;
+      for (unsigned it = 0, j = 1, c = vcost[0](0); it < t; ++it) {
+        if (vv[it](0) >= int(j * c)) {
+          ++j;
+          for (unsigned it2 = it + c + 1; it2 <= t; ++it2)
+            vv[it2](0) += (it2 - it - c);
+        }
+      }
+      for (unsigned k = 1; k < 4; ++k) {
+        for (unsigned it = 0, j = 1, c = vcost[k](k - 1); it < t; ++it) {
+          if (vv[it](k - 1) >= int(j * c)) {
+            ++j;
+            for (unsigned it2 = it + 1; it2 <= t; ++it2)
+              vv[it2](k) += (it2 - it);
+          }
+        }
+      }
+      eval = vv[t](3);
     }
 
     bool operator<(const State& r) const { return eval < r.eval; }
@@ -42,7 +59,7 @@ int main_2219() {
     State s0;
     s0.t = t;
     s0.v1(0) = 1;
-    s0.Eval();
+    s0.Eval(vcost);
     HeapMaxOnTop<State> h;
     unordered_set<size_t> sh;
     int best = 0;
@@ -64,14 +81,13 @@ int main_2219() {
         }
         st2.t -= 1;
         st2.v2 += st2.v1;
-        st2.Eval();
+        st2.Eval(vcost);
         auto hh = st2.Hash();
         if (sh.find(hh) != sh.end()) continue;
         sh.insert(hh);
         h.Add(st2);
       }
     }
-    // cout << h.Size() << endl;
     return best;
   };
 
