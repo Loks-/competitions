@@ -17,10 +17,11 @@ class Vector {
   using TSelf = Vector<dim_, T>;
   static const unsigned dim = dim_;
 
-  std::array<dim, T> dpc;
+  std::array<T, dim> dpc;
 
   Vector() { std::fill(dpc.begin(), dpc.end(), T()); }
-  Vector(const std::array<dim, T>& v) : dpc(v) {}
+  Vector(const T& value) { std::fill(dpc.begin(), dpc.end(), value); }
+  Vector(const std::array<T, dim>& v) : dpc(v) {}
 
   Vector(const std::vector<T>& v) {
     assert(v.size() == dim);
@@ -49,7 +50,7 @@ class Vector {
 
   bool operator<(const TSelf& r) const {
     for (unsigned i = 0; i < dim; ++i) {
-      if (pc[i] != r[i]) return pc[i] < r[i];
+      if (dpc[i] != r[i]) return dpc[i] < r[i];
     }
     return false;
   }
@@ -59,7 +60,7 @@ class Vector {
 
   TSelf operator-() const {
     TSelf p;
-    for (unsigned i = 0; i < dim; ++i) p[i] = -pc[i];
+    for (unsigned i = 0; i < dim; ++i) p[i] = -dpc[i];
     return p;
   }
 

@@ -15,10 +15,11 @@ class Point {
   using TSelf = Point<dim_, T>;
   static const unsigned dim = dim_;
 
-  std::array<dim, T> pc;
+  std::array<T, dim> pc;
 
   Point() { std::fill(pc.begin(), pc.end(), T()); }
-  Point(const std::array<dim, T>& v) : pc(v) {}
+  Point(const T& value) { std::fill(pc.begin(), pc.end(), value); }
+  Point(const std::array<T, dim>& v) : pc(v) {}
 
   Point(const std::vector<T>& v) {
     assert(v.size() == dim);
