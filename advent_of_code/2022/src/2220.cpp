@@ -1,5 +1,6 @@
 #include "common/binary_search_tree/base/order.h"
 #include "common/binary_search_tree/treap.h"
+#include "common/modular/arithmetic.h"
 #include "common/stl/base.h"
 #include "common/vector/read_all.h"
 
@@ -22,9 +23,8 @@ int main_2220() {
         tree.SplitBySize(t, 1, m, r);
         assert(m == node);
         root = tree.Join(l, r);
-        auto newp = p + node->data;
-        newp = ((newp % (n - 1)) + (n - 1)) % (n - 1);
-        tree.SplitBySize(root, newp, l, r);
+        auto pnew = modular::TArithmetic_C32U::ApplyS(p + node->data, n - 1);
+        tree.SplitBySize(root, pnew, l, r);
         root = tree.Join3(l, m, r);
       }
     }
