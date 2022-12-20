@@ -22,17 +22,27 @@ inline void IntervalRotateRight(typename TTree::TNode*& root, size_t first,
                                 size_t last, size_t shift) {
   assert(last > first);
   shift %= (last - first);
-  if (shift == 0) return;
-  return SwapIntervals<TTree>(root, first, last - shift, last);
+  if (shift != 0) SwapIntervals<TTree>(root, first, last - shift, last);
 }
 
-// Rotate elements in interval [first, last) to right by shift
+// Rotate elements in interval [first, last) to left by shift
 template <class TTree>
 inline void IntervalRotateLeft(typename TTree::TNode*& root, size_t first,
                                size_t last, size_t shift) {
   assert(last > first);
   shift %= (last - first);
-  if (shift == 0) return;
-  return SwapIntervals<TTree>(root, first, first + shift, last);
+  if (shift != 0) SwapIntervals<TTree>(root, first, first + shift, last);
+}
+
+// Rotate all elements to right by shift
+template <class TTree>
+inline void VectorRotateRight(typename TTree::TNode*& root, size_t shift) {
+  if (root) IntervalRotateRight<TTree>(root, 0, root->info.size, shift);
+}
+
+// Rotate all elements to left by shift
+template <class TTree>
+inline void VectorRotateLeft(typename TTree::TNode*& root, size_t shift) {
+  if (root) IntervalRotateLeft<TTree>(root, 0, root->info.size, shift);
 }
 }  // namespace bst
