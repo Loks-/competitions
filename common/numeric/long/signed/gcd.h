@@ -2,12 +2,15 @@
 
 #include "common/numeric/long/signed.h"
 #include "common/numeric/long/unsigned/gcd.h"
-#include "common/numeric/utils/gcd.h"
 
-inline LongSigned GCD(const LongSigned& a, const LongSigned& b) {
-  return LongSigned(GCD(a.GetUnsigned(), b.GetUnsigned()));
+namespace numeric {
+namespace nlong {
+inline Signed GCD(const Signed& a, const Signed& b) {
+  return Signed(GCD(a.GetUnsigned(), b.GetUnsigned()));
 }
 
-inline LongSigned GCDSafe(const LongSigned& a, const LongSigned& b) {
-  return LongSigned(GCD(a.GetUnsigned(), b.GetUnsigned()));
+inline Signed GCDSafe(const Signed& a, const Signed& b) {
+  return Signed(GCD(a.GetUnsigned(), b.GetUnsigned()));
 }
+}  // namespace nlong
+}  // namespace numeric

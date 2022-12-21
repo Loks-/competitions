@@ -19,8 +19,7 @@ class Fraction {
       numerator = -numerator;
       denominator = -denominator;
     }
-    TValue g =
-        GCD<TValue>((numerator < 0 ? -numerator : numerator), denominator);
+    TValue g = GCD((numerator < 0 ? -numerator : numerator), denominator);
     numerator /= g;
     denominator /= g;
   }
