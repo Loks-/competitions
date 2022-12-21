@@ -1,7 +1,4 @@
-#include "common/numeric/fraction.h"
-#include "common/numeric/long/signed/gcd.h"
-#include "common/numeric/long/signed/multiplication.h"
-#include "common/numeric/long/signed_io.h"
+#include "common/numeric/long/fraction_io.h"
 #include "common/stl/base.h"
 #include "common/string/utils/split.h"
 #include "common/vector/read_lines.h"
@@ -10,12 +7,10 @@
 #include <unordered_map>
 
 int main_2221() {
-  using TValue = numeric::Fraction<LongSigned>;
-
   class Monkey {
    public:
     string name;
-    TValue value;
+    TLFraction value;
     string op;
     string v1, v2;
     unsigned p;
@@ -33,7 +28,7 @@ int main_2221() {
       m.op = ss[2];
       m.v2 = ss[3];
     } else {
-      m.value = TValue(LongSigned(stoi(ss[1])));
+      m.value = MakeTLFraction(stoi(ss[1]));
     }
     mm[m.name] = m;
   }
@@ -44,7 +39,7 @@ int main_2221() {
     }
   }
 
-  auto Eval = [&](TValue x) {
+  auto Eval = [&](TLFraction x) {
     mm["humn"].value = x;
     queue<string> mq;
     for (auto& it : mm) {
@@ -75,7 +70,7 @@ int main_2221() {
 
   cout << Eval(mm["humn"].value).GetN() << endl;
   mm["root"].op = "-";
-  auto f0 = Eval(TValue(LongSigned(0))), f1 = Eval(TValue(LongSigned(1)));
+  auto f0 = Eval(MakeTLFraction(0)), f1 = Eval(MakeTLFraction(1));
   cout << (-f0 / (f1 - f0)).GetN() << endl;
   return 0;
 }
