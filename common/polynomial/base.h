@@ -1,6 +1,7 @@
 #pragma once
 
 #include "common/base.h"
+
 #include <algorithm>
 #include <vector>
 
@@ -27,13 +28,16 @@ class Base {
   bool Empty() const { return data.size() == 0; }
   unsigned Size() const { return unsigned(data.size()); }
   unsigned Power() const { return std::max<unsigned>(Size(), 1) - 1; }
+
   void Normalize() {
-    for (; (data.size() > 0) && (data.back() == TValue(0));) data.pop_back();
+    for (; (data.size() > 0) && (data.back() == TValue());) data.pop_back();
   }
 
   TValue GetCoefficient(unsigned i) const {
-    return (i < data.size()) ? data[i] : TValue(0);
+    return (i < data.size()) ? data[i] : TValue();
   }
+
+  TValue operator[](unsigned i) const { return GetCoefficient(i); }
 
   void SetCoefficient(unsigned i, const TValue& new_value) {
     if (data.size() <= i) data.resize(i + 1);
@@ -101,24 +105,22 @@ class Base {
 
   TMe operator-() const {
     TMe t(*Me());
-    for (TValue *p = t.begin(), *pend = t.end(); p < pend; ++p) *p = -*p;
+    for (auto p = t.begin(), pend = t.end(); p < pend; ++p) *p = -*p;
     return t;
   }
 
   TMe& operator+=(const TMe& v) {
     if (Size() < v.Size()) data.resize(v.Size());
-    TValue* p = v.begin();
-    for (const TValue *pv = v.begin(), *pvend = v.end(); pv < pvend;)
-      *p++ += *pv++;
+    auto p = begin();
+    for (auto pv = v.begin(), pvend = v.end(); pv < pvend;) *p++ += *pv++;
     Normalize();
     return *Me();
   }
 
   TMe& operator-=(const TMe& v) {
     if (Size() < v.Size()) data.resize(v.Size());
-    TValue* p = v.begin();
-    for (const TValue *pv = v.begin(), *pvend = v.end(); pv < pvend;)
-      *p++ -= *pv++;
+    auto p = begin();
+    for (auto pv = v.begin(), pvend = v.end(); pv < pvend;) *p++ -= *pv++;
     Normalize();
     return *Me();
   }

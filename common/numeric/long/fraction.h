@@ -7,10 +7,10 @@
 
 using TLFraction = numeric::Fraction<numeric::nlong::Signed>;
 
-TLFraction MakeTLFraction(int x) {
-  return TLFraction(numeric::nlong::Signed(x));
+inline TLFraction MakeTLFraction(int numerator) {
+  return TLFraction(numeric::nlong::Signed(numerator));
 }
 
-TLFraction MakeTLFraction(int64_t x) {
-  return TLFraction(numeric::nlong::Signed(x));
+inline TLFraction MakeTLFraction(int64_t numerator) {
+  return TLFraction(numeric::nlong::Signed(numerator));
 }

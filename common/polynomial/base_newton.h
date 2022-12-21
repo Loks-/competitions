@@ -1,13 +1,14 @@
 #pragma once
 
 #include "common/polynomial/base.h"
+
 #include <vector>
 
 namespace polynomial {
 // Basis polynomials:
 //   f_k = x * (x - 1) * ... * (x - k + 1)
 template <class TTValue>
-class BaseNewton : Base<TTValue, BaseNewton<TTValue>> {
+class BaseNewton : public Base<TTValue, BaseNewton<TTValue>> {
  public:
   using TValue = TTValue;
   using TSelf = BaseNewton<TValue>;
