@@ -17,9 +17,9 @@ class GCD : public TInfo {
   template <class TNode>
   void Update(TNode* node) {
     TBase::Update(node);
-    gcd = ::GCD<TGCDType>(node->data,
-                          ::GCD<TGCDType>((node->l ? node->l->info.gcd : 0),
-                                          (node->r ? node->r->info.gcd : 0)));
+    gcd = TGCDType(node->data);
+    if (node->l) gcd = ::GCD(gcd, node->l->info.gcd);
+    if (node->r) gcd = ::GCD(gcd, node->r->info.gcd);
   }
 };
 }  // namespace info
