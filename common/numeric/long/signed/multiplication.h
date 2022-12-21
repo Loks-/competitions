@@ -20,12 +20,10 @@ inline Signed Mult(const Signed& a, const Signed& b) {
   return Signed(a.Sign() == b.Sign(), Mult(a.GetUnsigned(), b.GetUnsigned()));
 }
 
-inline LongSigned operator*(const LongSigned& l, const LongSigned& r) {
-  return numeric::nlong::Mult(l, r);
-}
+inline Signed operator*(const Signed& l, const Signed& r) { return Mult(l, r); }
 
-inline LongSigned& operator*=(LongSigned& l, const LongSigned& r) {
-  l = numeric::nlong::Mult(l, r);
+inline Signed& operator*=(Signed& l, const Signed& r) {
+  l = Mult(l, r);
   return l;
 }
 }  // namespace nlong
