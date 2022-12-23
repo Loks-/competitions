@@ -74,7 +74,7 @@ class Base {
   }
 
   TMe& operator/=(const TValue& v) {
-    assert(v != TValue(0));
+    assert(v != TValue());
     for (TValue *p = begin(), *pend = end(); p < pend;) *p++ /= v;
     return *Me();
   }
