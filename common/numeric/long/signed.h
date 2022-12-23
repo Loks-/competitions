@@ -63,8 +63,9 @@ class Signed {
   bool operator!=(const Signed& ls) const { return !(*this == ls); }
 
   bool operator<(const Signed& ls) const {
-    return (sign != ls.sign) ? !sign : sign ? (value < ls.value)
-                                            : (ls.value < value);
+    return (sign != ls.sign) ? !sign
+           : sign            ? (value < ls.value)
+                             : (ls.value < value);
   }
 
   bool operator>(const Signed& ls) const { return ls < *this; }
@@ -137,16 +138,15 @@ class Signed {
   Signed operator-() const { return Signed(!sign, value); }
 
   Signed operator+(const Signed& r) const {
-    return (sign == r.sign)
-               ? Signed(sign, value + r.value)
-               : (value < r.value) ? Signed(r.sign, r.value - value)
-                                   : Signed(sign, value - r.value);
+    return (sign == r.sign)    ? Signed(sign, value + r.value)
+           : (value < r.value) ? Signed(r.sign, r.value - value)
+                               : Signed(sign, value - r.value);
   }
 
   Signed operator-(const Signed& r) const {
-    return (sign != r.sign) ? Signed(sign, value + r.value)
-                            : (value < r.value) ? Signed(!sign, r.value - value)
-                                                : Signed(sign, value - r.value);
+    return (sign != r.sign)    ? Signed(sign, value + r.value)
+           : (value < r.value) ? Signed(!sign, r.value - value)
+                               : Signed(sign, value - r.value);
   }
 
   Signed operator+(int32_t r) const { return *this + Signed(r); }
