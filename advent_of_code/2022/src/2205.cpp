@@ -20,7 +20,6 @@ int main_2205() {
     for (unsigned i = l + 1; i < vs.size(); ++i) {
       auto vi = nvector::ExtractInt<unsigned>(vs[i], " ");
       unsigned n = vi[0], f = vi[1], t = vi[2];
-      if ((vv[f].size() < n) || (f == t)) cout << "X" << endl;
       if (ab)
         vv[t].insert(vv[t].end(), vv[f].end() - n, vv[f].end());
       else
