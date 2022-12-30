@@ -9,4 +9,5 @@
     * 16 - Jae/Slava one pass DP algo for all subsets
     * 19 - Solution without KD tree
     * 22
+    * 23 - Avoid checks in the second part
     * 24 - A* solution
