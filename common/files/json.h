@@ -98,11 +98,27 @@ class JSON {
     return GetValue(key).GetInteger();
   }
 
+  int GetInteger(const std::string& key, int default_value) const {
+    return HasKey(key) ? GetValue(key).GetInteger() : default_value;
+  }
+
   double GetFloating() const {
     if (type == INTEGER) return value_integer;
     if (type == FLOATING) return value_floating;
     assert(false);
     return 0;
+  }
+
+  double GetFloating(unsigned index) const {
+    return GetValue(index).GetFloating();
+  }
+
+  double GetFloating(const std::string& key) const {
+    return GetValue(key).GetFloating();
+  }
+
+  double GetFloating(const std::string& key, double default_value) const {
+    return HasKey(key) ? GetValue(key).GetFloating() : default_value;
   }
 
   const std::string& GetString() const {
@@ -118,9 +134,25 @@ class JSON {
     return GetValue(key).GetString();
   }
 
+  const std::string& GetString(const std::string& key,
+                               const std::string& default_value) const {
+    return HasKey(key) ? GetValue(key).GetString() : default_value;
+  }
+
   bool GetBoolean() const {
     assert(type == BOOLEAN);
     return value_boolean;
+  }
+
+  std::vector<std::string> GetStringVector() const {
+    assert((type == ARRAY) || (type == DICTIONARY));
+    std::vector<std::string> vs;
+    for (const auto& s : value_array) vs.push_back(s.GetString());
+    return vs;
+  }
+
+  std::vector<std::string> GetStringVector(const std::string& key) const {
+    return GetValue(key).GetStringVector();
   }
 
   JSON& GetValue(unsigned index) {
