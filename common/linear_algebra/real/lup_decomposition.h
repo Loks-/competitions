@@ -4,9 +4,9 @@
 #include "common/linear_algebra/rows/sub_m.h"
 #include "common/linear_algebra/rows/swap.h"
 #include "common/linear_algebra/vector.h"
+#include "common/numeric/utils/abs.h"
 
 #include <algorithm>
-#include <cmath>
 #include <vector>
 
 namespace la {
@@ -39,14 +39,14 @@ class LUPDecomposition {
     for (unsigned i = 0; i < n; ++i) {
       double max_value = 0.0;
       for (unsigned j = 0; j < n; ++j)
-        max_value = std::max(max_value, fabs(lu(i, j)));
+        max_value = std::max(max_value, Abs(lu(i, j)));
       vv[i] = (max_value < eps_build) ? 1.0 : 1.0 / max_value;
     }
     for (unsigned k = 0; k < n; ++k) {
       double max_value = 0.0;
       unsigned imax = k;
       for (unsigned i = k; i < n; ++i) {
-        double temp = vv[i] * fabs(lu(i, k));
+        double temp = vv[i] * Abs(lu(i, k));
         if (temp > max_value) {
           max_value = temp;
           imax = i;
@@ -58,13 +58,13 @@ class LUPDecomposition {
         vv[imax] = vv[k];
       }
       p[k] = imax;
-      if (fabs(lu(k, k)) <= eps_build) {
+      if (Abs(lu(k, k)) <= eps_build) {
         for (unsigned i = k; i < n; ++i) {
-          if (fabs(lu(i, k)) > eps_build) return false;
+          if (Abs(lu(i, k)) > eps_build) return false;
           lu(i, k) = 0.0;
         }
       } else {
-        double ilukk = 1.0 / lu(k, k);
+        TValue ilukk = 1.0 / lu(k, k);
         for (unsigned i = k + 1; i < n; ++i) {
           lu(i, k) *= ilukk;
           rows::SubM(lu, i, k, lu(i, k), k + 1);
@@ -76,8 +76,8 @@ class LUPDecomposition {
 
   unsigned Size() const { return lu.Rows(); }
 
-  double Det() const {
-    double det = det_sign;
+  TValue Det() const {
+    TValue det = det_sign;
     for (unsigned i = 0; i < Size(); ++i) det *= lu(i, i);
     return det;
   }
@@ -91,7 +91,7 @@ class LUPDecomposition {
     unsigned ii = 0;
     for (unsigned i = 0; i < n; ++i) {
       unsigned ip = p[i];
-      double sum = output_x(ip);
+      TValue sum = output_x(ip);
       output_x(ip) = output_x(i);
       if (ii != 0) {
         for (unsigned j = ii - 1; j < i; ++j) sum -= lu(i, j) * output_x(j);
@@ -101,10 +101,10 @@ class LUPDecomposition {
       output_x(i) = sum;
     }
     for (unsigned i = n; i--;) {
-      double sum = output_x(i);
+      TValue sum = output_x(i);
       for (unsigned j = i + 1; j < n; ++j) sum -= lu(i, j) * output_x(j);
       if (lu(i, i) == 0.0) {
-        if (fabs(sum) > eps_solve) return false;
+        if (Abs(sum) > eps_solve) return false;
         output_x(i) = 0.0;
       } else {
         output_x(i) = sum / lu(i, i);
