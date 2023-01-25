@@ -3,7 +3,6 @@
 #include "common/base.h"
 #include "common/linear_algebra/rows/sub_m.h"
 #include "common/linear_algebra/rows/swap.h"
-#include "common/linear_algebra/vector.h"
 #include "common/numeric/utils/abs.h"
 
 #include <algorithm>
