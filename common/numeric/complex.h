@@ -16,6 +16,20 @@ class Complex {
   explicit Complex(const TValue& _re) : re(_re), im(0) {}
   Complex(const TValue& _re, const TValue& _im) : re(_re), im(_im) {}
 
+  bool operator==(const TValue& r) const {
+    return (re == r) && (im == TValue(0));
+  }
+
+  bool operator!=(const TValue& r) const {
+    return (re != r) || (im != TValue(0));
+  }
+
+  bool operator==(const TSelf& r) const { return (re == r.re) && (im == r.im); }
+  bool operator!=(const TSelf& r) const { return (re != r.re) || (im != r.im); }
+
+  TSelf operator*(const TValue& r) const { return TSelf(re * r, r.im * r); }
+  TSelf operator/(const TValue& r) const { return TSelf(re / r, r.im / r); }
+
   TSelf& operator+=(const TSelf& r) {
     re += r.re;
     im += r.im;
@@ -70,4 +84,14 @@ class Complex {
       return PowU(pow);
   }
 };
+
+template <class TValue>
+inline Complex<TValue> operator*(const TValue& l, const Complex<TValue>& r) {
+  return Complex<TValue>(r.re * l, r.im * l);
+}
+
+template <class TValue>
+inline Complex<TValue> operator/(const TValue& l, const Complex<TValue>& r) {
+  return Complex<TValue>(l) / r;
+}
 }  // namespace numeric
