@@ -35,7 +35,6 @@ int main_evolutionary_algorithms__treap() {
         auto s1 = (s - 1) / K;
         uint64_t tt = upper_bound(vss.begin(), vss.end(), s1) - vss.begin();
         if (tt > 1) {
-          // Use order instead of split?
           TTree::SplitByKey(vn[i], (s1 + 1) * N, p1, p2);
           uint64_t tc = (p1 ? p1->info.size : size_t(0));
           r += tc * (tt - tc);
