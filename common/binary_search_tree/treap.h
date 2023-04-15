@@ -9,6 +9,7 @@
 #include "common/binary_search_tree/info/update_node_to_root.h"
 #include "common/memory/nodes_manager_fixed_size.h"
 
+#include <algorithm>
 #include <stack>
 #include <vector>
 
@@ -218,6 +219,18 @@ class Treap
     }
     root->UpdateInfo();
     return root;
+  }
+
+  static TNode* Union(TNode* p1, TNode* p2) {
+    if (!p1) return p2;
+    if (!p2) return p1;
+    if (p1->info.treap_height < p2->info.treap_height) std::swap(p1, p2);
+    TNode *pt1 = nullptr, *pt2 = nullptr;
+    SplitByKey(p2, p1->key, pt1, pt2);
+    p1->SetL(Union(p1->l, pt1));
+    p1->SetR(Union(p1->r, pt2));
+    p1->UpdateInfo();
+    return p1;
   }
 
  protected:
