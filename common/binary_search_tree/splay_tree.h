@@ -9,6 +9,8 @@
 #include "common/binary_search_tree/info/size.h"
 #include "common/memory/nodes_manager_fixed_size.h"
 
+#include <algorithm>
+
 namespace bst {
 template <bool use_key, class TData, class TInfo = info::Size,
           class TAction = action::None, class TKey = int64_t,
@@ -156,7 +158,7 @@ class SplayTree
 
   static size_t Order(TNode* node) {
     Splay(node);
-    return node->l ? 1 + node->l->info.size : 0;
+    return node->l ? node->l->info.size : 0;
   }
 
   static TNode* FindByOrder(TNode*& root, size_t order_index) {
@@ -194,6 +196,23 @@ class SplayTree
     if (node->r) node->r->p = node;
     node->UpdateInfo();
     return node;
+  }
+
+  static TNode* Union(TNode* root1, TNode* root2) {
+    static_assert(use_key, "use_key should be true");
+    static_assert(TInfo::has_size, "info should contain size");
+    if (!root1) return root2;
+    if (!root2) return root1;
+    if (root1->info.size < root2->info.size) std::swap(root1, root2);
+    TNode *m = FindByOrder(root1, root1->info.size / 2), *r2l = nullptr,
+          *r2r = nullptr;
+    SplitByKey(root2, m->key, r2l, r2r);
+    if (m->l) m->l->p = nullptr;
+    if (m->r) m->r->p = nullptr;
+    m->SetL(Union(m->l, r2l));
+    m->SetR(Union(m->r, r2r));
+    m->UpdateInfo();
+    return m;
   }
 
  protected:

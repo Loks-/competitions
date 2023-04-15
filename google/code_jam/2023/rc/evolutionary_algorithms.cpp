@@ -20,7 +20,6 @@ int main_evolutionary_algorithms() {
     for (auto p : vp) vc[p - 1] += 1;
 
     TTree tree(N);
-    TNode *p1 = nullptr, *p2 = nullptr;
     uint64_t r = 0;
     vector<TNode *> vn(N);
     queue<unsigned> q;
@@ -35,11 +34,9 @@ int main_evolutionary_algorithms() {
         auto s1 = (s - 1) / K;
         uint64_t tt = upper_bound(vss.begin(), vss.end(), s1) - vss.begin();
         if (tt > 1) {
-          // Use order instead of split?
-          TTree::SplitByKey(vn[i], s1 + 1, p1, p2);
-          uint64_t tc = (p1 ? p1->info.size : size_t(0));
+          auto node = TTree::FindByKeyLess(vn[i], s1 + 1);
+          uint64_t tc = (node ? TTree::Order(node) + 1 : size_t(0));
           r += tc * (tt - tc);
-          vn[i] = TTree::Join(p1, p2);
         }
       }
       if (i > 0) {
