@@ -34,10 +34,14 @@ inline std::vector<unsigned> DFSRecursion(const UndirectedGraph& g) {
         low[u] = std::min(low[u], depth[v]);
       }
     }
-    if (((u == 0) && (cc > 1)) || ((u != 0) && ap)) output.push_back(u);
+    if (((parent[u] == graph::CNone) && (cc > 1)) ||
+        ((parent[u] != graph::CNone) && ap))
+      output.push_back(u);
   };
 
-  DFS(0, 0);
+  for (unsigned u = 0; u < n; ++u) {
+    if (!visited[u]) DFS(u, 0);
+  }
   return output;
 }
 }  // namespace ap
