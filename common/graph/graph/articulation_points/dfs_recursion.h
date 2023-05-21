@@ -39,7 +39,6 @@ inline std::vector<unsigned> DFSRecursion(const UndirectedGraph& g) {
 
   DFS(0, 0);
   return output;
-  return output;
 }
 }  // namespace ap
 }  // namespace graph
