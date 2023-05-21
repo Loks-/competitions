@@ -25,12 +25,12 @@ file ( WRITE ${ADVENT_PROXY_CXX}
 foreach( problemsourcefile ${ADVENT_SOURCES} )
     string( REPLACE ".cpp" "" problemfullname ${problemsourcefile} )
     get_filename_component( problembasename ${problemfullname} NAME )
-    if ( NOT ${problembasename} MATCHES "base|main")
+    if ( NOT ${problembasename} MATCHES "^base|^main")
         file ( APPEND ${ADVENT_PROXY_H}
 			"int main_${problembasename}();\n" )
         file ( APPEND ${ADVENT_PROXY_CXX}
 			"\t{ \"${problembasename}\", main_${problembasename} },\n")
-    endif ( NOT ${problembasename} MATCHES "base|main")
+    endif ( NOT ${problembasename} MATCHES "^base|^main")
 endforeach( problemsourcefile ${ADVENT_SOURCES} )
 file ( APPEND ${ADVENT_PROXY_CXX} "};\n" )
 add_executable( advent_of_code ${ADVENT_SOURCES} ${ADVENT_PROXY_CXX} )
@@ -56,12 +56,12 @@ file ( WRITE ${GOOGLE_CODE_JAM_PROXY_CXX}
 foreach( problemsourcefile ${GOOGLE_CODE_JAM_SOURCES} )
     string( REPLACE ".cpp" "" problemfullname ${problemsourcefile} )
     get_filename_component( problembasename ${problemfullname} NAME )
-    if ( NOT ${problembasename} MATCHES "base|main")
+    if ( NOT ${problembasename} MATCHES "^base|^main")
         file ( APPEND ${GOOGLE_CODE_JAM_PROXY_H}
 			"int main_${problembasename}();\n" )
         file ( APPEND ${GOOGLE_CODE_JAM_PROXY_CXX}
 			"\t{ \"${problembasename}\", main_${problembasename} },\n")
-    endif ( NOT ${problembasename} MATCHES "base|main")
+    endif ( NOT ${problembasename} MATCHES "^base|^main")
 endforeach( problemsourcefile ${GOOGLE_CODE_JAM_SOURCES} )
 file ( APPEND ${GOOGLE_CODE_JAM_PROXY_CXX} "};\n" )
 add_executable( google_code_jam ${GOOGLE_CODE_JAM_SOURCES} ${GOOGLE_CODE_JAM_PROXY_CXX} )
@@ -80,12 +80,12 @@ file ( WRITE ${HACKERRANK_PROXY_CXX}
 foreach( problemsourcefile ${HACKERRANK_SOURCES} )
     string( REPLACE ".cpp" "" problemfullname ${problemsourcefile} )
     get_filename_component( problembasename ${problemfullname} NAME )
-    if ( NOT ${problembasename} MATCHES "base|main")
+    if ( NOT ${problembasename} MATCHES "^base|^main")
         file ( APPEND ${HACKERRANK_PROXY_H}
 			"int main_${problembasename}();\n" )
         file ( APPEND ${HACKERRANK_PROXY_CXX}
 			"\t{ \"${problembasename}\", main_${problembasename} },\n")
-    endif ( NOT ${problembasename} MATCHES "base|main")
+    endif ( NOT ${problembasename} MATCHES "^base|^main")
 endforeach( problemsourcefile ${HACKERRANK_SOURCES} )
 file ( APPEND ${HACKERRANK_PROXY_CXX} "};\n" )
 add_executable( hackerrank ${HACKERRANK_SOURCES} ${HACKERRANK_PROXY_CXX} )
@@ -134,12 +134,12 @@ file ( WRITE ${IPCS_PROXY_CXX}
 foreach( problemsourcefile ${IPCS_SOURCES} )
     string( REPLACE ".cpp" "" problemfullname ${problemsourcefile} )
     get_filename_component( problembasename ${problemfullname} NAME )
-    if ( NOT ${problembasename} MATCHES "base|main")
+    if ( NOT ${problembasename} MATCHES "^base|^main")
         file ( APPEND ${IPCS_PROXY_H}
 			"int main_${problembasename}();\n" )
         file ( APPEND ${IPCS_PROXY_CXX}
 			"\t{ \"${problembasename}\", main_${problembasename} },\n")
-    endif ( NOT ${problembasename} MATCHES "base|main")
+    endif ( NOT ${problembasename} MATCHES "^base|^main")
 endforeach( problemsourcefile ${IPCS_SOURCES} )
 file ( APPEND ${IPCS_PROXY_CXX} "};\n" )
 add_executable( ipcs ${IPCS_SOURCES} ${IPCS_PROXY_CXX} )
@@ -158,12 +158,12 @@ file ( WRITE ${LEETCODE_PROXY_CXX}
 foreach( problemsourcefile ${LEETCODE_SOURCES} )
     string( REPLACE ".cpp" "" problemfullname ${problemsourcefile} )
     get_filename_component( problembasename ${problemfullname} NAME )
-    if ( NOT ${problembasename} MATCHES "base|main")
+    if ( NOT ${problembasename} MATCHES "^base|^main")
         file ( APPEND ${LEETCODE_PROXY_H}
 			"int main_${problembasename}();\n" )
         file ( APPEND ${LEETCODE_PROXY_CXX}
 			"\t{ \"${problembasename}\", main_${problembasename} },\n")
-    endif ( NOT ${problembasename} MATCHES "base|main")
+    endif ( NOT ${problembasename} MATCHES "^base|^main")
 endforeach( problemsourcefile ${LEETCODE_SOURCES} )
 file ( APPEND ${LEETCODE_PROXY_CXX} "};\n" )
 add_executable( leetcode ${LEETCODE_SOURCES} ${LEETCODE_PROXY_CXX} )
@@ -182,12 +182,12 @@ file ( WRITE ${TIMUS_PROXY_CXX}
 foreach( problemsourcefile ${TIMUS_SOURCES} )
     string( REPLACE ".cpp" "" problemfullname ${problemsourcefile} )
     get_filename_component( problembasename ${problemfullname} NAME )
-    if ( NOT ${problembasename} MATCHES "base|main")
+    if ( NOT ${problembasename} MATCHES "^base|^main")
         file ( APPEND ${TIMUS_PROXY_H}
 			"int main_${problembasename}();\n" )
         file ( APPEND ${TIMUS_PROXY_CXX}
 			"\t{ \"${problembasename}\", main_${problembasename} },\n")
-    endif ( NOT ${problembasename} MATCHES "base|main")
+    endif ( NOT ${problembasename} MATCHES "^base|^main")
 endforeach( problemsourcefile ${TIMUS_SOURCES} )
 file ( APPEND ${TIMUS_PROXY_CXX} "};\n" )
 add_executable( timus ${TIMUS_SOURCES} ${TIMUS_PROXY_CXX} )
