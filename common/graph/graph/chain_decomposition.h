@@ -1,11 +1,9 @@
 #pragma once
 
 #include "common/graph/graph.h"
-#include "common/vector/write.h"
 
 #include <algorithm>
 #include <functional>
-#include <iostream>
 #include <utility>
 #include <vector>
 
@@ -56,7 +54,6 @@ class ChainDecomposition {
           visited[w] = 1;
         }
         c.push_back(w);
-        // nvector::Write(c);
         chains.push_back(c);
       }
     }
