@@ -7,7 +7,7 @@
 using TTree = bst::SplayTree<true, TEmpty>;
 using TNode = TTree::TNode;
 
-int main_evolutionary_algorithms() {
+int main_evolutionary_algorithms__splay() {
   unsigned T, N, K;
   cin >> T;
   for (unsigned it = 1; it <= T; ++it) {
