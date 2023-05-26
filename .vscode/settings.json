@@ -88,7 +88,12 @@
         "compare": "cpp",
         "concepts": "cpp",
         "variant": "cpp",
-        "__verbose_abort": "cpp"
+        "__verbose_abort": "cpp",
+        "*.in": "test",
+        "*.out": "test"
+    },
+    "test": {
+        "editor.formatOnSave": false
     },
     "cmake.configureOnOpen": false
 }
