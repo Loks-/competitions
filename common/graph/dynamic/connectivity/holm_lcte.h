@@ -33,7 +33,7 @@ class HolmLCTE {
     EdgeData() : level(0) {}
   };
 
-  using TGraph = graph::dynamic::Graph<EdgeData>;
+  using TGraph = graph::dynamic::UndirectedGraph<EdgeData>;
   using TEdge = typename TGraph::TEdge;
   using TEdgeID = TEdge*;
 

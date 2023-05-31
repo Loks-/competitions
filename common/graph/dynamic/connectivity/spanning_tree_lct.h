@@ -15,7 +15,7 @@ namespace connectivity {
 // Keep spannig tree based on LinkCutTree.
 class SpanningTreeLCT {
  public:
-  using TGraph = graph::dynamic::Graph<bool>;
+  using TGraph = graph::dynamic::UndirectedGraph<bool>;
   using TEdge = typename TGraph::TEdge;
   using TEdgeID = TEdge*;
   using TLCT = graph::LinkCutTree<TEmpty, bst::info::None>;

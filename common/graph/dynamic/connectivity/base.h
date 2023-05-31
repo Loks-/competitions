@@ -11,7 +11,7 @@ namespace connectivity {
 // It should be used only for testing.
 class Base {
  public:
-  using TGraph = graph::dynamic::Graph<TEmpty>;
+  using TGraph = graph::dynamic::UndirectedGraph<TEmpty>;
   using TEdge = typename TGraph::TEdge;
   using TEdgeID = TEdge*;
 
