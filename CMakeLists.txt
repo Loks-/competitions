@@ -36,6 +36,30 @@ endforeach( problemsourcefile ${ADVENT_SOURCES} )
 file ( APPEND ${ADVENT_PROXY_CXX} "};\n" )
 add_executable( advent_of_code ${ADVENT_SOURCES} ${ADVENT_PROXY_CXX} )
 
+file( GLOB_RECURSE CODEFORCES_SOURCES RELATIVE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/codeforces/*.cpp" )
+list( SORT CODEFORCES_SOURCES )
+set( CODEFORCES_PROXY_H "${PROJECT_SOURCE_DIR}/codeforces/proxy_gen.h" )
+set( CODEFORCES_PROXY_CXX "${PROJECT_SOURCE_DIR}/codeforces/proxy_gen.cxx" )
+file ( WRITE ${CODEFORCES_PROXY_H}
+	"#pragma once\n\n" )
+file ( WRITE ${CODEFORCES_PROXY_CXX}
+	"#include \"common/proxy_run_base.h\"\n"
+    "#include \"proxy_gen.h\"\n"
+	"\n"
+	"TSolutionsMap solutions_map {\n")
+foreach( problemsourcefile ${CODEFORCES_SOURCES} )
+    string( REPLACE ".cpp" "" problemfullname ${problemsourcefile} )
+    get_filename_component( problembasename ${problemfullname} NAME )
+    if ( NOT ${problembasename} MATCHES "^base|^main")
+        file ( APPEND ${CODEFORCES_PROXY_H}
+			"int main_${problembasename}();\n" )
+        file ( APPEND ${CODEFORCES_PROXY_CXX}
+			"\t{ \"${problembasename}\", main_${problembasename} },\n")
+    endif ( NOT ${problembasename} MATCHES "^base|^main")
+endforeach( problemsourcefile ${HCODEFORCES_SOURCES} )
+file ( APPEND ${CODEFORCES_PROXY_CXX} "};\n" )
+add_executable( codeforces ${CODEFORCES_SOURCES} ${CODEFORCES_PROXY_CXX} )
+
 file( GLOB_RECURSE CODINGAME_PRACTICE_SOURCES RELATIVE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/codingame/practice/*.cpp" )
 add_executable( codingame_practice ${CODINGAME_PRACTICE_SOURCES} )
 
@@ -209,6 +233,16 @@ foreach( testfile_out ${ADVENT_OF_CODE_TESTS} )
     string( SUBSTRING ${testshortname} 0 2 year )
 	add_test( NAME "aoc.${testshortname}" COMMAND advent_of_code ${solution} "advent_of_code/20${year}/input/${testshortname}.txt" ${testfile_out} WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} )
 endforeach( testfile_out ${ADVENT_OF_CODE_TESTS} )
+
+file( GLOB_RECURSE CODEFORCES_TESTS RELATIVE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/tests/codeforces/*.in" )
+list( SORT CODEFORCES_TESTS )
+foreach( testfile_in ${CODEFORCES_TESTS} )
+    string( REPLACE ".in" "" testfullname ${testfile_in} )
+    string( REPLACE ".in" ".out" testfile_out ${testfile_in} )
+    get_filename_component( testshortname ${testfullname} NAME )
+    get_filename_component( solution ${testshortname} NAME_WE )
+	add_test( NAME ${testshortname} COMMAND codeforces ${solution} ${testfile_in} ${testfile_out} WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} )
+endforeach( testfile_in ${CODEFORCES_TESTS} )
 
 file( GLOB_RECURSE GOOGLE_CODE_JAM_TESTS RELATIVE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/tests/google/code_jam/*.out" )
 list( SORT GOOGLE_CODE_JAM_TESTS )
