@@ -30,6 +30,7 @@ class DHeap {
 
   bool Empty() const { return data.empty(); }
   unsigned Size() const { return unsigned(data.size()); }
+  void Clear() { data.clear(); }
 
   void Add(const TData& value) {
     data.push_back(value);
