@@ -1,6 +1,7 @@
 #include "common/linear_algebra/matrix.h"
 #include "common/modular_io.h"
 #include "common/stl/base.h"
+#include "common/vector/shuffle.h"
 
 #include <unordered_map>
 
@@ -15,7 +16,7 @@ int main_name_preserving_network() {
       next_try = false;
       m.Clear();
       m.SetDiagonal(1);
-      random_shuffle(v.begin(), v.end());
+      nvector::Shuffle(v);
       for (unsigned i = 0; i < 4 * n; i += 2) {
         bool found = false;
         for (unsigned j = i + 1; j < 4 * n; ++j) {

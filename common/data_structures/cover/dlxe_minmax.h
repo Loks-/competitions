@@ -3,6 +3,7 @@
 #include "common/base.h"
 #include "common/data_structures/cover/dlmatrix.h"
 #include "common/data_structures/unsigned_set.h"
+#include "common/vector/shuffle.h"
 
 #include <algorithm>
 #include <stack>
@@ -75,7 +76,7 @@ class DLXEMinMax : public DLMatrix {
 
   void ShuffleOrder() {
     auto v = uncovered.List();
-    std::random_shuffle(v.begin(), v.end());
+    nvector::Shuffle(v);
     uncovered.Clear();
     for (unsigned c : v) uncovered.Insert(c);
   }

@@ -2,14 +2,13 @@
 
 #include "common/graph/graph_ei.h"
 #include "common/vector/enumerate.h"
-
-#include <algorithm>
+#include "common/vector/shuffle.h"
 
 template <class TEdgeInfo, bool directed_edges>
 inline graph::GraphEI<TEdgeInfo, directed_edges> CreateLongPathGraph(
     unsigned size, size_t max_edge_cost) {
   auto v = nvector::Enumerate(0u, size);
-  std::random_shuffle(v.begin(), v.end());
+  nvector::Shuffle(v);
   graph::GraphEI<TEdgeInfo, directed_edges> g(size);
   unsigned block_size = std::min<unsigned>(max_edge_cost / 2 + 1, size),
            nblocks = (size - 1) / block_size + 1;

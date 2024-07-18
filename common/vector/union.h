@@ -26,7 +26,8 @@ template <class T>
 inline std::vector<T> UnionV(const std::vector<T>& v1,
                              const std::vector<T>& v2) {
   std::vector<T> r;
-  unsigned i1 = 0, i2 = 0 for (; (i1 < v1.size()) && (i2 < v2.size());) {
+  unsigned i1 = 0, i2 = 0;
+  for (; (i1 < v1.size()) && (i2 < v2.size());) {
     if (v1[i1] < v2[i2]) {
       r.push_back(v1[i1++]);
     } else if (v2[i2] < v1[i1]) {

@@ -24,6 +24,7 @@
 #include "common/hash.h"
 #include "common/timer.h"
 #include "common/vector/hrandom.h"
+#include "common/vector/shuffle.h"
 
 #include <algorithm>
 #include <iostream>
@@ -36,7 +37,7 @@ TesterFixedUniverseSuccessor::TesterFixedUniverseSuccessor(size_t _usize,
     : usize(_usize) {
   vdata = nvector::HRandom(ssize, 0, usize);
   vdata.insert(vdata.end(), vdata.begin(), vdata.end());
-  std::random_shuffle(vdata.begin(), vdata.end());
+  nvector::Shuffle(vdata);
 }
 
 template <class TFUS>

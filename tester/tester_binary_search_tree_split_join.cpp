@@ -13,6 +13,7 @@
 #include "common/template.h"
 #include "common/timer.h"
 #include "common/vector/hrandom.h"
+#include "common/vector/shuffle.h"
 
 #include <algorithm>
 #include <iostream>
@@ -22,7 +23,7 @@ TesterBinarySearchTreeSplitJoin::TesterBinarySearchTreeSplitJoin(
     size_t test_size) {
   vkeys = nvector::HRandom<TKey>(test_size, 0, max_key);
   vkeys.insert(vkeys.end(), vkeys.begin(), vkeys.end());
-  std::random_shuffle(vkeys.begin(), vkeys.end());
+  nvector::Shuffle(vkeys);
   vshift = nvector::HRandom<TKey>(test_size * 2, 0, max_key);
 }
 

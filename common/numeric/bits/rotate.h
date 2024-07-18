@@ -23,6 +23,6 @@ inline uint64_t RotateBitsR(uint64_t x, unsigned shift, unsigned length) {
 }
 
 inline uint64_t RotateBitsL(uint64_t x, unsigned shift, unsigned length) {
-  return RotateBitsL(x, length - (shift % length), length);
+  return RotateBitsR(x, length - (shift % length), length);
 }
 }  // namespace numeric

@@ -1,6 +1,5 @@
 #include "common/stl/base.h"
-
-#include <random>
+#include "common/vector/shuffle.h"
 
 namespace {
 class SolutionJumpingOverWalls {
@@ -42,8 +41,10 @@ class SolutionJumpingOverWalls {
     for (int x = 0; x < xsize; ++x) {
       for (int y = 0; y < ysize; ++y) {
         int u = vused[x][y];
-        cout << ((u == 0) ? '#'
-                          : (u == 1) ? 'A' : (u == dsize + 1) ? 'B' : '.');
+        cout << ((u == 0)           ? '#'
+                 : (u == 1)         ? 'A'
+                 : (u == dsize + 1) ? 'B'
+                                    : '.');
       }
       cout << endl;
     }
@@ -59,7 +60,7 @@ class SolutionJumpingOverWalls {
       if (!direction_used[i]) vda.push_back(i);
     }
     assert(vda.size() > 0);
-    random_shuffle(vda.begin(), vda.end());
+    nvector::Shuffle(vda);
     for (int di : vda) {
       direction_used[di] = true;
       vector<pair<int, int>> vnext;
@@ -68,7 +69,7 @@ class SolutionJumpingOverWalls {
         if (!Inside(xnew, ynew)) break;
         if (ValidToSet(xnew, ynew, di)) vnext.push_back(make_pair(xnew, ynew));
       }
-      random_shuffle(vnext.begin(), vnext.end());
+      nvector::Shuffle(vnext);
       for (auto p : vnext) {
         vused[p.first][p.second] = vused[x][y] + 1;
         if (SolveR(p.first, p.second)) return true;
@@ -84,7 +85,7 @@ class SolutionJumpingOverWalls {
     vector<pair<int, int>> v;
     for (int x = 0; x < xsize * ysize; ++x)
       v.push_back(make_pair(x / ysize, x % ysize));
-    random_shuffle(v.begin(), v.end());
+    nvector::Shuffle(v);
     for (auto p : v) {
       vused[p.first][p.second] = 1;
       if (SolveR(p.first, p.second)) return;
