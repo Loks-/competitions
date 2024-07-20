@@ -14,7 +14,7 @@ int main_1325e() {
   auto v = nvector::Read<unsigned>(N);
   vector<vector<unsigned>> vvp;
   vector<unsigned> vua;
-  vector<unsigned> vp;
+  vector<unsigned> vp(1, 1u);
   for (auto u : v) {
     vector<unsigned> uvp;
     unsigned ua = 1;
@@ -41,55 +41,20 @@ int main_1325e() {
   }
   nvector::UniqueUnsorted(vp);
   vector<unsigned> vpc(vp.size(), 0);
-  vector<vector<pair<unsigned, unsigned>>> vvp1(vp.size());
   vector<unordered_map<unsigned, unsigned>> vm(vp.size());
   for (auto& uvp : vvp) {
     auto p0 = uvp[0];
     auto it0 = lower_bound(vp.begin(), vp.end(), p0);
     auto i0 = it0 - vp.begin();
-    if (uvp.size() == 1) {
-      vvp1[i0].push_back({1, i0});
-    } else {
-      auto p1 = uvp[1];
-      auto it1 = lower_bound(vp.begin(), vp.end(), p1);
-      auto i1 = it1 - vp.begin();
-      vpc[i0]++;
-      vpc[i1]++;
-      vm[i0][i1] = 1;
-      vm[i1][i0] = 1;
-    }
+    auto p1 = (uvp.size() > 1) ? uvp[1] : 1u;
+    auto it1 = lower_bound(vp.begin(), vp.end(), p1);
+    auto i1 = it1 - vp.begin();
+    vpc[i0]++;
+    vpc[i1]++;
+    vm[i0][i1] = 1;
+    vm[i1][i0] = 1;
   }
   unsigned answer = N + 1;
-
-  auto Merge = [&](vector<pair<unsigned, unsigned>>& l,
-                   const vector<pair<unsigned, unsigned>>& r, unsigned d) {
-    if (r.empty()) return;
-    if (l.empty()) {
-      l = r;
-      for (auto& itl : l) itl.first += d;
-      return;
-    }
-    for (auto itl : l) {
-      for (auto itr : r) {
-        if (itl.second != itr.second) {
-          answer = min(answer, itl.first + itr.first + d);
-        }
-      }
-    }
-    for (auto itr : r) {
-      l.push_back({itr.first + d, itr.second});
-    }
-    sort(l.begin(), l.end());
-    if ((l.size() >= 2) && (l[0].second == l[1].second)) {
-      if (l.size() >= 3) {
-        l[1] = l[2];
-      } else {
-        l.resize(1);
-      }
-    }
-    if (l.size() >= 3) l.resize(2);
-  };
-
   THeap h(vpc, false);
   for (; !h.Empty();) {
     auto u = h.ExtractKey();
@@ -108,7 +73,6 @@ int main_1325e() {
     }
     for (auto it1 : vm[u]) {
       auto u1 = it1.first;
-      Merge(vvp1[u1], vvp1[u], it1.second);
       vm[u1].erase(u);
       h.Set(u1, vm[u1].size());
     }
