@@ -13,14 +13,14 @@
 namespace graph {
 namespace scycle {
 // Find shortest cycle length by vertex exclusion.
-// All edges cost are non-negative.
+// For graphs without negative cycle.
 // Works for sparse graphs.
 namespace hidden {
 template <class TValue>
 TValue VertexExclusionI(
     std::vector<std::unordered_map<unsigned, TValue>>& edges_in,
     std::vector<std::unordered_map<unsigned, TValue>>& edges_out,
-    const TValue& max_cost) {
+    const TValue& max_cost, bool positive_cost_edges) {
   assert(edges_in.size() == edges_out.size());
   TValue best_cost = max_cost;
   std::vector<unsigned> vpc(edges_in.size());
@@ -30,9 +30,11 @@ TValue VertexExclusionI(
   for (; !h.Empty();) {
     auto u = h.ExtractKey();
     for (auto e_in : edges_in[u]) {
+      if (positive_cost_edges && !(e_in.second < best_cost)) continue;
       for (auto e_out : edges_out[u]) {
         auto u1 = e_in.first, u2 = e_out.first;
         auto d12 = e_in.second + e_out.second;
+        if (positive_cost_edges && !(d12 < best_cost)) continue;
         if (u1 == u2) {
           best_cost = std::min(best_cost, d12);
           continue;
@@ -55,7 +57,8 @@ TValue VertexExclusionI(
 }  // namespace hidden
 
 template <class TValue>
-TValue VertexExclusion(const DirectedGraphEI<TValue>& g, TValue max_cost) {
+TValue VertexExclusion(const DirectedGraphEI<TValue>& g, TValue max_cost,
+                       bool positive_cost_edges) {
   std::vector<std::unordered_map<unsigned, TValue>> edges_in(g.Size()),
       edges_out(g.Size());
   for (unsigned u = 0; u < g.Size(); ++u) {
@@ -74,7 +77,8 @@ TValue VertexExclusion(const DirectedGraphEI<TValue>& g, TValue max_cost) {
       }
     }
   }
-  return hidden::VertexExclusionI(edges_in, edges_out, max_cost);
+  return hidden::VertexExclusionI(edges_in, edges_out, max_cost,
+                                  positive_cost_edges);
 }
 }  // namespace scycle
 }  // namespace graph
