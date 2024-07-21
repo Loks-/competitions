@@ -8,6 +8,8 @@
 #include <unordered_map>
 #include <vector>
 
+// Code in this files was not tested.
+
 namespace graph {
 namespace scycle {
 // Find shortest cycle length by vertex exclusion.
