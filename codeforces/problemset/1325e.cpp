@@ -1,5 +1,5 @@
 #include "common/factorization/factorization.h"
-#include "common/graph/graph_ei/shortest_cycle/vertex_exclusion.h"
+#include "common/graph/graph_ei/shortest_cycle/undirected_vertex_exclusion.h"
 #include "common/stl/base.h"
 #include "common/vector/read.h"
 #include "common/vector/unique.h"
