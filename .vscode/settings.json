@@ -90,7 +90,9 @@
         "variant": "cpp",
         "__verbose_abort": "cpp",
         "*.in": "test",
-        "*.out": "test"
+        "*.out": "test",
+        "charconv": "cpp",
+        "execution": "cpp"
     },
     "test": {
         "editor.formatOnSave": false
