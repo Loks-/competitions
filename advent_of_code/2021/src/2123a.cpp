@@ -85,7 +85,6 @@ int main_2123a() {
 
   unordered_map<size_t, unsigned> min_cost;
   unordered_set<size_t> done;
-  //   priority_queue<pair<unsigned, Pos>> q;
   HeapMinOnTop<pair<unsigned, Pos>> q;
   nvector::Write(vpos);
 
@@ -96,17 +95,13 @@ int main_2123a() {
     Pos p{vpos, vector<unsigned>(8, 0)};
     auto h = Hash(p);
     min_cost[h] = 0;
-    // q.push({Expected(p), p});
     q.Add({Expected(p), p});
     for (unsigned j = 0; j < 4; ++j) {
       if (itry & (1u << j)) swap(vpos[2 * j], vpos[2 * j + 1]);
     }
   }
-  // nvector::Write(vpos);
 
-  // for (; !q.empty(); q.pop()) {
   for (; !q.Empty(); q.Pop()) {
-    // auto qt = q.top();
     pair<unsigned, Pos> qt = q.Top();
     auto p = qt.second;
     auto h = Hash(p);
@@ -129,7 +124,6 @@ int main_2123a() {
             auto it = min_cost.find(h2);
             if ((it == min_cost.end()) || (it->second > new_cost)) {
               min_cost[h2] = new_cost;
-              //   q.push({new_cost + Expected(p2), p2});
               q.Add({new_cost + Expected(p2), p2});
             }
           }
@@ -145,17 +139,14 @@ int main_2123a() {
           auto it = min_cost.find(h2);
           if ((it == min_cost.end()) || (it->second > new_cost)) {
             min_cost[h2] = new_cost;
-            // q.push({new_cost + Expected(p2), p2});
             q.Add({new_cost + Expected(p2), p2});
           }
         }
       }
     }
-    // cout << q.size() << " " << min_cost.size() << "  " << done.size() <<
-    // endl;
     cout << q.Size() << " " << min_cost.size() << "  " << done.size() << " "
          << cost << endl;
   }
-  cout << "Dnone." << endl;
+  cout << "Done." << endl;
   return 0;
 }
