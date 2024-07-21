@@ -30,7 +30,6 @@ class DHeap {
 
   bool Empty() const { return data.empty(); }
   unsigned Size() const { return unsigned(data.size()); }
-  void Clear() { data.clear(); }
 
   void Add(const TData& value) {
     data.push_back(value);
@@ -50,6 +49,8 @@ class DHeap {
     Pop();
     return t;
   }
+
+  void ExtractAll() { data.clear(); }
 
   void Union(const TSelf& r) {
     data.insert(data.end(), r.data.begin(), r.data.end());

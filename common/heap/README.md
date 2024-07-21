@@ -6,12 +6,14 @@
     * TData Top() const;
     * void Pop();
     * TData Extract();
+    * [Optional] void ExtractAll();
     * [Optional] void Union(TSelf& heap);
 * Ext heaps support also next operations:
     * void DecreaseValue(unsigned key, const TValue& value);
     * void DecreaseValueIfLess(unsigned key, const TValue& value);
     * [Optional] void IncreaseValue(unsigned key, const TValue& value);
     * [Optional] void Set(unsigned key, const TValue& value);
+    * [Optional] void ExtractAll();
 * UKVM support next operations:
     * bool Empty() const;
     * unsigned Size() const;
@@ -32,4 +34,5 @@
     * unsigned ExtractKey();
     * const TValue& ExtractValue();
     * TData Extract();
+    * [Optional] void ExtractAll();
 * Monotone heaps assume that priority for new elements never less current top priority
