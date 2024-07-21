@@ -10,11 +10,11 @@ namespace spfa {
 // For graphs without negative cycle.
 // Time: O(VE) worst case
 template <class TGraph, class TEdgeCostFunction, class TEdgeCost>
-inline std::vector<TEdgeCost> GoldbergRadzik(const TGraph& graph,
+inline std::vector<TEdgeCost> GoldbergRadzik(const TGraph& g,
                                              const TEdgeCostFunction& f,
                                              unsigned source,
                                              const TEdgeCost& max_cost) {
-  unsigned gsize = graph.Size();
+  unsigned gsize = g.Size();
   std::vector<TEdgeCost> v(gsize, max_cost);
   v[source] = TEdgeCost();
   std::stack<unsigned> sa, sb;
@@ -33,7 +33,7 @@ inline std::vector<TEdgeCost> GoldbergRadzik(const TGraph& graph,
           break;
         case 3:
           m[u] = 0;
-          for (const auto& e : graph.EdgesEI(u)) {
+          for (const auto& e : g.EdgesEI(u)) {
             if (ucost + f(e.info) < v[e.to]) {
               m[u] = 5;                    // Processing
               if (m[e.to] == 2) continue;  // Already in a.
@@ -45,7 +45,7 @@ inline std::vector<TEdgeCost> GoldbergRadzik(const TGraph& graph,
         case 4:
           m[u] = 5;
           if (ucost < max_cost) {
-            for (const auto& e : graph.EdgesEI(u)) {
+            for (const auto& e : g.EdgesEI(u)) {
               if (m[e.to] == 2) continue;  // Already in a.
               if (m[e.to] == 5) continue;
               if (ucost + f(e.info) <= v[e.to]) {
@@ -66,7 +66,7 @@ inline std::vector<TEdgeCost> GoldbergRadzik(const TGraph& graph,
       unsigned u = sa.top();
       sa.pop();
       auto ucost = v[u];
-      for (const auto& e : graph.EdgesEI(u)) {
+      for (const auto& e : g.EdgesEI(u)) {
         if (ucost + f(e.info) < v[e.to]) {
           v[e.to] = ucost + f(e.info);
           if (m[e.to] == 0) {

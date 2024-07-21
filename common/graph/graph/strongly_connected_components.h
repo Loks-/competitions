@@ -6,6 +6,6 @@
 #include <vector>
 
 inline std::vector<unsigned> StronglyConnectedComponents(
-    const DirectedGraph& graph) {
-  return graph::scc::Tarjan(graph);
+    const DirectedGraph& g) {
+  return graph::scc::Tarjan(g);
 }

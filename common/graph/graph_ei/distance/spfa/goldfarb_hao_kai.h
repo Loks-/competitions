@@ -10,11 +10,11 @@ namespace spfa {
 // For graphs without negative cycle.
 // Time: O(VE) worst case
 template <class TGraph, class TEdgeCostFunction, class TEdgeCost>
-inline std::vector<TEdgeCost> GoldfarbHaoKai(const TGraph& graph,
+inline std::vector<TEdgeCost> GoldfarbHaoKai(const TGraph& g,
                                              const TEdgeCostFunction& f,
                                              unsigned source,
                                              const TEdgeCost& max_cost) {
-  unsigned gsize = graph.Size();
+  unsigned gsize = g.Size();
   std::vector<TEdgeCost> v(gsize, max_cost);
   v[source] = TEdgeCost();
   std::stack<unsigned> q0, q1;
@@ -27,7 +27,7 @@ inline std::vector<TEdgeCost> GoldfarbHaoKai(const TGraph& graph,
       q0.pop();
       if (m[u] != i) continue;
       auto ucost = v[u];
-      for (const auto& e : graph.EdgesEI(u)) {
+      for (const auto& e : g.EdgesEI(u)) {
         if (ucost + f(e.info) < v[e.to]) {
           v[e.to] = ucost + f(e.info);
           if (m[e.to] != i + 1) {

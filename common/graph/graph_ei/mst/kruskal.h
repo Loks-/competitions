@@ -13,7 +13,7 @@ namespace mst {
 // Time: O(V + E log E)
 template <class TGraph, class TEdgeCostFunction>
 inline std::pair<unsigned, typename TEdgeCostFunction::TEdgeCost> Kruskal(
-    const TGraph& graph, const TEdgeCostFunction& f) {
+    const TGraph& g, const TEdgeCostFunction& f) {
   using TEdgeCost = typename TEdgeCostFunction::TEdgeCost;
   struct Edge {
     unsigned from;
@@ -24,13 +24,13 @@ inline std::pair<unsigned, typename TEdgeCostFunction::TEdgeCost> Kruskal(
   };
 
   std::vector<Edge> edges;
-  for (unsigned u = 0; u < graph.Size(); ++u) {
-    for (auto e : graph.EdgesEI(u)) {
+  for (unsigned u = 0; u < g.Size(); ++u) {
+    for (auto e : g.EdgesEI(u)) {
       if (u < e.to) edges.push_back({u, e.to, f(e.info)});
     }
   }
   std::sort(edges.begin(), edges.end());
-  ds::DisjointSet ds(graph.Size());
+  ds::DisjointSet ds(g.Size());
   unsigned edges_added = 0;
   TEdgeCost total_cost = TEdgeCost();
   for (const auto& e : edges) {

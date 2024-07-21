@@ -10,8 +10,8 @@
 namespace graph {
 namespace scc {
 // Time: O(V + E)
-inline std::vector<unsigned> PathBased(const DirectedGraph& graph) {
-  unsigned n = graph.Size(), k = 0, l = 0;
+inline std::vector<unsigned> PathBased(const DirectedGraph& g) {
+  unsigned n = g.Size(), k = 0, l = 0;
   std::vector<unsigned> index(n, n), components(n, n);
   std::stack<unsigned> s, p;
 
@@ -19,7 +19,7 @@ inline std::vector<unsigned> PathBased(const DirectedGraph& graph) {
     index[u] = k++;
     s.push(u);
     p.push(u);
-    for (auto v : graph.Edges(u)) {
+    for (auto v : g.Edges(u)) {
       if (index[v] == n) {
         DFS(v);
       } else if (components[v] == n) {

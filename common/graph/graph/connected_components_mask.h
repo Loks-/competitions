@@ -7,10 +7,10 @@
 #include <vector>
 
 // Each value in the output vector is the mask for set of vertexes in component.
-inline std::vector<uint64_t> ConnectedComponentsMask(
-    const UndirectedGraph& graph, uint64_t mask = -1ull) {
+inline std::vector<uint64_t> ConnectedComponentsMask(const UndirectedGraph& g,
+                                                     uint64_t mask = -1ull) {
   std::vector<uint64_t> components;
-  unsigned n = graph.Size();
+  unsigned n = g.Size();
   assert(n <= 64);
   uint64_t visited = 0;
   std::stack<unsigned> s;
@@ -23,7 +23,7 @@ inline std::vector<uint64_t> ConnectedComponentsMask(
         unsigned j = s.top();
         s.pop();
         c |= (1ull << j);
-        for (unsigned k : graph.Edges(j)) {
+        for (unsigned k : g.Edges(j)) {
           uint64_t kbit = (1ull << k);
           if (mask & kbit & ~visited) {
             visited |= kbit;

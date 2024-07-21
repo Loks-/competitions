@@ -10,14 +10,12 @@ namespace distance {
 // Time: O(V^3)
 template <class TGraph, class TEdgeCostFunction, class TEdgeCost>
 inline std::vector<std::vector<TEdgeCost>> FloydWarshall(
-    const TGraph& graph, const TEdgeCostFunction& f,
-    const TEdgeCost& max_cost) {
-  unsigned gsize = graph.Size();
+    const TGraph& g, const TEdgeCostFunction& f, const TEdgeCost& max_cost) {
+  unsigned gsize = g.Size();
   std::vector<std::vector<TEdgeCost>> vd(
       gsize, std::vector<TEdgeCost>(gsize, max_cost));
   for (unsigned u = 0; u < gsize; ++u) {
-    for (auto e : graph.EdgesEI(u))
-      vd[u][e.to] = std::min(vd[u][e.to], f(e.info));
+    for (auto e : g.EdgesEI(u)) vd[u][e.to] = std::min(vd[u][e.to], f(e.info));
     vd[u][u] = TEdgeCost();
   }
   for (unsigned k = 0; k < gsize; ++k) {

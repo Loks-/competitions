@@ -19,10 +19,10 @@ class BipartiteMatching {
 
  protected:
   template <class TGraph>
-  bool BFS(const Bipartite<TGraph>& graph) {
+  bool BFS(const Bipartite<TGraph>& g) {
     vdist[size] = inf;
     for (unsigned u = 0; u < size; ++u) {
-      if (graph.Partition(u) || (vpair[u] != size)) {
+      if (g.Partition(u) || (vpair[u] != size)) {
         vdist[u] = inf;
       } else {
         vdist[u] = 0;
@@ -32,7 +32,7 @@ class BipartiteMatching {
     for (; !q.empty(); q.pop()) {
       unsigned u = q.front();
       if (vdist[u] < vdist[size]) {
-        for (unsigned v : graph.Edges(u)) {
+        for (unsigned v : g.Edges(u)) {
           unsigned vp = vpair[v];
           if (vdist[vp] == inf) {
             vdist[vp] = vdist[u] + 1;
@@ -45,12 +45,12 @@ class BipartiteMatching {
   }
 
   template <class TGraph>
-  bool DFS(const Bipartite<TGraph>& graph, unsigned u) {
+  bool DFS(const Bipartite<TGraph>& g, unsigned u) {
     if (u == size) return true;
-    for (unsigned v : graph.Edges(u)) {
+    for (unsigned v : g.Edges(u)) {
       unsigned vp = vpair[v];
       if (vdist[vp] == vdist[u] + 1) {
-        if (DFS(graph, vp)) {
+        if (DFS(g, vp)) {
           vpair[v] = u;
           vpair[u] = v;
           return true;
@@ -63,17 +63,17 @@ class BipartiteMatching {
 
  public:
   template <class TGraph>
-  unsigned Matching(const Bipartite<TGraph>& graph) {
-    size = graph.Size();
+  unsigned Matching(const Bipartite<TGraph>& g) {
+    size = g.Size();
     vpair.clear();
     vpair.resize(size, size);
     vdist.resize(size + 1);
     matched = 0;
-    for (; BFS(graph);) {
+    for (; BFS(g);) {
       for (unsigned u = 0; u < size; ++u) {
-        if (graph.Partition(u)) continue;
+        if (g.Partition(u)) continue;
         if (vpair[u] == size) {
-          if (DFS(graph, u)) ++matched;
+          if (DFS(g, u)) ++matched;
         }
       }
     }
@@ -86,7 +86,7 @@ class BipartiteMatching {
 }  // namespace graph
 
 template <class TGraph>
-inline unsigned BipartiteMatching(const graph::Bipartite<TGraph>& graph) {
+inline unsigned BipartiteMatching(const graph::Bipartite<TGraph>& g) {
   graph::BipartiteMatching bm;
-  return bm.Matching(graph);
+  return bm.Matching(g);
 }

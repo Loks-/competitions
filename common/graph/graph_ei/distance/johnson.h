@@ -15,10 +15,10 @@ namespace distance {
 // https://en.wikipedia.org/wiki/Johnson%27s_algorithm
 // Time: O(V (V + E) log(V))
 template <class TGraph, class TEdgeCostFunction, class TEdgeCost>
-inline std::vector<std::vector<TEdgeCost>> Johnson(const TGraph& graph,
+inline std::vector<std::vector<TEdgeCost>> Johnson(const TGraph& g,
                                                    const TEdgeCostFunction& f,
                                                    const TEdgeCost& max_cost) {
-  unsigned gsize = graph.Size();
+  unsigned gsize = g.Size();
   // Bellman-Ford
   std::vector<TEdgeCost> vh(gsize, TEdgeCost());
   bool relaxed = true;
@@ -26,7 +26,7 @@ inline std::vector<std::vector<TEdgeCost>> Johnson(const TGraph& graph,
     relaxed = false;
     for (unsigned u = 0; u < gsize; ++u) {
       auto ucost = vh[u];
-      for (const auto& e : graph.EdgesEI(u)) {
+      for (const auto& e : g.EdgesEI(u)) {
         if (ucost + f(e.info) < vh[e.to]) {
           vh[e.to] = ucost + f(e.info);
           relaxed = true;
@@ -39,7 +39,7 @@ inline std::vector<std::vector<TEdgeCost>> Johnson(const TGraph& graph,
   TEdgeCost adjust = nvector::Min(vh);
   GraphEI<TEdgeCost, true> g2(gsize);
   for (unsigned u = 0; u < gsize; ++u) {
-    for (const auto& e : graph.EdgesEI(u))
+    for (const auto& e : g.EdgesEI(u))
       g2.AddBaseEdge(u, e.to, f(e.info) + vh[u] - vh[e.to]);
   }
   EdgeCostProxy<TEdgeCost> fp;

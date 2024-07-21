@@ -9,11 +9,11 @@ namespace spfa {
 // Goldberg-Radzik algorithm with lazy copy from b to a.
 // For graphs without negative cycle.
 template <class TGraph, class TEdgeCostFunction, class TEdgeCost>
-inline std::vector<TEdgeCost> GoldbergRadzikLazy(const TGraph& graph,
+inline std::vector<TEdgeCost> GoldbergRadzikLazy(const TGraph& g,
                                                  const TEdgeCostFunction& f,
                                                  unsigned source,
                                                  const TEdgeCost& max_cost) {
-  unsigned gsize = graph.Size();
+  unsigned gsize = g.Size();
   std::vector<TEdgeCost> v(gsize, max_cost);
   v[source] = TEdgeCost();
   std::stack<unsigned> sa, sb;
@@ -28,7 +28,7 @@ inline std::vector<TEdgeCost> GoldbergRadzikLazy(const TGraph& graph,
         m[u] = 4;
         auto ucost = v[u];
         if (ucost < max_cost) {
-          for (const auto& e : graph.EdgesEI(u)) {
+          for (const auto& e : g.EdgesEI(u)) {
             if (m[e.to] != 3) continue;
             if (ucost + f(e.info) <= v[e.to]) sb.push(e.to);
           }
@@ -45,7 +45,7 @@ inline std::vector<TEdgeCost> GoldbergRadzikLazy(const TGraph& graph,
       unsigned u = sa.top();
       sa.pop();
       auto ucost = v[u];
-      for (const auto& e : graph.EdgesEI(u)) {
+      for (const auto& e : g.EdgesEI(u)) {
         if (ucost + f(e.info) < v[e.to]) {
           v[e.to] = ucost + f(e.info);
           if (m[e.to] == 0) {

@@ -11,10 +11,9 @@ namespace spfa {
 // Modification for SPFA to catch negative cycle.
 // Time: O(VE) worst case
 template <class TGraph, class TEdgeCostFunction, class TEdgeCost>
-inline std::vector<TEdgeCost> Safe(const TGraph& graph,
-                                   const TEdgeCostFunction& f, unsigned source,
-                                   const TEdgeCost& max_cost) {
-  unsigned gsize = graph.Size();
+inline std::vector<TEdgeCost> Safe(const TGraph& g, const TEdgeCostFunction& f,
+                                   unsigned source, const TEdgeCost& max_cost) {
+  unsigned gsize = g.Size();
   std::vector<TEdgeCost> v(gsize, max_cost);
   std::vector<unsigned> l(gsize, 0);
   v[source] = TEdgeCost();
@@ -25,7 +24,7 @@ inline std::vector<TEdgeCost> Safe(const TGraph& graph,
     q.pop();
     inq[u] = 0;
     auto ucost = v[u];
-    for (const auto& e : graph.EdgesEI(u)) {
+    for (const auto& e : g.EdgesEI(u)) {
       if (ucost + f(e.info) < v[e.to]) {
         v[e.to] = ucost + f(e.info);
         l[e.to] = l[u] + 1;

@@ -11,8 +11,8 @@ namespace graph {
 namespace scc {
 // Time: O(V + E)
 // Components are in the reverse topological sort order.
-inline std::vector<unsigned> Tarjan(const DirectedGraph& graph) {
-  unsigned n = graph.Size(), k = 0, l = 0;
+inline std::vector<unsigned> Tarjan(const DirectedGraph& g) {
+  unsigned n = g.Size(), k = 0, l = 0;
   std::vector<unsigned> index(n, n), lowlink(n, 0), instack(n, 0),
       components(n);
   std::stack<unsigned> s;
@@ -21,7 +21,7 @@ inline std::vector<unsigned> Tarjan(const DirectedGraph& graph) {
     index[u] = lowlink[u] = k++;
     s.push(u);
     instack[u] = 1;
-    for (auto v : graph.Edges(u)) {
+    for (auto v : g.Edges(u)) {
       if (index[v] == n) {
         SConnect(v);
         lowlink[u] = std::min(lowlink[u], lowlink[v]);

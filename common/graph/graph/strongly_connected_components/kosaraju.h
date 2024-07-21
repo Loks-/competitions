@@ -10,15 +10,15 @@
 namespace graph {
 namespace scc {
 // Time: O(V + E)
-inline std::vector<unsigned> Kosaraju(const DirectedGraph& graph) {
-  unsigned n = graph.Size(), l = 0;
+inline std::vector<unsigned> Kosaraju(const DirectedGraph& g) {
+  unsigned n = g.Size(), l = 0;
   std::vector<unsigned> visited(n, 0), vl, components(n, n);
   vl.reserve(n);
 
   std::function<void(unsigned)> Visit = [&](unsigned u) -> void {
     if (visited[u]) return;
     visited[u] = 1;
-    for (auto v : graph.Edges(u)) Visit(v);
+    for (auto v : g.Edges(u)) Visit(v);
     vl.push_back(u);
   };
 
@@ -26,7 +26,7 @@ inline std::vector<unsigned> Kosaraju(const DirectedGraph& graph) {
                                                        unsigned index) -> void {
     if (components[u] < n) return;
     components[u] = index;
-    for (auto v : graph.InvertedEdges(u)) Assign(v, index);
+    for (auto v : g.InvertedEdges(u)) Assign(v, index);
   };
 
   for (unsigned u = 0; u < n; ++u) Visit(u);

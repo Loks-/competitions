@@ -6,8 +6,8 @@
 #include <vector>
 
 // Time: O(V + E)
-inline unsigned ConnectedComponentsCount(const UndirectedGraph& graph) {
-  unsigned n = graph.Size(), r = 0;
+inline unsigned ConnectedComponentsCount(const UndirectedGraph& g) {
+  unsigned n = g.Size(), r = 0;
   std::vector<unsigned> visited(n, 0);
   std::stack<unsigned> s;
   for (unsigned i = 0; i < n; ++i) {
@@ -17,7 +17,7 @@ inline unsigned ConnectedComponentsCount(const UndirectedGraph& graph) {
       for (s.push(i); !s.empty();) {
         unsigned j = s.top();
         s.pop();
-        for (unsigned c : graph.Edges(j)) {
+        for (unsigned c : g.Edges(j)) {
           if (visited[c] == 0) {
             visited[c] = 1;
             s.push(c);

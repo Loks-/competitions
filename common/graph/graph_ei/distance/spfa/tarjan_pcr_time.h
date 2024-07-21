@@ -13,11 +13,11 @@ namespace spfa {
 // For graphs without negative cycle.
 // Time: O(VE) worst case
 template <class TGraph, class TEdgeCostFunction, class TEdgeCost>
-inline std::vector<TEdgeCost> TarjanPCRTime(const TGraph& graph,
+inline std::vector<TEdgeCost> TarjanPCRTime(const TGraph& g,
                                             const TEdgeCostFunction& f,
                                             unsigned source,
                                             const TEdgeCost& max_cost) {
-  unsigned gsize = graph.Size();
+  unsigned gsize = g.Size();
   std::vector<TEdgeCost> v(gsize, max_cost);
   v[source] = TEdgeCost();
   std::queue<unsigned> q;
@@ -30,7 +30,7 @@ inline std::vector<TEdgeCost> TarjanPCRTime(const TGraph& graph,
     q.pop();
     if (inq[u] != t) continue;
     auto ucost = v[u];
-    for (const auto& e : graph.EdgesEI(u)) {
+    for (const auto& e : g.EdgesEI(u)) {
       if (ucost + f(e.info) < v[e.to]) {
         unsigned u2 = e.to;
         if (inq[u2] > t) {

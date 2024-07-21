@@ -9,9 +9,9 @@
 namespace graph {
 template <class TGraph, class TEdgeCostFunction, class TEdgeCost>
 inline std::vector<TEdgeCost> DistanceFromSourceSkipCycleCheck(
-    const TGraph& graph, const TEdgeCostFunction& f, unsigned source,
+    const TGraph& g, const TEdgeCostFunction& f, unsigned source,
     const TEdgeCost& max_cost) {
-  return distance::spfa::SPFA(graph, f, source, max_cost);
+  return distance::spfa::SPFA(g, f, source, max_cost);
 }
 }  // namespace graph
 

@@ -15,7 +15,7 @@ namespace mst {
 // Time: O(E log V)
 template <class TGraph, class TEdgeCostFunction>
 inline std::pair<unsigned, typename TEdgeCostFunction::TEdgeCost> Boruvka(
-    const TGraph& graph, const TEdgeCostFunction& f) {
+    const TGraph& g, const TEdgeCostFunction& f) {
   using TEdgeCost = typename TEdgeCostFunction::TEdgeCost;
   struct Edge {
     unsigned from;
@@ -26,16 +26,16 @@ inline std::pair<unsigned, typename TEdgeCostFunction::TEdgeCost> Boruvka(
   };
 
   std::vector<Edge> edges;
-  for (unsigned u = 0; u < graph.Size(); ++u) {
-    for (auto e : graph.EdgesEI(u)) {
+  for (unsigned u = 0; u < g.Size(); ++u) {
+    for (auto e : g.EdgesEI(u)) {
       if (u < e.to) edges.push_back({u, e.to, f(e.info)});
     }
   }
-  ds::DisjointSet ds(graph.Size());
+  ds::DisjointSet ds(g.Size());
   ds::UnsignedSet edges_set(edges.size());
-  ds::UnsignedSet vertexes_set(graph.Size());
+  ds::UnsignedSet vertexes_set(g.Size());
   std::vector<unsigned> remove_list;
-  std::vector<unsigned> best_edge(graph.Size(), CNone);
+  std::vector<unsigned> best_edge(g.Size(), CNone);
 
   edges_set.InsertAll();
   unsigned edges_added = 0;

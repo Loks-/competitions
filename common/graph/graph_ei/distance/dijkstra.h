@@ -11,17 +11,16 @@ namespace distance {
 // All edges cost are non-negative.
 // Time: O((V + E) log V)
 template <class TGraph, class TEdgeCostFunction, class TEdgeCost>
-inline std::vector<TEdgeCost> Dijkstra(const TGraph& graph,
+inline std::vector<TEdgeCost> Dijkstra(const TGraph& g,
                                        const TEdgeCostFunction& f,
                                        unsigned source,
                                        const TEdgeCost& max_cost) {
-  heap::ukvm::DHeap<4u, TEdgeCost> q(
-      std::vector<TEdgeCost>(graph.Size(), max_cost), true);
+  heap::ukvm::DHeap<4u, TEdgeCost> q(std::vector<TEdgeCost>(g.Size(), max_cost),
+                                     true);
   for (q.AddNewKey(source, TEdgeCost()); !q.Empty();) {
     unsigned u = q.ExtractKey();
     TEdgeCost ucost = q.Get(u);
-    for (auto e : graph.EdgesEI(u))
-      q.DecreaseValueIfLess(e.to, ucost + f(e.info));
+    for (auto e : g.EdgesEI(u)) q.DecreaseValueIfLess(e.to, ucost + f(e.info));
   }
   return q.GetValues();
 }

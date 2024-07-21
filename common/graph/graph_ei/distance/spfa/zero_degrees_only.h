@@ -12,11 +12,11 @@ namespace spfa {
 // Zero-degrees-only algorithm.
 // Time: O(VE) worst case
 template <class TGraph, class TEdgeCostFunction, class TEdgeCost>
-inline std::vector<TEdgeCost> ZeroDegreesOnly(const TGraph& graph,
+inline std::vector<TEdgeCost> ZeroDegreesOnly(const TGraph& g,
                                               const TEdgeCostFunction& f,
                                               unsigned source,
                                               const TEdgeCost& max_cost) {
-  unsigned gsize = graph.Size();
+  unsigned gsize = g.Size();
   std::vector<TEdgeCost> v(gsize, max_cost);
   v[source] = TEdgeCost();
   std::queue<unsigned> q;
@@ -31,7 +31,7 @@ inline std::vector<TEdgeCost> ZeroDegreesOnly(const TGraph& graph,
     if (inq[u] != 1) continue;
     auto ucost = v[u];
     bool skip = false;
-    for (const auto& e : graph.InvertedEdgesEI(u)) {
+    for (const auto& e : g.InvertedEdgesEI(u)) {
       if ((v[e.to] < max_cost) && (v[e.to] + f(e.info) < ucost)) {
         skip = true;
         break;
@@ -39,7 +39,7 @@ inline std::vector<TEdgeCost> ZeroDegreesOnly(const TGraph& graph,
     }
     inq[u] = 0;
     if (skip) continue;
-    for (const auto& e : graph.EdgesEI(u)) {
+    for (const auto& e : g.EdgesEI(u)) {
       if (ucost + f(e.info) < v[e.to]) {
         unsigned u2 = e.to, p2 = pt.vp[u2];
         if (p2 != CNone) {

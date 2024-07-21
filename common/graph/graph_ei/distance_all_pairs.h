@@ -9,9 +9,8 @@
 namespace graph {
 template <class TGraph, class TEdgeCostFunction, class TEdgeCost>
 inline std::vector<std::vector<TEdgeCost>> DistanceAllPairs(
-    const TGraph& graph, const TEdgeCostFunction& f,
-    const TEdgeCost& max_cost) {
-  return distance::Johnson(graph, f, max_cost);
+    const TGraph& g, const TEdgeCostFunction& f, const TEdgeCost& max_cost) {
+  return distance::Johnson(g, f, max_cost);
 }
 }  // namespace graph
 

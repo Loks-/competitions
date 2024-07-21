@@ -10,17 +10,17 @@ namespace distance {
 // https://en.wikipedia.org/wiki/Bellman%E2%80%93Ford_algorithm
 // Time: O(VE)
 template <class TGraph, class TEdgeCostFunction, class TEdgeCost>
-inline std::vector<TEdgeCost> BellmanFordYen(const TGraph& graph,
+inline std::vector<TEdgeCost> BellmanFordYen(const TGraph& g,
                                              const TEdgeCostFunction& f,
                                              unsigned source,
                                              const TEdgeCost& max_cost) {
-  unsigned gsize = graph.Size();
+  unsigned gsize = g.Size();
   std::vector<std::pair<unsigned, TEdgeCost>> v1, v2;
   std::vector<unsigned> v1b(gsize + 1), v2b(gsize + 1);
   for (unsigned u = 0; u < gsize; ++u) {
     v1b[u] = v1.size();
     v2b[u] = v2.size();
-    for (const auto& e : graph.EdgesEI(u))
+    for (const auto& e : g.EdgesEI(u))
       (u < e.to ? v1 : v2).push_back({e.to, f(e.info)});
   }
   v1b[gsize] = v1.size();

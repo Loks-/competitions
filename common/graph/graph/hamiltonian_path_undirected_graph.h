@@ -15,7 +15,7 @@
 namespace graph {
 class HamiltonianPathUndirectedGraph {
  protected:
-  UndirectedGraph graph;
+  UndirectedGraph g;
   unsigned size;
   std::vector<unsigned> current_path;
   std::vector<unsigned> visited;
@@ -28,7 +28,7 @@ class HamiltonianPathUndirectedGraph {
   }
 
   bool Connected(unsigned from) const {
-    auto v = DistanceFromSource(graph, from);
+    auto v = DistanceFromSource(g, from);
     for (unsigned d : v) {
       if (d > size) return false;
     }
@@ -42,10 +42,10 @@ class HamiltonianPathUndirectedGraph {
     cache.insert(h);
     unsigned current = current_path.back();
     std::vector<std::pair<unsigned, unsigned>> vp;
-    for (unsigned u : graph.Edges(current)) {
+    for (unsigned u : g.Edges(current)) {
       if (visited[u]) continue;
       unsigned k = 0;
-      for (unsigned v : graph.Edges(u)) {
+      for (unsigned v : g.Edges(u)) {
         if (!visited[v]) ++k;
       }
       vp.push_back({k, u});
@@ -78,22 +78,22 @@ class HamiltonianPathUndirectedGraph {
   }
 
   bool Find() {
-    if (!graph.directed_edges && !Connected(0)) return false;
+    if (!g.directed_edges && !Connected(0)) return false;
     for (unsigned i = 0; i < size; ++i) {
-      if (Find(i, graph.directed_edges)) return true;
+      if (Find(i, g.directed_edges)) return true;
     }
     return false;
   }
 
   explicit HamiltonianPathUndirectedGraph(const UndirectedGraph& g)
-      : graph(g), size(graph.Size()) {
+      : g(g), size(g.Size()) {
     current_path.reserve(size);
     visited.resize(size, 0);
   }
 };
 }  // namespace graph
 
-inline std::vector<unsigned> HamiltonianPath(const UndirectedGraph& graph) {
-  graph::HamiltonianPathUndirectedGraph hp(graph);
+inline std::vector<unsigned> HamiltonianPath(const UndirectedGraph& g) {
+  graph::HamiltonianPathUndirectedGraph hp(g);
   return hp.Find() ? hp.GetPath() : std::vector<unsigned>();
 }

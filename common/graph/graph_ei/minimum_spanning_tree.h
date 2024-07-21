@@ -9,9 +9,9 @@
 namespace graph {
 template <class TGraph, class TEdgeCostFunction, class TEdgeCost>
 inline std::pair<unsigned, typename TEdgeCostFunction::TEdgeCost>
-MinimumSpanningTree(const TGraph& graph, const TEdgeCostFunction& f,
+MinimumSpanningTree(const TGraph& g, const TEdgeCostFunction& f,
                     const TEdgeCost& max_cost) {
-  return mst::Prim(graph, f, max_cost);
+  return mst::Prim(g, f, max_cost);
 }
 }  // namespace graph
 

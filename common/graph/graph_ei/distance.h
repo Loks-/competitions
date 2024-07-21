@@ -8,11 +8,11 @@
 
 namespace graph {
 template <class TGraph, class TEdgeCostFunction, class TEdgeCost>
-inline std::vector<TEdgeCost> DistanceFromSource(const TGraph& graph,
+inline std::vector<TEdgeCost> DistanceFromSource(const TGraph& g,
                                                  const TEdgeCostFunction& f,
                                                  unsigned source,
                                                  const TEdgeCost& max_cost) {
-  return distance::spfa::Safe(graph, f, source, max_cost);
+  return distance::spfa::Safe(g, f, source, max_cost);
 }
 }  // namespace graph
 
