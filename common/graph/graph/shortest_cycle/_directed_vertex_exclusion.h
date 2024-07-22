@@ -15,7 +15,7 @@ namespace scycle {
 // Find shortest cycle length by vertex exclusion.
 // Works for sparse graphs.
 namespace hidden {
-unsigned VertexExclusionI(
+inline unsigned VertexExclusionI(
     std::vector<std::unordered_map<unsigned, unsigned>>& edges_in,
     std::vector<std::unordered_map<unsigned, unsigned>>& edges_out) {
   assert(edges_in.size() == edges_out.size());
@@ -53,7 +53,7 @@ unsigned VertexExclusionI(
 }
 }  // namespace hidden
 
-unsigned VertexExclusion(const DirectedGraph& g) {
+inline unsigned VertexExclusion(const DirectedGraph& g) {
   std::vector<std::unordered_map<unsigned, unsigned>> edges_in(g.Size()),
       edges_out(g.Size());
   for (unsigned u = 0; u < g.Size(); ++u) {

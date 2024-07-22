@@ -19,9 +19,9 @@ namespace scycle {
 // Find shortest cycle length by running BFS from each node.
 // Time: O(V (V + E))
 namespace hidden {
-void BFSI(const graph::dynamic::DirectedGraph<TEmpty>& g, unsigned source,
-          unsigned& best_cost, std::queue<unsigned>& q,
-          std::vector<unsigned>& vd, ds::UnsignedSet& us) {
+inline void BFSI(const graph::dynamic::DirectedGraph<TEmpty>& g,
+                 unsigned source, unsigned& best_cost, std::queue<unsigned>& q,
+                 std::vector<unsigned>& vd, ds::UnsignedSet& us) {
   // Run Dijkstra
   const unsigned none = -1;
   // Run BFS
@@ -52,7 +52,7 @@ void BFSI(const graph::dynamic::DirectedGraph<TEmpty>& g, unsigned source,
 }
 }  // namespace hidden
 
-unsigned BFS(const DirectedGraph& g) {
+inline unsigned BFS(const DirectedGraph& g) {
   unsigned best_cost = unsigned(-1);
   std::queue<unsigned> q;
   std::vector<unsigned> vd(g.Size(), best_cost);

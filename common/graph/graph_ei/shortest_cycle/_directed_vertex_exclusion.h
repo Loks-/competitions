@@ -17,7 +17,7 @@ namespace scycle {
 // Works for sparse graphs.
 namespace hidden {
 template <class TValue>
-TValue VertexExclusionI(
+inline TValue VertexExclusionI(
     std::vector<std::unordered_map<unsigned, TValue>>& edges_in,
     std::vector<std::unordered_map<unsigned, TValue>>& edges_out,
     const TValue& max_cost, bool positive_cost_edges) {
@@ -57,8 +57,8 @@ TValue VertexExclusionI(
 }  // namespace hidden
 
 template <class TValue>
-TValue VertexExclusion(const DirectedGraphEI<TValue>& g, TValue max_cost,
-                       bool positive_cost_edges) {
+inline TValue VertexExclusion(const DirectedGraphEI<TValue>& g, TValue max_cost,
+                              bool positive_cost_edges) {
   std::vector<std::unordered_map<unsigned, TValue>> edges_in(g.Size()),
       edges_out(g.Size());
   for (unsigned u = 0; u < g.Size(); ++u) {

@@ -18,9 +18,10 @@ namespace scycle {
 // Time: O(V (V + E) log V)
 namespace hidden {
 template <class TValue, class TUKVMHeap>
-void DijkstraUpdateI(const graph::dynamic::DirectedGraph<TValue>& g,
-                     unsigned source, TValue& best_cost, const TValue& max_cost,
-                     TUKVMHeap& q, ds::UnsignedSet& us) {
+inline void DijkstraUpdateI(const graph::dynamic::DirectedGraph<TValue>& g,
+                            unsigned source, TValue& best_cost,
+                            const TValue& max_cost, TUKVMHeap& q,
+                            ds::UnsignedSet& us) {
   // Run Dijkstra
   us.Insert(source);
   for (q.AddNewKey(source, TValue()); !q.Empty();) {
@@ -45,7 +46,7 @@ void DijkstraUpdateI(const graph::dynamic::DirectedGraph<TValue>& g,
 }  // namespace hidden
 
 template <class TValue>
-TValue Dijkstra(const DirectedGraphEI<TValue>& g, TValue max_cost) {
+inline TValue Dijkstra(const DirectedGraphEI<TValue>& g, TValue max_cost) {
   TValue best_cost = max_cost;
   heap::ukvm::DHeap<4u, TValue> qd(std::vector<TValue>(g.Size(), max_cost),
                                    true);
