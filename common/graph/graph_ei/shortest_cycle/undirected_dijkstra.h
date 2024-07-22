@@ -69,6 +69,7 @@ TValue Dijkstra(const UndirectedGraphEI<TValue>& g, TValue max_cost) {
   heap::ukvm::DHeap<4u, unsigned, std::greater<unsigned>> qe(vpc, false);
   for (; !qe.Empty();) {
     auto u = qe.ExtractKey();
+    if (qe.Get(u) == 0) break;
     hidden::DijkstraUpdateI(dg, u, best_cost, max_cost, qd, us, vf);
     auto edges = dg.Edges(u);
     std::reverse(edges.begin(), edges.end());
