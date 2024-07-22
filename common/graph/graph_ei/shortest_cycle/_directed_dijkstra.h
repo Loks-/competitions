@@ -52,7 +52,7 @@ TValue Dijkstra(const DirectedGraphEI<TValue>& g, TValue max_cost) {
   ds::UnsignedSet us(g.Size());
   graph::dynamic::DirectedGraph<TValue> dg;
   graph::dynamic::Convert(g, dg);
-  std::vector<unsigned> vpc(g.size());
+  std::vector<unsigned> vpc(g.Size());
   for (unsigned i = 0; i < vpc.size(); ++i)
     vpc[i] = dg.Edges(i).size() * dg.InvertedEdges(i).size();
   heap::ukvm::DHeap<4u, unsigned, std::greater<unsigned>> qe(vpc, false);
