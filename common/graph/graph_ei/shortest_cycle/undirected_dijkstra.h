@@ -8,7 +8,6 @@
 #include "common/heap/ukvm/dheap.h"
 
 #include <algorithm>
-#include <iostream>
 #include <vector>
 
 namespace graph {
