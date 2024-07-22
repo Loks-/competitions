@@ -1,12 +1,8 @@
 #include "common/factorization/factorization.h"
-#include "common/graph/graph_ei/shortest_cycle/undirected_vertex_exclusion.h"
+#include "common/graph/graph/girth.h"
 #include "common/stl/base.h"
 #include "common/vector/read.h"
 #include "common/vector/unique.h"
-
-#include <unordered_map>
-
-using TGraph = UndirectedGraphEI<unsigned>;
 
 int main_1325e() {
   unsigned N;
@@ -26,11 +22,11 @@ int main_1325e() {
     vvp.push_back(uvp);
   }
   nvector::UniqueUnsorted(vp);
-  TGraph g(vp.size());
+  UndirectedGraph g(vp.size());
   for (auto& v : vvp)
     g.AddEdge(lower_bound(vp.begin(), vp.end(), v[0]) - vp.begin(),
-              lower_bound(vp.begin(), vp.end(), v[1]) - vp.begin(), 1);
-  auto answer = graph::scycle::VertexExclusion(g, N + 1);
+              lower_bound(vp.begin(), vp.end(), v[1]) - vp.begin());
+  auto answer = Girth(g);
   std::cout << ((answer <= N) ? int(answer) : -1) << std::endl;
   return 0;
 }
