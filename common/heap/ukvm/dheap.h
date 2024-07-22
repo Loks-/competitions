@@ -180,6 +180,11 @@ class DHeap {
     return t;
   }
 
+  void ExtractAll() {
+    for (auto p : heap_pointers) p->heap_position = not_in_heap;
+    heap_pointers.resize(0);
+  }
+
  protected:
   void SiftUp(unsigned pos) {
     if (pos == 0) return;
