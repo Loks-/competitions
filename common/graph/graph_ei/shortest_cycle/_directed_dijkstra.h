@@ -9,7 +9,7 @@
 
 #include <algorithm>
 
-// Code in this files was not tested.
+// Code in this file was not tested.
 
 namespace graph {
 namespace scycle {
