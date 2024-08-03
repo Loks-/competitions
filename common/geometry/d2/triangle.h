@@ -4,6 +4,7 @@
 #include "common/geometry/d2/point.h"
 #include "common/geometry/d2/utils/box.h"
 #include "common/numeric/utils/abs.h"
+
 #include <vector>
 
 namespace geometry {
@@ -20,7 +21,7 @@ class Triangle {
 
   T SignedDoubleArea() const { return (b - a) % (c - a); }
   T SignedArea() const { return SignedDoubleArea() / 2; }
-  T DoubleArea() const { return Abs(SignedDoubleArea); }
+  T DoubleArea() const { return Abs(SignedDoubleArea()); }
   T Area() const { return DoubleArea() / 2; }
 
   bool Empty() const { return SignedDoubleArea() == T(0); }

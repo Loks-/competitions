@@ -27,8 +27,8 @@ class Complex {
   bool operator==(const TSelf& r) const { return (re == r.re) && (im == r.im); }
   bool operator!=(const TSelf& r) const { return (re != r.re) || (im != r.im); }
 
-  TSelf operator*(const TValue& r) const { return TSelf(re * r, r.im * r); }
-  TSelf operator/(const TValue& r) const { return TSelf(re / r, r.im / r); }
+  TSelf operator*(const TValue& r) const { return TSelf(re * r, im * r); }
+  TSelf operator/(const TValue& r) const { return TSelf(re / r, im / r); }
 
   TSelf& operator+=(const TSelf& r) {
     re += r.re;
