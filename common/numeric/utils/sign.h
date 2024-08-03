@@ -1,6 +1,6 @@
 #pragma once
 
-template <typename T>
+template <class T>
 inline int Sign(const T& val) {
   return (T() < val) - (val < T());
 }
