@@ -1,5 +1,6 @@
 // http://acm.timus.ru/problem.aspx?space=1&num=1312
 
+#include "common/numeric/utils/sqr.h"
 #include "common/stl/base.h"
 #include "common/vector/read.h"
 
@@ -8,7 +9,6 @@
 
 int main_p1312() {
   cout << setprecision(4) << fixed;
-  auto sqr = [](double x) { return x * x; };
 
   int64_t h, w;
   cin >> w >> h;
@@ -49,29 +49,29 @@ int main_p1312() {
       int64_t r1 = vr[vp[0]], r2 = vr[vp[1]], r3 = vr[vp[2]];
       x1 = r1, y1 = r1, y2 = h - r2;
       x2 =
-          max((y2 - y1 < r1 + r2) ? x1 + sqrt(sqr(r1 + r2) - sqr(y2 - y1)) : x1,
+          max((y2 - y1 < r1 + r2) ? x1 + sqrt(Sqr(r1 + r2) - Sqr(y2 - y1)) : x1,
               double(r2));
       if (x2 + r2 > w + 1e-10) {
         next_permutation(vp.begin(), vp.end());
         continue;
       }
       x3 = w - r3, y3 = r3;
-      if ((sqr(x3 - x1) + sqr(y3 - y1) >= sqr(r3 + r1) - 1e-10) &&
-          (sqr(x3 - x2) + sqr(y3 - y2) >= sqr(r3 + r2) - 1e-10)) {
+      if ((Sqr(x3 - x1) + Sqr(y3 - y1) >= Sqr(r3 + r1) - 1e-10) &&
+          (Sqr(x3 - x2) + Sqr(y3 - y2) >= Sqr(r3 + r2) - 1e-10)) {
         Print();
         break;
       }
       y3 = h - r3;
-      if ((sqr(x3 - x1) + sqr(y3 - y1) >= sqr(r3 + r1) - 1e-10) &&
-          (sqr(x3 - x2) + sqr(y3 - y2) >= sqr(r3 + r2) - 1e-10)) {
+      if ((Sqr(x3 - x1) + Sqr(y3 - y1) >= Sqr(r3 + r1) - 1e-10) &&
+          (Sqr(x3 - x2) + Sqr(y3 - y2) >= Sqr(r3 + r2) - 1e-10)) {
         Print();
         break;
       }
       y3 =
-          max((x3 - x1 < r1 + r3) ? y1 + sqrt(sqr(r1 + r3) - sqr(x3 - x1)) : x1,
+          max((x3 - x1 < r1 + r3) ? y1 + sqrt(Sqr(r1 + r3) - Sqr(x3 - x1)) : x1,
               double(r3));
       if ((y3 + r3 <= h + 1e-10) &&
-          (sqr(x3 - x2) + sqr(y3 - y2) >= sqr(r3 + r2) - 1e-10)) {
+          (Sqr(x3 - x2) + Sqr(y3 - y2) >= Sqr(r3 + r2) - 1e-10)) {
         Print();
         break;
       }
