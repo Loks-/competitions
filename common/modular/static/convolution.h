@@ -23,6 +23,7 @@ inline std::vector<TModularNew> ConvolutionFFTChangeModular(
 // Max supported length for a is 2^24.
 template <class TModular, unsigned maxn = (1u << 16)>
 inline std::vector<TModular> ConvolutionFFT(const std::vector<TModular>& a) {
+  static_assert(TModular::IsModPrime() && TModular::IsMod32Bits());
   using TModularA = modular::TArithmetic_P32U;
   using TModular1 = TModular_P32<2013265921>;
   using TModular2 = TModular_P32<1811939329>;
@@ -55,6 +56,7 @@ inline std::vector<TModular> ConvolutionFFT(const std::vector<TModular>& a) {
 template <class TModular, unsigned maxn = (1u << 16)>
 inline std::vector<TModular> ConvolutionFFT(const std::vector<TModular>& a,
                                             const std::vector<TModular>& b) {
+  static_assert(TModular::IsModPrime() && TModular::IsMod32Bits());
   using TModularA = modular::TArithmetic_P32U;
   using TModular1 = TModular_P32<2013265921>;
   using TModular2 = TModular_P32<1811939329>;
@@ -89,14 +91,15 @@ inline std::vector<TModular> ConvolutionFFT(const std::vector<TModular>& a,
 template <class TModular, unsigned maxn = (1u << 16)>
 inline std::vector<TModular> Convolution(const std::vector<TModular>& a) {
   return (a.size() < 100) ? numeric::ConvolutionBase(a)
-                          : ConvolutionFFT<maxn>(a);
+                          : ConvolutionFFT<TModular, maxn>(a);
 }
 
 template <class TModular, unsigned maxn = (1u << 16)>
 inline std::vector<TModular> Convolution(const std::vector<TModular>& a,
                                          const std::vector<TModular>& b) {
-  return ((a.size() < 100) || (b.size() < 100)) ? numeric::ConvolutionBase(a, b)
-                                                : ConvolutionFFT<maxn>(a, b);
+  return ((a.size() < 100) || (b.size() < 100))
+             ? numeric::ConvolutionBase(a, b)
+             : ConvolutionFFT<TModular, maxn>(a, b);
 }
 }  // namespace mstatic
 }  // namespace modular
