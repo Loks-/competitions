@@ -28,6 +28,7 @@ class Base {
   bool Empty() const { return data.size() == 0; }
   unsigned Size() const { return unsigned(data.size()); }
   unsigned Power() const { return std::max<unsigned>(Size(), 1) - 1; }
+  const TData& Data() const { return data; }
 
   void Normalize() {
     for (; (data.size() > 0) && (data.back() == TValue());) data.pop_back();

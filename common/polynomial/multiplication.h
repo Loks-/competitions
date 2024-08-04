@@ -15,6 +15,11 @@ inline Polynomial<TValue> MultBase(const Polynomial<TValue>& a,
 }
 
 template <class TValue>
+inline Polynomial<TValue> SqrBase(const Polynomial<TValue>& a) {
+  return MultBase(a, a);
+}
+
+template <class TValue>
 inline Polynomial<TValue> operator*(const Polynomial<TValue>& l,
                                     const Polynomial<TValue>& r) {
   return MultBase(l, r);

@@ -26,6 +26,11 @@ class Polynomial : public Base<TTValue, Polynomial<TTValue>> {
     TBase::Normalize();
   }
 
+  explicit Polynomial(const TBase::TData& v) {
+    TBase::data = v;
+    TBase::Normalize();
+  }
+
   TValue Apply(TValue x) const {
     if (TBase::Empty()) return TValue();
     TValue *p = TBase::end(), *pbegin = TBase::begin();
