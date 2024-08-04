@@ -12,9 +12,9 @@ class Proxy {
   using TSelf = Proxy<mod, is_prime, is_32bit>;
 
  public:
-  static bool IsModPrime() { return is_prime; }
-  static bool IsMod32Bits() { return is_32bit; }
-  static TValue GetMod() { return mod; }
+  consteval static bool IsModPrime() { return is_prime; }
+  consteval static bool IsMod32Bits() { return is_32bit; }
+  consteval static TValue GetMod() { return mod; }
 
   static TValue ApplyU(uint64_t value) { return TBase::ApplyU(value, mod); }
   static TValue ApplyS(int64_t value) { return TBase::ApplyS(value, mod); }

@@ -13,9 +13,9 @@ class Modular {
   using TSelf = Modular<mod, is_prime, is_32bit>;
 
  public:
-  static bool IsModPrime() { return is_prime; }
-  static bool IsMod32Bits() { return is_32bit; }
-  static TValue GetMod() { return mod; }
+  consteval static bool IsModPrime() { return is_prime; }
+  consteval static bool IsMod32Bits() { return is_32bit; }
+  consteval static TValue GetMod() { return mod; }
 
  protected:
   TValue value;
