@@ -18,6 +18,8 @@ inline Unsigned MultBase(const Unsigned& a, const Unsigned& b) {
   return r;
 }
 
+inline Unsigned SqrBase(const Unsigned& a) { return MultBase(a, a); }
+
 namespace hidden {
 template <class TModular>
 inline std::vector<TModular> MultFFTConvert(const Unsigned& a) {
@@ -31,6 +33,33 @@ inline std::vector<TModular> MultFFTConvert(const Unsigned& a) {
   return v;
 }
 }  // namespace hidden
+
+// Max supported length for a is 2^24.
+template <unsigned maxn = (1u << 16)>
+inline Unsigned SqrFFT(const Unsigned& a) {
+  static const uint32_t mask16 = (1u << 16) - 1;
+  using TModular1 = TModular_P32<2013265921>;
+  using TModular2 = TModular_P32<1811939329>;
+  using TFFT1 = modular::mstatic::FFT<TModular1>;
+  using TFFT2 = modular::mstatic::FFT<TModular2>;
+  thread_local TFFT1 fft1(maxn);
+  thread_local TFFT2 fft2(maxn);
+  assert(2 * (a.Size() + b.Size()) <= maxn);
+  auto r1 = fft1.Convolution(hidden::MultFFTConvert<TModular1>(a));
+  auto r2 = fft2.Convolution(hidden::MultFFTConvert<TModular2>(a));
+  assert(r1.size() == r2.size());
+  uint64_t t64 = 0;
+  Unsigned::TData v(r1.size() / 2, 0);
+  for (size_t i = 0; i < r1.size(); ++i) {
+    t64 += MergeRemainders<modular::TArithmetic_P32U>(
+        TModular1::GetMod(), r1[i].Get(), TModular2::GetMod(), r2[i].Get());
+    uint32_t t16 = uint32_t(t64) & mask16;
+    v[i / 2] += (i % 2) ? (t16 << 16) : t16;
+    t64 >>= 16;
+  }
+  for (; t64; t64 >>= 32) v.push_back(uint32_t(t64));
+  return Unsigned(v);
+}
 
 // Max supported length for (a*b) is 2^25.
 template <unsigned maxn = (1u << 16)>
@@ -59,6 +88,11 @@ inline Unsigned MultFFT(const Unsigned& a, const Unsigned& b) {
   }
   for (; t64; t64 >>= 32) v.push_back(uint32_t(t64));
   return Unsigned(v);
+}
+
+template <unsigned maxn = (1u << 16)>
+inline Unsigned Sqr(const Unsigned& a) {
+  return (a.Size() < 100) ? SqrBase(a) : SqrFFT<maxn>(a);
 }
 
 template <unsigned maxn = (1u << 16)>
