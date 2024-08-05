@@ -6,7 +6,7 @@
 #include <vector>
 
 namespace factorization {
-// Similar to PrimesCountQuotients butt count primes 4k+1 and 4k+3
+// Similar to PrimesCountQuotients but count primes 4k+1 and 4k+3
 // independently
 class PrimesCountQuotients4k13 {
  public:
