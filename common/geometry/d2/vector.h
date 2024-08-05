@@ -38,7 +38,7 @@ class Vector {
     return (dx != r.dx) ? (dx < r.dx) : (dy < r.dy);
   }
 
-  constexpr T& operator[](unsigned index) {
+  T& operator[](unsigned index) {
     assert(index < 2);
     return (index == 0) ? dx : dy;
   }
