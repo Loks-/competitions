@@ -13,14 +13,16 @@ class Line {
   Point<T> p;
   Vector<T> v;
 
-  Line() {}
-  Line(const Point<T>& _p, const Vector<T>& _v) : p(_p), v(_v) {}
+  constexpr Line() {}
+  constexpr Line(const Point<T>& _p, const Vector<T>& _v) : p(_p), v(_v) {}
 
-  Point<T> operator()(const T& t) const {
+  constexpr Point<T> operator()(const T& t) const {
     return Point<T>(p.x + t * v.dx, p.y + t * v.dy, p.z + t * v.dz);
   }
 
-  T Project(const Point<T>& x) const { return ((x - p) * v) / (v * v); }
+  constexpr T Project(const Point<T>& x) const {
+    return ((x - p) * v) / (v * v);
+  }
 };
 }  // namespace d3
 }  // namespace geometry

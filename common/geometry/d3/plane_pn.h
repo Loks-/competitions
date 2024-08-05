@@ -13,15 +13,19 @@ class PlanePN {
   Point<T> p;
   Vector<T> n;
 
-  PlanePN() {}
-  PlanePN(const Point<T>& _p, const Vector<T>& _n) : p(_p), n(_n) {}
+  constexpr PlanePN() {}
 
-  bool Valid() const { return !n.Empty(); }
-  const Vector<T>& Normal() const { return n; }
-  T operator()(const Point<T>& pp) const { return n * (pp - p); }
+  constexpr PlanePN(const Point<T>& _p, const Vector<T>& _n) : p(_p), n(_n) {}
 
-  void SetOppositeNormal() { n = -n; }
-  void Normalize() { n.Normalize(); }
+  constexpr bool Valid() const { return !n.Empty(); }
+
+  constexpr const Vector<T>& Normal() const { return n; }
+
+  constexpr T operator()(const Point<T>& pp) const { return n * (pp - p); }
+
+  constexpr void SetOppositeNormal() { n = -n; }
+
+  constexpr void Normalize() { n.Normalize(); }
 };
 }  // namespace d3
 }  // namespace geometry

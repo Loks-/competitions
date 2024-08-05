@@ -9,36 +9,39 @@ class Point {
  public:
   using T = TValue;
   using TSelf = Point<T>;
-  static const unsigned dim = 3;
 
   T x, y, z;
 
-  Point() : x(), y(), z() {}
-  Point(const T& _x, const T& _y, const T& _z) : x(_x), y(_y), z(_z) {}
+  consteval static unsigned Dim() { return 3u; }
 
-  bool operator==(const TSelf& r) const {
+  constexpr Point() : x(), y(), z() {}
+
+  constexpr Point(const T& _x, const T& _y, const T& _z)
+      : x(_x), y(_y), z(_z) {}
+
+  constexpr bool operator==(const TSelf& r) const {
     return (x == r.x) && (y == r.y) && (z == r.z);
   }
 
-  bool operator!=(const TSelf& r) const {
+  constexpr bool operator!=(const TSelf& r) const {
     return (x != r.x) || (y != r.y) || (z != r.z);
   }
 
-  bool operator<(const TSelf& r) const {
+  constexpr bool operator<(const TSelf& r) const {
     return (x != r.x) ? (x < r.x) : (y != r.y) ? (y < r.y) : (z < r.z);
   }
 
-  T& operator[](unsigned index) {
+  constexpr T& operator[](unsigned index) {
     assert(index < 3);
     return (index == 0) ? x : (index == 1) ? y : z;
   }
 
-  const T& operator[](unsigned index) const {
+  constexpr const T& operator[](unsigned index) const {
     assert(index < 3);
     return (index == 0) ? x : (index == 1) ? y : z;
   }
 
-  TSelf operator-() const { return TSelf(-x, -y, -z); }
+  constexpr TSelf operator-() const { return TSelf(-x, -y, -z); }
 };
 }  // namespace d3
 }  // namespace geometry

@@ -10,111 +10,118 @@
 
 namespace geometry {
 namespace ds {
-template <unsigned dim_, class TValue>
+template <unsigned dim, class TValue>
 class Vector {
  public:
   using T = TValue;
-  using TSelf = Vector<dim_, T>;
-  static const unsigned dim = dim_;
+  using TSelf = Vector<dim, T>;
 
   std::array<T, dim> dpc;
 
-  Vector() { std::fill(dpc.begin(), dpc.end(), T()); }
-  Vector(const T& value) { std::fill(dpc.begin(), dpc.end(), value); }
-  Vector(const std::array<T, dim>& v) : dpc(v) {}
+  consteval static unsigned Dim() { return dim; }
 
-  Vector(const std::vector<T>& v) {
+  constexpr Vector() { std::fill(dpc.begin(), dpc.end(), T()); }
+
+  constexpr explicit Vector(const T& value) {
+    std::fill(dpc.begin(), dpc.end(), value);
+  }
+
+  constexpr explicit Vector(const std::array<T, dim>& v) : dpc(v) {}
+
+  constexpr explicit Vector(const std::vector<T>& v) {
     assert(v.size() == dim);
     for (unsigned i = 0; i < dim; ++i) dpc[i] = v[i];
   }
 
-  Point<dim, T> ToPoint() const { return Point<dim, T>(dpc); }
+  constexpr Point<dim, T> ToPoint() const { return Point<dim, T>(dpc); }
 
-  bool Empty() const {
+  constexpr bool Empty() const {
     for (auto x : dpc) {
       if (x != 0) return false;
     }
     return true;
   }
 
-  T LengthSquared() const {
+  constexpr T LengthSquared() const {
     T s = 0;
     for (auto x : dpc) s += x * x;
     return s;
   }
 
-  T Length() const { return sqrt(LengthSquared()); }
+  constexpr T Length() const { return sqrt(LengthSquared()); }
 
-  bool operator==(const TSelf& r) const { return dpc == r.dpc; }
-  bool operator!=(const TSelf& r) const { return dpc != r.dpc; }
+  constexpr bool operator==(const TSelf& r) const { return dpc == r.dpc; }
 
-  bool operator<(const TSelf& r) const {
+  constexpr bool operator!=(const TSelf& r) const { return dpc != r.dpc; }
+
+  constexpr bool operator<(const TSelf& r) const {
     for (unsigned i = 0; i < dim; ++i) {
       if (dpc[i] != r[i]) return dpc[i] < r[i];
     }
     return false;
   }
 
-  T& operator[](unsigned index) { return dpc[index]; }
-  const T& operator[](unsigned index) const { return dpc[index]; }
+  constexpr T& operator[](unsigned index) { return dpc[index]; }
 
-  TSelf operator-() const {
+  constexpr const T& operator[](unsigned index) const { return dpc[index]; }
+
+  constexpr TSelf operator-() const {
     TSelf p;
     for (unsigned i = 0; i < dim; ++i) p[i] = -dpc[i];
     return p;
   }
 
-  TSelf& operator*=(const T& r) {
+  constexpr TSelf& operator*=(const T& r) {
     for (auto& x : dpc) x *= r;
     return *this;
   }
 
-  TSelf& operator/=(const T& r) {
+  constexpr TSelf& operator/=(const T& r) {
     for (auto& x : dpc) x /= r;
     return *this;
   }
 
-  TSelf operator*(const T& r) const {
+  constexpr TSelf operator*(const T& r) const {
     TSelf t(*this);
     t *= r;
     return t;
   }
 
-  TSelf operator/(const T& r) const {
+  constexpr TSelf operator/(const T& r) const {
     TSelf t(*this);
     t *= r;
     return t;
   }
 
-  TSelf& operator+=(const TSelf& r) {
+  constexpr TSelf& operator+=(const TSelf& r) {
     for (unsigned i = 0; i < dim; ++i) dpc[i] += r[i];
     return *this;
   }
 
-  TSelf& operator-=(const TSelf& r) {
+  constexpr TSelf& operator-=(const TSelf& r) {
     for (unsigned i = 0; i < dim; ++i) dpc[i] -= r[i];
     return *this;
   }
 
-  TSelf operator+(const TSelf& r) const {
+  constexpr TSelf operator+(const TSelf& r) const {
     TSelf t(*this);
     t += r;
     return t;
   }
 
-  TSelf operator-(const TSelf& r) const {
+  constexpr TSelf operator-(const TSelf& r) const {
     TSelf t(*this);
     t -= r;
     return t;
   }
 
-  T operator*(const TSelf& r) const {
+  constexpr T operator*(const TSelf& r) const {
     T s = 0;
     for (unsigned i = 0; i < dim; ++i) s += dpc[i] * r[i];
     return s;
   }
 
-  void Normalize() {
+  constexpr void Normalize() {
     assert(!Empty());
     operator/=(Length());
   }

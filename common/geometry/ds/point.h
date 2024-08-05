@@ -8,38 +8,44 @@
 
 namespace geometry {
 namespace ds {
-template <unsigned dim_, class TValue>
+template <unsigned dim, class TValue>
 class Point {
  public:
   using T = TValue;
-  using TSelf = Point<dim_, T>;
-  static const unsigned dim = dim_;
+  using TSelf = Point<dim, T>;
 
   std::array<T, dim> pc;
 
-  Point() { std::fill(pc.begin(), pc.end(), T()); }
-  Point(const T& value) { std::fill(pc.begin(), pc.end(), value); }
-  Point(const std::array<T, dim>& v) : pc(v) {}
+  consteval static unsigned Dim() { return dim; }
 
-  Point(const std::vector<T>& v) {
+  constexpr Point() { std::fill(pc.begin(), pc.end(), T()); }
+
+  constexpr explicit Point(const T& value) {
+    std::fill(pc.begin(), pc.end(), value);
+  }
+
+  constexpr explicit Point(const std::array<T, dim>& v) : pc(v) {}
+
+  constexpr explicit Point(const std::vector<T>& v) {
     assert(v.size() == dim);
     for (unsigned i = 0; i < dim; ++i) pc[i] = v[i];
   }
 
-  bool operator==(const TSelf& r) const { return pc == r.pc; }
-  bool operator!=(const TSelf& r) const { return pc != r.pc; }
+  constexpr bool operator==(const TSelf& r) const { return pc == r.pc; }
+  constexpr bool operator!=(const TSelf& r) const { return pc != r.pc; }
 
-  bool operator<(const TSelf& r) const {
+  constexpr bool operator<(const TSelf& r) const {
     for (unsigned i = 0; i < dim; ++i) {
       if (pc[i] != r[i]) return pc[i] < r[i];
     }
     return false;
   }
 
-  T& operator[](unsigned index) { return pc[index]; }
-  const T& operator[](unsigned index) const { return pc[index]; }
+  constexpr T& operator[](unsigned index) { return pc[index]; }
 
-  TSelf operator-() const {
+  constexpr const T& operator[](unsigned index) const { return pc[index]; }
+
+  constexpr TSelf operator-() const {
     TSelf p;
     for (unsigned i = 0; i < dim; ++i) p[i] = -pc[i];
     return p;

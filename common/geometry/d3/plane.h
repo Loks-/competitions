@@ -12,25 +12,27 @@ class Plane {
  public:
   T a, b, c, d;
 
-  Plane() : a(), b(), c(), d() {}
-  Plane(const T& _a, const T& _b, const T& _c, const T& _d = T(0))
+  constexpr Plane() : a(), b(), c(), d() {}
+
+  constexpr Plane(const T& _a, const T& _b, const T& _c, const T& _d = T(0))
       : a(_a), b(_b), c(_c), d(_d) {}
 
-  bool Valid() const { return (a != 0) || (b != 0) || (c != 0); }
-  Vector<T> Normal() const { return Vector<T>(a, b, c); }
+  constexpr bool Valid() const { return (a != 0) || (b != 0) || (c != 0); }
 
-  T operator()(const Point<T>& p) const {
+  constexpr Vector<T> Normal() const { return Vector<T>(a, b, c); }
+
+  constexpr T operator()(const Point<T>& p) const {
     return a * p.x + b * p.y + c * p.z + d;
   }
 
-  void SetOppositeNormal() {
+  constexpr void SetOppositeNormal() {
     a = -a;
     b = -b;
     c = -c;
     d = -d;
   }
 
-  void Normalize() {
+  constexpr void Normalize() {
     assert(Valid());
     T l = Normal().Length();
     a /= l;

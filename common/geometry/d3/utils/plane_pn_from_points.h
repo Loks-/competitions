@@ -5,7 +5,7 @@
 #include "common/geometry/d3/point.h"
 
 template <class T>
-inline geometry::d3::PlanePN<T> PlanePNFromPoints(
+constexpr geometry::d3::PlanePN<T> PlanePNFromPoints(
     const geometry::d3::Point<T>& p1, const geometry::d3::Point<T>& p2,
     const geometry::d3::Point<T>& p3) {
   auto v2 = p2 - p1, v3 = p3 - p1;

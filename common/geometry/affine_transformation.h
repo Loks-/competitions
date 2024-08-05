@@ -3,10 +3,9 @@
 #include "common/linear_algebra/matrix_static_size.h"
 
 namespace geometry {
-template <class TValue, unsigned _dim>
+template <class TValue, unsigned dim>
 class AffineTransformation {
  public:
-  static const unsigned dim = _dim;
   using T = TValue;
   using TSelf = AffineTransformation<T, dim>;
 
@@ -14,21 +13,23 @@ class AffineTransformation {
   la::MatrixStaticSize<T, dim, dim + 1> m;
 
  public:
-  AffineTransformation() { m.SetDiagonal(T(1)); }
+  consteval static unsigned Dim() { return dim; }
 
-  T& Get(unsigned i, unsigned j) {
+  constexpr AffineTransformation() { m.SetDiagonal(T(1)); }
+
+  constexpr T& Get(unsigned i, unsigned j) {
     assert((i < dim) && (j <= dim));
     return m(i, j);
   }
 
-  T Get(unsigned i, unsigned j) const {
+  constexpr T Get(unsigned i, unsigned j) const {
     assert((i <= dim) && (j <= dim));
     return (i == dim) ? T((j == dim) ? 1 : 0) : m(i, j);
   }
 
   template <class TPoint>
-  TPoint Apply(const TPoint& p) {
-    static_assert(p.dim == dim);
+  constexpr TPoint Apply(const TPoint& p) const {
+    static_assert(p.Dim() == dim);
     TPoint r;
     for (unsigned i = 0; i < dim; ++i) {
       r[i] = m(i, dim);
@@ -37,7 +38,7 @@ class AffineTransformation {
     return r;
   }
 
-  TSelf Apply(const TSelf& at) {
+  constexpr TSelf Apply(const TSelf& at) const {
     TSelf r;
     for (unsigned i = 0; i < dim; ++i) {
       for (unsigned j = 0; j <= dim; ++j) {
@@ -50,10 +51,10 @@ class AffineTransformation {
   }
 
   template <class TPoint>
-  TPoint operator()(const TPoint& p) {
+  constexpr TPoint operator()(const TPoint& p) const {
     return Apply(p);
   }
 
-  TSelf operator*(const TSelf& r) { return Apply(r); }
+  constexpr TSelf operator*(const TSelf& r) const { return Apply(r); }
 };
 }  // namespace geometry

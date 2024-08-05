@@ -6,7 +6,7 @@
 #include "common/geometry/d3/utils/determinant.h"
 
 template <class T>
-inline geometry::d3::Plane<T> PlaneFromPoints(
+constexpr geometry::d3::Plane<T> PlaneFromPoints(
     const geometry::d3::Point<T>& p1, const geometry::d3::Point<T>& p2,
     const geometry::d3::Point<T>& p3) {
   auto v2 = p2 - p1, v3 = p3 - p1;

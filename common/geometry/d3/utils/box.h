@@ -7,7 +7,7 @@
 #include <vector>
 
 template <class T>
-inline geometry::d3::axis::Rectangle<T> Box(
+constexpr geometry::d3::axis::Rectangle<T> Box(
     const std::vector<geometry::d3::Point<T>>& points) {
   if (points.size() == 0) return {};
   geometry::d3::axis::Rectangle<T> r(points[0], points[0]);
