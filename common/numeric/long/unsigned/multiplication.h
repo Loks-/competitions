@@ -44,7 +44,7 @@ inline Unsigned SqrFFT(const Unsigned& a) {
   using TFFT2 = modular::mstatic::FFT<TModular2>;
   thread_local TFFT1 fft1(maxn);
   thread_local TFFT2 fft2(maxn);
-  assert(2 * (a.Size() + b.Size()) <= maxn);
+  assert(4 * a.Size() <= maxn);
   auto r1 = fft1.Convolution(hidden::MultFFTConvert<TModular1>(a));
   auto r2 = fft2.Convolution(hidden::MultFFTConvert<TModular2>(a));
   assert(r1.size() == r2.size());
