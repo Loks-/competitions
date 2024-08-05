@@ -38,7 +38,7 @@ class Vector {
     return (dx != r.dx) ? (dx < r.dx) : (dy < r.dy);
   }
 
-  T& operator[](unsigned index) {
+  constexpr T& operator[](unsigned index) {
     assert(index < 2);
     return (index == 0) ? dx : dy;
   }
@@ -50,13 +50,13 @@ class Vector {
 
   constexpr TSelf operator-() const { return TSelf(-dx, -dy); }
 
-  TSelf& operator*=(const T& r) {
+  constexpr TSelf& operator*=(const T& r) {
     dx *= r;
     dy *= r;
     return *this;
   }
 
-  TSelf& operator/=(const T& r) {
+  constexpr TSelf& operator/=(const T& r) {
     dx /= r;
     dy /= r;
     return *this;
@@ -65,13 +65,13 @@ class Vector {
   constexpr TSelf operator*(const T& r) const { return TSelf(dx * r, dy * r); }
   constexpr TSelf operator/(const T& r) const { return TSelf(dx / r, dy / r); }
 
-  TSelf& operator+=(const TSelf& r) {
+  constexpr TSelf& operator+=(const TSelf& r) {
     dx += r.dx;
     dy += r.dy;
     return *this;
   }
 
-  TSelf& operator-=(const TSelf& r) {
+  constexpr TSelf& operator-=(const TSelf& r) {
     dx -= r.dx;
     dy -= r.dy;
     return *this;
@@ -88,7 +88,7 @@ class Vector {
   constexpr T operator*(const TSelf& r) const { return dx * r.dx + dy * r.dy; }
   constexpr T operator%(const TSelf& r) const { return dx * r.dy - dy * r.dx; }
 
-  void Normalize() {
+  constexpr void Normalize() {
     assert(!Empty());
     operator/=(Length());
   }

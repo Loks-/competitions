@@ -20,7 +20,7 @@ class IAngle : public Angle<T, IAngle<T>> {
 
   constexpr explicit IAngle(const Vector<T>& v) : TBase(v) { Normalize(); }
 
-  void Normalize() {
+  constexpr void Normalize() {
     assert(TBase::Valid());
     T g = GCDSafe(TBase::dx, TBase::dy);
     TBase::dx /= g;

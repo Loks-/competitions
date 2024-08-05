@@ -27,7 +27,7 @@ class Polygon : public geometry::d2::Polygon<T> {
     Normalize();
   }
 
-  void Normalize() {
+  constexpr void Normalize() {
     TBase::Normalize();
     vx.clear();
     vvy.clear();

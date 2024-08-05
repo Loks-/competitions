@@ -35,7 +35,7 @@ class PolygonStaticSize {
     if (!skip_normalization) Normalize();
   }
 
-  void Normalize() {
+  constexpr void Normalize() {
     unsigned ilowest = 0;
     for (unsigned i = 1; i < size; ++i) {
       if (CompareYX(v[i], v[ilowest])) ilowest = i;

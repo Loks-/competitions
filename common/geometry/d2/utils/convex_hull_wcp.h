@@ -8,7 +8,7 @@
 
 template <class T>
 // Without collinear points
-inline geometry::d2::ConvexPolygon<T> ConvexHullWCP(
+constexpr geometry::d2::ConvexPolygon<T> ConvexHullWCP(
     const std::vector<geometry::d2::Point<T>>& vpoints) {
   return geometry::d2::convex_hull::GrahamScanWCP(vpoints);
 }

@@ -12,7 +12,7 @@ namespace geometry {
 namespace d2 {
 namespace convex_hull {
 template <class T>
-inline ConvexPolygon<T> GrahamScanWCP(const std::vector<Point<T>>& vpoints) {
+constexpr ConvexPolygon<T> GrahamScanWCP(const std::vector<Point<T>>& vpoints) {
   if (vpoints.size() <= 3) return ConvexPolygon<T>(vpoints);
   std::vector<Point<T>> v(vpoints), vh(v.size());
   unsigned ilowest = 0;

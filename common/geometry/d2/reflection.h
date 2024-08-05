@@ -12,7 +12,7 @@ class Reflection {
   Point<T> p;
   Vector<T> v, v2;
 
-  void UpdateV2() {
+  constexpr void UpdateV2() {
     assert(!v.Empty());
     v2 = v * T(2) / (v * v);
   }

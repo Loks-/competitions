@@ -27,8 +27,9 @@ class LinePV {
 
   constexpr T operator()(const Point<T>& pp) const { return v % (pp - p); }
 
-  void SetOppositeNormal() { v = -v; }
-  void Normalize() { v.Normalize(); }
+  constexpr void SetOppositeNormal() { v = -v; }
+
+  constexpr void Normalize() { v.Normalize(); }
 
   constexpr bool operator==(const LinePV<T>& r) const {
     return (r(p) == 0) && ((v % r.v) == 0);

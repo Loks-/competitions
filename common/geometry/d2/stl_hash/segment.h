@@ -7,7 +7,8 @@
 namespace std {
 template <class T, bool closed>
 struct hash<geometry::d2::Segment<T, closed>> {
-  size_t operator()(const geometry::d2::Segment<T, closed>& value) const {
+  constexpr size_t operator()(
+      const geometry::d2::Segment<T, closed>& value) const {
     return HashCombine(hash<geometry::d2::Point<T>>{}(value.p1),
                        hash<geometry::d2::Point<T>>{}(value.p2));
   }

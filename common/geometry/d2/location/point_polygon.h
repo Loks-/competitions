@@ -12,7 +12,7 @@ namespace geometry {
 namespace d2 {
 namespace location {
 template <class T>
-inline Location Locate(const Point<T>& p, const Polygon<T>& plgn) {
+constexpr Location Locate(const Point<T>& p, const Polygon<T>& plgn) {
   unsigned cnt = 0;
   if (p == plgn[0]) return {Location::VERTEX, 0};
   Segment<T, false> s0(p, {p.x, plgn[0].y - T(1)});

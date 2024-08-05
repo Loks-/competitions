@@ -47,7 +47,7 @@ inline unsigned HalfSplittingLine0B(
   std::sort(va.begin(), va.end());
   if (va.back().first == va[0].first) return va[0].second;
   unsigned i = 0, j1 = 0, j2 = 0;
-  auto AdjustJ = [&]() {
+  const auto AdjustJ = [&]() {
     auto a = va[i].first.ShiftPi();
     for (; (j1 < n) && (va[i] == va[j1]);) ++j1;
     for (; (a.ToVector() % va[j1 % n].first.ToVector()) < 0;) ++j1;

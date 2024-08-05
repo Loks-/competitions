@@ -29,7 +29,7 @@ class Point {
     return (x != r.x) ? (x < r.x) : (y < r.y);
   }
 
-  T& operator[](unsigned index) {
+  constexpr T& operator[](unsigned index) {
     assert(index < 2);
     return (index == 0) ? x : y;
   }

@@ -6,7 +6,7 @@
 namespace std {
 template <class T>
 struct hash<geometry::d2::Vector<T>> {
-  size_t operator()(const geometry::d2::Vector<T>& value) const {
+  constexpr size_t operator()(const geometry::d2::Vector<T>& value) const {
     return HashCombine(hash<T>{}(value.dx), hash<T>{}(value.dy));
   }
 };

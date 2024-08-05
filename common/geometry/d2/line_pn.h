@@ -29,8 +29,9 @@ class LinePN {
 
   constexpr T operator()(const Point<T>& pp) const { return n * (pp - p); }
 
-  void SetOppositeNormal() { n = -n; }
-  void Normalize() { n.Normalize(); }
+  constexpr void SetOppositeNormal() { n = -n; }
+
+  constexpr void Normalize() { n.Normalize(); }
 };
 }  // namespace d2
 }  // namespace geometry

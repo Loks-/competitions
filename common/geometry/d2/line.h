@@ -33,13 +33,13 @@ class Line {
     return a * p.x + b * p.y + c;
   }
 
-  void SetOppositeNormal() {
+  constexpr void SetOppositeNormal() {
     a = -a;
     b = -b;
     c = -c;
   }
 
-  void Normalize() {
+  constexpr void Normalize() {
     assert(Valid());
     T l = Normal().Length();
     a /= l;

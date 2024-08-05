@@ -10,7 +10,7 @@ namespace d2 {
 namespace reflection {
 // Assume no angles are equal to pi.
 template <class T>
-inline bool Symmetric(const Polygon<T>& plgn) {
+constexpr bool Symmetric(const Polygon<T>& plgn) {
   unsigned s = plgn.Size();
   std::vector<Point<T>> vnew;
   for (unsigned i = 0; i < s; ++i) {
@@ -36,7 +36,7 @@ inline bool Symmetric(const Polygon<T>& plgn) {
 // Assume no angles are equal to pi.
 // All coordinates should be even if T is integer.
 template <class T>
-inline LinePV<T> LineOfSymmetry(const Polygon<T>& plgn) {
+constexpr LinePV<T> LineOfSymmetry(const Polygon<T>& plgn) {
   unsigned s = plgn.Size();
   std::vector<Point<T>> vnew;
   for (unsigned i = 0; i < s; ++i) {

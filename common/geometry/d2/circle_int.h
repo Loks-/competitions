@@ -22,9 +22,9 @@ class ICircle {
   constexpr ICircle(const Point<T>& _c, const T& _r, const T& _r2)
       : c(_c), r(_r), r2(_r2) {}
 
-  void SetR2(const T& _r2) { r2 = _r2; }
+  constexpr void SetR2(const T& _r2) { r2 = _r2; }
 
-  void UpdateR2() { SetR2(r * r); }
+  constexpr void UpdateR2() { SetR2(r * r); }
 
   constexpr bool Valid() const { return r2 >= 0; }
 

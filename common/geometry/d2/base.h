@@ -6,14 +6,14 @@
 namespace geometry {
 namespace d2 {
 template <class T>
-inline Point<T>& operator+=(Point<T>& p, const Vector<T>& v) {
+constexpr Point<T>& operator+=(Point<T>& p, const Vector<T>& v) {
   p.x += v.dx;
   p.y += v.dy;
   return p;
 }
 
 template <class T>
-inline Point<T>& operator-=(Point<T>& p, const Vector<T>& v) {
+constexpr Point<T>& operator-=(Point<T>& p, const Vector<T>& v) {
   p.x -= v.dx;
   p.y -= v.dy;
   return p;
