@@ -12,12 +12,16 @@ class PrimesRange {
     PrimesGenerator* p;
 
    public:
-    Iterator(uint64_t _maxn) : maxn(_maxn), p(nullptr) {}
-    Iterator(PrimesGenerator* _p) : maxn(0), p(_p) {}
+    constexpr Iterator(uint64_t _maxn) : maxn(_maxn), p(nullptr) {}
+    constexpr Iterator(PrimesGenerator* _p) : maxn(0), p(_p) {}
 
-    uint64_t operator*() const { return p->Get(); }
-    void operator++() { p->Next(); }
-    bool operator!=(const Iterator& e) const { return p->Get() <= e.maxn; }
+    constexpr uint64_t operator*() const { return p->Get(); }
+
+    constexpr void operator++() { p->Next(); }
+
+    constexpr bool operator!=(const Iterator& e) const {
+      return p->Get() <= e.maxn;
+    }
   };
 
  protected:
@@ -25,8 +29,8 @@ class PrimesRange {
   PrimesGenerator pg;
 
  public:
-  explicit PrimesRange(uint64_t _maxn) : maxn(_maxn) {}
-  Iterator begin() { return Iterator(&pg); }
-  Iterator end() { return Iterator(maxn); }
+  constexpr explicit PrimesRange(uint64_t _maxn) : maxn(_maxn) {}
+  constexpr Iterator begin() { return Iterator(&pg); }
+  constexpr Iterator end() { return Iterator(maxn); }
 };
 }  // namespace factorization

@@ -1,7 +1,7 @@
 #include "common/base.h"
 #include "common/factorization/table/primes.h"
 
-inline int Mobius(const PrimesTable& pt, uint64_t n) {
+constexpr int Mobius(const PrimesTable& pt, uint64_t n) {
   const auto& table = pt.GetTable();
   assert(n <= table.size());
   unsigned primes_count = 0;

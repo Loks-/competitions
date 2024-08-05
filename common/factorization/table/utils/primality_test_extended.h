@@ -1,6 +1,6 @@
 #include "common/factorization/table/primes.h"
 
-inline bool IsPrime(const PrimesTable& pt, uint64_t n) {
+constexpr bool IsPrime(const PrimesTable& pt, uint64_t n) {
   assert(n <= pt.GetSquaredTableSize());
   if (n <= pt.GetTableSize()) return pt.IsPrime(n);
   const auto& primes = pt.GetPrimes();

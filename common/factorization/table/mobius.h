@@ -12,7 +12,7 @@ class Mobius : public Primes {
   std::vector<int> mobius;
 
  public:
-  explicit Mobius(uint64_t size) : Primes(size) {
+  constexpr explicit Mobius(uint64_t size) : Primes(size) {
     mobius.resize(Primes::table_size + 1);
     mobius[0] = 0;
     mobius[1] = 1;
@@ -22,8 +22,9 @@ class Mobius : public Primes {
     }
   }
 
-  int Get(uint64_t n) const { return mobius[n]; }
-  int operator()(uint64_t n) const { return Get(n); }
+  constexpr int Get(uint64_t n) const { return mobius[n]; }
+
+  constexpr int operator()(uint64_t n) const { return Get(n); }
 };
 }  // namespace table
 }  // namespace factorization

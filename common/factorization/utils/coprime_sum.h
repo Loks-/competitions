@@ -3,7 +3,8 @@
 #include "common/factorization/base.h"
 
 // Return sum of coprime to k numbers in the interval [1..n].
-inline uint64_t CoprimeSum(const TFactorization& k_factorization, uint64_t n) {
+constexpr uint64_t CoprimeSum(const TFactorization& k_factorization,
+                              uint64_t n) {
   if (n <= 1) return n;
   if (k_factorization.size() == 0) return (n * (n + 1)) / 2;
   uint64_t fs = k_factorization.size(), p2 = 1ull << fs;

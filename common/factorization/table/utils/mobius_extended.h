@@ -2,7 +2,7 @@
 #include "common/factorization/table/primes.h"
 #include "common/factorization/table/utils/mobius.h"
 
-inline int MobiusExtended(const PrimesTable& pt, uint64_t n) {
+constexpr int MobiusExtended(const PrimesTable& pt, uint64_t n) {
   if (n <= pt.GetTableSize()) return Mobius(pt, n);
   unsigned primes_count = 0;
   for (uint64_t p : pt.GetPrimes()) {

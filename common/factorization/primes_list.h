@@ -13,7 +13,7 @@ class PrimesList {
   std::vector<unsigned> table;
 
  public:
-  explicit PrimesList(uint64_t size) {
+  constexpr explicit PrimesList(uint64_t size) {
     table_size = size;
     squared_table_size = table_size * table_size;
     table.resize(table_size + 1, 0);
@@ -33,17 +33,17 @@ class PrimesList {
     for (uint64_t p : primes) squared_primes.push_back(p * p);
   }
 
-  const std::vector<uint64_t>& GetPrimes() const { return primes; }
+  constexpr const std::vector<uint64_t>& GetPrimes() const { return primes; }
 
-  const std::vector<uint64_t>& GetSquaredPrimes() const {
+  constexpr const std::vector<uint64_t>& GetSquaredPrimes() const {
     return squared_primes;
   }
 
-  uint64_t GetTableSize() const { return table_size; }
-  uint64_t GetSquaredTableSize() const { return squared_table_size; }
-  const std::vector<unsigned>& GetTable() const { return table; }
+  constexpr uint64_t GetTableSize() const { return table_size; }
+  constexpr uint64_t GetSquaredTableSize() const { return squared_table_size; }
+  constexpr const std::vector<unsigned>& GetTable() const { return table; }
 
-  bool IsPrime(uint64_t n) {
+  constexpr bool IsPrime(uint64_t n) {
     assert(n <= squared_table_size);
     if (n <= table_size) return (n > 1) && (table[n] == n);
     for (size_t i = 0; squared_primes[i] <= n; ++i) {
@@ -52,7 +52,7 @@ class PrimesList {
     return true;
   }
 
-  TFactorization FactorizeTable(uint64_t n) const {
+  constexpr TFactorization FactorizeTable(uint64_t n) const {
     assert(n <= table_size);
     TFactorization output;
     for (; n > 1;) {
@@ -63,7 +63,8 @@ class PrimesList {
     return output;
   }
 
-  TFactorization Factorize(uint64_t n, bool skip_assert = false) const {
+  constexpr TFactorization Factorize(uint64_t n,
+                                     bool skip_assert = false) const {
     if (n <= table_size) return FactorizeTable(n);
     TFactorization output;
     for (uint64_t p : primes) {

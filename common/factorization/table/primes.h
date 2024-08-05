@@ -13,7 +13,7 @@ class Primes {
   std::vector<unsigned> table;
 
  public:
-  explicit Primes(uint64_t size) {
+  constexpr explicit Primes(uint64_t size) {
     table_size = size;
     squared_table_size = table_size * table_size;
     table.resize(table_size + 1, 0);
@@ -33,20 +33,25 @@ class Primes {
     for (uint64_t p : primes) squared_primes.push_back(p * p);
   }
 
-  const std::vector<uint64_t>& GetPrimes() const { return primes; }
+  constexpr const std::vector<uint64_t>& GetPrimes() const { return primes; }
 
-  const std::vector<uint64_t>& GetSquaredPrimes() const {
+  constexpr const std::vector<uint64_t>& GetSquaredPrimes() const {
     return squared_primes;
   }
 
-  uint64_t GetTableSize() const { return table_size; }
-  uint64_t GetSquaredTableSize() const { return squared_table_size; }
-  const std::vector<unsigned>& GetTable() const { return table; }
+  constexpr uint64_t GetTableSize() const { return table_size; }
 
-  unsigned Get(uint64_t n) const { return table[n]; }
-  unsigned operator()(uint64_t n) const { return Get(n); }
+  constexpr uint64_t GetSquaredTableSize() const { return squared_table_size; }
 
-  bool IsPrime(uint64_t n) const { return (n > 1) && (table[n] == n); }
+  constexpr const std::vector<unsigned>& GetTable() const { return table; }
+
+  constexpr unsigned Get(uint64_t n) const { return table[n]; }
+
+  constexpr unsigned operator()(uint64_t n) const { return Get(n); }
+
+  constexpr bool IsPrime(uint64_t n) const {
+    return (n > 1) && (table[n] == n);
+  }
 };
 }  // namespace table
 }  // namespace factorization

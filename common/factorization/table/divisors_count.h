@@ -12,7 +12,7 @@ class DivisorsCount : public Primes {
   std::vector<unsigned> dc;
 
  public:
-  explicit DivisorsCount(uint64_t size) : Primes(size) {
+  constexpr explicit DivisorsCount(uint64_t size) : Primes(size) {
     dc.resize(Primes::table_size + 1, 1);
     for (uint64_t i = 1; i <= Primes::table_size; ++i) {
       if (!Primes::IsPrime(i)) continue;
@@ -25,8 +25,9 @@ class DivisorsCount : public Primes {
     }
   }
 
-  unsigned Get(uint64_t n) const { return dc[n]; }
-  unsigned operator()(uint64_t n) const { return Get(n); }
+  constexpr unsigned Get(uint64_t n) const { return dc[n]; }
+
+  constexpr unsigned operator()(uint64_t n) const { return Get(n); }
 };
 }  // namespace table
 }  // namespace factorization

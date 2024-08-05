@@ -12,7 +12,7 @@ class EulersTotient : public Primes {
   std::vector<unsigned> eulers_totient;
 
  public:
-  explicit EulersTotient(uint64_t size) : Primes(size) {
+  constexpr explicit EulersTotient(uint64_t size) : Primes(size) {
     eulers_totient.resize(Primes::table_size + 1);
     eulers_totient[0] = 0;
     eulers_totient[1] = 1;
@@ -23,8 +23,9 @@ class EulersTotient : public Primes {
     }
   }
 
-  uint64_t Get(uint64_t n) const { return eulers_totient[n]; }
-  uint64_t operator()(uint64_t n) const { return Get(n); }
+  constexpr uint64_t Get(uint64_t n) const { return eulers_totient[n]; }
+
+  constexpr uint64_t operator()(uint64_t n) const { return Get(n); }
 };
 }  // namespace table
 }  // namespace factorization

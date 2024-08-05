@@ -4,6 +4,7 @@
 #include "common/factorization/table/primes.h"
 #include "common/factorization/table/utils/factorize_extended.h"
 #include "common/numeric/utils/usqrt.h"
+
 #include <vector>
 
 // Works correctly for n <= pt.GetTableSize()^3.

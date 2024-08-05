@@ -1,7 +1,7 @@
 #include "common/base.h"
 #include "common/factorization/table/primes.h"
 
-inline uint64_t EulersTotient(const PrimesTable& pt, uint64_t n) {
+constexpr uint64_t EulersTotient(const PrimesTable& pt, uint64_t n) {
   const auto& table = pt.GetTable();
   assert(n <= table.size());
   uint64_t output = n;

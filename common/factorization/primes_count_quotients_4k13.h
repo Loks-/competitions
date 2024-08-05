@@ -13,9 +13,9 @@ class PrimesCountQuotients4k13 {
   uint64_t n, nsqrt, nsqrt2;
   std::vector<uint64_t> vcr1, vcr3, vcq1, vcq3;
 
-  explicit PrimesCountQuotients4k13(uint64_t _n) { Init(_n); }
+  constexpr explicit PrimesCountQuotients4k13(uint64_t _n) { Init(_n); }
 
-  void Init(uint64_t _n) {
+  constexpr void Init(uint64_t _n) {
     n = _n;
     nsqrt = USqrt(n);
     nsqrt2 = n / (nsqrt + 1);
@@ -63,22 +63,22 @@ class PrimesCountQuotients4k13 {
     vcq3[nsqrt2] = vcr3[nsqrt];
   }
 
-  uint64_t GetQ1(uint64_t q) const {
+  constexpr uint64_t GetQ1(uint64_t q) const {
     return (q <= nsqrt2) ? vcq1[q - 1] : vcr1[n / q];
   }
 
-  uint64_t GetQ3(uint64_t q) const {
+  constexpr uint64_t GetQ3(uint64_t q) const {
     return (q <= nsqrt2) ? vcq3[q - 1] : vcr3[n / q];
   }
 
-  uint64_t GetR1(uint64_t r) const {
+  constexpr uint64_t GetR1(uint64_t r) const {
     if (r <= nsqrt) return vcr1[r];
     uint64_t q = n / r;
     assert((n / q) == r);
     return vcq1[q - 1];
   }
 
-  uint64_t GetR3(uint64_t r) const {
+  constexpr uint64_t GetR3(uint64_t r) const {
     if (r <= nsqrt) return vcr3[r];
     uint64_t q = n / r;
     assert((n / q) == r);

@@ -3,8 +3,8 @@
 #include "common/factorization/table/primes.h"
 #include "common/factorization/table/utils/factorize.h"
 
-inline TFactorization FactorizeExtended(const PrimesTable& pt, uint64_t n,
-                                        bool skip_assert = false) {
+constexpr TFactorization FactorizeExtended(const PrimesTable& pt, uint64_t n,
+                                           bool skip_assert = false) {
   const auto& table = pt.GetTable();
   if (n < table.size()) return Factorize(pt, n);
   TFactorization output;

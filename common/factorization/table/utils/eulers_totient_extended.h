@@ -2,7 +2,7 @@
 #include "common/factorization/table/primes.h"
 #include "common/factorization/table/utils/eulers_totient.h"
 
-inline uint64_t EulersTotientExtended(const PrimesTable& pt, uint64_t n) {
+constexpr uint64_t EulersTotientExtended(const PrimesTable& pt, uint64_t n) {
   const auto& table = pt.GetTable();
   if (n <= table.size()) return EulersTotient(pt, n);
   uint64_t output = n;

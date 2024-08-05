@@ -2,7 +2,7 @@
 #include "common/factorization/base.h"
 #include "common/factorization/table/primes.h"
 
-inline TFactorization Factorize(const PrimesTable& pt, uint64_t n) {
+constexpr TFactorization Factorize(const PrimesTable& pt, uint64_t n) {
   const auto& table = pt.GetTable();
   assert(n <= table.size());
   TFactorization output;

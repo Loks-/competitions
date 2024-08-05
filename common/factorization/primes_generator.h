@@ -17,7 +17,7 @@ class PrimesGenerator {
   uint64_t current_prime_block_index, current_prime_global_index;
 
  protected:
-  void SetBlockSize(uint64_t new_block_size) {
+  constexpr void SetBlockSize(uint64_t new_block_size) {
     assert(new_block_size > 0);
     block_size = new_block_size + (new_block_size & 1);
     half_block_size = block_size / 2;
@@ -29,7 +29,7 @@ class PrimesGenerator {
     current_prime_global_index = 0;
   }
 
-  void FirstBlock() {
+  constexpr void FirstBlock() {
     vmask.clear();
     vmask.resize(half_block_size, false);
     for (uint64_t hi = 1; hi < half_block_size; ++hi) {
@@ -44,7 +44,7 @@ class PrimesGenerator {
     current_block = 1;
   }
 
-  void NextBlock() {
+  constexpr void NextBlock() {
     assert(current_block < block_size);
     uint64_t b = current_block * block_size, e = b + block_size;
     std::fill(vmask.begin(), vmask.end(), false);
@@ -63,17 +63,21 @@ class PrimesGenerator {
   }
 
  public:
-  PrimesGenerator() { SetBlockSize(default_block_size); }
-  explicit PrimesGenerator(uint64_t _block_size) { SetBlockSize(_block_size); }
+  constexpr PrimesGenerator() { SetBlockSize(default_block_size); }
+  constexpr explicit PrimesGenerator(uint64_t _block_size) {
+    SetBlockSize(_block_size);
+  }
 
-  uint64_t Get() const {
+  constexpr uint64_t Get() const {
     assert(current_prime_block_index < current_block_primes.size());
     return current_block_primes[current_prime_block_index];
   }
 
-  uint64_t GetPrimeIndex() const { return current_prime_global_index; }
+  constexpr uint64_t GetPrimeIndex() const {
+    return current_prime_global_index;
+  }
 
-  void Next() {
+  constexpr void Next() {
     if (++current_prime_block_index == current_block_primes.size()) {
       if (current_block == 0)
         FirstBlock();
@@ -84,14 +88,14 @@ class PrimesGenerator {
     ++current_prime_global_index;
   }
 
-  uint64_t GetNext() {
+  constexpr uint64_t GetNext() {
     Next();
     return Get();
   }
 };
 }  // namespace factorization
 
-inline std::vector<uint64_t> GeneratePrimes(uint64_t maxn) {
+constexpr std::vector<uint64_t> GeneratePrimes(uint64_t maxn) {
   factorization::PrimesGenerator pg;
   std::vector<uint64_t> vprimes;
   for (uint64_t p = pg.Get(); p <= maxn; p = pg.GetNext()) vprimes.push_back(p);
