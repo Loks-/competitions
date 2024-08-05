@@ -14,4 +14,4 @@ template <class T>
 class TFakeType {};
 
 template <class T>
-inline void FakeUse(const T&) {}
+constexpr void FakeUse(const T&) {}

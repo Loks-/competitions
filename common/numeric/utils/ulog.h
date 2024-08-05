@@ -1,7 +1,7 @@
 #pragma once
 
 template <class T>
-inline unsigned ULogK(const T& x, const T& k) {
+constexpr unsigned ULogK(const T& x, const T& k) {
   T xx(x);
   unsigned l = 0;
   for (; xx; xx /= k) ++l;
@@ -9,6 +9,6 @@ inline unsigned ULogK(const T& x, const T& k) {
 }
 
 template <class T>
-inline unsigned ULog10(const T& x) {
+constexpr unsigned ULog10(const T& x) {
   return ULogK(x, T(10));
 }

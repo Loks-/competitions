@@ -13,48 +13,50 @@ class LogDouble {
   double value;
 
  public:
-  static double safe_log(double x) {
+  constexpr static double safe_log(double x) {
     assert(x >= 0.);
     return (x == 0.) ? log0 : log(x);
   }
 
-  LogDouble() : value(log0) {}
-  LogDouble(double x) { value = safe_log(x); }
+  constexpr LogDouble() : value(log0) {}
+  constexpr LogDouble(double x) { value = safe_log(x); }
 
-  double Get() const { return exp(value); }
-  double GetLog() const { return value; }
-  void SetLog(double log_x) { value = log_x; }
+  constexpr double Get() const { return exp(value); }
+  constexpr double GetLog() const { return value; }
+  constexpr void SetLog(double log_x) { value = log_x; }
 
-  static LogDouble MakeLog(double log_x) {
+  constexpr static LogDouble MakeLog(double log_x) {
     LogDouble t;
     t.SetLog(log_x);
     return t;
   }
 
-  bool operator<(const LogDouble& r) const { return value < r.value; }
-  bool operator<=(const LogDouble& r) const { return !(r.value < value); }
+  constexpr bool operator<(const LogDouble& r) const { return value < r.value; }
+  constexpr bool operator<=(const LogDouble& r) const {
+    return !(r.value < value);
+  }
 
-  LogDouble& operator+=(const LogDouble& r) {
+  constexpr LogDouble& operator+=(const LogDouble& r) {
     *this = (*this + r);
     return *this;
   }
 
-  LogDouble& operator-=(const LogDouble& r) {
+  constexpr LogDouble& operator-=(const LogDouble& r) {
     *this = (*this - r);
     return *this;
   }
 
-  LogDouble& operator*=(const LogDouble& r) {
+  constexpr LogDouble& operator*=(const LogDouble& r) {
     value += r.value;
     return *this;
   }
 
-  LogDouble& operator/=(const LogDouble& r) {
+  constexpr LogDouble& operator/=(const LogDouble& r) {
     value -= r.value;
     return *this;
   }
 
-  LogDouble operator+(const LogDouble& r) const {
+  constexpr LogDouble operator+(const LogDouble& r) const {
     if (value == log0) return r;
     if (r.value == log0) return *this;
     double v1 = std::max(value, r.value);
@@ -62,20 +64,20 @@ class LogDouble {
     return MakeLog(v1 + log(1.0 + exp(v2 - v1)));
   }
 
-  LogDouble operator-(const LogDouble& r) const {
+  constexpr LogDouble operator-(const LogDouble& r) const {
     if (r.value == log0) return *this;
     if (value == r.value) return LogDouble();
     assert(r.value < value);
     return MakeLog(value + log(1.0 - exp(r.value - value)));
   }
 
-  LogDouble operator*(const LogDouble& r) const {
+  constexpr LogDouble operator*(const LogDouble& r) const {
     LogDouble t(*this);
     t *= r;
     return t;
   }
 
-  LogDouble operator/(const LogDouble& r) const {
+  constexpr LogDouble operator/(const LogDouble& r) const {
     LogDouble t(*this);
     t /= r;
     return t;

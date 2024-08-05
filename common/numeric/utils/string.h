@@ -5,7 +5,7 @@
 
 namespace numeric {
 template <class TValue>
-inline std::string UValueToString(const TValue& u, unsigned base = 10) {
+constexpr std::string UValueToString(const TValue& u, unsigned base = 10) {
   assert(base <= 10);
   if (u == 0) return "0";
   std::string s;

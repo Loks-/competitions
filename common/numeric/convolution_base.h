@@ -4,8 +4,8 @@
 
 namespace numeric {
 template <class T>
-inline std::vector<T> ConvolutionBase(const std::vector<T>& a,
-                                      const std::vector<T>& b) {
+constexpr std::vector<T> ConvolutionBase(const std::vector<T>& a,
+                                         const std::vector<T>& b) {
   if (a.empty() || b.empty()) return {};
   std::vector<T> r(a.size() + b.size() - 1);
   for (unsigned i = 0; i < a.size(); ++i) {
@@ -16,7 +16,7 @@ inline std::vector<T> ConvolutionBase(const std::vector<T>& a,
 }
 
 template <class T>
-inline std::vector<T> ConvolutionBase(const std::vector<T>& a) {
+constexpr std::vector<T> ConvolutionBase(const std::vector<T>& a) {
   return ConvolutionBase(a, a);
 }
 }  // namespace numeric

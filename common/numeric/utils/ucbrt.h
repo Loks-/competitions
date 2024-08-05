@@ -6,7 +6,7 @@
 namespace numeric {
 namespace hidden {
 template <class T>
-constexpr T CTUCbrtHelper(T x, T l, T h) {
+consteval T CTUCbrtHelper(T x, T l, T h) {
   if (l == h) return l;
   T m = (l + h + 1) / 2;
   if (x / m / m < m)
@@ -18,12 +18,12 @@ constexpr T CTUCbrtHelper(T x, T l, T h) {
 }  // namespace numeric
 
 template <class T>
-constexpr T CTUCbrt(T x) {
+consteval T CTUCbrt(T x) {
   return numeric::hidden::CTUCbrtHelper<T>(x, 0, x / 8 + 1);
 }
 
 template <class T>
-inline T UCbrt(T x) {
+constexpr T UCbrt(T x) {
   T r = T(cbrt(double(x)));
   T cbrt_max = CTUCbrt<T>(std::numeric_limits<T>::max());
   for (; (r < cbrt_max) && (r * r * r < x);) ++r;
