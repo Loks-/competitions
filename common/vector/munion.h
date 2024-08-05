@@ -6,8 +6,8 @@
 namespace nvector {
 // Union with duplicates
 template <class T>
-inline std::vector<T> MUnionV(const std::vector<T>& v1,
-                              const std::vector<T>& v2) {
+constexpr std::vector<T> MUnionV(const std::vector<T>& v1,
+                                 const std::vector<T>& v2) {
   if (v1.empty()) return v2;
   if (v2.empty()) return v1;
   std::vector<T> r;
@@ -26,7 +26,8 @@ inline std::vector<T> MUnionV(const std::vector<T>& v1,
 }
 
 template <class T>
-inline std::vector<T> MUnionVUnsorted(std::vector<T>& v1, std::vector<T>& v2) {
+constexpr std::vector<T> MUnionVUnsorted(std::vector<T>& v1,
+                                         std::vector<T>& v2) {
   auto v = v1;
   v.insert(v.end(), v2.begin(), v2.end());
   std::sort(v.begin(), v.end());

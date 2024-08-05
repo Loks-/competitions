@@ -5,7 +5,7 @@
 #include <vector>
 
 namespace nvector {
-inline std::vector<unsigned> MaskToVector(uint64_t mask) {
+constexpr std::vector<unsigned> MaskToVector(uint64_t mask) {
   std::vector<unsigned> v;
   for (unsigned i = 0; mask; ++i) {
     uint64_t b = (1ull << i);

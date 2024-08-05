@@ -5,7 +5,7 @@
 
 namespace nvector {
 template <class T>
-inline T Product(const std::vector<T>& v) {
+constexpr T Product(const std::vector<T>& v) {
   T r(1);
   for (auto& x : v) r *= x;
   return r;

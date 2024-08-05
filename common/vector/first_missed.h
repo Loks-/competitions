@@ -5,7 +5,7 @@
 
 namespace nvector {
 // Useful for Grundy/Nim value
-inline unsigned FirstMissed(std::vector<unsigned>& v) {
+constexpr unsigned FirstMissed(std::vector<unsigned>& v) {
   std::sort(v.begin(), v.end());
   unsigned k = 0, l = 0;
   for (; (l < v.size()) && (v[l] <= k); ++l) {

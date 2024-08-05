@@ -7,7 +7,8 @@
 
 namespace nvector {
 template <class TValue = size_t>
-std::vector<std::pair<TValue, TValue>> HRandomPair(size_t size, size_t seed) {
+constexpr std::vector<std::pair<TValue, TValue>> HRandomPair(size_t size,
+                                                             size_t seed) {
   size_t h1 = 0, h2 = seed;
   std::vector<std::pair<TValue, TValue>> v(size);
   for (size_t i = 0; i < size; ++i) {
@@ -19,8 +20,8 @@ std::vector<std::pair<TValue, TValue>> HRandomPair(size_t size, size_t seed) {
 }
 
 template <class TValue = size_t>
-std::vector<std::pair<TValue, TValue>> HRandomPair(size_t size, size_t seed,
-                                                   const TValue& max_value) {
+constexpr std::vector<std::pair<TValue, TValue>> HRandomPair(
+    size_t size, size_t seed, const TValue& max_value) {
   size_t h1 = 0, h2 = seed;
   std::vector<std::pair<TValue, TValue>> v(size);
   for (size_t i = 0; i < size; ++i) {

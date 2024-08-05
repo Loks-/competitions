@@ -4,7 +4,7 @@
 #include <vector>
 
 namespace nvector {
-inline std::vector<std::vector<std::string>> SplitEmptyString(
+constexpr std::vector<std::vector<std::string>> SplitEmptyString(
     const std::vector<std::string>& vs) {
   std::vector<std::vector<std::string>> vvs(vs.empty() ? 0 : 1);
   for (auto& s : vs) {

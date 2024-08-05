@@ -5,7 +5,7 @@
 
 namespace nvector {
 template <class TValue>
-inline unsigned LongestIncresingSubsequence(const std::vector<TValue>& v) {
+constexpr unsigned LongestIncresingSubsequence(const std::vector<TValue>& v) {
   std::vector<TValue> d;
   for (unsigned i = 0; i < v.size(); ++i) {
     unsigned j = std::lower_bound(d.begin(), d.end(), v[i]) - d.begin();

@@ -6,7 +6,7 @@
 
 namespace nvector {
 template <class TValue = size_t>
-inline std::vector<TValue> HRandom(size_t size, size_t seed) {
+constexpr std::vector<TValue> HRandom(size_t size, size_t seed) {
   size_t h = seed;
   std::vector<TValue> v(size);
   for (size_t i = 0; i < size; ++i) {
@@ -17,8 +17,8 @@ inline std::vector<TValue> HRandom(size_t size, size_t seed) {
 }
 
 template <class TValue = size_t>
-inline std::vector<TValue> HRandom(size_t size, size_t seed,
-                                   const TValue& max_value) {
+constexpr std::vector<TValue> HRandom(size_t size, size_t seed,
+                                      const TValue& max_value) {
   size_t h = seed;
   std::vector<TValue> v(size);
   for (size_t i = 0; i < size; ++i) {
