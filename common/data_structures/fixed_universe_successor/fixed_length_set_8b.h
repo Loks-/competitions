@@ -52,7 +52,7 @@ class FLSetB8 {
     return s;
   }
 
-  size_t USize() const { return 256; }
+  consteval static size_t USize() { return 256; }
 
   size_t Min() const {
     for (unsigned i = 0; i < length; ++i) {

@@ -26,7 +26,7 @@ class FLSetB6 {
 
   size_t IsEmpty() const { return (mask == 0ull); }
   size_t Size() const { return numeric::BitsCount(mask); }
-  size_t USize() const { return 64; }
+  consteval static size_t USize() { return 64; }
 
   size_t Min() const {
     auto p = numeric::FirstBit(mask);
