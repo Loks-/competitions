@@ -3,8 +3,8 @@
 #include <algorithm>
 
 template <class TValue1, class TValue2, class TFunction>
-inline TValue1 LowerBoundF(TValue1 begin, TValue1 end, const TValue2& value,
-                           TFunction& f) {
+constexpr TValue1 LowerBoundF(TValue1 begin, TValue1 end, const TValue2& value,
+                              TFunction& f) {
   for (; begin < end;) {
     TValue1 m = (begin + end) / 2;
     if (f(m) < value)
@@ -16,8 +16,8 @@ inline TValue1 LowerBoundF(TValue1 begin, TValue1 end, const TValue2& value,
 }
 
 template <class TValue1, class TValue2, class TFunction>
-inline TValue1 UpperBoundF(TValue1 begin, TValue1 end, const TValue2& value,
-                           TFunction& f) {
+constexpr TValue1 UpperBoundF(TValue1 begin, TValue1 end, const TValue2& value,
+                              TFunction& f) {
   for (; begin < end;) {
     TValue1 m = (begin + end) / 2;
     if (f(m) <= value)
@@ -29,7 +29,7 @@ inline TValue1 UpperBoundF(TValue1 begin, TValue1 end, const TValue2& value,
 }
 
 template <class TValue1, class TFunction>
-inline TValue1 LowerBoundB(TValue1 begin, TValue1 end, TFunction& f) {
+constexpr TValue1 LowerBoundB(TValue1 begin, TValue1 end, TFunction& f) {
   for (; begin < end;) {
     TValue1 m = (begin + end) / 2;
     if (f(m))
@@ -41,7 +41,7 @@ inline TValue1 LowerBoundB(TValue1 begin, TValue1 end, TFunction& f) {
 }
 
 template <class TValue1, class TFunction>
-inline TValue1 LowerBoundB(TValue1 begin, TFunction& f) {
+constexpr TValue1 LowerBoundB(TValue1 begin, TFunction& f) {
   auto end = std::max(begin, TValue1(1));
   for (; !f(end); end *= 2) begin = end + 1;
   return LowerBoundB(begin, end, f);
