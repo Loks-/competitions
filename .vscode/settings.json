@@ -92,7 +92,8 @@
         "*.in": "test",
         "*.out": "test",
         "charconv": "cpp",
-        "execution": "cpp"
+        "execution": "cpp",
+        "__memory": "cpp"
     },
     "test": {
         "editor.formatOnSave": false

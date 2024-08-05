@@ -10,7 +10,7 @@ class Point {
   static const unsigned dim = _dim;
   std::array<TValue, dim> x;
 
-  const TValue& operator()(unsigned i) { return x[i]; }
+  const TValue& operator()(unsigned i) const { return x[i]; }
 };
 }  // namespace multivariable
 }  // namespace calculus
