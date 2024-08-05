@@ -12,36 +12,43 @@ class Vector {
  public:
   using T = TValue;
   using TSelf = Vector<T>;
-  static const unsigned dim = 2;
 
   T dx, dy;
 
-  Vector() : dx(), dy() {}
-  Vector(const T& _dx, const T& _dy) : dx(_dx), dy(_dy) {}
-  explicit Vector(const Point<T>& p) : dx(p.x), dy(p.y) {}
+  consteval static unsigned Dim() { return 2u; }
 
-  Point<T> ToPoint() const { return Point<T>(dx, dy); }
-  bool Empty() const { return (dx == 0) && (dy == 0); }
-  T LengthSquared() const { return dx * dx + dy * dy; }
-  T Length() const { return sqrt(LengthSquared()); }
+  constexpr Vector() : dx(), dy() {}
+  constexpr Vector(const T& _dx, const T& _dy) : dx(_dx), dy(_dy) {}
+  constexpr explicit Vector(const Point<T>& p) : dx(p.x), dy(p.y) {}
 
-  bool operator==(const TSelf& r) const { return (dx == r.dx) && (dy == r.dy); }
-  bool operator!=(const TSelf& r) const { return (dx != r.dx) || (dy != r.dy); }
-  bool operator<(const TSelf& r) const {
+  constexpr Point<T> ToPoint() const { return Point<T>(dx, dy); }
+  constexpr bool Empty() const { return (dx == 0) && (dy == 0); }
+  constexpr T LengthSquared() const { return dx * dx + dy * dy; }
+  constexpr T Length() const { return sqrt(LengthSquared()); }
+
+  constexpr bool operator==(const TSelf& r) const {
+    return (dx == r.dx) && (dy == r.dy);
+  }
+
+  constexpr bool operator!=(const TSelf& r) const {
+    return (dx != r.dx) || (dy != r.dy);
+  }
+
+  constexpr bool operator<(const TSelf& r) const {
     return (dx != r.dx) ? (dx < r.dx) : (dy < r.dy);
   }
 
-  T& operator[](unsigned index) {
+  constexpr T& operator[](unsigned index) {
     assert(index < 2);
     return (index == 0) ? dx : dy;
   }
 
-  const T& operator[](unsigned index) const {
+  constexpr const T& operator[](unsigned index) const {
     assert(index < 2);
     return (index == 0) ? dx : dy;
   }
 
-  TSelf operator-() const { return TSelf(-dx, -dy); }
+  constexpr TSelf operator-() const { return TSelf(-dx, -dy); }
 
   TSelf& operator*=(const T& r) {
     dx *= r;
@@ -55,8 +62,8 @@ class Vector {
     return *this;
   }
 
-  TSelf operator*(const T& r) const { return TSelf(dx * r, dy * r); }
-  TSelf operator/(const T& r) const { return TSelf(dx / r, dy / r); }
+  constexpr TSelf operator*(const T& r) const { return TSelf(dx * r, dy * r); }
+  constexpr TSelf operator/(const T& r) const { return TSelf(dx / r, dy / r); }
 
   TSelf& operator+=(const TSelf& r) {
     dx += r.dx;
@@ -70,21 +77,29 @@ class Vector {
     return *this;
   }
 
-  TSelf operator+(const TSelf& r) const { return TSelf(dx + r.dx, dy + r.dy); }
-  TSelf operator-(const TSelf& r) const { return TSelf(dx - r.dx, dy - r.dy); }
-  T operator*(const TSelf& r) const { return dx * r.dx + dy * r.dy; }
-  T operator%(const TSelf& r) const { return dx * r.dy - dy * r.dx; }
+  constexpr TSelf operator+(const TSelf& r) const {
+    return TSelf(dx + r.dx, dy + r.dy);
+  }
+
+  constexpr TSelf operator-(const TSelf& r) const {
+    return TSelf(dx - r.dx, dy - r.dy);
+  }
+
+  constexpr T operator*(const TSelf& r) const { return dx * r.dx + dy * r.dy; }
+  constexpr T operator%(const TSelf& r) const { return dx * r.dy - dy * r.dx; }
 
   void Normalize() {
     assert(!Empty());
     operator/=(Length());
   }
 
-  bool UpperHalfPlane() const { return (dy > 0) || ((dy == 0) && (dx >= 0)); }
+  constexpr bool UpperHalfPlane() const {
+    return (dy > 0) || ((dy == 0) && (dx >= 0));
+  }
 
-  TSelf RotateHalfPi() const { return {-dy, dx}; }
+  constexpr TSelf RotateHalfPi() const { return {-dy, dx}; }
 
-  double RAngle() const {
+  constexpr double RAngle() const {
     assert(!Empty());
     return atan2(dy, dx);
   }

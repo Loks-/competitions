@@ -1,6 +1,6 @@
 #pragma once
 
 template <class T>
-inline int Sign(const T& val) {
+constexpr int Sign(const T& val) {
   return (T() < val) - (val < T());
 }

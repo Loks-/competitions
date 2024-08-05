@@ -13,16 +13,16 @@ class Circle {
   Point<T> c;
   T r;
 
-  Circle() : r() {}
-  Circle(const Point<T>& _c, const T& _r) : c(_c), r(_r) {}
+  constexpr Circle() : r() {}
+  constexpr Circle(const Point<T>& _c, const T& _r) : c(_c), r(_r) {}
 
-  bool Valid() const { return r >= 0; }
+  constexpr bool Valid() const { return r >= 0; }
 
-  bool Inside(const Point<T>& p) const {
+  constexpr bool Inside(const Point<T>& p) const {
     return SquaredDistance(p, c) <= r * r;
   }
 
-  T operator()(const Point<T>& p) const { return Distance(p, c) - r; }
+  constexpr T operator()(const Point<T>& p) const { return Distance(p, c) - r; }
 };
 }  // namespace d2
 }  // namespace geometry

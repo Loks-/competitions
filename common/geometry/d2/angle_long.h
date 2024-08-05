@@ -14,7 +14,9 @@ class LAngle : public Angle<LongSigned, LAngle> {
   using TBase = Angle<LongSigned, TSelf>;
 
   LAngle() {}
+
   LAngle(const T& _dx, const T& _dy) : TBase(_dx, _dy) { Normalize(); }
+
   explicit LAngle(const Vector<T>& v) : TBase(v) { Normalize(); }
 
   void Normalize() {

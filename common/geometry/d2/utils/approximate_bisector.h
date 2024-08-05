@@ -8,8 +8,8 @@
 
 // Vectors weight ratio is less than sqrt(2):1
 template <class T>
-inline geometry::d2::Vector<T> ApproximateBisector(geometry::d2::Vector<T> v1,
-                                                   geometry::d2::Vector<T> v2) {
+constexpr geometry::d2::Vector<T> ApproximateBisector(
+    geometry::d2::Vector<T> v1, geometry::d2::Vector<T> v2) {
   auto l1 = v1.LengthSquared(), l2 = v2.LengthSquared();
   if (l1 > l2) {
     std::swap(l1, l2);

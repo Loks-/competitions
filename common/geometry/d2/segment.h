@@ -12,12 +12,18 @@ class Segment {
   Point<T> p1, p2;
 
  public:
-  Segment(const Point<T>& _p1, const Point<T>& _p2) : p1(_p1), p2(_p2) {}
+  consteval static bool Closed() { return closed; }
 
-  bool Empty() const { return p1 == p2; }
-  bool operator==(const TSelf& r) const { return (p1 == r.p1) && (p2 == r.p2); }
+  constexpr Segment(const Point<T>& _p1, const Point<T>& _p2)
+      : p1(_p1), p2(_p2) {}
 
-  TSelf Flip() const { return {p2, p1}; }
+  constexpr bool Empty() const { return p1 == p2; }
+
+  constexpr bool operator==(const TSelf& r) const {
+    return (p1 == r.p1) && (p2 == r.p2);
+  }
+
+  constexpr TSelf Flip() const { return {p2, p1}; }
 };
 }  // namespace d2
 }  // namespace geometry

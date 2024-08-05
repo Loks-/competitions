@@ -6,8 +6,8 @@
 
 // Support coordinates up to 2^14 ~ 16k.
 template <class T>
-inline bool Intersect(const geometry::d2::Segment<T, true>& s,
-                      const geometry::d2::ICircle<T>& c) {
+constexpr bool Intersect(const geometry::d2::Segment<T, true>& s,
+                         const geometry::d2::ICircle<T>& c) {
   auto r1 = c(s.p1), r2 = c(s.p2);
   if ((r1 > 0) && (r2 > 0)) {
     auto v1 = s.p2 - s.p1, v2 = c.c - s.p1;

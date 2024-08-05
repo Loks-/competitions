@@ -14,17 +14,20 @@ class LinePN {
   Point<T> p;
   Vector<T> n;
 
-  LinePN() {}
-  LinePN(const Point<T>& _p, const Vector<T>& _n) : p(_p), n(_n) {}
+  constexpr LinePN() {}
 
-  LinePN(const Point<T>& p1, const Point<T>& p2) : p(p1) {
+  constexpr LinePN(const Point<T>& _p, const Vector<T>& _n) : p(_p), n(_n) {}
+
+  constexpr LinePN(const Point<T>& p1, const Point<T>& p2) : p(p1) {
     auto v = p2 - p1;
     n = Vector<T>(-v.dy, v.dx);
   }
 
-  bool Valid() const { return !n.Empty(); }
-  const Vector<T>& Normal() const { return n; }
-  T operator()(const Point<T>& pp) const { return n * (pp - p); }
+  constexpr bool Valid() const { return !n.Empty(); }
+
+  constexpr const Vector<T>& Normal() const { return n; }
+
+  constexpr T operator()(const Point<T>& pp) const { return n * (pp - p); }
 
   void SetOppositeNormal() { n = -n; }
   void Normalize() { n.Normalize(); }

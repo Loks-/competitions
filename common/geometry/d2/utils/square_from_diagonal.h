@@ -4,10 +4,11 @@
 #include "common/geometry/d2/line_pv.h"
 #include "common/geometry/d2/point.h"
 #include "common/geometry/d2/vector.h"
+
 #include <array>
 
 template <class T>
-inline geometry::d2::ConvexPolygonStaticSize<T, 4> SquareFromDiagonal(
+constexpr geometry::d2::ConvexPolygonStaticSize<T, 4> SquareFromDiagonal(
     const geometry::d2::Point<T>& a, const geometry::d2::Point<T>& c) {
   using TPoint = geometry::d2::Point<T>;
   using TVector = geometry::d2::Vector<T>;

@@ -19,14 +19,15 @@ class ConvexPolygon : public Polygon<T> {
   using TSelf = ConvexPolygon<T>;
   using TPoint = typename TBase::TPoint;
 
-  ConvexPolygon() {}
+  constexpr ConvexPolygon() {}
 
-  explicit ConvexPolygon(const std::vector<TPoint>& vp) : TBase(vp) {}
+  constexpr explicit ConvexPolygon(const std::vector<TPoint>& vp) : TBase(vp) {}
 
-  ConvexPolygon(const std::vector<TPoint>& vp, bool skip_normalization)
+  constexpr ConvexPolygon(const std::vector<TPoint>& vp,
+                          bool skip_normalization)
       : TBase(vp, skip_normalization) {}
 
-  bool Inside(const TPoint& p) const {
+  constexpr bool Inside(const TPoint& p) const {
     if (p == TBase::v[0]) return true;
     auto it = std::lower_bound(TBase::v.begin() + 1, TBase::v.end(), p,
                                [&](const TPoint& l, const TPoint& r) {

@@ -12,9 +12,13 @@ class IAngle : public Angle<T, IAngle<T>> {
   using TSelf = IAngle<T>;
   using TBase = Angle<T, TSelf>;
 
-  IAngle() {}
-  IAngle(const T& _dx, const T& _dy) : TBase(_dx, _dy) { Normalize(); }
-  explicit IAngle(const Vector<T>& v) : TBase(v) { Normalize(); }
+  constexpr IAngle() {}
+
+  constexpr IAngle(const T& _dx, const T& _dy) : TBase(_dx, _dy) {
+    Normalize();
+  }
+
+  constexpr explicit IAngle(const Vector<T>& v) : TBase(v) { Normalize(); }
 
   void Normalize() {
     assert(TBase::Valid());
@@ -24,18 +28,18 @@ class IAngle : public Angle<T, IAngle<T>> {
   }
 
  protected:
-  bool CompareI_i128(const TSelf& r) const {
+  constexpr bool CompareI_i128(const TSelf& r) const {
     return __int128_t(TBase::dy) * __int128_t(r.dx) <
            __int128_t(TBase::dx) * __int128_t(r.dy);
   }
 
  public:
-  bool ComparePiPi_i128(const TSelf& r) const {
+  constexpr bool ComparePiPi_i128(const TSelf& r) const {
     return (TBase::CompareVS0() != r.CompareVS0()) ? TBase::CompareVS0()
                                                    : CompareI_i128(r);
   }
 
-  bool Compare02Pi_i128(const TSelf& r) const {
+  constexpr bool Compare02Pi_i128(const TSelf& r) const {
     return (TBase::CompareVSPi() != r.CompareVSPi()) ? TBase::CompareVSPi()
                                                      : CompareI_i128(r);
   }

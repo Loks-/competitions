@@ -6,7 +6,7 @@
 #include <vector>
 
 template <class T>
-inline std::vector<geometry::d2::Point<T>>& RotatePi4S(
+constexpr std::vector<geometry::d2::Point<T>>& RotatePi4S(
     std::vector<geometry::d2::Point<T>>& points) {
   for (auto& p : points) p = RotatePi4S(p);
   return points;

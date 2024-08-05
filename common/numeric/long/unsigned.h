@@ -18,34 +18,34 @@ class Unsigned {
   using iterator = uint32_t*;
   using const_iterator = const uint32_t*;
 
-  Unsigned() {}
+  constexpr Unsigned() {}
 
-  explicit Unsigned(int32_t u) {
+  constexpr explicit Unsigned(int32_t u) {
     assert(u >= 0);
     if (u) data.push_back(u);
   }
 
-  explicit Unsigned(uint32_t u) {
+  constexpr explicit Unsigned(uint32_t u) {
     if (u) data.push_back(u);
   }
 
-  explicit Unsigned(uint64_t u) {
+  constexpr explicit Unsigned(uint64_t u) {
     data.push_back(uint32_t(u));
     data.push_back(uint32_t(u >> 32));
     Normalize();
   }
 
-  explicit Unsigned(const TData& _data) : data(_data) { Normalize(); }
+  constexpr explicit Unsigned(const TData& _data) : data(_data) { Normalize(); }
 
-  void Normalize() {
+  constexpr void Normalize() {
     for (; (data.size() > 0) && (data.back() == 0);) data.pop_back();
   }
 
-  void Clear() { data.clear(); }
-  bool Empty() const { return data.empty(); }
-  size_t Size() const { return data.size(); }
-  const TData& Data() const { return data; }
-  static unsigned BitsPerBlock() { return 32; }
+  constexpr void Clear() { data.clear(); }
+  constexpr bool Empty() const { return data.empty(); }
+  constexpr size_t Size() const { return data.size(); }
+  constexpr const TData& Data() const { return data; }
+  consteval static unsigned BitsPerBlock() { return 32; }
 
   iterator begin() { return &data.front(); }
   const_iterator begin() const { return &data.front(); }
@@ -53,10 +53,14 @@ class Unsigned {
   const_iterator end() const { return begin() + data.size(); }
   void swap(Unsigned& lu) { data.swap(lu.data); }
 
-  bool operator==(const Unsigned& lu) const { return data == lu.data; }
-  bool operator!=(const Unsigned& lu) const { return data != lu.data; }
+  constexpr bool operator==(const Unsigned& lu) const {
+    return data == lu.data;
+  }
+  constexpr bool operator!=(const Unsigned& lu) const {
+    return data != lu.data;
+  }
 
-  bool operator<(const Unsigned& lu) const {
+  constexpr bool operator<(const Unsigned& lu) const {
     if (Size() < lu.Size()) return true;
     if (lu.Size() < Size()) return false;
     for (size_t i = Size(); i--;) {
@@ -66,52 +70,52 @@ class Unsigned {
     return false;
   }
 
-  bool operator>(const Unsigned& lu) const { return lu < *this; }
-  bool operator<=(const Unsigned& lu) const { return !(lu < *this); }
-  bool operator>=(const Unsigned& lu) const { return !(*this < lu); }
+  constexpr bool operator>(const Unsigned& lu) const { return lu < *this; }
+  constexpr bool operator<=(const Unsigned& lu) const { return !(lu < *this); }
+  constexpr bool operator>=(const Unsigned& lu) const { return !(*this < lu); }
 
-  uint32_t ToUint32() const {
+  constexpr uint32_t ToUint32() const {
     assert(data.size() <= 1);
     return (data.size() > 0) ? data[0] : 0;
   }
 
-  uint64_t ToUint64() const {
+  constexpr uint64_t ToUint64() const {
     assert(data.size() <= 2);
     uint64_t r = (data.size() > 1) ? data[1] : 0;
     r <<= 32;
     return r + ((data.size() > 0) ? data[0] : 0);
   }
 
-  bool operator==(uint32_t u) const {
+  constexpr bool operator==(uint32_t u) const {
     return (data.size() <= 1) && (ToUint32() == u);
   }
 
-  bool operator<(uint32_t u) const {
+  constexpr bool operator<(uint32_t u) const {
     return (data.size() <= 1) && (ToUint32() < u);
   }
 
-  bool operator<=(uint32_t u) const {
+  constexpr bool operator<=(uint32_t u) const {
     return (data.size() <= 1) && (ToUint32() <= u);
   }
 
-  bool operator==(uint64_t u) const {
+  constexpr bool operator==(uint64_t u) const {
     return (data.size() <= 2) && (ToUint64() == u);
   }
 
-  bool operator<(uint64_t u) const {
+  constexpr bool operator<(uint64_t u) const {
     return (data.size() <= 2) && (ToUint64() < u);
   }
 
-  bool operator<=(uint64_t u) const {
+  constexpr bool operator<=(uint64_t u) const {
     return (data.size() <= 2) && (ToUint64() <= u);
   }
 
-  bool operator!=(uint32_t u) const { return !(*this == u); }
-  bool operator>(uint32_t u) const { return !(*this <= u); }
-  bool operator>=(uint32_t u) const { return !(*this < u); }
-  bool operator!=(uint64_t u) const { return !(*this == u); }
-  bool operator>(uint64_t u) const { return !(*this <= u); }
-  bool operator>=(uint64_t u) const { return !(*this < u); }
+  constexpr bool operator!=(uint32_t u) const { return !(*this == u); }
+  constexpr bool operator>(uint32_t u) const { return !(*this <= u); }
+  constexpr bool operator>=(uint32_t u) const { return !(*this < u); }
+  constexpr bool operator!=(uint64_t u) const { return !(*this == u); }
+  constexpr bool operator>(uint64_t u) const { return !(*this <= u); }
+  constexpr bool operator>=(uint64_t u) const { return !(*this < u); }
 
   Unsigned operator+(uint32_t u) const {
     if (u == 0) return (*this);

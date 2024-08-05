@@ -16,18 +16,22 @@ class Triangle {
 
   TPoint a, b, c;
 
-  Triangle(const TPoint& _a, const TPoint& _b, const TPoint& _c)
+  constexpr Triangle(const TPoint& _a, const TPoint& _b, const TPoint& _c)
       : a(_a), b(_b), c(_c) {}
 
-  T SignedDoubleArea() const { return (b - a) % (c - a); }
-  T SignedArea() const { return SignedDoubleArea() / 2; }
-  T DoubleArea() const { return Abs(SignedDoubleArea()); }
-  T Area() const { return DoubleArea() / 2; }
+  constexpr T SignedDoubleArea() const { return (b - a) % (c - a); }
 
-  bool Empty() const { return SignedDoubleArea() == T(0); }
-  bool Clockwise() const { return SignedDoubleArea() < T(0); }
+  constexpr T SignedArea() const { return SignedDoubleArea() / 2; }
 
-  bool Inside(const TPoint& p) {
+  constexpr T DoubleArea() const { return Abs(SignedDoubleArea()); }
+
+  constexpr T Area() const { return DoubleArea() / 2; }
+
+  constexpr bool Empty() const { return SignedDoubleArea() == T(0); }
+
+  constexpr bool Clockwise() const { return SignedDoubleArea() < T(0); }
+
+  constexpr bool Inside(const TPoint& p) const {
     T z(0), d = SignedDoubleArea();
     if (d < z) {
       return ((p - a) % (p - c) >= z) && ((p - c) % (p - b) >= z) &&

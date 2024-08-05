@@ -21,11 +21,14 @@ class Polygon {
 
   std::vector<TPoint> v;
 
-  Polygon() {}
+  constexpr Polygon() {}
 
-  explicit Polygon(const std::vector<TPoint>& vp) : v(vp) { Normalize(); }
+  constexpr explicit Polygon(const std::vector<TPoint>& vp) : v(vp) {
+    Normalize();
+  }
 
-  Polygon(const std::vector<TPoint>& vp, bool skip_normalization) : v(vp) {
+  constexpr Polygon(const std::vector<TPoint>& vp, bool skip_normalization)
+      : v(vp) {
     if (!skip_normalization) Normalize();
   }
 
@@ -40,15 +43,15 @@ class Polygon {
       std::reverse(v.begin() + 1, v.end());
   }
 
-  bool operator==(const TSelf& r) const { return v == r.v; }
-  bool operator!=(const TSelf& r) const { return v != r.v; }
+  constexpr bool operator==(const TSelf& r) const { return v == r.v; }
+  constexpr bool operator!=(const TSelf& r) const { return v != r.v; }
 
-  unsigned Size() const { return v.size(); }
+  constexpr unsigned Size() const { return v.size(); }
 
-  const TPoint& operator[](unsigned i) const { return v[i]; }
-  const TPoint& MGet(unsigned i) const { return v[i % v.size()]; }
+  constexpr const TPoint& operator[](unsigned i) const { return v[i]; }
+  constexpr const TPoint& MGet(unsigned i) const { return v[i % v.size()]; }
 
-  T DoubleArea() const {
+  constexpr T DoubleArea() const {
     if (Size() < 3) return {};
     auto a = T();
     auto& p0 = v[0];
@@ -56,7 +59,7 @@ class Polygon {
     return a;
   }
 
-  T Area() const { return DoubleArea() / 2; }
+  constexpr T Area() const { return DoubleArea() / 2; }
 };
 }  // namespace d2
 }  // namespace geometry

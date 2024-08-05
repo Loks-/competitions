@@ -19,16 +19,18 @@ class PolygonStaticSize {
   using TPoint = Point<T>;
   std::array<TPoint, size> v;
 
-  explicit PolygonStaticSize(const std::array<TPoint, size>& vp) : v(vp) {
+  constexpr explicit PolygonStaticSize(const std::array<TPoint, size>& vp)
+      : v(vp) {
     Normalize();
   }
 
-  explicit PolygonStaticSize(const std::vector<TPoint>& vp)
+  constexpr explicit PolygonStaticSize(const std::vector<TPoint>& vp)
       : v(vp.begin(), vp.end()) {
     Normalize();
   }
 
-  PolygonStaticSize(const std::array<TPoint, size>& vp, bool skip_normalization)
+  constexpr PolygonStaticSize(const std::array<TPoint, size>& vp,
+                              bool skip_normalization)
       : v(vp) {
     if (!skip_normalization) Normalize();
   }
@@ -44,10 +46,10 @@ class PolygonStaticSize {
       std::reverse(v.begin() + 1, v.end());
   }
 
-  unsigned Size() const { return size; }
+  consteval unsigned Size() const { return size; }
 
-  const TPoint& operator[](unsigned i) const { return v[i]; }
-  const TPoint& MGet(unsigned i) const { return v[i % size]; }
+  constexpr const TPoint& operator[](unsigned i) const { return v[i]; }
+  constexpr const TPoint& MGet(unsigned i) const { return v[i % size]; }
 };
 }  // namespace d2
 }  // namespace geometry

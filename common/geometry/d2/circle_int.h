@@ -13,19 +13,28 @@ class ICircle {
   Point<T> c;
   T r, r2;
 
-  ICircle() : r() { UpdateR2(); }
-  ICircle(const Point<T>& _c, const T& _r) : c(_c), r(_r) { UpdateR2(); }
-  ICircle(const Point<T>& _c, const T& _r, const T& _r2)
+  constexpr ICircle() : r() { UpdateR2(); }
+
+  constexpr ICircle(const Point<T>& _c, const T& _r) : c(_c), r(_r) {
+    UpdateR2();
+  }
+
+  constexpr ICircle(const Point<T>& _c, const T& _r, const T& _r2)
       : c(_c), r(_r), r2(_r2) {}
 
   void SetR2(const T& _r2) { r2 = _r2; }
+
   void UpdateR2() { SetR2(r * r); }
 
-  bool Valid() const { return r2 >= 0; }
+  constexpr bool Valid() const { return r2 >= 0; }
 
-  bool Inside(const Point<T>& p) const { return SquaredDistance(p, c) <= r2; }
+  constexpr bool Inside(const Point<T>& p) const {
+    return SquaredDistance(p, c) <= r2;
+  }
 
-  T operator()(const Point<T>& p) const { return SquaredDistance(p, c) - r2; }
+  constexpr T operator()(const Point<T>& p) const {
+    return SquaredDistance(p, c) - r2;
+  }
 };
 }  // namespace d2
 }  // namespace geometry

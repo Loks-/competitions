@@ -16,19 +16,22 @@ class TrianglePA {
 
   TPoint a, b, c;
 
-  TrianglePA(const TPoint& _a, const TPoint& _b, const TPoint& _c)
+  constexpr TrianglePA(const TPoint& _a, const TPoint& _b, const TPoint& _c)
       : a(_a), b(_b), c(_c) {
     assert(SignedDoubleArea() > 0);
   }
 
-  T SignedDoubleArea() const { return (b - a) % (c - a); }
-  T SignedArea() const { return SignedDoubleArea() / 2; }
-  T DoubleArea() const { return SignedDoubleArea(); }
-  T Area() const { return DoubleArea() / 2; }
+  constexpr T SignedDoubleArea() const { return (b - a) % (c - a); }
 
-  bool Empty() const { return false; }
+  constexpr T SignedArea() const { return SignedDoubleArea() / 2; }
 
-  bool Inside(const TPoint& p) {
+  constexpr T DoubleArea() const { return SignedDoubleArea(); }
+
+  constexpr T Area() const { return DoubleArea() / 2; }
+
+  constexpr bool Empty() const { return false; }
+
+  constexpr bool Inside(const TPoint& p) const {
     T z(0);
     auto pa = p - a, pb = p - b, pc = p - c;
     return ((pa % pb) >= z) && ((pb % pc) >= z) && ((pc % pa) >= z);

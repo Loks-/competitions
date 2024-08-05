@@ -4,6 +4,6 @@
 #include "common/numeric/utils/sign.h"
 
 template <class T>
-inline geometry::d2::Vector<T> Sign(const geometry::d2::Vector<T>& v) {
+constexpr geometry::d2::Vector<T> Sign(const geometry::d2::Vector<T>& v) {
   return {Sign(v.dx), Sign(v.dy)};
 }

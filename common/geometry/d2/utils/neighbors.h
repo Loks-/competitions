@@ -6,46 +6,39 @@
 
 #include <vector>
 
-inline const std::vector<I2Vector>& I2NeighborsD2() {
-  static std::vector<I2Vector> v{{1, 0}, {0, 1}};
-  return v;
+constexpr std::vector<I2Vector> I2NeighborsD2() { return {{1, 0}, {0, 1}}; }
+
+constexpr std::vector<I2Vector> I2NeighborsD3() {
+  return {{1, 0}, {1, 1}, {0, 1}};
 }
 
-inline const std::vector<I2Vector>& I2NeighborsD3() {
-  static std::vector<I2Vector> v{{1, 0}, {1, 1}, {0, 1}};
-  return v;
+constexpr std::vector<I2Vector> I2NeighborsD4() {
+  return {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
 }
 
-inline const std::vector<I2Vector>& I2NeighborsD4() {
-  static std::vector<I2Vector> v{{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
-  return v;
+constexpr std::vector<I2Vector> I2NeighborsD8() {
+  return {{1, 0}, {1, 1}, {0, 1}, {-1, 1}, {-1, 0}, {-1, -1}, {0, -1}, {1, -1}};
 }
 
-inline const std::vector<I2Vector>& I2NeighborsD8() {
-  static std::vector<I2Vector> v{{1, 0},  {1, 1},   {0, 1},  {-1, 1},
-                                 {-1, 0}, {-1, -1}, {0, -1}, {1, -1}};
-  return v;
-}
-
-inline std::vector<I2Point> I2NeighborsD2(const I2Point& p) {
+constexpr std::vector<I2Point> I2NeighborsD2(const I2Point& p) {
   std::vector<I2Point> v;
   for (auto d : I2NeighborsD2()) v.push_back(p + d);
   return v;
 }
 
-inline std::vector<I2Point> I2NeighborsD3(const I2Point& p) {
+constexpr std::vector<I2Point> I2NeighborsD3(const I2Point& p) {
   std::vector<I2Point> v;
   for (auto d : I2NeighborsD3()) v.push_back(p + d);
   return v;
 }
 
-inline std::vector<I2Point> I2NeighborsD4(const I2Point& p) {
+constexpr std::vector<I2Point> I2NeighborsD4(const I2Point& p) {
   std::vector<I2Point> v;
   for (auto d : I2NeighborsD4()) v.push_back(p + d);
   return v;
 }
 
-inline std::vector<I2Point> I2NeighborsD8(const I2Point& p) {
+constexpr std::vector<I2Point> I2NeighborsD8(const I2Point& p) {
   std::vector<I2Point> v;
   for (auto d : I2NeighborsD8()) v.push_back(p + d);
   return v;

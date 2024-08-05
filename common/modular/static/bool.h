@@ -11,9 +11,9 @@ class Bool {
   using TSelf = Bool;
 
  public:
-  static bool IsModPrime() { return true; }
-  static bool IsMod32Bits() { return true; }
-  static unsigned GetMod() { return 2; }
+  consteval static bool IsModPrime() { return true; }
+  consteval static bool IsMod32Bits() { return true; }
+  consteval static unsigned GetMod() { return 2u; }
 
  protected:
   TValue value;

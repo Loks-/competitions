@@ -9,8 +9,8 @@ namespace geometry {
 namespace d2 {
 namespace reflection {
 template <class T>
-inline bool Reflected(const LinePV<T>& line, const Point<T>& p1,
-                      const Point<T>& p2) {
+constexpr bool Reflected(const LinePV<T>& line, const Point<T>& p1,
+                         const Point<T>& p2) {
   return ((line.v * (p2 - p1)) == T(0)) &&
          (SquaredDistanceL2(line.p, p1) == SquaredDistanceL2(line.p, p2));
 }

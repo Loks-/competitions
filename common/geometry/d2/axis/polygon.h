@@ -23,7 +23,9 @@ class Polygon : public geometry::d2::Polygon<T> {
   std::vector<std::vector<T>> vvy;
 
  public:
-  explicit Polygon(const std::vector<TPoint>& vp) : TBase(vp) { Normalize(); }
+  constexpr explicit Polygon(const std::vector<TPoint>& vp) : TBase(vp) {
+    Normalize();
+  }
 
   void Normalize() {
     TBase::Normalize();
@@ -45,7 +47,7 @@ class Polygon : public geometry::d2::Polygon<T> {
     for (auto& vy : vvy) std::sort(vy.begin(), vy.end());
   }
 
-  bool Inside(const Point<T>& p) const {
+  constexpr bool Inside(const Point<T>& p) const {
     auto itx = std::lower_bound(vx.begin(), vx.end(), p.x);
     if (itx == vx.end()) return false;
     for (unsigned i = 0, j = itx - vx.begin(); i < 2; ++i) {

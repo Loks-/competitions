@@ -2,6 +2,7 @@
 
 #include "common/base.h"
 #include "common/template.h"
+
 #include <utility>
 
 namespace modular {
@@ -14,8 +15,8 @@ class Arithmetic {
   using TValue = _TValue;
   using TSelf = Arithmetic<is_prime, is_32bit, TValue>;
 
-  static bool IsModPrime() { return is_prime; }
-  static bool IsMod32Bits() { return is_32bit; }
+  consteval static bool IsModPrime() { return is_prime; }
+  consteval static bool IsMod32Bits() { return is_32bit; }
 
   static TValue ApplyU(uint64_t value, TValue mod) {
     return TValue(value % uint64_t(mod));

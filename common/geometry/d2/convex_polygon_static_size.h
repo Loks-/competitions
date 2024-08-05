@@ -17,14 +17,14 @@ class ConvexPolygonStaticSize : public PolygonStaticSize<T, size> {
   using TBase = PolygonStaticSize<T, size>;
   using TPoint = typename TBase::TPoint;
 
-  explicit ConvexPolygonStaticSize(const std::array<TPoint, size>& vp)
+  constexpr explicit ConvexPolygonStaticSize(const std::array<TPoint, size>& vp)
       : TBase(vp) {}
 
-  ConvexPolygonStaticSize(const std::array<TPoint, size>& vp,
-                          bool skip_normalization)
+  constexpr ConvexPolygonStaticSize(const std::array<TPoint, size>& vp,
+                                    bool skip_normalization)
       : TBase(vp, skip_normalization) {}
 
-  bool Inside(const TPoint& p) const {
+  constexpr bool Inside(const TPoint& p) const {
     if (p == TBase::v[0]) return true;
     auto it = std::lower_bound(TBase::v.begin() + 1, TBase::v.end(), p,
                                [&](const TPoint& l, const TPoint& r) {

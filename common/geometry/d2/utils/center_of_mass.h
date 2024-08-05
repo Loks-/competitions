@@ -6,7 +6,7 @@
 #include <vector>
 
 template <class T>
-inline geometry::d2::Vector<T> CenterOfMass(
+constexpr geometry::d2::Vector<T> CenterOfMass(
     const std::vector<geometry::d2::Vector<T>>& vectors) {
   if (vectors.empty()) return {};
   geometry::d2::Vector<T> s;
@@ -15,7 +15,7 @@ inline geometry::d2::Vector<T> CenterOfMass(
 }
 
 template <class T>
-inline geometry::d2::Point<T> CenterOfMass(
+constexpr geometry::d2::Point<T> CenterOfMass(
     const std::vector<geometry::d2::Point<T>>& points) {
   unsigned n = points.size();
   if (n == 0) return {};
