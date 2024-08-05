@@ -6,7 +6,7 @@
 #include <unordered_set>
 #include <vector>
 
-inline std::vector<std::string> Split(const std::string& s, char delimeter) {
+constexpr std::vector<std::string> Split(const std::string& s, char delimeter) {
   if (s.empty()) return {};
   std::vector<std::string> vs;
   size_t npos = 0;

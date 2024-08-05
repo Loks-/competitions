@@ -8,9 +8,9 @@
 namespace nstring {
 class NumberToWords {
  public:
-  static std::string ConvertZero() { return "Zero"; }
+  constexpr static std::string ConvertZero() { return "Zero"; }
 
-  static std::string ConvertHundred(uint64_t n) {
+  constexpr static std::string ConvertHundred(uint64_t n) {
     assert(n < 100);
     switch (n) {
       case 0:
@@ -74,7 +74,7 @@ class NumberToWords {
     }
   }
 
-  static std::string ConvertThousand(uint64_t n) {
+  constexpr static std::string ConvertThousand(uint64_t n) {
     assert(n < 1000);
     std::string s;
     if (n >= 100) {
@@ -87,7 +87,7 @@ class NumberToWords {
     return s;
   }
 
-  static std::string Convert(uint64_t n) {
+  constexpr static std::string Convert(uint64_t n) {
     if (n == 0) return ConvertZero();
     std::vector<std::string> vbase{"", "Thousand", "Million", "Billion",
                                    "Trillion"};

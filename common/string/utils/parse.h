@@ -5,7 +5,7 @@
 #include <string>
 
 template <class T = uint64_t>
-inline T Parse(const std::string& s, T base = 10) {
+constexpr T Parse(const std::string& s, T base = 10) {
   T x = 0;
   for (char c : s) {
     assert(((c >= '0') && (c <= '9')) || ((c >= 'A') && (c <= 'Z')));
