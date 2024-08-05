@@ -5,7 +5,7 @@
 #include "common/modular/arithmetic.h"
 
 template <class TModularA = modular::TArithmetic_P32U>
-inline uint64_t FindSmallestPrimitiveRoot(
+constexpr uint64_t FindSmallestPrimitiveRoot(
     uint64_t p, const TFactorization& p1_factorization) {
   if (p <= 3) return p - 1;
   for (uint64_t u = 2; u < p; ++u) {

@@ -21,7 +21,7 @@ int main_find_the_operations__lupd() {
     int i1 = int(i / N), i2 = int(i % N);
     for (unsigned j = 0; j < NN; ++j) {
       int j1 = int(j / N), j2 = int(j % N);
-      if (abs(i1 - j1) + abs(i2 - j2) <= int(D)) M(i, j) = 1;
+      if (abs(i1 - j1) + abs(i2 - j2) <= int(D)) M(i, j) = ModularBool::True();
     }
   }
   la::field::LUPDecomposition<TMatrix> lupd;

@@ -17,13 +17,14 @@ class Factorial {
   std::vector<TValue> vf, vfi;
 
  public:
-  explicit Factorial(TValue mod) : proxy(mod) {
+  constexpr explicit Factorial(TValue mod) : proxy(mod) {
     vf.push_back(1);
     if (keep_inverted) vfi.push_back(1);
   }
-  const TProxy& GetProxy() const { return proxy; }
 
-  void Adjust(unsigned n) {
+  constexpr const TProxy& GetProxy() const { return proxy; }
+
+  constexpr void Adjust(unsigned n) {
     unsigned k = vf.size();
     if (k > n) return;
     vf.resize(n + 1);
@@ -42,19 +43,19 @@ class Factorial {
     }
   }
 
-  TValue Get(unsigned n) {
+  constexpr TValue Get(unsigned n) {
     Adjust(n);
     return vf[n];
   }
 
-  TValue GetI(unsigned n) {
+  constexpr TValue GetI(unsigned n) {
     Adjust(n);
     return (keep_inverted ? vfi[n] : proxy.Inverse(vf[n]));
   }
 
-  TValue operator()(unsigned n) { return Get(n); }
+  constexpr TValue operator()(unsigned n) { return Get(n); }
 
-  TValue BinomialCoefficient(unsigned n, unsigned k) {
+  constexpr TValue BinomialCoefficient(unsigned n, unsigned k) {
     if (k > n) return 0;
     Adjust(n);
     return (keep_inverted ? proxy.Mult(proxy.Mult(vf[n], vfi[k]), vfi[n - k])

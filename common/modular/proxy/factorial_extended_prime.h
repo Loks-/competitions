@@ -8,7 +8,7 @@
 
 namespace modular {
 namespace proxy {
-inline uint64_t FactorialExtendedPrimeCoprimeOnly(
+constexpr uint64_t FactorialExtendedPrimeCoprimeOnly(
     uint64_t n, Factorial<TModularProxy_P32U, false>& f) {
   const TModularProxy_P32U& mp = f.GetProxy();
   uint64_t p = mp.GetMod();
@@ -17,7 +17,7 @@ inline uint64_t FactorialExtendedPrimeCoprimeOnly(
   return r;
 }
 
-inline uint64_t FactorialExtendedPrime(
+constexpr uint64_t FactorialExtendedPrime(
     uint64_t n, Factorial<TModularProxy_P32U, false>& f) {
   if (n == 0) return 1;
   const TModularProxy_P32U& mp = f.GetProxy();
@@ -26,7 +26,7 @@ inline uint64_t FactorialExtendedPrime(
                  FactorialExtendedPrime(n / p, f));
 }
 
-inline uint64_t FactorialExtendedPrime(uint64_t n, unsigned prime) {
+constexpr uint64_t FactorialExtendedPrime(uint64_t n, unsigned prime) {
   Factorial<TModularProxy_P32U, false> f(prime);
   return FactorialExtendedPrime(n, f);
 }

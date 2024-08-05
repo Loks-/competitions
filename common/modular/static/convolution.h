@@ -12,7 +12,7 @@ namespace modular {
 namespace mstatic {
 namespace hidden {
 template <class TModularNew, class TModular>
-inline std::vector<TModularNew> ConvolutionFFTChangeModular(
+constexpr std::vector<TModularNew> ConvolutionFFTChangeModular(
     const std::vector<TModular>& a) {
   std::vector<TModularNew> v(a.size());
   for (size_t i = 0; i < a.size(); ++i) v[i] = TModularNew(a[i].Get());

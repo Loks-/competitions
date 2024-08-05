@@ -7,8 +7,8 @@
 namespace modular {
 namespace mstatic {
 template <class TModular>
-inline TModular BinomialCoefficientPrime(uint64_t n, uint64_t k,
-                                         Factorial<TModular>& f) {
+constexpr TModular BinomialCoefficientPrime(uint64_t n, uint64_t k,
+                                            Factorial<TModular>& f) {
   if (k > n) return 0;
   uint64_t p = TModular::GetMod();
   TModular r = 1;

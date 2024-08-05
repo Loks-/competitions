@@ -5,6 +5,7 @@
 #include "common/modular/arithmetic.h"
 #include "common/modular/utils/primitive_root.h"
 #include "common/numeric/utils/usqrt.h"
+
 #include <algorithm>
 #include <unordered_map>
 
@@ -41,14 +42,17 @@ class DiscreteLogSqrtMap {
     m = USqrt(p) + 1;
     Build();
   }
+
   DiscreteLogSqrtMap(uint64_t prime, uint64_t pprimitive, uint64_t size)
       : p(prime), primitive(pprimitive) {
     m = std::min(size, p - 1);
     Build();
   }
+
   DiscreteLogSqrtMap(uint64_t prime, const TFactorization& p1_factorization)
       : DiscreteLogSqrtMap(
             prime, FindSmallestPrimitiveRoot(prime, p1_factorization)) {}
+
   DiscreteLogSqrtMap(uint64_t prime, const TFactorization& p1_factorization,
                      uint64_t size)
       : DiscreteLogSqrtMap(

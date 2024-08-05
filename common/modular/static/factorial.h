@@ -10,12 +10,12 @@ class Factorial {
   std::vector<TModular> vf, vfi;
 
  public:
-  Factorial() {
+  constexpr Factorial() {
     vf.push_back(TModular(1));
     if (keep_inverted) vfi.push_back(TModular(1));
   }
 
-  void Adjust(unsigned n) {
+  constexpr void Adjust(unsigned n) {
     unsigned k = vf.size();
     if (k > n) return;
     vf.resize(n + 1);
@@ -27,24 +27,24 @@ class Factorial {
     }
   }
 
-  TModular Get(unsigned n) {
+  constexpr TModular Get(unsigned n) {
     Adjust(n);
     return vf[n];
   }
 
-  TModular GetI(unsigned n) {
+  constexpr TModular GetI(unsigned n) {
     Adjust(n);
     return (keep_inverted ? vfi[n] : vf[n].Inverse());
   }
 
-  TModular Inverse(unsigned n) {
+  constexpr TModular Inverse(unsigned n) {
     Adjust(n);
     return vf[n - 1] * vfi[n];
   }
 
-  TModular operator()(unsigned n) { return Get(n); }
+  constexpr TModular operator()(unsigned n) { return Get(n); }
 
-  TModular BinomialCoefficient(unsigned n, unsigned k) {
+  constexpr TModular BinomialCoefficient(unsigned n, unsigned k) {
     if (k > n) return 0;
     Adjust(n);
     return (keep_inverted ? vf[n] * vfi[k] * vfi[n - k]

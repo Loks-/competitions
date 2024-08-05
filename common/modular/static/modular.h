@@ -21,65 +21,69 @@ class Modular {
   TValue value;
 
  public:
-  TValue Get() const { return value; }
-  void SetU(uint64_t _value) { value = TBase::ApplyU(_value); }
-  void SetS(int64_t _value) { value = TBase::ApplyS(_value); }
-  void SetT(TValue _value) { value = TBase::ApplyT(_value); }
+  constexpr TValue Get() const { return value; }
 
-  Modular() : value(0) {}
-  Modular(TValue _value) : value(TBase::ApplyT(_value)) {}
+  constexpr void SetU(uint64_t _value) { value = TBase::ApplyU(_value); }
 
-  explicit operator bool() const { return value != 0; }
+  constexpr void SetS(int64_t _value) { value = TBase::ApplyS(_value); }
 
-  TSelf operator+(TSelf rvalue) const {
+  constexpr void SetT(TValue _value) { value = TBase::ApplyT(_value); }
+
+  constexpr Modular() : value(0) {}
+
+  constexpr Modular(TValue _value) : value(TBase::ApplyT(_value)) {}
+
+  constexpr explicit operator bool() const { return value != 0; }
+
+  constexpr TSelf operator+(TSelf rvalue) const {
     return TBase::Add(value, rvalue.value);
   }
 
-  TSelf& operator+=(TSelf rvalue) {
+  constexpr TSelf& operator+=(TSelf rvalue) {
     value += rvalue.value;
     value %= mod;
     return *this;
   }
 
-  TSelf operator-() const { return TBase::Minus(value); }
+  constexpr TSelf operator-() const { return TBase::Minus(value); }
 
-  TSelf operator-(TSelf rvalue) const {
+  constexpr TSelf operator-(TSelf rvalue) const {
     return TBase::Sub(value, rvalue.value);
   }
 
-  TSelf& operator-=(TSelf rvalue) {
+  constexpr TSelf& operator-=(TSelf rvalue) {
     value += (mod - rvalue.value);
     value %= mod;
     return *this;
   }
 
-  TSelf operator*(TSelf rvalue) const {
+  constexpr TSelf operator*(TSelf rvalue) const {
     return TBase::Mult(value, rvalue.value);
   }
 
-  TSelf& operator*=(TSelf rvalue) {
+  constexpr TSelf& operator*=(TSelf rvalue) {
     value = TBase::Mult(value, rvalue.value);
     return *this;
   }
 
-  TSelf operator/(TSelf rvalue) const {
+  constexpr TSelf operator/(TSelf rvalue) const {
     return TBase::Div(value, rvalue.value);
   }
 
-  TSelf& operator/=(TSelf rvalue) {
+  constexpr TSelf& operator/=(TSelf rvalue) {
     value = TBase::Div(value, rvalue.value);
     return *this;
   }
 
-  TSelf Inverse() const { return TBase::Inverse(value); }
+  constexpr TSelf Inverse() const { return TBase::Inverse(value); }
 
-  TSelf PowU(uint64_t pow) const { return TBase::PowU(value, pow); }
+  constexpr TSelf PowU(uint64_t pow) const { return TBase::PowU(value, pow); }
 
-  TSelf PowS(int64_t pow) const { return TBase::PowS(value, pow); }
+  constexpr TSelf PowS(int64_t pow) const { return TBase::PowS(value, pow); }
 
-  bool operator<(const TSelf& r) const { return value < r.value; }
-  bool operator==(const TSelf& r) const { return value == r.value; }
-  bool operator!=(const TSelf& r) const { return value != r.value; }
+  constexpr bool operator<(const TSelf& r) const { return value < r.value; }
+  constexpr bool operator==(const TSelf& r) const { return value == r.value; }
+  constexpr bool operator!=(const TSelf& r) const { return value != r.value; }
 };
 }  // namespace mstatic
 }  // namespace modular

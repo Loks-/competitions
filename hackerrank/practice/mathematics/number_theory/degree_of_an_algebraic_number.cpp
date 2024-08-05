@@ -38,7 +38,7 @@ int main_degree_of_an_algebraic_number() {
       for (unsigned p : vap[i]) {
         unsigned j =
             unsigned(lower_bound(pv.begin(), pv.end(), p) - pv.begin());
-        m(i, j) = true;
+        m(i, j) = ModularBool::True();
       }
     }
     cout << PowU<uint64_t>(2, la::field::Rank(m)) << endl;

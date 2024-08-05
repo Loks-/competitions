@@ -19,73 +19,81 @@ class Bool {
   TValue value;
 
  public:
-  TValue Get() const { return value; }
-  void SetU(uint64_t _value) { value = (_value & 1u); }
-  void SetS(int64_t _value) { value = (_value & 1); }
-  void SetT(TValue _value) { value = _value; }
+  constexpr TValue Get() const { return value; }
+  constexpr void SetU(uint64_t _value) { value = (_value & 1u); }
+  constexpr void SetS(int64_t _value) { value = (_value & 1); }
+  constexpr void SetT(TValue _value) { value = _value; }
 
-  Bool() : value(false) {}
-  Bool(bool b) : value(b) {}
-  explicit Bool(uint32_t _value) { SetU(_value); }
-  explicit Bool(uint64_t _value) { SetU(_value); }
-  explicit Bool(int32_t _value) { SetS(_value); }
-  explicit Bool(int64_t _value) { SetS(_value); }
+  constexpr Bool() : value(false) {}
+  constexpr explicit Bool(bool b) : value(b) {}
+  constexpr explicit Bool(uint32_t _value) { SetU(_value); }
+  constexpr explicit Bool(uint64_t _value) { SetU(_value); }
+  constexpr explicit Bool(int32_t _value) { SetS(_value); }
+  constexpr explicit Bool(int64_t _value) { SetS(_value); }
 
-  static Bool False() { return Bool(false); }
-  static Bool True() { return Bool(true); }
+  consteval static Bool False() { return Bool(false); }
+  consteval static Bool True() { return Bool(true); }
 
-  operator bool() const { return value; }
+  constexpr operator bool() const { return value; }
 
-  TSelf operator+(TSelf rvalue) const { return TSelf(value != rvalue.value); }
+  constexpr TSelf operator+(TSelf rvalue) const {
+    return TSelf(value != rvalue.value);
+  }
 
-  TSelf& operator+=(TSelf rvalue) {
+  constexpr TSelf& operator+=(TSelf rvalue) {
     value = (value != rvalue.value);
     return *this;
   }
 
-  TSelf operator-() const { return *this; }
+  constexpr TSelf operator-() const { return *this; }
 
-  TSelf operator-(TSelf rvalue) const { return TSelf(value != rvalue.value); }
+  constexpr TSelf operator-(TSelf rvalue) const {
+    return TSelf(value != rvalue.value);
+  }
 
-  TSelf& operator-=(TSelf rvalue) {
+  constexpr TSelf& operator-=(TSelf rvalue) {
     value = (value != rvalue.value);
     return *this;
   }
 
-  TSelf operator*(TSelf rvalue) const { return TSelf(value && rvalue.value); }
+  constexpr TSelf operator*(TSelf rvalue) const {
+    return TSelf(value && rvalue.value);
+  }
 
-  TSelf& operator*=(TSelf rvalue) {
+  constexpr TSelf& operator*=(TSelf rvalue) {
     value &= rvalue.value;
     return *this;
   }
 
-  TSelf operator/(TSelf rvalue) const {
+  constexpr TSelf operator/(TSelf rvalue) const {
     FakeUse(rvalue);
     assert(rvalue.value);
     return *this;
   }
 
-  TSelf& operator/=(TSelf rvalue) {
+  constexpr TSelf& operator/=(TSelf rvalue) {
     FakeUse(rvalue);
     assert(rvalue.value);
     return *this;
   }
 
-  TSelf Inverse() const {
+  constexpr TSelf Inverse() const {
     assert(value);
     return *this;
   }
 
-  TSelf PowU(uint64_t pow) const { return (pow == 0) ? TSelf(true) : *this; }
+  constexpr TSelf PowU(uint64_t pow) const {
+    return (pow == 0) ? TSelf(true) : *this;
+  }
 
-  TSelf PowS(int64_t pow) const {
+  constexpr TSelf PowS(int64_t pow) const {
     assert(value || (pow >= 0));
     return (pow == 0) ? TSelf(true) : *this;
   }
 
-  bool operator<(const TSelf& r) const { return !value && r.value; }
-  bool operator==(const TSelf& r) const { return value == r.value; }
-  bool operator!=(const TSelf& r) const { return value != r.value; }
+  constexpr bool operator<(const TSelf& r) const { return !value && r.value; }
+  constexpr bool operator==(const TSelf& r) const { return value == r.value; }
+  constexpr bool operator!=(const TSelf& r) const { return value != r.value; }
 };
 }  // namespace mstatic
 }  // namespace modular

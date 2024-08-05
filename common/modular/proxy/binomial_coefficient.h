@@ -19,23 +19,25 @@ class BinomialCoefficient {
   using TPrimeFactorialProxy = Factorial<TModularProxy_P32U, true, false>;
   using TPrimePowerFactorialProxy = Factorial<TModularProxy_C32U, true, true>;
 
-  static uint64_t GetPPower(uint64_t n, uint64_t p) {
+  constexpr static uint64_t GetPPower(uint64_t n, uint64_t p) {
     uint64_t s = 0;
     for (n /= p; n; n /= p) s += n;
     return s;
   }
 
-  static uint64_t GetPPower(uint64_t n, uint64_t k, uint64_t p) {
+  constexpr static uint64_t GetPPower(uint64_t n, uint64_t k, uint64_t p) {
     assert(n >= k);
     return GetPPower(n, p) - GetPPower(k, p) - GetPPower(n - k, p);
   }
 
-  static uint64_t GetPPower(uint64_t n, uint64_t k, uint64_t l, uint64_t p) {
+  constexpr static uint64_t GetPPower(uint64_t n, uint64_t k, uint64_t l,
+                                      uint64_t p) {
     assert(n >= k);
     return GetPPower(n, p) - GetPPower(k, p) - GetPPower(l, p);
   }
 
-  static uint64_t Apply(uint64_t n, uint64_t k, TPrimeFactorialProxy& fp) {
+  constexpr static uint64_t Apply(uint64_t n, uint64_t k,
+                                  TPrimeFactorialProxy& fp) {
     const auto& mp = fp.GetProxy();
     uint64_t p = mp.GetMod();
     uint64_t ppower = GetPPower(n, k, p);
@@ -52,8 +54,8 @@ class BinomialCoefficient {
     return r;
   }
 
-  static uint64_t Apply(uint64_t n, uint64_t k, uint64_t p, unsigned q,
-                        TPrimePowerFactorialProxy& fp) {
+  constexpr static uint64_t Apply(uint64_t n, uint64_t k, uint64_t p,
+                                  unsigned q, TPrimePowerFactorialProxy& fp) {
     const auto& mp = fp.GetProxy();
     uint64_t pq = mp.GetMod();
     uint64_t ppower_adj =

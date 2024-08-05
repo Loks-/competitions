@@ -9,18 +9,18 @@ class Catalan : public Factorial<TModular, true> {
  public:
   using TBase = Factorial<TModular, true>;
 
-  TModular Get(unsigned n) {
+  constexpr TModular Get(unsigned n) {
     TBase::Adjust(2 * n + 1);
     return TBase::vf[2 * n] * TBase::vfi[n] * TBase::vfi[n + 1];
   }
 
-  TModular GetTriangle(unsigned n, unsigned m) {
+  constexpr TModular GetTriangle(unsigned n, unsigned m) {
     TBase::Adjust(n + m + 1);
     return TBase::vf[n + m] * TModular(n - m + 1) * TBase::vfi[n + 1] *
            TBase::vfi[m];
   }
 
-  TModular GetConvolution(unsigned n, unsigned k) {
+  constexpr TModular GetConvolution(unsigned n, unsigned k) {
     TBase::Adjust(2 * n + k + 1);
     return TBase::vf[2 * n + k] * TModular(k + 1) * TBase::vfi[n] *
            TBase::vfi[n + k + 1];

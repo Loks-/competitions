@@ -24,7 +24,7 @@ class DiscreteLogFullMap {
   std::vector<unsigned> vmap;
 
  public:
-  void Build() {
+  constexpr void Build() {
     vmap.resize(p);
     uint64_t r = 1;
     for (uint64_t i = 0; i + 1 < p; ++i) {
@@ -33,18 +33,20 @@ class DiscreteLogFullMap {
     }
   }
 
-  DiscreteLogFullMap(unsigned prime, unsigned pprimitive)
+  constexpr DiscreteLogFullMap(unsigned prime, unsigned pprimitive)
       : p(prime), primitive(pprimitive) {
     Build();
   }
 
-  DiscreteLogFullMap(unsigned prime, const TFactorization& p1_factorization)
+  constexpr DiscreteLogFullMap(unsigned prime,
+                               const TFactorization& p1_factorization)
       : DiscreteLogFullMap(
             prime, FindSmallestPrimitiveRoot(prime, p1_factorization)) {}
-  explicit DiscreteLogFullMap(unsigned prime)
+
+  constexpr explicit DiscreteLogFullMap(unsigned prime)
       : DiscreteLogFullMap(prime, FactorizeBase(prime - 1)) {}
 
-  unsigned Log(uint64_t x) const {
+  constexpr unsigned Log(uint64_t x) const {
     x = TModularA::ApplyU(x, p);
     assert(x);
     return vmap[x];

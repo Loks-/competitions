@@ -5,6 +5,7 @@
 #include "common/linear_algebra/bool/rows_block_add.h"
 #include "common/linear_algebra/bool/rows_block_swap.h"
 #include "common/linear_algebra/bool/vector.h"
+
 #include <vector>
 
 namespace la {
@@ -43,7 +44,7 @@ inline bool Solve(const MatrixBool& A, const VectorBool& b,
     for (unsigned i = 0; i < r; ++i) {
       if (m.GetBit(i, j)) v.Complement(i);
     }
-    output_x.Set(j, 1);
+    output_x.Set(j, ModularBool::True());
   }
   return true;
 }

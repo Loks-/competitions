@@ -27,7 +27,7 @@ class LUPDecomposition {
     unsigned n = m.Rows();
     lu = m;
     p.resize(n);
-    det_sign = 1;
+    det_sign = TValue(1);
     for (unsigned k = 0; k < n; ++k) {
       p[k] = k;
       for (unsigned i = k; i < n; ++i) {
@@ -86,7 +86,7 @@ class LUPDecomposition {
       for (unsigned j = i + 1; j < n; ++j) sum -= lu(i, j) * output_x(j);
       if (!lu(i, i)) {
         if (sum) return false;
-        output_x(i) = 0;
+        output_x(i) = TValue(0);
       } else {
         output_x(i) = sum / lu(i, i);
       }

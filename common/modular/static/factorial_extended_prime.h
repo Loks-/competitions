@@ -8,17 +8,17 @@
 namespace modular {
 namespace mstatic {
 template <class TModular>
-inline TModular FactorialExtendedPrimeCoprimeOnly(uint64_t n,
-                                                  Factorial<TModular, true>& f,
-                                                  bool inverted = false) {
+constexpr TModular FactorialExtendedPrimeCoprimeOnly(
+    uint64_t n, Factorial<TModular, true>& f, bool inverted = false) {
   const uint64_t p = TModular::GetMod();
   TModular r = inverted ? f.GetI(unsigned(n % p)) : f.Get(unsigned(n % p));
   return ((n / p) & 1) ? -r : r;
 }
 
 template <class TModular>
-inline TModular FactorialExtendedPrime(uint64_t n, Factorial<TModular, true>& f,
-                                       bool inverted = false) {
+constexpr TModular FactorialExtendedPrime(uint64_t n,
+                                          Factorial<TModular, true>& f,
+                                          bool inverted = false) {
   if (n == 0) return 1;
   const uint64_t p = TModular::GetMod();
   return FactorialExtendedPrimeCoprimeOnly(n, f, inverted) *
