@@ -47,11 +47,11 @@ class Unsigned {
   constexpr const TData& Data() const { return data; }
   consteval static unsigned BitsPerBlock() { return 32; }
 
-  iterator begin() { return &data.front(); }
-  const_iterator begin() const { return &data.front(); }
-  iterator end() { return begin() + data.size(); }
-  const_iterator end() const { return begin() + data.size(); }
-  void swap(Unsigned& lu) { data.swap(lu.data); }
+  constexpr iterator begin() { return &data.front(); }
+  constexpr const_iterator begin() const { return &data.front(); }
+  constexpr iterator end() { return begin() + data.size(); }
+  constexpr const_iterator end() const { return begin() + data.size(); }
+  constexpr void swap(Unsigned& lu) { data.swap(lu.data); }
 
   constexpr bool operator==(const Unsigned& lu) const {
     return data == lu.data;
@@ -117,7 +117,7 @@ class Unsigned {
   constexpr bool operator>(uint64_t u) const { return !(*this <= u); }
   constexpr bool operator>=(uint64_t u) const { return !(*this < u); }
 
-  Unsigned operator+(uint32_t u) const {
+  constexpr Unsigned operator+(uint32_t u) const {
     if (u == 0) return (*this);
     Unsigned lu;
     lu.data.reserve(data.size());
@@ -131,9 +131,9 @@ class Unsigned {
     return lu;
   }
 
-  Unsigned operator+(uint64_t u) const { return *this + Unsigned(u); }
+  constexpr Unsigned operator+(uint64_t u) const { return *this + Unsigned(u); }
 
-  Unsigned operator*(uint32_t u) const {
+  constexpr Unsigned operator*(uint32_t u) const {
     if (u == 0) return Unsigned();
     Unsigned lu;
     lu.data.reserve(data.size() + 1);
@@ -147,7 +147,7 @@ class Unsigned {
     return lu;
   }
 
-  Unsigned operator*(uint64_t u) const {
+  constexpr Unsigned operator*(uint64_t u) const {
     if (u == 0) return Unsigned();
     Unsigned lu1 = *this * uint32_t(u);
     u >>= 32;
@@ -157,7 +157,7 @@ class Unsigned {
     return lu1 + lu2;
   }
 
-  Unsigned operator/(uint32_t u) const {
+  constexpr Unsigned operator/(uint32_t u) const {
     assert(u);
     if (data.empty()) return Unsigned();
     Unsigned lu;
@@ -176,7 +176,7 @@ class Unsigned {
     return lu;
   }
 
-  uint32_t operator%(uint32_t u) const {
+  constexpr uint32_t operator%(uint32_t u) const {
     assert(u);
     if (data.empty()) return 0;
     if ((u & (u - 1)) == 0) return (data[0] % u);
@@ -186,7 +186,7 @@ class Unsigned {
     return uint32_t(t64);
   }
 
-  Unsigned operator+(const Unsigned& r) const {
+  constexpr Unsigned operator+(const Unsigned& r) const {
     if (Empty()) return r;
     if (r.Empty()) return *this;
     Unsigned lu;
@@ -203,7 +203,7 @@ class Unsigned {
     return lu;
   }
 
-  Unsigned operator-(const Unsigned& r) const {
+  constexpr Unsigned operator-(const Unsigned& r) const {
     if (r.Empty()) return *this;
     assert(r <= *this);
     Unsigned lu;
@@ -221,53 +221,53 @@ class Unsigned {
     return lu;
   }
 
-  Unsigned& operator+=(uint64_t u) {
+  constexpr Unsigned& operator+=(uint64_t u) {
     Unsigned t = (*this + u);
     swap(t);
     return *this;
   }
 
-  Unsigned& operator*=(uint32_t u) {
+  constexpr Unsigned& operator*=(uint32_t u) {
     Unsigned t = (*this * u);
     swap(t);
     return *this;
   }
 
-  Unsigned& operator*=(uint64_t u) {
+  constexpr Unsigned& operator*=(uint64_t u) {
     Unsigned t = (*this * u);
     swap(t);
     return *this;
   }
 
-  Unsigned& operator/=(uint32_t u) {
+  constexpr Unsigned& operator/=(uint32_t u) {
     Unsigned t = (*this / u);
     swap(t);
     return *this;
   }
 
-  Unsigned& operator+=(const Unsigned& r) {
+  constexpr Unsigned& operator+=(const Unsigned& r) {
     Unsigned t = (*this + r);
     swap(t);
     return *this;
   }
 
-  Unsigned& operator-=(const Unsigned& r) {
+  constexpr Unsigned& operator-=(const Unsigned& r) {
     Unsigned t = (*this - r);
     swap(t);
     return *this;
   }
 
-  Unsigned& ShiftBlocksLeft(size_t ublocks) {
+  constexpr Unsigned& ShiftBlocksLeft(size_t ublocks) {
     if (ublocks) data.erase(data.begin(), data.begin() + ublocks);
     return *this;
   }
 
-  Unsigned& ShiftBlocksRight(size_t ublocks) {
+  constexpr Unsigned& ShiftBlocksRight(size_t ublocks) {
     if (ublocks && !Empty()) data.insert(data.begin(), ublocks, 0);
     return *this;
   }
 
-  Unsigned& ShiftBitsLeft(size_t ubits) {
+  constexpr Unsigned& ShiftBitsLeft(size_t ubits) {
     ShiftBlocksLeft(ubits / 32);
     ubits %= 32;
     if (ubits && !Empty()) {
@@ -280,7 +280,7 @@ class Unsigned {
     return *this;
   }
 
-  Unsigned& ShiftBitsRight(size_t ubits) {
+  constexpr Unsigned& ShiftBitsRight(size_t ubits) {
     ShiftBlocksRight(ubits / 32);
     ubits %= 32;
     if (ubits && !Empty()) {
@@ -294,22 +294,25 @@ class Unsigned {
     return *this;
   }
 
-  Unsigned& operator>>=(size_t ubits) { return ShiftBitsLeft(ubits); }
-  Unsigned& operator<<=(size_t ubits) { return ShiftBitsRight(ubits); }
+  constexpr Unsigned& operator>>=(size_t ubits) { return ShiftBitsLeft(ubits); }
 
-  Unsigned operator<<(size_t ubits) const {
+  constexpr Unsigned& operator<<=(size_t ubits) {
+    return ShiftBitsRight(ubits);
+  }
+
+  constexpr Unsigned operator<<(size_t ubits) const {
     Unsigned t(*this);
     t <<= ubits;
     return t;
   }
 
-  Unsigned operator>>(size_t ubits) const {
+  constexpr Unsigned operator>>(size_t ubits) const {
     Unsigned t(*this);
     t >>= ubits;
     return t;
   }
 
-  Unsigned operator/(const Unsigned& r) const {
+  constexpr Unsigned operator/(const Unsigned& r) const {
     assert(!r.Empty());
     if (Empty()) return Unsigned();
     Unsigned tl(*this), tr(r), lu;
@@ -326,7 +329,7 @@ class Unsigned {
     return lu;
   }
 
-  Unsigned operator%(const Unsigned& r) const {
+  constexpr Unsigned operator%(const Unsigned& r) const {
     assert(!r.Empty());
     if (Empty()) return Unsigned();
     Unsigned tl(*this), tr(r);
@@ -341,19 +344,19 @@ class Unsigned {
     return tl;
   }
 
-  Unsigned& operator/=(const Unsigned& r) {
+  constexpr Unsigned& operator/=(const Unsigned& r) {
     Unsigned t = (*this / r);
     swap(t);
     return *this;
   }
 
-  Unsigned& operator%=(const Unsigned& r) {
+  constexpr Unsigned& operator%=(const Unsigned& r) {
     Unsigned t = (*this % r);
     swap(t);
     return *this;
   }
 
-  std::vector<unsigned> ToVector(uint32_t base) const {
+  constexpr std::vector<unsigned> ToVector(uint32_t base) const {
     Unsigned t(*this);
     std::vector<unsigned> v;
     for (; !t.Empty(); t /= base) v.push_back(unsigned(t % base));

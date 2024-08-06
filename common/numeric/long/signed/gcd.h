@@ -5,11 +5,11 @@
 
 namespace numeric {
 namespace nlong {
-inline Signed GCD(const Signed& a, const Signed& b) {
+constexpr Signed GCD(const Signed& a, const Signed& b) {
   return Signed(GCD(a.GetUnsigned(), b.GetUnsigned()));
 }
 
-inline Signed GCDSafe(const Signed& a, const Signed& b) {
+constexpr Signed GCDSafe(const Signed& a, const Signed& b) {
   return Signed(GCD(a.GetUnsigned(), b.GetUnsigned()));
 }
 }  // namespace nlong

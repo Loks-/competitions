@@ -16,12 +16,13 @@ class ContinuedFraction {
   std::vector<int64_t> cf;
 
  public:
-  explicit ContinuedFraction(const std::vector<int64_t>& continued_fraction)
+  constexpr explicit ContinuedFraction(
+      const std::vector<int64_t>& continued_fraction)
       : cf(continued_fraction) {
     if (cf.size() == 0) cf.push_back(0);
   }
 
-  explicit ContinuedFraction(const TIFraction& f) {
+  constexpr explicit ContinuedFraction(const TIFraction& f) {
     int64_t n = f.GetN(), d = f.GetD();
     if (d == 0) {
       assert(n > 0);
@@ -39,18 +40,20 @@ class ContinuedFraction {
     }
   }
 
-  const std::vector<int64_t>& GetVector() const { return cf; }
-  unsigned Size() const { return unsigned(cf.size()); }
-  int64_t operator()(unsigned index) const { return cf[index]; }
+  constexpr const std::vector<int64_t>& GetVector() const { return cf; }
 
-  void SplitLast() {
+  constexpr unsigned Size() const { return unsigned(cf.size()); }
+
+  constexpr int64_t operator()(unsigned index) const { return cf[index]; }
+
+  constexpr void SplitLast() {
     if (!cf.empty() && ((cf.back() > 1) || (cf.size() == 1))) {
       cf.back() -= 1;
       cf.push_back(1);
     }
   }
 
-  TIFraction ToFraction() const {
+  constexpr TIFraction ToFraction() const {
     int64_t n0 = 1, n1 = 0, d0 = 0, d1 = 1;
     for (int64_t a : cf) {
       int64_t nn = a * n0 + n1;
@@ -63,9 +66,11 @@ class ContinuedFraction {
     return TIFraction(n0, d0);
   }
 
-  bool operator==(const ContinuedFraction& r) const { return cf == r.cf; }
+  constexpr bool operator==(const ContinuedFraction& r) const {
+    return cf == r.cf;
+  }
 
-  bool operator<(const ContinuedFraction& r) const {
+  constexpr bool operator<(const ContinuedFraction& r) const {
     unsigned ls = Size(), rs = r.Size(), s = std::min(ls, rs);
     for (unsigned i = 0; i < s; ++i) {
       int64_t d = cf[i] - r.cf[i];

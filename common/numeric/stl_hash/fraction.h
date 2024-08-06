@@ -6,7 +6,7 @@
 namespace std {
 template <class T>
 struct hash<numeric::Fraction<T>> {
-  size_t operator()(const numeric::Fraction<T>& value) const {
+  constexpr size_t operator()(const numeric::Fraction<T>& value) const {
     return HashCombine(hash<T>{}(value.GetN()), hash<T>{}(value.GetD()));
   }
 };

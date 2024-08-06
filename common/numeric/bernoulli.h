@@ -1,6 +1,7 @@
 #pragma once
 
 #include "common/base.h"
+
 #include <vector>
 
 namespace numeric {
@@ -14,9 +15,9 @@ class Bernoulli {
   std::vector<TValue> bernoulli, binomial, binomial_temp, inverted;
 
  public:
-  Bernoulli() { Init(); }
+  constexpr Bernoulli() { Init(); }
 
-  void Init() {
+  constexpr void Init() {
     bernoulli.clear();
     binomial.clear();
     inverted.clear();
@@ -30,7 +31,7 @@ class Bernoulli {
     inverted.push_back(half);
   }
 
-  void CalcNext() {
+  constexpr void CalcNext() {
     unsigned m = unsigned(bernoulli.size());
     assert(binomial.size() == m);
     binomial_temp.swap(binomial);
@@ -50,18 +51,18 @@ class Bernoulli {
     bernoulli.push_back((positive ? one : zero) - s);
   }
 
-  void Adjust(unsigned n) {
+  constexpr void Adjust(unsigned n) {
     for (; bernoulli.size() <= n;) CalcNext();
   }
 
-  TValue Get(unsigned n) {
+  constexpr TValue Get(unsigned n) {
     Adjust(n);
     return bernoulli[n];
   }
 
-  TValue operator()(unsigned n) { return Get(n); }
+  constexpr TValue operator()(unsigned n) { return Get(n); }
 
-  TValue GetInverted(unsigned n) {
+  constexpr TValue GetInverted(unsigned n) {
     assert(n);
     Adjust(n - 1);
     return inverted[n];

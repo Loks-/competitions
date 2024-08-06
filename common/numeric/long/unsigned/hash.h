@@ -6,7 +6,7 @@
 namespace std {
 template <>
 struct hash<numeric::nlong::Unsigned> {
-  size_t operator()(const numeric::nlong::Unsigned& u) const {
+  constexpr size_t operator()(const numeric::nlong::Unsigned& u) const {
     hash<vector<uint32_t>> hv;
     return hv(u.Data());
   }

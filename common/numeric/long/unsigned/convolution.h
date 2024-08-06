@@ -11,7 +11,8 @@
 namespace numeric {
 namespace nlong {
 namespace hidden {
-inline Unsigned ConvolutionV2U(const std::vector<Unsigned>& a, unsigned xsize) {
+constexpr Unsigned ConvolutionV2U(const std::vector<Unsigned>& a,
+                                  unsigned xsize) {
   Unsigned::TData rd(a.size() * xsize);
   for (unsigned i = 0; i < a.size(); ++i) {
     auto& ai = a[i].Data();
@@ -20,7 +21,8 @@ inline Unsigned ConvolutionV2U(const std::vector<Unsigned>& a, unsigned xsize) {
   return Unsigned(rd);
 }
 
-inline std::vector<Unsigned> ConvolutionU2V(const Unsigned& a, unsigned xsize) {
+constexpr std::vector<Unsigned> ConvolutionU2V(const Unsigned& a,
+                                               unsigned xsize) {
   if (!a.Size()) return {};
   auto& ad = a.Data();
   unsigned l = (ad.size() - 1) / xsize + 1;

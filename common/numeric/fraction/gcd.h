@@ -4,14 +4,14 @@
 #include "common/numeric/utils/gcd.h"
 
 template <class T>
-inline numeric::Fraction<T> GCD(const numeric::Fraction<T>& x,
-                                const numeric::Fraction<T>& y) {
+constexpr numeric::Fraction<T> GCD(const numeric::Fraction<T>& x,
+                                   const numeric::Fraction<T>& y) {
   return {GCD(x.GetN() * y.GetD(), x.GetD() * y.GetN()), x.GetD() * y.GetD()};
 }
 
 template <class T>
-inline numeric::Fraction<T> GCDSafe(const numeric::Fraction<T>& x,
-                                    const numeric::Fraction<T>& y) {
+constexpr numeric::Fraction<T> GCDSafe(const numeric::Fraction<T>& x,
+                                       const numeric::Fraction<T>& y) {
   return {GCDSafe(x.GetN() * y.GetD(), x.GetD() * y.GetN()),
           x.GetD() * y.GetD()};
 }

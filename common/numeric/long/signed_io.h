@@ -2,6 +2,7 @@
 
 #include "common/numeric/long/signed.h"
 #include "common/numeric/long/unsigned_io.h"
+
 #include <iostream>
 #include <istream>
 #include <ostream>
@@ -9,11 +10,10 @@
 
 namespace numeric {
 namespace nlong {
-inline Signed SignedParse(const std::string& s, unsigned base = 10) {
-  return s.empty()
-             ? Signed()
-             : (s[0] == '-') ? Signed(false, UnsignedParse(s.substr(1), base))
-                             : Signed(UnsignedParse(s, base));
+constexpr Signed SignedParse(const std::string& s, unsigned base = 10) {
+  return s.empty()       ? Signed()
+         : (s[0] == '-') ? Signed(false, UnsignedParse(s.substr(1), base))
+                         : Signed(UnsignedParse(s, base));
 }
 
 inline std::istream& operator>>(std::istream& s, Signed& ls) {
@@ -29,7 +29,7 @@ inline Signed SignedReadBase(unsigned base = 10) {
   return SignedParse(s, base);
 }
 
-inline std::string ToString(const Signed& ls, unsigned base = 10) {
+constexpr std::string ToString(const Signed& ls, unsigned base = 10) {
   return (ls.Sign() ? "" : "-") + ToString(ls.GetUnsigned(), base);
 }
 

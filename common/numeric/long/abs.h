@@ -4,6 +4,6 @@
 #include "common/numeric/utils/abs.h"
 
 template <>
-inline LongSigned Abs<LongSigned>(const LongSigned& val) {
+constexpr LongSigned Abs<LongSigned>(const LongSigned& val) {
   return LongSigned(val.GetUnsigned());
 }

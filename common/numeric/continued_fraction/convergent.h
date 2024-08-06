@@ -12,7 +12,7 @@ class CFConvergent {
   unsigned itc;
   int64_t n0, n1, d0, d1;
 
-  void ResetIteratorI() {
+  constexpr void ResetIteratorI() {
     itc = 0;
     n0 = 1;
     n1 = 0;
@@ -21,20 +21,21 @@ class CFConvergent {
   }
 
  public:
-  void ResetIterator() {
+  constexpr void ResetIterator() {
     ResetIteratorI();
     Next();
   }
 
-  explicit CFConvergent(const ContinuedFraction& continued_fraction)
+  constexpr explicit CFConvergent(const ContinuedFraction& continued_fraction)
       : cf(continued_fraction) {
     ResetIterator();
   }
 
-  bool End() const { return itc > cf.Size(); }
-  TIFraction Get() const { return TIFraction(n0, d0); }
+  constexpr bool End() const { return itc > cf.Size(); }
 
-  CFConvergent& Next() {
+  constexpr TIFraction Get() const { return TIFraction(n0, d0); }
+
+  constexpr CFConvergent& Next() {
     if (itc < cf.Size()) {
       int64_t nn = cf(itc) * n0 + n1;
       n1 = n0;
@@ -47,8 +48,9 @@ class CFConvergent {
     return *this;
   }
 
-  TIFraction operator*() const { return Get(); }
-  CFConvergent& operator++() { return Next(); }
+  constexpr TIFraction operator*() const { return Get(); }
+
+  constexpr CFConvergent& operator++() { return Next(); }
 };
 }  // namespace cf
 }  // namespace numeric

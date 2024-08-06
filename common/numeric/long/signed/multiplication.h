@@ -5,7 +5,7 @@
 
 namespace numeric {
 namespace nlong {
-inline Signed MultBase(const Signed& a, const Signed& b) {
+constexpr Signed MultBase(const Signed& a, const Signed& b) {
   return Signed(a.Sign() == b.Sign(),
                 MultBase(a.GetUnsigned(), b.GetUnsigned()));
 }

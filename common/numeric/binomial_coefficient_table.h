@@ -10,12 +10,13 @@ class BinomialCoefficientTable {
   std::vector<std::vector<uint64_t>> nCr_table;
 
  public:
-  explicit BinomialCoefficientTable(uint64_t _max_value = (1ull << 62))
+  constexpr explicit BinomialCoefficientTable(uint64_t _max_value = (1ull
+                                                                     << 62))
       : max_value(_max_value) {}
 
-  uint64_t MaxValue() const { return max_value; }
+  constexpr uint64_t MaxValue() const { return max_value; }
 
-  void Adjust(size_t n) {
+  constexpr void Adjust(size_t n) {
     for (; nCr_table.size() <= n;) {
       std::vector<uint64_t> vnext(nCr_table.size() + 1, 1);
       for (size_t i = 1; i + 1 < vnext.size(); ++i)
@@ -25,7 +26,7 @@ class BinomialCoefficientTable {
     }
   }
 
-  uint64_t operator()(size_t n, size_t k) {
+  constexpr uint64_t operator()(size_t n, size_t k) {
     if (k > n) return 0;
     Adjust(n);
     return nCr_table[n][k];

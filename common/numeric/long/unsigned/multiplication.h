@@ -9,7 +9,7 @@
 
 namespace numeric {
 namespace nlong {
-inline Unsigned MultBase(const Unsigned& a, const Unsigned& b) {
+constexpr Unsigned MultBase(const Unsigned& a, const Unsigned& b) {
   Unsigned r;
   for (auto it = b.end(); it != b.begin();) {
     r.ShiftBlocksRight(1);
@@ -18,12 +18,12 @@ inline Unsigned MultBase(const Unsigned& a, const Unsigned& b) {
   return r;
 }
 
-inline Unsigned SqrBase(const Unsigned& a) { return MultBase(a, a); }
+constexpr Unsigned SqrBase(const Unsigned& a) { return MultBase(a, a); }
 
 namespace hidden {
 template <class TModular>
-inline std::vector<TModular> MultFFTConvert(const Unsigned& a) {
-  static const uint32_t mask16 = (1u << 16) - 1;
+constexpr std::vector<TModular> MultFFTConvert(const Unsigned& a) {
+  constexpr uint32_t mask16 = (1u << 16) - 1;
   std::vector<TModular> v;
   v.reserve(2 * a.Size());
   for (auto ai : a) {
@@ -37,7 +37,7 @@ inline std::vector<TModular> MultFFTConvert(const Unsigned& a) {
 // Max supported length for a is 2^24.
 template <unsigned maxn = (1u << 16)>
 inline Unsigned SqrFFT(const Unsigned& a) {
-  static const uint32_t mask16 = (1u << 16) - 1;
+  constexpr uint32_t mask16 = (1u << 16) - 1;
   using TModular1 = TModular_P32<2013265921>;
   using TModular2 = TModular_P32<1811939329>;
   using TFFT1 = modular::mstatic::FFT<TModular1>;
@@ -64,7 +64,7 @@ inline Unsigned SqrFFT(const Unsigned& a) {
 // Max supported length for (a*b) is 2^25.
 template <unsigned maxn = (1u << 16)>
 inline Unsigned MultFFT(const Unsigned& a, const Unsigned& b) {
-  static const uint32_t mask16 = (1u << 16) - 1;
+  constexpr uint32_t mask16 = (1u << 16) - 1;
   using TModular1 = TModular_P32<2013265921>;
   using TModular2 = TModular_P32<1811939329>;
   using TFFT1 = modular::mstatic::FFT<TModular1>;

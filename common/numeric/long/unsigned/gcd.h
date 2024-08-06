@@ -6,7 +6,7 @@
 
 namespace numeric {
 namespace nlong {
-inline Unsigned GCD(const Unsigned& x, const Unsigned& y) {
+constexpr Unsigned GCD(const Unsigned& x, const Unsigned& y) {
   if (x.Empty()) return y;
   if (y.Empty()) return x;
   Unsigned a(x), b(y);
@@ -20,7 +20,7 @@ inline Unsigned GCD(const Unsigned& x, const Unsigned& y) {
   return b << std::min(p2a, p2b);
 }
 
-inline Unsigned GCDSafe(const Unsigned& x, const Unsigned& y) {
+constexpr Unsigned GCDSafe(const Unsigned& x, const Unsigned& y) {
   return GCD(x, y);
 }
 }  // namespace nlong

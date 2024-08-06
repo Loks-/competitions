@@ -1,6 +1,7 @@
 #pragma once
 
 #include "common/numeric/long/unsigned.h"
+
 #include <iostream>
 #include <istream>
 #include <ostream>
@@ -8,7 +9,7 @@
 
 namespace numeric {
 namespace nlong {
-inline Unsigned UnsignedParse(const std::string& s, unsigned base = 10) {
+constexpr Unsigned UnsignedParse(const std::string& s, unsigned base = 10) {
   assert(base == 10);
   Unsigned lu;
   for (char c : s) {
@@ -32,7 +33,7 @@ inline Unsigned UnsignedReadBase(unsigned base = 10) {
   return UnsignedParse(s, base);
 }
 
-inline std::string ToString(const Unsigned& lu, unsigned base = 10) {
+constexpr std::string ToString(const Unsigned& lu, unsigned base = 10) {
   if (lu.Empty()) return "0";
   assert(base == 10);
   std::vector<unsigned> v = lu.ToVector(base);
