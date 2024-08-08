@@ -3,8 +3,8 @@
 namespace memory {
 class Node {
  public:
-  void ClearCreate() {}
-  void ClearRelease() {}
-  void ClearReuse() {}
+  constexpr void ClearCreate() {}
+  constexpr void ClearRelease() {}
+  constexpr void ClearReuse() {}
 };
 }  // namespace memory

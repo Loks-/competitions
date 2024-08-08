@@ -5,15 +5,15 @@
 namespace geometry {
 namespace kdtree {
 namespace base {
-template <class TTValue>
-constexpr bool Under(const geometry::d2::Point<TTValue>& l,
-                     const geometry::d2::Point<TTValue>& r) {
+template <class T>
+constexpr bool Under(const geometry::d2::Point<T>& l,
+                     const geometry::d2::Point<T>& r) {
   return (l.x <= r.x) && (l.y <= r.y);
 }
 
-template <class TTValue>
-constexpr bool StrictUnder(const geometry::d2::Point<TTValue>& l,
-                           const geometry::d2::Point<TTValue>& r) {
+template <class T>
+constexpr bool StrictUnder(const geometry::d2::Point<T>& l,
+                           const geometry::d2::Point<T>& r) {
   return (l.x < r.x) && (l.y < r.y);
 }
 }  // namespace base

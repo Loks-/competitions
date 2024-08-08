@@ -11,14 +11,12 @@
 namespace geometry {
 namespace kdtree {
 namespace base {
-template <unsigned _dim, class TTPoint, class TTLData, class TTIData,
+template <unsigned dim, class TTPoint, class TTLData, class TTIData,
           class TTInfo, class TTAction>
 class Tree : protected memory::NodesManager<
                  base::Node<typename TTPoint::TType, TTLData, TTIData, TTInfo,
                             TTAction, true, false>> {
  public:
-  static const unsigned dim = _dim;
-
   using TPoint = TTPoint;
   using TValue = typename TPoint::TType;
   using TLData = TTLData;
@@ -28,12 +26,12 @@ class Tree : protected memory::NodesManager<
   using TNode = base::Node<TValue, TLData, TIData, TInfo, TAction, true, false>;
   using TNodesManager = memory::NodesManager<TNode>;
 
- public:
+ protected:
   TPoint sb, se;
   TNode* root = nullptr;
 
  protected:
-  void ReleaseSubtree(TNode* p) {
+  constexpr void ReleaseSubtree(TNode* p) {
     if (p) {
       ReleaseSubtree(p->l);
       ReleaseSubtree(p->r);
@@ -42,12 +40,13 @@ class Tree : protected memory::NodesManager<
   }
 
  public:
-  void Clear() {
+  constexpr void Clear() {
     ReleaseSubtree(root);
     root = nullptr;
   }
 
-  void Init(const TPoint& pb, const TPoint& pe, const TValue& v = TValue()) {
+  constexpr void Init(const TPoint& pb, const TPoint& pe,
+                      const TValue& v = TValue()) {
     Clear();
     assert(base::StrictUnder(pb, pe));
     sb = pb;
@@ -55,16 +54,21 @@ class Tree : protected memory::NodesManager<
     root = New(v, pb, pe);
   }
 
-  TNode* New() { return TNodesManager::New(); }
+  constexpr TNode* Root() { return root; }
 
-  TNode* New(const TLData& ldata, const TPoint& pb, const TPoint& pe) {
+  constexpr const TNode* Root() const { return root; }
+
+  constexpr TNode* New() { return TNodesManager::New(); }
+
+  constexpr TNode* New(const TLData& ldata, const TPoint& pb,
+                       const TPoint& pe) {
     auto p = New();
     p->ldata = ldata;
     p->UpdateLeafInfo(pb, pe);
     return p;
   }
 
-  bool PossibleToSplit(const TPoint& pb, const TPoint& pe) {
+  constexpr bool PossibleToSplit(const TPoint& pb, const TPoint& pe) {
     for (unsigned i = 0; i < dim; ++i) {
       if (pe[i] > pb[i] + 1) return true;
     }
@@ -72,8 +76,8 @@ class Tree : protected memory::NodesManager<
   }
 
  protected:
-  void SplitNodeI(TNode* p, const TPoint& pb, const TPoint& pe,
-                  unsigned split_dim, const TValue& split_value) {
+  constexpr void SplitNodeI(TNode* p, const TPoint& pb, const TPoint& pe,
+                            unsigned split_dim, const TValue& split_value) {
     assert(p->IsLeaf());
     p->ApplyAction();
     p->SetL(New(p->ldata, pb, base::DSet(split_dim, pe, split_value)));
@@ -83,7 +87,7 @@ class Tree : protected memory::NodesManager<
   }
 
  public:
-  void SplitNodeHLD(TNode* p, const TPoint& pb, const TPoint& pe) {
+  constexpr void SplitNodeHLD(TNode* p, const TPoint& pb, const TPoint& pe) {
     assert(p->IsLeaf());
     p->ApplyAction();
     unsigned d = dim;
@@ -96,26 +100,26 @@ class Tree : protected memory::NodesManager<
       }
     }
     assert(d < dim);
-    auto v = (pb[d] + pe[d]) / 2;
+    const auto v = (pb[d] + pe[d]) / 2;
     SplitNodeI(p, pb, pe, d, v);
   }
 
-  void SplitNodeHLD(TNode* p) {
+  constexpr void SplitNodeHLD(TNode* p) {
     static_assert(TIData::support_box, "IData should contain box.");
     SplitNodeHLD(p, p->idata.b, p->idata.e);
   }
 
-  static TLData Get(TNode* p, const TPoint& pp) {
+  static constexpr TLData Get(TNode* p, const TPoint& pp) {
     for (p->ApplyAction(); !p->IsLeaf(); p->ApplyAction())
       p = (pp[p->split_dim] < p->split_value) ? p->l : p->r;
     return p->ldata;
   }
 
-  TLData Get(const TPoint& pp) { return Get(root, pp); }
+  constexpr TLData Get(const TPoint& pp) { return Get(root, pp); }
 
  protected:
-  void SetRIReplace(TNode* p, const TPoint& pb, const TPoint& pe,
-                    const TLData& ldata) {
+  constexpr void SetRIReplace(TNode* p, const TPoint& pb, const TPoint& pe,
+                              const TLData& ldata) {
     auto pp = p->p;
     auto pnew = New(ldata, pb, pe);
     if (!pp) {
@@ -133,13 +137,13 @@ class Tree : protected memory::NodesManager<
   // Current version going to the leaf unless first node is already inside.
   // It's possible to stop earlier (check before going to both subtrees).
   // SetRI with dd is good example how to avoid unnecessary checks.
-  static TInfo GetInfoI(TNode* p, TPoint rb, TPoint re, const TPoint& pb,
-                        const TPoint& pe) {
+  static constexpr TInfo GetInfoI(TNode* p, TPoint rb, TPoint re,
+                                  const TPoint& pb, const TPoint& pe) {
     p->ApplyAction();
     if (base::Under(pb, rb) && base::Under(re, pe)) return p->info;
     TInfo r;
     for (; !p->IsLeaf(); p->ApplyAction()) {
-      unsigned d = p->split_dim;
+      const unsigned d = p->split_dim;
       const TValue& v = p->split_value;
       if (pb[d] >= v) {
         p = p->r;
@@ -158,12 +162,12 @@ class Tree : protected memory::NodesManager<
   }
 
  public:
-  TInfo GetInfo(const TPoint& pb, const TPoint& pe) {
+  constexpr TInfo GetInfo(const TPoint& pb, const TPoint& pe) {
     if (!base::StrictUnder(pb, pe)) return {};
     return GetInfoI(root, sb, se, pb, pe);
   }
 
-  TInfo GetInfo(const TPoint& pe) { return GetInfo(sb, pe); }
+  constexpr TInfo GetInfo(const TPoint& pe) { return GetInfo(sb, pe); }
 };
 }  // namespace base
 }  // namespace kdtree

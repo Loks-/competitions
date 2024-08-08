@@ -54,7 +54,7 @@ int main_2122__cc_isp_box() {
     }
     int64_t r = 0;
     queue<TNode*> q;
-    for (q.push(tree.root); !q.empty(); q.pop()) {
+    for (q.push(tree.Root()); !q.empty(); q.pop()) {
       auto p = q.front();
       if (p->IsLeaf()) {
         auto b = p->idata.b, e = p->idata.e;

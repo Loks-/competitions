@@ -56,7 +56,7 @@ int main_2122() {
     for (auto& s : vi) tree.Set(s.p1, s.p2, s.v);
     int64_t r = 0;
     queue<QNode> q;
-    for (q.push({tree.root, tree.sb, tree.se}); !q.empty(); q.pop()) {
+    for (q.push({tree.Root(), box.p1, box.p2}); !q.empty(); q.pop()) {
       auto p = q.front();
       if (p.p->IsLeaf()) {
         int64_t rp = p.p->ldata;

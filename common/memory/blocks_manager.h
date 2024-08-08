@@ -22,52 +22,53 @@ class BlocksManager {
   std::stack<TNode*> released_blocks;
 
  public:
-  explicit BlocksManager(size_t block_size_) {
+  constexpr explicit BlocksManager(size_t block_size_) {
     Clear();
     InitBlockSize(block_size_);
   }
 
-  BlocksManager() : BlocksManager(1) {}
+  constexpr BlocksManager() : BlocksManager(1) {}
 
-  void Clear() {
+  constexpr void Clear() {
     nodes.clear();
     total_blocks = used_blocks = 0;
     current_index1 = current_index2 = 0;
     std::stack<TNode*>().swap(released_blocks);
   }
 
-  void InitBlockSize(size_t new_block_size) {
+  constexpr void InitBlockSize(size_t new_block_size) {
     if (new_block_size == block_size) return;
     Clear();
     block_size = new_block_size;
   }
 
-  void ReserveBlocks(size_t new_max_blocks) {
+  constexpr void ReserveBlocks(size_t new_max_blocks) {
     if (new_max_blocks > total_blocks) {
       nodes.resize(nodes.size() + 1);
-      auto new_blocks = std::max(new_max_blocks - total_blocks, total_blocks);
+      const auto new_blocks =
+          std::max(new_max_blocks - total_blocks, total_blocks);
       nodes.back().resize(block_size * new_blocks);
       total_blocks += new_blocks;
     }
   }
 
-  void ReserveNodes(size_t new_max_nodes) {
+  constexpr void ReserveNodes(size_t new_max_nodes) {
     ReserveBlocks(new_max_nodes / block_size + 1);
   }
 
-  void ReserveAdditionalBlocks(size_t new_blocks) {
+  constexpr void ReserveAdditionalBlocks(size_t new_blocks) {
     if (ReservedBlocks() < new_blocks) {
       ReserveBlocks(UsedBlocks() + new_blocks);
     }
   }
 
-  void ReserveAdditionalNodes(size_t new_nodes) {
+  constexpr void ReserveAdditionalNodes(size_t new_nodes) {
     if (ReservedNodes() < new_nodes) {
       ReserveNodes(UsedNodes() + new_nodes);
     }
   }
 
-  TNode* NewBlock() {
+  constexpr TNode* NewBlock() {
     if (!released_blocks.empty()) {
       TNode* p = released_blocks.top();
       released_blocks.pop();
@@ -86,17 +87,25 @@ class BlocksManager {
     }
   }
 
-  void ReleaseBlock(TNode* p) {
+  constexpr void ReleaseBlock(TNode* p) {
     released_blocks.push(p);
     --used_blocks;
   }
 
-  size_t SizeBlocks() const { return total_blocks; }
-  size_t UsedBlocks() const { return used_blocks; }
-  size_t ReservedBlocks() const { return SizeBlocks() - UsedBlocks(); }
+  constexpr size_t SizeBlocks() const { return total_blocks; }
 
-  size_t SizeNodes() const { return block_size * SizeBlocks(); }
-  size_t UsedNodes() const { return block_size * UsedBlocks(); }
-  size_t ReservedNodes() const { return block_size * ReservedBlocks(); }
+  constexpr size_t UsedBlocks() const { return used_blocks; }
+
+  constexpr size_t ReservedBlocks() const {
+    return SizeBlocks() - UsedBlocks();
+  }
+
+  constexpr size_t SizeNodes() const { return block_size * SizeBlocks(); }
+
+  constexpr size_t UsedNodes() const { return block_size * UsedBlocks(); }
+
+  constexpr size_t ReservedNodes() const {
+    return block_size * ReservedBlocks();
+  }
 };
 }  // namespace memory

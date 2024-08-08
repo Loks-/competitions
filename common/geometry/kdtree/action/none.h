@@ -5,16 +5,21 @@ namespace kdtree {
 namespace action {
 class None {
  public:
-  using TSelf = None;
-  static const bool modify_data = false;
-  static const bool modify_tree = false;
+  static constexpr bool modify_data = false;
+  static constexpr bool modify_tree = false;
 
-  bool IsEmpty() const { return true; }
-  void Clear(){};
+  using TSelf = None;
+
+ public:
+  constexpr bool IsEmpty() const { return true; }
+
+  constexpr void Clear() {};
+
   template <class TNode, class TActionValue>
-  void Add(TNode*, const TActionValue&) {}
+  constexpr void Add(TNode*, const TActionValue&) {}
+
   template <class TNode>
-  void Apply(const TNode*) {}
+  constexpr void Apply(const TNode*) {}
 };
 }  // namespace action
 }  // namespace kdtree

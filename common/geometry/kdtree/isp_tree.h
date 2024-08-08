@@ -9,13 +9,11 @@
 namespace geometry {
 namespace kdtree {
 // Implicit k-d tree with plane split by half on the longest dimension.
-template <unsigned _dim, class TTPoint, class TTLData, class TTIData,
+template <unsigned dim, class TTPoint, class TTLData, class TTIData,
           class TTInfo, class TTAction>
 class ISPTree
-    : public base::Tree<_dim, TTPoint, TTLData, TTIData, TTInfo, TTAction> {
+    : public base::Tree<dim, TTPoint, TTLData, TTIData, TTInfo, TTAction> {
  public:
-  static const unsigned dim = _dim;
-
   using TPoint = TTPoint;
   using TValue = typename TPoint::TType;
   using TLData = TTLData;
@@ -24,7 +22,7 @@ class ISPTree
   using TNode = typename TBase::TNode;
 
  protected:
-  void SetI(const TPoint& pp, const TLData& ldata, TFakeFalse) {
+  constexpr void SetI(const TPoint& pp, const TLData& ldata, TFakeFalse) {
     auto p = TBase::root;
     auto pb = TBase::sb, pe = TBase::se;
     for (p->ApplyAction(); !p->IsLeaf(); p->ApplyAction()) {
@@ -52,7 +50,7 @@ class ISPTree
     info::UpdateNodeToRoot(p->p);
   }
 
-  void SetI(const TPoint& pp, const TLData& ldata, TFakeTrue) {
+  constexpr void SetI(const TPoint& pp, const TLData& ldata, TFakeTrue) {
     auto p = TBase::root;
     for (p->ApplyAction(); !p->IsLeaf(); p->ApplyAction())
       p = (pp[p->split_dim] < p->split_value) ? p->l : p->r;
@@ -67,20 +65,23 @@ class ISPTree
   }
 
  public:
-  void Set(const TPoint& pp, const TLData& ldata) {
+  constexpr void Set(const TPoint& pp, const TLData& ldata) {
     SetI(pp, ldata, TFakeBool<TIData::support_box>());
   }
 
-  void Add(const TPoint& pp, const TLData& ldata) { Set(pp, ldata + Get(pp)); }
+  constexpr void Add(const TPoint& pp, const TLData& ldata) {
+    Set(pp, ldata + Get(pp));
+  }
 
  protected:
-  void SetRIF(TNode* p, const TPoint& rb, const TPoint& re, const TPoint& pb,
-              const TPoint& pe, const TLData& ldata, unsigned dd) {
+  constexpr void SetRIF(TNode* p, const TPoint& rb, const TPoint& re,
+                        const TPoint& pb, const TPoint& pe, const TLData& ldata,
+                        unsigned dd) {
     p->ApplyAction();
     if (dd == 0) return TBase::SetRIReplace(p, pb, pe, ldata);
     if (p->IsLeaf() && (p->ldata == ldata)) return;  // No changes
     if (p->IsLeaf()) TBase::SplitNodeHLD(p, rb, re);
-    unsigned d = p->split_dim;
+    const unsigned d = p->split_dim;
     const TValue& v = p->split_value;
     if (pb[d] >= v) {
       SetRIF(p->r, base::DSet(d, rb, v), re, pb, pe, ldata,
@@ -97,13 +98,13 @@ class ISPTree
     p->UpdateInfo();
   }
 
-  void SetRIT(TNode* p, const TPoint& pb, const TPoint& pe, const TLData& ldata,
-              unsigned dd) {
+  constexpr void SetRIT(TNode* p, const TPoint& pb, const TPoint& pe,
+                        const TLData& ldata, unsigned dd) {
     p->ApplyAction();
     if (dd == 0) return TBase::SetRIReplace(p, pb, pe, ldata);
     if (p->IsLeaf() && (p->ldata == ldata)) return;  // No changes
     if (p->IsLeaf()) TBase::SplitNodeHLD(p);
-    unsigned d = p->split_dim;
+    const unsigned d = p->split_dim;
     const TValue& v = p->split_value;
     if (pb[d] >= v) {
       SetRIT(p->r, pb, pe, ldata, dd - ((pb[d] == v) ? 1u : 0u));
@@ -118,18 +119,18 @@ class ISPTree
     p->UpdateInfo();
   }
 
-  void SetRI(TNode* p, const TPoint& pb, const TPoint& pe, const TLData& ldata,
-             unsigned dd, TFakeFalse) {
+  constexpr void SetRI(TNode* p, const TPoint& pb, const TPoint& pe,
+                       const TLData& ldata, unsigned dd, TFakeFalse) {
     SetRIF(p, TBase::sb, TBase::se, pb, pe, ldata, dd);
   }
 
-  void SetRI(TNode* p, const TPoint& pb, const TPoint& pe, const TLData& ldata,
-             unsigned dd, TFakeTrue) {
+  constexpr void SetRI(TNode* p, const TPoint& pb, const TPoint& pe,
+                       const TLData& ldata, unsigned dd, TFakeTrue) {
     SetRIT(p, pb, pe, ldata, dd);
   }
 
  public:
-  void Set(const TPoint& pb, const TPoint& pe, const TLData& ldata) {
+  constexpr void Set(const TPoint& pb, const TPoint& pe, const TLData& ldata) {
     unsigned dd = 0;
     for (unsigned i = 0; i < dim; ++i)
       dd += ((TBase::sb[i] == pb[i]) ? 0u : 1u) +

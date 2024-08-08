@@ -8,23 +8,25 @@ namespace info {
 template <class TSumType, class TInfo>
 class Sum : public TInfo {
  public:
+  static constexpr bool is_none = false;
+  static constexpr bool use_data = true;
+
   using TBase = TInfo;
   using TSelf = Sum<TSumType, TInfo>;
 
-  static const bool is_none = false;
-  static const bool use_data = true;
-
+ public:
   TSumType sum;
 
-  Sum() : sum() {}
+ public:
+  constexpr Sum() : sum() {}
 
-  void Merge(const TSelf& r) {
+  constexpr void Merge(const TSelf& r) {
     TBase::Merge(r);
     sum += r.sum;
   }
 
   template <class TNode>
-  void Update(const TNode* node) {
+  constexpr void Update(const TNode* node) {
     assert(!node->IsLeaf());
     static_assert(!TNode::ldata_in_inode);
     TBase::Update(node);
@@ -34,7 +36,8 @@ class Sum : public TInfo {
   }
 
   template <class TNode, class TPoint>
-  void UpdateLeaf(const TNode* node, const TPoint& pb, const TPoint& pe) {
+  constexpr void UpdateLeaf(const TNode* node, const TPoint& pb,
+                            const TPoint& pe) {
     TBase::UpdateLeaf(node, pb, pe);
     sum = node->ldata * base::Volume(pb, pe);
   }

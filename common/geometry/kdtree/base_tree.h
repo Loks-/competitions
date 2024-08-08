@@ -12,13 +12,11 @@
 namespace geometry {
 namespace kdtree {
 // Base k-d tree with dynamic split when requested.
-template <unsigned _dim, class TTPoint, class TTLData, class TTIData,
+template <unsigned dim, class TTPoint, class TTLData, class TTIData,
           class TTInfo, class TTAction>
 class BaseTree
-    : public base::Tree<_dim, TTPoint, TTLData, TTIData, TTInfo, TTAction> {
+    : public base::Tree<dim, TTPoint, TTLData, TTIData, TTInfo, TTAction> {
  public:
-  static const unsigned dim = _dim;
-
   using TPoint = TTPoint;
   using TValue = typename TPoint::TType;
   using TLData = TTLData;
@@ -28,17 +26,17 @@ class BaseTree
 
  public:
   // Split node with coordinate from ib/ie which is closest to half by volume.
-  void SplitNode(TNode* p, const TPoint& pb, const TPoint& pe, const TPoint& ib,
-                 const TPoint& ie) {
+  constexpr void SplitNode(TNode* p, const TPoint& pb, const TPoint& pe,
+                           const TPoint& ib, const TPoint& ie) {
     assert(p->IsLeaf());
     p->ApplyAction();
     double best_split_ratio = 0.;
     unsigned d = dim;
     TValue sv = TValue(0);
     for (unsigned i = 0; i < dim; ++i) {
-      for (auto& x : {ib[i], ie[i]}) {
-        auto ls = std::min(x - pb[i], pe[i] - x), l = pe[i] - pb[i];
-        double ds = double(ls) / double(l);
+      for (const auto& x : {ib[i], ie[i]}) {
+        const auto ls = std::min(x - pb[i], pe[i] - x), l = pe[i] - pb[i];
+        const double ds = double(ls) / double(l);
         if (best_split_ratio < ds) {
           best_split_ratio = ds;
           d = i;
@@ -50,14 +48,14 @@ class BaseTree
     TBase::SplitNodeI(p, pb, pe, d, sv);
   }
 
-  void SplitNode(TNode* p, const TPoint& ib, const TPoint& ie) {
+  constexpr void SplitNode(TNode* p, const TPoint& ib, const TPoint& ie) {
     static_assert(TIData::support_box, "IData should contain box.");
     SplitNode(p, p->idata.b, p->idata.e, ib, ie);
   }
 
  protected:
-  void SetI(const TPoint& pp, const TLData& ldata, TFakeFalse) {
-    auto pp1 = base::Shift(pp, TValue(1));
+  constexpr void SetI(const TPoint& pp, const TLData& ldata, TFakeFalse) {
+    const auto pp1 = base::Shift(pp, TValue(1));
     auto p = TBase::root;
     auto pb = TBase::sb, pe = TBase::se;
     for (p->ApplyAction(); !p->IsLeaf(); p->ApplyAction()) {
@@ -85,8 +83,8 @@ class BaseTree
     info::UpdateNodeToRoot(p->p);
   }
 
-  void SetI(const TPoint& pp, const TLData& ldata, TFakeTrue) {
-    auto pp1 = base::Shift(pp, TValue(1));
+  constexpr void SetI(const TPoint& pp, const TLData& ldata, TFakeTrue) {
+    const auto pp1 = base::Shift(pp, TValue(1));
     auto p = TBase::root;
     for (p->ApplyAction(); !p->IsLeaf(); p->ApplyAction())
       p = (pp[p->split_dim] < p->split_value) ? p->l : p->r;
@@ -101,18 +99,19 @@ class BaseTree
   }
 
  public:
-  void Set(const TPoint& pp, const TLData& ldata) {
+  constexpr void Set(const TPoint& pp, const TLData& ldata) {
     SetI(pp, ldata, TFakeBool<TIData::support_box>());
   }
 
  protected:
-  void SetRIF(TNode* p, const TPoint& rb, const TPoint& re, const TPoint& pb,
-              const TPoint& pe, const TLData& ldata, unsigned dd) {
+  constexpr void SetRIF(TNode* p, const TPoint& rb, const TPoint& re,
+                        const TPoint& pb, const TPoint& pe, const TLData& ldata,
+                        unsigned dd) {
     p->ApplyAction();
     if (dd == 0) return TBase::SetRIReplace(p, pb, pe, ldata);
     if (p->IsLeaf() && (p->ldata == ldata)) return;  // No changes
     if (p->IsLeaf()) SplitNode(p, rb, re, pb, pe);
-    unsigned d = p->split_dim;
+    const unsigned d = p->split_dim;
     const TValue& v = p->split_value;
     if (pb[d] >= v) {
       SetRIF(p->r, base::DSet(d, rb, v), re, pb, pe, ldata,
@@ -129,13 +128,13 @@ class BaseTree
     p->UpdateInfo();
   }
 
-  void SetRIT(TNode* p, const TPoint& pb, const TPoint& pe, const TLData& ldata,
-              unsigned dd) {
+  constexpr void SetRIT(TNode* p, const TPoint& pb, const TPoint& pe,
+                        const TLData& ldata, unsigned dd) {
     p->ApplyAction();
     if (dd == 0) return TBase::SetRIReplace(p, pb, pe, ldata);
     if (p->IsLeaf() && (p->ldata == ldata)) return;  // No changes
     if (p->IsLeaf()) SplitNode(p, pb, pe);
-    unsigned d = p->split_dim;
+    const unsigned d = p->split_dim;
     const TValue& v = p->split_value;
     if (pb[d] >= v) {
       SetRIT(p->r, pb, pe, ldata, dd - ((pb[d] == v) ? 1u : 0u));
@@ -150,18 +149,18 @@ class BaseTree
     p->UpdateInfo();
   }
 
-  void SetRI(TNode* p, const TPoint& pb, const TPoint& pe, const TLData& ldata,
-             unsigned dd, TFakeFalse) {
+  constexpr void SetRI(TNode* p, const TPoint& pb, const TPoint& pe,
+                       const TLData& ldata, unsigned dd, TFakeFalse) {
     SetRIF(p, TBase::sb, TBase::se, pb, pe, ldata, dd);
   }
 
-  void SetRI(TNode* p, const TPoint& pb, const TPoint& pe, const TLData& ldata,
-             unsigned dd, TFakeTrue) {
+  constexpr void SetRI(TNode* p, const TPoint& pb, const TPoint& pe,
+                       const TLData& ldata, unsigned dd, TFakeTrue) {
     SetRIT(p, pb, pe, ldata, dd);
   }
 
  public:
-  void Set(const TPoint& pb, const TPoint& pe, const TLData& ldata) {
+  constexpr void Set(const TPoint& pb, const TPoint& pe, const TLData& ldata) {
     unsigned dd = 0;
     for (unsigned i = 0; i < dim; ++i)
       dd += ((TBase::sb[i] == pb[i]) ? 0u : 1u) +

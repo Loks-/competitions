@@ -6,7 +6,7 @@ namespace geometry {
 namespace kdtree {
 namespace info {
 template <class TNode>
-inline void UpdateNodeToRoot(TNode* node) {
+constexpr void UpdateNodeToRoot(TNode* node) {
   bst::info::UpdateNodeToRoot(node);
 }
 }  // namespace info
