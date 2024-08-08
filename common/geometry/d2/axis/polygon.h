@@ -35,7 +35,7 @@ class Polygon : public geometry::d2::Polygon<T> {
     nvector::UniqueUnsorted(vx);
     vvy.resize(vx.size());
     for (unsigned i = 0; i < TBase::Size(); ++i) {
-      auto p0 = TBase::v[i], p1 = TBase::MGet(i + 1);
+      const auto p0 = TBase::v[i], p1 = TBase::MGet(i + 1);
       assert((i & 1) ? p0.x == p1.x : p0.y == p1.y);
       if (p0.x != p1.x) {
         auto i0 = std::lower_bound(vx.begin(), vx.end(), p0.x) - vx.begin();
@@ -48,13 +48,13 @@ class Polygon : public geometry::d2::Polygon<T> {
   }
 
   constexpr bool Inside(const Point<T>& p) const {
-    auto itx = std::lower_bound(vx.begin(), vx.end(), p.x);
+    const auto itx = std::lower_bound(vx.begin(), vx.end(), p.x);
     if (itx == vx.end()) return false;
     for (unsigned i = 0, j = itx - vx.begin(); i < 2; ++i) {
       if ((i == 0) && (p.x < vx[j])) continue;
       if ((i == 1) && (j == 0)) continue;
       const auto& vy = vvy[j - i];
-      auto ity = std::lower_bound(vy.begin(), vy.end(), p.y);
+      const auto ity = std::lower_bound(vy.begin(), vy.end(), p.y);
       if ((ity != vy.end()) && ((p.y == *ity) || ((ity - vy.begin()) & 1)))
         return true;
     }

@@ -14,8 +14,13 @@ class Triangle {
  public:
   using TPoint = Point<T>;
 
+ protected:
+  static constexpr T zero = T(0);
+
+ public:
   TPoint a, b, c;
 
+ public:
   constexpr Triangle(const TPoint& _a, const TPoint& _b, const TPoint& _c)
       : a(_a), b(_b), c(_c) {}
 
@@ -27,20 +32,19 @@ class Triangle {
 
   constexpr T Area() const { return DoubleArea() / 2; }
 
-  constexpr bool Empty() const { return SignedDoubleArea() == T(0); }
+  constexpr bool Empty() const { return SignedDoubleArea() == zero; }
 
-  constexpr bool Clockwise() const { return SignedDoubleArea() < T(0); }
+  constexpr bool Clockwise() const { return SignedDoubleArea() < zero; }
 
   constexpr bool Inside(const TPoint& p) const {
-    T z(0), d = SignedDoubleArea();
-    if (d < z) {
-      return ((p - a) % (p - c) >= z) && ((p - c) % (p - b) >= z) &&
-             ((p - b) % (p - a) >= z);
-    } else if (z < d) {
-      return ((p - a) % (p - b) >= z) && ((p - b) % (p - c) >= z) &&
-             ((p - c) % (p - a) >= z);
+    const T d = SignedDoubleArea();
+    const auto pa = p - a, pb = p - b, pc = p - c;
+    if (d < zero) {
+      return (pa % pc >= zero) && (pc % pb >= zero) && (pb % pa >= zero);
+    } else if (zero < d) {
+      return (pa % pb >= zero) && (pb % pc >= zero) && (pc % pa >= zero);
     } else {
-      if ((p - b) % (p - c) != z) return false;
+      if (pb % pc != zero) return false;
       return Box(std::vector<TPoint>{a, b, c}).Inside(p);
     }
   }

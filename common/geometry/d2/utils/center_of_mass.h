@@ -17,7 +17,7 @@ constexpr geometry::d2::Vector<T> CenterOfMass(
 template <class T>
 constexpr geometry::d2::Point<T> CenterOfMass(
     const std::vector<geometry::d2::Point<T>>& points) {
-  unsigned n = points.size();
+  const unsigned n = points.size();
   if (n == 0) return {};
   T sx(0), sy(0);
   for (auto& p : points) {

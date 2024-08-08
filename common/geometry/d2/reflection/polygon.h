@@ -11,16 +11,16 @@ namespace reflection {
 // Assume no angles are equal to pi.
 template <class T>
 constexpr bool Symmetric(const Polygon<T>& plgn) {
-  unsigned s = plgn.Size();
+  const unsigned s = plgn.Size();
   std::vector<Point<T>> vnew;
   for (unsigned i = 0; i < s; ++i) {
     auto &p1 = plgn[i], &p2 = plgn.MGet(i + 1);
     vnew.push_back({p1.x + p1.x, p1.y + p1.y});
     vnew.push_back({p1.x + p2.x, p1.y + p2.y});
   }
-  Polygon<T> pnew(vnew, true);
+  const Polygon<T> pnew(vnew, true);
   for (unsigned i = 0; i < s; ++i) {
-    LinePV<T> l(pnew[i], pnew[i + s]);
+    const LinePV<T> l(pnew[i], pnew[i + s]);
     bool good = true;
     for (unsigned j = 1; j < s; ++j) {
       if (!Reflected(l, pnew[i + j], pnew.MGet(i + 2 * s - j))) {
@@ -37,7 +37,7 @@ constexpr bool Symmetric(const Polygon<T>& plgn) {
 // All coordinates should be even if T is integer.
 template <class T>
 constexpr LinePV<T> LineOfSymmetry(const Polygon<T>& plgn) {
-  unsigned s = plgn.Size();
+  const unsigned s = plgn.Size();
   std::vector<Point<T>> vnew;
   for (unsigned i = 0; i < s; ++i) {
     auto &p1 = plgn[i], &p2 = plgn.MGet(i + 1);
@@ -46,7 +46,7 @@ constexpr LinePV<T> LineOfSymmetry(const Polygon<T>& plgn) {
   }
   Polygon<T> pnew(vnew, true);
   for (unsigned i = 0; i < s; ++i) {
-    LinePV<T> l(pnew[i], pnew[i + s]);
+    const LinePV<T> l(pnew[i], pnew[i + s]);
     bool good = true;
     for (unsigned j = 1; j < s; ++j) {
       if (!Reflected(l, pnew[i + j], pnew.MGet(i + 2 * s - j))) {

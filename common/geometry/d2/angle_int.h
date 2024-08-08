@@ -12,6 +12,7 @@ class IAngle : public Angle<T, IAngle<T>> {
   using TSelf = IAngle<T>;
   using TBase = Angle<T, TSelf>;
 
+ public:
   constexpr IAngle() {}
 
   constexpr IAngle(const T& _dx, const T& _dy) : TBase(_dx, _dy) {
@@ -22,7 +23,7 @@ class IAngle : public Angle<T, IAngle<T>> {
 
   constexpr void Normalize() {
     assert(TBase::Valid());
-    T g = GCDSafe(TBase::dx, TBase::dy);
+    const T g = GCDSafe(TBase::dx, TBase::dy);
     TBase::dx /= g;
     TBase::dy /= g;
   }

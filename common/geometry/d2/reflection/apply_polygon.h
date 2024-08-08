@@ -11,7 +11,7 @@ namespace d2 {
 template <class T>
 constexpr Polygon<T> Apply(const Reflection<T>& r, const Polygon<T>& plgn) {
   std::vector<Point<T>> vp;
-  for (auto& p : plgn.v) vp.push_back(r(p));
+  for (auto& p : plgn.Vertices()) vp.push_back(r(p));
   return Polygon<T>(vp);
 }
 }  // namespace d2

@@ -13,11 +13,11 @@ namespace d2 {
 // border.
 // Return empty vector if plgn_large == plgn_small or subtraction is impossible.
 template <class T>
-inline std::vector<Polygon<T>> Subtraction(const Polygon<T>& plgn_large,
-                                           const Polygon<T>& plgn_small) {
+constexpr std::vector<Polygon<T>> Subtraction(const Polygon<T>& plgn_large,
+                                              const Polygon<T>& plgn_small) {
   if (plgn_large == plgn_small) return {};
   std::vector<location::Location> vl;
-  for (auto& p : plgn_small.v) {
+  for (auto& p : plgn_small.Vertices()) {
     vl.push_back(location::Locate(p, plgn_large));
     if (vl.back().type == location::Location::OUTSIDE) return {};
   }
@@ -27,8 +27,8 @@ inline std::vector<Polygon<T>> Subtraction(const Polygon<T>& plgn_large,
     if (vl[i].type == location::Location::INSIDE) continue;
     for (j = i + 1; vl[j % vl.size()].type == location::Location::INSIDE;) ++j;
     if (j == i + vl.size()) continue;
-    auto &p1 = plgn_small[i], &p2 = plgn_small.MGet(j);
-    auto &l1 = vl[i], &l2 = vl[j % vl.size()];
+    const auto &p1 = plgn_small[i], &p2 = plgn_small.MGet(j);
+    const auto &l1 = vl[i], &l2 = vl[j % vl.size()];
     unsigned l2a = (l2.type == location::Location::VERTEX)
                        ? (l2.index == 0) ? plgn_large.Size() - 1 : l2.index - 1
                        : l2.index;

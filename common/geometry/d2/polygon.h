@@ -19,8 +19,10 @@ class Polygon {
   using TPoint = Point<T>;
   using TSelf = Polygon<T>;
 
+ protected:
   std::vector<TPoint> v;
 
+ public:
   constexpr Polygon() {}
 
   constexpr explicit Polygon(const std::vector<TPoint>& vp) : v(vp) {
@@ -44,17 +46,21 @@ class Polygon {
   }
 
   constexpr bool operator==(const TSelf& r) const { return v == r.v; }
+
   constexpr bool operator!=(const TSelf& r) const { return v != r.v; }
 
   constexpr unsigned Size() const { return v.size(); }
 
+  constexpr const std::vector<TPoint>& Vertices() const { return v; }
+
   constexpr const TPoint& operator[](unsigned i) const { return v[i]; }
+
   constexpr const TPoint& MGet(unsigned i) const { return v[i % v.size()]; }
 
   constexpr T DoubleArea() const {
     if (Size() < 3) return {};
     auto a = T();
-    auto& p0 = v[0];
+    const auto& p0 = v[0];
     for (unsigned i = 2; i < v.size(); ++i) a += (v[i - 1] - p0) % (v[i] - p0);
     return a;
   }

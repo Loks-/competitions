@@ -17,8 +17,11 @@ template <class T, unsigned size>
 class PolygonStaticSize {
  public:
   using TPoint = Point<T>;
+
+ protected:
   std::array<TPoint, size> v;
 
+ public:
   constexpr explicit PolygonStaticSize(const std::array<TPoint, size>& vp)
       : v(vp) {
     Normalize();
@@ -46,9 +49,12 @@ class PolygonStaticSize {
       std::reverse(v.begin() + 1, v.end());
   }
 
-  consteval unsigned Size() const { return size; }
+  static consteval unsigned Size() { return size; }
+
+  constexpr const std::array<TPoint, size>& Vertices() const { return v; }
 
   constexpr const TPoint& operator[](unsigned i) const { return v[i]; }
+
   constexpr const TPoint& MGet(unsigned i) const { return v[i % size]; }
 };
 }  // namespace d2

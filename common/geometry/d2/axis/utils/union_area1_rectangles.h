@@ -36,7 +36,7 @@ inline std::pair<T, T> UnionArea1(
       s2 += (p.first - x) * su.Length2Plus();
       x = p.first;
     }
-    auto& r = v[p.second / 2];
+    const auto& r = v[p.second / 2];
     if (p.second & 1) {
       su.Remove(r.p1.y, r.p2.y);
     } else {

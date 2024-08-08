@@ -32,7 +32,7 @@ inline T UnionArea(const std::vector<geometry::d2::axis::Rectangle<T>>& v) {
       s += (p.first - x) * su.Length();
       x = p.first;
     }
-    auto& r = v[p.second / 2];
+    const auto& r = v[p.second / 2];
     if (p.second & 1) {
       su.Remove(r.p1.y, r.p2.y);
     } else {

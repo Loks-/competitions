@@ -11,23 +11,29 @@ namespace d2 {
 template <class T>
 class LinePN {
  public:
-  Point<T> p;
-  Vector<T> n;
+  using TPoint = Point<T>;
+  using TVector = Vector<T>;
+  using TSelf = LinePN<T>;
 
+ public:
+  TPoint p;
+  TVector n;
+
+ public:
   constexpr LinePN() {}
 
-  constexpr LinePN(const Point<T>& _p, const Vector<T>& _n) : p(_p), n(_n) {}
+  constexpr LinePN(const TPoint& _p, const TVector& _n) : p(_p), n(_n) {}
 
-  constexpr LinePN(const Point<T>& p1, const Point<T>& p2) : p(p1) {
-    auto v = p2 - p1;
-    n = Vector<T>(-v.dy, v.dx);
+  constexpr LinePN(const TPoint& p1, const TPoint& p2) : p(p1) {
+    const auto v = p2 - p1;
+    n = TVector(-v.dy, v.dx);
   }
 
   constexpr bool Valid() const { return !n.Empty(); }
 
-  constexpr const Vector<T>& Normal() const { return n; }
+  constexpr const TVector& Normal() const { return n; }
 
-  constexpr T operator()(const Point<T>& pp) const { return n * (pp - p); }
+  constexpr T operator()(const TPoint& pp) const { return n * (pp - p); }
 
   constexpr void SetOppositeNormal() { n = -n; }
 

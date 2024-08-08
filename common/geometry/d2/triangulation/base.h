@@ -30,22 +30,28 @@ class Base {
   THull hull;
 
  public:
-  Base() {}
-  Base(const TSet& s) { Build(s); }
+  constexpr Base() {}
 
-  Base(const TSelf& t1, const TSelf& t2, const TSegment& s) {
+  constexpr explicit Base(const TSet& s) { Build(s); }
+
+  constexpr Base(const TSelf& t1, const TSelf& t2, const TSegment& s) {
     Build(t1, t2, s);
   }
 
-  void Clear() {
+  constexpr void Clear() {
     segments.clear();
     triangles.clear();
   }
 
-  const std::vector<TSegment>& GetSegments() const { return segments; }
-  const std::vector<TTriangle>& GetTrianlges() const { return triangles; }
+  constexpr const std::vector<TSegment>& GetSegments() const {
+    return segments;
+  }
 
-  void Build(const TSet& s) {
+  constexpr const std::vector<TTriangle>& GetTrianlges() const {
+    return triangles;
+  }
+
+  constexpr void Build(const TSet& s) {
     Clear();
     std::vector<Point<T>> v(s), vh(v.size());
     unsigned ilowest = 0;
@@ -79,7 +85,8 @@ class Base {
 
   // Merge 2 triangulations to one.
   // Triangulations should be on different sides from common segment
-  void Build(const TSelf& t1, const TSelf& t2, const TSegment& common_segment) {
+  constexpr void Build(const TSelf& t1, const TSelf& t2,
+                       const TSegment& common_segment) {
     Clear();
     if (t2.triangles.empty()) {
       *this = t1;
@@ -106,7 +113,7 @@ class Base {
     }
     assert(j1 < t2.hull.Size());
     assert(t2.hull.MGet(j1 + 1) == s1.p1);
-    TSegment s2(s1.p2, s1.p1);
+    const TSegment s2(s1.p2, s1.p1);
 
     // Copy segments and triangles
     for (auto& ss : t1.segments) segments.push_back(ss);
@@ -118,13 +125,13 @@ class Base {
     for (auto& t : t2.triangles) triangles.push_back(t);
 
     // Convex hull
-    auto vt1 = t1.hull.v, vt2 = t2.hull.v;
+    auto vt1 = t1.hull.Vertices(), vt2 = t2.hull.Vertices();
     nvector::RotateLeft(vt1, i1 + 1);
     nvector::RotateLeft(vt2, j1);
     vt1.insert(vt1.end(), vt2.begin() + 2, vt2.end());
     for (auto p : {s1.p2, s1.p1}) {
       if (vt1[0] != p) {
-        auto it = std::find(vt1.begin() + 1, vt1.end(), p);
+        const auto it = std::find(vt1.begin() + 1, vt1.end(), p);
         assert(it != vt1.end());
         nvector::RotateLeft(vt1, it - vt1.begin());
       }

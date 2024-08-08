@@ -11,31 +11,36 @@ namespace d2 {
 template <class T>
 class LinePV {
  public:
-  Point<T> p;
-  Vector<T> v;
+  using TPoint = Point<T>;
+  using TVector = Vector<T>;
+  using TSelf = LinePV<T>;
 
+ public:
+  TPoint p;
+  TVector v;
+
+ public:
   constexpr LinePV() {}
 
-  constexpr LinePV(const Point<T>& _p, const Vector<T>& _v) : p(_p), v(_v) {}
+  constexpr LinePV(const TPoint& _p, const TVector& _v) : p(_p), v(_v) {}
 
-  constexpr LinePV(const Point<T>& p1, const Point<T>& p2)
-      : p(p1), v(p2 - p1) {}
+  constexpr LinePV(const TPoint& p1, const TPoint& p2) : p(p1), v(p2 - p1) {}
 
   constexpr bool Valid() const { return !v.Empty(); }
 
-  constexpr Vector<T> Normal() const { return v.RotateHalfPi(); }
+  constexpr TVector Normal() const { return v.RotateHalfPi(); }
 
-  constexpr T operator()(const Point<T>& pp) const { return v % (pp - p); }
+  constexpr T operator()(const TPoint& pp) const { return v % (pp - p); }
 
   constexpr void SetOppositeNormal() { v = -v; }
 
   constexpr void Normalize() { v.Normalize(); }
 
-  constexpr bool operator==(const LinePV<T>& r) const {
+  constexpr bool operator==(const TSelf& r) const {
     return (r(p) == 0) && ((v % r.v) == 0);
   }
 
-  constexpr bool operator!=(const LinePV<T>& r) const {
+  constexpr bool operator!=(const TSelf& r) const {
     return (r(p) != 0) || ((v % r.v) != 0);
   }
 };

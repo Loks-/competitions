@@ -12,9 +12,9 @@ constexpr geometry::d2::ConvexPolygonStaticSize<T, 4> SquareFromDiagonal(
     const geometry::d2::Point<T>& a, const geometry::d2::Point<T>& c) {
   using TPoint = geometry::d2::Point<T>;
   using TVector = geometry::d2::Vector<T>;
-  auto va = TVector(a), vc = TVector(c), vm2 = va + vc;
-  geometry::d2::LinePV<T> l(a, c);
-  auto vd = l.Normal();
+  const auto va = TVector(a), vc = TVector(c), vm2 = va + vc;
+  const geometry::d2::LinePV<T> l(a, c);
+  const auto vd = l.Normal();
   return geometry::d2::ConvexPolygonStaticSize<T, 4>(std::array<TPoint, 4>{
       a, ((vm2 + vd) / 2).ToPoint(), c, ((vm2 - vd) / 2).ToPoint()});
 }

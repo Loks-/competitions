@@ -19,20 +19,20 @@ class Graph {
   std::vector<std::vector<unsigned>> inverted_edges;
 
  public:
-  void Clear() {
+  constexpr void Clear() {
     nvertices = 0;
     edges.clear();
     inverted_edges.clear();
   }
 
-  void Resize(unsigned _nvertices) {
+  constexpr void Resize(unsigned _nvertices) {
     Clear();
     nvertices = _nvertices;
     edges.resize(nvertices);
     if (directed_edges) inverted_edges.resize(nvertices);
   }
 
-  void ResizeWithoutClear(unsigned _nvertices) {
+  constexpr void ResizeWithoutClear(unsigned _nvertices) {
     for (unsigned i = _nvertices; i < nvertices; ++i) {
       assert((edges[i].size() == 0) &&
              (!directed_edges || (inverted_edges[i].size() == 0)));
@@ -42,46 +42,53 @@ class Graph {
     if (directed_edges) inverted_edges.resize(nvertices);
   }
 
-  explicit Graph(unsigned _nvertices = 0) { Resize(_nvertices); }
-  unsigned Size() const { return nvertices; }
+  constexpr explicit Graph(unsigned _nvertices = 0) { Resize(_nvertices); }
 
-  std::vector<std::vector<unsigned>>& Edges() { return edges; }
+  constexpr unsigned Size() const { return nvertices; }
 
-  const std::vector<std::vector<unsigned>>& Edges() const { return edges; }
+  constexpr std::vector<std::vector<unsigned>>& Edges() { return edges; }
 
-  std::vector<unsigned>& Edges(unsigned from) { return edges[from]; }
+  constexpr const std::vector<std::vector<unsigned>>& Edges() const {
+    return edges;
+  }
 
-  const std::vector<unsigned>& Edges(unsigned from) const {
+  constexpr std::vector<unsigned>& Edges(unsigned from) { return edges[from]; }
+
+  constexpr const std::vector<unsigned>& Edges(unsigned from) const {
     return edges[from];
   }
 
-  std::vector<std::vector<unsigned>>& InvertedEdges() { return inverted_edges; }
-
-  const std::vector<std::vector<unsigned>>& InvertedEdges() const {
+  constexpr std::vector<std::vector<unsigned>>& InvertedEdges() {
     return inverted_edges;
   }
 
-  std::vector<unsigned>& InvertedEdges(unsigned from) {
+  constexpr const std::vector<std::vector<unsigned>>& InvertedEdges() const {
+    return inverted_edges;
+  }
+
+  constexpr std::vector<unsigned>& InvertedEdges(unsigned from) {
     return inverted_edges[from];
   }
 
-  const std::vector<unsigned>& InvertedEdges(unsigned from) const {
+  constexpr const std::vector<unsigned>& InvertedEdges(unsigned from) const {
     return inverted_edges[from];
   }
 
-  unsigned EdgesSize() const {
+  constexpr unsigned EdgesSize() const {
     size_t total = 0;
     for (unsigned i = 0; i < nvertices; ++i) total += edges[i].size();
     return (directed_edges ? total : total / 2);
   }
 
-  void AddBaseEdge(unsigned from, unsigned to) { edges[from].push_back(to); }
+  constexpr void AddBaseEdge(unsigned from, unsigned to) {
+    edges[from].push_back(to);
+  }
 
-  void AddInvertedEdge(unsigned from, unsigned to) {
+  constexpr void AddInvertedEdge(unsigned from, unsigned to) {
     inverted_edges[from].push_back(to);
   }
 
-  void AddEdge(unsigned from, unsigned to) {
+  constexpr void AddEdge(unsigned from, unsigned to) {
     AddBaseEdge(from, to);
     if (directed_edges)
       AddInvertedEdge(to, from);

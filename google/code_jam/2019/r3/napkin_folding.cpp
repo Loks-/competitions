@@ -103,7 +103,7 @@ int main_napkin_folding() {
                 TReflection r(pk0, pk1);
                 auto plgn_sr = Apply(r, plgn_s);
                 // Check that all points are on border
-                for (auto& p : plgn_sr.v) {
+                for (auto& p : plgn_sr.Vertices()) {
                   if (mpoints.find(p) == mpoints.end()) {
                     eok = false;
                     break;

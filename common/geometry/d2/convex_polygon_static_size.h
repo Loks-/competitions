@@ -17,6 +17,7 @@ class ConvexPolygonStaticSize : public PolygonStaticSize<T, size> {
   using TBase = PolygonStaticSize<T, size>;
   using TPoint = typename TBase::TPoint;
 
+ public:
   constexpr explicit ConvexPolygonStaticSize(const std::array<TPoint, size>& vp)
       : TBase(vp) {}
 
@@ -26,16 +27,15 @@ class ConvexPolygonStaticSize : public PolygonStaticSize<T, size> {
 
   constexpr bool Inside(const TPoint& p) const {
     if (p == TBase::v[0]) return true;
-    auto it = std::lower_bound(TBase::v.begin() + 1, TBase::v.end(), p,
-                               [&](const TPoint& l, const TPoint& r) {
-                                 return CompareVectorAngle(l - TBase::v[0],
-                                                           r - TBase::v[0]);
-                               });
+    const auto it = std::lower_bound(TBase::v.begin() + 1, TBase::v.end(), p,
+                                     [&](const TPoint& l, const TPoint& r) {
+                                       return CompareVectorAngle(
+                                           l - TBase::v[0], r - TBase::v[0]);
+                                     });
     if (it == TBase::v.end()) return false;
     if (it == TBase::v.begin() + 1)
       return HasPoint(Segment<T, true>(TBase::v[0], TBase::v[1]), p);
-    TrianglePA<T> t(TBase::v[0], *(it - 1), *it);
-    return t.Inside(p);
+    return TrianglePA<T>(TBase::v[0], *(it - 1), *it).Inside(p);
   }
 };
 }  // namespace d2

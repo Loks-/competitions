@@ -8,8 +8,8 @@ inline typename TPointSet::TWeight Count(
   typename TPointSet::TWeight s0 = 0, s1 = 0;
   auto p0 = p[p.Size() - 1], p1 = p[0], p2 = p[1];
   for (unsigned i = 0; i < p.Size(); ++i) {
-    unsigned ix = (p0.y < p1.y) || (p2.y < p1.y),
-             iy = (p0.x < p1.x) || (p2.x < p1.x), i1 = (i & 1);
+    const unsigned ix = (p0.y < p1.y) || (p2.y < p1.y),
+                   iy = (p0.x < p1.x) || (p2.x < p1.x), i1 = (i & 1);
     (i1 ? s0 : s1) += ps.CountQ({p1.x + (ix ^ i1), p1.y + (iy ^ i1)});
     p0 = p1;
     p1 = p2;

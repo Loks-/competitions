@@ -13,8 +13,10 @@ class Angle {
  public:
   using TSelf = TTSelf;
 
+ public:
   T dx, dy;
 
+ public:
   constexpr Angle() : dx(1), dy(0) {}
   constexpr Angle(const T& _dx, const T& _dy) : dx(_dx), dy(_dy) {}
   constexpr Angle(const Vector<T>& v) : dx(v.dx), dy(v.dy) {}

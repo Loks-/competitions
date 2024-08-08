@@ -10,19 +10,24 @@ namespace d2 {
 template <class T>
 class Circle {
  public:
-  Point<T> c;
+  using TPoint = Point<T>;
+
+ public:
+  TPoint c;
   T r;
 
+ public:
   constexpr Circle() : r() {}
-  constexpr Circle(const Point<T>& _c, const T& _r) : c(_c), r(_r) {}
+
+  constexpr Circle(const TPoint& _c, const T& _r) : c(_c), r(_r) {}
 
   constexpr bool Valid() const { return r >= 0; }
 
-  constexpr bool Inside(const Point<T>& p) const {
+  constexpr bool Inside(const TPoint& p) const {
     return SquaredDistance(p, c) <= r * r;
   }
 
-  constexpr T operator()(const Point<T>& p) const { return Distance(p, c) - r; }
+  constexpr T operator()(const TPoint& p) const { return Distance(p, c) - r; }
 };
 }  // namespace d2
 }  // namespace geometry

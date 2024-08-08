@@ -14,8 +14,10 @@ class TrianglePA {
  public:
   using TPoint = Point<T>;
 
+ protected:
   TPoint a, b, c;
 
+ public:
   constexpr TrianglePA(const TPoint& _a, const TPoint& _b, const TPoint& _c)
       : a(_a), b(_b), c(_c) {
     assert(SignedDoubleArea() > 0);
@@ -32,8 +34,8 @@ class TrianglePA {
   constexpr bool Empty() const { return false; }
 
   constexpr bool Inside(const TPoint& p) const {
-    T z(0);
-    auto pa = p - a, pb = p - b, pc = p - c;
+    constexpr T z(0);
+    const auto pa = p - a, pb = p - b, pc = p - c;
     return ((pa % pb) >= z) && ((pb % pc) >= z) && ((pc % pa) >= z);
   }
 };

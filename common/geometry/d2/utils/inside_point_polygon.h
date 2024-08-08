@@ -8,7 +8,7 @@
 namespace geometry {
 namespace d2 {
 template <class T>
-inline bool Inside(const Point<T>& p, const Polygon<T>& plgn) {
+constexpr bool Inside(const Point<T>& p, const Polygon<T>& plgn) {
   return location::Locate(p, plgn).type != location::Location::OUTSIDE;
 }
 }  // namespace d2

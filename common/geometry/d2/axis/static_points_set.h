@@ -54,7 +54,7 @@ class StaticPointsSet {
   }
 
   TNode* LowerBound(T x) const {
-    auto it = std::lower_bound(vx.begin(), vx.end(), TPair(x, nullptr));
+    const auto it = std::lower_bound(vx.begin(), vx.end(), TPair(x, nullptr));
     if (it == vx.begin()) return nullptr;
     return (it - 1)->second;
   }

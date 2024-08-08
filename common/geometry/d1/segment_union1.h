@@ -15,7 +15,6 @@ namespace d1 {
 template <class TValue>
 class SegmentUnion1 {
  public:
-  using T = TValue;
   using TTree = ds::st::SegmentTree<TEmpty, ds::st::info::LSum1<int, TValue>,
                                     ds::st::action::AddEachLSum0<int>,
                                     ds::st::sinfo::Position<TValue>, false>;
@@ -24,14 +23,14 @@ class SegmentUnion1 {
  protected:
   TTree tree;
   TNode* root;
-  T l;
+  TValue l;
 
  public:
   SegmentUnion1() { Clear(); }
 
   void Clear() {
     root = nullptr;
-    l = T();
+    l = TValue();
   }
 
   // Sorted list of possible values

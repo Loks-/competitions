@@ -17,7 +17,7 @@ constexpr geometry::d2::Vector<T> ApproximateBisector(
   }
   assert(l1 > 0);
   for (; (l1 << 1) < l2; l1 <<= 2) v1 *= T(2);
-  auto v = v1 + v2;
-  auto g = GCDSafe(v.dx, v.dy);
+  const auto v = v1 + v2;
+  const auto g = GCDSafe(v.dx, v.dy);
   return v / g;
 }

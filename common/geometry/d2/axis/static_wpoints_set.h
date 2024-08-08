@@ -46,7 +46,7 @@ class StaticWPointsSet {
 
   void Init(const std::vector<TPoint>& points) {
     std::vector<TWPoint> v;
-    for (auto p : points) v.push_back(p);
+    for (auto p : points) v.push_back(TWPoint(p));
     Init(v);
   }
 
@@ -63,7 +63,7 @@ class StaticWPointsSet {
   }
 
   TNode* LowerBound(T1 x) const {
-    auto it = std::lower_bound(vx.begin(), vx.end(), TPair(x, nullptr));
+    const auto it = std::lower_bound(vx.begin(), vx.end(), TPair(x, nullptr));
     if (it == vx.begin()) return nullptr;
     return (it - 1)->second;
   }

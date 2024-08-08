@@ -18,7 +18,9 @@ class WPoint : public Point<T1> {
   constexpr WPoint(const T1& _x, const T1& _y, const T2& _w)
       : TBase(_x, _y), w(_w) {}
 
-  constexpr WPoint(const TBase& p, const T2& _w = T2(1)) : TBase(p), w(_w) {}
+  constexpr explicit WPoint(const TBase& p) : TBase(p), w(1) {}
+
+  constexpr WPoint(const TBase& p, const T2& _w) : TBase(p), w(_w) {}
 };
 }  // namespace d2
 }  // namespace geometry

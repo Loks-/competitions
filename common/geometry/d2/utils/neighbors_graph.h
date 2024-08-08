@@ -4,8 +4,8 @@
 #include "common/geometry/d2/utils/neighbors.h"
 #include "common/graph/graph.h"
 
-inline DirectedGraph NeighborsDGraphD2(unsigned dx, unsigned dy) {
-  I2ARectangle b({0, 0}, {dx - 1, dy - 1});
+constexpr DirectedGraph NeighborsDGraphD2(unsigned dx, unsigned dy) {
+  const I2ARectangle b({0, 0}, {dx - 1, dy - 1});
   DirectedGraph g(dx * dy);
   I2Point p(0, 0);
   for (p.y = 0; p.y < dy; ++p.y) {
@@ -18,8 +18,8 @@ inline DirectedGraph NeighborsDGraphD2(unsigned dx, unsigned dy) {
   return g;
 }
 
-inline DirectedGraph NeighborsDGraphD3(unsigned dx, unsigned dy) {
-  I2ARectangle b({0, 0}, {dx - 1, dy - 1});
+constexpr DirectedGraph NeighborsDGraphD3(unsigned dx, unsigned dy) {
+  const I2ARectangle b({0, 0}, {dx - 1, dy - 1});
   DirectedGraph g(dx * dy);
   I2Point p(0, 0);
   for (p.y = 0; p.y < dy; ++p.y) {
@@ -32,8 +32,8 @@ inline DirectedGraph NeighborsDGraphD3(unsigned dx, unsigned dy) {
   return g;
 }
 
-inline DirectedGraph NeighborsDGraphD4(unsigned dx, unsigned dy) {
-  I2ARectangle b({0, 0}, {dx - 1, dy - 1});
+constexpr DirectedGraph NeighborsDGraphD4(unsigned dx, unsigned dy) {
+  const I2ARectangle b({0, 0}, {dx - 1, dy - 1});
   DirectedGraph g(dx * dy);
   I2Point p(0, 0);
   for (p.y = 0; p.y < dy; ++p.y) {
@@ -46,8 +46,8 @@ inline DirectedGraph NeighborsDGraphD4(unsigned dx, unsigned dy) {
   return g;
 }
 
-inline DirectedGraph NeighborsDGraphD8(unsigned dx, unsigned dy) {
-  I2ARectangle b({0, 0}, {dx - 1, dy - 1});
+constexpr DirectedGraph NeighborsDGraphD8(unsigned dx, unsigned dy) {
+  const I2ARectangle b({0, 0}, {dx - 1, dy - 1});
   DirectedGraph g(dx * dy);
   I2Point p(0, 0);
   for (p.y = 0; p.y < dy; ++p.y) {
@@ -60,8 +60,8 @@ inline DirectedGraph NeighborsDGraphD8(unsigned dx, unsigned dy) {
   return g;
 }
 
-inline UndirectedGraph NeighborsUGraphD4(unsigned dx, unsigned dy) {
-  I2ARectangle b({0, 0}, {dx - 1, dy - 1});
+constexpr UndirectedGraph NeighborsUGraphD4(unsigned dx, unsigned dy) {
+  const I2ARectangle b({0, 0}, {dx - 1, dy - 1});
   UndirectedGraph g(dx * dy);
   I2Point p(0, 0);
   for (p.y = 0; p.y < dy; ++p.y) {
@@ -74,16 +74,16 @@ inline UndirectedGraph NeighborsUGraphD4(unsigned dx, unsigned dy) {
   return g;
 }
 
-inline UndirectedGraph NeighborsUGraphD8(unsigned dx, unsigned dy) {
-  I2ARectangle b({0, 0}, {dx - 1, dy - 1});
+constexpr UndirectedGraph NeighborsUGraphD8(unsigned dx, unsigned dy) {
+  const I2ARectangle b({0, 0}, {dx - 1, dy - 1});
   UndirectedGraph g(dx * dy);
   I2Point p(0, 0);
   for (p.y = 0; p.y < dy; ++p.y) {
     for (p.x = 0; p.x < dx; ++p.x) {
-      auto i0 = b.InsideIndexYX(p);
+      const auto i0 = b.InsideIndexYX(p);
       for (auto p1 : I2NeighborsD8(p)) {
         if (!b.Inside(p1)) continue;
-        auto i1 = b.InsideIndexYX(p1);
+        const auto i1 = b.InsideIndexYX(p1);
         if (i1 > i0) g.AddEdge(i0, i1);
       }
     }

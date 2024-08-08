@@ -4,17 +4,19 @@
 
 namespace geometry {
 namespace d2 {
-template <class TValue>
+template <class T>
 class Point {
  public:
-  using T = TValue;
   using TSelf = Point<T>;
 
+ public:
   T x, y;
 
-  consteval static unsigned Dim() { return 2u; }
+ public:
+  static consteval unsigned Dim() { return 2u; }
 
   constexpr Point() : x(), y() {}
+
   constexpr Point(const T& _x, const T& _y) : x(_x), y(_y) {}
 
   constexpr bool operator==(const TSelf& r) const {

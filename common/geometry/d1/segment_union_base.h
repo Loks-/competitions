@@ -13,17 +13,16 @@ namespace d1 {
 template <class TValue>
 class SegmentUnionBase {
  public:
-  using T = TValue;
-  using TSegment = std::pair<T, T>;
+  using TSegment = std::pair<TValue, TValue>;
   using TVector = std::vector<TSegment>;
 
  protected:
   TVector vp;
 
  public:
-  void Clear() { vp.clear(); }
+  constexpr void Clear() { vp.clear(); }
 
-  TValue Length() const {
+  constexpr TValue Length() const {
     TValue s{};
     if (vp.empty()) return s;
     auto l = vp[0].first, r = l;
@@ -40,19 +39,19 @@ class SegmentUnionBase {
     return s;
   }
 
-  void Add(const TValue& l, const TValue& r) {
-    auto p = std::make_pair(l, r);
-    auto it = std::lower_bound(vp.begin(), vp.end(), p);
+  constexpr void Add(const TValue& l, const TValue& r) {
+    const auto p = std::make_pair(l, r);
+    const auto it = std::lower_bound(vp.begin(), vp.end(), p);
     vp.insert(it, p);
   }
 
-  void Remove(const TValue& l, const TValue& r) {
-    auto p = std::make_pair(l, r);
-    auto it = std::find(vp.begin(), vp.end(), p);
+  constexpr void Remove(const TValue& l, const TValue& r) {
+    const auto p = std::make_pair(l, r);
+    const auto it = std::find(vp.begin(), vp.end(), p);
     vp.erase(it);
   }
 
-  static TVector Compress(const TVector& v) {
+  static constexpr TVector Compress(const TVector& v) {
     if (v.size() <= 1) return v;
     TVector v1(v);
     std::sort(v1.begin(), v1.end());
@@ -72,7 +71,7 @@ class SegmentUnionBase {
 }  // namespace geometry
 
 template <class TValue>
-inline std::vector<std::pair<TValue, TValue>> SegmentMerge(
+constexpr std::vector<std::pair<TValue, TValue>> SegmentMerge(
     const std::vector<std::pair<TValue, TValue>>& v) {
   return geometry::d1::SegmentUnionBase<TValue>::Compress(v);
 }

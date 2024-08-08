@@ -7,15 +7,16 @@ namespace d2 {
 template <class T, bool closed>
 class Segment {
  public:
+  using TPoint = Point<T>;
   using TSelf = Segment<T, closed>;
 
-  Point<T> p1, p2;
+ public:
+  TPoint p1, p2;
 
  public:
-  consteval static bool Closed() { return closed; }
+  static consteval bool Closed() { return closed; }
 
-  constexpr Segment(const Point<T>& _p1, const Point<T>& _p2)
-      : p1(_p1), p2(_p2) {}
+  constexpr Segment(const TPoint& _p1, const TPoint& _p2) : p1(_p1), p2(_p2) {}
 
   constexpr bool Empty() const { return p1 == p2; }
 

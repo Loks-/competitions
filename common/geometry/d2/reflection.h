@@ -9,27 +9,32 @@ namespace d2 {
 template <class T>
 class Reflection {
  public:
-  Point<T> p;
-  Vector<T> v, v2;
+  using TPoint = Point<T>;
+  using TVector = Vector<T>;
 
+ protected:
+  TPoint p;
+  TVector v, v2;
+
+ protected:
   constexpr void UpdateV2() {
     assert(!v.Empty());
     v2 = v * T(2) / (v * v);
   }
 
-  constexpr Reflection(const Point<T>& p1, const Point<T>& p2)
-      : p(p1), v(p2 - p1) {
+ public:
+  constexpr Reflection(const TPoint& p1, const TPoint& p2) : p(p1), v(p2 - p1) {
     UpdateV2();
   }
 
-  constexpr Reflection(const Point<T>& _p, const Vector<T>& _v) : p(_p), v(_v) {
+  constexpr Reflection(const TPoint& _p, const TVector& _v) : p(_p), v(_v) {
     UpdateV2();
   }
 
-  constexpr Reflection() : Reflection(Point<T>(), Vector<T>(T(1), T(0))) {}
+  constexpr Reflection() : Reflection(TPoint(), TVector(T(1), T(0))) {}
 
-  constexpr Point<T> operator()(const Point<T>& pp) const {
-    auto pv = pp - p;
+  constexpr TPoint operator()(const TPoint& pp) const {
+    const auto pv = pp - p;
     return p + v2 * (pv * v) - pv;
   }
 };

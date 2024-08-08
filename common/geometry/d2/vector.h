@@ -7,23 +7,29 @@
 
 namespace geometry {
 namespace d2 {
-template <class TValue>
+template <class T>
 class Vector {
  public:
-  using T = TValue;
   using TSelf = Vector<T>;
 
+ public:
   T dx, dy;
 
-  consteval static unsigned Dim() { return 2u; }
+ public:
+  static consteval unsigned Dim() { return 2u; }
 
   constexpr Vector() : dx(), dy() {}
+
   constexpr Vector(const T& _dx, const T& _dy) : dx(_dx), dy(_dy) {}
+
   constexpr explicit Vector(const Point<T>& p) : dx(p.x), dy(p.y) {}
 
   constexpr Point<T> ToPoint() const { return Point<T>(dx, dy); }
+
   constexpr bool Empty() const { return (dx == 0) && (dy == 0); }
+
   constexpr T LengthSquared() const { return dx * dx + dy * dy; }
+
   constexpr T Length() const { return sqrt(LengthSquared()); }
 
   constexpr bool operator==(const TSelf& r) const {
@@ -63,6 +69,7 @@ class Vector {
   }
 
   constexpr TSelf operator*(const T& r) const { return TSelf(dx * r, dy * r); }
+
   constexpr TSelf operator/(const T& r) const { return TSelf(dx / r, dy / r); }
 
   constexpr TSelf& operator+=(const TSelf& r) {
@@ -86,6 +93,7 @@ class Vector {
   }
 
   constexpr T operator*(const TSelf& r) const { return dx * r.dx + dy * r.dy; }
+
   constexpr T operator%(const TSelf& r) const { return dx * r.dy - dy * r.dx; }
 
   constexpr void Normalize() {

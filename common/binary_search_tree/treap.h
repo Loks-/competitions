@@ -38,7 +38,9 @@ class Treap
   friend TTree;
 
  protected:
-  static const THeight& Height(TNode* node) { return node->info.treap_height; }
+  constexpr static const THeight& Height(const TNode* node) {
+    return node->info.treap_height;
+  }
 
  public:
   explicit Treap(size_t max_nodes) : TTree(max_nodes) {}
