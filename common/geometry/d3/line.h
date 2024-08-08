@@ -10,19 +10,23 @@ namespace d3 {
 template <class T>
 class Line {
  public:
-  Point<T> p;
-  Vector<T> v;
+  using TPoint = Point<T>;
+  using TVector = Vector<T>;
 
+ public:
+  TPoint p;
+  TVector v;
+
+ public:
   constexpr Line() {}
-  constexpr Line(const Point<T>& _p, const Vector<T>& _v) : p(_p), v(_v) {}
 
-  constexpr Point<T> operator()(const T& t) const {
-    return Point<T>(p.x + t * v.dx, p.y + t * v.dy, p.z + t * v.dz);
+  constexpr Line(const TPoint& _p, const TVector& _v) : p(_p), v(_v) {}
+
+  constexpr TPoint operator()(const T& t) const {
+    return TPoint(p.x + t * v.dx, p.y + t * v.dy, p.z + t * v.dz);
   }
 
-  constexpr T Project(const Point<T>& x) const {
-    return ((x - p) * v) / (v * v);
-  }
+  constexpr T Project(const TPoint& x) const { return ((x - p) * v) / (v * v); }
 };
 }  // namespace d3
 }  // namespace geometry

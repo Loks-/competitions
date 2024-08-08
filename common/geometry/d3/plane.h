@@ -10,8 +10,13 @@ namespace d3 {
 template <class T>
 class Plane {
  public:
+  using TPoint = Point<T>;
+  using TVector = Vector<T>;
+
+ public:
   T a, b, c, d;
 
+ public:
   constexpr Plane() : a(), b(), c(), d() {}
 
   constexpr Plane(const T& _a, const T& _b, const T& _c, const T& _d = T(0))
@@ -19,9 +24,9 @@ class Plane {
 
   constexpr bool Valid() const { return (a != 0) || (b != 0) || (c != 0); }
 
-  constexpr Vector<T> Normal() const { return Vector<T>(a, b, c); }
+  constexpr TVector Normal() const { return {a, b, c}; }
 
-  constexpr T operator()(const Point<T>& p) const {
+  constexpr T operator()(const TPoint& p) const {
     return a * p.x + b * p.y + c * p.z + d;
   }
 
@@ -34,7 +39,7 @@ class Plane {
 
   constexpr void Normalize() {
     assert(Valid());
-    T l = Normal().Length();
+    const T l = Normal().Length();
     a /= l;
     b /= l;
     c /= l;

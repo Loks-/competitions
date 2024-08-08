@@ -10,15 +10,17 @@
 
 namespace geometry {
 namespace ds {
-template <unsigned dim, class TValue>
+template <unsigned dim, class T>
 class Vector {
  public:
-  using T = TValue;
+  using TPoint = Point<dim, T>;
   using TSelf = Vector<dim, T>;
 
+ public:
   std::array<T, dim> dpc;
 
-  consteval static unsigned Dim() { return dim; }
+ public:
+  static consteval unsigned Dim() { return dim; }
 
   constexpr Vector() { std::fill(dpc.begin(), dpc.end(), T()); }
 
@@ -33,7 +35,7 @@ class Vector {
     for (unsigned i = 0; i < dim; ++i) dpc[i] = v[i];
   }
 
-  constexpr Point<dim, T> ToPoint() const { return Point<dim, T>(dpc); }
+  constexpr TPoint ToPoint() const { return {dpc}; }
 
   constexpr bool Empty() const {
     for (auto x : dpc) {

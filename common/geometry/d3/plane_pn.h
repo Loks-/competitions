@@ -10,9 +10,14 @@ namespace d3 {
 template <class T>
 class PlanePN {
  public:
-  Point<T> p;
-  Vector<T> n;
+  using TPoint = Point<T>;
+  using TVector = Vector<T>;
 
+ public:
+  TPoint p;
+  TVector n;
+
+ public:
   constexpr PlanePN() {}
 
   constexpr PlanePN(const Point<T>& _p, const Vector<T>& _n) : p(_p), n(_n) {}

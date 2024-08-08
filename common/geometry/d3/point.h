@@ -4,15 +4,17 @@
 
 namespace geometry {
 namespace d3 {
-template <class TValue>
+template <class T>
 class Point {
  public:
-  using T = TValue;
+  using TType = T;
   using TSelf = Point<T>;
 
+ public:
   T x, y, z;
 
-  consteval static unsigned Dim() { return 3u; }
+ public:
+  static consteval unsigned Dim() { return 3u; }
 
   constexpr Point() : x(), y(), z() {}
 

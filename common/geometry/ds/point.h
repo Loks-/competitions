@@ -8,15 +8,17 @@
 
 namespace geometry {
 namespace ds {
-template <unsigned dim, class TValue>
+template <unsigned dim, class T>
 class Point {
  public:
-  using T = TValue;
+  using TType = T;
   using TSelf = Point<dim, T>;
 
+ public:
   std::array<T, dim> pc;
 
-  consteval static unsigned Dim() { return dim; }
+ public:
+  static consteval unsigned Dim() { return dim; }
 
   constexpr Point() { std::fill(pc.begin(), pc.end(), T()); }
 
@@ -32,6 +34,7 @@ class Point {
   }
 
   constexpr bool operator==(const TSelf& r) const { return pc == r.pc; }
+
   constexpr bool operator!=(const TSelf& r) const { return pc != r.pc; }
 
   constexpr bool operator<(const TSelf& r) const {

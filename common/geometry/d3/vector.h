@@ -7,22 +7,24 @@
 
 namespace geometry {
 namespace d3 {
-template <class TValue>
+template <class T>
 class Vector {
  public:
-  using T = TValue;
+  using TPoint = Point<T>;
   using TSelf = Vector<T>;
 
+ public:
   T dx, dy, dz;
 
-  consteval static unsigned Dim() { return 3u; }
+ public:
+  static consteval unsigned Dim() { return 3u; }
 
   constexpr Vector() : dx(), dy(), dz() {}
 
   constexpr Vector(const T& _dx, const T& _dy, const T& _dz)
       : dx(_dx), dy(_dy), dz(_dz) {}
 
-  constexpr Point<T> ToPoint() const { return Point<T>(dx, dy, dz); }
+  constexpr TPoint ToPoint() const { return {dx, dy, dz}; }
 
   constexpr bool Empty() const { return (dx == 0) && (dy == 0) && (dz == 0); }
 

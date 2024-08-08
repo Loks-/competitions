@@ -20,7 +20,7 @@ class BaseTree
   static const unsigned dim = _dim;
 
   using TPoint = TTPoint;
-  using TValue = typename TPoint::T;
+  using TValue = typename TPoint::TType;
   using TLData = TTLData;
   using TIData = TTIData;
   using TBase = base::Tree<dim, TPoint, TLData, TIData, TTInfo, TTAction>;

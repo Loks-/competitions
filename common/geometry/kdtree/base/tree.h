@@ -14,13 +14,13 @@ namespace base {
 template <unsigned _dim, class TTPoint, class TTLData, class TTIData,
           class TTInfo, class TTAction>
 class Tree : protected memory::NodesManager<
-                 base::Node<typename TTPoint::T, TTLData, TTIData, TTInfo,
+                 base::Node<typename TTPoint::TType, TTLData, TTIData, TTInfo,
                             TTAction, true, false>> {
  public:
   static const unsigned dim = _dim;
 
   using TPoint = TTPoint;
-  using TValue = typename TPoint::T;
+  using TValue = typename TPoint::TType;
   using TLData = TTLData;
   using TIData = TTIData;
   using TInfo = TTInfo;

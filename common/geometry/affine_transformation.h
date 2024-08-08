@@ -13,7 +13,7 @@ class AffineTransformation {
   la::MatrixStaticSize<T, dim, dim + 1> m;
 
  public:
-  consteval static unsigned Dim() { return dim; }
+  static consteval unsigned Dim() { return dim; }
 
   constexpr AffineTransformation() { m.SetDiagonal(T(1)); }
 

@@ -7,6 +7,7 @@ namespace d2 {
 template <class T>
 class Point {
  public:
+  using TType = T;
   using TSelf = Point<T>;
 
  public:

@@ -10,6 +10,7 @@ namespace d2 {
 template <class T>
 class Vector {
  public:
+  using TPoint = Point<T>;
   using TSelf = Vector<T>;
 
  public:
@@ -22,9 +23,9 @@ class Vector {
 
   constexpr Vector(const T& _dx, const T& _dy) : dx(_dx), dy(_dy) {}
 
-  constexpr explicit Vector(const Point<T>& p) : dx(p.x), dy(p.y) {}
+  constexpr explicit Vector(const TPoint& p) : dx(p.x), dy(p.y) {}
 
-  constexpr Point<T> ToPoint() const { return Point<T>(dx, dy); }
+  constexpr TPoint ToPoint() const { return {dx, dy}; }
 
   constexpr bool Empty() const { return (dx == 0) && (dy == 0); }
 

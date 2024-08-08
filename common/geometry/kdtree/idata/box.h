@@ -14,7 +14,7 @@ class Box : public None {
   using TPoint = TTPoint;
   using TSelf = Box<TPoint>;
   using TBase = None;
-  using TValue = typename TPoint::T;
+  using TValue = typename TPoint::TType;
 
  public:
   TPoint b, e;
