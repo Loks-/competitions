@@ -15,7 +15,7 @@ constexpr uint64_t RotateBitsL(uint64_t x, unsigned shift) {
 
 constexpr uint64_t RotateBitsR(uint64_t x, unsigned shift, unsigned length) {
   shift %= length;
-  uint64_t tail = x & ((1ull << length) - 1);
+  const uint64_t tail = x & ((1ull << length) - 1);
   if (shift)
     x = ((((1ull << shift) - 1) & tail) << (length - shift)) | (tail >> shift) |
         (x ^ tail);

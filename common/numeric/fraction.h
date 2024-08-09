@@ -4,10 +4,9 @@
 #include "common/numeric/utils/gcd.h"
 
 namespace numeric {
-template <class TTValue>
+template <class TValue>
 class Fraction {
  public:
-  using TValue = TTValue;
   using TSelf = Fraction<TValue>;
 
  protected:
@@ -19,7 +18,7 @@ class Fraction {
       numerator = -numerator;
       denominator = -denominator;
     }
-    TValue g = GCDSafe(numerator, denominator);
+    const TValue g = GCDSafe(numerator, denominator);
     numerator /= g;
     denominator /= g;
   }
@@ -36,6 +35,7 @@ class Fraction {
   }
 
   constexpr const TValue& GetN() const { return numerator; }
+
   constexpr const TValue& GetD() const { return denominator; }
 
   constexpr double ToDouble() const {

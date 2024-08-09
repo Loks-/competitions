@@ -5,9 +5,18 @@
 
 namespace numeric {
 namespace nlong {
+constexpr Signed SqrBase(const Signed& a) {
+  return Signed(SqrBase(a.GetUnsigned()));
+}
+
 constexpr Signed MultBase(const Signed& a, const Signed& b) {
   return Signed(a.Sign() == b.Sign(),
                 MultBase(a.GetUnsigned(), b.GetUnsigned()));
+}
+
+template <unsigned maxn = (1u << 16)>
+inline Signed SqrFFT(const Signed& a) {
+  return Signed(SqrFFT<maxn>(a.GetUnsigned()));
 }
 
 template <unsigned maxn = (1u << 16)>
@@ -16,8 +25,15 @@ inline Signed MultFFT(const Signed& a, const Signed& b) {
                 MultFFT<maxn>(a.GetUnsigned(), b.GetUnsigned()));
 }
 
+template <unsigned maxn = (1u << 16)>
+inline Signed Sqr(const Signed& a) {
+  return Signed(Sqr<maxn>(a.GetUnsigned()));
+}
+
+template <unsigned maxn = (1u << 16)>
 inline Signed Mult(const Signed& a, const Signed& b) {
-  return Signed(a.Sign() == b.Sign(), Mult(a.GetUnsigned(), b.GetUnsigned()));
+  return Signed(a.Sign() == b.Sign(),
+                Mult<maxn>(a.GetUnsigned(), b.GetUnsigned()));
 }
 
 inline Signed operator*(const Signed& l, const Signed& r) { return Mult(l, r); }

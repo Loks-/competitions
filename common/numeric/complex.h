@@ -3,17 +3,19 @@
 #include "common/base.h"
 
 namespace numeric {
-template <class TTValue>
+template <class TValue>
 class Complex {
  public:
-  using TValue = TTValue;
-  using TSelf = Complex<TTValue>;
+  using TSelf = Complex<TValue>;
 
  public:
   TValue re, im;
 
+ public:
   constexpr Complex() : re(0), im(0) {}
+
   constexpr explicit Complex(const TValue& _re) : re(_re), im(0) {}
+
   constexpr Complex(const TValue& _re, const TValue& _im) : re(_re), im(_im) {}
 
   constexpr bool operator==(const TValue& r) const {
@@ -27,6 +29,7 @@ class Complex {
   constexpr bool operator==(const TSelf& r) const {
     return (re == r.re) && (im == r.im);
   }
+
   constexpr bool operator!=(const TSelf& r) const {
     return (re != r.re) || (im != r.im);
   }
@@ -34,6 +37,7 @@ class Complex {
   constexpr TSelf operator*(const TValue& r) const {
     return TSelf(re * r, im * r);
   }
+
   constexpr TSelf operator/(const TValue& r) const {
     return TSelf(re / r, im / r);
   }
@@ -51,12 +55,15 @@ class Complex {
   }
 
   constexpr TSelf& operator*=(const TSelf& r) { return (*this = (*this * r)); }
+
   constexpr TSelf& operator/=(const TSelf& r) { return (*this = (*this / r)); }
 
   constexpr TSelf operator-() const { return TSelf(-re, -im); }
+
   constexpr TSelf operator+(const TSelf& r) const {
     return TSelf(re + r.re, im + r.im);
   }
+
   constexpr TSelf operator-(const TSelf& r) const {
     return TSelf(re - r.re, im - r.im);
   }
@@ -66,13 +73,14 @@ class Complex {
   }
 
   constexpr TSelf operator/(const TSelf& r) const {
-    TValue tre = re * r.re + im * r.im, tim = im * r.re - re * r.im,
-           td = r.re * r.re + r.im * r.im;
+    const TValue tre = re * r.re + im * r.im, tim = im * r.re - re * r.im,
+                 td = r.re * r.re + r.im * r.im;
     assert(td != 0);
     return TSelf(tre / td, tim / td);
   }
 
   constexpr TSelf Conjugate() const { return TSelf(re, -im); }
+
   constexpr TValue AbsSquared() const { return re * re + im * im; }
 
   constexpr TSelf Inverse() const {
@@ -90,10 +98,7 @@ class Complex {
   }
 
   constexpr TSelf PowS(int64_t pow) const {
-    if (pow < 0)
-      return Inverse().PowU(-pow);
-    else
-      return PowU(pow);
+    return (pow < 0) ? Inverse().PowU(-pow) : PowU(pow);
   }
 };
 

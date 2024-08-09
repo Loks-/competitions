@@ -10,61 +10,70 @@ namespace nlong {
 template <bool is_prime = false>
 class Modular {
  public:
-  consteval static bool IsModPrime() { return is_prime; }
+  static consteval bool IsModPrime() { return is_prime; }
 
-  constexpr static Unsigned Apply(const Unsigned& value, const Unsigned& mod) {
+  static constexpr Unsigned Apply(const Unsigned& value, const Unsigned& mod) {
     return value % mod;
   }
 
-  constexpr static Unsigned Add(const Unsigned& lvalue, const Unsigned& rvalue,
+  static constexpr Unsigned Add(const Unsigned& lvalue, const Unsigned& rvalue,
                                 const Unsigned& mod) {
-    Unsigned t = lvalue + rvalue;
+    const Unsigned t = lvalue + rvalue;
     return (t < mod) ? t : t - mod;
   }
 
-  constexpr static Unsigned AddSafe(const Unsigned& lvalue,
+  static constexpr Unsigned AddSafe(const Unsigned& lvalue,
                                     const Unsigned& rvalue,
                                     const Unsigned& mod) {
     return Apply(lvalue + rvalue, mod);
   }
 
-  constexpr static Unsigned Sub(const Unsigned& lvalue, const Unsigned& rvalue,
+  static constexpr Unsigned Sub(const Unsigned& lvalue, const Unsigned& rvalue,
                                 const Unsigned& mod) {
     return (rvalue <= lvalue) ? lvalue - rvalue : lvalue + mod - rvalue;
   }
 
-  constexpr static Unsigned SubSafe(const Unsigned& lvalue,
+  static constexpr Unsigned SubSafe(const Unsigned& lvalue,
                                     const Unsigned& rvalue,
                                     const Unsigned& mod) {
     return Apply(lvalue + mod - Apply(rvalue, mod), mod);
   }
 
-  constexpr static Unsigned Minus(const Unsigned& value, const Unsigned& mod) {
+  static constexpr Unsigned Minus(const Unsigned& value, const Unsigned& mod) {
     return (value.Empty()) ? value : mod - value;
   }
 
-  constexpr static Unsigned MinusSafe(const Unsigned& value,
+  static constexpr Unsigned MinusSafe(const Unsigned& value,
                                       const Unsigned& mod) {
     return Minus(Apply(value, mod), mod);
   }
 
-  constexpr static Unsigned Mult(const Unsigned& lvalue, const Unsigned& rvalue,
+  static constexpr Unsigned Mult(const Unsigned& lvalue, const Unsigned& rvalue,
                                  const Unsigned& mod) {
-    return (lvalue * rvalue) % mod;
+    return numeric::nlong::Mult(lvalue, rvalue) % mod;
   }
 
-  constexpr static Unsigned MultSafe(const Unsigned& lvalue,
+  static constexpr Unsigned MultSafe(const Unsigned& lvalue,
                                      const Unsigned& rvalue,
                                      const Unsigned& mod) {
     return Mult(Apply(lvalue, mod), Apply(rvalue, mod), mod);
   }
 
-  constexpr static Unsigned PowU(const Unsigned& value, uint64_t pow,
+  static constexpr Unsigned Sqr(const Unsigned& value, const Unsigned& mod) {
+    return numeric::nlong::Sqr(value) % mod;
+  }
+
+  static constexpr Unsigned SqrSafe(const Unsigned& value,
+                                    const Unsigned& mod) {
+    return Sqr(Apply(value, mod), mod);
+  }
+
+  static constexpr Unsigned PowU(const Unsigned& value, uint64_t pow,
                                  const Unsigned& mod) {
     Unsigned ans(1u), x = value;
     for (; pow; pow >>= 1) {
       if (pow & 1) ans = Mult(ans, x, mod);
-      x = Mult(x, x, mod);
+      x = Sqr(x, mod);
     }
     return ans;
   }

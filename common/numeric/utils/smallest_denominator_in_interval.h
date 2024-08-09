@@ -3,11 +3,12 @@
 #include "common/base.h"
 #include "common/numeric/continued_fraction/continued_fraction.h"
 #include "common/numeric/fraction.h"
+
 #include <algorithm>
 #include <vector>
 
-inline TIFraction SmallestDenominatorInInterval(const TIFraction& l,
-                                                const TIFraction& r) {
+constexpr TIFraction SmallestDenominatorInInterval(const TIFraction& l,
+                                                   const TIFraction& r) {
   assert(l < r);
   auto vl = numeric::cf::ContinuedFraction(l).GetVector(),
        vr = numeric::cf::ContinuedFraction(r).GetVector();

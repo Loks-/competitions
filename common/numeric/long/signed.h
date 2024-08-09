@@ -79,10 +79,13 @@ class Signed {
   }
 
   constexpr bool operator>(const Signed& ls) const { return ls < *this; }
+
   constexpr bool operator<=(const Signed& ls) const { return !(ls < *this); }
+
   constexpr bool operator>=(const Signed& ls) const { return !(*this < ls); }
 
   constexpr bool operator==(uint32_t v) const { return sign && (value == v); }
+
   constexpr bool operator==(uint64_t v) const { return sign && (value == v); }
 
   constexpr bool operator==(int32_t v) const {
@@ -96,28 +99,43 @@ class Signed {
   }
 
   constexpr bool operator!=(uint32_t v) const { return !(*this == v); }
+
   constexpr bool operator!=(uint64_t v) const { return !(*this == v); }
+
   constexpr bool operator!=(int32_t v) const { return !(*this == v); }
+
   constexpr bool operator!=(int64_t v) const { return !(*this == v); }
 
   constexpr bool operator<(int32_t v) const { return *this < Signed(v); }
+
   constexpr bool operator<(uint32_t v) const { return *this < Signed(v); }
+
   constexpr bool operator<(int64_t v) const { return *this < Signed(v); }
+
   constexpr bool operator<(uint64_t v) const { return *this < Signed(v); }
 
   constexpr bool operator<=(int32_t v) const { return *this <= Signed(v); }
+
   constexpr bool operator<=(uint32_t v) const { return *this <= Signed(v); }
+
   constexpr bool operator<=(int64_t v) const { return *this <= Signed(v); }
+
   constexpr bool operator<=(uint64_t v) const { return *this <= Signed(v); }
 
   constexpr bool operator>(int32_t v) const { return *this > Signed(v); }
+
   constexpr bool operator>(uint32_t v) const { return *this > Signed(v); }
+
   constexpr bool operator>(int64_t v) const { return *this > Signed(v); }
+
   constexpr bool operator>(uint64_t v) const { return *this > Signed(v); }
 
   constexpr bool operator>=(int32_t v) const { return *this >= Signed(v); }
+
   constexpr bool operator>=(uint32_t v) const { return *this >= Signed(v); }
+
   constexpr bool operator>=(int64_t v) const { return *this >= Signed(v); }
+
   constexpr bool operator>=(uint64_t v) const { return *this >= Signed(v); }
 
   constexpr uint32_t ToUint32() const {
@@ -136,7 +154,7 @@ class Signed {
   }
 
   constexpr int64_t ToInt64() const {
-    auto v = value.ToUint64();
+    const auto v = value.ToUint64();
     return sign ? v : -v;
   }
 
@@ -160,13 +178,19 @@ class Signed {
   }
 
   constexpr Signed operator+(int32_t r) const { return *this + Signed(r); }
+
   constexpr Signed operator+(int64_t r) const { return *this + Signed(r); }
+
   constexpr Signed operator+(uint32_t r) const { return *this + Signed(r); }
+
   constexpr Signed operator+(uint64_t r) const { return *this + Signed(r); }
 
   constexpr Signed operator-(int32_t r) const { return *this - Signed(r); }
+
   constexpr Signed operator-(int64_t r) const { return *this - Signed(r); }
+
   constexpr Signed operator-(uint32_t r) const { return *this - Signed(r); }
+
   constexpr Signed operator-(uint64_t r) const { return *this - Signed(r); }
 
   constexpr Signed& operator+=(const Signed& r) {
@@ -182,21 +206,29 @@ class Signed {
   }
 
   constexpr Signed& operator+=(int32_t r) { return *this += Signed(r); }
+
   constexpr Signed& operator+=(int64_t r) { return *this += Signed(r); }
+
   constexpr Signed& operator+=(uint32_t r) { return *this += Signed(r); }
+
   constexpr Signed& operator+=(uint64_t r) { return *this += Signed(r); }
 
   constexpr Signed& operator-=(int32_t r) { return *this -= Signed(r); }
+
   constexpr Signed& operator-=(int64_t r) { return *this -= Signed(r); }
+
   constexpr Signed& operator-=(uint32_t r) { return *this -= Signed(r); }
+
   constexpr Signed& operator-=(uint64_t r) { return *this -= Signed(r); }
 
   constexpr Signed operator*(uint32_t r) const {
     return Signed(sign, value * r);
   }
+
   constexpr Signed operator*(uint64_t r) const {
     return Signed(sign, value * r);
   }
+
   constexpr Signed operator/(uint32_t r) const {
     return Signed(sign, value / r);
   }
@@ -217,7 +249,7 @@ class Signed {
   }
 
   constexpr int32_t operator%(uint32_t r) const {
-    auto v = value % r;
+    const auto v = value % r;
     return sign ? v : -v;
   }
 

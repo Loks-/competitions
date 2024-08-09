@@ -10,14 +10,13 @@ namespace nlong {
 class Unsigned {
  public:
   using TData = std::vector<uint32_t>;
+  using iterator = uint32_t*;
+  using const_iterator = const uint32_t*;
 
  protected:
   TData data;
 
  public:
-  using iterator = uint32_t*;
-  using const_iterator = const uint32_t*;
-
   constexpr Unsigned() {}
 
   constexpr explicit Unsigned(int32_t u) {
@@ -42,20 +41,29 @@ class Unsigned {
   }
 
   constexpr void Clear() { data.clear(); }
+
   constexpr bool Empty() const { return data.empty(); }
+
   constexpr size_t Size() const { return data.size(); }
+
   constexpr const TData& Data() const { return data; }
-  consteval static unsigned BitsPerBlock() { return 32; }
+
+  static consteval unsigned BitsPerBlock() { return 32; }
 
   constexpr iterator begin() { return &data.front(); }
+
   constexpr const_iterator begin() const { return &data.front(); }
+
   constexpr iterator end() { return begin() + data.size(); }
+
   constexpr const_iterator end() const { return begin() + data.size(); }
+
   constexpr void swap(Unsigned& lu) { data.swap(lu.data); }
 
   constexpr bool operator==(const Unsigned& lu) const {
     return data == lu.data;
   }
+
   constexpr bool operator!=(const Unsigned& lu) const {
     return data != lu.data;
   }
@@ -71,7 +79,9 @@ class Unsigned {
   }
 
   constexpr bool operator>(const Unsigned& lu) const { return lu < *this; }
+
   constexpr bool operator<=(const Unsigned& lu) const { return !(lu < *this); }
+
   constexpr bool operator>=(const Unsigned& lu) const { return !(*this < lu); }
 
   constexpr uint32_t ToUint32() const {
@@ -111,10 +121,15 @@ class Unsigned {
   }
 
   constexpr bool operator!=(uint32_t u) const { return !(*this == u); }
+
   constexpr bool operator>(uint32_t u) const { return !(*this <= u); }
+
   constexpr bool operator>=(uint32_t u) const { return !(*this < u); }
+
   constexpr bool operator!=(uint64_t u) const { return !(*this == u); }
+
   constexpr bool operator>(uint64_t u) const { return !(*this <= u); }
+
   constexpr bool operator>=(uint64_t u) const { return !(*this < u); }
 
   constexpr Unsigned operator+(uint32_t u) const {
@@ -180,7 +195,8 @@ class Unsigned {
     assert(u);
     if (data.empty()) return 0;
     if ((u & (u - 1)) == 0) return (data[0] % u);
-    uint64_t u64 = u, t64 = data.back() % u64;
+    const uint64_t u64 = u;
+    uint64_t t64 = data.back() % u64;
     for (auto p = end() - 2, pb = begin(); p >= pb;)
       t64 = ((t64 << 32) + *p--) % u64;
     return uint32_t(t64);
@@ -190,7 +206,7 @@ class Unsigned {
     if (Empty()) return r;
     if (r.Empty()) return *this;
     Unsigned lu;
-    size_t l = std::max(data.size(), r.data.size());
+    const size_t l = std::max(data.size(), r.data.size());
     lu.data.reserve(l);
     uint64_t t64 = 0;
     for (size_t i = 0; i < l; ++i) {
@@ -207,7 +223,7 @@ class Unsigned {
     if (r.Empty()) return *this;
     assert(r <= *this);
     Unsigned lu;
-    size_t l = data.size();
+    const size_t l = data.size();
     lu.data.reserve(l);
     int64_t i64 = 0;
     for (size_t i = 0; i < l; ++i) {
@@ -284,7 +300,7 @@ class Unsigned {
     ShiftBlocksRight(ubits / 32);
     ubits %= 32;
     if (ubits && !Empty()) {
-      size_t tail = data.back() >> (32 - ubits);
+      const size_t tail = data.back() >> (32 - ubits);
       for (size_t i = Size() - 1; i; --i) {
         data[i] = (data[i] << ubits) | (data[i - 1] >> (32 - ubits));
       }
@@ -316,7 +332,7 @@ class Unsigned {
     assert(!r.Empty());
     if (Empty()) return Unsigned();
     Unsigned tl(*this), tr(r), lu;
-    size_t total_shift = 1 + std::max(Size(), r.Size()) - r.Size();
+    const size_t total_shift = 1 + std::max(Size(), r.Size()) - r.Size();
     tr.ShiftBlocksRight(total_shift);
     for (size_t i = 0; i < 32 * total_shift; ++i) {
       lu.ShiftBitsRight(1);
@@ -333,7 +349,7 @@ class Unsigned {
     assert(!r.Empty());
     if (Empty()) return Unsigned();
     Unsigned tl(*this), tr(r);
-    size_t total_shift = 1 + std::max(Size(), r.Size()) - r.Size();
+    const size_t total_shift = 1 + std::max(Size(), r.Size()) - r.Size();
     tr.ShiftBlocksRight(total_shift);
     for (size_t i = 0; i < 32 * total_shift; ++i) {
       tr.ShiftBitsLeft(1);

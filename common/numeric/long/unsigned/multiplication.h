@@ -45,15 +45,15 @@ inline Unsigned SqrFFT(const Unsigned& a) {
   thread_local TFFT1 fft1(maxn);
   thread_local TFFT2 fft2(maxn);
   assert(4 * a.Size() <= maxn);
-  auto r1 = fft1.Convolution(hidden::MultFFTConvert<TModular1>(a));
-  auto r2 = fft2.Convolution(hidden::MultFFTConvert<TModular2>(a));
+  const auto r1 = fft1.Convolution(hidden::MultFFTConvert<TModular1>(a));
+  const auto r2 = fft2.Convolution(hidden::MultFFTConvert<TModular2>(a));
   assert(r1.size() == r2.size());
   uint64_t t64 = 0;
   Unsigned::TData v(r1.size() / 2, 0);
   for (size_t i = 0; i < r1.size(); ++i) {
     t64 += MergeRemainders<modular::TArithmetic_P32U>(
         TModular1::GetMod(), r1[i].Get(), TModular2::GetMod(), r2[i].Get());
-    uint32_t t16 = uint32_t(t64) & mask16;
+    const uint32_t t16 = uint32_t(t64) & mask16;
     v[i / 2] += (i % 2) ? (t16 << 16) : t16;
     t64 >>= 16;
   }
@@ -72,17 +72,17 @@ inline Unsigned MultFFT(const Unsigned& a, const Unsigned& b) {
   thread_local TFFT1 fft1(maxn);
   thread_local TFFT2 fft2(maxn);
   assert(2 * (a.Size() + b.Size()) <= maxn);
-  auto r1 = fft1.Convolution(hidden::MultFFTConvert<TModular1>(a),
-                             hidden::MultFFTConvert<TModular1>(b));
-  auto r2 = fft2.Convolution(hidden::MultFFTConvert<TModular2>(a),
-                             hidden::MultFFTConvert<TModular2>(b));
+  const auto r1 = fft1.Convolution(hidden::MultFFTConvert<TModular1>(a),
+                                   hidden::MultFFTConvert<TModular1>(b));
+  const auto r2 = fft2.Convolution(hidden::MultFFTConvert<TModular2>(a),
+                                   hidden::MultFFTConvert<TModular2>(b));
   assert(r1.size() == r2.size());
   uint64_t t64 = 0;
   Unsigned::TData v(r1.size() / 2, 0);
   for (size_t i = 0; i < r1.size(); ++i) {
     t64 += MergeRemainders<modular::TArithmetic_P32U>(
         TModular1::GetMod(), r1[i].Get(), TModular2::GetMod(), r2[i].Get());
-    uint32_t t16 = uint32_t(t64) & mask16;
+    const uint32_t t16 = uint32_t(t64) & mask16;
     v[i / 2] += (i % 2) ? (t16 << 16) : t16;
     t64 >>= 16;
   }
@@ -102,11 +102,11 @@ inline Unsigned Mult(const Unsigned& a, const Unsigned& b) {
 }
 
 inline Unsigned operator*(const Unsigned& l, const Unsigned& r) {
-  return numeric::nlong::Mult(l, r);
+  return Mult(l, r);
 }
 
 inline Unsigned& operator*=(Unsigned& l, const Unsigned& r) {
-  l = numeric::nlong::Mult(l, r);
+  l = Mult(l, r);
   return l;
 }
 }  // namespace nlong

@@ -38,7 +38,7 @@ inline std::ostream& operator<<(std::ostream& s, const Signed& ls) {
 }
 
 inline void Write(const Signed& ls, bool add_eod = true, unsigned base = 10) {
-  std::string s = ToString(ls, base);
+  const std::string s = ToString(ls, base);
   std::cout << s;
   if (add_eod) std::cout << std::endl;
 }

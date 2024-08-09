@@ -5,11 +5,10 @@
 #include <vector>
 
 namespace numeric {
-template <class TTValue, bool positive = false>
+template <class TValue, bool positive = false>
 class Bernoulli {
  public:
-  using TValue = TTValue;
-  const TValue zero = TValue(0), one = TValue(1);
+  static constexpr TValue zero = TValue(0), one = TValue(1);
 
  protected:
   std::vector<TValue> bernoulli, binomial, binomial_temp, inverted;
@@ -21,7 +20,7 @@ class Bernoulli {
     bernoulli.clear();
     binomial.clear();
     inverted.clear();
-    TValue half = one / TValue(2);
+    constexpr TValue half = one / TValue(2);
     bernoulli.push_back(one);
     bernoulli.push_back(positive ? half : -half);
     binomial.push_back(one);
@@ -32,7 +31,7 @@ class Bernoulli {
   }
 
   constexpr void CalcNext() {
-    unsigned m = unsigned(bernoulli.size());
+    const unsigned m = unsigned(bernoulli.size());
     assert(binomial.size() == m);
     binomial_temp.swap(binomial);
     binomial_temp.push_back(zero);

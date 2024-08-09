@@ -19,10 +19,13 @@ class LogDouble {
   }
 
   constexpr LogDouble() : value(log0) {}
+
   constexpr LogDouble(double x) { value = safe_log(x); }
 
   constexpr double Get() const { return exp(value); }
+
   constexpr double GetLog() const { return value; }
+
   constexpr void SetLog(double log_x) { value = log_x; }
 
   constexpr static LogDouble MakeLog(double log_x) {
@@ -32,6 +35,7 @@ class LogDouble {
   }
 
   constexpr bool operator<(const LogDouble& r) const { return value < r.value; }
+
   constexpr bool operator<=(const LogDouble& r) const {
     return !(r.value < value);
   }
@@ -59,8 +63,8 @@ class LogDouble {
   constexpr LogDouble operator+(const LogDouble& r) const {
     if (value == log0) return r;
     if (r.value == log0) return *this;
-    double v1 = std::max(value, r.value);
-    double v2 = std::min(value, r.value);
+    const double v1 = std::max(value, r.value);
+    const double v2 = std::min(value, r.value);
     return MakeLog(v1 + log(1.0 + exp(v2 - v1)));
   }
 

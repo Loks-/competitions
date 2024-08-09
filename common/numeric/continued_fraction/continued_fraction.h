@@ -71,9 +71,9 @@ class ContinuedFraction {
   }
 
   constexpr bool operator<(const ContinuedFraction& r) const {
-    unsigned ls = Size(), rs = r.Size(), s = std::min(ls, rs);
+    const unsigned ls = Size(), rs = r.Size(), s = std::min(ls, rs);
     for (unsigned i = 0; i < s; ++i) {
-      int64_t d = cf[i] - r.cf[i];
+      const int64_t d = cf[i] - r.cf[i];
       if (d) return ((i & 1) == 0) == (d < 0);
     }
     if (ls == rs) return false;
