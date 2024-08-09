@@ -14,32 +14,34 @@ constexpr Signed MultBase(const Signed& a, const Signed& b) {
                 MultBase(a.GetUnsigned(), b.GetUnsigned()));
 }
 
-template <unsigned maxn = (1u << 16)>
+template <unsigned log2_maxn = 16>
 inline Signed SqrFFT(const Signed& a) {
-  return Signed(SqrFFT<maxn>(a.GetUnsigned()));
+  return Signed(SqrFFT<log2_maxn>(a.GetUnsigned()));
 }
 
-template <unsigned maxn = (1u << 16)>
+template <unsigned log2_maxn = 16>
 inline Signed MultFFT(const Signed& a, const Signed& b) {
   return Signed(a.Sign() == b.Sign(),
-                MultFFT<maxn>(a.GetUnsigned(), b.GetUnsigned()));
+                MultFFT<log2_maxn>(a.GetUnsigned(), b.GetUnsigned()));
 }
 
-template <unsigned maxn = (1u << 16)>
+template <unsigned log2_maxn = 16>
 inline Signed Sqr(const Signed& a) {
-  return Signed(Sqr<maxn>(a.GetUnsigned()));
+  return Signed(Sqr<log2_maxn>(a.GetUnsigned()));
 }
 
-template <unsigned maxn = (1u << 16)>
+template <unsigned log2_maxn = 16>
 inline Signed Mult(const Signed& a, const Signed& b) {
   return Signed(a.Sign() == b.Sign(),
-                Mult<maxn>(a.GetUnsigned(), b.GetUnsigned()));
+                Mult<log2_maxn>(a.GetUnsigned(), b.GetUnsigned()));
 }
 
-inline Signed operator*(const Signed& l, const Signed& r) { return Mult(l, r); }
+inline Signed operator*(const Signed& l, const Signed& r) {
+  return Mult<16>(l, r);
+}
 
 inline Signed& operator*=(Signed& l, const Signed& r) {
-  l = Mult(l, r);
+  l = Mult<16>(l, r);
   return l;
 }
 }  // namespace nlong

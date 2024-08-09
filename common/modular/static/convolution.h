@@ -20,20 +20,19 @@ constexpr std::vector<TModularNew> ConvolutionFFTChangeModular(
 }
 }  // namespace hidden
 
-// Max supported length for a is 2^24.
-template <class TModular, unsigned maxn = (1u << 16)>
+// Max supported length for a is 2^25.
+template <class TModular, unsigned log2_maxn = 16>
 inline std::vector<TModular> ConvolutionFFT(const std::vector<TModular>& a) {
   static_assert(TModular::IsModPrime() && TModular::IsMod32Bits());
+  static_assert(log2_maxn <= 26);
   using TModularA = modular::TArithmetic_P32U;
-  using TModular1 = TModular_P32<2013265921>;
-  using TModular2 = TModular_P32<1811939329>;
-  using TModular3 = TModular_P32<1711276033>;
-  using TFFT1 = modular::mstatic::FFT<TModular1>;
-  using TFFT2 = modular::mstatic::FFT<TModular2>;
-  using TFFT3 = modular::mstatic::FFT<TModular3>;
-  thread_local TFFT1 fft1(maxn);
-  thread_local TFFT2 fft2(maxn);
-  thread_local TFFT3 fft3(maxn);
+  using TModular1 = TModular_P32<2013265921>;  // 2^27*3*5 + 1
+  using TModular2 = TModular_P32<1811939329>;  // 2^26*3^2 + 1
+  using TModular3 = TModular_P32<469762049>;   // 2^26*7 + 1
+  constexpr uint32_t maxn = (1u << log2_maxn);
+  thread_local modular::mstatic::FFT<TModular1> fft1(maxn);
+  thread_local modular::mstatic::FFT<TModular2> fft2(maxn);
+  thread_local modular::mstatic::FFT<TModular3> fft3(maxn);
   uint64_t p1 = TModular1::GetMod(), p2 = TModular2::GetMod(),
            p3 = TModular3::GetMod(), p12 = p1 * p2, p12m3 = p12 % p3;
   assert(2 * a.size() <= maxn);
@@ -52,21 +51,20 @@ inline std::vector<TModular> ConvolutionFFT(const std::vector<TModular>& a) {
   return v;
 }
 
-// Max supported length for (a + b) is 2^25.
-template <class TModular, unsigned maxn = (1u << 16)>
+// Max supported length for (a + b) is 2^26.
+template <class TModular, unsigned log2_maxn = 16>
 inline std::vector<TModular> ConvolutionFFT(const std::vector<TModular>& a,
                                             const std::vector<TModular>& b) {
   static_assert(TModular::IsModPrime() && TModular::IsMod32Bits());
+  static_assert(log2_maxn <= 26);
   using TModularA = modular::TArithmetic_P32U;
-  using TModular1 = TModular_P32<2013265921>;
-  using TModular2 = TModular_P32<1811939329>;
-  using TModular3 = TModular_P32<1711276033>;
-  using TFFT1 = modular::mstatic::FFT<TModular1>;
-  using TFFT2 = modular::mstatic::FFT<TModular2>;
-  using TFFT3 = modular::mstatic::FFT<TModular3>;
-  thread_local TFFT1 fft1(maxn);
-  thread_local TFFT2 fft2(maxn);
-  thread_local TFFT3 fft3(maxn);
+  using TModular1 = TModular_P32<2013265921>;  // 2^27*3*5 + 1
+  using TModular2 = TModular_P32<1811939329>;  // 2^26*3^2 + 1
+  using TModular3 = TModular_P32<469762049>;   // 2^26*7 + 1
+  constexpr uint32_t maxn = (1u << log2_maxn);
+  thread_local modular::mstatic::FFT<TModular1> fft1(maxn);
+  thread_local modular::mstatic::FFT<TModular2> fft2(maxn);
+  thread_local modular::mstatic::FFT<TModular3> fft3(maxn);
   uint64_t p1 = TModular1::GetMod(), p2 = TModular2::GetMod(),
            p3 = TModular3::GetMod(), p12 = p1 * p2, p12m3 = p12 % p3;
   assert(a.size() + b.size() <= maxn);
@@ -88,18 +86,18 @@ inline std::vector<TModular> ConvolutionFFT(const std::vector<TModular>& a,
   return v;
 }
 
-template <class TModular, unsigned maxn = (1u << 16)>
+template <class TModular, unsigned log2_maxn = 16>
 inline std::vector<TModular> Convolution(const std::vector<TModular>& a) {
   return (a.size() < 100) ? numeric::ConvolutionBase(a)
-                          : ConvolutionFFT<TModular, maxn>(a);
+                          : ConvolutionFFT<TModular, log2_maxn>(a);
 }
 
-template <class TModular, unsigned maxn = (1u << 16)>
+template <class TModular, unsigned log2_maxn = 16>
 inline std::vector<TModular> Convolution(const std::vector<TModular>& a,
                                          const std::vector<TModular>& b) {
   return ((a.size() < 100) || (b.size() < 100))
              ? numeric::ConvolutionBase(a, b)
-             : ConvolutionFFT<TModular, maxn>(a, b);
+             : ConvolutionFFT<TModular, log2_maxn>(a, b);
 }
 }  // namespace mstatic
 }  // namespace modular

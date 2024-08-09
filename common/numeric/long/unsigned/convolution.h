@@ -36,7 +36,7 @@ constexpr std::vector<Unsigned> ConvolutionU2V(const Unsigned& a,
 }
 }  //  namespace hidden
 
-template <unsigned maxn = (1u << 16)>
+template <unsigned log2_maxn = 16>
 inline std::vector<Unsigned> Convolution(const std::vector<Unsigned>& a,
                                          const std::vector<Unsigned>& b) {
   unsigned max_size_a = 0, max_size_b = 0;
@@ -44,23 +44,23 @@ inline std::vector<Unsigned> Convolution(const std::vector<Unsigned>& a,
   for (auto& bi : b) max_size_b = std::max<unsigned>(max_size_b, bi.Size());
   if ((max_size_a == 0) || (max_size_b == 0)) return {};
   const unsigned x_size = max_size_a + max_size_b + 1;
-  assert(x_size * (a.size() + b.size()) <= maxn);
-  const auto r = Mult<maxn>(hidden::ConvolutionV2U(a, x_size),
-                            hidden::ConvolutionV2U(b, x_size));
+  assert(x_size * (a.size() + b.size()) <= (1u << log2_maxn));
+  const auto r = Mult<log2_maxn>(hidden::ConvolutionV2U(a, x_size),
+                                 hidden::ConvolutionV2U(b, x_size));
   const auto vr = hidden::ConvolutionU2V(r, x_size);
   assert(vr.size() == a.size() + b.size() - 1);
   return vr;
 }
 
-template <unsigned maxn = (1u << 16)>
+template <unsigned log2_maxn = 16>
 inline std::vector<Unsigned> ConvolutionN(const std::vector<Unsigned>& a,
                                           unsigned n) {
   unsigned max_size_a = 0;
   for (auto& ai : a) max_size_a = std::max<unsigned>(max_size_a, ai.Size());
   if (max_size_a == 0) return {};
   const unsigned x_size = n * max_size_a + n / 16 + 1;
-  assert(x_size * a.size() <= maxn);
-  const auto r = PowU<maxn>(hidden::ConvolutionV2U(a, x_size), n);
+  assert(x_size * a.size() <= (1u << log2_maxn));
+  const auto r = PowU<log2_maxn>(hidden::ConvolutionV2U(a, x_size), n);
   const auto vr = hidden::ConvolutionU2V(r, x_size);
   assert(vr.size() == (a.size() - 1) * n + 1);
   return vr;

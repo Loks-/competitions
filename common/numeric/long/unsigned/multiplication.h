@@ -35,15 +35,14 @@ constexpr std::vector<TModular> MultFFTConvert(const Unsigned& a) {
 }  // namespace hidden
 
 // Max supported length for a is 2^24.
-template <unsigned maxn = (1u << 16)>
+template <unsigned log2_maxn = 16>
 inline Unsigned SqrFFT(const Unsigned& a) {
-  constexpr uint32_t mask16 = (1u << 16) - 1;
-  using TModular1 = TModular_P32<2013265921>;
-  using TModular2 = TModular_P32<1811939329>;
-  using TFFT1 = modular::mstatic::FFT<TModular1>;
-  using TFFT2 = modular::mstatic::FFT<TModular2>;
-  thread_local TFFT1 fft1(maxn);
-  thread_local TFFT2 fft2(maxn);
+  static_assert(log2_maxn <= 26);
+  constexpr uint32_t mask16 = (1u << 16) - 1, maxn = (1u << log2_maxn);
+  using TModular1 = TModular_P32<2013265921>;  // 2^27*3*5 + 1
+  using TModular2 = TModular_P32<1811939329>;  // 2^26*3^2 + 1
+  thread_local modular::mstatic::FFT<TModular1> fft1(maxn);
+  thread_local modular::mstatic::FFT<TModular2> fft2(maxn);
   assert(4 * a.Size() <= maxn);
   const auto r1 = fft1.Convolution(hidden::MultFFTConvert<TModular1>(a));
   const auto r2 = fft2.Convolution(hidden::MultFFTConvert<TModular2>(a));
@@ -62,15 +61,14 @@ inline Unsigned SqrFFT(const Unsigned& a) {
 }
 
 // Max supported length for (a*b) is 2^25.
-template <unsigned maxn = (1u << 16)>
+template <unsigned log2_maxn = 16>
 inline Unsigned MultFFT(const Unsigned& a, const Unsigned& b) {
-  constexpr uint32_t mask16 = (1u << 16) - 1;
-  using TModular1 = TModular_P32<2013265921>;
-  using TModular2 = TModular_P32<1811939329>;
-  using TFFT1 = modular::mstatic::FFT<TModular1>;
-  using TFFT2 = modular::mstatic::FFT<TModular2>;
-  thread_local TFFT1 fft1(maxn);
-  thread_local TFFT2 fft2(maxn);
+  static_assert(log2_maxn <= 26);
+  constexpr uint32_t mask16 = (1u << 16) - 1, maxn = (1u << log2_maxn);
+  using TModular1 = TModular_P32<2013265921>;  // 2^27*3*5 + 1
+  using TModular2 = TModular_P32<1811939329>;  // 2^26*3^2 + 1
+  thread_local modular::mstatic::FFT<TModular1> fft1(maxn);
+  thread_local modular::mstatic::FFT<TModular2> fft2(maxn);
   assert(2 * (a.Size() + b.Size()) <= maxn);
   const auto r1 = fft1.Convolution(hidden::MultFFTConvert<TModular1>(a),
                                    hidden::MultFFTConvert<TModular1>(b));
@@ -90,23 +88,23 @@ inline Unsigned MultFFT(const Unsigned& a, const Unsigned& b) {
   return Unsigned(v);
 }
 
-template <unsigned maxn = (1u << 16)>
+template <unsigned log2_maxn = 16>
 inline Unsigned Sqr(const Unsigned& a) {
-  return (a.Size() < 100) ? SqrBase(a) : SqrFFT<maxn>(a);
+  return (a.Size() < 100) ? SqrBase(a) : SqrFFT<log2_maxn>(a);
 }
 
-template <unsigned maxn = (1u << 16)>
+template <unsigned log2_maxn = 16>
 inline Unsigned Mult(const Unsigned& a, const Unsigned& b) {
   return ((a.Size() < 100) || (b.Size() < 100)) ? MultBase(a, b)
-                                                : MultFFT<maxn>(a, b);
+                                                : MultFFT<log2_maxn>(a, b);
 }
 
 inline Unsigned operator*(const Unsigned& l, const Unsigned& r) {
-  return Mult(l, r);
+  return Mult<16>(l, r);
 }
 
 inline Unsigned& operator*=(Unsigned& l, const Unsigned& r) {
-  l = Mult(l, r);
+  l = Mult<16>(l, r);
   return l;
 }
 }  // namespace nlong
