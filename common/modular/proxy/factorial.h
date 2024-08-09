@@ -25,7 +25,7 @@ class Factorial {
   constexpr const TProxy& GetProxy() const { return proxy; }
 
   constexpr void Adjust(unsigned n) {
-    unsigned k = vf.size();
+    const unsigned k = vf.size();
     if (k > n) return;
     vf.resize(n + 1);
     for (unsigned i = k; i <= n; ++i)

@@ -14,8 +14,8 @@ class Fibonacci {
   constexpr Fibonacci(const TModular& v0, const TModular& v1) : vf({v0, v1}) {}
 
   constexpr void Adjust(unsigned n) {
-    unsigned i = unsigned(vf.size());
-    for (; i <= n; ++i) vf.push_back(vf[i - 2] + vf[i - 1]);
+    for (unsigned i = unsigned(vf.size()); i <= n; ++i)
+      vf.push_back(vf[i - 2] + vf[i - 1]);
   }
 
   constexpr TModular Get(unsigned n) {

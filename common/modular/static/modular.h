@@ -13,9 +13,9 @@ class Modular {
   using TSelf = Modular<mod, is_prime, is_32bit>;
 
  public:
-  consteval static bool IsModPrime() { return is_prime; }
-  consteval static bool IsMod32Bits() { return is_32bit; }
-  consteval static TValue GetMod() { return mod; }
+  static consteval bool IsModPrime() { return is_prime; }
+  static consteval bool IsMod32Bits() { return is_32bit; }
+  static consteval TValue GetMod() { return mod; }
 
  protected:
   TValue value;
@@ -82,7 +82,9 @@ class Modular {
   constexpr TSelf PowS(int64_t pow) const { return TBase::PowS(value, pow); }
 
   constexpr bool operator<(const TSelf& r) const { return value < r.value; }
+
   constexpr bool operator==(const TSelf& r) const { return value == r.value; }
+
   constexpr bool operator!=(const TSelf& r) const { return value != r.value; }
 };
 }  // namespace mstatic

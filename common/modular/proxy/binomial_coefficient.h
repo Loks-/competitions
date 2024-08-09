@@ -19,28 +19,28 @@ class BinomialCoefficient {
   using TPrimeFactorialProxy = Factorial<TModularProxy_P32U, true, false>;
   using TPrimePowerFactorialProxy = Factorial<TModularProxy_C32U, true, true>;
 
-  constexpr static uint64_t GetPPower(uint64_t n, uint64_t p) {
+  static constexpr uint64_t GetPPower(uint64_t n, uint64_t p) {
     uint64_t s = 0;
     for (n /= p; n; n /= p) s += n;
     return s;
   }
 
-  constexpr static uint64_t GetPPower(uint64_t n, uint64_t k, uint64_t p) {
+  static constexpr uint64_t GetPPower(uint64_t n, uint64_t k, uint64_t p) {
     assert(n >= k);
     return GetPPower(n, p) - GetPPower(k, p) - GetPPower(n - k, p);
   }
 
-  constexpr static uint64_t GetPPower(uint64_t n, uint64_t k, uint64_t l,
+  static constexpr uint64_t GetPPower(uint64_t n, uint64_t k, uint64_t l,
                                       uint64_t p) {
     assert(n >= k);
     return GetPPower(n, p) - GetPPower(k, p) - GetPPower(l, p);
   }
 
-  constexpr static uint64_t Apply(uint64_t n, uint64_t k,
+  static constexpr uint64_t Apply(uint64_t n, uint64_t k,
                                   TPrimeFactorialProxy& fp) {
     const auto& mp = fp.GetProxy();
-    uint64_t p = mp.GetMod();
-    uint64_t ppower = GetPPower(n, k, p);
+    const uint64_t p = mp.GetMod();
+    const uint64_t ppower = GetPPower(n, k, p);
     uint64_t r = ((ppower & 1) ? p - 1 : 1);
     uint64_t l = n - k;
     for (; n;) {
@@ -54,11 +54,11 @@ class BinomialCoefficient {
     return r;
   }
 
-  constexpr static uint64_t Apply(uint64_t n, uint64_t k, uint64_t p,
+  static constexpr uint64_t Apply(uint64_t n, uint64_t k, uint64_t p,
                                   unsigned q, TPrimePowerFactorialProxy& fp) {
     const auto& mp = fp.GetProxy();
-    uint64_t pq = mp.GetMod();
-    uint64_t ppower_adj =
+    const uint64_t pq = mp.GetMod();
+    const uint64_t ppower_adj =
         GetPPower((n * p) / pq, (k * p) / pq, ((n - k) * p) / pq, p);
     uint64_t r = (((p == 2) && (q >= 3)) ? 1 : ((ppower_adj & 1) ? pq - 1 : 1));
     uint64_t l = n - k;
@@ -95,18 +95,18 @@ class BinomialCoefficient {
     if (n < k) return 0;
     uint64_t m = 1, mr = 0;
     for (auto& fp : factorial_proxies_prime) {
-      uint64_t p = fp.GetProxy().GetMod();
-      uint64_t pr = ((GetPPower(n, k, p) > 0) ? 0 : Apply(n, k, fp));
+      const uint64_t p = fp.GetProxy().GetMod();
+      const uint64_t pr = ((GetPPower(n, k, p) > 0) ? 0 : Apply(n, k, fp));
       mr = MergeRemainders<TArithmetic_P32U>(m, mr, p, pr);
       m *= p;
     }
     for (auto& t : factorial_proxies_composite) {
-      uint64_t p = std::get<0>(t);
-      unsigned q = std::get<1>(t);
+      const uint64_t p = std::get<0>(t);
+      const unsigned q = std::get<1>(t);
       TPrimePowerFactorialProxy& fp = std::get<2>(t);
       const auto& mp = fp.GetProxy();
-      uint64_t pq = mp.GetMod();
-      uint64_t ppower = GetPPower(n, k, p);
+      const uint64_t pq = mp.GetMod();
+      const uint64_t ppower = GetPPower(n, k, p);
       uint64_t pqr = Apply(n, k, p, q, fp);
       if (ppower) pqr = mp.Mult(pqr, mp.PowU(p, ppower));
       mr = MergeRemainders<TArithmetic_C32U>(m, mr, pq, pqr);

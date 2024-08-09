@@ -9,75 +9,84 @@ namespace modular {
 // Most functions are O(1).
 // Division and Inverse are O(log (mod)).
 // Pow is O(log (pow)).
-template <bool is_prime = true, bool is_32bit = true, class _TValue = uint64_t>
+template <bool is_prime = true, bool is_32bit = true, class TValue = uint64_t>
 class Arithmetic {
  public:
-  using TValue = _TValue;
   using TSelf = Arithmetic<is_prime, is_32bit, TValue>;
 
-  consteval static bool IsModPrime() { return is_prime; }
-  consteval static bool IsMod32Bits() { return is_32bit; }
+  static consteval bool IsModPrime() { return is_prime; }
+  static consteval bool IsMod32Bits() { return is_32bit; }
 
-  constexpr static TValue ApplyU(uint64_t value, TValue mod) {
+ public:
+  static constexpr TValue ApplyU(uint64_t value, TValue mod) {
     return TValue(value % uint64_t(mod));
   }
 
-  constexpr static TValue ApplyS(int64_t value, TValue mod) {
-    int64_t smod = int64_t(mod);
+  static constexpr TValue ApplyS(int64_t value, TValue mod) {
+    const int64_t smod = int64_t(mod);
     return TValue(((value % smod) + smod) % smod);
   }
 
  protected:
-  constexpr static TValue ApplyTI(TValue value, TValue mod,
+  static constexpr TValue ApplyTI(TValue value, TValue mod,
                                   TFakeType<uint64_t>) {
     return ApplyU(value, mod);
   }
 
-  constexpr static TValue ApplyTI(TValue value, TValue mod,
+  static constexpr TValue ApplyTI(TValue value, TValue mod,
                                   TFakeType<int64_t>) {
     return ApplyS(value, mod);
   }
 
  public:
-  constexpr static TValue ApplyT(TValue value, TValue mod) {
+  static constexpr TValue ApplyT(TValue value, TValue mod) {
     return ApplyTI(value, mod, TFakeType<TValue>());
   }
 
-  constexpr static TValue Add(TValue lvalue, TValue rvalue, TValue mod) {
+  static constexpr TValue Add(TValue lvalue, TValue rvalue, TValue mod) {
     return (lvalue + rvalue) % mod;
   }
 
-  constexpr static TValue AddSafe(TValue lvalue, TValue rvalue, TValue mod) {
+  static constexpr TValue AddSafe(TValue lvalue, TValue rvalue, TValue mod) {
     return ApplyT(lvalue + rvalue, mod);
   }
 
-  constexpr static TValue Sub(TValue lvalue, TValue rvalue, TValue mod) {
+  static constexpr TValue Sub(TValue lvalue, TValue rvalue, TValue mod) {
     return (lvalue + mod - rvalue) % mod;
   }
 
-  constexpr static TValue SubSafe(TValue lvalue, TValue rvalue, TValue mod) {
+  static constexpr TValue SubSafe(TValue lvalue, TValue rvalue, TValue mod) {
     return ApplyT(lvalue + mod - ApplyT(rvalue, mod), mod);
   }
 
-  constexpr static TValue Minus(TValue value, TValue mod) {
+  static constexpr TValue Minus(TValue value, TValue mod) {
     return (mod - value) % mod;
   }
 
-  constexpr static TValue MinusSafe(TValue value, TValue mod) {
+  static constexpr TValue MinusSafe(TValue value, TValue mod) {
     return (mod - (value % mod)) % mod;
   }
 
-  constexpr static TValue Mult_32(TValue lvalue, TValue rvalue, TValue mod) {
+  static constexpr TValue Mult_32(TValue lvalue, TValue rvalue, TValue mod) {
     return (lvalue * rvalue) % mod;
   }
 
-  constexpr static TValue MultSafe_32(TValue lvalue, TValue rvalue,
+  static constexpr TValue MultSafe_32(TValue lvalue, TValue rvalue,
                                       TValue mod) {
     return ApplyT((lvalue % mod) * (rvalue % mod), mod);
   }
 
+  static constexpr TValue Sqr_32(TValue value, TValue mod) {
+    return (value * value) % mod;
+  }
+
+  static constexpr TValue SqrSafe_32(TValue value, TValue rvalue, TValue mod) {
+    const auto value_adj = value % mod;
+    return (value_adj * value_adj) % mod;
+  }
+
  protected:
-  constexpr static int64_t Mult_64S(int64_t lvalue, int64_t rvalue,
+  static constexpr int64_t Mult_64S(int64_t lvalue, int64_t rvalue,
                                     int64_t mod) {
 #ifdef _INT128_SUPPORTED_
     __int128 a128 = lvalue;
@@ -86,8 +95,8 @@ class Arithmetic {
     a128 %= mod;
     return int64t_t(a128);
 #else
-    long double invm = ((long double)(1.0)) / mod;
-    int64_t div = int64_t(invm * lvalue * rvalue);
+    const long double invm = ((long double)(1.0)) / mod;
+    const int64_t div = int64_t(invm * lvalue * rvalue);
     int64_t res = (lvalue * rvalue) - mod * div;
     while (res < 0) res += mod;
     while (res >= mod) res -= mod;
@@ -96,147 +105,172 @@ class Arithmetic {
   }
 
  public:
-  constexpr static TValue Mult_64(TValue lvalue, TValue rvalue, TValue mod) {
+  static constexpr TValue Mult_64(TValue lvalue, TValue rvalue, TValue mod) {
     return TValue(Mult_64S(int64_t(lvalue), int64_t(rvalue), int64_t(mod)));
   }
 
-  constexpr static TValue MultSafe_64(TValue lvalue, TValue rvalue,
+  static constexpr TValue MultSafe_64(TValue lvalue, TValue rvalue,
                                       TValue mod) {
     return Mult_64(lvalue % mod, rvalue % mod, mod);
   }
 
+  static constexpr TValue Sqr_64(TValue value, TValue mod) {
+    return Mult_64(value, value, mod);
+  }
+
+  static constexpr TValue SqrSafe_64(TValue value, TValue mod) {
+    return Mult_64(value % mod, value % mod, mod);
+  }
+
  protected:
-  constexpr static TValue MultI(TValue lvalue, TValue rvalue, TValue mod,
+  static constexpr TValue MultI(TValue lvalue, TValue rvalue, TValue mod,
                                 TFakeTrue) {
     return Mult_32(lvalue, rvalue, mod);
   }
 
-  constexpr static TValue MultI(TValue lvalue, TValue rvalue, TValue mod,
+  static constexpr TValue MultI(TValue lvalue, TValue rvalue, TValue mod,
                                 TFakeFalse) {
     return Mult_64(lvalue, rvalue, mod);
   }
 
+  static constexpr TValue SqrI(TValue value, TValue mod, TFakeTrue) {
+    return Sqr_32(value, mod);
+  }
+
+  static constexpr TValue SqrI(TValue value, TValue mod, TFakeFalse) {
+    return Sqr_64(value, mod);
+  }
+
  public:
-  constexpr static TValue Mult(TValue lvalue, TValue rvalue, TValue mod) {
+  static constexpr TValue Mult(TValue lvalue, TValue rvalue, TValue mod) {
     return MultI(lvalue, rvalue, mod, TFakeBool<is_32bit>());
   }
 
-  constexpr static TValue MultSafe(TValue lvalue, TValue rvalue, TValue mod) {
+  static constexpr TValue MultSafe(TValue lvalue, TValue rvalue, TValue mod) {
     return Mult(ApplyT(lvalue, mod), ApplyT(rvalue, mod), mod);
   }
 
-  constexpr static TValue Inverse_Prime(TValue value, TValue mod) {
+  static constexpr TValue Sqr(TValue value, TValue mod) {
+    return SqrI(value, mod, TFakeBool<is_32bit>());
+  }
+
+  static constexpr TValue SqrSafe(TValue value, TValue mod) {
+    return Sqr(value % mod, mod);
+  }
+
+  static constexpr TValue Inverse_Prime(TValue value, TValue mod) {
     assert(value != 0);
     return PowU(value, mod - 2, mod);
   }
 
-  constexpr static TValue InverseSafe_Prime(TValue value, TValue mod) {
+  static constexpr TValue InverseSafe_Prime(TValue value, TValue mod) {
     return Inverse_Prime(ApplyT(value, mod), mod);
   }
 
-  constexpr static TValue Div_Prime(TValue lvalue, TValue rvalue, TValue mod) {
+  static constexpr TValue Div_Prime(TValue lvalue, TValue rvalue, TValue mod) {
     return Mult(lvalue, Inverse_Prime(rvalue, mod), mod);
   }
 
-  constexpr static TValue DivSafe_Prime(TValue lvalue, TValue rvalue,
+  static constexpr TValue DivSafe_Prime(TValue lvalue, TValue rvalue,
                                         TValue mod) {
     return Div_Prime(ApplyT(lvalue), ApplyT(rvalue), mod);
   }
 
  protected:
-  constexpr static std::pair<int64_t, int64_t> GCD_Ext(int64_t a, int64_t b) {
+  static constexpr std::pair<int64_t, int64_t> GCD_Ext(int64_t a, int64_t b) {
     if ((a % b) == 0) return std::make_pair<int64_t, int64_t>(0, 1);
-    std::pair<int64_t, int64_t> t = GCD_Ext(b, a % b);
+    const std::pair<int64_t, int64_t> t = GCD_Ext(b, a % b);
     return std::make_pair(t.second, t.first - t.second * (a / b));
   }
 
-  constexpr static TValue Div_CompositeS(int64_t numerator, int64_t denominator,
+  static constexpr TValue Div_CompositeS(int64_t numerator, int64_t denominator,
                                          int64_t mod) {
-    std::pair<int64_t, int64_t> dm_gcd_ext = GCD_Ext(denominator, mod);
-    int64_t dm_gcd = dm_gcd_ext.first * denominator + dm_gcd_ext.second * mod;
+    const std::pair<int64_t, int64_t> dm_gcd_ext = GCD_Ext(denominator, mod);
+    const int64_t dm_gcd =
+        dm_gcd_ext.first * denominator + dm_gcd_ext.second * mod;
     assert((numerator % dm_gcd) == 0);
-    TValue tmod = TValue(mod);
+    const TValue tmod = TValue(mod);
     return Mult(ApplyS(numerator / dm_gcd, tmod),
                 ApplyS(dm_gcd_ext.first, tmod), tmod);
   }
 
  public:
-  constexpr static TValue Div_Composite(TValue numerator, TValue denominator,
+  static constexpr TValue Div_Composite(TValue numerator, TValue denominator,
                                         TValue mod) {
     return Div_CompositeS(int64_t(numerator), int64_t(denominator),
                           int64_t(mod));
   }
 
-  constexpr static TValue DivSafe_Composite(TValue numerator,
+  static constexpr TValue DivSafe_Composite(TValue numerator,
                                             TValue denominator, TValue mod) {
     return Div_Composite(ApplyT(numerator, mod), ApplyT(denominator, mod), mod);
   }
 
-  constexpr static TValue Inverse_Composite(TValue value, TValue mod) {
+  static constexpr TValue Inverse_Composite(TValue value, TValue mod) {
     return Div_Composite(TValue(1), value, mod);
   }
 
-  constexpr static TValue InverseSafe_Composite(TValue value, TValue mod) {
+  static constexpr TValue InverseSafe_Composite(TValue value, TValue mod) {
     return Div_Composite(TValue(1), ApplyT(value, mod), mod);
   }
 
  protected:
-  constexpr static TValue InverseI(TValue value, TValue mod, TFakeTrue) {
+  static constexpr TValue InverseI(TValue value, TValue mod, TFakeTrue) {
     return Inverse_Prime(value, mod);
   }
 
-  constexpr static TValue InverseI(TValue value, TValue mod, TFakeFalse) {
+  static constexpr TValue InverseI(TValue value, TValue mod, TFakeFalse) {
     return Inverse_Composite(value, mod);
   }
 
-  constexpr static TValue DivI(TValue numerator, TValue denominator, TValue mod,
+  static constexpr TValue DivI(TValue numerator, TValue denominator, TValue mod,
                                TFakeTrue) {
     return Div_Prime(numerator, denominator, mod);
   }
 
-  constexpr static TValue DivI(TValue numerator, TValue denominator, TValue mod,
+  static constexpr TValue DivI(TValue numerator, TValue denominator, TValue mod,
                                TFakeFalse) {
     return Div_Composite(numerator, denominator, mod);
   }
 
  public:
-  constexpr static TValue Inverse(TValue value, TValue mod) {
+  static constexpr TValue Inverse(TValue value, TValue mod) {
     return InverseI(value, mod, TFakeBool<is_prime>());
   }
 
-  constexpr static TValue InverseSafe(TValue value, TValue mod) {
+  static constexpr TValue InverseSafe(TValue value, TValue mod) {
     return Inverse(ApplyT(value, mod), mod);
   }
 
-  constexpr static TValue Div(TValue numerator, TValue denominator,
+  static constexpr TValue Div(TValue numerator, TValue denominator,
                               TValue mod) {
     return DivI(numerator, denominator, mod, TFakeBool<is_prime>());
   }
 
-  constexpr static TValue DivSafe(TValue numerator, TValue denominator,
+  static constexpr TValue DivSafe(TValue numerator, TValue denominator,
                                   TValue mod) {
     return Div(ApplyT(numerator, mod), ApplyT(denominator, mod), mod);
   }
 
-  constexpr static TValue PowU(TValue x, uint64_t pow, TValue mod) {
+  static constexpr TValue PowU(TValue x, uint64_t pow, TValue mod) {
     TValue ans = 1;
     for (; pow; pow >>= 1) {
       if (pow & 1) ans = Mult(ans, x, mod);
-      x = Mult(x, x, mod);
+      x = Sqr(x, mod);
     }
     return ans;
   }
 
-  constexpr static TValue PowUSafe(TValue x, uint64_t pow, TValue mod) {
+  static constexpr TValue PowUSafe(TValue x, uint64_t pow, TValue mod) {
     return PowU(ApplyT(x, mod), pow, mod);
   }
 
-  constexpr static TValue PowS(TValue x, int64_t pow, TValue mod) {
+  static constexpr TValue PowS(TValue x, int64_t pow, TValue mod) {
     return (pow < 0) ? PowU(Inverse(x, mod), uint64_t(-pow), mod)
                      : PowU(x, uint64_t(pow), mod);
   }
 
-  constexpr static TValue PowSSafe(TValue x, int64_t pow, TValue mod) {
+  static constexpr TValue PowSSafe(TValue x, int64_t pow, TValue mod) {
     return PowS(ApplyT(x, mod), pow, mod);
   }
 };

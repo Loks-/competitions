@@ -4,10 +4,10 @@
 
 namespace modular {
 namespace proxy {
-template <bool is_prime = true, bool is_32bit = true, class _TValue = uint64_t>
+template <bool is_prime = true, bool is_32bit = true, class TTValue = uint64_t>
 class Proxy {
  public:
-  using TValue = _TValue;
+  using TValue = TTValue;
   using TBase = Arithmetic<is_prime, is_32bit, TValue>;
   using TSelf = Proxy<is_prime, is_32bit, TValue>;
 
@@ -15,8 +15,8 @@ class Proxy {
   TValue mod;
 
  public:
-  consteval static bool IsModPrime() { return is_prime; }
-  consteval static bool IsMod32Bits() { return is_32bit; }
+  static consteval bool IsModPrime() { return is_prime; }
+  static consteval bool IsMod32Bits() { return is_32bit; }
 
   constexpr TValue GetMod() const { return mod; }
 
@@ -64,6 +64,12 @@ class Proxy {
 
   constexpr TValue MultSafe(TValue lvalue, TValue rvalue) const {
     return TBase::MultSafe(lvalue, rvalue, mod);
+  }
+
+  constexpr TValue Sqr(TValue value) const { return TBase::Sqr(value, mod); }
+
+  constexpr TValue SqrSafe(TValue value) const {
+    return TBase::SqrSafe(value, mod);
   }
 
   constexpr TValue Inverse(TValue lvalue) const {

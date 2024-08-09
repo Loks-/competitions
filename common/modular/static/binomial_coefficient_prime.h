@@ -10,10 +10,10 @@ template <class TModular>
 constexpr TModular BinomialCoefficientPrime(uint64_t n, uint64_t k,
                                             Factorial<TModular>& f) {
   if (k > n) return 0;
-  uint64_t p = TModular::GetMod();
+  const uint64_t p = TModular::GetMod();
   TModular r = 1;
   for (; n; n /= p, k /= p) {
-    uint64_t np = n % p, kp = k % p;
+    const uint64_t np = n % p, kp = k % p;
     if (kp > np) return 0;
     r *= f.BinomialCoefficient(unsigned(np), unsigned(kp));
   }

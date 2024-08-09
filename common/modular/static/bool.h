@@ -11,9 +11,9 @@ class Bool {
   using TSelf = Bool;
 
  public:
-  consteval static bool IsModPrime() { return true; }
-  consteval static bool IsMod32Bits() { return true; }
-  consteval static unsigned GetMod() { return 2u; }
+  static consteval bool IsModPrime() { return true; }
+  static consteval bool IsMod32Bits() { return true; }
+  static consteval unsigned GetMod() { return 2u; }
 
  protected:
   TValue value;
@@ -31,8 +31,8 @@ class Bool {
   constexpr explicit Bool(int32_t _value) { SetS(_value); }
   constexpr explicit Bool(int64_t _value) { SetS(_value); }
 
-  consteval static Bool False() { return Bool(false); }
-  consteval static Bool True() { return Bool(true); }
+  static consteval Bool False() { return Bool(false); }
+  static consteval Bool True() { return Bool(true); }
 
   constexpr operator bool() const { return value; }
 
@@ -61,7 +61,7 @@ class Bool {
   }
 
   constexpr TSelf& operator*=(TSelf rvalue) {
-    value &= rvalue.value;
+    value = (value && rvalue.value);
     return *this;
   }
 

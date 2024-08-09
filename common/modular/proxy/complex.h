@@ -29,33 +29,38 @@ class Complex {
   constexpr void SetMod(TValue mod) { proxy.SetMod(mod); }
 
   constexpr TComplex Add(const TComplex& l, const TComplex& r) const {
-    TComplex t = l + r;
+    const TComplex t = l + r;
     return TComplex(proxy.ApplyT(t.re), proxy.ApplyT(t.im));
   }
 
   constexpr TComplex Sub(const TComplex& l, const TComplex& r) const {
-    TComplex t = l - r;
+    const TComplex t = l - r;
     return TComplex(proxy.ApplyT(t.re), proxy.ApplyT(t.im));
   }
 
   constexpr TComplex Minus(const TComplex& l) const {
-    TComplex t = -l;
+    const TComplex t = -l;
     return TComplex(proxy.ApplyT(t.re), proxy.ApplyT(t.im));
   }
 
   constexpr TComplex Mult(const TComplex& l, const TComplex& r) const {
-    TComplex t = l * r;
+    const TComplex t = l * r;
+    return TComplex(proxy.ApplyT(t.re), proxy.ApplyT(t.im));
+  }
+
+  constexpr TComplex Sqr(const TComplex& l) const {
+    const TComplex t = l * l;
     return TComplex(proxy.ApplyT(t.re), proxy.ApplyT(t.im));
   }
 
   constexpr TComplex Div(const TComplex& l, const TComplex& r) const {
-    TComplex t = Mult(l, r.Conjugate());
-    TValue x = proxy.ApplyT(r.AbsSquared());
+    const TComplex t = Mult(l, r.Conjugate());
+    const TValue x = proxy.ApplyT(r.AbsSquared());
     return TComplex(proxy.Div(t.re, x), proxy.Div(t.im, x));
   }
 
   constexpr TComplex Inverse(const TComplex& l) const {
-    TValue x = proxy.ApplyT(l.AbsSquared());
+    const TValue x = proxy.ApplyT(l.AbsSquared());
     return TComplex(proxy.Div(l.re, x), proxy.Div(proxy.Minus(l.im), x));
   }
 
@@ -63,7 +68,7 @@ class Complex {
     TComplex ans = TComplex(1, 0);
     for (; pow; pow >>= 1) {
       if (pow & 1) ans = Mult(ans, x);
-      x = Mult(x, x);
+      x = Sqr(x);
     }
     return ans;
   }

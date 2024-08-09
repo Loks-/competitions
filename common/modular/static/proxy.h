@@ -12,83 +12,89 @@ class Proxy {
   using TSelf = Proxy<mod, is_prime, is_32bit>;
 
  public:
-  consteval static bool IsModPrime() { return is_prime; }
-  consteval static bool IsMod32Bits() { return is_32bit; }
-  consteval static TValue GetMod() { return mod; }
+  static consteval bool IsModPrime() { return is_prime; }
+  static consteval bool IsMod32Bits() { return is_32bit; }
+  static consteval TValue GetMod() { return mod; }
 
-  constexpr static TValue ApplyU(uint64_t value) {
+  static constexpr TValue ApplyU(uint64_t value) {
     return TBase::ApplyU(value, mod);
   }
 
-  constexpr static TValue ApplyS(int64_t value) {
+  static constexpr TValue ApplyS(int64_t value) {
     return TBase::ApplyS(value, mod);
   }
 
-  constexpr static TValue ApplyT(TValue value) {
+  static constexpr TValue ApplyT(TValue value) {
     return TBase::ApplyT(value, mod);
   }
 
-  constexpr static TValue Add(TValue lvalue, TValue rvalue) {
+  static constexpr TValue Add(TValue lvalue, TValue rvalue) {
     return TBase::Add(lvalue, rvalue, mod);
   }
 
-  constexpr static TValue AddSafe(TValue lvalue, TValue rvalue) {
+  static constexpr TValue AddSafe(TValue lvalue, TValue rvalue) {
     return TBase::AddSafe(lvalue, rvalue, mod);
   }
 
-  constexpr static TValue Sub(TValue lvalue, TValue rvalue) {
+  static constexpr TValue Sub(TValue lvalue, TValue rvalue) {
     return TBase::Sub(lvalue, rvalue, mod);
   }
 
-  constexpr static TValue SubSafe(TValue lvalue, TValue rvalue) {
+  static constexpr TValue SubSafe(TValue lvalue, TValue rvalue) {
     return TBase::SubSafe(lvalue, rvalue, mod);
   }
 
-  constexpr static TValue Minus(TValue lvalue) {
+  static constexpr TValue Minus(TValue lvalue) {
     return TBase::Minus(lvalue, mod);
   }
 
-  constexpr static TValue MinusSafe(TValue lvalue) {
+  static constexpr TValue MinusSafe(TValue lvalue) {
     return TBase::MinusSafe(lvalue, mod);
   }
 
-  constexpr static TValue Mult(TValue lvalue, TValue rvalue) {
+  static constexpr TValue Mult(TValue lvalue, TValue rvalue) {
     return TBase::Mult(lvalue, rvalue, mod);
   }
 
-  constexpr static TValue MultSafe(TValue lvalue, TValue rvalue) {
+  static constexpr TValue MultSafe(TValue lvalue, TValue rvalue) {
     return TBase::MultSafe(lvalue, rvalue, mod);
   }
 
-  constexpr static TValue Inverse(TValue lvalue) {
+  static constexpr TValue Sqr(TValue value) { return TBase::Sqr(value, mod); }
+
+  static constexpr TValue SqrSafe(TValue value) {
+    return TBase::SqrSafe(value, mod);
+  }
+
+  static constexpr TValue Inverse(TValue lvalue) {
     return TBase::Inverse(lvalue, mod);
   }
 
-  constexpr static TValue InverseSafe(TValue lvalue) {
+  static constexpr TValue InverseSafe(TValue lvalue) {
     return TBase::InverseSafe(lvalue, mod);
   }
 
-  constexpr static TValue Div(TValue numerator, TValue denominator) {
+  static constexpr TValue Div(TValue numerator, TValue denominator) {
     return TBase::Div(numerator, denominator, mod);
   }
 
-  constexpr static TValue DivSafe(TValue numerator, TValue denominator) {
+  static constexpr TValue DivSafe(TValue numerator, TValue denominator) {
     return TBase::DivSafe(numerator, denominator, mod);
   }
 
-  constexpr static TValue PowU(TValue x, uint64_t pow) {
+  static constexpr TValue PowU(TValue x, uint64_t pow) {
     return TBase::PowU(x, pow, mod);
   }
 
-  constexpr static TValue PowUSafe(TValue x, uint64_t pow) {
+  static constexpr TValue PowUSafe(TValue x, uint64_t pow) {
     return TBase::PowUSafe(x, pow, mod);
   }
 
-  constexpr static TValue PowS(TValue x, int64_t pow) {
+  static constexpr TValue PowS(TValue x, int64_t pow) {
     return TBase::PowS(x, pow, mod);
   }
 
-  constexpr static TValue PowSSafe(TValue x, int64_t pow) {
+  static constexpr TValue PowSSafe(TValue x, int64_t pow) {
     return TBase::PowSSafe(x, pow, mod);
   }
 };

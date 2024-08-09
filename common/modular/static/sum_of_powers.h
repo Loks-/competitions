@@ -23,7 +23,7 @@ class SumOfPowers {
     if (power == 1) return TModular((n + 1) / 2) * TModular(n | 1);
     b.Adjust(power);
     f.Adjust(power + 1);
-    TModular x(n), xx = x * x;
+    const TModular x(n), xx = x * x;
     TModular s = (b(0) * x + b(1) * TModular(power + 1)) * x +
                  b(2) * f.BinomialCoefficient(power + 1, 2);
     for (unsigned j = 4; j <= power; j += 2)

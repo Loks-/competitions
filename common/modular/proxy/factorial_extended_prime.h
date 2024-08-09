@@ -11,7 +11,7 @@ namespace proxy {
 constexpr uint64_t FactorialExtendedPrimeCoprimeOnly(
     uint64_t n, Factorial<TModularProxy_P32U, false>& f) {
   const TModularProxy_P32U& mp = f.GetProxy();
-  uint64_t p = mp.GetMod();
+  const uint64_t p = mp.GetMod();
   uint64_t r = f.Get(n % p);
   if ((n / p) & 1) r = mp.Minus(r);
   return r;
@@ -21,7 +21,7 @@ constexpr uint64_t FactorialExtendedPrime(
     uint64_t n, Factorial<TModularProxy_P32U, false>& f) {
   if (n == 0) return 1;
   const TModularProxy_P32U& mp = f.GetProxy();
-  uint64_t p = mp.GetMod();
+  const uint64_t p = mp.GetMod();
   return mp.Mult(FactorialExtendedPrimeCoprimeOnly(n, f),
                  FactorialExtendedPrime(n / p, f));
 }
