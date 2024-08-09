@@ -6,6 +6,9 @@
 	* Add insert by order id to balanced trees
 	* Add insert by order id to Red Black Trees
 	* Ext trees with one pass for add/remove
+* Factorization
+    * Recheck factorization algorithm (Pollard's rho)
+        * Check if Brent optimization is applied
 * Graph
 	* Additional MST algorithms
 	* Shortest path for directed acyclic graphs
