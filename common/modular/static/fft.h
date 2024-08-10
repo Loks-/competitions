@@ -10,29 +10,24 @@
 
 namespace modular {
 namespace mstatic {
-template <class TModular>
+template <class TModular, unsigned log2_maxn, unsigned primitive_root>
 class FFT {
  public:
   using TVector = std::vector<TModular>;
 
  protected:
-  TModular primitive = 0;
-  unsigned maxn = 0;
+  static constexpr unsigned maxn = (1u << log2_maxn);
+  static constexpr TModular primitive = primitive_root;
+
+ protected:
   std::vector<TVector> roots;
   std::vector<std::vector<unsigned>> bit_rev_map;
 
  protected:
-  constexpr void InitI(unsigned n, const TFactorization& p1f) {
+  constexpr void Init() {
     constexpr uint64_t p = TModular::GetMod();
-    unsigned log2_maxn;
-    if (n) {
-      maxn = GetFFTN(n);
-      log2_maxn = numeric::ULog2(maxn);
-    } else {
-      log2_maxn = p1f[0].power;
-      maxn = 1u << log2_maxn;
-    }
-
+    static_assert(((p - 1) % maxn) == 0);
+    static_assert(IsPrimitiveRoot(p, FactorizeBase(p - 1), primitive_root));
     TVector base_roots(maxn);
     TModular nprimitive = primitive.PowU((p - 1) / maxn), r = 1;
     for (unsigned i = 0; i < maxn; ++i) {
@@ -60,28 +55,6 @@ class FFT {
     }
   }
 
-  constexpr void Init(unsigned n) {
-    constexpr uint64_t p = TModular::GetMod();
-    // Usually p-1 for FFT is 2^k * M, where M is small.
-    // FactrorizeBase should be good enough.
-    TFactorization p1f = FactorizeBase(p - 1);
-    assert((p1f.size() > 0) && (p1f[0].prime == 2u));
-    primitive =
-        FindSmallestPrimitiveRoot<typename TModular::TArithmetic>(p, p1f);
-    InitI(n, p1f);
-  }
-
-  constexpr void Init(unsigned n, unsigned pprimitive) {
-    constexpr uint64_t p = TModular::GetMod();
-    // Usually p-1 for FFT is 2^k * M, where M is small.
-    // FactrorizeBase should be good enough.
-    TFactorization p1f = FactorizeBase(p - 1);
-    assert((p1f.size() > 0) && (p1f[0].prime == 2u));
-    assert(IsPrimitiveRoot(p, p1f, pprimitive));
-    primitive = pprimitive;
-    InitI(n, p1f);
-  }
-
   constexpr void FFTI_Adjust(TVector& output) const {
     std::reverse(output.begin() + 1, output.end());
     TModular invn = TModular(output.size()).Inverse();
@@ -95,13 +68,9 @@ class FFT {
     return n;
   }
 
-  constexpr FFT() { Init(0); }
+  constexpr FFT() { Init(); }
 
-  constexpr explicit FFT(unsigned n) { Init(n); }
-
-  constexpr FFT(unsigned n, unsigned pprimitive) { Init(n, pprimitive); }
-
-  constexpr unsigned GetMaxN() const { return maxn; }
+  static constexpr unsigned GetMaxN() { return maxn; }
 
   constexpr TVector Apply(unsigned n, const TVector& vx) const {
     assert((n > 0) && (maxn % n == 0));
@@ -145,5 +114,11 @@ class FFT {
     return ApplyI(n, vf1);
   }
 };
+
+template <class TModular, unsigned log2_maxn>
+using FFTA =
+    FFT<TModular, log2_maxn,
+        FindSmallestPrimitiveRoot<typename TModular::TArithmetic>(
+            TModular::GetMod(), FactorizeBase(TModular::GetMod() - 1))>;
 }  // namespace mstatic
 }  // namespace modular

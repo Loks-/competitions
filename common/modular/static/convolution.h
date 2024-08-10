@@ -26,16 +26,15 @@ inline std::vector<TModular> ConvolutionFFT(const std::vector<TModular>& a) {
   static_assert(TModular::IsModPrime() && TModular::IsMod32Bits());
   static_assert(log2_maxn <= 26);
   using TModularA = modular::TArithmetic_P32U;
-  using TModular1 = TModular_P32<2013265921>;  // 2^27*3*5 + 1
-  using TModular2 = TModular_P32<1811939329>;  // 2^26*3^2 + 1
-  using TModular3 = TModular_P32<469762049>;   // 2^26*7 + 1
-  constexpr uint32_t maxn = (1u << log2_maxn);
-  thread_local modular::mstatic::FFT<TModular1> fft1(maxn);
-  thread_local modular::mstatic::FFT<TModular2> fft2(maxn);
-  thread_local modular::mstatic::FFT<TModular3> fft3(maxn);
+  using TModular1 = TModular_P32<2013265921>;  // 2^27*3*5 + 1, 31
+  using TModular2 = TModular_P32<1811939329>;  // 2^26*3^2 + 1, 13
+  using TModular3 = TModular_P32<469762049>;   // 2^26*7 + 1, 3
+  thread_local modular::mstatic::FFT<TModular1, log2_maxn, 31> fft1;
+  thread_local modular::mstatic::FFT<TModular2, log2_maxn, 13> fft2;
+  thread_local modular::mstatic::FFT<TModular3, log2_maxn, 3> fft3;
   uint64_t p1 = TModular1::GetMod(), p2 = TModular2::GetMod(),
            p3 = TModular3::GetMod(), p12 = p1 * p2, p12m3 = p12 % p3;
-  assert(2 * a.size() <= maxn);
+  assert(2 * a.size() <= (1u << log2_maxn));
   auto r1 = fft1.Convolution(hidden::ConvolutionFFTChangeModular<TModular1>(a));
   auto r2 = fft2.Convolution(hidden::ConvolutionFFTChangeModular<TModular2>(a));
   auto r3 = fft3.Convolution(hidden::ConvolutionFFTChangeModular<TModular3>(a));
@@ -61,13 +60,12 @@ inline std::vector<TModular> ConvolutionFFT(const std::vector<TModular>& a,
   using TModular1 = TModular_P32<2013265921>;  // 2^27*3*5 + 1
   using TModular2 = TModular_P32<1811939329>;  // 2^26*3^2 + 1
   using TModular3 = TModular_P32<469762049>;   // 2^26*7 + 1
-  constexpr uint32_t maxn = (1u << log2_maxn);
-  thread_local modular::mstatic::FFT<TModular1> fft1(maxn);
-  thread_local modular::mstatic::FFT<TModular2> fft2(maxn);
-  thread_local modular::mstatic::FFT<TModular3> fft3(maxn);
+  thread_local modular::mstatic::FFT<TModular1, log2_maxn, 31> fft1;
+  thread_local modular::mstatic::FFT<TModular2, log2_maxn, 13> fft2;
+  thread_local modular::mstatic::FFT<TModular3, log2_maxn, 3> fft3;
   uint64_t p1 = TModular1::GetMod(), p2 = TModular2::GetMod(),
            p3 = TModular3::GetMod(), p12 = p1 * p2, p12m3 = p12 % p3;
-  assert(a.size() + b.size() <= maxn);
+  assert(a.size() + b.size() <= (1u << log2_maxn));
   auto r1 = fft1.Convolution(hidden::ConvolutionFFTChangeModular<TModular1>(a),
                              hidden::ConvolutionFFTChangeModular<TModular1>(b));
   auto r2 = fft2.Convolution(hidden::ConvolutionFFTChangeModular<TModular2>(a),

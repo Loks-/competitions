@@ -5,15 +5,16 @@
 #include "common/stl/base.h"
 
 using TModular = TModular_P32<7340033>;
-using TFFT = modular::mstatic::FFT<TModular>;
+using TFFT = modular::mstatic::FFTA<TModular, 17>;
 
 int main_parity_party() {
   TModular one = 1;
   unsigned n, a, b, c, s, l;
   cin >> n >> a >> b >> c;
   s = a + b + c;
+  TFFT fft;
   l = TFFT::GetFFTN(a + b + 1);
-  TFFT fft(l);
+  assert(l < (1u << 17));
   vector<TModular> va_fft = fft.Apply(l, {one, -one});
   vector<TModular> vb_fft = fft.Apply(l, {one, one});
   vector<TModular> vf_fft(l);
