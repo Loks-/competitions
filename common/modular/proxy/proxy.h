@@ -27,9 +27,11 @@ class Proxy {
   constexpr TValue ApplyU(uint64_t value) const {
     return TBase::ApplyU(value, mod);
   }
+
   constexpr TValue ApplyS(int64_t value) const {
     return TBase::ApplyS(value, mod);
   }
+
   constexpr TValue ApplyT(TValue value) const {
     return TBase::ApplyT(value, mod);
   }
