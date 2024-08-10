@@ -77,12 +77,11 @@ class Arithmetic {
   }
 
   static constexpr TValue Sqr_32(TValue value, TValue mod) {
-    return (value * value) % mod;
+    return Mult_32(value, value, mod);
   }
 
   static constexpr TValue SqrSafe_32(TValue value, TValue rvalue, TValue mod) {
-    const auto value_adj = value % mod;
-    return (value_adj * value_adj) % mod;
+    return Sqr_32(value % mod, mod);
   }
 
  protected:
@@ -119,7 +118,7 @@ class Arithmetic {
   }
 
   static constexpr TValue SqrSafe_64(TValue value, TValue mod) {
-    return Mult_64(value % mod, value % mod, mod);
+    return Sqr_64(value % mod, mod);
   }
 
  protected:

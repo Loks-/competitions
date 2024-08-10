@@ -1,8 +1,9 @@
 #pragma once
 
 #include "common/base.h"
-#include "common/factorization/factorization.h"
+#include "common/factorization/utils/factorization_base.h"
 #include "common/modular/utils/primitive_root.h"
+#include "common/numeric/bits/ulog2.h"
 
 #include <algorithm>
 #include <vector>
@@ -21,19 +22,15 @@ class FFT {
   std::vector<std::vector<unsigned>> bit_rev_map;
 
  protected:
-  void Init(unsigned n) {
-    uint64_t p = TModular::GetMod();
-    TFactorization p1f = Factorize(p - 1);
-    assert(p1f.size() > 0);
-    primitive =
-        FindSmallestPrimitiveRoot<typename TModular::TArithmetic>(p, p1f);
-    unsigned max2p;
+  constexpr void InitI(unsigned n, const TFactorization& p1f) {
+    constexpr uint64_t p = TModular::GetMod();
+    unsigned log2_maxn;
     if (n) {
       maxn = GetFFTN(n);
-      for (max2p = 0; (1u << max2p) < maxn;) ++max2p;
+      log2_maxn = numeric::ULog2(maxn);
     } else {
-      max2p = ((p1f[0].prime == 2) ? p1f[0].power : 0u);
-      maxn = 1u << max2p;
+      log2_maxn = p1f[0].power;
+      maxn = 1u << log2_maxn;
     }
 
     TVector base_roots(maxn);
@@ -45,7 +42,7 @@ class FFT {
     assert(r == 1);
 
     roots.clear();
-    roots.reserve(max2p + 1);
+    roots.reserve(log2_maxn + 1);
     for (unsigned k = 1; k <= maxn; k *= 2) {
       TVector v(k);
       for (unsigned i = 0; i < k; ++i) v[i] = base_roots[i * (maxn / k)];
@@ -53,7 +50,7 @@ class FFT {
     }
 
     bit_rev_map.clear();
-    bit_rev_map.reserve(max2p + 1);
+    bit_rev_map.reserve(log2_maxn + 1);
     bit_rev_map.push_back({0});
     for (unsigned b = 1; b < maxn; b *= 2) {
       std::vector<unsigned> v(2 * b);
@@ -63,27 +60,52 @@ class FFT {
     }
   }
 
-  void FFTI_Adjust(TVector& output) const {
+  constexpr void Init(unsigned n) {
+    constexpr uint64_t p = TModular::GetMod();
+    // Usually p-1 for FFT is 2^k * M, where M is small.
+    // FactrorizeBase should be good enough.
+    TFactorization p1f = FactorizeBase(p - 1);
+    assert((p1f.size() > 0) && (p1f[0].prime == 2u));
+    primitive =
+        FindSmallestPrimitiveRoot<typename TModular::TArithmetic>(p, p1f);
+    InitI(n, p1f);
+  }
+
+  constexpr void Init(unsigned n, unsigned pprimitive) {
+    constexpr uint64_t p = TModular::GetMod();
+    // Usually p-1 for FFT is 2^k * M, where M is small.
+    // FactrorizeBase should be good enough.
+    TFactorization p1f = FactorizeBase(p - 1);
+    assert((p1f.size() > 0) && (p1f[0].prime == 2u));
+    assert(IsPrimitiveRoot(p, p1f, pprimitive));
+    primitive = pprimitive;
+    InitI(n, p1f);
+  }
+
+  constexpr void FFTI_Adjust(TVector& output) const {
     std::reverse(output.begin() + 1, output.end());
     TModular invn = TModular(output.size()).Inverse();
-    for (size_t i = 0; i < output.size(); ++i) output[i] *= invn;
+    for (auto& o : output) o *= invn;
   }
 
  public:
-  static unsigned GetFFTN(unsigned l) {
+  static constexpr unsigned GetFFTN(unsigned l) {
     unsigned n = 1;
     for (; n < l;) n *= 2;
     return n;
   }
 
-  explicit FFT(unsigned n = 0) { Init(n); }
+  constexpr FFT() { Init(0); }
 
-  unsigned GetMaxN() const { return maxn; }
+  constexpr explicit FFT(unsigned n) { Init(n); }
 
-  TVector Apply(unsigned n, const TVector& vx) const {
+  constexpr FFT(unsigned n, unsigned pprimitive) { Init(n, pprimitive); }
+
+  constexpr unsigned GetMaxN() const { return maxn; }
+
+  constexpr TVector Apply(unsigned n, const TVector& vx) const {
     assert((n > 0) && (maxn % n == 0));
-    unsigned k = 0;
-    for (; (1u << k) < n;) ++k;
+    const unsigned k = numeric::ULog2(n);
     TVector output(n);
     for (unsigned i = 0; i < n; ++i)
       output[i] = (bit_rev_map[k][i] < vx.size()) ? vx[bit_rev_map[k][i]] : 0;
@@ -93,7 +115,7 @@ class FFT {
       const TVector& current_roots = roots[kl];
       for (unsigned pdest = 0; pdest < n; pdest += l) {
         for (unsigned i = 0; i < l; ++i, ++pdest) {
-          TModular v = current_roots[i] * output[pdest + l];
+          const TModular v = current_roots[i] * output[pdest + l];
           current[pdest] = output[pdest] + v;
           current[pdest + l] = output[pdest] - v;
         }
@@ -103,21 +125,21 @@ class FFT {
     return output;
   }
 
-  TVector ApplyI(unsigned n, const TVector& vx) const {
+  constexpr TVector ApplyI(unsigned n, const TVector& vx) const {
     TVector output = Apply(n, vx);
     FFTI_Adjust(output);
     return output;
   }
 
-  TVector Convolution(const TVector& vx) {
-    unsigned n = GetFFTN(unsigned(2 * vx.size()));
+  constexpr TVector Convolution(const TVector& vx) {
+    const unsigned n = GetFFTN(unsigned(2 * vx.size()));
     auto vf = Apply(n, vx);
-    for (unsigned i = 0; i < n; ++i) vf[i] *= vf[i];
+    for (auto& f : vf) f *= f;
     return ApplyI(n, vf);
   }
 
-  TVector Convolution(const TVector& vx1, const TVector& vx2) {
-    unsigned n = GetFFTN(unsigned(vx1.size() + vx2.size()));
+  constexpr TVector Convolution(const TVector& vx1, const TVector& vx2) {
+    const unsigned n = GetFFTN(unsigned(vx1.size() + vx2.size()));
     auto vf1 = Apply(n, vx1), vf2 = Apply(n, vx2);
     for (unsigned i = 0; i < n; ++i) vf1[i] *= vf2[i];
     return ApplyI(n, vf1);
