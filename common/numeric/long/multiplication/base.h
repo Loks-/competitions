@@ -4,6 +4,7 @@
 
 namespace numeric {
 namespace nlong {
+namespace multiplication {
 constexpr Unsigned MultBase(const Unsigned& a, const Unsigned& b) {
   Unsigned r;
   for (auto it = b.end(); it != b.begin();) {
@@ -14,5 +15,6 @@ constexpr Unsigned MultBase(const Unsigned& a, const Unsigned& b) {
 }
 
 constexpr Unsigned SqrBase(const Unsigned& a) { return MultBase(a, a); }
+}  // namespace multiplication
 }  // namespace nlong
 }  // namespace numeric

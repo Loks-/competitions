@@ -29,8 +29,8 @@ bool TestModularFFT() {
       return false;
     }
   }
-  if ((v1 != fft.ApplyI(n, v1_fft)) || (v2 != fft.ApplyI(n, v2_fft)) ||
-      (v3 != fft.ApplyI(n, v3_fft))) {
+  if ((v1 != fft.ApplyInv(n, v1_fft)) || (v2 != fft.ApplyInv(n, v2_fft)) ||
+      (v3 != fft.ApplyInv(n, v3_fft))) {
     std::cout << "FFTI(FFT(x)) != x." << std::endl;
     return false;
   }
@@ -40,7 +40,7 @@ bool TestModularFFT() {
   std::vector<TModular> vr_fft = fft.Apply(n, {1, r});
   unsigned power = 1000;
   for (TModular& x : vr_fft) x = x.PowU(power);
-  std::vector<TModular> vr = fft.ApplyI(n, vr_fft);
+  std::vector<TModular> vr = fft.ApplyInv(n, vr_fft);
   for (unsigned i = 0; i < n; ++i) {
     if (vr[i] != f.BinomialCoefficient(power, i) * rp) {
       std::cout << "Incorrect result for (1 + r)^power @ " << i << std::endl;

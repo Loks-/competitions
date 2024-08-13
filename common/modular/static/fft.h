@@ -6,6 +6,7 @@
 #include "common/numeric/bits/ulog2.h"
 
 #include <algorithm>
+#include <mutex>
 #include <vector>
 
 namespace modular {
@@ -14,67 +15,79 @@ template <class TModular, unsigned log2_maxn, unsigned primitive_root>
 class FFT {
  public:
   using TVector = std::vector<TModular>;
+  using TSelf = FFT<TModular, log2_maxn, primitive_root>;
 
  protected:
   static constexpr unsigned maxn = (1u << log2_maxn);
   static constexpr TModular primitive = primitive_root;
 
  protected:
-  std::vector<TVector> roots;
-  std::vector<std::vector<unsigned>> bit_rev_map;
+  mutable std::mutex m;
+  mutable std::vector<TVector> roots;
+  mutable std::vector<std::vector<unsigned>> bit_rev_map;
 
  protected:
+  constexpr void InitK(unsigned k) const {
+    constexpr uint64_t p = TModular::GetMod();
+    const uint64_t n = (1u << k);
+    const TModular nroot = primitive.PowU((p - 1) / n);
+    TModular r(1);
+    roots.push_back({});
+    auto& vr = roots.back();
+    vr.resize(n);
+    for (unsigned i = 0; i < n; ++i) {
+      vr[i] = r;
+      r *= nroot;
+    }
+    assert(r == 1);
+    bit_rev_map.push_back({});
+    const auto& vbp = bit_rev_map[bit_rev_map.size() - 2];
+    auto& vb = bit_rev_map.back();
+    vb.resize(n);
+    for (unsigned i = 0; i < n; ++i)
+      vb[i] = vbp[i / 2] + ((i & 1) ? n / 2 : 0u);
+  }
+
   constexpr void Init() {
     constexpr uint64_t p = TModular::GetMod();
     static_assert(((p - 1) % maxn) == 0);
     static_assert(IsPrimitiveRoot(p, FactorizeBase(p - 1), primitive_root));
-    TVector base_roots(maxn);
-    TModular nprimitive = primitive.PowU((p - 1) / maxn), r = 1;
-    for (unsigned i = 0; i < maxn; ++i) {
-      base_roots[i] = r;
-      r *= nprimitive;
-    }
-    assert(r == 1);
-
     roots.clear();
     roots.reserve(log2_maxn + 1);
-    for (unsigned k = 1; k <= maxn; k *= 2) {
-      TVector v(k);
-      for (unsigned i = 0; i < k; ++i) v[i] = base_roots[i * (maxn / k)];
-      roots.push_back(v);
-    }
-
+    roots.push_back({TModular(1u)});
     bit_rev_map.clear();
     bit_rev_map.reserve(log2_maxn + 1);
     bit_rev_map.push_back({0});
-    for (unsigned b = 1; b < maxn; b *= 2) {
-      std::vector<unsigned> v(2 * b);
-      for (unsigned i = 0; i < 2 * b; ++i)
-        v[i] = bit_rev_map.back()[i / 2] + ((i & 1) ? b : 0u);
-      bit_rev_map.push_back(v);
-    }
   }
 
-  constexpr void FFTI_Adjust(TVector& output) const {
+  static constexpr void FFTI_Adjust(TVector& output) {
     std::reverse(output.begin() + 1, output.end());
-    TModular invn = TModular(output.size()).Inverse();
+    const TModular invn = TModular(output.size()).Inverse();
     for (auto& o : output) o *= invn;
   }
 
  public:
-  static constexpr unsigned GetFFTN(unsigned l) {
+  static constexpr unsigned GetNForFFT(unsigned l) {
     unsigned n = 1;
     for (; n < l;) n *= 2;
     return n;
   }
 
+  static constexpr unsigned MaxN() { return maxn; }
+
   constexpr FFT() { Init(); }
 
-  static constexpr unsigned GetMaxN() { return maxn; }
+  constexpr void AdjustK(unsigned k) const {
+    if (roots.size() <= k) {
+      const std::lock_guard<std::mutex> lock(m);
+      for (unsigned l = roots.size(); l <= k; ++l) InitK(l);
+    }
+  }
 
   constexpr TVector Apply(unsigned n, const TVector& vx) const {
     assert((n > 0) && (maxn % n == 0));
     const unsigned k = numeric::ULog2(n);
+    AdjustK(k);
     TVector output(n);
     for (unsigned i = 0; i < n; ++i)
       output[i] = (bit_rev_map[k][i] < vx.size()) ? vx[bit_rev_map[k][i]] : 0;
@@ -94,30 +107,53 @@ class FFT {
     return output;
   }
 
-  constexpr TVector ApplyI(unsigned n, const TVector& vx) const {
+  constexpr TVector ApplyInv(unsigned n, const TVector& vx) const {
     TVector output = Apply(n, vx);
     FFTI_Adjust(output);
     return output;
   }
 
-  constexpr TVector Convolution(const TVector& vx) {
-    const unsigned n = GetFFTN(unsigned(2 * vx.size()));
+  constexpr TVector Convolution(const TVector& vx) const {
+    const unsigned n = GetNForFFT(unsigned(2 * vx.size()));
     auto vf = Apply(n, vx);
     for (auto& f : vf) f *= f;
-    return ApplyI(n, vf);
+    return ApplyInv(n, vf);
   }
 
-  constexpr TVector Convolution(const TVector& vx1, const TVector& vx2) {
-    const unsigned n = GetFFTN(unsigned(vx1.size() + vx2.size()));
+  constexpr TVector Convolution(const TVector& vx1, const TVector& vx2) const {
+    const unsigned n = GetNForFFT(unsigned(vx1.size() + vx2.size()));
     auto vf1 = Apply(n, vx1), vf2 = Apply(n, vx2);
     for (unsigned i = 0; i < n; ++i) vf1[i] *= vf2[i];
-    return ApplyI(n, vf1);
+    return ApplyInv(n, vf1);
+  }
+
+ public:
+  static const TSelf& GetFFT() {
+    static const TSelf fft;
+    return fft;
+  }
+
+  static TVector SApply(unsigned n, const TVector& vx) {
+    GetFFT().Apply(n, vx);
+  }
+
+  static TVector SApplyInv(unsigned n, const TVector& vx) {
+    GetFFT().ApplyInv(n, vx);
+  }
+
+  static constexpr TVector SConvolution(const TVector& vx) {
+    return GetFFT().Convolution(vx);
+  }
+
+  static constexpr TVector SConvolution(const TVector& vx1,
+                                        const TVector& vx2) {
+    return GetFFT().Convolution(vx1, vx2);
   }
 };
 
-template <class TModular, unsigned log2_maxn>
+template <class TModular>
 using FFTA =
-    FFT<TModular, log2_maxn,
+    FFT<TModular, FactorizeBase(TModular::GetMod() - 1)[0].power,
         FindSmallestPrimitiveRoot<typename TModular::TArithmetic>(
             TModular::GetMod(), FactorizeBase(TModular::GetMod() - 1))>;
 }  // namespace mstatic

@@ -1,29 +1,22 @@
 #pragma once
 
-#include "common/numeric/long/unsigned/multiplication_base.h"
-#include "common/numeric/long/unsigned/multiplication_fft.h"
-
-#include <vector>
+#include "common/numeric/long/multiplication/auto.h"
+#include "common/numeric/long/unsigned.h"
 
 namespace numeric {
 namespace nlong {
-template <unsigned log2_maxn = 16>
-inline Unsigned Sqr(const Unsigned& a) {
-  return (a.Size() < 100) ? SqrBase(a) : SqrFFT<log2_maxn>(a);
-}
+inline Unsigned Sqr(const Unsigned& a) { return multiplication::SqrAuto(a); }
 
-template <unsigned log2_maxn = 16>
 inline Unsigned Mult(const Unsigned& a, const Unsigned& b) {
-  return ((a.Size() < 100) || (b.Size() < 100)) ? MultBase(a, b)
-                                                : MultFFT<log2_maxn>(a, b);
+  return multiplication::MultAuto(a, b);
 }
 
 inline Unsigned operator*(const Unsigned& l, const Unsigned& r) {
-  return Mult<16>(l, r);
+  return Mult(l, r);
 }
 
 inline Unsigned& operator*=(Unsigned& l, const Unsigned& r) {
-  l = Mult<16>(l, r);
+  l = Mult(l, r);
   return l;
 }
 }  // namespace nlong
