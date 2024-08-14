@@ -16,7 +16,6 @@
 #include <unordered_map>
 
 using namespace geometry::d2;
-using namespace geometry::d2::location;
 
 using TPoint = Point<TIFraction>;
 using TPolygon = Polygon<TIFraction>;
@@ -72,7 +71,9 @@ int main_napkin_folding() {
           auto aj = TTriangle(pi, pj0, pj).SignedDoubleArea();
           if (acurrent + aj == aone) {
             // Candidate from the area point of view
-            if (!hidden::InsideI(TSegment(pi, pj), plgn0, lpi, lpj)) continue;
+            if (!InisideSegmentPolygon<TIFraction>::InsideI(TSegment(pi, pj),
+                                                            plgn0, lpi, lpj))
+              continue;
             bool eok = true;
             vector<TPoint> vc{pj, pi}, vl{pi, pj};
             for (unsigned k = l * (i / l + 1); k < j; k += l)

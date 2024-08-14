@@ -1,7 +1,7 @@
 #pragma once
 
 #include "common/geometry/d2/base.h"
-#include "common/geometry/d2/location/location.h"
+#include "common/geometry/d2/location.h"
 #include "common/geometry/d2/point.h"
 #include "common/geometry/d2/polygon.h"
 #include "common/geometry/d2/segment.h"
@@ -10,7 +10,6 @@
 
 namespace geometry {
 namespace d2 {
-namespace location {
 template <class T>
 constexpr Location Locate(const Point<T>& p, const Polygon<T>& plgn) {
   unsigned cnt = 0;
@@ -30,6 +29,5 @@ constexpr Location Locate(const Point<T>& p, const Polygon<T>& plgn) {
   }
   return {(cnt % 2) ? Location::INSIDE : Location::OUTSIDE, 0};
 }
-}  // namespace location
 }  // namespace d2
 }  // namespace geometry
