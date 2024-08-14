@@ -2,6 +2,7 @@
 
 #include "common/base.h"
 #include "common/numeric/bits/ulog2.h"
+#include "common/templates/bits.h"
 
 #include <numeric>
 #include <vector>
@@ -10,7 +11,7 @@ namespace numeric {
 template <class TCode = uint64_t, class TLength = unsigned>
 class AlphabeticCode {
  public:
-  static constexpr unsigned nbits = 8 * sizeof(TCode);
+  static constexpr unsigned nbits = templates::SizeInBits<TCode>();
 
   using TSelf = AlphabeticCode<TCode, TLength>;
 

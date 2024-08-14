@@ -3,6 +3,7 @@
 #include "common/base.h"
 #include "common/modular/static/bool.h"
 #include "common/template.h"
+#include "common/templates/bits.h"
 
 #include <algorithm>
 #include <vector>
@@ -15,7 +16,8 @@ class VectorBool {
   using TData = std::vector<TBlockValue>;
   using TSelf = VectorBool;
 
-  static const unsigned bits_per_block = 8 * sizeof(TBlockValue);
+  static constexpr unsigned bits_per_block =
+      templates::SizeInBits<TBlockValue>();
 
   static unsigned MinBlockSize(unsigned size) {
     return (size + bits_per_block - 1) / bits_per_block;
