@@ -3,23 +3,19 @@
 #include <cmath>
 #include <limits>
 
-namespace numeric {
-namespace hidden {
 template <class T>
-consteval T CTUSqrtHelper(T x, T l, T h) {
+consteval T CTUSqrt(T x, T l, T h) {
   if (l == h) return l;
   const T m = (l + h + 1) / 2;
   if (x / m < m)
-    return CTUSqrtHelper<T>(x, l, m - 1);
+    return CTUSqrt<T>(x, l, m - 1);
   else
-    return CTUSqrtHelper<T>(x, m, h);
+    return CTUSqrt<T>(x, m, h);
 }
-}  // namespace hidden
-}  // namespace numeric
 
 template <class T>
 consteval T CTUSqrt(T x) {
-  return numeric::hidden::CTUSqrtHelper<T>(x, 0, x / 4 + 1);
+  return CTUSqrt<T>(x, 0, x / 4 + 1);
 }
 
 template <class T>

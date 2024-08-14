@@ -3,23 +3,19 @@
 #include <cmath>
 #include <limits>
 
-namespace numeric {
-namespace hidden {
 template <class T>
-consteval T CTUCbrtHelper(T x, T l, T h) {
+consteval T CTUCbrt(T x, T l, T h) {
   if (l == h) return l;
   const T m = (l + h + 1) / 2;
   if (x / m / m < m)
-    return CTUCbrtHelper<T>(x, l, m - 1);
+    return CTUCbrt<T>(x, l, m - 1);
   else
-    return CTUCbrtHelper<T>(x, m, h);
+    return CTUCbrt<T>(x, m, h);
 }
-}  // namespace hidden
-}  // namespace numeric
 
 template <class T>
 consteval T CTUCbrt(T x) {
-  return numeric::hidden::CTUCbrtHelper<T>(x, 0, x / 8 + 1);
+  return CTUCbrt<T>(x, 0, x / 8 + 1);
 }
 
 template <class T>
