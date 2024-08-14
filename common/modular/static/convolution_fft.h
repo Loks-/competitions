@@ -12,6 +12,8 @@ namespace mstatic {
 template <class TModular>
 class ConvolutionFFT {
  protected:
+  static_assert(TModular::IsModPrime() && TModular::IsMod32Bits());
+
   static constexpr unsigned log2_maxn = 26;
 
   using TModularA = modular::TArithmetic_P32U;
@@ -52,7 +54,6 @@ class ConvolutionFFT {
 
  public:
   static std::vector<TModular> Convolution(const std::vector<TModular>& a) {
-    static_assert(TModular::IsModPrime() && TModular::IsMod32Bits());
     return Restore(TMFFT1::SConvolution(ChangeModular<TModular1>(a)),
                    TMFFT2::SConvolution(ChangeModular<TModular2>(a)),
                    TMFFT3::SConvolution(ChangeModular<TModular3>(a)));
@@ -60,7 +61,6 @@ class ConvolutionFFT {
 
   static std::vector<TModular> Convolution(const std::vector<TModular>& a,
                                            const std::vector<TModular>& b) {
-    static_assert(TModular::IsModPrime() && TModular::IsMod32Bits());
     return Restore(TMFFT1::SConvolution(ChangeModular<TModular1>(a),
                                         ChangeModular<TModular1>(b)),
                    TMFFT2::SConvolution(ChangeModular<TModular2>(a),

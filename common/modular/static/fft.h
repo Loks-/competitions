@@ -18,8 +18,12 @@ class FFT {
   using TSelf = FFT<TModular, log2_maxn, primitive_root>;
 
  protected:
+  static constexpr uint64_t p = TModular::GetMod();
   static constexpr unsigned maxn = (1u << log2_maxn);
   static constexpr TModular primitive = primitive_root;
+
+  static_assert(((p - 1) % maxn) == 0);
+  static_assert(IsPrimitiveRoot(p, FactorizeBase(p - 1), primitive_root));
 
  protected:
   mutable std::mutex m;
@@ -28,7 +32,6 @@ class FFT {
 
  protected:
   constexpr void InitK(unsigned k) const {
-    constexpr uint64_t p = TModular::GetMod();
     const uint64_t n = (1u << k);
     const TModular nroot = primitive.PowU((p - 1) / n);
     TModular r(1);
@@ -49,9 +52,6 @@ class FFT {
   }
 
   constexpr void Init() {
-    constexpr uint64_t p = TModular::GetMod();
-    static_assert(((p - 1) % maxn) == 0);
-    static_assert(IsPrimitiveRoot(p, FactorizeBase(p - 1), primitive_root));
     roots.clear();
     roots.reserve(log2_maxn + 1);
     roots.push_back({TModular(1u)});
