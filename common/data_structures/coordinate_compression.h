@@ -1,6 +1,7 @@
 #pragma once
 
 #include "common/base.h"
+#include "common/hash.h"
 
 #include <algorithm>
 #include <set>
@@ -12,7 +13,7 @@ template <class TValue>
 class CoordinateCompression {
  protected:
   std::vector<TValue> new_to_old;
-  std::unordered_map<TValue, size_t> old_to_new;
+  std::unordered_map<TValue, size_t, DHash<TValue>> old_to_new;
 
  public:
   CoordinateCompression() {}

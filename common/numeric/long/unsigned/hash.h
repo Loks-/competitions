@@ -1,14 +1,15 @@
 #pragma once
 
+#include "common/hash/base.h"
+#include "common/hash/vector.h"
 #include "common/numeric/long/unsigned.h"
-#include "common/stl/hash/vector.h"
 
-namespace std {
-template <>
-struct hash<numeric::nlong::Unsigned> {
+namespace nhash {
+template <class Policy>
+class Hash<Policy, numeric::nlong::Unsigned> {
+ public:
   constexpr size_t operator()(const numeric::nlong::Unsigned& u) const {
-    hash<vector<uint32_t>> hv;
-    return hv(u.Data());
+    return Hash<Policy, numeric::nlong::Unsigned::TData>{}(u.Data());
   }
 };
-}  // namespace std
+}  // namespace nhash

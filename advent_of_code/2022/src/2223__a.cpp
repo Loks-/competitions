@@ -1,6 +1,7 @@
-#include "common/geometry/d2/stl_hash/point.h"
+#include "common/geometry/d2/hash/point.h"
 #include "common/geometry/d2/utils/box.h"
 #include "common/geometry/d2/utils/neighbors.h"
+#include "common/hash.h"
 #include "common/stl/base.h"
 #include "common/vector/read_lines.h"
 
@@ -10,8 +11,8 @@ int main_2223__a() {
   auto vs = nvector::ReadLines();
   auto vd4 = I2NeighborsD4();
   vector<unsigned> vdo{3, 1, 2, 0};
-  unordered_map<I2Point, I2Point> elfs;
-  unordered_map<I2Point, unsigned> mc;
+  unordered_map<I2Point, I2Point, DHash<I2Point>> elfs;
+  unordered_map<I2Point, unsigned, DHash<I2Point>> mc;
   for (unsigned i = 0; i < vs.size(); ++i) {
     for (unsigned j = 0; j < vs[i].size(); ++j) {
       if (vs[i][j] == '#') elfs[{j, i}] = {j, i};

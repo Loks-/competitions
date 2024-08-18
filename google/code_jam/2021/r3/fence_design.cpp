@@ -1,8 +1,9 @@
+#include "common/geometry/d2/hash/point.h"
 #include "common/geometry/d2/line_pv.h"
 #include "common/geometry/d2/point_io.h"
 #include "common/geometry/d2/segment.h"
-#include "common/geometry/d2/stl_hash/point.h"
 #include "common/geometry/d2/triangulation/base.h"
+#include "common/hash.h"
 #include "common/numeric/utils/sign.h"
 #include "common/stl/base.h"
 #include "common/vector/read.h"
@@ -16,7 +17,7 @@ int main_fence_design() {
     cin >> N;
     auto vp = nvector::Read<I2Point>(N);
     auto vis = nvector::Read<unsigned>(4);
-    unordered_map<I2Point, unsigned> mp2i;
+    unordered_map<I2Point, unsigned, DHash<I2Point>> mp2i;
     for (unsigned i = 0; i < N; ++i) mp2i[vp[i]] = i + 1;
 
     I2OpenSegment s1(vp[vis[0] - 1], vp[vis[1] - 1]),

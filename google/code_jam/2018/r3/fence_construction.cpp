@@ -1,10 +1,11 @@
 #include "common/geometry/d2/base.h"
+#include "common/geometry/d2/hash/point.h"
 #include "common/geometry/d2/point_io.h"
-#include "common/geometry/d2/stl_hash/point.h"
 #include "common/geometry/d2/vector.h"
 #include "common/graph/graph_ei.h"
 #include "common/graph/plane/dual_ei.h"
 #include "common/graph/plane/sort_edges_by_angle.h"
+#include "common/hash.h"
 #include "common/heap.h"
 #include "common/stl/base.h"
 #include "common/vector/write.h"
@@ -22,7 +23,7 @@ int main_fence_construction() {
   for (unsigned it = 1; it <= T; ++it) {
     unsigned F, K, points = 0;
     cin >> F >> K;
-    unordered_map<I2Point, unsigned> pmap;
+    unordered_map<I2Point, unsigned, DHash<I2Point>> pmap;
 
     auto point_id = [&](const I2Point& p) {
       auto it = pmap.find(p);

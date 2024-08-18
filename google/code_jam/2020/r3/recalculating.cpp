@@ -1,12 +1,13 @@
 #include "common/geometry/d2/axis/rectangle.h"
 #include "common/geometry/d2/axis/utils/union_area1_rectangles.h"
 #include "common/geometry/d2/base.h"
+#include "common/geometry/d2/hash/point.h"
 #include "common/geometry/d2/point_io.h"
-#include "common/geometry/d2/stl_hash/point.h"
 #include "common/geometry/d2/utils/rotate_pi4s_points.h"
+#include "common/hash.h"
+#include "common/hash/vector.h"
 #include "common/numeric/utils/gcd.h"
 #include "common/stl/base.h"
-#include "common/stl/hash/vector.h"
 #include "common/vector/read.h"
 
 #include <deque>
@@ -39,7 +40,7 @@ int main_recalculating() {
 
     deque<unsigned> di;
     TKey vkey;
-    unordered_map<TKey, vector<I2ARectangle>> mk2b;
+    unordered_map<TKey, vector<I2ARectangle>, DHash<TKey>> mk2b;
     for (unsigned i1 = 0, i2 = 0; i2 < vp.size();) {
       auto xnew =
           (i1 < vp.size()) ? min(vp[i1].x - D, vp[i2].x + D) : vp[i2].x + D;

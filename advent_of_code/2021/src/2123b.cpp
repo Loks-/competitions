@@ -1,10 +1,11 @@
 #include "common/geometry/d2/utils/neighbors.h"
 #include "common/graph/graph.h"
 #include "common/graph/graph/distance.h"
+#include "common/hash.h"
+#include "common/hash/pair.h"
+#include "common/hash/vector.h"
 #include "common/heap.h"
 #include "common/stl/full.h"
-#include "common/stl/hash/pair.h"
-#include "common/stl/hash/vector.h"
 #include "common/stl/pair.h"
 #include "common/stl/pair_io.h"
 #include "common/string/utils/split.h"
@@ -19,7 +20,7 @@ using Pos = vector<pair<unsigned, unsigned>>;
 
 int main_2123b() {
   vector<unsigned> vcost{1, 10, 100, 1000};
-  hash<Pos> hh;
+  DHash<Pos> hh;
   unsigned D = 4;
   unsigned N = 11 + 4 * D;
   UndirectedGraph g(N);

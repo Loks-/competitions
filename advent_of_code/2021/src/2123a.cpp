@@ -1,9 +1,10 @@
 #include "common/geometry/d2/utils/neighbors.h"
 #include "common/graph/graph.h"
 #include "common/graph/graph/distance.h"
+#include "common/hash.h"
+#include "common/hash/vector.h"
 #include "common/heap.h"
 #include "common/stl/full.h"
-#include "common/stl/hash/vector.h"
 #include "common/stl/pair.h"
 #include "common/stl/pair_io.h"
 #include "common/string/utils/split.h"
@@ -54,7 +55,7 @@ int main_2123a() {
   }
 
   auto Hash = [](const Pos& p) {
-    hash<vector<unsigned>> h;
+    DHash<vector<unsigned>> h;
     return HashCombine(h(p.vpos), h(p.vm));
   };
 

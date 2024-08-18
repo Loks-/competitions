@@ -1,16 +1,18 @@
 #include "common/geometry/d3/base.h"
-#include "common/geometry/d3/stl_hash/point.h"
+#include "common/geometry/d3/hash/point.h"
 #include "common/geometry/d3/utils/box.h"
 #include "common/geometry/d3/utils/neighbors.h"
+#include "common/hash.h"
 #include "common/stl/base.h"
 #include "common/vector/read_from_string.h"
 #include "common/vector/read_lines.h"
 
 #include <queue>
+#include <unordered_set>
 
 int main_2218() {
   auto vs = nvector::ReadLines();
-  unordered_set<I3Point> points;
+  unordered_set<I3Point, DHash<I3Point>> points;
   unsigned r1 = 0, r2 = 0;
   for (auto s : vs) {
     auto v = nvector::ReadFromString<int>(s, ",");
@@ -25,7 +27,7 @@ int main_2218() {
   auto b = Box(vector<I3Point>{points.begin(), points.end()});
   b.p1 -= v1;
   b.p2 += v1;
-  unordered_set<I3Point> points2 = points;
+  unordered_set<I3Point, DHash<I3Point>> points2 = points;
   points2.insert(b.p1);
   queue<I3Point> q;
   for (q.push(b.p1); !q.empty(); q.pop()) {

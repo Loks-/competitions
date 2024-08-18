@@ -1,7 +1,8 @@
 #include "common/geometry/d2/axis/rectangle.h"
+#include "common/geometry/d2/hash/point.h"
 #include "common/geometry/d2/point.h"
-#include "common/geometry/d2/stl_hash/point.h"
 #include "common/geometry/d2/utils/neighbors.h"
+#include "common/hash.h"
 #include "common/stl/base.h"
 #include "common/vector/read_lines.h"
 
@@ -13,7 +14,7 @@ int main_2109() {
   I2ARectangle b({0, 0}, {n - 1, m - 1});
   auto Get = [&](const I2Point& p) { return b.Inside(p) ? vs[p.x][p.y] : '9'; };
 
-  unordered_map<I2Point, unsigned> um;
+  unordered_map<I2Point, unsigned, DHash<I2Point>> um;
   for (I2Point p; p.x < n; ++p.x) {
     for (p.y = 0; p.y < m; ++p.y) {
       if (Get(p) == '9') continue;

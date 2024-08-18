@@ -1,16 +1,17 @@
 #include "common/geometry/d2/angle_fraction.h"
 #include "common/geometry/d2/base.h"
+#include "common/geometry/d2/hash/point.h"
 #include "common/geometry/d2/point_io.h"
 #include "common/geometry/d2/polygon.h"
 #include "common/geometry/d2/reflection.h"
 #include "common/geometry/d2/reflection/apply_polygon.h"
 #include "common/geometry/d2/segment.h"
-#include "common/geometry/d2/stl_hash/point.h"
 #include "common/geometry/d2/triangle.h"
 #include "common/geometry/d2/utils/inside_segment_polygon.h"
 #include "common/geometry/d2/utils/subtraction_polygon.h"
+#include "common/hash.h"
 #include "common/numeric/fraction_io.h"
-#include "common/numeric/stl_hash/fraction.h"
+#include "common/numeric/hash/fraction.h"
 #include "common/stl/base.h"
 
 #include <unordered_map>
@@ -52,7 +53,7 @@ int main_napkin_folding() {
       auto v = plgn0.MGet(i + 1) - p;
       for (unsigned j = 0; j < l; ++j) vpe.push_back(p + v * vpp[j]);
     }
-    unordered_map<TPoint, unsigned> mpoints;
+    unordered_map<TPoint, unsigned, DHash<TPoint>> mpoints;
     for (unsigned i = 0; i < vpe.size(); ++i) mpoints[vpe[i]] = i;
 
     vector<pair<TPoint, TPoint>> vsol;

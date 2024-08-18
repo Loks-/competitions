@@ -1,6 +1,7 @@
+#include "common/hash.h"
+#include "common/hash/pair.h"
 #include "common/numeric/utils/gcd.h"
 #include "common/stl/base.h"
-#include "common/stl/hash/pair.h"
 #include "common/stl/pair_io.h"
 #include "common/vector/read.h"
 
@@ -13,7 +14,7 @@ int main_new_elements_part1() {
     unsigned n;
     cin >> n;
     auto v = nvector::Read<pair<int64_t, int64_t>>(n);
-    unordered_set<pair<int64_t, int64_t>> us;
+    unordered_set<pair<int64_t, int64_t>, DHash<pair<int64_t, int64_t>>> us;
     for (unsigned i = 0; i < n; ++i) {
       for (unsigned j = i + 1; j < n; ++j) {
         int64_t dc = v[i].first - v[j].first;

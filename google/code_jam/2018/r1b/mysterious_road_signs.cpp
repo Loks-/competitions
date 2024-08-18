@@ -1,5 +1,6 @@
+#include "common/hash.h"
+#include "common/hash/pair.h"
 #include "common/stl/base.h"
-#include "common/stl/hash/pair.h"
 
 #include <array>
 #include <unordered_set>
@@ -9,7 +10,8 @@
 namespace {
 struct BestIntervals {
   unsigned max_length;
-  unordered_set<pair<unsigned, unsigned>> intervals;
+  unordered_set<pair<unsigned, unsigned>, DHash<pair<unsigned, unsigned>>>
+      intervals;
 
   BestIntervals() : max_length(0) {}
 

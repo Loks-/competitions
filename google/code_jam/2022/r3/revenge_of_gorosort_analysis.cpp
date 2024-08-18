@@ -1,7 +1,8 @@
 #include "common/assert_exception.h"
+#include "common/hash.h"
+#include "common/hash/vector.h"
 #include "common/numeric/factorial.h"
 #include "common/stl/base.h"
-#include "common/stl/hash/vector.h"
 #include "common/timer.h"
 #include "common/vector/enumerate.h"
 #include "common/vector/munion.h"
@@ -13,7 +14,7 @@
 int main_revenge_of_gorosort_analysis() {
   class Transitions {
    public:
-    unordered_map<vector<unsigned>, double> m;
+    unordered_map<vector<unsigned>, double, DHash<vector<unsigned>>> m;
 
     Transitions() {}
     Transitions(double x) { m[{}] = x; }
@@ -64,7 +65,7 @@ int main_revenge_of_gorosort_analysis() {
   };
 
   unsigned L = 40;
-  unordered_map<vector<unsigned>, double> mexp;
+  unordered_map<vector<unsigned>, double, DHash<vector<unsigned>>> mexp;
   vector<Transitions> vsplit0(2, Transitions(1)), vsplit = vsplit0;
   mexp[{}] = 0;
 
@@ -93,7 +94,7 @@ int main_revenge_of_gorosort_analysis() {
   };
 
   auto Init0 = [&](unsigned l) {
-    unordered_map<vector<unsigned>, double> mvc;
+    unordered_map<vector<unsigned>, double, DHash<vector<unsigned>>> mvc;
     vector<unsigned> v;
     for (unsigned i = 1; i <= l; ++i) {
       for (auto& p : vsplit0[l - i].m) {

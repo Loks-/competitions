@@ -1,5 +1,6 @@
+#include "common/hash.h"
+#include "common/hash/vector.h"
 #include "common/stl/base.h"
-#include "common/stl/hash/vector.h"
 #include "common/stl/pair.h"
 #include "common/vector/first_missed.h"
 #include "common/vector/read.h"
@@ -19,7 +20,7 @@ int main_win_as_second() {
     vnim_path1[i] = nvector::FirstMissed(vp);
   }
 
-  unordered_map<vector<unsigned>, unsigned> mnim_star;
+  unordered_map<vector<unsigned>, unsigned, DHash<vector<unsigned>>> mnim_star;
 
   std::function<unsigned(const vector<unsigned>&)> GetNimStar =
       [&](const vector<unsigned>& v) -> unsigned {

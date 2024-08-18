@@ -4,7 +4,7 @@
 #include "common/graph/graph.h"
 #include "common/graph/graph/distance.h"
 #include "common/hash.h"
-#include "common/stl/hash/vector.h"
+#include "common/hash/vector.h"
 
 #include <algorithm>
 #include <functional>
@@ -23,7 +23,7 @@ class HamiltonianPathUndirectedGraph {
 
  protected:
   size_t Hash() const {
-    thread_local std::hash<std::vector<unsigned>> h;
+    DHash<std::vector<unsigned>> h;
     return HashCombine(h(visited), current_path.back());
   }
 

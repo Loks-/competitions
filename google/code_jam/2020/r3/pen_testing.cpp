@@ -1,6 +1,6 @@
 #include "common/hash.h"
+#include "common/hash/vector.h"
 #include "common/stl/base.h"
-#include "common/stl/hash/vector.h"
 #include "common/vector/enumerate.h"
 #include "common/vector/mask.h"
 
@@ -27,20 +27,20 @@ class CompactState {
 };
 }  // namespace
 
-namespace std {
-template <>
-struct hash<CompactState> {
-  size_t operator()(const CompactState& s) const {
-    hash<vector<unsigned>> h;
-    return HashCombine(h(s.vc), s.mask);
+namespace nhash {
+template <class Policy>
+class Hash<Policy, CompactState> {
+ public:
+  constexpr size_t operator()(const CompactState& s) const {
+    return HashCombine(Hash<Policy, vector<unsigned>>{}(s.vc), s.mask);
   }
 };
-}  // namespace std
+}  // namespace nhash
 
 namespace {
 class Solver {
  public:
-  unordered_map<CompactState, pair<double, unsigned>> m;
+  unordered_map<CompactState, pair<double, unsigned>, DHash<CompactState>> m;
 
   uint64_t Count(const CompactState& s) {
     uint64_t r = 1;

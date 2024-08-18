@@ -3,7 +3,9 @@
 #include "common/base.h"
 #include "common/graph/edge.h"
 #include "common/graph/graph_ei.h"
-#include "common/stl/hash/pair.h"
+#include "common/hash.h"
+#include "common/hash/pair.h"
+
 #include <unordered_map>
 #include <utility>
 #include <vector>
@@ -20,7 +22,9 @@ inline UndirectedGraphEI<TEdgeInfo> Dual(
     }
   }
   unsigned edges = g.EdgesSize();
-  std::unordered_map<std::pair<unsigned, unsigned>, unsigned> edge_to_face;
+  std::unordered_map<std::pair<unsigned, unsigned>, unsigned,
+                     DHash<std::pair<unsigned, unsigned>>>
+      edge_to_face;
   edge_to_face.reserve(2 * edges);
   unsigned current_face = 0;
   for (unsigned i = 0; i < g.Size(); ++i) {

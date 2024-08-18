@@ -1,6 +1,7 @@
 #include "common/geometry/d2/base.h"
-#include "common/geometry/d2/stl_hash/point.h"
+#include "common/geometry/d2/hash/point.h"
 #include "common/geometry/d2/utils/sign.h"
+#include "common/hash.h"
 #include "common/stl/base.h"
 #include "common/vector/extract_int.h"
 #include "common/vector/read_lines.h"
@@ -10,7 +11,7 @@
 int main_2214() {
   auto vs = nvector::ReadLines();
   int64_t maxy = 0, count = 0, x0 = 500;
-  unordered_set<I2Point> ps;
+  unordered_set<I2Point, DHash<I2Point>> ps;
   auto Test = [&](const I2Point& p) { return ps.find(p) == ps.end(); };
 
   for (auto& s : vs) {

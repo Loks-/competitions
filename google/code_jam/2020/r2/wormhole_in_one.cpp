@@ -1,7 +1,8 @@
 #include "common/geometry/d2/angle_int.h"
 #include "common/geometry/d2/base.h"
+#include "common/geometry/d2/hash/angle_int.h"
 #include "common/geometry/d2/point_io.h"
-#include "common/geometry/d2/stl_hash/angle_int.h"
+#include "common/hash.h"
 #include "common/stl/base.h"
 #include "common/vector/read.h"
 
@@ -14,7 +15,7 @@ int main_wormhole_in_one() {
   for (unsigned it = 1; it <= T; ++it) {
     cin >> N;
     auto v = nvector::Read<I2Point>(N);
-    unordered_map<I2Angle, unordered_set<unsigned>> m;
+    unordered_map<I2Angle, unordered_set<unsigned>, DHash<I2Angle>> m;
     for (unsigned i = 0; i < N; ++i) {
       for (unsigned j = 0; j < N; ++j) {
         if (i == j) continue;

@@ -1,5 +1,6 @@
+#include "common/hash.h"
+#include "common/hash/pair.h"
 #include "common/stl/base.h"
-#include "common/stl/hash/pair.h"
 #include "common/string/utils/split.h"
 #include "common/vector/read_lines.h"
 
@@ -15,7 +16,7 @@ int main_2217() {
   auto s = vs[0];
   vector<uint64_t> vh;
   using TKey = pair<uint64_t, uint32_t>;
-  unordered_map<TKey, pair<uint64_t, uint64_t>> m;
+  unordered_map<TKey, pair<uint64_t, uint64_t>, DHash<TKey>> m;
   for (unsigned i = 0, j = 0;; ++i) {
     auto b = vvb[i % vvb.size()];
     for (auto& x : b) x <<= 2;
