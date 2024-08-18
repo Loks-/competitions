@@ -1,6 +1,6 @@
 #include "tester/tester_heap_base.h"
 
-#include "common/hash.h"
+#include "common/hash/combine.h"
 #include "common/heap/base/binary.h"
 #include "common/heap/base/binomial.h"
 #include "common/heap/base/dheap.h"
@@ -33,11 +33,11 @@ size_t TesterHeapBase::TestPriorityQueue() const {
   std::priority_queue<size_t, std::vector<size_t>, std::greater<size_t>> heap(
       vinit.begin(), vinit.end());
   for (unsigned i = 0; i < vloop.size(); ++i) {
-    h = HashCombine(h, heap.top());
+    nhash::DCombineH(h, heap.top());
     heap.pop();
     heap.push(vloop[i]);
   }
-  for (; !heap.empty(); heap.pop()) h = HashCombine(h, heap.top());
+  for (; !heap.empty(); heap.pop()) nhash::DCombineH(h, heap.top());
   std::cout << "Test results [B   PQ]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;
   return h;
@@ -49,10 +49,10 @@ size_t TesterHeapBase::TestBase(const std::string& name) const {
   size_t h = 0;
   THeap heap(vinit);
   for (unsigned i = 0; i < vloop.size(); ++i) {
-    h = HashCombine(h, heap.Extract());
+    nhash::DCombineH(h, heap.Extract());
     heap.Add(vloop[i]);
   }
-  for (; !heap.Empty();) h = HashCombine(h, heap.Extract());
+  for (; !heap.Empty();) nhash::DCombineH(h, heap.Extract());
   std::cout << "Test results [" << name << "]: " << h << "\t"
             << t.GetMilliseconds() << std::endl;
   return h;
@@ -66,10 +66,10 @@ size_t TesterHeapBase::TestNodesManager(const std::string& name) const {
   THeap heap(nodes_manager);
   for (size_t v : vinit) heap.Add(v);
   for (unsigned i = 0; i < vloop.size(); ++i) {
-    h = HashCombine(h, heap.Extract());
+    nhash::DCombineH(h, heap.Extract());
     heap.Add(vloop[i]);
   }
-  for (; !heap.Empty();) h = HashCombine(h, heap.Extract());
+  for (; !heap.Empty();) nhash::DCombineH(h, heap.Extract());
   std::cout << "Test results [" << name << "]: " << h << "\t"
             << t.GetMilliseconds() << std::endl;
   return h;
@@ -82,10 +82,10 @@ size_t TesterHeapBase::TestKVM(const std::string& name) const {
   THeap heap(vinit.size() + vloop.size());
   for (unsigned i = 0; i < vinit.size(); ++i) heap.Set(i, vinit[i]);
   for (unsigned i = 0; i < vloop.size(); ++i) {
-    h = HashCombine(h, heap.ExtractValue());
+    nhash::DCombineH(h, heap.ExtractValue());
     heap.Set(vinit.size() + i, vloop[i]);
   }
-  for (; !heap.Empty();) h = HashCombine(h, heap.ExtractValue());
+  for (; !heap.Empty();) nhash::DCombineH(h, heap.ExtractValue());
   std::cout << "Test results [" << name << "]: " << h << "\t"
             << t.GetMilliseconds() << std::endl;
   return h;

@@ -29,7 +29,7 @@
 #include "common/graph/graph_ei/distance/spfa/zero_degrees_only_base.h"
 #include "common/graph/graph_ei/distance/spfa/zero_degrees_only_time.h"
 #include "common/graph/graph_ei/edge_cost_proxy.h"
-#include "common/hash.h"
+#include "common/hash/combine.h"
 #include "common/timer.h"
 
 #include <iostream>
@@ -93,7 +93,7 @@ class TesterGraphEIDistanceBase {
     size_t h = 0;
     auto vv = fa(g, edge_proxy, max_cost);
     for (unsigned i = 0; i < g.Size(); ++i) {
-      for (auto d : vv[i]) h = HashCombine(h, d);
+      for (auto d : vv[i]) nhash::DCombineH(h, d);
     }
     std::cout << "Test results  [" << name << "]: " << h << "\t"
               << t.GetMilliseconds() << std::endl;
@@ -107,7 +107,7 @@ class TesterGraphEIDistanceBase {
     std::vector<TEdgeCost> v;
     for (unsigned i = 0; i < g.Size(); ++i) {
       v = fs(g, edge_proxy, i, max_cost);
-      for (auto d : v) h = HashCombine(h, d);
+      for (auto d : v) nhash::DCombineH(h, d);
     }
     std::cout << "Test results  [" << name << "]: " << h << "\t"
               << t.GetMilliseconds() << std::endl;

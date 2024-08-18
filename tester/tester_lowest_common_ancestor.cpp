@@ -7,7 +7,7 @@
 #include "common/graph/tree/lca/offline_proxy.h"
 #include "common/graph/tree/lca/schieber_vishkin.h"
 #include "common/graph/tree/lca/tarjan_offline.h"
-#include "common/hash.h"
+#include "common/hash/combine.h"
 #include "common/timer.h"
 #include "common/vector/hrandom_pair.h"
 #include "common/vector/rmq.h"
@@ -33,7 +33,7 @@ size_t TesterLowestCommonAncestor::TestTarjanOffline() const {
   std::vector<uint64_t> r;
   for (const auto& t : trees) {
     auto vr = graph::lca::TarjanOffline(t, queries);
-    for (auto r : vr) h = HashCombine(h, r);
+    for (auto r : vr) nhash::DCombineH(h, r);
   }
   std::cout << "Test results  [Tarjan Offline  ]: " << h << "\t"
             << t.GetMilliseconds() << std::endl;
@@ -46,7 +46,7 @@ size_t TesterLowestCommonAncestor::TestSchieberVishkin() const {
   std::vector<uint64_t> r;
   for (const auto& t : trees) {
     auto vr = graph::lca::OfflineProxy<graph::lca::SchieberVishkin>(t, queries);
-    for (auto r : vr) h = HashCombine(h, r);
+    for (auto r : vr) nhash::DCombineH(h, r);
   }
   std::cout << "Test results  [Schieber Vishkin]: " << h << "\t"
             << t.GetMilliseconds() << std::endl;
@@ -61,7 +61,7 @@ size_t TesterLowestCommonAncestor::TestEulerTourRMQ() const {
     auto vr =
         graph::lca::OfflineProxy<graph::lca::EulerTour<nvector::RMQ<unsigned>>>(
             t, queries);
-    for (auto r : vr) h = HashCombine(h, r);
+    for (auto r : vr) nhash::DCombineH(h, r);
   }
   std::cout << "Test results  [Euler Tour RMQ  ]: " << h << "\t"
             << t.GetMilliseconds() << std::endl;
@@ -75,7 +75,7 @@ size_t TesterLowestCommonAncestor::TestEulerTourRMQ1() const {
   for (const auto& t : trees) {
     auto vr = graph::lca::OfflineProxy<
         graph::lca::EulerTour<nvector::rmq::PPTRMQ1<unsigned>>>(t, queries);
-    for (auto r : vr) h = HashCombine(h, r);
+    for (auto r : vr) nhash::DCombineH(h, r);
   }
   std::cout << "Test results  [Euler Tour RMQ1 ]: " << h << "\t"
             << t.GetMilliseconds() << std::endl;
@@ -88,7 +88,7 @@ size_t TesterLowestCommonAncestor::TestAlphabeticCode() const {
   std::vector<uint64_t> r;
   for (const auto& t : trees) {
     auto vr = graph::lca::OfflineProxy<graph::lca::AlphabeticCode>(t, queries);
-    for (auto r : vr) h = HashCombine(h, r);
+    for (auto r : vr) nhash::DCombineH(h, r);
   }
   std::cout << "Test results  [Alphabetic Code ]: " << h << "\t"
             << t.GetMilliseconds() << std::endl;

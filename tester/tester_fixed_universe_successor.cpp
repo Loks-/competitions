@@ -21,7 +21,7 @@
 #include "common/data_structures/fixed_universe_successor/x_fast_tree.h"
 #include "common/data_structures/fixed_universe_successor/x_fast_trie.h"
 #include "common/data_structures/fixed_universe_successor/y_fast_trie_proxy.h"
-#include "common/hash.h"
+#include "common/hash/combine.h"
 #include "common/timer.h"
 #include "common/vector/hrandom.h"
 #include "common/vector/shuffle.h"
@@ -49,10 +49,10 @@ size_t TesterFixedUniverseSuccessor::TestBase(const std::string& name) const {
   for (size_t x : vdata) {
     // std::cout << x << " " << fus.Successor(x) << " " << fus.Predecessor(x)
     //           << std::endl;
-    h = HashCombine(h, fus.Min());
-    h = HashCombine(h, fus.Max());
-    h = HashCombine(h, fus.Successor(x));
-    h = HashCombine(h, fus.Predecessor(x));
+    nhash::DCombineH(h, fus.Min());
+    nhash::DCombineH(h, fus.Max());
+    nhash::DCombineH(h, fus.Successor(x));
+    nhash::DCombineH(h, fus.Predecessor(x));
     if (fus.HasKey(x)) {
       fus.Delete(x);
     } else {

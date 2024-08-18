@@ -2,7 +2,8 @@
 
 #include "common/base.h"
 #include "common/graph/tree.h"
-#include "common/hash.h"
+#include "common/hash/combine.h"
+
 #include <algorithm>
 #include <functional>
 #include <stack>
@@ -43,24 +44,27 @@ class TreeIsomorphicHash {
   }
 
   static size_t HashR(const TreeGraph& tree, unsigned node, unsigned parent) {
-    size_t current = std::hash<unsigned>{}(1);
+    size_t seed = 1;
     std::vector<size_t> v;
     for (unsigned c : tree.Edges(node)) {
       if (c == parent) continue;
       v.push_back(HashR(tree, c, node));
     }
     std::sort(v.begin(), v.end());
-    for (size_t h : v) current = HashCombine(current, h);
-    return current;
+    for (size_t h : v) nhash::DCombineH(seed, h);
+    return seed;
   }
 
  public:
   static size_t Hash(const TreeGraph& tree) {
     auto p = GetCenter(tree);
     if (p.second == CNone) return HashR(tree, p.first, p.second);
-    size_t h1 = HashR(tree, p.first, p.second);
-    size_t h2 = HashR(tree, p.second, p.first);
-    return (h1 < h2) ? HashCombine(h1, h2) : HashCombine(h2, h1);
+    size_t seed = 0, h1 = HashR(tree, p.first, p.second),
+           h2 = HashR(tree, p.second, p.first);
+    if (h1 > h2) std::swap(h1, h2);
+    nhash::DCombineH(seed, h1);
+    nhash::DCombineH(seed, h2);
+    return seed;
   }
 };
 }  // namespace graph

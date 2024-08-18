@@ -1,7 +1,7 @@
 #pragma once
 
 #include "common/graph/graph_ei.h"
-#include "common/hash.h"
+#include "common/hash/combine.h"
 
 template <class TEdgeInfo, bool directed_edges>
 inline graph::GraphEI<TEdgeInfo, directed_edges> CreateHRandomGraph(
@@ -13,7 +13,7 @@ inline graph::GraphEI<TEdgeInfo, directed_edges> CreateHRandomGraph(
     for (unsigned j = 0;
          j < (directed_edges ? edges_per_node : (edges_per_node + (i % 2)) / 2);
          ++j) {
-      h = HashCombine(h, i + j);
+      nhash::DCombineH(h, i + j);
       g.AddEdge(i, h % size, h % max_edge_cost);
     }
   }

@@ -5,6 +5,7 @@
 #include "common/vector/first_missed.h"
 #include "common/vector/read.h"
 
+#include <functional>
 #include <unordered_map>
 
 int main_win_as_second() {

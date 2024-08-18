@@ -1,7 +1,7 @@
 #include "common/geometry/d2/point_io.h"
 #include "common/geometry/d2/utils/half_splitting_line_dl.h"
 #include "common/geometry/d2/utils/scale_points.h"
-#include "common/hash.h"
+#include "common/hash/combine.h"
 #include "common/stl/base.h"
 #include "common/vector/enumerate.h"
 #include "common/vector/read.h"
@@ -25,7 +25,7 @@ int main_juggle_struggle_part1__rsplit() {
       unsigned e1 = b + s, e2 = (s == 2 * N) ? e1 : e1 + s;
       vpt.clear();
       for (unsigned i = b; i < e2; ++i) vpt.push_back(vp[vl[i]]);
-      h = HashCombine(h, s);
+      nhash::DCombineH(h, s);
       unsigned p1 = b + h % s, p2 = (e1 == e2) ? b + (h + 1) % s : e1 + h % s;
       auto l = HalfSplittingLineDL(vpt, (vp[vl[p2]] - vp[vl[p1]]) / 2);
       for (auto& vt : vvt) vt.clear();

@@ -3,7 +3,9 @@
 #include "common/base.h"
 #include "common/graph/graph.h"
 #include "common/graph/graph/distance.h"
-#include "common/hash.h"
+#include "common/hash/hash.h"
+#include "common/hash/pair.h"
+#include "common/hash/value.h"
 #include "common/hash/vector.h"
 
 #include <algorithm>
@@ -23,8 +25,8 @@ class HamiltonianPathUndirectedGraph {
 
  protected:
   size_t Hash() const {
-    DHash<std::vector<unsigned>> h;
-    return HashCombine(h(visited), current_path.back());
+    return nhash::HValue<nhash::PolicySafe>(
+        std::make_pair(visited, current_path.back()));
   }
 
   bool Connected(unsigned from) const {

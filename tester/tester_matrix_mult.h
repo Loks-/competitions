@@ -2,7 +2,7 @@
 
 #include "tester/matrix_mult.h"
 
-#include "common/hash.h"
+#include "common/hash/combine.h"
 #include "common/linear_algebra/bool/matrix.h"
 #include "common/linear_algebra/matrix.h"
 #include "common/linear_algebra/matrix_static_size.h"
@@ -27,25 +27,25 @@ class TesterMatrixMult {
                            bool use_bool_hash = false) {
     size_t h = 0;
     for (uint64_t t : m.GetData())
-      h = HashCombine(h, (use_bool_hash ? t & 1 : TModularProxy::ApplyU(t)));
+      nhash::DCombineH(h, (use_bool_hash ? t & 1 : TModularProxy::ApplyU(t)));
     return h;
   }
 
   static size_t MatrixHash(const la::Matrix<TModularD>& m) {
     size_t h = 0;
-    for (TModularD t : m.GetData()) h = HashCombine(h, t.Get());
+    for (TModularD t : m.GetData()) nhash::DCombineH(h, t.Get());
     return h;
   }
 
   static size_t MatrixHash(const la::Matrix<TModular2>& m) {
     size_t h = 0;
-    for (TModular2 t : m.GetData()) h = HashCombine(h, t.Get());
+    for (TModular2 t : m.GetData()) nhash::DCombineH(h, t.Get());
     return h;
   }
 
   static size_t MatrixHash(const la::Matrix<ModularBool>& m) {
     size_t h = 0;
-    for (ModularBool t : m.GetData()) h = HashCombine(h, t.Get() ? 1 : 0);
+    for (ModularBool t : m.GetData()) nhash::DCombineH(h, t.Get() ? 1 : 0);
     return h;
   }
 
@@ -53,7 +53,8 @@ class TesterMatrixMult {
   static size_t MatrixHash(
       const la::MatrixStaticSize<uint64_t, matrix_size, matrix_size>& m) {
     size_t h = 0;
-    for (uint64_t t : m.GetData()) h = HashCombine(h, TModularProxy::ApplyU(t));
+    for (uint64_t t : m.GetData())
+      nhash::DCombineH(h, TModularProxy::ApplyU(t));
     return h;
   }
 
@@ -61,7 +62,7 @@ class TesterMatrixMult {
   static size_t MatrixHash(
       const la::MatrixStaticSize<TModularD, matrix_size, matrix_size>& m) {
     size_t h = 0;
-    for (TModularD t : m.GetData()) h = HashCombine(h, t.Get());
+    for (TModularD t : m.GetData()) nhash::DCombineH(h, t.Get());
     return h;
   }
 
@@ -69,7 +70,7 @@ class TesterMatrixMult {
     size_t h = 0;
     for (unsigned i = 0; i < m.Rows(); ++i) {
       for (unsigned j = 0; j < m.Columns(); ++j)
-        h = HashCombine(h, m.Get(i, j).Get());
+        nhash::DCombineH(h, m.Get(i, j).Get());
     }
     return h;
   }

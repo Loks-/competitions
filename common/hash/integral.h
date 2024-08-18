@@ -75,6 +75,10 @@ class HashIntegral<Policy, T, 64> {
 };
 
 template <class Policy>
+class Hash<Policy, char>
+    : public HashIntegral<Policy, char, templates::SizeInBits<size_t>()> {};
+
+template <class Policy>
 class Hash<Policy, int8_t>
     : public HashIntegral<Policy, int8_t, templates::SizeInBits<size_t>()> {};
 

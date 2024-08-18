@@ -1,10 +1,12 @@
 #include "common/hash.h"
+#include "common/hash/pair.h"
 #include "common/hash/vector.h"
 #include "common/stl/base.h"
 #include "common/vector/enumerate.h"
 #include "common/vector/mask.h"
 
 #include <unordered_map>
+#include <utility>
 
 namespace {
 static const unsigned N = 15;
@@ -32,7 +34,7 @@ template <class Policy>
 class Hash<Policy, CompactState> {
  public:
   constexpr size_t operator()(const CompactState& s) const {
-    return HashCombine(Hash<Policy, vector<unsigned>>{}(s.vc), s.mask);
+    return Hash<Policy, pair<vector<unsigned>, uint64_t>>{}({s.vc, s.mask});
   }
 };
 }  // namespace nhash

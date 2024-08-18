@@ -8,7 +8,7 @@
 #include "common/binary_search_tree/splay_tree.h"
 #include "common/binary_search_tree/treap.h"
 #include "common/binary_search_tree/wavl_tree.h"
-#include "common/hash.h"
+#include "common/hash/combine.h"
 #include "common/modular/proxy/proxy.h"
 #include "common/template.h"
 #include "common/timer.h"
@@ -56,7 +56,7 @@ size_t TesterBinarySearchTreeSplitJoin::TestBase(
     } else {
       root = tree.InsertNewNode(root, {}, key);
     }
-    h = HashCombine(h, root ? root->info.sum_keys : 0);
+    nhash::DCombineH(h, root ? root->info.sum_keys : 0);
   }
   Assert(!root);
   std::cout << "Test results [" << name << "]: " << h << "\t"

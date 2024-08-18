@@ -1,6 +1,6 @@
 #include "tester/tester_heap_ext.h"
 
-#include "common/hash.h"
+#include "common/hash/combine.h"
 #include "common/heap/base/binary.h"
 #include "common/heap/base/binomial.h"
 #include "common/heap/base/dheap.h"
@@ -44,14 +44,14 @@ size_t TesterHeapExt::TestPriorityQueue() const {
   for (unsigned j = 0; j < dpm; ++j) {
     for (unsigned i = 0; i < size; ++i)
       heap.push(std::make_pair(v[i * dpm + j], i));
-    h = HashCombine(h, heap.top().first);
+    nhash::DCombineH(h, heap.top().first);
   }
   std::vector<unsigned> in_heap(size, 1);
   for (; !heap.empty();) {
     auto v = heap.top();
     heap.pop();
     if (in_heap[v.second]) {
-      h = HashCombine(h, v.first);
+      nhash::DCombineH(h, v.first);
       in_heap[v.second] = 0;
     }
   }
@@ -68,13 +68,13 @@ size_t TesterHeapExt::TestBase(const std::string& name) const {
   for (unsigned j = 0; j < dpm; ++j) {
     for (unsigned i = 0; i < size; ++i)
       heap.Add(std::make_pair(v[i * dpm + j], i));
-    h = HashCombine(h, heap.Top().first);
+    nhash::DCombineH(h, heap.Top().first);
   }
   std::vector<unsigned> in_heap(size, 1);
   for (; !heap.Empty();) {
     auto v = heap.Extract();
     if (in_heap[v.second]) {
-      h = HashCombine(h, v.first);
+      nhash::DCombineH(h, v.first);
       in_heap[v.second] = 0;
     }
   }
@@ -92,13 +92,13 @@ size_t TesterHeapExt::TestBaseNodesManager(const std::string& name) const {
   for (unsigned j = 0; j < dpm; ++j) {
     for (unsigned i = 0; i < size; ++i)
       heap.Add(std::make_pair(v[i * dpm + j], i));
-    h = HashCombine(h, heap.Top().first);
+    nhash::DCombineH(h, heap.Top().first);
   }
   std::vector<unsigned> in_heap(size, 1);
   for (; !heap.Empty();) {
     auto v = heap.Extract();
     if (in_heap[v.second]) {
-      h = HashCombine(h, v.first);
+      nhash::DCombineH(h, v.first);
       in_heap[v.second] = 0;
     }
   }
@@ -115,9 +115,9 @@ size_t TesterHeapExt::TestExt(const std::string& name) const {
   for (unsigned j = 0; j < dpm; ++j) {
     for (unsigned i = 0; i < size; ++i)
       heap.DecreaseValueIfLess(i, v[i * dpm + j]);
-    h = HashCombine(h, heap.TopValue());
+    nhash::DCombineH(h, heap.TopValue());
   }
-  for (; !heap.Empty();) h = HashCombine(h, heap.ExtractValue());
+  for (; !heap.Empty();) nhash::DCombineH(h, heap.ExtractValue());
   std::cout << "Test results [" << name << "]: " << h << "\t"
             << t.GetMilliseconds() << std::endl;
   return h;
@@ -133,9 +133,9 @@ size_t TesterHeapExt::TestExtNodesManager(const std::string& name) const {
   for (unsigned j = 0; j < dpm; ++j) {
     for (unsigned i = 0; i < size; ++i)
       heap.DecreaseValueIfLess(nodes_manager.NodeByRawIndex(i), v[i * dpm + j]);
-    h = HashCombine(h, heap.Top());
+    nhash::DCombineH(h, heap.Top());
   }
-  for (; !heap.Empty();) h = HashCombine(h, heap.Extract());
+  for (; !heap.Empty();) nhash::DCombineH(h, heap.Extract());
   std::cout << "Test results [" << name << "]: " << h << "\t"
             << t.GetMilliseconds() << std::endl;
   return h;
@@ -149,9 +149,9 @@ size_t TesterHeapExt::TestKVM(const std::string& name) const {
   for (unsigned j = 0; j < dpm; ++j) {
     for (unsigned i = 0; i < size; ++i)
       heap.DecreaseValueIfLess(i, v[i * dpm + j]);
-    h = HashCombine(h, heap.TopValue());
+    nhash::DCombineH(h, heap.TopValue());
   }
-  for (; !heap.Empty();) h = HashCombine(h, heap.ExtractValue());
+  for (; !heap.Empty();) nhash::DCombineH(h, heap.ExtractValue());
   std::cout << "Test results [" << name << "]: " << h << "\t"
             << t.GetMilliseconds() << std::endl;
   return h;
@@ -186,9 +186,9 @@ size_t TesterHeapExt::TestKVME(const std::string& name, const TExtra& e) const {
   for (unsigned j = 0; j < dpm; ++j) {
     for (unsigned i = 0; i < size; ++i)
       heap.DecreaseValueIfLess(i, v[i * dpm + j]);
-    h = HashCombine(h, heap.TopValue());
+    nhash::DCombineH(h, heap.TopValue());
   }
-  for (; !heap.Empty();) h = HashCombine(h, heap.ExtractValue());
+  for (; !heap.Empty();) nhash::DCombineH(h, heap.ExtractValue());
   std::cout << "Test results [" << name << "]: " << h << "\t"
             << t.GetMilliseconds() << std::endl;
   return h;

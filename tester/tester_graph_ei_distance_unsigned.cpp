@@ -5,7 +5,7 @@
 
 #include "common/graph/graph_ei/distance/dial.h"
 #include "common/graph/graph_ei/distance_positive_cost.h"
-#include "common/hash.h"
+#include "common/hash/combine.h"
 #include "common/heap/base/bucket_queue.h"
 #include "common/heap/base/bucket_queue_ll.h"
 #include "common/heap/monotone/base/bucket_queue.h"
@@ -48,7 +48,7 @@ void TesterGraphEIDistanceUnsigned::TestDial() {
   std::vector<TEdgeCost> v;
   for (unsigned i = 0; i < g.Size(); ++i) {
     v = graph::distance::Dial(g, edge_proxy, i, max_cost, max_edge_cost);
-    for (auto d : v) h = HashCombine(h, d);
+    for (auto d : v) nhash::DCombineH(h, d);
   }
   std::cout << "Test results  [   Dial]: " << h << "\t" << t.GetMilliseconds()
             << std::endl;

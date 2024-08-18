@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/no-prefix-set
 
-#include "common/hash.h"
+#include "common/hash/hash.h"
 #include "common/stl/base.h"
 
 #include <string>
@@ -10,17 +10,16 @@ int main_no_prefix_set() {
   unsigned N;
   cin >> N;
   unordered_set<size_t> sprefix, sstring;
-  hash<char> h;
   bool found = false;
   for (unsigned i = 0; i < N; ++i) {
     string s;
     cin >> s;
     size_t hvalue = 0;
-    for (char c : s) hvalue = HashCombine(hvalue, h(c));
+    for (char c : s) nhash::CombineV<nhash::PolicySafe>(hvalue, c);
     if (sprefix.find(hvalue) != sprefix.end()) found = true;
     hvalue = 0;
     for (char c : s) {
-      hvalue = HashCombine(hvalue, h(c));
+      nhash::CombineV<nhash::PolicySafe>(hvalue, c);
       if (sstring.find(hvalue) != sstring.end()) found = true;
       sprefix.insert(hvalue);
     }

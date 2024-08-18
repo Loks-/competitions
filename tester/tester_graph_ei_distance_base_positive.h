@@ -5,7 +5,7 @@
 #include "tester/tester_graph_ei_distance_base.h"
 
 #include "common/base.h"
-#include "common/hash.h"
+#include "common/hash/combine.h"
 #include "common/heap/base/binary.h"
 #include "common/heap/base/dheap.h"
 #include "common/heap/ext/dheap_ukey_pos_map.h"
@@ -53,7 +53,7 @@ class TesterGraphEIDistanceBasePositive
     std::vector<TEdgeCost> v;
     for (unsigned i = 0; i < TBase::g.Size(); ++i) {
       v = Dijkstra_DBH<THeap>(TBase::g, TBase::edge_proxy, i, TBase::max_cost);
-      for (auto d : v) h = HashCombine(h, d);
+      for (auto d : v) nhash::DCombineH(h, d);
     }
     std::cout << "Test results  [DB" << name << "]: " << h << "\t"
               << t.GetMilliseconds() << std::endl;
@@ -67,7 +67,7 @@ class TesterGraphEIDistanceBasePositive
     std::vector<TEdgeCost> v;
     for (unsigned i = 0; i < TBase::g.Size(); ++i) {
       v = Dijkstra_DBHP<THeap>(TBase::g, TBase::edge_proxy, i, TBase::max_cost);
-      for (auto d : v) h = HashCombine(h, d);
+      for (auto d : v) nhash::DCombineH(h, d);
     }
     std::cout << "Test results  [DB" << name << "]: " << h << "\t"
               << t.GetMilliseconds() << std::endl;
@@ -82,7 +82,7 @@ class TesterGraphEIDistanceBasePositive
     for (unsigned i = 0; i < TBase::g.Size(); ++i) {
       v = Dijkstra_DBHPW<THeap>(TBase::g, TBase::edge_proxy, i,
                                 TBase::max_edge_cost, TBase::max_cost);
-      for (auto d : v) h = HashCombine(h, d);
+      for (auto d : v) nhash::DCombineH(h, d);
     }
     std::cout << "Test results  [DB" << name << "]: " << h << "\t"
               << t.GetMilliseconds() << std::endl;
@@ -96,7 +96,7 @@ class TesterGraphEIDistanceBasePositive
     std::vector<TEdgeCost> v;
     for (unsigned i = 0; i < TBase::g.Size(); ++i) {
       v = Dijkstra_DEH<THeap>(TBase::g, TBase::edge_proxy, i, TBase::max_cost);
-      for (auto d : v) h = HashCombine(h, d);
+      for (auto d : v) nhash::DCombineH(h, d);
     }
     std::cout << "Test results  [DE" << name << "]: " << h << "\t"
               << t.GetMilliseconds() << std::endl;
@@ -110,7 +110,7 @@ class TesterGraphEIDistanceBasePositive
     std::vector<TEdgeCost> v;
     for (unsigned i = 0; i < TBase::g.Size(); ++i) {
       v = Dijkstra_DMH<THeap>(TBase::g, TBase::edge_proxy, i, TBase::max_cost);
-      for (auto d : v) h = HashCombine(h, d);
+      for (auto d : v) nhash::DCombineH(h, d);
     }
     std::cout << "Test results  [DM" << name << "]: " << h << "\t"
               << t.GetMilliseconds() << std::endl;
@@ -125,7 +125,7 @@ class TesterGraphEIDistanceBasePositive
     for (unsigned i = 0; i < TBase::g.Size(); ++i) {
       v = Dijkstra_DMHW<THeap>(TBase::g, TBase::edge_proxy, i,
                                TBase::max_edge_cost, TBase::max_cost);
-      for (auto d : v) h = HashCombine(h, d);
+      for (auto d : v) nhash::DCombineH(h, d);
     }
     std::cout << "Test results  [DM" << name << "]: " << h << "\t"
               << t.GetMilliseconds() << std::endl;

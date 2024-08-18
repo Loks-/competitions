@@ -5,7 +5,7 @@
 
 #include "common/assert_exception.h"
 #include "common/base.h"
-#include "common/hash.h"
+#include "common/hash/combine.h"
 #include "common/timer.h"
 
 #include <iostream>
@@ -69,7 +69,7 @@ class TesterBinarySearchTree {
   size_t TreeHash(TNode* root, size_t h) {
     if (!root) return h;
     h = TreeHash(root->l, h);
-    h = HashCombine(h, root->key);
+    nhash::DCombineH(h, root->key);
     return TreeHash(root->r, h);
   }
 
@@ -133,7 +133,7 @@ class TesterBinarySearchTree {
       AddAction(root);
       root = tree.InsertNewNode(root, key, key);
       VerifyParentLinksLazy(root);
-      h = HashCombine(h, GetInfoValue(root));
+      nhash::DCombineH(h, GetInfoValue(root));
     }
     AddResult("Insert", type, h, t.GetMilliseconds());
     VerifyParentLinks(root);
@@ -154,7 +154,7 @@ class TesterBinarySearchTree {
     for (unsigned i = 0; i < Size(); ++i) {
       typename TTree::TNode* node = tree.FindByOrder(root, i);
       Assert(node);
-      h = HashCombine(h, node->key);
+      nhash::DCombineH(h, node->key);
     }
     AddResult("FindO", type, h, t.GetMilliseconds());
     return root;
@@ -169,7 +169,7 @@ class TesterBinarySearchTree {
     for (unsigned i = 0; i <= Size(); ++i) {
       typename TTree::TNode* node = tree.FindByKey(root, 2 * i);
       Assert(!node);
-      h = HashCombine(h, reinterpret_cast<size_t>(node));
+      nhash::DCombineH(h, reinterpret_cast<size_t>(node));
     }
     AddResult("FindK0", type, h, t.GetMilliseconds());
     return root;
@@ -185,7 +185,7 @@ class TesterBinarySearchTree {
     for (const TKey& key : vkeys) {
       typename TTree::TNode* node = tree.FindByKey(root, key);
       Assert(node);
-      h = HashCombine(h, (type <= shuffled) ? node->data : node->key);
+      nhash::DCombineH(h, (type <= shuffled) ? node->data : node->key);
     }
     AddResult("FindK1", type, h, t.GetMilliseconds());
     return root;
@@ -210,8 +210,9 @@ class TesterBinarySearchTree {
       AddAction(root);
       root = tree.RemoveAndReleaseByKey(root, key);
       VerifyParentLinksLazy(root);
-      h = HashCombine(h, (type <= shuffled) ? GetInfoValue(root)
-                                            : root ? root->info.size : 0);
+      nhash::DCombineH(h, (type <= shuffled) ? GetInfoValue(root)
+                          : root             ? root->info.size
+                                             : 0);
     }
     AddResult("DelKey", type, h, t.GetMilliseconds());
     return root;
@@ -243,7 +244,7 @@ class TesterBinarySearchTree {
       AddAction(root);
       root = tree.RemoveAndReleaseByNode(tree.NodeByRawIndex(i));
       VerifyParentLinksLazy(root);
-      h = HashCombine(h, GetInfoValue(root));
+      nhash::DCombineH(h, GetInfoValue(root));
     }
     AddResult("DelNode", type, h, t.GetMilliseconds());
     return root;
@@ -277,7 +278,7 @@ class TesterBinarySearchTree {
       root = tree.InsertNewNode(root, vkeys[2 * i], vkeys[2 * i]);
       root = tree.InsertNewNode(root, vkeys[2 * i + 1], vkeys[2 * i + 1]);
       root = tree.RemoveAndReleaseByKey(root, vkeys[i]);
-      h = HashCombine(h, GetInfoValue(root));
+      nhash::DCombineH(h, GetInfoValue(root));
     }
     for (size_t i = 0; i < s; ++i) {
       AddAction(root);
@@ -285,7 +286,7 @@ class TesterBinarySearchTree {
       root = tree.InsertNewNode(root, vkeys[2 * s + i], vkeys[2 * s + i]);
       root = tree.RemoveAndReleaseByKey(root, vkeys[s + 2 * i]);
       root = tree.RemoveAndReleaseByKey(root, vkeys[s + 2 * i + 1]);
-      h = HashCombine(h, GetInfoValue(root));
+      nhash::DCombineH(h, GetInfoValue(root));
     }
     AddResult("InsDel", type, h, t.GetMilliseconds());
     VerifyParentLinks(root);

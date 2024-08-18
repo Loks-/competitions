@@ -3,7 +3,7 @@
 #include "common/geometry/d2/long.h"
 #include "common/geometry/d2/point_io.h"
 #include "common/geometry/d2/utils/half_splitting_line_ab.h"
-#include "common/hash.h"
+#include "common/hash/combine.h"
 #include "common/numeric/long/signed_io.h"
 #include "common/stl/base.h"
 #include "common/vector/enumerate.h"
@@ -35,7 +35,7 @@ int main_juggle_struggle_part1__long() {
       unsigned e1 = b + s, e2 = (s == 2 * N) ? e1 : e1 + s;
       vpt.clear();
       for (unsigned i = b; i < e2; ++i) vpt.push_back(vp[vl[i]]);
-      h = HashCombine(h, s);
+      nhash::DCombineH(h, s);
       unsigned p0 = h % s, p1 = vl[b + p0],
                p2 = vl[b + HalfSplittingLineAB<LongSigned, L2Angle>(vpt, p0)];
       vm[p1] = p2;

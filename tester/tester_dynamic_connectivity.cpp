@@ -4,7 +4,7 @@
 // #include "common/graph/dynamic/connectivity/spanning_tree_ett_st.h"
 #include "common/graph/dynamic/connectivity/holm_lcte.h"
 #include "common/graph/dynamic/connectivity/spanning_tree_lct.h"
-#include "common/hash.h"
+#include "common/hash/combine.h"
 #include "common/timer.h"
 #include "common/vector/hrandom.h"
 
@@ -42,19 +42,19 @@ size_t TesterDynamicConnectivity::Test(const std::string& name) const {
     auto e = s.InsertEdge(vsf[i], vst[i]);
     edges.push_back(e);
     // std::cout << "\t" << s.Components() << std::endl;
-    h = HashCombine(h, s.Components());
+    nhash::DCombineH(h, s.Components());
   }
   for (unsigned i = 0; i < main_loop; ++i) {
     auto eindex = vme[i];
     s.RemoveEdge(edges[eindex]);
     edges[eindex] = s.InsertEdge(vmf[i], vmt[i]);
     // std::cout << "\t" << s.Components() << std::endl;
-    h = HashCombine(h, s.Components());
+    nhash::DCombineH(h, s.Components());
   }
   for (unsigned i = 0; i < max_edges; ++i) {
     s.RemoveEdge(edges[i]);
     // std::cout << "\t" << s.Components() << std::endl;
-    h = HashCombine(h, s.Components());
+    nhash::DCombineH(h, s.Components());
   }
   std::cout << "Test results  [" << name << "]: " << h << "\t"
             << t.GetMilliseconds() << std::endl;

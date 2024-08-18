@@ -2,6 +2,7 @@
 #include "common/graph/graph.h"
 #include "common/graph/graph/distance.h"
 #include "common/hash.h"
+#include "common/hash/pair.h"
 #include "common/hash/vector.h"
 #include "common/heap.h"
 #include "common/stl/full.h"
@@ -55,8 +56,7 @@ int main_2123a() {
   }
 
   auto Hash = [](const Pos& p) {
-    DHash<vector<unsigned>> h;
-    return HashCombine(h(p.vpos), h(p.vm));
+    return nhash::HValue<nhash::PolicySafe>(std::make_pair(p.vpos, p.vm));
   };
 
   auto Expected = [&](const Pos& p) {

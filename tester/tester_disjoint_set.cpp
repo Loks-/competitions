@@ -1,4 +1,5 @@
 #include "tester/tester_disjoint_set.h"
+
 #include "tester/disjoint_set_proxy.h"
 
 #include <random>
@@ -24,7 +25,7 @@ size_t TesterDisjointSet::TestExtended() const {
   for (unsigned i = 0; i < unions; ++i) {
     if ((i > 0) && ((i % unions_per_block) == 0)) dsp.Reset();
     dsp.Union(vunions[i].first, vunions[i].second);
-    h = HashCombine(h, dsp.GetUnions());
+    nhash::DCombineH(h, dsp.GetUnions());
   }
   std::cout << "Test results: E\t" << h << "\t" << t.GetMilliseconds()
             << std::endl;

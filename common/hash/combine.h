@@ -27,4 +27,8 @@ template <class Policy, class T>
 constexpr void CombineV(size_t& seed, const T& value) {
   CombineH<Policy>(seed, Hash<Policy, T>{}(value));
 }
+
+constexpr void DCombineH(size_t& seed, size_t hvalue) {
+  return CombineH<nhash::PolicySafe>(seed, hvalue);
+}
 }  // namespace nhash

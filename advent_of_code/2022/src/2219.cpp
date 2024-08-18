@@ -1,4 +1,5 @@
 #include "common/hash.h"
+#include "common/hash/combine.h"
 #include "common/heap.h"
 #include "common/linear_algebra/utils/all_values_compare.h"
 #include "common/linear_algebra/vector_static_size.h"
@@ -42,8 +43,10 @@ int main_2219() {
 
     size_t Hash() const {
       size_t h = t;
-      for (unsigned i = 0; i < 4; ++i)
-        h = HashCombine(HashCombine(h, v1(i)), v2(i));
+      for (unsigned i = 0; i < 4; ++i) {
+        nhash::CombineV<nhash::PolicySafe>(h, v1(i));
+        nhash::CombineV<nhash::PolicySafe>(h, v2(i));
+      }
       return h;
     }
   };
