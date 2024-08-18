@@ -11,22 +11,24 @@ class RBTColor : public TInfo {
  public:
   using TBase = TInfo;
 
+ public:
   bool black = false;
 
-  void BTIReset() {
+ public:
+  constexpr void BTIReset() {
     TBase::BTIReset();
     black = false;
   }
 
   template <class TNode>
-  void BTICopy(TNode* node) {
+  constexpr void BTICopy(const TNode* node) {
     assert(node);
     TBase::BTICopy(node);
     black = node->info.black;
   }
 
   template <class TNode>
-  void BTISwap(TNode* node) {
+  constexpr void BTISwap(TNode* node) {
     assert(node);
     TBase::BTISwap(node);
     std::swap(black, node->info.black);

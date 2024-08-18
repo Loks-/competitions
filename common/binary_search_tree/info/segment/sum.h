@@ -11,22 +11,23 @@ class Sum : public bst::info::Sum<TSumType, TInfo> {
   using TBase = bst::info::Sum<TSumType, TInfo>;
   using TSelf = Sum<TSumType, TInfo>;
 
-  Sum() { TBase::sum = TSumType(0); }
+ public:
+  constexpr Sum() { TBase::sum = TSumType(0); }
 
   template <class TNode>
-  void SetN(const TNode* node) {
+  constexpr void SetN(const TNode* node) {
     TBase::SetN(node);
     TBase::sum = node->data;
   }
 
   template <class TNode>
-  void SetS(const TNode* node) {
+  constexpr void SetS(const TNode* node) {
     TBase::SetS(node);
     TBase::sum = node->info.sum;
   }
 
   template <class TNode>
-  void AddN(const TNode* node) {
+  constexpr void AddN(const TNode* node) {
     TBase::AddN(node);
     if (node) {
       TBase::sum += node->data;
@@ -34,7 +35,7 @@ class Sum : public bst::info::Sum<TSumType, TInfo> {
   }
 
   template <class TNode>
-  void AddS(const TNode* node) {
+  constexpr void AddS(const TNode* node) {
     TBase::AddS(node);
     if (node) {
       TBase::sum += node->info.sum;

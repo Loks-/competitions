@@ -9,13 +9,16 @@ class GCD : public TInfo {
  public:
   using TBase = TInfo;
   using TSelf = GCD<TGCDType, TInfo>;
-  static const bool is_none = false;
-  static const bool use_data = true;
 
+  static constexpr bool is_none = false;
+  static constexpr bool use_data = true;
+
+ public:
   TGCDType gcd;
 
+ public:
   template <class TNode>
-  void Update(TNode* node) {
+  constexpr void Update(TNode* node) {
     TBase::Update(node);
     gcd = TGCDType(node->data);
     if (node->l) gcd = ::GCD(gcd, node->l->info.gcd);

@@ -8,13 +8,16 @@ namespace info {
 class Size : public None {
  public:
   using TSelf = Size;
-  static const bool is_none = false;
-  static const bool has_size = true;
 
+  static constexpr bool is_none = false;
+  static constexpr bool has_size = true;
+
+ public:
   size_t size = 0;
 
+ public:
   template <class TNode>
-  void Update(TNode* node) {
+  constexpr void Update(TNode* node) {
     size = 1 + (node->l ? node->l->info.size : 0) +
            (node->r ? node->r->info.size : 0);
   }

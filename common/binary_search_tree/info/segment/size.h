@@ -10,28 +10,29 @@ class Size : public bst::info::Size {
   using TBase = bst::info::Size;
   using TSelf = Size;
 
+ public:
   template <class TNode>
-  void SetN(const TNode* node) {
+  constexpr void SetN(const TNode* node) {
     assert(node);
     FakeUse(node);
     TBase::size = 1;
   }
 
   template <class TNode>
-  void SetS(const TNode* node) {
+  constexpr void SetS(const TNode* node) {
     assert(node);
     TBase::size = node->info.size;
   }
 
   template <class TNode>
-  void AddN(const TNode* node) {
+  constexpr void AddN(const TNode* node) {
     if (node) {
       TBase::size += 1;
     }
   }
 
   template <class TNode>
-  void AddS(const TNode* node) {
+  constexpr void AddS(const TNode* node) {
     if (node) {
       TBase::size += node->info.size;
     }

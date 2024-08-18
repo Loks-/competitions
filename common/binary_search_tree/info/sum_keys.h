@@ -7,12 +7,15 @@ class SumKeys : public TInfo {
  public:
   using TBase = TInfo;
   using TSelf = SumKeys<TSumType, TInfo>;
-  static const bool is_none = false;
 
+  static constexpr bool is_none = false;
+
+ public:
   TSumType sum_keys;
 
+ public:
   template <class TNode>
-  void Update(TNode* node) {
+  constexpr void Update(TNode* node) {
     TBase::Update(node);
     sum_keys = node->key + (node->l ? node->l->info.sum_keys : 0) +
                (node->r ? node->r->info.sum_keys : 0);

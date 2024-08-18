@@ -8,12 +8,12 @@
 namespace bst {
 namespace info {
 template <class TNode>
-inline void UpdateNodeToRootWithPath(
+constexpr void UpdateNodeToRootWithPath(
     const std::vector<TNode*>& node_to_root_path, size_t start_from_index,
     TFakeFalse) {}
 
 template <class TNode>
-inline void UpdateNodeToRootWithPath(
+constexpr void UpdateNodeToRootWithPath(
     const std::vector<TNode*>& node_to_root_path, size_t start_from_index,
     TFakeTrue) {
   for (auto it = node_to_root_path.begin() + start_from_index;
@@ -22,7 +22,7 @@ inline void UpdateNodeToRootWithPath(
 }
 
 template <class TNode>
-inline void UpdateNodeToRootWithPath(
+constexpr void UpdateNodeToRootWithPath(
     const std::vector<TNode*>& node_to_root_path, size_t start_from_index = 0) {
   UpdateNodeToRootWithPath(node_to_root_path, start_from_index,
                            TFakeBool<!TNode::TInfo::is_none>());

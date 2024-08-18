@@ -24,7 +24,7 @@ class None {
   constexpr void BTIReset() {}
 
   template <class TNode>
-  constexpr void BTICopy(TNode*) {}
+  constexpr void BTICopy(const TNode*) {}
 
   template <class TNode>
   constexpr void BTISwap(TNode*) {}
