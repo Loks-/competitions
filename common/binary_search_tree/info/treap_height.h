@@ -1,6 +1,6 @@
 #pragma once
 
-#include <random>
+#include "common/hash.h"
 
 namespace bst {
 namespace info {
@@ -9,11 +9,12 @@ class TreapHeight : public TInfo {
  public:
   using THeight = TTHeight;
 
+ public:
   THeight treap_height;
 
-  TreapHeight() {
-    thread_local std::minstd_rand random_engine;
-    treap_height = random_engine();
+ public:
+  constexpr void ClearCreate(unsigned raw_index) {
+    treap_height = THeight(nhash::HValue<nhash::PolicySafe>(raw_index));
   }
 };
 }  // namespace info

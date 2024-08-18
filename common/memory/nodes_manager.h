@@ -45,8 +45,8 @@ class NodesManager {
     } else {
       ReserveAdditional(1);
       assert(used_nodes < nodes.size());
-      TNode* p = &(nodes[used_nodes++]);
-      p->ClearCreate();
+      TNode* p = &(nodes[used_nodes]);
+      p->ClearCreate(used_nodes++);
       return p;
     }
   }
