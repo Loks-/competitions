@@ -9,24 +9,19 @@
 int main_contacts() {
   unsigned N;
   cin >> N;
-  unordered_map<size_t, unsigned> m1, m2;
+  unordered_map<size_t, unsigned> m;
   for (unsigned i = 0; i < N; ++i) {
     string s1, s2;
     cin >> s1 >> s2;
-    size_t hvalue1 = 0, hvalue2 = 1;
+    size_t hvalue = 0;
     if (s1 == "add") {
       for (char c : s2) {
-        nhash::DCombineH(hvalue1, c);
-        nhash::DCombineH(hvalue2, c);
-        m1[hvalue1] += 1;
-        m2[hvalue2] += 1;
+        nhash::DCombineH(hvalue, c);
+        m[hvalue] += 1;
       }
     } else if (s1 == "find") {
-      for (char c : s2) {
-        nhash::DCombineH(hvalue1, c);
-        nhash::DCombineH(hvalue2, c);
-      }
-      cout << min(m1[hvalue1], m2[hvalue2]) << endl;
+      for (char c : s2) nhash::DCombineH(hvalue, c);
+      cout << m[hvalue] << endl;
     }
   }
   return 0;
