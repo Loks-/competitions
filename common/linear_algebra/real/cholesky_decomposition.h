@@ -22,13 +22,13 @@ class CholeskyDecomposition {
   TMatrix l;
 
  public:
-  explicit CholeskyDecomposition(double _eps_build = 1e-10,
-                                 double _eps_solve = 1e-5)
+  constexpr explicit CholeskyDecomposition(double _eps_build = 1e-10,
+                                           double _eps_solve = 1e-5)
       : eps_build(_eps_build), eps_solve(_eps_solve), l(0) {}
 
-  bool Build(const TMatrix& m) {
+  constexpr bool Build(const TMatrix& m) {
     assert(m.Rows() == m.Columns());
-    unsigned n = m.Rows();
+    const unsigned n = m.Rows();
     l = m;
     for (unsigned i = 0; i < n; ++i) {
       auto sum = l(i, i);
@@ -51,9 +51,9 @@ class CholeskyDecomposition {
     return true;
   }
 
-  unsigned Size() const { return l.Rows(); }
+  constexpr unsigned Size() const { return l.Rows(); }
 
-  double Det() const {
+  constexpr double Det() const {
     double det = 1.0;
     for (unsigned i = 0; i < Size(); ++i) det *= l(i, i);
     return det * det;
@@ -61,8 +61,8 @@ class CholeskyDecomposition {
 
   // Solve Lx = b
   template <class TVector>
-  bool SolveL(const TVector& b, TVector& output_x) const {
-    unsigned n = Size();
+  constexpr bool SolveL(const TVector& b, TVector& output_x) const {
+    const unsigned n = Size();
     assert(b.Size() == n);
     if (&output_x != &b) output_x = b;
     for (unsigned i = 0; i < n; ++i) {
@@ -80,8 +80,8 @@ class CholeskyDecomposition {
 
   // Solve LTx = b
   template <class TVector>
-  bool SolveLT(const TVector& b, TVector& output_x) const {
-    unsigned n = Size();
+  constexpr bool SolveLT(const TVector& b, TVector& output_x) const {
+    const unsigned n = Size();
     assert(b.Size() == n);
     if (&output_x != &b) output_x = b;
     for (unsigned i = n; i--;) {
@@ -99,7 +99,7 @@ class CholeskyDecomposition {
 
   // Solve Ax = b
   template <class TVector>
-  bool Solve(const TVector& b, TVector& output_x) const {
+  constexpr bool Solve(const TVector& b, TVector& output_x) const {
     return SolveL(b, output_x) && SolveLT(output_x, output_x);
   }
 };

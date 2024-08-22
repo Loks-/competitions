@@ -25,12 +25,13 @@ class LUPDecomposition {
   double det_sign;
 
  public:
-  explicit LUPDecomposition(double _eps_build = 1e-10, double _eps_solve = 1e-5)
+  constexpr explicit LUPDecomposition(double _eps_build = 1e-10,
+                                      double _eps_solve = 1e-5)
       : eps_build(_eps_build), eps_solve(_eps_solve), lu(0), det_sign(1.0) {}
 
-  bool Build(const TMatrix& m) {
+  constexpr bool Build(const TMatrix& m) {
     assert(m.Rows() == m.Columns());
-    unsigned n = m.Rows();
+    const unsigned n = m.Rows();
     lu = m;
     p.resize(n);
     std::vector<double> vv(n);
@@ -73,9 +74,9 @@ class LUPDecomposition {
     return true;
   }
 
-  unsigned Size() const { return lu.Rows(); }
+  constexpr unsigned Size() const { return lu.Rows(); }
 
-  TValue Det() const {
+  constexpr TValue Det() const {
     TValue det = det_sign;
     for (unsigned i = 0; i < Size(); ++i) det *= lu(i, i);
     return det;
@@ -83,13 +84,13 @@ class LUPDecomposition {
 
   // Solve Ax = b
   template <class TVector>
-  bool Solve(const TVector& b, TVector& output_x) const {
-    unsigned n = Size();
+  constexpr bool Solve(const TVector& b, TVector& output_x) const {
+    const unsigned n = Size();
     assert(b.Size() == n);
     if (&output_x != &b) output_x = b;
     unsigned ii = 0;
     for (unsigned i = 0; i < n; ++i) {
-      unsigned ip = p[i];
+      const unsigned ip = p[i];
       TValue sum = output_x(ip);
       output_x(ip) = output_x(i);
       if (ii != 0) {

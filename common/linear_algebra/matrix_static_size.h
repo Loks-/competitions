@@ -5,13 +5,9 @@
 #include <algorithm>
 
 namespace la {
-template <class TTValue, unsigned _rows, unsigned _columns>
-class MatrixStaticSize : public VectorStaticSize<TTValue, _rows * _columns> {
+template <class TTValue, unsigned rows, unsigned columns>
+class MatrixStaticSize : public VectorStaticSize<TTValue, rows * columns> {
  public:
-  static const unsigned rows = _rows;
-  static const unsigned columns = _columns;
-  static const bool is_square = (rows == columns);
-
   using TValue = TTValue;
   using TSelf = MatrixStaticSize<TValue, rows, columns>;
   using TBase = VectorStaticSize<TValue, rows * columns>;
@@ -20,67 +16,72 @@ class MatrixStaticSize : public VectorStaticSize<TTValue, _rows * _columns> {
   using const_iterator = typename TBase::const_iterator;
 
  public:
-  unsigned Rows() const { return rows; }
-  unsigned Columns() const { return columns; }
+  static consteval unsigned Rows() { return rows; }
+  static consteval unsigned Columns() { return columns; }
+  static consteval bool IsSquare() { return (rows == columns); }
 
-  MatrixStaticSize() {}
+ public:
+  constexpr MatrixStaticSize() {}
 
   // explicit MatrixStaticSize(const TValue& v) : TBase(v) {}
 
-  explicit MatrixStaticSize(std::initializer_list<TValue> l) : TBase(l) {}
+  constexpr explicit MatrixStaticSize(std::initializer_list<TValue> l)
+      : TBase(l) {}
 
-  TSelf& operator=(const TValue& v) {
+  constexpr TSelf& operator=(const TValue& v) {
     TBase::Fill(v);
     return *this;
   }
 
-  TValue& operator()(unsigned i, unsigned j) {
+  constexpr TValue& operator()(unsigned i, unsigned j) {
     return TBase::data[i * columns + j];
   }
 
-  const TValue& operator()(unsigned i, unsigned j) const {
+  constexpr const TValue& operator()(unsigned i, unsigned j) const {
     return TBase::data[i * columns + j];
   }
 
-  iterator GetP(unsigned i, unsigned j) { return TBase::GetP(i * columns + j); }
-
-  const_iterator GetP(unsigned i, unsigned j) const {
+  constexpr iterator GetP(unsigned i, unsigned j) {
     return TBase::GetP(i * columns + j);
   }
 
-  void swap(TSelf& r) { TBase::swap(r); }
+  constexpr const_iterator GetP(unsigned i, unsigned j) const {
+    return TBase::GetP(i * columns + j);
+  }
 
-  void SetDiagonal(const TValue& v) {
+  constexpr void swap(TSelf& r) { TBase::swap(r); }
+
+  constexpr void SetDiagonal(const TValue& v) {
     unsigned diagonal_length = std::min(rows, columns);
-    unsigned shift = columns + 1;
+    const unsigned shift = columns + 1;
     for (iterator p = TBase::begin(); diagonal_length--; p += shift) *p = v;
   }
 
-  TSelf& operator+=(const TSelf& v) {
+  constexpr TSelf& operator+=(const TSelf& v) {
     TBase::operator+=(v);
     return *this;
   }
 
-  TSelf& operator-=(const TSelf& v) {
+  constexpr TSelf& operator-=(const TSelf& v) {
     TBase::operator-=(v);
     return *this;
   }
 
-  TSelf operator+(const TSelf& v) const {
+  constexpr TSelf operator+(const TSelf& v) const {
     TSelf t(*this);
     t += v;
     return t;
   }
 
-  TSelf operator-(const TSelf& v) const {
+  constexpr TSelf operator-(const TSelf& v) const {
     TSelf t(*this);
     t -= v;
     return t;
   }
 
   template <unsigned columns2>
-  void Mult(const MatrixStaticSize<TValue, columns, columns2>& v,
-            MatrixStaticSize<TValue, rows, columns2>& output) const {
+  constexpr void Mult(const MatrixStaticSize<TValue, columns, columns2>& v,
+                      MatrixStaticSize<TValue, rows, columns2>& output) const {
     output.Clear();
     const_iterator pA = TBase::begin();
     for (unsigned i = 0; i < rows; ++i) {
@@ -94,7 +95,7 @@ class MatrixStaticSize : public VectorStaticSize<TTValue, _rows * _columns> {
   }
 
   template <unsigned columns2>
-  MatrixStaticSize<TValue, rows, columns2> operator*(
+  constexpr MatrixStaticSize<TValue, rows, columns2> operator*(
       const MatrixStaticSize<TValue, columns, columns2>& v) const {
     MatrixStaticSize<TValue, rows, columns2> t;
     Mult(v, t);
@@ -102,16 +103,16 @@ class MatrixStaticSize : public VectorStaticSize<TTValue, _rows * _columns> {
   }
 
   // Operations with square matrix
-  TSelf& operator*=(const TSelf& v) {
-    static_assert(is_square, "matrix should be square");
+  constexpr TSelf& operator*=(const TSelf& v) {
+    static_assert(IsSquare(), "matrix should be square");
     TSelf t;
     Mult(v, t);
     swap(t);
     return *this;
   }
 
-  TSelf PowU(uint64_t pow) const {
-    static_assert(is_square, "matrix should be square");
+  constexpr TSelf PowU(uint64_t pow) const {
+    static_assert(IsSquare(), "matrix should be square");
     TSelf ans;
     ans.SetDiagonal(TValue(1));
     TSelf x = *this;

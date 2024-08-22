@@ -8,7 +8,7 @@
 namespace la {
 namespace gcd {
 template <class TMatrix>
-inline unsigned Rank(const TMatrix& matrix) {
+constexpr unsigned Rank(const TMatrix& matrix) {
   using TValue = typename TMatrix::TValue;
   TMatrix m(matrix);
   unsigned r = 0;

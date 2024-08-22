@@ -11,10 +11,12 @@ class MatrixBool : public VectorBool {
   using TValue = TBase::TValue;
   using TBlockValue = TBase::TBlockValue;
   using TSelf = MatrixBool;
-  static const unsigned bits_per_block = VectorBool::bits_per_block;
 
   using biterator = TBase::biterator;
   using const_biterator = TBase::const_biterator;
+
+ public:
+  static constexpr unsigned bits_per_block = VectorBool::bits_per_block;
 
  protected:
   unsigned rows;
@@ -22,31 +24,34 @@ class MatrixBool : public VectorBool {
   unsigned blocks_per_row, bits_per_row;
 
  public:
-  unsigned Rows() const { return rows; }
-  unsigned Columns() const { return columns; }
-  unsigned BlocksPerRow() const { return blocks_per_row; }
-  unsigned BitsPerRow() const { return bits_per_row; }
+  constexpr unsigned Rows() const { return rows; }
 
-  MatrixBool(unsigned _rows, unsigned _columns)
+  constexpr unsigned Columns() const { return columns; }
+
+  constexpr unsigned BlocksPerRow() const { return blocks_per_row; }
+
+  constexpr unsigned BitsPerRow() const { return bits_per_row; }
+
+  constexpr MatrixBool(unsigned _rows, unsigned _columns)
       : rows(_rows), columns(_columns) {
     blocks_per_row = TBase::MinBlockSize(columns);
     bits_per_row = blocks_per_row * bits_per_block;
     TBase::Resize(rows * bits_per_row);
   }
 
-  explicit MatrixBool(unsigned size) : MatrixBool(size, size) {}
+  constexpr explicit MatrixBool(unsigned size) : MatrixBool(size, size) {}
 
-  MatrixBool(unsigned _rows, unsigned _columns, const TValue& v)
+  constexpr MatrixBool(unsigned _rows, unsigned _columns, const TValue& v)
       : MatrixBool(_rows, _columns) {
     if (v.Get()) TBase::Fill(v);
   }
 
-  TSelf& operator=(const TValue& v) {
+  constexpr TSelf& operator=(const TValue& v) {
     TBase::Fill(v);
     return *this;
   }
 
-  void swap(TSelf& r) {
+  constexpr void swap(TSelf& r) {
     TBase::swap(r);
     std::swap(rows, r.rows);
     std::swap(columns, r.columns);
@@ -54,54 +59,54 @@ class MatrixBool : public VectorBool {
     std::swap(bits_per_row, r.bits_per_row);
   }
 
-  TValue Get(unsigned i, unsigned j) const {
+  constexpr TValue Get(unsigned i, unsigned j) const {
     return TBase::Get(i * bits_per_row + j);
   }
 
-  TBlockValue GetBit(unsigned i, unsigned j) const {
+  constexpr TBlockValue GetBit(unsigned i, unsigned j) const {
     return TBase::GetBit(i * bits_per_row + j);
   }
 
-  void Set(unsigned i, unsigned j, TValue v) {
+  constexpr void Set(unsigned i, unsigned j, TValue v) {
     TBase::Set(i * bits_per_row + j, v);
   }
 
-  biterator GetBP(unsigned row, unsigned block_index) {
+  constexpr biterator GetBP(unsigned row, unsigned block_index) {
     return TBase::GetBP(row * blocks_per_row + block_index);
   }
 
-  const_biterator GetBP(unsigned row, unsigned block_index) const {
+  constexpr const_biterator GetBP(unsigned row, unsigned block_index) const {
     return TBase::GetBP(row * blocks_per_row + block_index);
   }
 
-  void SetDiagonal(const TValue& v) {
-    unsigned diagonal_length = std::min(rows, columns);
+  constexpr void SetDiagonal(const TValue& v) {
+    const unsigned diagonal_length = std::min(rows, columns);
     for (unsigned i = 0; i < diagonal_length; ++i) Set(i, i, v);
   }
 
-  TSelf& operator+=(const TSelf& v) {
+  constexpr TSelf& operator+=(const TSelf& v) {
     TBase::operator+=(v);
     return *this;
   }
 
-  TSelf& operator-=(const TSelf& v) {
+  constexpr TSelf& operator-=(const TSelf& v) {
     TBase::operator-=(v);
     return *this;
   }
 
-  TSelf operator+(const TSelf& v) const {
+  constexpr TSelf operator+(const TSelf& v) const {
     TSelf t(*this);
     t += v;
     return t;
   }
 
-  TSelf operator-(const TSelf& v) const {
+  constexpr TSelf operator-(const TSelf& v) const {
     TSelf t(*this);
     t -= v;
     return t;
   }
 
-  void Mult(const TSelf& v, TSelf& output) const {
+  constexpr void Mult(const TSelf& v, TSelf& output) const {
     assert((v.rows == columns) && (output.rows == rows) &&
            (output.columns == v.columns));
     output.Clear();
@@ -137,20 +142,20 @@ class MatrixBool : public VectorBool {
   //   return t;
   // }
 
-  TSelf operator*(const TSelf& v) const {
+  constexpr TSelf operator*(const TSelf& v) const {
     TSelf t(rows, v.columns);
     Mult(v, t);
     return t;
   }
 
-  TSelf& operator*=(const TSelf& v) {
+  constexpr TSelf& operator*=(const TSelf& v) {
     TSelf t(rows, v.columns);
     Mult(v, t);
     swap(t);
     return *this;
   }
 
-  TSelf PowU(uint64_t pow) const {
+  constexpr TSelf PowU(uint64_t pow) const {
     assert(rows == columns);
     TSelf ans(rows, columns);
     ans.SetDiagonal(TValue::True());

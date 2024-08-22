@@ -4,10 +4,10 @@
 
 namespace la {
 template <class TMatrix, class TDecomposition>
-inline bool InverseFromDecomposition(const TDecomposition& md,
-                                     TMatrix& output) {
+constexpr bool InverseFromDecomposition(const TDecomposition& md,
+                                        TMatrix& output) {
   using TValue = typename TMatrix::TValue;
-  unsigned size = md.Size();
+  const unsigned size = md.Size();
   la::Vector<TValue> b(size, 0), x(size);
   TMatrix m(size);
   for (unsigned i = 0; i < size; ++i) {

@@ -3,16 +3,17 @@
 #include "common/base.h"
 #include "common/linear_algebra/rows/sub_m.h"
 #include "common/linear_algebra/rows/swap.h"
+
 #include <cmath>
 
 namespace la {
 namespace real {
 template <class TMatrix>
-inline double Det(const TMatrix& matrix, double eps = 1e-10) {
+constexpr double Det(const TMatrix& matrix, double eps = 1e-10) {
   double det = 1.0;
   TMatrix m(matrix);
   assert(m.Rows() == m.Columns());
-  unsigned n = m.Rows();
+  const unsigned n = m.Rows();
   for (unsigned k = 0; k < n; ++k) {
     double max_value = fabs(m(k, k));
     unsigned imax = k;

@@ -5,7 +5,7 @@
 #include "common/linear_algebra/bool/rows_block_swap.h"
 
 namespace la {
-inline unsigned Rank(const MatrixBool& matrix) {
+constexpr unsigned Rank(const MatrixBool& matrix) {
   MatrixBool m(matrix);
   unsigned r = 0;
   for (unsigned j = 0; (r < m.Rows()) && (j < m.Columns()); ++j) {

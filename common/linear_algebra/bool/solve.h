@@ -10,8 +10,8 @@
 
 namespace la {
 // Solve Ax = b
-inline bool Solve(const MatrixBool& A, const VectorBool& b,
-                  VectorBool& output_x) {
+constexpr bool Solve(const MatrixBool& A, const VectorBool& b,
+                     VectorBool& output_x) {
   assert((A.Rows() == b.Size()) && (A.Columns() == output_x.Size()));
   MatrixBool m(A);
   VectorBool v(b);

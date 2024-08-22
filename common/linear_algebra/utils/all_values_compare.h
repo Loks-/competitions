@@ -4,7 +4,7 @@
 
 namespace la {
 template <class TVector>
-bool AVLess(const TVector& l, const TVector& r) {
+constexpr bool AVLess(const TVector& l, const TVector& r) {
   assert(l.Size() == r.Size());
   for (auto pl = l.begin(), pr = r.begin(), pend = l.end(); pl < pend;) {
     if (*pl++ >= *pr++) return false;
@@ -13,7 +13,7 @@ bool AVLess(const TVector& l, const TVector& r) {
 }
 
 template <class TVector>
-bool AVLessOrEqual(const TVector& l, const TVector& r) {
+constexpr bool AVLessOrEqual(const TVector& l, const TVector& r) {
   assert(l.Size() == r.Size());
   for (auto pl = l.begin(), pr = r.begin(), pend = l.end(); pl < pend;) {
     if (*pl++ > *pr++) return false;

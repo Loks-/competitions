@@ -20,11 +20,11 @@ class LUPDecomposition {
   TValue det_sign;
 
  public:
-  LUPDecomposition() : lu(0), det_sign(1) {}
+  constexpr LUPDecomposition() : lu(0), det_sign(1) {}
 
-  bool Build(const TMatrix& m) {
+  constexpr bool Build(const TMatrix& m) {
     assert(m.Rows() == m.Columns());
-    unsigned n = m.Rows();
+    const unsigned n = m.Rows();
     lu = m;
     p.resize(n);
     det_sign = TValue(1);
@@ -45,7 +45,7 @@ class LUPDecomposition {
           if (lu(i, k)) return false;
         }
       } else {
-        TValue ilukk = TValue(1) / lu(k, k);
+        const TValue ilukk = TValue(1) / lu(k, k);
         for (unsigned i = k + 1; i < n; ++i) {
           lu(i, k) *= ilukk;
           rows::SubM(lu, i, k, lu(i, k), k + 1);
@@ -55,9 +55,9 @@ class LUPDecomposition {
     return true;
   }
 
-  unsigned Size() const { return lu.Rows(); }
+  constexpr unsigned Size() const { return lu.Rows(); }
 
-  TValue Det() const {
+  constexpr TValue Det() const {
     TValue det = det_sign;
     for (unsigned i = 0; i < lu.Rows(); ++i) det *= lu(i, i);
     return det;
@@ -65,13 +65,13 @@ class LUPDecomposition {
 
   // Solve Ax = b
   template <class TVector>
-  bool Solve(const TVector& b, TVector& output_x) const {
-    unsigned n = lu.Rows();
+  constexpr bool Solve(const TVector& b, TVector& output_x) const {
+    const unsigned n = lu.Rows();
     assert(b.Size() == n);
     output_x = b;
     unsigned ii = 0;
     for (unsigned i = 0; i < n; ++i) {
-      unsigned ip = p[i];
+      const unsigned ip = p[i];
       TValue sum = output_x(ip);
       output_x(ip) = output_x(i);
       if (ii != 0) {
