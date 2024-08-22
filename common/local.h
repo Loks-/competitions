@@ -1,3 +1,3 @@
 #pragma once
 
-static const bool local_run = true;
+static constexpr bool local_run = true;
