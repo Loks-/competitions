@@ -10,26 +10,32 @@ class Reverse : public None {
  public:
   using TBase = None;
   using TSelf = Reverse;
-  static const bool modify_tree = true;
 
+  static constexpr bool is_none = false;
+  static constexpr bool modify_tree = true;
+
+ public:
   bool reverse;
 
-  Reverse() : reverse(false) {}
-  bool IsEmpty() const { return !reverse; }
-  void Clear() { reverse = false; };
+ public:
+  constexpr Reverse() : reverse(false) {}
+
+  constexpr bool IsEmpty() const { return !reverse; }
+
+  constexpr void Clear() { reverse = false; };
 
   template <class TNode>
-  void ReverseSubtree(TNode*) {
+  constexpr void ReverseSubtree(TNode*) {
     reverse = !reverse;
   }
 
   template <class TNode>
-  void Add(TNode* node, bool value) {
+  constexpr void Add(TNode* node, bool value) {
     if (value) ReverseSubtree(node);
   }
 
   template <class TNode>
-  void Apply(TNode* node) {
+  constexpr void Apply(TNode* node) {
     if (reverse) {
       std::swap(node->l, node->r);
       if (node->l) node->l->action.ReverseSubtree(node->l);

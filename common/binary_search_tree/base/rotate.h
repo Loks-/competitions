@@ -12,10 +12,11 @@ inline void Rotate(TNode* child, TNode* parent, TNode* gparent) {
     child->ApplyAction();
   }
   if (gparent) {
-    if (gparent->l == parent)
+    if (gparent->l == parent) {
       gparent->l = child;
-    else
+    } else {
       gparent->r = child;
+    }
   }
   child->SetP(gparent);
   if (parent->l == child) {

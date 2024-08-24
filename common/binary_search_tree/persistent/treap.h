@@ -24,9 +24,9 @@ class Treap
                               TAction, use_key, use_parent, TKey>>,
           Treap<use_key, use_parent, TData, TTInfo, TAction, TKey>> {
  public:
-  static const bool support_remove = true;
-  static const bool support_join = true;
-  static const bool support_split = true;
+  static constexpr bool support_remove = true;
+  static constexpr bool support_join = true;
+  static constexpr bool support_split = true;
 
   using TInfo = bst::info::TreapHeight<unsigned, TTInfo>;
   using THeight = typename TInfo::THeight;
@@ -38,11 +38,13 @@ class Treap
   friend TTree;
 
  protected:
-  static const THeight& Height(TNode* node) { return node->info.treap_height; }
+  static constexpr THeight& Height(TNode* node) {
+    return node->info.treap_height;
+  }
 
  public:
-  Treap() : TBase(0) {}
-  explicit Treap(size_t expected_nodes) : TBase(expected_nodes) {}
+  constexpr Treap() : TBase(0) {}
+  constexpr explicit Treap(size_t expected_nodes) : TBase(expected_nodes) {}
 
  public:
   // Same code as for bst::Treap::BuildTree

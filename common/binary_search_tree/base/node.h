@@ -84,16 +84,16 @@ class Node : public TNodeProxyParent<
 
   constexpr void ClearAction() { action.Clear(); }
 
-  constexpr void UpdateInfo() { info.Update(this); }
+  void UpdateInfo() { info.Update(this); }
 
   template <class TActionValue>
-  constexpr void AddAction(const TActionValue& value) {
+  void AddAction(const TActionValue& value) {
     action.Add(this, value);
   }
 
-  constexpr void ApplyAction() { action.Apply(this); }
+  void ApplyAction() { action.Apply(this); }
 
-  constexpr void ResetLinksAndUpdateInfo() {
+  void ResetLinksAndUpdateInfo() {
     TProxyParent::ResetLinks();
     info.BTIReset();
     UpdateInfo();

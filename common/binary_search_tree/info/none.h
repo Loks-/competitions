@@ -8,6 +8,7 @@ class None {
 
   static constexpr bool is_none = true;
   static constexpr bool use_data = false;
+  static constexpr bool use_keys = false;
   static constexpr bool has_size = false;
 
   // Usused fields to support info with ext trees.
@@ -17,6 +18,7 @@ class None {
  public:
   constexpr void ClearCreate(unsigned) {}
 
+  // External functions should not assume that Update is constexpr.
   template <class TNode>
   constexpr void Update(const TNode*) {}
 

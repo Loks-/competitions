@@ -20,10 +20,10 @@ class PerfectTree
                             TData, TInfo, TAction, true, use_parent, TKey>>,
                         PerfectTree<use_parent, TData, TInfo, TAction, TKey>> {
  public:
-  static const bool support_insert = false;
-  static const bool support_remove = false;
-  static const bool support_join3 = false;
-  static const bool support_split = false;
+  static constexpr bool support_insert = false;
+  static constexpr bool support_remove = false;
+  static constexpr bool support_join3 = false;
+  static constexpr bool support_split = false;
 
   using TNode = base::Node<TData, TInfo, TAction, true, use_parent, TKey>;
   using TSelf = PerfectTree<use_parent, TData, TInfo, TAction, TKey>;
@@ -31,6 +31,6 @@ class PerfectTree
   friend TTree;
 
  public:
-  explicit PerfectTree(size_t max_nodes) : TTree(max_nodes) {}
+  constexpr explicit PerfectTree(size_t max_nodes) : TTree(max_nodes) {}
 };
 }  // namespace bst

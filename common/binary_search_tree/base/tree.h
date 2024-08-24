@@ -23,29 +23,32 @@ class Tree : public TTNodesManager {
   using TAction = typename TNode::TAction;
   using TMe = TTMe;
 
-  static const bool use_key = TNode::use_key;
-  static const bool use_parent = TNode::use_parent;
+  static constexpr bool use_key = TNode::use_key;
+  static constexpr bool use_parent = TNode::use_parent;
 
-  static const bool support_insert = true;
-  static const bool support_remove = use_parent;
-  static const bool support_remove_by_node = use_parent && TMe::support_remove;
-  static const bool support_join3 = false;
-  static const bool support_join =
+  static constexpr bool support_insert = true;
+  static constexpr bool support_remove = use_parent;
+  static constexpr bool support_remove_by_node =
+      use_parent && TMe::support_remove;
+  static constexpr bool support_join3 = false;
+  static constexpr bool support_join =
       TMe::support_join3 && TMe::support_remove_by_node;
-  static const bool support_split = TMe::support_join3;
-  static const bool support_insert_by_order =
+  static constexpr bool support_split = TMe::support_join3;
+  static constexpr bool support_insert_by_order =
       !use_key && TInfo::has_size && TMe::support_join3 && TMe::support_split;
 
-  static const bool is_persistent = false;
+  static constexpr bool is_persistent = false;
 
  public:
-  explicit Tree(size_t max_nodes) : TNodesManager(max_nodes) {}
-  Tree() : Tree(0) {}
+  constexpr explicit Tree(size_t max_nodes) : TNodesManager(max_nodes) {}
 
-  TMe* Me() { return static_cast<TMe*>(this); }
-  const TMe* Me() const { return static_cast<const TMe*>(this); }
+  constexpr Tree() : Tree(0) {}
 
-  TNode* New() { return TNodesManager::New(); }
+  constexpr TMe* Me() { return static_cast<TMe*>(this); }
+
+  constexpr const TMe* Me() const { return static_cast<const TMe*>(this); }
+
+  constexpr TNode* New() { return TNodesManager::New(); }
 
   TNode* New(const TData& data) {
     auto p = New();
@@ -72,8 +75,8 @@ class Tree : public TTNodesManager {
   }
 
   TNode* Build(const std::vector<TData>& data) {
-    TNodesManager::ReserveAdditional(data.size());
     if (data.size() == 0) return nullptr;
+    TNodesManager::ReserveAdditional(data.size());
     std::vector<TNode*> v(data.size());
     for (size_t i = 0; i < data.size(); ++i) v[i] = New(data[i]);
     return TMe::BuildTree(v);
@@ -82,8 +85,8 @@ class Tree : public TTNodesManager {
   TNode* Build(const std::vector<TData>& data, const std::vector<TKey>& keys) {
     static_assert(use_key, "use_key should be true");
     assert(data.size() == keys.size());
-    TNodesManager::ReserveAdditional(data.size());
     if (data.size() == 0) return nullptr;
+    TNodesManager::ReserveAdditional(data.size());
     std::vector<std::pair<TKey, TNode*>> vp(data.size());
     for (size_t i = 0; i < data.size(); ++i)
       vp[i] = std::make_pair(keys[i], New(data[i], keys[i]));
@@ -185,7 +188,7 @@ class Tree : public TTNodesManager {
   static void SplitBySize(TNode* root, size_t lsize, TNode*& output_l,
                           TNode*& output_r);
 
-  void ReleaseTree(TNode* root) {
+  constexpr void ReleaseTree(TNode* root) {
     if (root) {
       ReleaseTree(root->l);
       ReleaseTree(root->r);

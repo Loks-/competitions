@@ -13,7 +13,7 @@ constexpr void UpdateNodeToRootWithPath(
     TFakeFalse) {}
 
 template <class TNode>
-constexpr void UpdateNodeToRootWithPath(
+inline void UpdateNodeToRootWithPath(
     const std::vector<TNode*>& node_to_root_path, size_t start_from_index,
     TFakeTrue) {
   for (auto it = node_to_root_path.begin() + start_from_index;
@@ -22,10 +22,24 @@ constexpr void UpdateNodeToRootWithPath(
 }
 
 template <class TNode>
-constexpr void UpdateNodeToRootWithPath(
+inline void UpdateNodeToRootWithPath(
     const std::vector<TNode*>& node_to_root_path, size_t start_from_index = 0) {
   UpdateNodeToRootWithPath(node_to_root_path, start_from_index,
                            TFakeBool<!TNode::TInfo::is_none>());
+}
+
+template <class TNode>
+inline void UpdateNodeToRootWithPath_DataUpdated(
+    const std::vector<TNode*>& node_to_root_path, size_t start_from_index = 0) {
+  UpdateNodeToRootWithPath(node_to_root_path, start_from_index,
+                           TFakeBool<TNode::TInfo::use_data>());
+}
+
+template <class TNode>
+inline void UpdateNodeToRootWithPath_KeysUpdated(
+    const std::vector<TNode*>& node_to_root_path, size_t start_from_index = 0) {
+  UpdateNodeToRootWithPath(node_to_root_path, start_from_index,
+                           TFakeBool<TNode::TInfo::use_keys>());
 }
 }  // namespace info
 }  // namespace bst

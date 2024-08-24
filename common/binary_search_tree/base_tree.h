@@ -23,13 +23,13 @@ class BaseTree
       base::BalancedTree<memory::NodesManagerFixedSize<TNode>, TSelf>;
   friend TBTree;
 
-  static const bool support_join3 = true;
+  static constexpr bool support_join3 = true;
 
  public:
-  explicit BaseTree(size_t max_nodes) : TBTree(max_nodes) {}
+  constexpr explicit BaseTree(size_t max_nodes) : TBTree(max_nodes) {}
 
  protected:
-  static TNode* FixBalance(TNode* node) { return node; }
+  constexpr static TNode* FixBalance(TNode* node) { return node; }
 
  public:
   static TNode* Join3(TNode* l, TNode* m1, TNode* r) {

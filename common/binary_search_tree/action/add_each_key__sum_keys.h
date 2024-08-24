@@ -11,8 +11,9 @@ class AddEachKeySumKeys : public AddEachKey<TData> {
   using TBase = AddEachKey<TData>;
   using TSelf = AddEachKeySumKeys<TData>;
 
+ public:
   template <class TNode>
-  void Add(TNode* node, const TData& value) {
+  constexpr void Add(TNode* node, const TData& value) {
     node->info.sum_keys += value * node->info.size;
     TBase::Add(node, value);
   }

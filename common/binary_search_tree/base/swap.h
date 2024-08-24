@@ -8,8 +8,8 @@ namespace bst {
 namespace base {
 // Swap doesn't apply action and not update info.
 template <class TNode>
-inline void SwapNotRelated(TNode* node1, TNode* parent1, TNode* node2,
-                           TNode* parent2) {
+constexpr void SwapNotRelated(TNode* node1, TNode* parent1, TNode* node2,
+                              TNode* parent2) {
   assert(node1 != node2);
   TNode *child1l = node1->l, *child1r = node1->r;
   node1->SetL(node2->l);
@@ -40,7 +40,7 @@ inline void SwapNotRelated(TNode* node1, TNode* parent1, TNode* node2,
 }
 
 template <class TNode>
-inline void SwapChildParent(TNode* child, TNode* parent, TNode* gparent) {
+constexpr void SwapChildParent(TNode* child, TNode* parent, TNode* gparent) {
   if (child == parent->l) {
     TNode* sibling = parent->r;
     parent->SetL(child->l);
@@ -55,10 +55,11 @@ inline void SwapChildParent(TNode* child, TNode* parent, TNode* gparent) {
     child->SetR(parent);
   }
   if (gparent) {
-    if (parent == gparent->l)
+    if (parent == gparent->l) {
       gparent->SetL(child);
-    else
+    } else {
       gparent->SetR(child);
+    }
   } else {
     child->SetP(nullptr);
   }
@@ -66,8 +67,8 @@ inline void SwapChildParent(TNode* child, TNode* parent, TNode* gparent) {
 }
 
 template <class TNode>
-inline void SwapAuto(TNode* node1, TNode* parent1, TNode* node2,
-                     TNode* parent2) {
+constexpr void SwapAuto(TNode* node1, TNode* parent1, TNode* node2,
+                        TNode* parent2) {
   assert(node1 && node2);
   if (node1 == node2) return;
   if (parent1 == node2)

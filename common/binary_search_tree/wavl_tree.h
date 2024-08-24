@@ -28,17 +28,21 @@ class WAVLTree
   friend TBTree;
   friend TTree;
 
-  static const bool support_join3 = true;
+  static constexpr bool support_join3 = true;
 
  public:
-  explicit WAVLTree(size_t max_nodes) : TBTree(max_nodes) {}
+  constexpr explicit WAVLTree(size_t max_nodes) : TBTree(max_nodes) {}
 
  protected:
-  static int Rank(TNode* node) { return node ? int(node->info.rank) : -1; }
+  static constexpr int Rank(TNode* node) {
+    return node ? int(node->info.rank) : -1;
+  }
 
-  static int RankDiff(TNode* p, TNode* c) { return p ? Rank(p) - Rank(c) : 1; }
+  static constexpr int RankDiff(TNode* p, TNode* c) {
+    return p ? Rank(p) - Rank(c) : 1;
+  }
 
-  static void UpdateRank(TNode* p) {
+  static constexpr void UpdateRank(TNode* p) {
     p->info.rank = std::max(Rank(p->l), Rank(p->r)) + 1;
   }
 
@@ -185,7 +189,7 @@ class WAVLTree
  public:
   static TNode* Join3(TNode* l, TNode* m1, TNode* r) {
     assert(m1 && !m1->l && !m1->r);
-    auto hl = Rank(l), hr = Rank(r), hd = hl - hr;
+    const auto hl = Rank(l), hr = Rank(r), hd = hl - hr;
     return (hd > 1)    ? Join3L(l, m1, r, hr)
            : (hd < -1) ? Join3R(l, m1, r, hl)
                        : Join3IBase(l, m1, r);

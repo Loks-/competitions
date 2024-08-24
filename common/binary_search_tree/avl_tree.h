@@ -27,15 +27,17 @@ class AVLTree
   friend TBTree;
   friend TTree;
 
-  static const bool support_join3 = true;
+  static constexpr bool support_join3 = true;
 
  public:
-  explicit AVLTree(size_t max_nodes) : TBTree(max_nodes) {}
+  constexpr explicit AVLTree(size_t max_nodes) : TBTree(max_nodes) {}
 
  protected:
-  static int Height(TNode* node) { return node ? int(node->info.height) : 0; }
+  static constexpr int Height(TNode* node) {
+    return node ? int(node->info.height) : 0;
+  }
 
-  static int Balance(TNode* node) {
+  static constexpr int Balance(TNode* node) {
     return node ? Height(node->l) - Height(node->r) : 0;
   }
 
@@ -83,7 +85,7 @@ class AVLTree
  public:
   static TNode* Join3(TNode* l, TNode* m1, TNode* r) {
     assert(m1 && !m1->l && !m1->r);
-    auto hl = Height(l), hr = Height(r), hd = hl - hr;
+    const auto hl = Height(l), hr = Height(r), hd = hl - hr;
     return (hd > 1)    ? Join3L(l, m1, r, hr)
            : (hd < -1) ? Join3R(l, m1, r, hl)
                        : TTree::Join3IBase(l, m1, r);

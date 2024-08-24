@@ -11,6 +11,8 @@ class AddEachSDotProduct : public None {
  public:
   using TBase = None;
   using TSelf = AddEachSDotProduct<TData>;
+
+  static const bool is_none = false;
   static const bool modify_data = true;
 
   TData add_value;

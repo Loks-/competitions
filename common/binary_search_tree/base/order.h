@@ -10,7 +10,7 @@ size_t Order(TNode* node) {
   static_assert(TNode::use_parent, "use_parent should be true");
   static_assert(TNode::TInfo::has_size, "info should contain size");
   assert(node);
-  bst::action::ApplyRootToNode(node);
+  bst::action::ApplyRootToNode_ModifyTree(node);
   size_t order = 0;
   if (node->l) order += node->l->info.size;
   for (; node->p; node = node->p) {

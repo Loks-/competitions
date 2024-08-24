@@ -33,15 +33,19 @@ class RedBlackTree
   using TTree = base::Tree<TTNodesManager<TNode>, TSelf>;
   friend TTree;
 
-  static const bool support_join3 = true;
-  static const bool support_join = support_join3;
+  static constexpr bool support_join3 = true;
+  static constexpr bool support_join = support_join3;
 
  protected:
-  static bool IsBlack(const TNode* node) { return !node || node->info.black; }
-  static bool IsRed(const TNode* node) { return node && !node->info.black; }
+  static constexpr bool IsBlack(const TNode* node) {
+    return !node || node->info.black;
+  }
+  static constexpr bool IsRed(const TNode* node) {
+    return node && !node->info.black;
+  }
 
  public:
-  explicit RedBlackTree(size_t max_nodes) : TTree(max_nodes) {}
+  constexpr explicit RedBlackTree(size_t max_nodes) : TTree(max_nodes) {}
 
  protected:
   static void BuildTreeIFixColorsR(TNode* root, size_t height) {
@@ -86,7 +90,8 @@ class RedBlackTree
       TNode* gparent = parent->p;
       TNode* uncle = base::Sibling(parent, gparent);
       if (IsBlack(uncle)) {
-        bool rotate_required = ((gparent->l == parent) != (parent->l == node));
+        const bool rotate_required =
+            ((gparent->l == parent) != (parent->l == node));
         if (rotate_required) {
           base::RotateUp<TNode, false, false>(node);
           parent = node;
@@ -108,7 +113,7 @@ class RedBlackTree
  protected:
   static TNode* RemoveByNodeI(TNode* node) {
     base::RemovePushDown<TNode, false>(node);
-    bool black = node->info.black;
+    const bool black = node->info.black;
 
     // Drop node from tree
     TNode* child = node->l ? node->l : node->r;
@@ -246,7 +251,7 @@ class RedBlackTree
  public:
   static TNode* Join3(TNode* l, TNode* m1, TNode* r) {
     assert(m1 && !m1->l && !m1->r);
-    auto hl = BHeight(l), hr = BHeight(r), hd = hl - hr;
+    const auto hl = BHeight(l), hr = BHeight(r), hd = hl - hr;
     auto root = (hd > 0)   ? Join3L(l, m1, r, hd)
                 : (hd < 0) ? Join3R(l, m1, r, -hd)
                            : Join3IBase(l, m1, r);

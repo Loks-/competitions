@@ -20,6 +20,8 @@ class RotateVectorSum : public None {
  public:
   using TBase = None;
   using TSelf = RotateVectorSum;
+
+  static const bool is_none = false;
   static const bool modify_data = true;
 
   unsigned r = 0;

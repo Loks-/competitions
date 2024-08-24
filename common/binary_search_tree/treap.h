@@ -24,10 +24,10 @@ class Treap
           Treap<use_key, use_parent, TData, TTInfo, TAction, TKey,
                 TTNodesManager>> {
  public:
-  static const bool support_remove = true;
-  static const bool support_join = true;
-  static const bool support_join3 = true;
-  static const bool support_split = true;
+  static constexpr bool support_remove = true;
+  static constexpr bool support_join = true;
+  static constexpr bool support_join3 = true;
+  static constexpr bool support_split = true;
 
   using TInfo = info::TreapHeight<unsigned, TTInfo>;
   using THeight = typename TInfo::THeight;
@@ -38,12 +38,12 @@ class Treap
   friend TTree;
 
  protected:
-  constexpr static const THeight& Height(const TNode* node) {
+  static constexpr const THeight& Height(const TNode* node) {
     return node->info.treap_height;
   }
 
  public:
-  explicit Treap(size_t max_nodes) : TTree(max_nodes) {}
+  explicit constexpr Treap(size_t max_nodes) : TTree(max_nodes) {}
 
  public:
   static TNode* BuildTree(const std::vector<TNode*>& nodes) {
@@ -142,7 +142,7 @@ class Treap
   static void SplitBySizeI(TNode* p, size_t lsize, TNode*& output_l,
                            TNode*& output_r) {
     p->ApplyAction();
-    size_t hlsize = (p->l ? p->l->info.size : 0);
+    const size_t hlsize = (p->l ? p->l->info.size : 0);
     if (lsize < hlsize) {
       output_r = p;
       SplitBySizeI(p->l, lsize, output_l, p->l);

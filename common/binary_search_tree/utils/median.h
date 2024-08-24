@@ -8,7 +8,7 @@ template <class TNode, class TValue>
 inline TValue Median(TNode* root) {
   static_assert(TNode::TInfo::has_size, "info should contain size");
   assert(root);
-  size_t size = root->info.size;
+  const size_t size = root->info.size;
   if (size & 1)
     return TValue(base::FindByOrder(root, size / 2)->key);
   else

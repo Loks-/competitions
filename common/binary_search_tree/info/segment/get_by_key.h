@@ -4,8 +4,8 @@ namespace bst {
 namespace info {
 namespace segment {
 template <class TNode>
-inline typename TNode::TInfo GetByKey(TNode* root,
-                                      const typename TNode::TKey& end) {
+constexpr typename TNode::TInfo GetByKey(const TNode* root,
+                                         const typename TNode::TKey& end) {
   typename TNode::TInfo output;
   for (; root;) {
     if (root->key < end) {
@@ -20,9 +20,9 @@ inline typename TNode::TInfo GetByKey(TNode* root,
 }
 
 template <class TNode>
-inline typename TNode::TInfo GetByKey(TNode* root,
-                                      const typename TNode::TKey& begin,
-                                      const typename TNode::TKey& end) {
+constexpr typename TNode::TInfo GetByKey(const TNode* root,
+                                         const typename TNode::TKey& begin,
+                                         const typename TNode::TKey& end) {
   for (; root;) {
     if (root->key < begin)
       root = root->r;
@@ -34,7 +34,7 @@ inline typename TNode::TInfo GetByKey(TNode* root,
   typename TNode::TInfo output;
   if (!root) return output;
   output.SetN(root);
-  for (TNode* node = root->l; node;) {
+  for (const TNode* node = root->l; node;) {
     if (node->key < begin) {
       node = node->r;
     } else {
@@ -43,7 +43,7 @@ inline typename TNode::TInfo GetByKey(TNode* root,
       node = node->l;
     }
   }
-  for (TNode* node = root->r; node;) {
+  for (const TNode* node = root->r; node;) {
     if (node->key < end) {
       output.AddS(node->l);
       output.AddN(node);

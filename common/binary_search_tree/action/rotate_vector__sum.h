@@ -12,7 +12,7 @@ class RotateVectorSum : public None {
   static void Rotate(TVector& v, size_t r) {
     if (r == 0) return;
     thread_local TVector vt;
-    size_t size = v.Size();
+    const size_t size = v.Size();
     for (size_t i = 0; i < size; ++i) vt((i + r) % size) = v(i);
     v.swap(vt);
   }
@@ -20,12 +20,17 @@ class RotateVectorSum : public None {
  public:
   using TBase = None;
   using TSelf = RotateVectorSum;
-  static const bool modify_data = true;
 
+  static constexpr bool is_none = false;
+  static constexpr bool modify_data = true;
+
+ public:
   size_t r = 0;
 
-  bool IsEmpty() const { return r == 0; }
-  void Clear() { r = 0; };
+ public:
+  constexpr bool IsEmpty() const { return r == 0; }
+
+  constexpr void Clear() { r = 0; };
 
   template <class TNode>
   void Add(TNode* node, size_t _r) {

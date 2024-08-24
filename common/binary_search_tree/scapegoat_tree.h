@@ -29,10 +29,10 @@ class ScapegoatTree
   friend TBTree;
 
   // Split/Join is supported but it's slow.
-  static const bool support_join3 = true;
+  static constexpr bool support_join3 = true;
 
  public:
-  explicit ScapegoatTree(size_t max_nodes) : TBTree(max_nodes) {}
+  constexpr explicit ScapegoatTree(size_t max_nodes) : TBTree(max_nodes) {}
 
   static size_t Size(const TNode* root) { return root ? root->info.size : 0; }
 
@@ -54,7 +54,7 @@ class ScapegoatTree
 
   static TNode* FixBalance(TNode* node) {
     assert(node);
-    auto s = size_t(alpha * Size(node));
+    const auto s = size_t(alpha * Size(node));
     return ((Size(node->l) > s) || (Size(node->r) > s)) ? RebuildSubtree(node)
                                                         : node;
   }
@@ -84,7 +84,7 @@ class ScapegoatTree
  public:
   static TNode* Join3(TNode* l, TNode* m1, TNode* r) {
     assert(m1 && !m1->l && !m1->r);
-    size_t lsize = Size(l), rsize = Size(r);
+    const size_t lsize = Size(l), rsize = Size(r);
     return lsize >= rsize ? Join3L(l, m1, r, rsize) : Join3R(l, m1, r, lsize);
   }
 };

@@ -12,7 +12,7 @@ inline TNode* RemoveByKey(TNode* root, const TKey& key, TNode*& removed_node,
   static_assert(TNode::use_parent, "use_parent should be true");
   removed_node = FindByKey(root, key);
   if (!removed_node) return root;
-  return RemoveByNode(removed_node, first_changed_node);
+  return RemoveByNode<TNode, false>(removed_node, first_changed_node);
 }
 }  // namespace base
 }  // namespace bst

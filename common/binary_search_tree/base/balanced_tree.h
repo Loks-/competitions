@@ -13,15 +13,16 @@ class BalancedTree : public Tree<TTNodesManager, TTMe> {
   using TMe = TTMe;
   friend TTree;
 
-  static const bool support_join = TMe::support_join3;
+  static constexpr bool support_join = TMe::support_join3;
 
  public:
-  explicit BalancedTree(size_t max_nodes) : TTree(max_nodes) {}
+  constexpr explicit BalancedTree(size_t max_nodes) : TTree(max_nodes) {}
 
  protected:
   static TNode* FixBalance(TNode* node);
 
   static TNode* FixBalanceInsert(TNode* node) { return TMe::FixBalance(node); }
+
   static TNode* FixBalanceRemove(TNode* node) { return TMe::FixBalance(node); }
 
   static TNode* InsertByKeyIR(TNode* root, TNode* node) {

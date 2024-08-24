@@ -5,15 +5,23 @@ namespace action {
 class None {
  public:
   using TSelf = None;
-  static const bool modify_data = false;
-  static const bool modify_tree = false;
 
-  bool IsEmpty() const { return true; }
-  void Clear(){};
+  static constexpr bool is_none = true;
+  static constexpr bool modify_data = false;
+  static constexpr bool modify_keys = false;
+  static constexpr bool modify_tree = false;
+
+ public:
+  constexpr bool IsEmpty() const { return true; }
+
+  constexpr void Clear() {};
+
+  // External functions should not assume that Add and Apply are constexpr.
   template <class TNode, class TActionValue>
-  void Add(TNode*, const TActionValue&) {}
+  constexpr void Add(TNode*, const TActionValue&) {}
+
   template <class TNode>
-  void Apply(const TNode*) {}
+  constexpr void Apply(TNode*) {}
 };
 }  // namespace action
 }  // namespace bst

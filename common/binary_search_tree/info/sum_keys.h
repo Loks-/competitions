@@ -9,6 +9,7 @@ class SumKeys : public TInfo {
   using TSelf = SumKeys<TSumType, TInfo>;
 
   static constexpr bool is_none = false;
+  static constexpr bool use_keys = true;
 
  public:
   TSumType sum_keys;

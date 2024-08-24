@@ -9,26 +9,32 @@ class AddEachKey : public None {
  public:
   using TBase = None;
   using TSelf = AddEachKey<TData>;
-  static const bool modify_data = true;
 
-  TData add_value;
+  static constexpr bool is_none = false;
+  static constexpr bool modify_keys = true;
 
-  AddEachKey() : add_value() {}
-  bool IsEmpty() const { return add_value == TData(); }
-  void Clear() { add_value = TData(); };
+ public:
+  TData add_value_to_keys;
+
+ public:
+  constexpr AddEachKey() : add_value_to_keys() {}
+
+  constexpr bool IsEmpty() const { return add_value_to_keys == TData(); }
+
+  constexpr void Clear() { add_value_to_keys = TData(); };
 
   template <class TNode>
-  void Add(TNode*, const TData& value) {
-    add_value += value;
+  constexpr void Add(TNode*, const TData& value) {
+    add_value_to_keys += value;
   }
 
   template <class TNode>
-  void Apply(TNode* node) {
+  constexpr void Apply(TNode* node) {
     if (IsEmpty()) return;
-    node->key += add_value;
-    if (node->l) node->l->AddAction(add_value);
-    if (node->r) node->r->AddAction(add_value);
-    add_value = TData();
+    node->key += add_value_to_keys;
+    if (node->l) node->l->AddAction(add_value_to_keys);
+    if (node->r) node->r->AddAction(add_value_to_keys);
+    add_value_to_keys = TData();
   }
 };
 }  // namespace action

@@ -21,10 +21,10 @@ class SplayTree
               base::Node<TData, TInfo, TAction, use_key, true, TKey>>,
           SplayTree<use_key, TData, TInfo, TAction, TKey, TTNodesManager>> {
  public:
-  static const bool support_remove = true;
-  static const bool support_join = true;
-  static const bool support_join3 = true;
-  static const bool support_split = true;
+  static constexpr bool support_remove = true;
+  static constexpr bool support_join = true;
+  static constexpr bool support_join3 = true;
+  static constexpr bool support_split = true;
 
   using TNode = base::Node<TData, TInfo, TAction, use_key, true, TKey>;
   using TSelf = SplayTree<use_key, TData, TInfo, TAction, TKey, TTNodesManager>;
@@ -32,8 +32,8 @@ class SplayTree
   friend TTree;
 
  public:
-  explicit SplayTree(size_t max_nodes) : TTree(max_nodes) {}
-  SplayTree() : SplayTree(0) {}
+  constexpr explicit SplayTree(size_t max_nodes) : TTree(max_nodes) {}
+  constexpr SplayTree() : SplayTree(0) {}
 
   // Splay assumes that actions are already applied from root to node.
   static void Splay(TNode* node) {
