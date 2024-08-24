@@ -15,21 +15,25 @@ class Term {
   TValueF a;
   TTermPower tp;
 
-  explicit Term(const TValueF& _a) : a(_a) {}
-  Term(const TValueF& _a, const TTermPower& _tp) : a(_a), tp(_tp) {}
+  constexpr explicit Term(const TValueF& _a) : a(_a) {}
 
-  bool IsConstant() const { return tp.IsConstant(); }
-  bool IsPolynomial() const { return tp.IsPolynomial(); }
+  constexpr Term(const TValueF& _a, const TTermPower& _tp) : a(_a), tp(_tp) {}
 
-  TValueF Get(const TValueTerm& x) const {
+  constexpr bool IsConstant() const { return tp.IsConstant(); }
+
+  constexpr bool IsPolynomial() const { return tp.IsPolynomial(); }
+
+  constexpr TValueF Get(const TValueTerm& x) const {
     return (a != TValueF(0)) ? a * TValueF(tp.Get(x)) : TValueF(0);
   }
 
-  bool IsFinite(const TValueTerm& x) const {
+  constexpr bool IsFinite(const TValueTerm& x) const {
     return (a == TValueF(0)) || tp.IsFinite(x);
   }
 
-  bool operator==(const TSelf& r) const { return (a == r.a) && (tp == r.tp); }
+  constexpr bool operator==(const TSelf& r) const {
+    return (a == r.a) && (tp == r.tp);
+  }
 
   std::string ToString(const std::string& variable_name) const {
     if (a == TValueF(0)) return "";
@@ -51,16 +55,16 @@ class Term {
     }
   }
 
-  TSelf operator-() const { return TSelf(-a, tp); }
+  constexpr TSelf operator-() const { return TSelf(-a, tp); }
 
-  TSelf& operator*=(const TValueF& r) {
+  constexpr TSelf& operator*=(const TValueF& r) {
     a *= r;
     return *this;
   }
 
-  TSelf operator*(const TValueF& r) const { return TSelf(a * r, tp); }
+  constexpr TSelf operator*(const TValueF& r) const { return TSelf(a * r, tp); }
 
-  bool IsMultiplicable(const TSelf& r) const {
+  constexpr bool IsMultiplicable(const TSelf& r) const {
     return tp.IsMultiplicable(r.tp);
   }
 
@@ -76,14 +80,16 @@ class Term {
     return t;
   }
 
-  TSelf& operator/=(const TValueF& r) {
+  constexpr TSelf& operator/=(const TValueF& r) {
     a /= r;
     return *this;
   }
 
-  TSelf operator/(const TValueF& r) const { return TSelf(a / r, tp); }
+  constexpr TSelf operator/(const TValueF& r) const { return TSelf(a / r, tp); }
 
-  bool IsDivisible(const TSelf& r) const { return tp.IsDivisible(r.tp); }
+  constexpr bool IsDivisible(const TSelf& r) const {
+    return tp.IsDivisible(r.tp);
+  }
 
   TSelf& operator/=(const TSelf& r) {
     a /= r.a;
@@ -99,7 +105,7 @@ class Term {
 };
 
 template <class TValueF, class TValueTerm, class TTermPower>
-inline Term<TValueF, TValueTerm, TTermPower> operator*(
+constexpr Term<TValueF, TValueTerm, TTermPower> operator*(
     const TValueF& l, const Term<TValueF, TValueTerm, TTermPower>& r) {
   return r * l;
 }

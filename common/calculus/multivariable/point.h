@@ -4,13 +4,16 @@
 
 namespace calculus {
 namespace multivariable {
-template <class TValue, unsigned _dim>
+template <class TValue, unsigned dim>
 class Point {
  public:
-  static const unsigned dim = _dim;
+  static constexpr unsigned Dim() { return dim; }
+
+ public:
   std::array<TValue, dim> x;
 
-  const TValue& operator()(unsigned i) const { return x[i]; }
+ public:
+  constexpr const TValue& operator()(unsigned i) const { return x[i]; }
 };
 }  // namespace multivariable
 }  // namespace calculus

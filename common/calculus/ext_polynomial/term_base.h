@@ -26,47 +26,51 @@ class TermBase {
   using TSelf = TermBase<TValue>;
   using PSelf = PTermBase<TValue>;
 
-  TermBase() {}
-  virtual ~TermBase() {}
+  constexpr TermBase() {}
 
-  virtual term_bases::Type GetType() const = 0;
-  virtual bool IsOne() const { return GetType() == term_bases::Type::ONE; }
+  virtual constexpr ~TermBase() {}
 
-  virtual TValue BaseGet(const TValue&) const {
+  virtual constexpr term_bases::Type GetType() const = 0;
+  virtual constexpr bool IsOne() const {
+    return GetType() == term_bases::Type::ONE;
+  }
+
+  virtual constexpr TValue BaseGet(const TValue&) const {
     assert(false);
     return TValue(0);
   }
 
-  virtual TValue GetXPower(const TValue& x, int power) const {
+  virtual constexpr TValue GetXPower(const TValue& x, int power) const {
     return PowS(x, power);
   }
 
-  virtual TValue Get(const TValue& x, int power) const {
+  virtual constexpr TValue Get(const TValue& x, int power) const {
     return GetXPower(x, power) * BaseGet(x);
   }
 
-  virtual bool IsBaseFinite(const TValue&) const { return true; }
+  virtual constexpr bool IsBaseFinite(const TValue&) const { return true; }
 
-  virtual bool IsFinite(const TValue& x, int power) const {
+  virtual constexpr bool IsFinite(const TValue& x, int power) const {
     return IsBaseFinite(x) && ((x != TValue(0)) || (power >= 0));
   }
 
-  virtual bool SameType(const TSelf& r) const {
+  virtual constexpr bool SameType(const TSelf& r) const {
     return GetType() == r.GetType();
   }
 
-  virtual bool SameTypeLess(const TSelf&) const { return false; }
-  virtual bool SameTypeEqual(const TSelf&) const { return true; }
+  virtual constexpr bool SameTypeLess(const TSelf&) const { return false; }
 
-  virtual bool operator<(const TSelf& r) const {
+  virtual constexpr bool SameTypeEqual(const TSelf&) const { return true; }
+
+  virtual constexpr bool operator<(const TSelf& r) const {
     return SameType(r) ? SameTypeLess(r) : (GetType() < r.GetType());
   }
 
-  virtual bool operator==(const TSelf& r) const {
+  virtual constexpr bool operator==(const TSelf& r) const {
     return SameType(r) && SameTypeEqual(r);
   }
 
-  virtual bool IsMultiplicable(const TSelf& r) const {
+  virtual constexpr bool IsMultiplicable(const TSelf& r) const {
     return IsOne() || r.IsOne();
   }
 
@@ -78,7 +82,7 @@ class TermBase {
     return nullptr;
   }
 
-  virtual bool IsDivisible(const TSelf& r) const {
+  virtual constexpr bool IsDivisible(const TSelf& r) const {
     return r.IsOne() || (*this == r);
   }
 

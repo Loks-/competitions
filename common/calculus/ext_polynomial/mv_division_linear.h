@@ -6,32 +6,33 @@
 #include "common/calculus/ext_polynomial/mv_function.h"
 #include "common/calculus/ext_polynomial/mv_unused_index.h"
 #include "common/calculus/ext_polynomial/mv_view.h"
+
 #include <iostream>
 
 // Division f / (xi - c)
 namespace calculus {
 namespace ext_polynomial {
 template <class TValue, unsigned dim>
-std::pair<MVFunction<TValue, dim>, MVFunction<TValue, dim>> DivisionLinearFQR(
-    const MVFunction<TValue, dim>& f, unsigned index,
-    const MVFunction<TValue, dim>& fc) {
+inline std::pair<MVFunction<TValue, dim>, MVFunction<TValue, dim>>
+DivisionLinearFQR(const MVFunction<TValue, dim>& f, unsigned index,
+                  const MVFunction<TValue, dim>& fc) {
   assert(IsIndexUnused(fc, index));
-  auto p = DivisionLinearQR(SVPolynomialView(f, index), fc);
+  const auto p = DivisionLinearQR(SVPolynomialView(f, index), fc);
   return {MVView(p.first, index), MVView(p.second, index)};
 }
 
 template <class TValue, unsigned dim>
-std::pair<MVFunction<TValue, dim>, MVFunction<TValue, dim>> DivisionLinearVQR(
-    const MVFunction<TValue, dim>& f, unsigned index, const TValue& vc) {
+inline std::pair<MVFunction<TValue, dim>, MVFunction<TValue, dim>>
+DivisionLinearVQR(const MVFunction<TValue, dim>& f, unsigned index,
+                  const TValue& vc) {
   return DivisionLinearVQR(f, index, MVFunction<TValue, dim>(vc));
 }
 
 template <class TValue, unsigned dim>
-MVFunction<TValue, dim> DivisionLinearF(const MVFunction<TValue, dim>& f,
-                                        unsigned index,
-                                        const MVFunction<TValue, dim>& fc,
-                                        bool force_division) {
-  auto p = DivisionLinearFQR(f, index, fc);
+inline MVFunction<TValue, dim> DivisionLinearF(
+    const MVFunction<TValue, dim>& f, unsigned index,
+    const MVFunction<TValue, dim>& fc, bool force_division) {
+  const auto p = DivisionLinearFQR(f, index, fc);
   if (p.second.Empty()) return p.first;
   if (force_division) {
     std::cerr << "Dropping remainder: " << p.second << std::endl;
@@ -40,10 +41,11 @@ MVFunction<TValue, dim> DivisionLinearF(const MVFunction<TValue, dim>& f,
     return {};
   }
 }
+
 template <class TValue, unsigned dim>
-MVFunction<TValue, dim> DivisionLinearV(const MVFunction<TValue, dim>& f,
-                                        unsigned index, const TValue& vc,
-                                        bool force_division) {
+inline MVFunction<TValue, dim> DivisionLinearV(const MVFunction<TValue, dim>& f,
+                                               unsigned index, const TValue& vc,
+                                               bool force_division) {
   return DivisionLinearF(f, index, MVFunction<TValue, dim>(vc), force_division);
 }
 }  // namespace ext_polynomial

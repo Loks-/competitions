@@ -2,6 +2,7 @@
 
 #include "common/calculus/ext_polynomial/term_bases/ln_abs.h"
 #include "common/calculus/ext_polynomial/term_bases/type.h"
+
 #include <cmath>
 #include <memory>
 #include <string>
@@ -14,10 +15,12 @@ class SquareLnAbs : public LnAbs<TValue> {
  public:
   using TBase = TermBase<TValue>;
 
-  SquareLnAbs() {}
-  Type GetType() const override { return Type::SQUARE_LN_ABS; }
+ public:
+  constexpr SquareLnAbs() {}
 
-  TValue BaseGet(const TValue& x) const override {
+  constexpr Type GetType() const override { return Type::SQUARE_LN_ABS; }
+
+  constexpr TValue BaseGet(const TValue& x) const override {
     auto t = log(fabs(x));
     return t * t;
   }

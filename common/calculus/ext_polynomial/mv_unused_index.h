@@ -5,7 +5,7 @@
 namespace calculus {
 namespace ext_polynomial {
 template <class TValue, unsigned dim>
-bool IsIndexUnused(const MVFunction<TValue, dim>& f, unsigned index) {
+constexpr bool IsIndexUnused(const MVFunction<TValue, dim>& f, unsigned index) {
   for (auto& t : f.terms) {
     if (!t.tp.IsIndexUnused(index)) return false;
   }

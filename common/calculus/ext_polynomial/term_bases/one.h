@@ -14,9 +14,12 @@ class One : public TermBase<TValue> {
  public:
   using TBase = TermBase<TValue>;
 
-  One() {}
-  Type GetType() const override { return Type::ONE; }
-  TValue BaseGet(const TValue&) const override { return TValue(1); }
+ public:
+  constexpr One() {}
+
+  constexpr Type GetType() const override { return Type::ONE; }
+
+  constexpr TValue BaseGet(const TValue&) const override { return TValue(1); }
 
   std::string ToString(const std::string&) const override { return ""; }
 };

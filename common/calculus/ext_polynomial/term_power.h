@@ -20,28 +20,36 @@ class TermPower {
   int power;
 
  public:
-  TermPower() : base(term_bases::MakeOne<TValue>()), power(0) {}
-  TermPower(TTermBase _base, int _power = 0) : base(_base), power(_power) {
+  constexpr TermPower() : base(term_bases::MakeOne<TValue>()), power(0) {}
+
+  constexpr TermPower(TTermBase _base, int _power = 0)
+      : base(_base), power(_power) {
     assert(base);
   }
 
-  term_bases::Type GetType() const { return base->GetType(); }
-  bool IsConstant() const { return (power == 0) && base->IsOne(); }
-  bool IsPolynomial() const { return base->IsOne(); }
+  constexpr term_bases::Type GetType() const { return base->GetType(); }
 
-  TValue Get(const TValue& x) const { return base->Get(x, power); }
-  bool IsFinite(const TValue& x) const { return base->IsFinite(x, power); }
+  constexpr bool IsConstant() const { return (power == 0) && base->IsOne(); }
 
-  bool operator<(const TSelf& r) const {
-    return (power < r.power) ? true
-                             : (r.power < power) ? false : (*base < *r.base);
+  constexpr bool IsPolynomial() const { return base->IsOne(); }
+
+  constexpr TValue Get(const TValue& x) const { return base->Get(x, power); }
+
+  constexpr bool IsFinite(const TValue& x) const {
+    return base->IsFinite(x, power);
   }
 
-  bool operator==(const TSelf& r) const {
+  constexpr bool operator<(const TSelf& r) const {
+    return (power < r.power)   ? true
+           : (r.power < power) ? false
+                               : (*base < *r.base);
+  }
+
+  constexpr bool operator==(const TSelf& r) const {
     return (power == r.power) && (*base == *r.base);
   }
 
-  bool IsMultiplicable(const TSelf& r) const {
+  constexpr bool IsMultiplicable(const TSelf& r) const {
     return base->IsMultiplicable(*r.base);
   }
 
@@ -57,7 +65,9 @@ class TermPower {
     return t;
   }
 
-  bool IsDivisible(const TSelf& r) const { return base->IsDivisible(*r.base); }
+  constexpr bool IsDivisible(const TSelf& r) const {
+    return base->IsDivisible(*r.base);
+  }
 
   TSelf& operator/=(const TSelf& r) {
     base = base->Division(base, r.base);

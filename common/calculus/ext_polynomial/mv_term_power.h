@@ -9,55 +9,67 @@
 
 namespace calculus {
 namespace ext_polynomial {
-template <class TValue, unsigned _dim>
+template <class TValue, unsigned dim>
 class MVTermPower {
  public:
-  using TPoint = calculus::multivariable::Point<TValue, _dim>;
+  using TPoint = calculus::multivariable::Point<TValue, dim>;
   using TSVTermPower = TermPower<TValue>;
-  using TSelf = MVTermPower<TValue, _dim>;
-  static const unsigned dim = _dim;
+  using TSelf = MVTermPower<TValue, dim>;
 
-  std::array<TSVTermPower, _dim> terms;
+  static constexpr unsigned Dim() { return dim; }
 
-  MVTermPower() : terms(MakeArray<TSVTermPower, dim>(TSVTermPower())) {}
-  explicit MVTermPower(const std::array<TSVTermPower, _dim>& _terms)
+ public:
+  std::array<TSVTermPower, dim> terms;
+
+ public:
+  constexpr MVTermPower()
+      : terms(MakeArray<TSVTermPower, dim>(TSVTermPower())) {}
+
+  constexpr explicit MVTermPower(const std::array<TSVTermPower, dim>& _terms)
       : terms(_terms) {}
 
-  bool IsConstant() const {
+  constexpr bool IsConstant() const {
     for (auto& t : terms) {
       if (!t.IsConstant()) return false;
     }
     return true;
   }
 
-  bool IsPolynomial() const {
+  constexpr bool IsPolynomial() const {
     for (auto& t : terms) {
       if (!t.IsPolynomial()) return false;
     }
     return true;
   }
 
-  bool IsIndexUnused(unsigned index) const { return terms[index].IsConstant(); }
+  constexpr bool IsIndexUnused(unsigned index) const {
+    return terms[index].IsConstant();
+  }
 
-  TValue Get(const TPoint& p) const {
+  constexpr TValue Get(const TPoint& p) const {
     TValue r = TValue(1);
     for (unsigned i = 0; i < dim; ++i) r *= terms[i].Get(p(i));
     return r;
   }
 
-  bool IsFinite(const TPoint& p) const {
+  constexpr bool IsFinite(const TPoint& p) const {
     for (unsigned i = 0; i < dim; ++i) {
       if (!IsFinite(p(i))) return false;
     }
     return true;
   }
 
-  TSVTermPower& operator()(unsigned index) { return terms[index]; }
-  const TSVTermPower& operator()(unsigned index) const { return terms[index]; }
-  bool operator<(const TSelf& r) const { return terms < r.terms; }
-  bool operator==(const TSelf& r) const { return terms == r.terms; }
+  constexpr TSVTermPower& operator()(unsigned index) { return terms[index]; }
 
-  bool IsMultiplicable(const TSelf& r) const {
+  constexpr const TSVTermPower& operator()(unsigned index) const {
+    return terms[index];
+  }
+
+  constexpr bool operator<(const TSelf& r) const { return terms < r.terms; }
+
+  constexpr bool operator==(const TSelf& r) const { return terms == r.terms; }
+
+  constexpr bool IsMultiplicable(const TSelf& r) const {
     for (unsigned i = 0; i < dim; ++i) {
       if (!terms[i].IsMultiplicable(r(i))) return false;
     }
@@ -75,7 +87,7 @@ class MVTermPower {
     return t;
   }
 
-  bool IsDivisible(const TSelf& r) const {
+  constexpr bool IsDivisible(const TSelf& r) const {
     for (unsigned i = 0; i < dim; ++i) {
       if (!terms[i].IsDivisible(r(i))) return false;
     }

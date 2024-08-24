@@ -6,6 +6,7 @@
 #include "common/calculus/ext_polynomial/term.h"
 #include "common/calculus/ext_polynomial/term_bases/one.h"
 #include "common/calculus/ext_polynomial/term_power.h"
+
 #include <iostream>
 #include <utility>
 
@@ -13,8 +14,8 @@
 namespace calculus {
 namespace ext_polynomial {
 template <class TValueF, class TValueTerm>
-std::pair<Function<TValueF, TValueTerm, Term<TValueF, TValueTerm>>,
-          Function<TValueF, TValueTerm, Term<TValueF, TValueTerm>>>
+inline std::pair<Function<TValueF, TValueTerm, Term<TValueF, TValueTerm>>,
+                 Function<TValueF, TValueTerm, Term<TValueF, TValueTerm>>>
 DivisionLinearQR(
     const Function<TValueF, TValueTerm, Term<TValueF, TValueTerm>>& f,
     const TValueF& c) {
@@ -38,10 +39,10 @@ DivisionLinearQR(
 }
 
 template <class TValueF, class TValueTerm>
-Function<TValueF, TValueTerm, Term<TValueF, TValueTerm>> DivisionLinear(
+inline Function<TValueF, TValueTerm, Term<TValueF, TValueTerm>> DivisionLinear(
     const Function<TValueF, TValueTerm, Term<TValueF, TValueTerm>>& f,
     const TValueF& c, bool force_division) {
-  auto p = DivisionLinearQR(f, c);
+  const auto p = DivisionLinearQR(f, c);
   if (p.second == TValueF(0)) return p.first;
   if (force_division) {
     std::cerr << "[Warning] Dropping remainder: " << p.second << std::endl;
