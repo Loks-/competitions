@@ -88,13 +88,13 @@ class NumberToWords {
   }
 
   constexpr static std::string Convert(uint64_t n) {
+    const std::vector<std::string> vbase{"", "Thousand", "Million", "Billion",
+                                         "Trillion"};
     if (n == 0) return ConvertZero();
-    std::vector<std::string> vbase{"", "Thousand", "Million", "Billion",
-                                   "Trillion"};
     uint64_t h = 1000;
     std::string s;
     for (unsigned i = 0; n; ++i, n /= h) {
-      uint64_t nh = n % h;
+      const uint64_t nh = n % h;
       if (nh == 0) continue;
       std::string st = ConvertThousand(nh);
       if (i) st = st + " " + vbase[i];

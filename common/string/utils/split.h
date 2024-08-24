@@ -22,7 +22,7 @@ constexpr std::vector<std::string> Split(const std::string& s, char delimeter) {
 inline std::vector<std::string> SplitAll(const std::string& s,
                                          const std::string& delimeters) {
   std::vector<std::string> vs;
-  std::unordered_set<char> us(delimeters.begin(), delimeters.end());
+  const std::unordered_set<char> us(delimeters.begin(), delimeters.end());
   std::string scur;
   for (auto c : s) {
     if (us.find(c) == us.end()) {
