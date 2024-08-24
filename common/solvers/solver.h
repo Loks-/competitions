@@ -17,8 +17,10 @@ class Solver {
   unsigned max_time_in_seconds;
 
  public:
-  Solver() : max_time_in_seconds(-1u) {}
-  explicit Solver(unsigned _max_time) : max_time_in_seconds(_max_time) {}
+  constexpr Solver() : max_time_in_seconds(-1u) {}
+
+  constexpr explicit Solver(unsigned _max_time)
+      : max_time_in_seconds(_max_time) {}
 
   virtual ~Solver() {}
   virtual PSolver Clone() const { return nullptr; }

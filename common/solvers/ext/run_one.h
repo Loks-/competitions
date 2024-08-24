@@ -31,7 +31,7 @@ inline void RunOne(TSolver& solver, const std::string& problem_id) {
   if (new_solution && !solver.SkipSolutionWrite()) {
     TSolution scache;
     scache.Load(problem_id, solver_name);
-    auto rcache = TEvaluator::Apply(p, scache);
+    const auto rcache = TEvaluator::Apply(p, scache);
     if (TEvaluator::Compare(r, rcache)) {
       std::cout << "New solution for problem: " << problem_id << std::endl;
       s.Save(solver_name);
@@ -40,7 +40,7 @@ inline void RunOne(TSolver& solver, const std::string& problem_id) {
   if (!solver.SkipBest()) {
     TSolution sbest;
     sbest.Load(problem_id, "best");
-    auto rbest = TEvaluator::Apply(p, sbest);
+    const auto rbest = TEvaluator::Apply(p, sbest);
     if (TEvaluator::Compare(r, rbest)) {
       std::cout << "New best solution for problem: " << problem_id << std::endl;
       s.Save("best");

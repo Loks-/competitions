@@ -22,7 +22,7 @@ inline bool UpdateBest(const std::string& id, const std::string& solver_name,
   if (!p.Load(id)) return false;
   TSolution s;
   if (!s.Load(id, solver_name)) return false;
-  auto r = TEvaluator::Apply(p, s);
+  const auto r = TEvaluator::Apply(p, s);
   if (!r.correct) return false;
   TSolution sbest;
   if (!sbest.Load(id, best_name)) {
