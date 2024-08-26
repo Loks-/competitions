@@ -11,11 +11,14 @@ class Base {
   TValue data;
 
  public:
-  explicit Base(const TValue& _data = TValue()) : data(_data) {}
-  const TValue& Get() const { return data; }
-  TValue& Get() { return data; }
-  void Set(const TValue& _data) { data = _data; }
+  constexpr explicit Base(const TValue& _data = TValue()) : data(_data) {}
 
-  bool operator<(const TSelf& r) const { return data < r.data; }
+  constexpr const TValue& Get() const { return data; }
+
+  constexpr TValue& Get() { return data; }
+
+  constexpr void Set(const TValue& _data) { data = _data; }
+
+  constexpr bool operator<(const TSelf& r) const { return data < r.data; }
 };
 }  // namespace proxy

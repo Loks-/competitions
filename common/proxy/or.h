@@ -9,14 +9,18 @@ class Or : public Base<TValue> {
   using TBase = Base<TValue>;
   using TSelf = Or<TValue>;
 
-  Or() : TBase() {}
-  explicit Or(const TValue& _data) : TBase(_data) {}
+ public:
+  constexpr Or() : TBase() {}
 
-  TSelf& operator+=(const TSelf& r) {
+  constexpr explicit Or(const TValue& _data) : TBase(_data) {}
+
+  constexpr TSelf& operator+=(const TSelf& r) {
     TBase::data |= r.data;
     return *this;
   }
 
-  TSelf operator+(const TSelf& r) { return TSelf(TBase::data | r.data); }
+  constexpr TSelf operator+(const TSelf& r) {
+    return TSelf(TBase::data | r.data);
+  }
 };
 }  // namespace proxy

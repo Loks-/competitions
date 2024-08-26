@@ -12,15 +12,17 @@ class Max : public Base<TValue> {
   using TBase = Base<TValue>;
   using TSelf = Max<TValue>;
 
-  Max() : TBase(std::numeric_limits<TValue>::lowest()) {}
-  explicit Max(const TValue& _data) : TBase(_data) {}
+ public:
+  constexpr Max() : TBase(std::numeric_limits<TValue>::lowest()) {}
 
-  TSelf& operator+=(const TSelf& r) {
+  constexpr explicit Max(const TValue& _data) : TBase(_data) {}
+
+  constexpr TSelf& operator+=(const TSelf& r) {
     TBase::data = std::max(TBase::data, r.data);
     return *this;
   }
 
-  TSelf operator+(const TSelf& r) {
+  constexpr TSelf operator+(const TSelf& r) {
     return TSelf(std::max(TBase::data, r.data));
   }
 };
