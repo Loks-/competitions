@@ -17,8 +17,9 @@ class DLXEMinMax : public DLMatrix {
  public:
   using TBase = DLMatrix;
   using Node = TBase::Node;
-  static const size_t missed = size_t(-1ll);
-  static const size_t stop = missed - 1;
+
+  static constexpr size_t missed = size_t(-1ll);
+  static constexpr size_t stop = missed - 1;
 
  protected:
   std::vector<size_t> selected_rows;
@@ -81,7 +82,7 @@ class DLXEMinMax : public DLMatrix {
     for (unsigned c : v) uncovered.Insert(c);
   }
 
-  const std::vector<size_t> SelectedRows() const { return selected_rows; }
+  constexpr std::vector<size_t> SelectedRows() const { return selected_rows; }
 
  protected:
   void DisableNode(Node* node) {
@@ -161,7 +162,7 @@ class DLXEMinMax : public DLMatrix {
 
   template <class TAlgorthimXCallBack>
   bool Search(TAlgorthimXCallBack& callback) {
-    size_t c = GetBestColumn();
+    const size_t c = GetBestColumn();
     if (c == stop) return false;
     if (c == missed) return callback(selected_rows);
     auto h = headers_columns[c];

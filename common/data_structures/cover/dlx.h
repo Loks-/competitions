@@ -37,7 +37,7 @@ class DLX : public DLMatrix {
     std::stack<size_t>().swap(stack_sizes);
   }
 
-  const std::vector<size_t> SelectedRows() const { return selected_rows; }
+  constexpr std::vector<size_t> SelectedRows() const { return selected_rows; }
 
  protected:
   void DisableNode(Node* node) {
@@ -66,7 +66,7 @@ class DLX : public DLMatrix {
   }
 
  public:
-  Node* GetBestColumn() const {
+  constexpr Node* GetBestColumn() const {
     size_t best_count = TBase::nrows + 2;
     Node* best_node = nullptr;
     for (Node* n = header->r; n != header; n = n->r) {

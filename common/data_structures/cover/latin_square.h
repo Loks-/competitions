@@ -14,24 +14,26 @@ class LatinSquare {
  public:
   void Init(size_t size) {
     n = size;
-    size_t dlcolumns = 3 * n * n;
-    size_t dlrows = n * n * n;
+    const size_t dlcolumns = 3 * n * n;
+    const size_t dlrows = n * n * n;
     dlx.Init(dlrows, dlcolumns);
     for (size_t i = 0; i < dlrows; ++i) {
-      size_t r = Row(i), c = Column(i), v = Value(i);
+      const size_t r = Row(i), c = Column(i), v = Value(i);
       dlx.Add(i, v * n + r);
       dlx.Add(i, n * n + r * n + c);
       dlx.Add(i, 2 * n * n + c * n + v);
     }
   }
 
-  size_t DLRow(size_t row, size_t column, size_t value) const {
+  constexpr size_t DLRow(size_t row, size_t column, size_t value) const {
     return value + n * (column + n * row);
   }
 
-  size_t Row(size_t dlrow) const { return dlrow / (n * n); }
-  size_t Column(size_t dlrow) const { return (dlrow / n) % n; }
-  size_t Value(size_t dlrow) const { return dlrow % n; }
+  constexpr size_t Row(size_t dlrow) const { return dlrow / (n * n); }
+
+  constexpr size_t Column(size_t dlrow) const { return (dlrow / n) % n; }
+
+  constexpr size_t Value(size_t dlrow) const { return dlrow % n; }
 
   void Set(size_t row, size_t column, size_t value) {
     dlx.SelectRow(DLRow(row, column, value));

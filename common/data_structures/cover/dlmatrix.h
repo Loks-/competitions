@@ -15,9 +15,10 @@ class DLMatrix {
     size_t row;
     size_t column;
 
-    Node(size_t row_, size_t column_) : row(row_), column(column_) {}
+   public:
+    constexpr Node(size_t row_, size_t column_) : row(row_), column(column_) {}
 
-    void ResetLinks() { l = r = u = d = this; }
+    constexpr void ResetLinks() { l = r = u = d = this; }
   };
 
  protected:
@@ -58,7 +59,7 @@ class DLMatrix {
       headers_rows.push_back(NewNode(i, ncolumns));
     headers_rows.push_back(header);
     for (size_t i = 0; i <= nrows; ++i) {
-      size_t j = (i + 1) % (nrows + 1);
+      const size_t j = (i + 1) % (nrows + 1);
       headers_rows[i]->d = headers_rows[j];
       headers_rows[j]->u = headers_rows[i];
     }
@@ -66,7 +67,7 @@ class DLMatrix {
       headers_columns.push_back(NewNode(nrows, i));
     headers_columns.push_back(header);
     for (size_t i = 0; i <= ncolumns; ++i) {
-      size_t j = (i + 1) % (ncolumns + 1);
+      const size_t j = (i + 1) % (ncolumns + 1);
       headers_columns[i]->r = headers_columns[j];
       headers_columns[j]->l = headers_columns[i];
     }
@@ -77,13 +78,14 @@ class DLMatrix {
   }
 
   DLMatrix() { Clear(); }
+
   DLMatrix(size_t rows, size_t columns) { Init(rows, columns); }
 
-  bool IsHeader(const Node* node) const {
+  constexpr bool IsHeader(const Node* node) const {
     return (node->row == nrows) || (node->column == ncolumns);
   }
 
-  void DisableNode(Node* node) {
+  constexpr void DisableNode(Node* node) {
     node->l->r = node->r;
     node->r->l = node->l;
     node->u->d = node->d;
@@ -92,7 +94,7 @@ class DLMatrix {
     --count_columns[node->column];
   }
 
-  void EnableNode(Node* node) {
+  constexpr void EnableNode(Node* node) {
     node->l->r = node;
     node->r->l = node;
     node->u->d = node;
@@ -101,7 +103,7 @@ class DLMatrix {
     ++count_columns[node->column];
   }
 
-  static bool IsNodeEnabled(const Node* node) {
+  static constexpr bool IsNodeEnabled(const Node* node) {
     return (node->r->l == node) && (node->u->d == node);
   }
 
@@ -117,7 +119,7 @@ class DLMatrix {
     return node;
   }
 
-  Node* Find(size_t row, size_t column) const {
+  constexpr Node* Find(size_t row, size_t column) const {
     if (row > nrows) return nullptr;
     auto h = headers_rows[row];
     if (h->column == column) return h;
