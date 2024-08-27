@@ -69,7 +69,7 @@ class Hungarian {
     return -v[m];
   }
 
-  constexpr std::vector<unsigned> Get() const {
+  std::vector<unsigned> Get() const {
     std::vector<unsigned> r(n);
     for (unsigned j = 0; j < m; ++j) {
       if (p[j] != n) r[p[j]] = j;
