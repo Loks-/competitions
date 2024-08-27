@@ -15,25 +15,31 @@ class Segment {
   using TInfo = typename TNode::TInfo;
   using TSelf = Segment<TNode>;
 
+ public:
   std::vector<TNode*> nodes;
 
-  Segment() {}
-  explicit Segment(TNode* node) : nodes(1, node) {}
-  Segment(const TSelf& l, const TSelf& r) : nodes(l.nodes) { AddBack(r); }
+ public:
+  constexpr Segment() {}
 
-  void AddBack(TNode* node) { nodes.push_back(node); }
+  constexpr explicit Segment(TNode* node) : nodes(1, node) {}
 
-  void AddBack(const TSelf& r) {
+  constexpr Segment(const TSelf& l, const TSelf& r) : nodes(l.nodes) {
+    AddBack(r);
+  }
+
+  constexpr void AddBack(TNode* node) { nodes.push_back(node); }
+
+  constexpr void AddBack(const TSelf& r) {
     nodes.insert(nodes.end(), r.nodes.begin(), r.nodes.end());
   }
 
-  void AddBackReversed(const TSelf& r) {
+  constexpr void AddBackReversed(const TSelf& r) {
     nodes.insert(nodes.end(), r.nodes.rbegin(), r.nodes.rend());
   }
 
-  void Reverse() { std::reverse(nodes.begin(), nodes.end()); }
+  constexpr void Reverse() { std::reverse(nodes.begin(), nodes.end()); }
 
-  TSelf Reversed() const {
+  constexpr TSelf Reversed() const {
     TSelf t(*this);
     t.Reverse();
     return t;

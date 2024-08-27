@@ -7,21 +7,28 @@ class None {
  public:
   using TSelf = None;
 
-  static const bool is_none = true;
-  static const bool use_data = false;
-  static const bool use_sinfo_in_update_data = false;
-  static const bool use_sinfo_in_update_lr = false;
+  static constexpr bool is_none = true;
+  static constexpr bool use_data = false;
 
-  static const bool use_update_node = false;
+  static constexpr bool use_sinfo_in_update_data = false;
+  static constexpr bool use_sinfo_in_update_lr = false;
 
+  static constexpr bool use_update_node = false;
+
+  // To reuse bst function
+  static constexpr bool use_keys = false;
+  static constexpr bool has_size = false;
+
+ public:
+  // External functions should not assume that Update is constexpr.
   template <class TData, class TSInfo>
-  void UpdateData(const TData&, const TSInfo&) {}
+  constexpr void UpdateData(const TData&, const TSInfo&) {}
 
   template <class TSInfo>
-  void UpdateLR(const TSelf&, const TSelf&, const TSInfo&) {}
+  constexpr void UpdateLR(const TSelf&, const TSelf&, const TSInfo&) {}
 
   template <class TNode>
-  void UpdateNode(const TNode*) {}
+  constexpr void UpdateNode(const TNode*) {}
 };
 }  // namespace info
 }  // namespace st

@@ -10,20 +10,23 @@ class SumSecond : public TInfo {
   using TBase = TInfo;
   using TSelf = SumSecond<TValue, TBase>;
 
-  static const bool is_none = false;
-  static const bool use_data = true;
+ public:
+  static constexpr bool is_none = false;
+  static constexpr bool use_data = true;
 
-  TValue sum;
+ public:
+  TValue sum_second;
 
+ public:
   template <class TData>
-  void UpdateData(const TData& data) {
+  constexpr void UpdateData(const TData& data) {
     TBase::UpdateData(data);
-    sum = data.second;
+    sum_second = data.second;
   }
 
-  void UpdateLR(const TSelf& l, const TSelf& r) {
+  constexpr void UpdateLR(const TSelf& l, const TSelf& r) {
     TBase::UpdateLR(l, r);
-    sum = l.sum + r.sum;
+    sum_second = l.sum_second + r.sum_second;
   }
 };
 }  // namespace sinfo

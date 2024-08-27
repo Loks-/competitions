@@ -12,29 +12,31 @@ class AddEachSDotProduct : public None {
   using TBase = None;
   using TSelf = AddEachSDotProduct<TData>;
 
-  static const bool is_none = false;
-  static const bool modify_data = true;
+  static constexpr bool is_none = false;
+  static constexpr bool modify_data = true;
 
+ public:
   TData add_value;
 
-  bool IsEmpty() const { return add_value.IsZero(); }
+ public:
+  constexpr bool IsEmpty() const { return add_value.IsZero(); }
 
-  void Clear() {
+  constexpr void Clear() {
     TBase::Clear();
     add_value.Clear();
   };
 
   template <class TNode>
-  void Add(TNode* node, const TData& value) {
-    node->info.sum += node->sinfo.sum.DotProduct(value);
+  constexpr void Add(TNode* node, const TData& value) {
+    node->info.sum_first += node->sinfo.sum_second.DotProduct(value);
     add_value += value;
   }
 
   template <class TNode>
-  void Apply(TNode* node) {
+  constexpr void Apply(TNode* node) {
     if (IsEmpty()) return;
     if (node->IsLeaf()) {
-      node->GetData().first += node->sinfo.sum.DotProduct(add_value);
+      node->GetData().first += node->sinfo.sum_second.DotProduct(add_value);
     } else {
       node->l->AddAction(add_value);
       node->r->AddAction(add_value);

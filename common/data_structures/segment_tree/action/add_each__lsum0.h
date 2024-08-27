@@ -12,6 +12,7 @@ class AddEachLSum0 : public None {
   using TBase = None;
   using TSelf = AddEachLSum0<TValue>;
 
+ public:
   template <class TNode>
   void Add(TNode* node, const TValue& value) {
     TBase::Add(node, value);

@@ -16,7 +16,7 @@ template <class TTData, class TTInfo = info::None,
           bool _use_parent = true>
 class SegmentTree {
  public:
-  static const bool use_parent = _use_parent;
+  static constexpr bool use_parent = _use_parent;
 
   using TData = TTData;
   using TInfo = TTInfo;
@@ -32,7 +32,7 @@ class SegmentTree {
   unsigned used_data, used_nodes;
 
  public:
-  void ResetNodes(unsigned data_size, unsigned max_nodes) {
+  constexpr void ResetNodes(unsigned data_size, unsigned max_nodes) {
     data.resize(0);
     data.resize(data_size);
     nodes.resize(0);
@@ -40,26 +40,31 @@ class SegmentTree {
     used_data = used_nodes = 0;
   }
 
-  void ResetNodes(unsigned data_size) { ResetNodes(data_size, 2 * data_size); }
-  void ResetNodes() {
+  constexpr void ResetNodes(unsigned data_size) {
+    ResetNodes(data_size, 2 * data_size);
+  }
+
+  constexpr void ResetNodes() {
     ResetNodes(unsigned(data.size()), unsigned(nodes.size()));
   }
 
-  explicit SegmentTree(unsigned data_size) { ResetNodes(data_size); }
-  SegmentTree() : SegmentTree(0) {}
+  constexpr explicit SegmentTree(unsigned data_size) { ResetNodes(data_size); }
 
-  SegmentTree(unsigned data_size, unsigned max_nodes) {
+  constexpr SegmentTree() : SegmentTree(0) {}
+
+  constexpr SegmentTree(unsigned data_size, unsigned max_nodes) {
     ResetNodes(data_size, max_nodes);
   }
 
-  unsigned DataUsed() const { return used_data; }
-  unsigned UsedNodes() const { return used_nodes; }
+  constexpr unsigned DataUsed() const { return used_data; }
 
-  unsigned AvailableNodes() const {
+  constexpr unsigned UsedNodes() const { return used_nodes; }
+
+  constexpr unsigned AvailableNodes() const {
     return unsigned(nodes.size()) - used_nodes;
   }
 
-  TNode* NewNode() {
+  constexpr TNode* NewNode() {
     assert(used_nodes < nodes.size());
     return &(nodes[used_nodes++]);
   }

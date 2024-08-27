@@ -12,16 +12,18 @@ class MaxCount : public Max<TMaxValue, TInfo> {
   using TBase = Max<TMaxValue, TInfo>;
   using TSelf = MaxCount<TMaxValue, TInfo>;
 
+ public:
   unsigned max_count;
 
+ public:
   template <class TData, class TSInfo>
-  void UpdateData(const TData& data, const TSInfo& sinfo) {
+  constexpr void UpdateData(const TData& data, const TSInfo& sinfo) {
     TBase::UpdateData(data, sinfo);
     max_count = 1;
   }
 
   template <class TSInfo>
-  void UpdateLR(const TSelf& l, const TSelf& r, const TSInfo& sinfo) {
+  constexpr void UpdateLR(const TSelf& l, const TSelf& r, const TSInfo& sinfo) {
     TBase::UpdateLR(l, r, sinfo);
     max_count = ((l.max == TBase::max) ? l.max_count : 0u) +
                 ((r.max == TBase::max) ? r.max_count : 0u);

@@ -28,7 +28,7 @@ int main_heavy_light_2_white_falcon() {
       if (v != a)
         hld.PathFromAncestor(a, v, true).AddAction(TVector{y - x * d, x});
     } else if (t == 2) {
-      cout << hld.Path(u, v).GetInfo().sum << endl;
+      cout << hld.Path(u, v).GetInfo().sum_first << endl;
     }
   }
   return 0;

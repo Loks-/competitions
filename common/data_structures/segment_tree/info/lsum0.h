@@ -16,15 +16,18 @@ class LSum0 : public None {
   using TBase = TInfo;
   using TSelf = LSum0<TValue, TSumValue, TBase>;
 
-  static const bool is_none = false;
-  static const bool use_sinfo_in_update_data = true;
-  static const bool use_sinfo_in_update_lr = true;
-  static const bool use_update_node = true;
+ public:
+  static constexpr bool is_none = false;
+  static constexpr bool use_sinfo_in_update_data = true;
+  static constexpr bool use_sinfo_in_update_lr = true;
+  static constexpr bool use_update_node = true;
 
+ public:
   TValue subtree_value;
   TSumValue lsum0;
 
-  LSum0() { subtree_value = 0; }
+ public:
+  constexpr LSum0() { subtree_value = 0; }
 
   template <class TNode>
   void UpdateLSum0(const TNode* node) {

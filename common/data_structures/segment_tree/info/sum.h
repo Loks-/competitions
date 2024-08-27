@@ -12,19 +12,22 @@ class Sum : public TInfo {
   using TBase = TInfo;
   using TSelf = Sum<TValue, TBase>;
 
-  static const bool is_none = false;
-  static const bool use_data = true;
+ public:
+  static constexpr bool is_none = false;
+  static constexpr bool use_data = true;
 
+ public:
   TValue sum;
 
+ public:
   template <class TData, class TSInfo>
-  void UpdateData(const TData& data, const TSInfo& sinfo) {
+  constexpr void UpdateData(const TData& data, const TSInfo& sinfo) {
     TBase::UpdateData(data, sinfo);
     sum = data;
   }
 
   template <class TSInfo>
-  void UpdateLR(const TSelf& l, const TSelf& r, const TSInfo& sinfo) {
+  constexpr void UpdateLR(const TSelf& l, const TSelf& r, const TSInfo& sinfo) {
     TBase::UpdateLR(l, r, sinfo);
     sum = l.sum + r.sum;
   }

@@ -27,7 +27,7 @@ int main_fibonacci_numbers_tree__hldsdp() {
     if (c == 'Q') {
       unsigned x, y;
       cin >> x >> y;
-      cout << hld.Path(x - 1, y - 1).GetInfo().sum << endl;
+      cout << hld.Path(x - 1, y - 1).GetInfo().sum_first << endl;
     } else if (c == 'U') {
       unsigned x;
       int64_t kx;

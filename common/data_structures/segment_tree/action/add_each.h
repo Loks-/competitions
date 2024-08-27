@@ -11,27 +11,29 @@ class AddEach : public None {
   using TBase = None;
   using TSelf = AddEach<TData>;
 
-  static const bool is_none = false;
-  static const bool modify_data = true;
+  static constexpr bool is_none = false;
+  static constexpr bool modify_data = true;
 
+ public:
   TData add_value;
 
-  AddEach() : add_value() {}
+ public:
+  constexpr AddEach() : add_value() {}
 
-  bool IsEmpty() const { return add_value == TData(); }
+  constexpr bool IsEmpty() const { return add_value == TData(); }
 
-  void Clear() {
+  constexpr void Clear() {
     TBase::Clear();
     add_value = TData();
   };
 
   template <class TNode>
-  void Add(TNode*, const TData& value) {
+  constexpr void Add(TNode*, const TData& value) {
     add_value += value;
   }
 
   template <class TNode>
-  void Apply(TNode* node) {
+  constexpr void Apply(TNode* node) {
     if (IsEmpty()) return;
     if (node->IsLeaf()) {
       node->GetData() += add_value;

@@ -12,19 +12,22 @@ class Position : public None {
   using TBase = None;
   using TSelf = Position<TCoordinate>;
 
-  static const bool is_none = false;
-  static const bool has_coordinate = true;
+ public:
+  static constexpr bool is_none = false;
+  static constexpr bool has_coordinate = true;
 
+ public:
   TCoordinate left, right;
 
-  void SetCoordinate(const TCoordinate& l, const TCoordinate& r) {
+ public:
+  constexpr void SetCoordinate(const TCoordinate& l, const TCoordinate& r) {
     left = l;
     right = r;
   }
 
-  TCoordinate Size() const { return right - left; }
+  constexpr TCoordinate Size() const { return right - left; }
 
-  void UpdateLR(const TSelf& l, const TSelf& r) {
+  constexpr void UpdateLR(const TSelf& l, const TSelf& r) {
     TBase::UpdateLR(l, r);
     left = l.left;
     right = r.right;

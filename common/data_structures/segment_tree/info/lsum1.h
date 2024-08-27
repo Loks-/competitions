@@ -17,8 +17,10 @@ class LSum1 : public LSum0<TTValue, TTSumValue, TInfo> {
   using TBase = LSum0<TTValue, TTSumValue, TInfo>;
   using TSelf = LSum0<TValue, TSumValue, TInfo>;
 
+ public:
   TSumValue lsum1;
 
+ public:
   template <class TNode>
   void UpdateLSum1(const TNode* node) {
     if (TBase::subtree_value == 0) {

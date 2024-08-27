@@ -17,9 +17,8 @@ int main_recalling_early_days_gp_with_trees() {
   THLD hld(tree);
 
   TModular r(R), ri = (r ? r.Inverse() : 0);
-  hld.InitSInfo([&](unsigned, unsigned d) {
-    return TVector{r.PowU(d), ri.PowU(d)};
-  });
+  hld.InitSInfo(
+      [&](unsigned, unsigned d) { return TVector{r.PowU(d), ri.PowU(d)}; });
 
   cin >> U >> Q;
   unsigned a, b;
@@ -40,7 +39,7 @@ int main_recalling_early_days_gp_with_trees() {
   }
   for (unsigned iQ = 0; iQ < Q; ++iQ) {
     cin >> a >> b;
-    cout << hld.Path(a - 1, b - 1).GetInfo().sum << endl;
+    cout << hld.Path(a - 1, b - 1).GetInfo().sum_first << endl;
   }
   return 0;
 }

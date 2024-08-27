@@ -12,21 +12,24 @@ class SumFirst : public TInfo {
   using TBase = TInfo;
   using TSelf = SumFirst<TValue, TBase>;
 
-  static const bool is_none = false;
-  static const bool use_data = true;
+ public:
+  static constexpr bool is_none = false;
+  static constexpr bool use_data = true;
 
-  TValue sum;
+ public:
+  TValue sum_first;
 
+ public:
   template <class TData, class TSInfo>
-  void UpdateData(const TData& data, const TSInfo& sinfo) {
+  constexpr void UpdateData(const TData& data, const TSInfo& sinfo) {
     TBase::UpdateData(data, sinfo);
-    sum = data.first;
+    sum_first = data.first;
   }
 
   template <class TSInfo>
-  void UpdateLR(const TSelf& l, const TSelf& r, const TSInfo& sinfo) {
+  constexpr void UpdateLR(const TSelf& l, const TSelf& r, const TSInfo& sinfo) {
     TBase::UpdateLR(l, r, sinfo);
-    sum = l.sum + r.sum;
+    sum_first = l.sum_first + r.sum_first;
   }
 };
 }  // namespace info

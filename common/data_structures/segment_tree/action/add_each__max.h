@@ -12,8 +12,9 @@ class AddEachMax : public AddEach<TData> {
   using TBase = AddEach<TData>;
   using TSelf = AddEachMax<TData>;
 
+ public:
   template <class TNode>
-  void Add(TNode* node, const TData& value) {
+  constexpr void Add(TNode* node, const TData& value) {
     node->info.max += value;
     TBase::Add(node, value);
   }

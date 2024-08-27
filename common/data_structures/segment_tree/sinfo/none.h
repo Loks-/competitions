@@ -8,16 +8,19 @@ class None {
   using TCoordinate = unsigned;
   using TSelf = None;
 
-  static const bool is_none = true;
-  static const bool use_data = false;
-  static const bool has_coordinate = false;
+ public:
+  static constexpr bool is_none = true;
+  static constexpr bool use_data = false;
+  static constexpr bool has_coordinate = false;
 
-  void SetCoordinate(const TCoordinate&, const TCoordinate&) {}
+ public:
+  constexpr void SetCoordinate(const TCoordinate&, const TCoordinate&) {}
 
+  // External functions should not assume that Update is constexpr.
   template <class TData>
-  void UpdateData(const TData&) {}
+  constexpr void UpdateData(const TData&) {}
 
-  void UpdateLR(const TSelf&, const TSelf&) {}
+  constexpr void UpdateLR(const TSelf&, const TSelf&) {}
 };
 }  // namespace sinfo
 }  // namespace st

@@ -10,15 +10,18 @@ class MinWithIndex : public TInfo {
   using TBase = TInfo;
   using TSelf = MinWithIndex<TValue, TBase>;
 
-  static const bool is_none = false;
-  static const bool use_data = true;
-  static const bool use_sinfo_in_update_data = true;
+ public:
+  static constexpr bool is_none = false;
+  static constexpr bool use_data = true;
+  static constexpr bool use_sinfo_in_update_data = true;
 
+ public:
   TValue min;
   unsigned min_coordinate;
 
+ public:
   template <class TData, class TSInfo>
-  void UpdateData(const TData& data, const TSInfo& sinfo) {
+  constexpr void UpdateData(const TData& data, const TSInfo& sinfo) {
     static_assert(TSInfo::has_coordinate);
     TBase::UpdateData(data, sinfo);
     min = data;
@@ -26,7 +29,7 @@ class MinWithIndex : public TInfo {
   }
 
   template <class TSInfo>
-  void UpdateLR(const TSelf& l, const TSelf& r, const TSInfo& sinfo) {
+  constexpr void UpdateLR(const TSelf& l, const TSelf& r, const TSInfo& sinfo) {
     TBase::UpdateLR(l, r, sinfo);
     if (r.min < l.min) {
       min = r.min;
