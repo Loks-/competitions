@@ -21,24 +21,27 @@ class IntervalsBasedSet {
    public:
     TValue b, e;
 
-    Interval() : b(0), e(0) {}
-    explicit Interval(TValue v) : b(v), e(v + 1) {}
-    Interval(TValue b_, TValue e_) : b(b_), e(e_) {}
-
-    bool Empty() const { return e <= b; }
-    TValue Size() const { return e - b; }
+   public:
+    constexpr Interval() : b(0), e(0) {}
+    constexpr explicit Interval(TValue v) : b(v), e(v + 1) {}
+    constexpr Interval(TValue b_, TValue e_) : b(b_), e(e_) {}
+    constexpr bool Empty() const { return e <= b; }
+    constexpr TValue Size() const { return e - b; }
   };
 
   class Info : public bst::info::Size {
    public:
     using TBase = bst::info::Size;
     using TSelf = Info;
-    static const bool use_data = true;
 
+    static constexpr bool use_data = true;
+
+   public:
     TTValue set_size = 0;
 
+   public:
     template <class TNode>
-    void Update(TNode* node) {
+    constexpr void Update(TNode* node) {
       TBase::Update(node);
       set_size = node->data.Size() + (node->l ? node->l->info.set_size : 0) +
                  (node->r ? node->r->info.set_size : 0);
@@ -55,20 +58,23 @@ class IntervalsBasedSet {
   TNode* root;
 
  public:
-  IntervalsBasedSet() : my_tree(0), tree(my_tree), root(nullptr) {}
-  explicit IntervalsBasedSet(TTree& tree_to_use)
+  constexpr IntervalsBasedSet() : my_tree(0), tree(my_tree), root(nullptr) {}
+
+  constexpr explicit IntervalsBasedSet(TTree& tree_to_use)
       : my_tree(0), tree(tree_to_use), root(nullptr) {}
 
-  bool Empty() const { return root == nullptr; }
-  TValue Size() const { return Empty() ? 0 : root->info.set_size; }
-  size_t TreeSize() const { return Empty() ? 0 : root->info.size; }
+  constexpr bool Empty() const { return root == nullptr; }
+
+  constexpr TValue Size() const { return Empty() ? 0 : root->info.set_size; }
+
+  constexpr size_t TreeSize() const { return Empty() ? 0 : root->info.size; }
 
   std::vector<Interval> ToVector() const {
     return bst::base::Traverse<TNode, Interval>(
         root, bst::base::ETraversalOrder::Inorder);
   }
 
-  bool HasKey(TValue key) const {
+  constexpr bool HasKey(TValue key) const {
     for (TNode* node = root; node;) {
       if (key < node->data.b)
         node = node->l;
@@ -115,7 +121,7 @@ class IntervalsBasedSet {
   void Insert(const TSelf& ibs) { InsertIBSI(ibs.root); }
 
  protected:
-  void ShiftValuesI(TNode* node, TValue shift) {
+  constexpr void ShiftValuesI(TNode* node, TValue shift) {
     if (!node) return;
     node->data.b += shift;
     node->data.e += shift;
@@ -125,7 +131,7 @@ class IntervalsBasedSet {
   }
 
  public:
-  void ShiftValues(TValue shift) { ShiftValuesI(root, shift); }
+  constexpr void ShiftValues(TValue shift) { ShiftValuesI(root, shift); }
 
   void Intersect(const Interval& i) {
     if (i.Empty()) {
@@ -138,11 +144,11 @@ class IntervalsBasedSet {
     tree.SplitByKey(t, i.e + 1, m, r);
     tree.ReleaseTree(l);
     if (m) {
-      auto mf = bst::base::Left(m);
+      const auto mf = bst::base::Left(m);
       mf->data.b = std::max(mf->data.b, i.b);
     }
     if (r) {
-      auto rf = bst::base::Left(r);
+      const auto rf = bst::base::Left(r);
       if (rf->data.b < i.e) {
         t = tree.New(Interval(rf->data.b, i.e), i.e);
         m = tree.Join(m, t);

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "common/base.h"
+
 #include <algorithm>
 #include <vector>
 
@@ -17,33 +18,36 @@ class CompactIntervalsBasedSet {
    public:
     TValue b, e;
 
-    Interval() : b(0), e(0) {}
-    explicit Interval(TValue v) : b(v), e(v + 1) {}
-    Interval(TValue b_, TValue e_) : b(b_), e(e_) {}
-
-    bool Empty() const { return e <= b; }
-    TValue Size() const { return e - b; }
+   public:
+    constexpr Interval() : b(0), e(0) {}
+    constexpr explicit Interval(TValue v) : b(v), e(v + 1) {}
+    constexpr Interval(TValue b_, TValue e_) : b(b_), e(e_) {}
+    constexpr bool Empty() const { return e <= b; }
+    constexpr TValue Size() const { return e - b; }
   };
 
  protected:
   std::vector<Interval> data;
 
  public:
-  bool Empty() const { return data.empty(); }
-  size_t VectorSize() const { return data.size(); }
-  void Swap(TSelf& r) { data.swap(r.data); }
+  constexpr bool Empty() const { return data.empty(); }
 
-  bool HasKey(TValue key) const {
-    auto it = std::lower_bound(
+  constexpr size_t VectorSize() const { return data.size(); }
+
+  constexpr void Swap(TSelf& r) { data.swap(r.data); }
+
+  constexpr bool HasKey(TValue key) const {
+    const auto it = std::lower_bound(
         data.begin(), data.end(), key,
         [](const Interval& i, TValue key) { return i.e <= key; });
     return (it != data.end()) && (it->b <= key);
   }
 
-  void InsertBack(TValue key) { InsertBack(Interval(key)); }
-  // void Insert(TValue key) { Insert(Interval(key)); }
+  constexpr void InsertBack(TValue key) { InsertBack(Interval(key)); }
 
-  void InsertBack(const Interval& i) {
+  // constexpr void Insert(TValue key) { Insert(Interval(key)); }
+
+  constexpr void InsertBack(const Interval& i) {
     if (data.empty() || (data.back().e < i.b)) {
       data.push_back(i);
     } else {
@@ -52,9 +56,9 @@ class CompactIntervalsBasedSet {
     }
   }
 
-  // void Insert(const Interval& i) {}
+  // constexpr void Insert(const Interval& i) {}
 
-  static TSelf Merge(const TSelf& l, const TSelf& r) {
+  static constexpr TSelf Merge(const TSelf& l, const TSelf& r) {
     size_t i = 0, j = 0;
     TSelf o;
     while ((i < l.VectorSize()) && (j < r.VectorSize())) {
@@ -68,14 +72,14 @@ class CompactIntervalsBasedSet {
     return o;
   }
 
-  TSelf Merge(const TSelf& r) const { return Merge(*this, r); }
+  constexpr TSelf Merge(const TSelf& r) const { return Merge(*this, r); }
 
-  void Insert(const TSelf& cibs) {
+  constexpr void Insert(const TSelf& cibs) {
     auto m = Merge(cibs);
     Swap(m);
   }
 
-  void ShiftValues(TValue shift) {
+  constexpr void ShiftValues(TValue shift) {
     for (auto& i : data) {
       i.b += shift;
       i.e += shift;

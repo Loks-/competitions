@@ -11,10 +11,13 @@ class StringBase {
   std::vector<std::vector<unsigned>> vd;
 
  public:
-  StringBase() {}
-  StringBase(const std::string& s1, const std::string& s2) { Distance(s1, s2); }
+  constexpr StringBase() {}
 
-  unsigned Distance(const std::string& s1, const std::string& s2) {
+  constexpr StringBase(const std::string& s1, const std::string& s2) {
+    Distance(s1, s2);
+  }
+
+  constexpr unsigned Distance(const std::string& s1, const std::string& s2) {
     vd.clear();
     vd.resize(s1.size() + 1, std::vector<unsigned>(s2.size() + 1, 0));
     for (unsigned i = 1; i <= s1.size(); ++i) vd[i][0] = i;
@@ -30,8 +33,8 @@ class StringBase {
     return vd[s1.size()][s2.size()];
   }
 
-  std::vector<std::string> Sequence(const std::string& s1,
-                                    const std::string& s2) {
+  constexpr std::vector<std::string> Sequence(const std::string& s1,
+                                              const std::string& s2) {
     unsigned l = Distance(s1, s2);
     std::string s = s2;
     std::vector<std::string> vs(1, s);

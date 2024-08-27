@@ -11,25 +11,29 @@ class UnsignedMultiSet {
   std::vector<unsigned> vlist;
 
  public:
-  explicit UnsignedMultiSet(unsigned total_size) : vcount(total_size, 0) {
+  constexpr explicit UnsignedMultiSet(unsigned total_size)
+      : vcount(total_size, 0) {
     vlist.reserve(total_size);
   };
 
-  bool Empty() const { return vlist.empty(); }
-  unsigned Size() const { return unsigned(vlist.size()); }
-  unsigned Count(unsigned key) const { return vcount[key]; }
+  constexpr bool Empty() const { return vlist.empty(); }
 
-  void Increase(unsigned key, unsigned count = 1) {
+  constexpr unsigned Size() const { return unsigned(vlist.size()); }
+
+  constexpr unsigned Count(unsigned key) const { return vcount[key]; }
+
+  constexpr void Increase(unsigned key, unsigned count = 1) {
     if (!vcount[key]) {
       vlist.push_back(key);
     }
     vcount[key] += count;
   }
 
-  std::vector<unsigned>& List() { return vlist; }
-  const std::vector<unsigned>& List() const { return vlist; }
+  // constexpr std::vector<unsigned>& List() { return vlist; }
 
-  void Clear() {
+  constexpr const std::vector<unsigned>& List() const { return vlist; }
+
+  constexpr void Clear() {
     for (unsigned u : vlist) vcount[u] = 0;
     vlist.clear();
   }

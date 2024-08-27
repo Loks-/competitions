@@ -5,8 +5,8 @@
 
 namespace ds {
 template <class TValue>
-inline MDVector<TValue> Min(const MDVector<TValue>& v1,
-                            const MDVector<TValue>& v2) {
+constexpr MDVector<TValue> Min(const MDVector<TValue>& v1,
+                               const MDVector<TValue>& v2) {
   assert(v1.GetShape() == v2.GetShape());
   auto r = v1;
   for (size_t i = 0; i < r.Size(); ++i) {

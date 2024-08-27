@@ -12,7 +12,7 @@ class BITSparse {
   std::unordered_map<uint64_t, TValue> values;
 
  public:
-  explicit BITSparse(uint64_t _size) : size(_size) {}
+  constexpr explicit BITSparse(uint64_t _size) : size(_size) {}
 
   void Reset(uint64_t new_size) {
     size = new_size;
@@ -28,7 +28,7 @@ class BITSparse {
     TValue sum = TValue();
     for (uint64_t index, index1 = end; index1; index1 &= index) {
       index = index1 - 1;
-      auto it = values.find(index);
+      const auto it = values.find(index);
       if (it != values.end()) sum += it->second;
     }
     return sum;

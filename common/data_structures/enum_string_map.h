@@ -24,16 +24,16 @@ class IntStringMap {
     ms2i.clear();
   }
 
-  size_t Size() const { return mi2s.size(); }
+  constexpr size_t Size() const { return mi2s.size(); }
 
   const std::string& operator()(int64_t i) const {
-    auto it = mi2s.find(i);
+    const auto it = mi2s.find(i);
     assert(it != mi2s.end());
     return it->second;
   }
 
   int64_t operator()(const std::string& s) const {
-    auto it = ms2i.find(s);
+    const auto it = ms2i.find(s);
     assert(it != ms2i.end());
     return it->second;
   }

@@ -12,28 +12,33 @@ class UnsignedSet {
   std::vector<unsigned> vlist;
 
  public:
-  UnsignedSet() {}
+  constexpr UnsignedSet() {}
 
-  explicit UnsignedSet(unsigned total_size) : vset(total_size, 0) {
+  constexpr explicit UnsignedSet(unsigned total_size) : vset(total_size, 0) {
     vlist.reserve(total_size);
   };
 
-  bool Empty() const { return vlist.empty(); }
-  unsigned Size() const { return unsigned(vlist.size()); }
-  unsigned SetSize() const { return unsigned(vset.size()); }
-  unsigned HasKey(unsigned key) const { return vset[key]; }
-  unsigned Last() const { return vlist.back(); }
-  const std::vector<unsigned>& List() const { return vlist; }
+  constexpr bool Empty() const { return vlist.empty(); }
 
-  void Insert(unsigned key) {
+  constexpr unsigned Size() const { return unsigned(vlist.size()); }
+
+  constexpr unsigned SetSize() const { return unsigned(vset.size()); }
+
+  constexpr unsigned HasKey(unsigned key) const { return vset[key]; }
+
+  constexpr unsigned Last() const { return vlist.back(); }
+
+  constexpr const std::vector<unsigned>& List() const { return vlist; }
+
+  constexpr void Insert(unsigned key) {
     if (!vset[key]) {
       vlist.push_back(key);
       vset[key] = vlist.size();
     }
   }
 
-  void InsertAll() {
-    unsigned size = SetSize();
+  constexpr void InsertAll() {
+    const unsigned size = SetSize();
     vlist.resize(size);
     for (unsigned i = 0; i < size; ++i) {
       vset[i] = i + 1;
@@ -41,8 +46,8 @@ class UnsignedSet {
     }
   }
 
-  void Remove(unsigned key) {
-    unsigned p = vset[key];
+  constexpr void Remove(unsigned key) {
+    const unsigned p = vset[key];
     if (p) {
       vset[key] = 0;
       if (p != vlist.size()) {
@@ -54,24 +59,24 @@ class UnsignedSet {
     }
   }
 
-  void RemoveLast() {
-    unsigned u = Last();
+  constexpr void RemoveLast() {
+    const unsigned u = Last();
     vlist.pop_back();
     vset[u] = 0;
   }
 
-  void Clear() {
+  constexpr void Clear() {
     for (unsigned u : vlist) vset[u] = 0;
     vlist.clear();
   }
 
-  void Resize(unsigned new_size) {
+  constexpr void Resize(unsigned new_size) {
     Clear();
     vset.resize(new_size);
     vlist.reserve(new_size);
   }
 
-  void Swap(UnsignedSet& s) {
+  constexpr void Swap(UnsignedSet& s) {
     vset.swap(s.vset);
     vlist.swap(s.vlist);
   }

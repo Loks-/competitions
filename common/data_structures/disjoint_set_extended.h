@@ -32,15 +32,18 @@ class DisjointSetExtended {
     unions = 0;
   }
 
-  unsigned Size() const { return unsigned(p.size()); }
-  unsigned GetUnions() const { return unions; }
+  constexpr unsigned Size() const { return unsigned(p.size()); }
+
+  constexpr unsigned GetUnions() const { return unions; }
+
   unsigned GetSize(const TData& v) { return vsize[Find(v)]; }
+
   void Union(const TData& v1, const TData& v2) { UnionI(Find(v1), Find(v2)); }
 
   unsigned GetIndex(const TData& v) {
-    auto it = m.find(v);
+    const auto it = m.find(v);
     if (it != m.end()) return it->second;
-    unsigned index = unsigned(Size());
+    const unsigned index = unsigned(Size());
     m[v] = index;
     p.push_back(index);
     rank.push_back(0);

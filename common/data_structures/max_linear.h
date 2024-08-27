@@ -20,9 +20,9 @@ class MaxLinear {
     TValue a, b;
     TData data;
 
-    TValue operator()(const TValue& x) const { return a * x + b; }
-
-    const TData& Data() const { return data; }
+   public:
+    constexpr TValue operator()(const TValue& x) const { return a * x + b; }
+    constexpr const TData& Data() const { return data; }
   };
 
   class LinearExt {
@@ -35,12 +35,13 @@ class MaxLinear {
                                bst::action::None, TValue, memory::NodesManager>;
   using TNode = typename TTree::TNode;
 
+ public:
   TValue xl, xr;
   TTree tree;
   TNode* root = nullptr;
 
  public:
-  MaxLinear(TValue _xl, TValue _xr) : xl(_xl), xr(_xr) {}
+  constexpr MaxLinear(TValue _xl, TValue _xr) : xl(_xl), xr(_xr) {}
 
   void Add(const Linear& l) {
     if (!root) {
@@ -105,7 +106,7 @@ class MaxLinear {
     Add({a, b, data});
   }
 
-  bool Empty() const { return root == nullptr; }
+  constexpr bool Empty() const { return root == nullptr; }
 
   const Linear& Get(const TValue& x) const {
     assert(!Empty());

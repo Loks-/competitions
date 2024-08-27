@@ -13,14 +13,19 @@ class DisjointSet {
   unsigned unions;
 
  public:
-  explicit DisjointSet(unsigned n = 0) { Init(n); }
-  unsigned Size() const { return n; }
-  unsigned GetUnions() const { return unions; }
-  unsigned GetSetsCount() const { return n - unions; }
-  void Union(unsigned i1, unsigned i2) { UnionI(Find(i1), Find(i2)); }
-  unsigned GetSize(unsigned x) { return vsize[Find(x)]; }
+  constexpr explicit DisjointSet(unsigned n = 0) { Init(n); }
 
-  void Init(unsigned n_) {
+  constexpr unsigned Size() const { return n; }
+
+  constexpr unsigned GetUnions() const { return unions; }
+
+  constexpr unsigned GetSetsCount() const { return n - unions; }
+
+  constexpr void Union(unsigned i1, unsigned i2) { UnionI(Find(i1), Find(i2)); }
+
+  constexpr unsigned GetSize(unsigned x) { return vsize[Find(x)]; }
+
+  constexpr void Init(unsigned n_) {
     n = n_;
     p.resize(n);
     for (unsigned i = 0; i < n; ++i) p[i] = i;
@@ -31,7 +36,7 @@ class DisjointSet {
     unions = 0;
   }
 
-  unsigned Find(unsigned x) {
+  constexpr unsigned Find(unsigned x) {
     unsigned px = p[x], ppx = p[px];
     for (; px != ppx;) {
       p[x] = ppx;
@@ -42,7 +47,7 @@ class DisjointSet {
     return px;
   }
 
-  std::vector<unsigned> GetRepresentatives() const {
+  constexpr std::vector<unsigned> GetRepresentatives() const {
     std::vector<unsigned> output;
     for (unsigned i = 0; i < n; ++i) {
       if (p[i] == i) output.push_back(i);
@@ -51,7 +56,7 @@ class DisjointSet {
   }
 
  protected:
-  void UnionI(unsigned i1, unsigned i2) {
+  constexpr void UnionI(unsigned i1, unsigned i2) {
     if (i1 == i2) return;
     ++unions;
     if (rank[i1] > rank[i2]) {

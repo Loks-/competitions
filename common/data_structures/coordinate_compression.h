@@ -45,9 +45,11 @@ class CoordinateCompression {
     InitUnsorted(v);
   }
 
-  size_t Size() const { return new_to_old.size(); }
+  constexpr size_t Size() const { return new_to_old.size(); }
 
-  const TValue& GetOld(size_t new_value) const { return new_to_old[new_value]; }
+  constexpr const TValue& GetOld(size_t new_value) const {
+    return new_to_old[new_value];
+  }
 
   size_t GetNew(const TValue& old_value) const {
     auto it = old_to_new.find(old_value);
@@ -55,12 +57,12 @@ class CoordinateCompression {
     return it->second;
   }
 
-  size_t LowerBound(const TValue& old_value) const {
+  constexpr size_t LowerBound(const TValue& old_value) const {
     auto it = std::lower_bound(new_to_old.begin(), new_to_old.end(), old_value);
     return it - new_to_old.begin();
   }
 
-  size_t UpperBound(const TValue& old_value) const {
+  constexpr size_t UpperBound(const TValue& old_value) const {
     auto it = std::upper_bound(new_to_old.begin(), new_to_old.end(), old_value);
     return it - new_to_old.begin();
   }
