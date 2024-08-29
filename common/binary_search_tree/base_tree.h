@@ -29,7 +29,7 @@ class BaseTree
   constexpr explicit BaseTree(size_t max_nodes) : TBTree(max_nodes) {}
 
  protected:
-  constexpr static TNode* FixBalance(TNode* node) { return node; }
+  static TNode* FixBalance(TNode* node) { return node; }
 
  public:
   static TNode* Join3(TNode* l, TNode* m1, TNode* r) {

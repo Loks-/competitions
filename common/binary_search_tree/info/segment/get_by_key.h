@@ -4,8 +4,8 @@ namespace bst {
 namespace info {
 namespace segment {
 template <class TNode>
-constexpr typename TNode::TInfo GetByKey(const TNode* root,
-                                         const typename TNode::TKey& end) {
+inline typename TNode::TInfo GetByKey(const TNode* root,
+                                      const typename TNode::TKey& end) {
   typename TNode::TInfo output;
   for (; root;) {
     if (root->key < end) {
@@ -20,9 +20,9 @@ constexpr typename TNode::TInfo GetByKey(const TNode* root,
 }
 
 template <class TNode>
-constexpr typename TNode::TInfo GetByKey(const TNode* root,
-                                         const typename TNode::TKey& begin,
-                                         const typename TNode::TKey& end) {
+inline typename TNode::TInfo GetByKey(const TNode* root,
+                                      const typename TNode::TKey& begin,
+                                      const typename TNode::TKey& end) {
   for (; root;) {
     if (root->key < begin)
       root = root->r;
