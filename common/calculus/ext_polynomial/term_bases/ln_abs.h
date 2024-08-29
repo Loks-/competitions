@@ -37,7 +37,8 @@ class LnAbs : public TermBase<TValue> {
     return (x != TValue(0)) || (power > 0);
   }
 
-  std::string ToString(const std::string& variable_name) const override {
+  constexpr std::string ToString(
+      const std::string& variable_name) const override {
     return "ln(abs(" + variable_name + "))";
   }
 };

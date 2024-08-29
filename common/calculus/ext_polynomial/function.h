@@ -102,6 +102,7 @@ class Function {
   }
 
   constexpr bool operator==(const TSelf& r) const { return terms == r.terms; }
+
   constexpr bool operator!=(const TSelf& r) const {
     return !(terms == r.terms);
   }

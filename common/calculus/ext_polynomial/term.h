@@ -35,7 +35,7 @@ class Term {
     return (a == r.a) && (tp == r.tp);
   }
 
-  std::string ToString(const std::string& variable_name) const {
+  constexpr std::string ToString(const std::string& variable_name) const {
     if (a == TValueF(0)) return "";
     std::string stp = tp.ToString(variable_name);
     if (stp.empty()) {

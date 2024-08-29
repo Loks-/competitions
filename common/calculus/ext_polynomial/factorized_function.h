@@ -19,10 +19,14 @@ class FactorizedFunction {
   TFactorized f1;
   TFunction f2;
 
+ public:
   FactorizedFunction() {}
+
   explicit FactorizedFunction(const TFactorized& _f1)
       : f1(_f1), f2(TValue(1)) {}
+
   explicit FactorizedFunction(const TFunction& _f2) : f2(_f2) {}
+
   FactorizedFunction(const TFactorized& _f1, const TFunction& _f2)
       : f1(_f1), f2(_f2) {}
 

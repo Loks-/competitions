@@ -25,7 +25,8 @@ class SquareLnAbs : public LnAbs<TValue> {
     return t * t;
   }
 
-  std::string ToString(const std::string& variable_name) const override {
+  constexpr std::string ToString(
+      const std::string& variable_name) const override {
     return "ln^2(abs(" + variable_name + "))";
   }
 };

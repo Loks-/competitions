@@ -81,7 +81,7 @@ class TermPower {
     return t;
   }
 
-  std::string ToString(const std::string& variable_name) const {
+  constexpr std::string ToString(const std::string& variable_name) const {
     std::string xpk;
     if (power != 0) {
       xpk = variable_name;

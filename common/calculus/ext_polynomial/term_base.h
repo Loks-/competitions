@@ -31,6 +31,7 @@ class TermBase {
   virtual constexpr ~TermBase() {}
 
   virtual constexpr term_bases::Type GetType() const = 0;
+
   virtual constexpr bool IsOne() const {
     return GetType() == term_bases::Type::ONE;
   }
@@ -94,7 +95,8 @@ class TermBase {
     return nullptr;
   }
 
-  virtual std::string ToString(const std::string& variable_name) const = 0;
+  virtual constexpr std::string ToString(
+      const std::string& variable_name) const = 0;
 };
 }  // namespace ext_polynomial
 }  // namespace calculus

@@ -7,7 +7,7 @@ namespace multivariable {
 template <class TValue, unsigned dim>
 class Point {
  public:
-  static constexpr unsigned Dim() { return dim; }
+  static consteval unsigned Dim() { return dim; }
 
  public:
   std::array<TValue, dim> x;

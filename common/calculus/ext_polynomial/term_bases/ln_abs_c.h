@@ -44,7 +44,8 @@ class LnAbsC : public TermBase<TValue> {
     return c == p->c;
   }
 
-  std::string ToString(const std::string& variable_name) const override {
+  constexpr std::string ToString(
+      const std::string& variable_name) const override {
     return "ln(abs(" + variable_name + "-" + std::to_string(c) + "))";
   }
 };

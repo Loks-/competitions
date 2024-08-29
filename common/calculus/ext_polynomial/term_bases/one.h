@@ -21,7 +21,9 @@ class One : public TermBase<TValue> {
 
   constexpr TValue BaseGet(const TValue&) const override { return TValue(1); }
 
-  std::string ToString(const std::string&) const override { return ""; }
+  constexpr std::string ToString(const std::string&) const override {
+    return "";
+  }
 };
 
 template <class TValue>
