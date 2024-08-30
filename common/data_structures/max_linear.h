@@ -106,7 +106,7 @@ class MaxLinear {
     Add({a, b, data});
   }
 
-  constexpr bool Empty() const { return root == nullptr; }
+  bool Empty() const { return root == nullptr; }
 
   const Linear& Get(const TValue& x) const {
     assert(!Empty());

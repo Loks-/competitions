@@ -32,9 +32,9 @@ class DisjointSetExtended {
     unions = 0;
   }
 
-  constexpr unsigned Size() const { return unsigned(p.size()); }
+  unsigned Size() const { return unsigned(p.size()); }
 
-  constexpr unsigned GetUnions() const { return unions; }
+  unsigned GetUnions() const { return unions; }
 
   unsigned GetSize(const TData& v) { return vsize[Find(v)]; }
 

@@ -63,18 +63,18 @@ class IntervalsBasedSet {
   constexpr explicit IntervalsBasedSet(TTree& tree_to_use)
       : my_tree(0), tree(tree_to_use), root(nullptr) {}
 
-  constexpr bool Empty() const { return root == nullptr; }
+  bool Empty() const { return root == nullptr; }
 
-  constexpr TValue Size() const { return Empty() ? 0 : root->info.set_size; }
+  TValue Size() const { return Empty() ? 0 : root->info.set_size; }
 
-  constexpr size_t TreeSize() const { return Empty() ? 0 : root->info.size; }
+  size_t TreeSize() const { return Empty() ? 0 : root->info.size; }
 
   std::vector<Interval> ToVector() const {
     return bst::base::Traverse<TNode, Interval>(
         root, bst::base::ETraversalOrder::Inorder);
   }
 
-  constexpr bool HasKey(TValue key) const {
+  bool HasKey(TValue key) const {
     for (TNode* node = root; node;) {
       if (key < node->data.b)
         node = node->l;
@@ -121,7 +121,7 @@ class IntervalsBasedSet {
   void Insert(const TSelf& ibs) { InsertIBSI(ibs.root); }
 
  protected:
-  constexpr void ShiftValuesI(TNode* node, TValue shift) {
+  void ShiftValuesI(TNode* node, TValue shift) {
     if (!node) return;
     node->data.b += shift;
     node->data.e += shift;
@@ -131,7 +131,7 @@ class IntervalsBasedSet {
   }
 
  public:
-  constexpr void ShiftValues(TValue shift) { ShiftValuesI(root, shift); }
+  void ShiftValues(TValue shift) { ShiftValuesI(root, shift); }
 
   void Intersect(const Interval& i) {
     if (i.Empty()) {

@@ -24,7 +24,7 @@ class IntStringMap {
     ms2i.clear();
   }
 
-  constexpr size_t Size() const { return mi2s.size(); }
+  size_t Size() const { return mi2s.size(); }
 
   const std::string& operator()(int64_t i) const {
     const auto it = mi2s.find(i);
