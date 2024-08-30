@@ -17,20 +17,20 @@ class Tree : public bst::base::Tree<TTNodesManager, TTMe> {
   static constexpr bool is_persistent = true;
 
  public:
-  constexpr Tree() : TBase() {}
-  constexpr explicit Tree(size_t expected_nodes) : TBase(expected_nodes) {}
+  Tree() : TBase() {}
+  explicit Tree(size_t expected_nodes) : TBase(expected_nodes) {}
 
   TNode* InsertNewNode(TNode* root, const TData& data, const TKey& key) {
     return TBase::Me()->InsertByKey(root, TBase::New(data, key));
   }
 
-  constexpr TNode* PClone(TNode* node) {
+  TNode* PClone(TNode* node) {
     TNode* new_node = TBase::New();
     *new_node = *node;
     return new_node;
   }
 
-  static constexpr void UpdatePForChildren(TNode* node) {
+  static void UpdatePForChildren(TNode* node) {
     if (node) {
       if (node->l) node->l->SetP(node);
       if (node->r) node->r->SetP(node);

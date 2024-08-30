@@ -41,7 +41,7 @@ class MaxLinear {
   TNode* root = nullptr;
 
  public:
-  constexpr MaxLinear(TValue _xl, TValue _xr) : xl(_xl), xr(_xr) {}
+  MaxLinear(TValue _xl, TValue _xr) : xl(_xl), xr(_xr) {}
 
   void Add(const Linear& l) {
     if (!root) {

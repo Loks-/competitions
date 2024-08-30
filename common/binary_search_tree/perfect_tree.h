@@ -31,6 +31,6 @@ class PerfectTree
   friend TTree;
 
  public:
-  constexpr explicit PerfectTree(size_t max_nodes) : TTree(max_nodes) {}
+  explicit PerfectTree(size_t max_nodes) : TTree(max_nodes) {}
 };
 }  // namespace bst

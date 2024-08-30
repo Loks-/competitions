@@ -31,7 +31,7 @@ class WAVLTree
   static constexpr bool support_join3 = true;
 
  public:
-  constexpr explicit WAVLTree(size_t max_nodes) : TBTree(max_nodes) {}
+  explicit WAVLTree(size_t max_nodes) : TBTree(max_nodes) {}
 
  protected:
   static constexpr int Rank(TNode* node) {

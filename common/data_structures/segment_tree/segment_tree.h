@@ -32,7 +32,7 @@ class SegmentTree {
   unsigned used_data, used_nodes;
 
  public:
-  constexpr void ResetNodes(unsigned data_size, unsigned max_nodes) {
+  void ResetNodes(unsigned data_size, unsigned max_nodes) {
     data.resize(0);
     data.resize(data_size);
     nodes.resize(0);
@@ -40,31 +40,29 @@ class SegmentTree {
     used_data = used_nodes = 0;
   }
 
-  constexpr void ResetNodes(unsigned data_size) {
-    ResetNodes(data_size, 2 * data_size);
-  }
+  void ResetNodes(unsigned data_size) { ResetNodes(data_size, 2 * data_size); }
 
-  constexpr void ResetNodes() {
+  void ResetNodes() {
     ResetNodes(unsigned(data.size()), unsigned(nodes.size()));
   }
 
-  constexpr explicit SegmentTree(unsigned data_size) { ResetNodes(data_size); }
+  explicit SegmentTree(unsigned data_size) { ResetNodes(data_size); }
 
-  constexpr SegmentTree() : SegmentTree(0) {}
+  SegmentTree() : SegmentTree(0) {}
 
-  constexpr SegmentTree(unsigned data_size, unsigned max_nodes) {
+  SegmentTree(unsigned data_size, unsigned max_nodes) {
     ResetNodes(data_size, max_nodes);
   }
 
-  constexpr unsigned DataUsed() const { return used_data; }
+  unsigned DataUsed() const { return used_data; }
 
-  constexpr unsigned UsedNodes() const { return used_nodes; }
+  unsigned UsedNodes() const { return used_nodes; }
 
-  constexpr unsigned AvailableNodes() const {
+  unsigned AvailableNodes() const {
     return unsigned(nodes.size()) - used_nodes;
   }
 
-  constexpr TNode* NewNode() {
+  TNode* NewNode() {
     assert(used_nodes < nodes.size());
     return &(nodes[used_nodes++]);
   }

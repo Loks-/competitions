@@ -58,9 +58,9 @@ class IntervalsBasedSet {
   TNode* root;
 
  public:
-  constexpr IntervalsBasedSet() : my_tree(0), tree(my_tree), root(nullptr) {}
+  IntervalsBasedSet() : my_tree(0), tree(my_tree), root(nullptr) {}
 
-  constexpr explicit IntervalsBasedSet(TTree& tree_to_use)
+  explicit IntervalsBasedSet(TTree& tree_to_use)
       : my_tree(0), tree(tree_to_use), root(nullptr) {}
 
   bool Empty() const { return root == nullptr; }

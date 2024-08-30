@@ -16,7 +16,7 @@ class BalancedTree : public Tree<TTNodesManager, TTMe> {
   static constexpr bool support_join = TMe::support_join3;
 
  public:
-  constexpr explicit BalancedTree(size_t max_nodes) : TTree(max_nodes) {}
+  explicit BalancedTree(size_t max_nodes) : TTree(max_nodes) {}
 
  protected:
   static TNode* FixBalance(TNode* node);

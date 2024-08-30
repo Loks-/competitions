@@ -43,7 +43,7 @@ class Treap
   }
 
  public:
-  explicit constexpr Treap(size_t max_nodes) : TTree(max_nodes) {}
+  explicit Treap(size_t max_nodes) : TTree(max_nodes) {}
 
  public:
   static TNode* BuildTree(const std::vector<TNode*>& nodes) {

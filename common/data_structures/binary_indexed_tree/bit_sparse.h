@@ -12,7 +12,7 @@ class BITSparse {
   std::unordered_map<uint64_t, TValue> values;
 
  public:
-  constexpr explicit BITSparse(uint64_t _size) : size(_size) {}
+  explicit BITSparse(uint64_t _size) : size(_size) {}
 
   void Reset(uint64_t new_size) {
     size = new_size;

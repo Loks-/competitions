@@ -40,15 +40,15 @@ class Tree : public TTNodesManager {
   static constexpr bool is_persistent = false;
 
  public:
-  constexpr explicit Tree(size_t max_nodes) : TNodesManager(max_nodes) {}
+  explicit Tree(size_t max_nodes) : TNodesManager(max_nodes) {}
 
-  constexpr Tree() : Tree(0) {}
+  Tree() : Tree(0) {}
 
-  constexpr TMe* Me() { return static_cast<TMe*>(this); }
+  TMe* Me() { return static_cast<TMe*>(this); }
 
-  constexpr const TMe* Me() const { return static_cast<const TMe*>(this); }
+  const TMe* Me() const { return static_cast<const TMe*>(this); }
 
-  constexpr TNode* New() { return TNodesManager::New(); }
+  TNode* New() { return TNodesManager::New(); }
 
   TNode* New(const TData& data) {
     auto p = New();
@@ -188,7 +188,7 @@ class Tree : public TTNodesManager {
   static void SplitBySize(TNode* root, size_t lsize, TNode*& output_l,
                           TNode*& output_r);
 
-  constexpr void ReleaseTree(TNode* root) {
+  void ReleaseTree(TNode* root) {
     if (root) {
       ReleaseTree(root->l);
       ReleaseTree(root->r);

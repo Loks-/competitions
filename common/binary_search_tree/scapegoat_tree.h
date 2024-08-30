@@ -32,7 +32,7 @@ class ScapegoatTree
   static constexpr bool support_join3 = true;
 
  public:
-  constexpr explicit ScapegoatTree(size_t max_nodes) : TBTree(max_nodes) {}
+  explicit ScapegoatTree(size_t max_nodes) : TBTree(max_nodes) {}
 
   static size_t Size(const TNode* root) { return root ? root->info.size : 0; }
 

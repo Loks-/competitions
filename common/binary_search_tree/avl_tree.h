@@ -30,7 +30,7 @@ class AVLTree
   static constexpr bool support_join3 = true;
 
  public:
-  constexpr explicit AVLTree(size_t max_nodes) : TBTree(max_nodes) {}
+  explicit AVLTree(size_t max_nodes) : TBTree(max_nodes) {}
 
  protected:
   static constexpr int Height(TNode* node) {

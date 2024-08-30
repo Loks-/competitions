@@ -27,7 +27,7 @@ class LSum0 : public None {
   TSumValue lsum0;
 
  public:
-  constexpr LSum0() { subtree_value = 0; }
+  LSum0() { subtree_value = 0; }
 
   template <class TNode>
   void UpdateLSum0(const TNode* node) {

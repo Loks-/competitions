@@ -43,8 +43,8 @@ class Treap
   }
 
  public:
-  constexpr Treap() : TBase(0) {}
-  constexpr explicit Treap(size_t expected_nodes) : TBase(expected_nodes) {}
+  Treap() : TBase(0) {}
+  explicit Treap(size_t expected_nodes) : TBase(expected_nodes) {}
 
  public:
   // Same code as for bst::Treap::BuildTree
