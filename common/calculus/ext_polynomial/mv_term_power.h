@@ -105,7 +105,7 @@ class MVTermPower {
     return t;
   }
 
-  std::string ToString(const std::string& variable_name) const {
+  constexpr std::string ToString(const std::string& variable_name) const {
     std::string s;
     bool first = true;
     for (unsigned i = 0; i < dim; ++i) {
