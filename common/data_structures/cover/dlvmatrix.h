@@ -88,11 +88,11 @@ class DLVMatrix {
     Init(rows, columns, headers_value);
   }
 
-  constexpr bool IsHeader(const Node* node) const {
+  bool IsHeader(const Node* node) const {
     return (node->row == nrows) || (node->column == ncolumns);
   }
 
-  constexpr void DisableNode(Node* node) {
+  void DisableNode(Node* node) {
     node->l->r = node->r;
     node->r->l = node->l;
     node->u->d = node->d;
@@ -101,7 +101,7 @@ class DLVMatrix {
     --count_columns[node->column];
   }
 
-  constexpr void EnableNode(Node* node) {
+  void EnableNode(Node* node) {
     node->l->r = node;
     node->r->l = node;
     node->u->d = node;
@@ -110,7 +110,7 @@ class DLVMatrix {
     ++count_columns[node->column];
   }
 
-  static constexpr bool IsNodeEnabled(const Node* node) {
+  static bool IsNodeEnabled(const Node* node) {
     return (node->r->l == node) && (node->u->d == node);
   }
 
@@ -126,7 +126,7 @@ class DLVMatrix {
     return node;
   }
 
-  constexpr Node* Find(size_t row, size_t column) const {
+  Node* Find(size_t row, size_t column) const {
     if (row > nrows) return nullptr;
     auto h = headers_rows[row];
     if (h->column == column) return h;

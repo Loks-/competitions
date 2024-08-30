@@ -25,15 +25,15 @@ class LatinSquare {
     }
   }
 
-  constexpr size_t DLRow(size_t row, size_t column, size_t value) const {
+  size_t DLRow(size_t row, size_t column, size_t value) const {
     return value + n * (column + n * row);
   }
 
-  constexpr size_t Row(size_t dlrow) const { return dlrow / (n * n); }
+  size_t Row(size_t dlrow) const { return dlrow / (n * n); }
 
-  constexpr size_t Column(size_t dlrow) const { return (dlrow / n) % n; }
+  size_t Column(size_t dlrow) const { return (dlrow / n) % n; }
 
-  constexpr size_t Value(size_t dlrow) const { return dlrow % n; }
+  size_t Value(size_t dlrow) const { return dlrow % n; }
 
   void Set(size_t row, size_t column, size_t value) {
     dlx.SelectRow(DLRow(row, column, value));

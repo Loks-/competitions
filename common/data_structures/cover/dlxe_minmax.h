@@ -82,7 +82,7 @@ class DLXEMinMax : public DLMatrix {
     for (unsigned c : v) uncovered.Insert(c);
   }
 
-  constexpr std::vector<size_t> SelectedRows() const { return selected_rows; }
+  std::vector<size_t> SelectedRows() const { return selected_rows; }
 
  protected:
   void DisableNode(Node* node) {
