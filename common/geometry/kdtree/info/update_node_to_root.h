@@ -1,13 +1,29 @@
 #pragma once
 
-#include "common/binary_search_tree/info/update_node_to_root.h"
+#include "common/template.h"
 
 namespace geometry {
 namespace kdtree {
 namespace info {
+namespace hidden {
+template <class TNode>
+constexpr void UpdateNodeToRootI(TNode*, TFakeFalse) {}
+
+template <class TNode>
+constexpr void UpdateNodeToRootI(TNode* node, TFakeTrue) {
+  static_assert(TNode::use_parent, "use_parent should be true");
+  for (; node; node = node->p) node->UpdateInfo();
+}
+}  // namespace hidden
+
 template <class TNode>
 constexpr void UpdateNodeToRoot(TNode* node) {
-  bst::info::UpdateNodeToRoot(node);
+  hidden::UpdateNodeToRootI(node, TFakeBool<!TNode::TInfo::is_none>{});
+}
+
+template <class TNode>
+constexpr void UpdateNodeToRoot_DataUpdated(TNode* node) {
+  hidden::UpdateNodeToRootI(node, TFakeBool<TNode::TInfo::use_data>{});
 }
 }  // namespace info
 }  // namespace kdtree
