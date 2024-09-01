@@ -7,7 +7,8 @@ constexpr TFactorization Factorize(const PrimesTable& pt, uint64_t n) {
   assert(n <= table.size());
   TFactorization output;
   for (; n > 1;) {
-    unsigned p = table[n], cnt = 1;
+    const unsigned p = table[n];
+    unsigned cnt = 1;
     for (n /= p; table[n] == p; ++cnt) n /= p;
     output.push_back({uint64_t(p), cnt});
   }

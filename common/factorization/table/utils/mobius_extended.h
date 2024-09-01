@@ -12,7 +12,7 @@ constexpr int MobiusExtended(const PrimesTable& pt, uint64_t n) {
       if ((n % p) == 0) return 0;
     }
   }
-  assert(pt.GetSquaredTableSize() > n);
+  assert(n < pt.GetSquaredTableSize());
   if (n != 1) ++primes_count;
   return (primes_count & 1) ? -1 : 1;
 }

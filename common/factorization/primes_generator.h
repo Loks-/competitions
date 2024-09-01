@@ -10,7 +10,9 @@ namespace factorization {
 // https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes
 class PrimesGenerator {
  protected:
-  const uint64_t default_block_size = 262144;
+  static constexpr uint64_t default_block_size = 262144;
+
+ protected:
   uint64_t block_size, half_block_size, current_block;
   std::vector<bool> vmask;
   std::vector<uint64_t> first_block_primes, current_block_primes;
@@ -34,7 +36,7 @@ class PrimesGenerator {
     vmask.resize(half_block_size, false);
     for (uint64_t hi = 1; hi < half_block_size; ++hi) {
       if (!vmask[hi]) {
-        uint64_t i = 2 * hi + 1;
+        const uint64_t i = 2 * hi + 1;
         first_block_primes.push_back(i);
         for (uint64_t hj = 2 * hi * (hi + 1); hj < half_block_size; hj += i)
           vmask[hj] = true;
@@ -64,6 +66,7 @@ class PrimesGenerator {
 
  public:
   constexpr PrimesGenerator() { SetBlockSize(default_block_size); }
+
   constexpr explicit PrimesGenerator(uint64_t _block_size) {
     SetBlockSize(_block_size);
   }

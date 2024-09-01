@@ -6,7 +6,7 @@ constexpr uint64_t EulersTotient(const PrimesTable& pt, uint64_t n) {
   assert(n <= table.size());
   uint64_t output = n;
   for (; n > 1;) {
-    unsigned p = table[n];
+    const unsigned p = table[n];
     output -= output / p;
     for (n /= p; table[n] == p;) n /= p;
   }

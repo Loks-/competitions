@@ -6,7 +6,7 @@ constexpr int Mobius(const PrimesTable& pt, uint64_t n) {
   assert(n <= table.size());
   unsigned primes_count = 0;
   for (; n > 1;) {
-    unsigned p = table[n];
+    const unsigned p = table[n];
     n /= p;
     if (table[n] == p) return 0;
     ++primes_count;

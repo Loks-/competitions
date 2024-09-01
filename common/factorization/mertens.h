@@ -14,10 +14,11 @@ class Mertens {
   uint64_t u;
   table::Mertens mertens;
 
+ protected:
   // y <= U^2
   // Time: O(sqrt(y))
-  int64_t S(uint64_t y) const {
-    uint64_t v = USqrt(y), k = y / (v + 1);
+  constexpr int64_t S(uint64_t y) const {
+    const uint64_t v = USqrt(y), k = y / (v + 1);
     int64_t r = 1 + int64_t(k) * mertens(v);
     for (uint64_t n = y / u + 1; n <= k; ++n) r -= mertens(y / n);
     for (uint64_t n = 1; n <= v; ++n)
@@ -26,22 +27,22 @@ class Mertens {
   }
 
  public:
-  explicit Mertens(uint64_t _u) : u(_u), mertens(u) {}
+  constexpr explicit Mertens(uint64_t _u) : u(_u), mertens(u) {}
 
   // x <= U
-  int GetMobius(uint64_t x) const { return mertens.GetMobius(x); }
+  constexpr int GetMobius(uint64_t x) const { return mertens.GetMobius(x); }
 
   // x <= U^2
-  int64_t GetMertens(uint64_t x) const {
+  constexpr int64_t GetMertens(uint64_t x) const {
     if (x <= u) return mertens(x);
     int64_t r = 0;
     for (uint64_t n = 1; n <= x / u; ++n) {
-      int m = GetMobius(n);
+      const int m = GetMobius(n);
       if (m) r += m * S(x / n);
     }
     return r;
   }
 
-  int64_t operator()(uint64_t x) const { return GetMertens(x); }
+  constexpr int64_t operator()(uint64_t x) const { return GetMertens(x); }
 };
 }  // namespace factorization

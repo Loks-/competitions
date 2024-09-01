@@ -17,7 +17,7 @@ class EulersTotient : public Primes {
     eulers_totient[0] = 0;
     eulers_totient[1] = 1;
     for (uint64_t i = 2; i <= Primes::table_size; ++i) {
-      unsigned p = Primes::table[i];
+      const unsigned p = Primes::table[i];
       eulers_totient[i] =
           eulers_totient[i / p] * (Primes::table[i / p] == p ? p : (p - 1));
     }

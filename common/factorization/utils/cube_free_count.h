@@ -9,8 +9,8 @@ constexpr uint64_t CubeFreeCount(uint64_t n,
                                  size_t first_prime_to_check = 0) {
   uint64_t s = n;
   for (size_t i = first_prime_to_check; i < vprimes.size(); ++i) {
-    uint64_t p = vprimes[i];
-    uint64_t np = n / (p * p * p);
+    const uint64_t p = vprimes[i];
+    const uint64_t np = n / (p * p * p);
     if (np == 0) break;
     s -= CubeFreeCount(np, vprimes, i + 1);
   }

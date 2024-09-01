@@ -17,7 +17,7 @@ class Mobius : public Primes {
     mobius[0] = 0;
     mobius[1] = 1;
     for (uint64_t i = 2; i <= Primes::table_size; ++i) {
-      unsigned p = Primes::table[i];
+      const unsigned p = Primes::table[i];
       mobius[i] = (Primes::table[i / p] == p ? 0 : -1 * mobius[i / p]);
     }
   }

@@ -11,6 +11,7 @@ class PrimesCountQuotients {
   uint64_t n, nsqrt, nsqrt2;
   std::vector<uint64_t> vcr, vcq;
 
+ public:
   constexpr explicit PrimesCountQuotients(uint64_t _n) { Init(_n); }
 
   constexpr void Init(uint64_t _n) {
@@ -23,10 +24,10 @@ class PrimesCountQuotients {
     for (uint64_t j = 0; j < nsqrt2; ++j) vcq[j] = n / (j + 1) - 1;
     for (uint64_t p = 2; p <= nsqrt; ++p) {
       if (vcr[p] != vcr[p - 1]) {
-        uint64_t vp = vcr[p - 1], p2 = p * p;
+        const uint64_t vp = vcr[p - 1], p2 = p * p;
         for (uint64_t j = 0; j < nsqrt2; ++j) {
           if (n < (j + 1) * p2) break;
-          uint64_t l = (j + 1) * p;
+          const uint64_t l = (j + 1) * p;
           vcq[j] -= ((l <= nsqrt2) ? vcq[l - 1] : vcr[n / l]) - vp;
         }
         for (uint64_t i = nsqrt; i >= p2; --i) {
@@ -43,7 +44,7 @@ class PrimesCountQuotients {
 
   constexpr uint64_t GetR(uint64_t r) const {
     if (r <= nsqrt) return vcr[r];
-    uint64_t q = n / r;
+    const uint64_t q = n / r;
     assert((n / q) == r);
     return vcq[q - 1];
   }

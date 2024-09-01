@@ -19,7 +19,7 @@ inline std::vector<unsigned> PrimesPowers(const PrimesTable& pt, uint64_t n) {
   if (n <= pt.GetSquaredTableSize()) return output;
   if (primality_test.IsPrime(n)) return output;
   assert(pt.GetTableSize() / n / n / n == 0);
-  uint64_t nsqrt = USqrt(n);
+  const uint64_t nsqrt = USqrt(n);
   if (nsqrt * nsqrt == n)
     output.back() = 2;
   else

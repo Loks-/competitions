@@ -18,12 +18,14 @@ class PrimalityTest {
   };
 
   // n - 1 == d * 2^s
-  struct P2Factorization {
+  class P2Factorization {
+   public:
     uint64_t n;
     uint64_t s;
     uint64_t d;
   };
 
+ protected:
   static P2Factorization Factor(uint64_t n) {
     P2Factorization f;
     f.n = n;
@@ -47,18 +49,19 @@ class PrimalityTest {
     static const std::vector<uint64_t> wmax = {2,  3,  5,  7,  11, 13,
                                                17, 19, 23, 29, 31, 37};
 
-    if (n < 2047ull)
+    if (n < 2047ull) {
       return w2k;
-    else if (n < 25326001ull)
+    } else if (n < 25326001ull) {
       return w25M;
-    else if (n < 3474749660383ull)
+    } else if (n < 3474749660383ull) {
       return w3T;
-    else if (n < 341550071728321ull)
+    } else if (n < 341550071728321ull) {
       return w341T;
-    else if (n < 3825123056546413051ull)
+    } else if (n < 3825123056546413051ull) {
       return w3_1016;
-    else
+    } else {
       return wmax;
+    }
   }
 
   static Primality CheckMillerRabinWitness(const P2Factorization& f,
@@ -77,8 +80,7 @@ class PrimalityTest {
     if ((~n) & 1) return COMPOSITE;
     P2Factorization f = Factor(n);
     const std::vector<uint64_t>& witnesses = SelectWitnesses(n);
-    for (size_t i = 0; i < witnesses.size(); ++i) {
-      uint64_t witness = witnesses[i];
+    for (auto witness : witnesses) {
       if (CheckMillerRabinWitness(f, witness) == COMPOSITE) return COMPOSITE;
     }
     return PROBABLY_PRIME;

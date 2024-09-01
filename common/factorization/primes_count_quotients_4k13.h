@@ -13,6 +13,7 @@ class PrimesCountQuotients4k13 {
   uint64_t n, nsqrt, nsqrt2;
   std::vector<uint64_t> vcr1, vcr3, vcq1, vcq3;
 
+ public:
   constexpr explicit PrimesCountQuotients4k13(uint64_t _n) { Init(_n); }
 
   constexpr void Init(uint64_t _n) {
@@ -28,16 +29,16 @@ class PrimesCountQuotients4k13 {
       vcr3[i] = (i + 1) / 4;
     }
     for (uint64_t j = 0; j < nsqrt2; ++j) {
-      uint64_t i = n / (j + 1);
+      const uint64_t i = n / (j + 1);
       vcq1[j] = (i - 1) / 4;
       vcq3[j] = (i + 1) / 4;
     }
     for (uint64_t p = 3; p <= nsqrt; p += 2) {
       if (vcr1[p] != vcr1[p - 1]) {
-        uint64_t vp1 = vcr1[p - 1], vp3 = vcr3[p - 1], p2 = p * p;
+        const uint64_t vp1 = vcr1[p - 1], vp3 = vcr3[p - 1], p2 = p * p;
         for (uint64_t j = 0; j < nsqrt2; ++j) {
           if (n < (j + 1) * p2) break;
-          uint64_t l = (j + 1) * p;
+          const uint64_t l = (j + 1) * p;
           vcq1[j] -= ((l <= nsqrt2) ? vcq1[l - 1] : vcr1[n / l]) - vp1;
           vcq3[j] -= ((l <= nsqrt2) ? vcq3[l - 1] : vcr3[n / l]) - vp3;
         }
@@ -46,10 +47,10 @@ class PrimesCountQuotients4k13 {
           vcr3[i] -= vcr3[i / p] - vp3;
         }
       } else if (vcr3[p] != vcr3[p - 1]) {
-        uint64_t vp1 = vcr1[p - 1], vp3 = vcr3[p - 1], p2 = p * p;
+        const uint64_t vp1 = vcr1[p - 1], vp3 = vcr3[p - 1], p2 = p * p;
         for (uint64_t j = 0; j < nsqrt2; ++j) {
           if (n < (j + 1) * p2) break;
-          uint64_t l = (j + 1) * p;
+          const uint64_t l = (j + 1) * p;
           vcq3[j] -= ((l <= nsqrt2) ? vcq1[l - 1] : vcr1[n / l]) - vp1;
           vcq1[j] -= ((l <= nsqrt2) ? vcq3[l - 1] : vcr3[n / l]) - vp3;
         }
@@ -73,14 +74,14 @@ class PrimesCountQuotients4k13 {
 
   constexpr uint64_t GetR1(uint64_t r) const {
     if (r <= nsqrt) return vcr1[r];
-    uint64_t q = n / r;
+    const uint64_t q = n / r;
     assert((n / q) == r);
     return vcq1[q - 1];
   }
 
   constexpr uint64_t GetR3(uint64_t r) const {
     if (r <= nsqrt) return vcr3[r];
-    uint64_t q = n / r;
+    const uint64_t q = n / r;
     assert((n / q) == r);
     return vcq3[q - 1];
   }

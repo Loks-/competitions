@@ -4,6 +4,7 @@
 #include "common/factorization/primality_test.h"
 #include "common/modular/proxy/proxy.h"
 #include "common/numeric/utils/gcd.h"
+
 #include <algorithm>
 #include <vector>
 
@@ -12,9 +13,12 @@ namespace factorization {
 // https://en.wikipedia.org/wiki/Pollard%27s_rho_algorithm ).
 class Factorization {
  protected:
-  const uint64_t u32threshold = (1u << 31);
+  static constexpr uint64_t u32threshold = (1u << 31);
+
+ protected:
   PrimalityTest primality_test;
 
+ protected:
   uint64_t FindFactor32(uint64_t n, uint64_t start) {
     modular::proxy::Proxy<false, true> proxy(n);
     auto next = [&](uint64_t k) { return proxy.Add(proxy.Mult(k, k), 1); };
@@ -50,7 +54,7 @@ class Factorization {
     if (n == 1) return {};
     std::vector<uint64_t> v;
     for (; !primality_test.IsPrime(n);) {
-      uint64_t d = FindFactor(n);
+      const uint64_t d = FindFactor(n);
       n /= d;
       if (primality_test.IsPrime(d)) {
         v.push_back(d);
@@ -68,7 +72,7 @@ class Factorization {
     for (uint64_t p : {2, 3, 5}) {
       for (; (n % p) == 0; n /= p) v.push_back(p);
     }
-    auto vv = FactorizeI(n);
+    const auto vv = FactorizeI(n);
     v.insert(v.end(), vv.begin(), vv.end());
     return v;
   }

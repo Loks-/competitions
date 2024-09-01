@@ -17,7 +17,7 @@ constexpr TFactorization FactorizeExtended(const PrimesTable& pt, uint64_t n,
       output.push_back({p, cnt});
     }
   }
-  if (!skip_assert) assert(pt.GetSquaredTableSize() > n);
+  if (!skip_assert) assert(n < pt.GetSquaredTableSize());
   if (n != 1) output.push_back({n, 1});
   return output;
 }
