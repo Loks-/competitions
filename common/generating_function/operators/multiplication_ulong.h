@@ -25,7 +25,7 @@ class Multiplication<LongUnsigned> : public GeneratingFunction<LongUnsigned> {
       : f1(_f1), f2(_f2) {}
 
   void Adjust(uint64_t n) override {
-    uint64_t n0 = va.size();
+    const uint64_t n0 = va.size();
     if (n < n0) return;
     f1->Adjust(n);
     f2->Adjust(n);
@@ -42,7 +42,7 @@ class Multiplication<LongUnsigned> : public GeneratingFunction<LongUnsigned> {
         v1[k] = f1->Get(k);
         v2[k] = f2->Get(k);
       }
-      auto vt = numeric::nlong::Convolution(v1, v2);
+      const auto vt = numeric::nlong::Convolution(v1, v2);
       va.resize(n + 1);
       for (unsigned k = n0; k <= n; ++k) va[k] = vt[k];
     }

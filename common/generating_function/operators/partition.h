@@ -25,7 +25,7 @@ class Partition : public GeneratingFunction<TValue> {
   void Adjust(uint64_t n) override {
     f->Adjust(n);
     while (vcache.size() <= n) {
-      uint64_t m = vcache.size();
+      const uint64_t m = vcache.size();
       std::vector<TValue> vm(m + 1, TValue(0));
       for (uint64_t k = 1; k <= m; ++k) {
         TValue s = vm[k - 1], fk = f->Get(k), b = TValue(1);
