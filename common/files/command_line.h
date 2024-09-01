@@ -44,13 +44,13 @@ class CommandLine {
   }
 
   int GetInt(const std::string& key) const {
-    auto it = args_int.find(key);
+    const auto it = args_int.find(key);
     assert(it != args_int.end());
     return it->second;
   }
 
   std::string GetString(const std::string& key) const {
-    auto it = args_string.find(key);
+    const auto it = args_string.find(key);
     assert(it != args_string.end());
     return it->second;
   }
