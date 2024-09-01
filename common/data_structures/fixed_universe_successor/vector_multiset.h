@@ -23,51 +23,52 @@ class VectorMultiset {
   size_t size;
 
  public:
-  void Clear() {
+  constexpr void Clear() {
     std::fill(vs.begin(), vs.end(), 0);
     size = 0;
   }
 
-  void Init(size_t u) {
+  constexpr void Init(size_t u) {
     vs.clear();
     vs.resize(u);
     size = 0;
   }
 
-  void Insert(size_t x) {
+  constexpr void Insert(size_t x) {
     ++vs[x];
     ++size;
   }
 
-  bool HasKey(size_t x) const { return vs[x]; }
+  constexpr bool HasKey(size_t x) const { return vs[x]; }
 
-  void Delete(size_t x) {
+  constexpr void Delete(size_t x) {
     if (vs[x]) {
       --vs[x];
       --size;
     }
   }
 
-  size_t Size() const { return size; }
-  size_t USize() const { return vs.size(); }
+  constexpr size_t Size() const { return size; }
 
-  size_t Min() const {
+  constexpr size_t USize() const { return vs.size(); }
+
+  constexpr size_t Min() const {
     for (size_t x = 0; x < vs.size(); ++x) {
       if (vs[x]) return x;
     }
     return Empty;
   }
 
-  size_t Max() const { return Predecessor(vs.size()); }
+  constexpr size_t Max() const { return Predecessor(vs.size()); }
 
-  size_t Successor(size_t x) const {
+  constexpr size_t Successor(size_t x) const {
     for (++x; x < vs.size(); ++x) {
       if (vs[x]) return x;
     }
     return Empty;
   }
 
-  size_t Predecessor(size_t x) const {
+  constexpr size_t Predecessor(size_t x) const {
     for (--x; x < vs.size(); --x) {
       if (vs[x]) return x;
     }

@@ -24,13 +24,13 @@ class VectorPrecomputed {
   size_t size;
 
  public:
-  void Clear() {
+  constexpr void Clear() {
     std::fill(vnext.begin(), vnext.end(), Empty);
     std::fill(vprev.begin(), vprev.end(), Empty);
     size = 0;
   }
 
-  void Init(size_t u) {
+  constexpr void Init(size_t u) {
     assert(u > 1);
     vnext.clear();
     vnext.resize(u, Empty);
@@ -39,9 +39,9 @@ class VectorPrecomputed {
     size = 0;
   }
 
-  void Insert(size_t x) {
+  constexpr void Insert(size_t x) {
     if (!HasKey(x)) {
-      auto xp = Predecessor(x), xn = Successor(x);
+      const auto xp = Predecessor(x), xn = Successor(x);
       for (auto y = ((xp == Empty) ? 0 : xp); y < x; ++y) vnext[y] = x;
       for (auto y = x + 1, z = ((xn == Empty) ? vprev.size() : xn + 1); y < z;
            ++y)
@@ -50,13 +50,13 @@ class VectorPrecomputed {
     }
   }
 
-  bool HasKey(size_t x) const {
+  constexpr bool HasKey(size_t x) const {
     return (x ? (vnext[x - 1] == x) : (vprev[1] == 0));
   }
 
-  void Delete(size_t x) {
+  constexpr void Delete(size_t x) {
     if (HasKey(x)) {
-      auto xp = Predecessor(x), xn = Successor(x);
+      const auto xp = Predecessor(x), xn = Successor(x);
       for (auto y = ((xp == Empty) ? 0 : xp); y < x; ++y) vnext[y] = xn;
       for (auto y = x + 1, z = ((xn == Empty) ? vprev.size() : xn + 1); y < z;
            ++y)
@@ -65,17 +65,19 @@ class VectorPrecomputed {
     }
   }
 
-  size_t Size() const { return size; }
-  size_t USize() const { return vnext.size(); }
+  constexpr size_t Size() const { return size; }
 
-  size_t Min() const { return (vprev[1] == 0) ? 0 : vnext[0]; }
+  constexpr size_t USize() const { return vnext.size(); }
 
-  size_t Max() const {
+  constexpr size_t Min() const { return (vprev[1] == 0) ? 0 : vnext[0]; }
+
+  constexpr size_t Max() const {
     return (vnext[vnext.size() - 2] != Empty) ? vnext.size() - 1 : vprev.back();
   }
 
-  size_t Successor(size_t x) const { return vnext[x]; }
-  size_t Predecessor(size_t x) const { return vprev[x]; }
+  constexpr size_t Successor(size_t x) const { return vnext[x]; }
+
+  constexpr size_t Predecessor(size_t x) const { return vprev[x]; }
 };
 }  // namespace fus
 }  // namespace ds

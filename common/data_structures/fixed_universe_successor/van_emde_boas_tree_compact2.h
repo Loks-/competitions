@@ -25,7 +25,7 @@ namespace fus {
 template <class TFLS>
 class VanEmdeBoasTreeCompact2 {
  protected:
-  static const unsigned bits_per_level = TFLS::nbits;
+  static constexpr unsigned bits_per_level = TFLS::nbits;
 
   class Node;
 
@@ -34,7 +34,8 @@ class VanEmdeBoasTreeCompact2 {
     size_t min_value, max_value;
     Node* aux_tree;
 
-    void Clear() {
+   public:
+    constexpr void Clear() {
       min_value = max_value = Empty;
       aux_tree = nullptr;
     }
@@ -48,28 +49,28 @@ class VanEmdeBoasTreeCompact2 {
     };
 
    public:
-    Node() {}
+    constexpr Node() {}
 
-    void Clear(unsigned h) {
+    constexpr void Clear(unsigned h) {
       if (h == 1)
         leaf.Clear();
       else
         node.Clear();
     }
 
-    bool IsEmpty(unsigned h) const {
+    constexpr bool IsEmpty(unsigned h) const {
       return (h == 1) ? leaf.IsEmpty() : (node.min_value == Empty);
     }
 
-    size_t Min(unsigned h) const {
+    constexpr size_t Min(unsigned h) const {
       return (h == 1) ? leaf.Min() : node.min_value;
     }
 
-    size_t Max(unsigned h) const {
+    constexpr size_t Max(unsigned h) const {
       return (h == 1) ? leaf.Max() : node.max_value;
     }
 
-    void Set1(size_t x, unsigned h) {
+    constexpr void Set1(size_t x, unsigned h) {
       if (h == 1) {
         leaf.Set1(x);
       } else {
@@ -152,11 +153,13 @@ class VanEmdeBoasTreeCompact2 {
   }
 
   bool IsEmpty() const { return root.IsEmpty(maxh); }
+
   size_t Min() const { return root.Min(maxh); }
+
   size_t Max() const { return root.Max(maxh); }
 
   bool HasKey(size_t x) const {
-    size_t x0 = x;
+    const size_t x0 = x;
     unsigned h = maxh;
     for (const Node* node = &root; node; node = FindNode(x0, 0, h)) {
       if (h == 1) return node->leaf.HasKey(x);
@@ -180,9 +183,9 @@ class VanEmdeBoasTreeCompact2 {
       } else {
         node->node.max_value = std::max(node->node.max_value, x);
       }
-      auto hl = h / 2;
-      auto child_hkey = HKey(x0, h0, hl);
-      auto child = FindNode(child_hkey);
+      const auto hl = h / 2;
+      const auto child_hkey = HKey(x0, h0, hl);
+      const auto child = FindNode(child_hkey);
       if (!child) {
         Make1(child_hkey, x & ((1ull << (bits_per_level * hl)) - 1), hl);
         if (!node->node.aux_tree) {
@@ -204,7 +207,7 @@ class VanEmdeBoasTreeCompact2 {
  protected:
   void DeleteI(Node* node, size_t x0, size_t x, unsigned h0, unsigned h) {
     if (h == 1) return node->leaf.Delete(x);
-    auto hl = h / 2;
+    const auto hl = h / 2;
     if (x == node->node.min_value) {
       if (node->node.min_value == node->node.max_value) {
         node->node.min_value = node->node.max_value = Empty;
@@ -212,15 +215,15 @@ class VanEmdeBoasTreeCompact2 {
       }
       assert(node->node.aux_tree);
       x0 = Replace(x0, node->node.aux_tree->Min(h - hl), h0 + hl, h - hl);
-      auto child = FindNode(x0, h0, hl);
+      const auto child = FindNode(x0, h0, hl);
       assert(child);
       x0 += (child->Min(hl) << (bits_per_level * h0));
       x = (node->node.aux_tree->Min(h - hl) << ((bits_per_level * hl))) +
           child->Min(hl);
       node->node.min_value = x;
     }
-    auto child_key = HKey(x0, h0, hl);
-    auto child = FindNode(child_key);
+    const auto child_key = HKey(x0, h0, hl);
+    const auto child = FindNode(child_key);
     if (!child) return;  // No element to remove
     DeleteI(child, x0, x & ((1ull << (bits_per_level * hl)) - 1), h0, hl);
     if (child->IsEmpty(hl)) {
@@ -250,7 +253,7 @@ class VanEmdeBoasTreeCompact2 {
     if (h == 1) return node->leaf.Successor(x);
     if (x < node->node.min_value) return node->node.min_value;
     if (x >= node->node.max_value) return Empty;
-    unsigned hl = h / 2;
+    const unsigned hl = h / 2;
     size_t x1 = (x >> (bits_per_level * hl)),
            x2 = x & ((1ull << (bits_per_level * hl)) - 1);
     auto child = FindNode(x0, h0, hl);
@@ -268,7 +271,7 @@ class VanEmdeBoasTreeCompact2 {
     if (h == 1) return node->leaf.Predecessor(x);
     if (x > node->node.max_value) return node->node.max_value;
     if (x <= node->node.min_value) return Empty;
-    unsigned hl = h / 2;
+    const unsigned hl = h / 2;
     size_t x1 = (x >> (bits_per_level * hl)),
            x2 = x & ((1ull << (bits_per_level * hl)) - 1);
     auto child = FindNode(x0, h0, hl);

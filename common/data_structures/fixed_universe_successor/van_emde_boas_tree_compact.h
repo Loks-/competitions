@@ -45,6 +45,7 @@ class VanEmdeBoasTreeCompact {
 
  public:
   VanEmdeBoasTreeCompact() {}
+
   VanEmdeBoasTreeCompact(unsigned _m, size_t x) { InitL(_m, x); }
 
  protected:
@@ -70,13 +71,14 @@ class VanEmdeBoasTreeCompact {
   }
 
   size_t Min() const { return Flat() ? leaf.Min() : min_value; }
+
   size_t Max() const { return Flat() ? leaf.Max() : max_value; }
 
   bool HasKey(size_t x) const {
     if (Flat()) return leaf.HasKey(x);
     if (x < min_value) return false;
     if (x == min_value) return true;
-    auto it = children.find(x >> mh);
+    const auto it = children.find(x >> mh);
     return (it == children.end()) ? false : it->second->HasKey(x & mask_low);
   }
 
@@ -89,8 +91,8 @@ class VanEmdeBoasTreeCompact {
         std::swap(min_value, x);
       else
         max_value = std::max(max_value, x);
-      size_t x1 = (x >> mh), x2 = (x & mask_low);
-      auto it = children.find(x1);
+      const size_t x1 = (x >> mh), x2 = (x & mask_low);
+      const auto it = children.find(x1);
       if (it == children.end()) {
         if (aux_tree)
           aux_tree->Insert(x1);
@@ -111,11 +113,11 @@ class VanEmdeBoasTreeCompact {
         return;
       }
       assert(aux_tree);
-      auto x1 = aux_tree->Min();
+      const auto x1 = aux_tree->Min();
       x = (x1 << mh) + children[x1]->Min();
       min_value = x;
     }
-    auto x1 = (x >> mh), x2 = (x & mask_low);
+    const auto x1 = (x >> mh), x2 = (x & mask_low);
     auto it1 = children.find(x1);
     if (it1 == children.end()) return;  // No element to remove
     it1->second->Delete(x2);
@@ -131,7 +133,7 @@ class VanEmdeBoasTreeCompact {
       if (!aux_tree || aux_tree->IsEmpty()) {
         max_value = min_value;
       } else {
-        auto y1 = aux_tree->Max();
+        const auto y1 = aux_tree->Max();
         max_value = (y1 << mh) + children[y1]->Max();
       }
     }

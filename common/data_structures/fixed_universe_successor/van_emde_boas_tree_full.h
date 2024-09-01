@@ -43,6 +43,7 @@ class VanEmdeBoasTreeFull {
 
  public:
   VanEmdeBoasTreeFull() {}
+
   VanEmdeBoasTreeFull(unsigned _m) { InitL(_m); }
 
  protected:
@@ -66,6 +67,7 @@ class VanEmdeBoasTreeFull {
   }
 
   size_t Min() const { return Flat() ? leaf.Min() : min_value; }
+
   size_t Max() const { return Flat() ? leaf.Max() : max_value; }
 
   bool HasKey(size_t x) const {
@@ -84,7 +86,7 @@ class VanEmdeBoasTreeFull {
         std::swap(min_value, x);
       else
         max_value = std::max(max_value, x);
-      size_t x1 = (x >> mh), x2 = (x & mask_low);
+      const size_t x1 = (x >> mh), x2 = (x & mask_low);
       if (children[x1].IsEmpty()) {
         aux_tree->Insert(x1);
       }
@@ -99,18 +101,18 @@ class VanEmdeBoasTreeFull {
         min_value = max_value = Empty;
         return;
       }
-      auto x1 = aux_tree->Min();
+      const auto x1 = aux_tree->Min();
       x = (x1 << mh) + children[x1].Min();
       min_value = x;
     }
-    auto x1 = (x >> mh), x2 = (x & mask_low);
+    const auto x1 = (x >> mh), x2 = (x & mask_low);
     children[x1].Delete(x2);
     if (children[x1].IsEmpty()) aux_tree->Delete(x1);
     if (x == max_value) {
       if (aux_tree->IsEmpty()) {
         max_value = min_value;
       } else {
-        auto y1 = aux_tree->Max();
+        const auto y1 = aux_tree->Max();
         max_value = (y1 << mh) + children[y1].Max();
       }
     }

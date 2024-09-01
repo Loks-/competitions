@@ -22,19 +22,22 @@ namespace fus {
 template <class TFLS>
 class MultiSearchTree {
  protected:
-  static const unsigned bits_per_level = TFLS::nbits;
-  static const size_t level_mask = (size_t(1) << bits_per_level) - 1;
+  static constexpr unsigned bits_per_level = TFLS::nbits;
+  static constexpr size_t level_mask = (size_t(1) << bits_per_level) - 1;
 
-  struct Node {
+  class Node {
+   public:
     size_t key = 0;
     size_t min_value = Empty;
     size_t max_value = Empty;
     TFLS mask;
 
-    bool IsEmpty() const { return min_value == Empty; }
-    bool IsSplit() const { return min_value != max_value; }
+   public:
+    constexpr bool IsEmpty() const { return min_value == Empty; }
 
-    void Clear() {
+    constexpr bool IsSplit() const { return min_value != max_value; }
+
+    constexpr void Clear() {
       min_value = max_value = Empty;
       mask.Clear();
     }
@@ -51,24 +54,26 @@ class MultiSearchTree {
   std::vector<Node *> path;
 
  protected:
-  size_t HBits(size_t x, size_t h) const {
+  constexpr size_t HBits(size_t x, size_t h) const {
     if (h >= maxh) return 0;
-    size_t mask_low_bits = (1ull << ((h + 1) * bits_per_level)) - 1;
+    const size_t mask_low_bits = (1ull << ((h + 1) * bits_per_level)) - 1;
     return (x & ~mask_low_bits);
   }
 
-  size_t HKey(size_t x, size_t h) const { return HBits(x, h) + h + 1; }
+  constexpr size_t HKey(size_t x, size_t h) const {
+    return HBits(x, h) + h + 1;
+  }
 
-  size_t GetHash(size_t x) const {
-    const size_t m = 0x4906ba494954cb65ull;
+  constexpr size_t GetHash(size_t x) const {
+    constexpr size_t m = 0x4906ba494954cb65ull;
     return (x * m) >> hash_shift;
   }
 
-  size_t Index(size_t x, size_t h) const {
+  constexpr size_t Index(size_t x, size_t h) const {
     return (x >> (h * bits_per_level)) & level_mask;
   }
 
-  void ResizeHash(size_t new_size) {
+  constexpr void ResizeHash(size_t new_size) {
     size_t ln_size = 2;
     for (; (1ull << ln_size) < new_size * 2;) ++ln_size;
     hash_shift = 64 - ln_size;
@@ -91,28 +96,28 @@ class MultiSearchTree {
     nodes.swap(new_nodes);
   }
 
-  size_t FindNodeIndex(size_t key) const {
+  constexpr size_t FindNodeIndex(size_t key) const {
     for (size_t idx = GetHash(key);; ++idx) {
-      size_t ptr = idx & node_ptr_mask;
+      const size_t ptr = idx & node_ptr_mask;
       if (nodes[ptr].key == key) {
         return ptr;
       }
     }
   }
 
-  Node *FindNode(size_t x, size_t h) {
+  constexpr Node *FindNode(size_t x, size_t h) {
     return &nodes[FindNodeIndex(HKey(x, h))];
   }
 
-  const Node *FindNode(size_t x, size_t h) const {
+  constexpr const Node *FindNode(size_t x, size_t h) const {
     return &nodes[FindNodeIndex(HKey(x, h))];
   }
 
-  Node *AddNode(size_t x, size_t h) {
+  constexpr Node *AddNode(size_t x, size_t h) {
     ++nodes_used;
-    size_t key = HKey(x, h);
+    const size_t key = HKey(x, h);
     for (size_t idx = GetHash(key);; ++idx) {
-      size_t ptr = idx & node_ptr_mask;
+      const size_t ptr = idx & node_ptr_mask;
       if (nodes[ptr].IsEmpty()) {
         nodes[ptr].key = key;
         return &nodes[ptr];
@@ -121,15 +126,15 @@ class MultiSearchTree {
     }
   }
 
-  void Set1(Node *node, size_t x, size_t h) {
+  constexpr void Set1(Node *node, size_t x, size_t h) {
     node->min_value = node->max_value = x;
     node->mask.Set1I(Index(x, h));
   }
 
  public:
-  MultiSearchTree() { Init(64); }
+  constexpr MultiSearchTree() { Init(64); }
 
-  void Init(size_t u) {
+  constexpr void Init(size_t u) {
     usize = u;
     root.Clear();
     maxh = 0;
@@ -141,9 +146,9 @@ class MultiSearchTree {
     ResizeHash(1000);
   }
 
-  size_t USize() const { return usize; }
+  constexpr size_t USize() const { return usize; }
 
-  bool HasKey(size_t x) const {
+  constexpr bool HasKey(size_t x) const {
     if (root.IsEmpty()) return false;
     const Node *node = &root;
     for (size_t h = maxh;; node = FindNode(x, --h)) {
@@ -153,7 +158,7 @@ class MultiSearchTree {
     }
   }
 
-  void Insert(size_t x) {
+  constexpr void Insert(size_t x) {
     if (nodes_used * 3 > node_ptr_mask) ResizeHash(4 * (node_ptr_mask + 1));
     Node *node = &root;
     for (size_t h = maxh;;) {
@@ -177,7 +182,7 @@ class MultiSearchTree {
     }
   }
 
-  void Delete(size_t x) {
+  constexpr void Delete(size_t x) {
     Node *prev_node = nullptr, *node = &root;
     size_t prev_idx = 0, h = maxh;
     for (;; node = FindNode(x, --h)) {
@@ -210,10 +215,12 @@ class MultiSearchTree {
     for (++h; h <= maxh; ++h) {
       node = path[h];
       if (node->min_value == x) {
-        auto x2 = HBits(x, h) + (node->mask.MinI() << (h * bits_per_level));
+        const auto x2 =
+            HBits(x, h) + (node->mask.MinI() << (h * bits_per_level));
         node->min_value = FindNode(x2, h - 1)->min_value;
       } else if (node->max_value == x) {
-        auto x2 = HBits(x, h) + (node->mask.MaxI() << (h * bits_per_level));
+        const auto x2 =
+            HBits(x, h) + (node->mask.MaxI() << (h * bits_per_level));
         node->max_value = FindNode(x2, h - 1)->max_value;
       } else {
         break;
@@ -228,15 +235,16 @@ class MultiSearchTree {
     }
   }
 
-  size_t Min() const { return root.min_value; }
-  size_t Max() const { return root.max_value; }
+  constexpr size_t Min() const { return root.min_value; }
 
-  size_t Successor(size_t x) const {
+  constexpr size_t Max() const { return root.max_value; }
+
+  constexpr size_t Successor(size_t x) const {
     if (root.IsEmpty() || (x >= root.max_value)) return Empty;
     const Node *node = &root;
     for (size_t h = maxh;; --h) {
       if (!node->IsSplit()) return node->max_value;
-      size_t idx = Index(x, h);
+      const size_t idx = Index(x, h);
       if (h == 0) return x - idx + node->mask.Successor(idx);
       if (node->mask.HasKey(idx)) {
         auto next_node = FindNode(x, h - 1);
@@ -245,19 +253,19 @@ class MultiSearchTree {
           continue;
         }
       }
-      auto idx2 = node->mask.Successor(idx);
+      const auto idx2 = node->mask.Successor(idx);
       return FindNode(x + ((idx2 - idx) << (h * bits_per_level)), h - 1)
           ->min_value;
     }
     return Empty;
   }
 
-  size_t Predecessor(size_t x) const {
+  constexpr size_t Predecessor(size_t x) const {
     if (root.IsEmpty() || (x <= root.min_value)) return Empty;
     const Node *node = &root;
     for (size_t h = maxh;; --h) {
       if (!node->IsSplit()) return node->min_value;
-      size_t idx = Index(x, h);
+      const size_t idx = Index(x, h);
       if (h == 0) return x - idx + node->mask.Predecessor(idx);
       if (node->mask.HasKey(idx)) {
         auto next_node = FindNode(x, h - 1);
@@ -266,7 +274,7 @@ class MultiSearchTree {
           continue;
         }
       }
-      auto idx2 = node->mask.Predecessor(idx);
+      const auto idx2 = node->mask.Predecessor(idx);
       return FindNode(x - ((idx - idx2) << (h * bits_per_level)), h - 1)
           ->max_value;
     }

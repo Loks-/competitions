@@ -44,8 +44,9 @@ class VanEmdeBoasTreeCompactStaticSize<6> : public FLSetB6 {};
 template <unsigned nbits_high, unsigned nbits_low>
 class VanEmdeBoasTreeCompactStaticSizeI {
  protected:
-  static const size_t mask_low = (size_t(1) << nbits_low) - 1;
+  static constexpr size_t mask_low = (size_t(1) << nbits_low) - 1;
 
+ protected:
   std::shared_ptr<VanEmdeBoasTreeCompactStaticSize<nbits_high>> aux_tree;
   std::unordered_map<
       size_t, std::shared_ptr<VanEmdeBoasTreeCompactStaticSize<nbits_low>>>
@@ -77,12 +78,13 @@ class VanEmdeBoasTreeCompactStaticSizeI {
   bool IsEmpty() const { return (min_value == Empty); }
 
   size_t Min() const { return min_value; }
+
   size_t Max() const { return max_value; }
 
   bool HasKey(size_t x) const {
     if (x < min_value) return false;
     if (x == min_value) return true;
-    auto it = children.find(x >> nbits_low);
+    const auto it = children.find(x >> nbits_low);
     return (it == children.end()) ? false : it->second->HasKey(x & mask_low);
   }
 
@@ -94,7 +96,7 @@ class VanEmdeBoasTreeCompactStaticSizeI {
         std::swap(min_value, x);
       else
         max_value = std::max(max_value, x);
-      size_t x1 = (x >> nbits_low), x2 = (x & mask_low);
+      const size_t x1 = (x >> nbits_low), x2 = (x & mask_low);
       auto it = children.find(x1);
       if (it == children.end()) {
         if (aux_tree)
@@ -115,11 +117,11 @@ class VanEmdeBoasTreeCompactStaticSizeI {
         return;
       }
       assert(aux_tree);
-      auto x1 = aux_tree->Min();
+      const auto x1 = aux_tree->Min();
       x = (x1 << nbits_low) + children[x1]->Min();
       min_value = x;
     }
-    auto x1 = (x >> nbits_low), x2 = (x & mask_low);
+    const auto x1 = (x >> nbits_low), x2 = (x & mask_low);
     auto it1 = children.find(x1);
     if (it1 == children.end()) return;  // No element to remove
     it1->second->Delete(x2);
@@ -135,7 +137,7 @@ class VanEmdeBoasTreeCompactStaticSizeI {
       if (!aux_tree || aux_tree->IsEmpty()) {
         max_value = min_value;
       } else {
-        auto y1 = aux_tree->Max();
+        const auto y1 = aux_tree->Max();
         max_value = (y1 << nbits_low) + children[y1]->Max();
       }
     }

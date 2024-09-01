@@ -21,72 +21,78 @@ namespace fus {
 template <class TFLS>
 class TwoLayers {
  protected:
-  static const unsigned low_level_bits = TFLS::nbits;
-  static const size_t mask = (1ull << low_level_bits) - 1;
+  static constexpr unsigned low_level_bits = TFLS::nbits;
+  static constexpr size_t mask = (1ull << low_level_bits) - 1;
 
+ protected:
   size_t usize;
   VectorMultiset vhigh;
   std::vector<TFLS> vlow;
 
  public:
-  void Clear() {
+  constexpr void Clear() {
     vhigh.Clear();
     for (auto& l : vlow) l.Clear();
   }
 
-  void Init(size_t u) {
+  constexpr void Init(size_t u) {
     assert(u > 0);
     usize = u;
-    size_t ll = ((usize - 1) >> low_level_bits) + 1;
+    const size_t ll = ((usize - 1) >> low_level_bits) + 1;
     vhigh.Init(ll);
     vlow.resize(ll);
     for (auto& l : vlow) l.Init((1ull << low_level_bits));
   }
 
-  void Insert(size_t x) {
-    auto xh = x >> low_level_bits, xl = x & mask;
+  constexpr void Insert(size_t x) {
+    const auto xh = x >> low_level_bits, xl = x & mask;
     if (!HasKey(xh, xl)) {
       vhigh.Insert(xh);
       vlow[xh].Insert(xl);
     }
   }
 
-  bool HasKey(size_t xh, size_t xl) const { return vlow[xh].HasKey(xl); }
+  constexpr bool HasKey(size_t xh, size_t xl) const {
+    return vlow[xh].HasKey(xl);
+  }
 
-  bool HasKey(size_t x) const { return HasKey(x >> low_level_bits, x & mask); }
+  constexpr bool HasKey(size_t x) const {
+    return HasKey(x >> low_level_bits, x & mask);
+  }
 
-  void Delete(size_t x) {
-    auto xh = x >> low_level_bits, xl = x & mask;
+  constexpr void Delete(size_t x) {
+    const auto xh = x >> low_level_bits, xl = x & mask;
     if (HasKey(xh, xl)) {
       vhigh.Delete(xh);
       vlow[xh].Delete(xl);
     }
   }
 
-  size_t Size() const { return vhigh.Size(); }
-  size_t USize() const { return usize; }
+  constexpr size_t Size() const { return vhigh.Size(); }
 
-  size_t Min() const {
-    auto xh = vhigh.Min();
+  constexpr size_t USize() const { return usize; }
+
+  constexpr size_t Min() const {
+    const auto xh = vhigh.Min();
     return (xh == Empty) ? Empty : (xh << low_level_bits) + vlow[xh].MinI();
   }
 
-  size_t Max() const {
-    auto xh = vhigh.Max();
+  constexpr size_t Max() const {
+    const auto xh = vhigh.Max();
     return (xh == Empty) ? Empty : (xh << low_level_bits) + vlow[xh].MaxI();
   }
 
-  size_t Successor(size_t x) const {
+  constexpr size_t Successor(size_t x) const {
     auto xh = x >> low_level_bits, xl = x & mask;
-    auto rl = vlow[xh].Successor(xl);
+    const auto rl = vlow[xh].Successor(xl);
     if (rl != Empty) return (xh << low_level_bits) + rl;
     xh = vhigh.Successor(xh);
     return (xh == Empty) ? Empty : (xh << low_level_bits) + vlow[xh].MinI();
   }
 
-  size_t Predecessor(size_t x) const {
+  constexpr size_t Predecessor(size_t x) const {
     auto xh = x >> low_level_bits, xl = x & mask;
-    auto rl = vlow[xh].Predecessor(xl);
+    const auto rl = vlow[xh].Predecessor(xl);
     if (rl != Empty) return (xh << low_level_bits) + rl;
     xh = vhigh.Predecessor(xh);
     return (xh == Empty) ? Empty : (xh << low_level_bits) + vlow[xh].MaxI();

@@ -199,7 +199,7 @@ class XFastTrie {
     if (IsEmpty()) return &empty_node;
     unsigned h0 = 0u, h1 = maxh;
     for (; h1 > h0;) {
-      auto h = (h0 + h1 + 1) / 2 - 1;
+      const auto h = (h0 + h1 + 1) / 2 - 1;
       if (vm[h].find(x >> h) == vm[h].end()) {
         h0 = h + 1;
       } else {
@@ -214,7 +214,7 @@ class XFastTrie {
     if (IsEmpty()) return &empty_node;
     unsigned h0 = 0u, h1 = maxh;
     for (; h1 > h0;) {
-      auto h = (h0 + h1 + 1) / 2 - 1;
+      const auto h = (h0 + h1 + 1) / 2 - 1;
       if (vm[h].find(x >> h) == vm[h].end()) {
         h0 = h + 1;
       } else {

@@ -73,7 +73,7 @@ class XFastTree {
     assert(!IsEmpty());
     unsigned h0 = 0u, h1 = maxh;
     for (; h1 > h0;) {
-      auto h = (h0 + h1 - 1) / 2;
+      const auto h = (h0 + h1 - 1) / 2;
       if (vm[h].find(x >> h) == vm[h].end()) {
         h0 = h + 1;
       } else {
@@ -98,7 +98,7 @@ class XFastTree {
     if (++size == 1) return InsertFirstNode(x);
     auto h1 = FindH(x);
     auto snode = vm[h1][x >> h1];
-    auto sx = snode->value;
+    const auto sx = snode->value;
     auto noder = (x < sx) ? snode : snode->r;
     auto nodel = noder->l;
     auto node = node_manager.New();
@@ -182,19 +182,19 @@ class XFastTree {
  protected:
   const Node *SuccessorI(size_t x) const {
     if (IsEmpty()) return &empty_node;
-    auto it = lm.find(x);
+    const auto it = lm.find(x);
     if (it != lm.end()) return it->second->r;
-    auto h = FindH(x);
-    auto node = vm[h].find(x >> h)->second;
+    const auto h = FindH(x);
+    const auto node = vm[h].find(x >> h)->second;
     return (node->value > x) ? node : node->r;
   }
 
   const Node *PredecessorI(size_t x) const {
     if (IsEmpty()) return &empty_node;
-    auto it = lm.find(x);
+    const auto it = lm.find(x);
     if (it != lm.end()) return it->second->l;
-    auto h = FindH(x);
-    auto node = vm[h].find(x >> h)->second;
+    const auto h = FindH(x);
+    const auto node = vm[h].find(x >> h)->second;
     return (node->value < x) ? node : node->l;
   }
 

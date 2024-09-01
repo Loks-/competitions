@@ -10,49 +10,52 @@ namespace fus {
 // U = 64
 class FLSetB6 {
  public:
-  static const unsigned nbits = 6;
+  static constexpr unsigned nbits = 6;
 
  protected:
   uint64_t mask;
 
  public:
-  FLSetB6() { Clear(); }
-  void Clear() { mask = 0; }
-  void Init(size_t) { mask = 0; }
-  void Set1(size_t x) { mask = (1ull << x); }
-  void Insert(size_t x) { mask |= (1ull << x); }
-  bool HasKey(size_t x) const { return (mask >> x) & 1ull; }
-  void Delete(size_t x) { mask &= ~(1ull << x); }
+  constexpr FLSetB6() { Clear(); }
+  constexpr void Clear() { mask = 0; }
+  constexpr void Init(size_t) { mask = 0; }
+  constexpr void Set1(size_t x) { mask = (1ull << x); }
+  constexpr void Insert(size_t x) { mask |= (1ull << x); }
+  constexpr bool HasKey(size_t x) const { return (mask >> x) & 1ull; }
+  constexpr void Delete(size_t x) { mask &= ~(1ull << x); }
 
-  size_t IsEmpty() const { return (mask == 0ull); }
-  size_t Size() const { return numeric::BitsCount(mask); }
-  consteval static size_t USize() { return 64; }
+  constexpr size_t IsEmpty() const { return (mask == 0ull); }
+  constexpr size_t Size() const { return numeric::BitsCount(mask); }
+  static consteval size_t USize() { return 64; }
 
-  size_t Min() const {
+  constexpr size_t Min() const {
     auto p = numeric::FirstBit(mask);
     return p ? p - 1 : Empty;
   }
 
-  size_t Max() const { return mask ? numeric::HighestBit(mask) : Empty; }
+  constexpr size_t Max() const {
+    return mask ? numeric::HighestBit(mask) : Empty;
+  }
 
-  size_t Successor(size_t x) const {
+  constexpr size_t Successor(size_t x) const {
     if (x == 63) return Empty;
-    auto p = numeric::FirstBit(mask >> (x + 1));
+    const auto p = numeric::FirstBit(mask >> (x + 1));
     return p ? p + x : Empty;
   }
 
-  size_t Predecessor(size_t x) const {
-    uint64_t t = mask & ((1ull << x) - 1ull);
+  constexpr size_t Predecessor(size_t x) const {
+    const uint64_t t = mask & ((1ull << x) - 1ull);
     return t ? numeric::HighestBit(t) : Empty;
   }
 
  public:
   // Assume mask != 0.
-  size_t MinI() const { return numeric::Lowest0Bits(mask); }
-  size_t MaxI() const { return numeric::HighestBit(mask); }
+  constexpr size_t MinI() const { return numeric::Lowest0Bits(mask); }
+
+  constexpr size_t MaxI() const { return numeric::HighestBit(mask); }
 
   // Assume mask == 0.
-  void Set1I(size_t x) { Set1(x); }
+  constexpr void Set1I(size_t x) { Set1(x); }
 };
 }  // namespace fus
 }  // namespace ds

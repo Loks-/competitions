@@ -25,12 +25,15 @@ class BinarySearchTree {
   using TTree = bst::RedBlackTree<TEmpty, bst::info::None, bst::action::None,
                                   size_t, memory::NodesManager>;
   using TNode = TTree::TNode;
+
+ protected:
   TTree tree;
   TNode* root;
   size_t usize;
 
  public:
   BinarySearchTree() : tree(0), root(nullptr), usize(0) {}
+
   BinarySearchTree(size_t u) : tree(u), root(nullptr), usize(u) {}
 
   void Clear() {
@@ -56,9 +59,11 @@ class BinarySearchTree {
   }
 
   size_t Size() const { return tree.Used(); }
+
   size_t USize() const { return usize; }
 
   size_t Min() const { return root ? bst::base::Left(root)->key : Empty; }
+
   size_t Max() const { return root ? bst::base::Right(root)->key : Empty; }
 
   size_t Successor(size_t x) const {

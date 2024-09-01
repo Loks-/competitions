@@ -25,9 +25,9 @@ namespace fus {
 template <class TFLS>
 class BTree {
  protected:
-  static const unsigned bits_per_level = TFLS::nbits;
-  static const size_t level_mask = (size_t(1) << bits_per_level) - 1;
-  static const size_t level_size = (size_t(1) << bits_per_level);
+  static constexpr unsigned bits_per_level = TFLS::nbits;
+  static constexpr size_t level_mask = (size_t(1) << bits_per_level) - 1;
+  static constexpr size_t level_size = (size_t(1) << bits_per_level);
 
   class Node : public memory::Node {
    public:
@@ -36,10 +36,11 @@ class BTree {
     TFLS mask;
     Node** children = nullptr;
 
-    bool IsEmpty() const { return min_value == Empty; }
-    bool IsSplit() const { return children != nullptr; }
+   public:
+    constexpr bool IsEmpty() const { return min_value == Empty; }
+    constexpr bool IsSplit() const { return children != nullptr; }
 
-    void Clear() {
+    constexpr void Clear() {
       min_value = max_value = Empty;
       mask.Clear();
       children = nullptr;
@@ -58,32 +59,32 @@ class BTree {
   std::vector<Node*> path;
 
  protected:
-  size_t Index(size_t x, size_t h) const {
+  constexpr size_t Index(size_t x, size_t h) const {
     return (x >> (h * bits_per_level)) & level_mask;
   }
 
-  void Set1(Node* node, size_t x, unsigned h) {
+  constexpr void Set1(Node* node, size_t x, unsigned h) {
     node->min_value = node->max_value = x;
     node->mask.Set1(Index(x, h));
     node->children = nullptr;
   }
 
-  Node* NewNode(size_t x, unsigned h) {
+  constexpr Node* NewNode(size_t x, unsigned h) {
     auto node = manager1.New();
     Set1(node, x, h);
     return node;
   }
 
  public:
-  BTree() { manager2.InitBlockSize(level_size); }
+  constexpr BTree() { manager2.InitBlockSize(level_size); }
 
-  void Clear() {
+  constexpr void Clear() {
     manager1.ResetNodes();
     manager2.Clear();
     root.Clear();
   }
 
-  void Init(size_t u) {
+  constexpr void Init(size_t u) {
     Clear();
     usize = u;
     maxh =
@@ -91,7 +92,7 @@ class BTree {
     path.resize(maxh + 1);
   }
 
-  bool HasKey(size_t x) const {
+  constexpr bool HasKey(size_t x) const {
     auto node = &root;
     for (unsigned h = maxh; node && (h > 0); --h) {
       if (!node->IsSplit()) return x == node->min_value;
@@ -100,7 +101,7 @@ class BTree {
     return node ? node->mask.HasKey(x & level_mask) : false;
   }
 
-  void Insert(size_t x) {
+  constexpr void Insert(size_t x) {
     if (root.IsEmpty()) return Set1(&root, x, maxh);
     auto node = &root;
     for (unsigned h = maxh; h; --h) {
@@ -114,7 +115,7 @@ class BTree {
       }
       node->min_value = std::min(node->min_value, x);
       node->max_value = std::max(node->max_value, x);
-      size_t idx = Index(x, h);
+      const size_t idx = Index(x, h);
       auto child = node->children[idx];
       if (child) {
         node = child;
@@ -129,7 +130,7 @@ class BTree {
     node->mask.Insert(x & level_mask);
   }
 
-  void Delete(size_t x) {
+  constexpr void Delete(size_t x) {
     Node *prev_node = nullptr, *node = &root;
     size_t idx = 0;
     unsigned h = maxh;
@@ -178,38 +179,39 @@ class BTree {
     }
   }
 
-  size_t USize() const { return usize; }
+  constexpr size_t USize() const { return usize; }
 
-  size_t Min() const { return root.min_value; }
-  size_t Max() const { return root.max_value; }
+  constexpr size_t Min() const { return root.min_value; }
 
-  size_t Successor(size_t x) const {
+  constexpr size_t Max() const { return root.max_value; }
+
+  constexpr size_t Successor(size_t x) const {
     if (root.IsEmpty() || (x >= root.max_value)) return Empty;
     const Node* node = &root;
     for (size_t h = maxh; h; --h) {
       if (!node->IsSplit()) return node->max_value;
-      size_t idx = Index(x, h);
+      const size_t idx = Index(x, h);
       auto child = node->children[idx];
       if (!child || (x >= child->max_value))
         return node->children[node->mask.Successor(idx)]->min_value;
       node = child;
     }
-    auto idx = x & level_mask;
+    const auto idx = x & level_mask;
     return x - idx + node->mask.Successor(idx);
   }
 
-  size_t Predecessor(size_t x) const {
+  constexpr size_t Predecessor(size_t x) const {
     if (root.IsEmpty() || (x <= root.min_value)) return Empty;
     const Node* node = &root;
     for (size_t h = maxh; h; --h) {
       if (!node->IsSplit()) return node->min_value;
-      size_t idx = Index(x, h);
+      const size_t idx = Index(x, h);
       auto child = node->children[idx];
       if (!child || (x <= child->min_value))
         return node->children[node->mask.Predecessor(idx)]->max_value;
       node = child;
     }
-    auto idx = x & level_mask;
+    const auto idx = x & level_mask;
     return x - idx + node->mask.Predecessor(idx);
   }
 };
