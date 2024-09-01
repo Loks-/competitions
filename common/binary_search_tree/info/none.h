@@ -11,7 +11,7 @@ class None {
   static constexpr bool use_keys = false;
   static constexpr bool has_size = false;
 
-  // Usused fields to support info with ext trees.
+  // Unused fields to support info with ext trees.
   static constexpr bool support_insert = false;
   static constexpr bool support_remove = false;
 
