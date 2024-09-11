@@ -1,6 +1,7 @@
 #pragma once
 
 #include "common/base.h"
+
 #include <algorithm>
 #include <array>
 #include <bitset>
