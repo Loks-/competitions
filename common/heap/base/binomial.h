@@ -17,8 +17,6 @@ template <class TData, class TCompare = std::less<TData>,
           template <class TNode> class TTNodesManager = memory::NodesManager>
 class Binomial {
  public:
-  using TSelf = Binomial<TData, TCompare, TTNodesManager>;
-
   class Node : public memory::Node {
    public:
     TData value;
@@ -41,6 +39,7 @@ class Binomial {
   };
 
   using TNodesManager = TTNodesManager<Node>;
+  using TSelf = Binomial<TData, TCompare, TTNodesManager>;
 
  public:
   constexpr explicit Binomial(TNodesManager& _manager)
@@ -175,9 +174,9 @@ class Binomial {
             pp->s = pn;
           } else {
             head = pn;
-            Link(pc, pn);
-            pc = pn;
           }
+          Link(pc, pn);
+          pc = pn;
         }
       }
     }

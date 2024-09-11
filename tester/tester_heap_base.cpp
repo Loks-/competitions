@@ -119,7 +119,7 @@ bool TesterHeapBase::TestAll() const {
   hs.insert(TestBase<heap::base::DHeap<2, size_t>>("B   D2"));
   hs.insert(TestBase<heap::base::DHeap<4, size_t>>("B   D4"));
   hs.insert(TestBase<heap::base::DHeap<8, size_t>>("B   D8"));
-  // hs.insert(TestNodesManager<heap::base::Binomial<size_t>>("B BNML"));
+  hs.insert(TestNodesManager<heap::base::Binomial<size_t>>("B BNML"));
   hs.insert(TestBasePairing<0, 0>());
   hs.insert(TestBasePairing<1, 0>());
   hs.insert(TestBasePairing<0, 1>());
