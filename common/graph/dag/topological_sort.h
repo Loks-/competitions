@@ -13,7 +13,7 @@ inline std::vector<unsigned> TopologicalSort(const DirectedGraph& g) {
     if (ein[u] == 0) q.push(u);
   }
   for (; !q.empty(); q.pop()) {
-    auto u = q.front();
+    const auto u = q.front();
     order.push_back(u);
     for (auto v : g.Edges(u)) {
       if (--ein[v] == 0) q.push(v);

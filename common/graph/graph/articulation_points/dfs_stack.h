@@ -11,14 +11,14 @@ namespace ap {
 // Time: O(V + E)
 inline std::vector<unsigned> DFSStack(const UndirectedGraph& g) {
   std::vector<unsigned> output;
-  unsigned n = g.Size();
+  const unsigned n = g.Size();
   if (n <= 1) return output;
   std::vector<unsigned> visited(n, 0), parent(n, graph::CNone), depth(n, 0),
       low(n, graph::CNone), art(n, 0);
   std::stack<unsigned> s;
   for (unsigned u = 0; u < n; ++u) s.push(u);
   for (; !s.empty();) {
-    auto u = s.top(), d = depth[u], p = parent[u], vu = visited[u]++;
+    const auto u = s.top(), d = depth[u], p = parent[u], vu = visited[u]++;
     if (vu) s.pop();
     if (vu == 0) {
       low[u] = d;

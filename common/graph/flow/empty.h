@@ -4,7 +4,7 @@ namespace graph {
 namespace flow {
 class Empty {
  public:
-  Empty operator-() const { return {}; }
+  constexpr Empty operator-() const { return {}; }
 };
 }  // namespace flow
 }  // namespace graph

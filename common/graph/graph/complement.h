@@ -4,10 +4,10 @@
 #include "common/graph/graph/adjacency_matrix.h"
 
 // Time: O(V^2)
-inline UndirectedGraph Complement(const UndirectedGraph& g) {
-  unsigned n = g.Size();
+constexpr UndirectedGraph Complement(const UndirectedGraph& g) {
+  const unsigned n = g.Size();
   UndirectedGraph gnew(n);
-  auto gam = AdjacencyMatrix(g);
+  const auto gam = AdjacencyMatrix(g);
   for (unsigned i = 0; i < n; ++i) {
     for (unsigned j = i + 1; j < n; ++j) {
       if (!gam[i][j]) gnew.AddEdge(i, j);

@@ -12,12 +12,13 @@ namespace scc {
 // Time: O(V + E)
 // Components are in the reverse topological sort order.
 inline std::vector<unsigned> Tarjan(const DirectedGraph& g) {
-  unsigned n = g.Size(), k = 0, l = 0;
+  const unsigned n = g.Size();
+  unsigned k = 0, l = 0;
   std::vector<unsigned> index(n, n), lowlink(n, 0), instack(n, 0),
       components(n);
   std::stack<unsigned> s;
 
-  std::function<void(unsigned)> SConnect = [&](unsigned u) -> void {
+  const std::function<void(unsigned)> SConnect = [&](unsigned u) -> void {
     index[u] = lowlink[u] = k++;
     s.push(u);
     instack[u] = 1;
@@ -31,7 +32,7 @@ inline std::vector<unsigned> Tarjan(const DirectedGraph& g) {
     }
     if (lowlink[u] == index[u]) {
       for (;;) {
-        auto v = s.top();
+        const auto v = s.top();
         s.pop();
         instack[v] = 0;
         components[v] = l;

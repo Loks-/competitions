@@ -18,65 +18,76 @@ class Graph {
   std::vector<std::vector<TEdge>> edges;
 
  public:
-  void Clear() {
+  constexpr void Clear() {
     nvertices = 0;
     edges.clear();
   }
 
-  void Resize(unsigned _nvertices) {
+  constexpr void Resize(unsigned _nvertices) {
     Clear();
     nvertices = _nvertices;
     edges.resize(nvertices);
   }
 
-  explicit Graph(unsigned _nvertices = 0) { Resize(_nvertices); }
-  Graph(unsigned _nvertices, unsigned _source, unsigned _sink)
+  constexpr explicit Graph(unsigned _nvertices = 0) { Resize(_nvertices); }
+
+  constexpr Graph(unsigned _nvertices, unsigned _source, unsigned _sink)
       : source(_source), sink(_sink) {
     Resize(_nvertices);
   }
 
-  void SetSourceSink(unsigned _source, unsigned _sink) {
+  constexpr void SetSourceSink(unsigned _source, unsigned _sink) {
     ResetFlow();
     source = _source;
     sink = _sink;
   }
 
-  unsigned Size() const { return nvertices; }
-  unsigned Source() const { return source; }
-  unsigned Sink() const { return sink; }
-  std::vector<std::vector<TEdge>>& Edges() { return edges; }
-  const std::vector<std::vector<TEdge>>& Edges() const { return edges; }
-  std::vector<TEdge>& Edges(unsigned from) { return edges[from]; }
-  const std::vector<TEdge>& Edges(unsigned from) const { return edges[from]; }
+  constexpr unsigned Size() const { return nvertices; }
 
-  void AddDataEdge(const TData& data, unsigned from, unsigned to,
-                   TFlow max_flow, TFlow max_flow_inverted = 0) {
+  constexpr unsigned Source() const { return source; }
+
+  constexpr unsigned Sink() const { return sink; }
+
+  constexpr std::vector<std::vector<TEdge>>& Edges() { return edges; }
+
+  constexpr const std::vector<std::vector<TEdge>>& Edges() const {
+    return edges;
+  }
+
+  constexpr std::vector<TEdge>& Edges(unsigned from) { return edges[from]; }
+
+  constexpr const std::vector<TEdge>& Edges(unsigned from) const {
+    return edges[from];
+  }
+
+  constexpr void AddDataEdge(const TData& data, unsigned from, unsigned to,
+                             TFlow max_flow, TFlow max_flow_inverted = 0) {
     edges[from].push_back(
         {data, max_flow, 0, from, to, unsigned(edges[to].size())});
     edges[to].push_back({-data, max_flow_inverted, 0, to, from,
                          unsigned(edges[from].size() - 1)});
   }
 
-  void AddEdge(unsigned from, unsigned to, TFlow max_flow,
-               TFlow max_flow_inverted = 0) {
+  constexpr void AddEdge(unsigned from, unsigned to, TFlow max_flow,
+                         TFlow max_flow_inverted = 0) {
     AddDataEdge(TData(), from, to, max_flow, max_flow_inverted);
   }
 
-  TEdge& ReversedEdge(const TEdge& e) {
+  constexpr TEdge& ReversedEdge(const TEdge& e) {
     return edges[e.to][e.reversed_edge_index];
   }
 
-  const TEdge& ReversedEdge(const TEdge& e) const {
+  constexpr const TEdge& ReversedEdge(const TEdge& e) const {
     return edges[e.to][e.reversed_edge_index];
   }
 
-  void ResetFlow() {
+  constexpr void ResetFlow() {
     for (unsigned i = 0; i < nvertices; ++i) {
       for (auto& e : Edges(i)) e.flow = 0;
     }
   }
 
-  TFlow Flow() const {
+  constexpr TFlow Flow() const {
     TFlow f = 0;
     for (auto& e : Edges(source)) f += e.flow;
     return f;

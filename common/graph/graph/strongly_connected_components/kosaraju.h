@@ -11,19 +11,20 @@ namespace graph {
 namespace scc {
 // Time: O(V + E)
 inline std::vector<unsigned> Kosaraju(const DirectedGraph& g) {
-  unsigned n = g.Size(), l = 0;
+  const unsigned n = g.Size();
+  unsigned l = 0;
   std::vector<unsigned> visited(n, 0), vl, components(n, n);
   vl.reserve(n);
 
-  std::function<void(unsigned)> Visit = [&](unsigned u) -> void {
+  const std::function<void(unsigned)> Visit = [&](unsigned u) -> void {
     if (visited[u]) return;
     visited[u] = 1;
     for (auto v : g.Edges(u)) Visit(v);
     vl.push_back(u);
   };
 
-  std::function<void(unsigned, unsigned)> Assign = [&](unsigned u,
-                                                       unsigned index) -> void {
+  const std::function<void(unsigned, unsigned)> Assign =
+      [&](unsigned u, unsigned index) -> void {
     if (components[u] < n) return;
     components[u] = index;
     for (auto v : g.InvertedEdges(u)) Assign(v, index);

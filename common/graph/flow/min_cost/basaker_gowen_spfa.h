@@ -19,13 +19,13 @@ inline typename TCostProxy::TCost BasakerGowenSPFA(
   using TFlow = typename TEdge::TFlow;
   using TCost = typename TCostProxy::TCost;
   g.ResetFlow();
-  unsigned source = g.Source(), sink = g.Sink(), gsize = g.Size();
+  const unsigned source = g.Source(), sink = g.Sink(), gsize = g.Size();
   std::vector<TEdge*> p(gsize);
   TFlow flow = TFlow(0);
   TCost cost = TCost(0);
   TEdge* pe = nullptr;
   for (; flow < max_flow;) {
-    auto d = distance::SPFA(g, f, source, sink, p);
+    const auto d = distance::SPFA(g, f, source, sink, p);
     if (p[sink] == nullptr) break;
     auto new_flow = max_flow - flow;
     for (pe = p[sink]; pe; pe = p[pe->from])

@@ -97,7 +97,7 @@ class Graph {
   }
 
   void ReadEdges(unsigned edges_to_read, bool zero_based_indexes = false) {
-    unsigned shift = zero_based_indexes ? 0 : 1;
+    const unsigned shift = zero_based_indexes ? 0 : 1;
     for (; edges_to_read--;) {
       unsigned from, to;
       std::cin >> from >> to;

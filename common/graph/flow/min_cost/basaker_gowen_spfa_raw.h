@@ -19,7 +19,7 @@ inline typename TCostProxy::TCost BasakerGowenSPFARaw(
   using TFlow = typename TEdge::TFlow;
   using TCost = typename TCostProxy::TCost;
   g.ResetFlow();
-  unsigned source = g.Source(), sink = g.Sink(), gsize = g.Size();
+  const unsigned source = g.Source(), sink = g.Sink(), gsize = g.Size();
   std::vector<TCost> v(gsize);
   std::vector<TEdge*> p(gsize);
   std::queue<unsigned> q;
@@ -31,10 +31,10 @@ inline typename TCostProxy::TCost BasakerGowenSPFARaw(
     std::fill(p.begin(), p.end(), nullptr);
     std::fill(inq.begin(), inq.end(), 0);
     for (q.push(source); !q.empty();) {
-      unsigned u = q.front();
+      const unsigned u = q.front();
       q.pop();
       inq[u] = 2;
-      auto ucost = v[u];
+      const auto ucost = v[u];
       for (auto& e : g.Edges(u)) {
         if ((e.to != source) && (e.flow < e.max_flow)) {
           if ((inq[e.to] == 0) || (ucost + f(e) < v[e.to])) {

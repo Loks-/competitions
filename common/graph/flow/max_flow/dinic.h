@@ -16,7 +16,7 @@ namespace max_flow {
 template <class TEdge>
 inline typename TEdge::TFlow Dinic(Graph<TEdge>& g) {
   using TFlow = typename TEdge::TFlow;
-  unsigned source = g.Source(), sink = g.Sink(), gsize = g.Size();
+  const unsigned source = g.Source(), sink = g.Sink(), gsize = g.Size();
   std::queue<unsigned> q;
   std::vector<unsigned> d(gsize);
   std::vector<unsigned> ei(gsize);
@@ -24,10 +24,10 @@ inline typename TEdge::TFlow Dinic(Graph<TEdge>& g) {
   for (auto& e : g.Edges(source))
     source_max_flow = std::max(source_max_flow, e.max_flow);
 
-  std::function<TFlow(unsigned, TFlow)> AddBlockingFlow = [&](
-      unsigned u, TFlow flow) -> TFlow {
+  const std::function<TFlow(unsigned, TFlow)> AddBlockingFlow =
+      [&](unsigned u, TFlow flow) -> TFlow {
     if (u == sink) return flow;
-    unsigned du = d[u];
+    const unsigned du = d[u];
     auto& uedges = g.Edges(u);
     for (unsigned& i = ei[u]; i < uedges.size(); ++i) {
       auto& e = uedges[i];
@@ -49,7 +49,7 @@ inline typename TEdge::TFlow Dinic(Graph<TEdge>& g) {
     std::fill(d.begin(), d.end(), -1u);
     d[source] = 0;
     for (q.push(source); (d[sink] == -1u) && !q.empty(); q.pop()) {
-      unsigned u = q.front(), du = d[u];
+      const unsigned u = q.front(), du = d[u];
       for (auto& e : g.Edges(u)) {
         if ((e.flow < e.max_flow) && (d[e.to] == -1u)) {
           d[e.to] = du + 1;
@@ -60,8 +60,7 @@ inline typename TEdge::TFlow Dinic(Graph<TEdge>& g) {
     }
     if (d[sink] == -1u) break;
     std::fill(ei.begin(), ei.end(), 0);
-    while (AddBlockingFlow(source, source_max_flow)) {
-    }
+    while (AddBlockingFlow(source, source_max_flow));
   }
   return g.Flow();
 }

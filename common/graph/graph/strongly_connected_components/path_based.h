@@ -11,11 +11,12 @@ namespace graph {
 namespace scc {
 // Time: O(V + E)
 inline std::vector<unsigned> PathBased(const DirectedGraph& g) {
-  unsigned n = g.Size(), k = 0, l = 0;
+  const unsigned n = g.Size();
+  unsigned k = 0, l = 0;
   std::vector<unsigned> index(n, n), components(n, n);
   std::stack<unsigned> s, p;
 
-  std::function<void(unsigned)> DFS = [&](unsigned u) -> void {
+  const std::function<void(unsigned)> DFS = [&](unsigned u) -> void {
     index[u] = k++;
     s.push(u);
     p.push(u);

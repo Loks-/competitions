@@ -7,7 +7,8 @@
 
 // Time: O(V + E)
 inline unsigned ConnectedComponentsCount(const UndirectedGraph& g) {
-  unsigned n = g.Size(), r = 0;
+  const unsigned n = g.Size();
+  unsigned r = 0;
   std::vector<unsigned> visited(n, 0);
   std::stack<unsigned> s;
   for (unsigned i = 0; i < n; ++i) {

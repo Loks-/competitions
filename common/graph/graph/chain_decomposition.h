@@ -19,12 +19,12 @@ class ChainDecomposition {
   // Output false if graph not connected.
   bool Build(const UndirectedGraph& g, unsigned root = 0) {
     Clear();
-    unsigned n = g.Size();
+    const unsigned n = g.Size();
     std::vector<unsigned> visited(n, 0), parent(n, CNone), dfi, ap(n, 0);
     dfi.reserve(n);
     std::vector<std::vector<unsigned>> backedges(n);
 
-    std::function<void(unsigned)> DFS = [&](unsigned u) -> void {
+    const std::function<void(unsigned)> DFS = [&](unsigned u) -> void {
       dfi.push_back(u);
       visited[u] = dfi.size();
       for (auto v : g.Edges(u)) {
@@ -60,7 +60,7 @@ class ChainDecomposition {
 
     // Construct articulation points
     for (unsigned i = 1; i < chains.size(); ++i) {
-      auto& c = chains[i];
+      const auto& c = chains[i];
       if (c[0] == c.back()) ap[c[0]] = 1;
     }
     for (auto& p : bridges) {

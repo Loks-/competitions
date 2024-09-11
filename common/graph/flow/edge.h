@@ -11,6 +11,7 @@ class Edge {
   using TData = TTData;
   using TFlow = TTFlow;
 
+ public:
   TTData data;
   TFlow max_flow;
   TFlow flow;

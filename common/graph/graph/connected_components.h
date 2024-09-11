@@ -7,7 +7,8 @@
 
 // Time: O(V + E)
 inline std::vector<unsigned> ConnectedComponents(const UndirectedGraph& g) {
-  unsigned n = g.Size(), l = -1;
+  const unsigned n = g.Size();
+  unsigned l = -1;
   std::vector<unsigned> visited(n, 0), components(n);
   std::stack<unsigned> s;
   for (unsigned i = 0; i < n; ++i) {
@@ -15,7 +16,7 @@ inline std::vector<unsigned> ConnectedComponents(const UndirectedGraph& g) {
       visited[i] = 1;
       ++l;
       for (s.push(i); !s.empty();) {
-        unsigned j = s.top();
+        const unsigned j = s.top();
         s.pop();
         components[j] = l;
         for (unsigned c : g.Edges(j)) {

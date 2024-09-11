@@ -11,13 +11,13 @@ namespace ap {
 // Time: O(V + E)
 inline std::vector<unsigned> DFSRecursion(const UndirectedGraph& g) {
   std::vector<unsigned> output;
-  unsigned n = g.Size();
+  const unsigned n = g.Size();
   if (n <= 1) return output;
   std::vector<unsigned> visited(n, 0), parent(n, graph::CNone),
       depth(n, graph::CNone), low(n, graph::CNone);
 
-  std::function<void(unsigned, unsigned)> DFS = [&](unsigned u,
-                                                    unsigned d) -> void {
+  const std::function<void(unsigned, unsigned)> DFS = [&](unsigned u,
+                                                          unsigned d) -> void {
     visited[u] = 1;
     depth[u] = d;
     low[u] = d;

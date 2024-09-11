@@ -83,14 +83,14 @@ class HolmLCTE {
   }
 
   void LCTEAddTreeEdge(TEdgeID edge) {
-    unsigned l = edge->data.level / 2;
-    unsigned lu1 = LIndex(edge->u1, l);
+    const unsigned l = edge->data.level / 2;
+    const unsigned lu1 = LIndex(edge->u1, l);
     LCTEAddTreeEdge(edge, lu1, Node(lu1));
   }
 
   void LCTEAddGraphEdge(TEdgeID edge) {
-    unsigned l = edge->data.level / 2;
-    unsigned lu1 = LIndex(edge->u1, l), lu2 = LIndex(edge->u2, l);
+    const unsigned l = edge->data.level / 2;
+    const unsigned lu1 = LIndex(edge->u1, l), lu2 = LIndex(edge->u2, l);
     LCTEAddGraphEdge(edge, lu1, Node(lu1), true);
     LCTEAddGraphEdge(edge, lu2, Node(lu2), false);
   }
@@ -98,7 +98,7 @@ class HolmLCTE {
   void LCTERemoveTreeEdge(TEdgeID edge, unsigned lu1, TNode* node1) {
     auto& ledges = vledges[lu1];
     auto& edges = ledges.tree_edges;
-    auto index = edge->data.index1;
+    const auto index = edge->data.index1;
     assert(edges[index] == edge);
     if (index + 1 < edges.size()) {
       edges[index] = edges.back();
@@ -111,10 +111,10 @@ class HolmLCTE {
   void LCTERemoveGraphEdge(TEdgeID edge, unsigned lu1, TNode* node1, bool b12) {
     auto& ledges = vledges[lu1];
     auto& edges = ledges.graph_edges;
-    auto index = (b12 ? edge->data.index1 : edge->data.index2);
+    const auto index = (b12 ? edge->data.index1 : edge->data.index2);
     assert(edges[index] == edge);
     if (index + 1 < edges.size()) {
-      auto enew = edges.back();
+      const auto enew = edges.back();
       edges[index] = enew;
       ((enew->u1 == (lu1 % size)) ? enew->data.index1 : enew->data.index2) =
           index;
@@ -124,14 +124,14 @@ class HolmLCTE {
   }
 
   void LCTERemoveTreeEdge(TEdgeID edge) {
-    unsigned l = edge->data.level / 2;
-    unsigned lu1 = LIndex(edge->u1, l);
+    const unsigned l = edge->data.level / 2;
+    const unsigned lu1 = LIndex(edge->u1, l);
     LCTERemoveTreeEdge(edge, lu1, Node(lu1));
   }
 
   void LCTERemoveGraphEdge(TEdgeID edge) {
-    unsigned l = edge->data.level / 2;
-    unsigned lu1 = LIndex(edge->u1, l), lu2 = LIndex(edge->u2, l);
+    const unsigned l = edge->data.level / 2;
+    const unsigned lu1 = LIndex(edge->u1, l), lu2 = LIndex(edge->u2, l);
     LCTERemoveGraphEdge(edge, lu1, Node(lu1), true);
     LCTERemoveGraphEdge(edge, lu2, Node(lu2), false);
   }
@@ -186,7 +186,7 @@ class HolmLCTE {
   void RemoveEdge(TEdgeID edge) {
     if (edge->data.level & 1) {
       unsigned l = edge->data.level / 2;
-      unsigned u1 = edge->u1, u2 = edge->u2;
+      const unsigned u1 = edge->u1, u2 = edge->u2;
       for (unsigned i = 0; i <= l; ++i)
         LCTECutEdge(Node(edge->u1, i), Node(edge->u2, i));
       LCTERemoveTreeEdge(edge);
@@ -205,8 +205,8 @@ class HolmLCTE {
         FakeUse(root2);
         assert(root2 != node1);
         for (; !found && node1->info.tmax; lcte.Access(node1)) {
-          auto value = node1->info.tmax;
-          auto u = value % lsize;
+          const auto value = node1->info.tmax;
+          const auto u = value % lsize;
           if (value >= 2 * lsize) {
             // Push up tree edges
             auto& edges = vledges[u].tree_edges;
@@ -224,7 +224,7 @@ class HolmLCTE {
             auto& edges = vledges[u].graph_edges;
             for (unsigned j = edges.size(); j-- > 0;) {
               auto e = edges[j];
-              auto eu1 = LIndex(e->u1, l), eu2 = LIndex(e->u2, l);
+              const auto eu1 = LIndex(e->u1, l), eu2 = LIndex(e->u2, l);
               auto n1 = Node(eu1), n2 = Node(eu2);
               auto r1 = lcte.FindRoot(n1), r2 = lcte.FindRoot(n2);
               if (r1 == r2) {

@@ -21,14 +21,14 @@ inline unsigned VertexExclusionI(
   for (auto& m : edges) vpc.push_back(m.size());
   heap::ukvm::DHeap<4, unsigned> h(vpc, false);
   for (; !h.Empty();) {
-    auto u = h.ExtractKey();
+    const auto u = h.ExtractKey();
     for (auto it1 = edges[u].begin(); it1 != edges[u].end(); ++it1) {
       if (it1->second + 2 >= best_cost) continue;
       for (auto it2 = edges[u].begin(); it2 != it1; ++it2) {
-        auto u1 = it1->first, u2 = it2->first;
-        auto d12 = it1->second + it2->second;
+        const auto u1 = it1->first, u2 = it2->first;
+        const auto d12 = it1->second + it2->second;
         if (d12 + 1 >= best_cost) continue;
-        auto itu12 = edges[u1].find(u2);
+        const auto itu12 = edges[u1].find(u2);
         if (itu12 == edges[u1].end()) {
           edges[u1][u2] = edges[u2][u1] = d12;
         } else {
@@ -40,7 +40,7 @@ inline unsigned VertexExclusionI(
       }
     }
     for (auto it1 : edges[u]) {
-      auto u1 = it1.first;
+      const auto u1 = it1.first;
       edges[u1].erase(u);
       h.Set(u1, edges[u1].size());
     }

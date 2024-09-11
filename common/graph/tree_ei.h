@@ -17,15 +17,15 @@ class TreeEI : public Tree<UndirectedGraphEI<TTEdgeInfo>> {
   using TSelf = TreeEI<TTEdgeInfo>;
 
  public:
-  explicit TreeEI(unsigned _nvertices = 0, unsigned _root = 0)
+  constexpr explicit TreeEI(unsigned _nvertices = 0, unsigned _root = 0)
       : TTree(_nvertices, _root) {}
 
-  void ReadEdges(bool zero_based_indexes = false) {
+  constexpr void ReadEdges(bool zero_based_indexes = false) {
     TGraph::ReadEdges(TBaseGraph::nvertices - 1, zero_based_indexes);
   }
 
   void ReadTreeEdges(bool zero_based_indexes = false) {
-    unsigned shift = zero_based_indexes ? 0 : 1;
+    const unsigned shift = zero_based_indexes ? 0 : 1;
     for (unsigned i = 1; i < TBaseGraph::nvertices; ++i) {
       TEdgeInfo edge_info;
       unsigned from;

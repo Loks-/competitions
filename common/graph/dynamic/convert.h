@@ -9,9 +9,9 @@ namespace graph {
 namespace dynamic {
 // If graph is undirected self edges are not supported and ignored.
 template <class TEdgeData, bool directed_edges>
-void Convert(const graph::Graph<directed_edges>& g,
-             graph::dynamic::Graph<TEdgeData, directed_edges>& output,
-             const TEdgeData& value) {
+constexpr void Convert(const graph::Graph<directed_edges>& g,
+                       graph::dynamic::Graph<TEdgeData, directed_edges>& output,
+                       const TEdgeData& value) {
   output.Resize(g.Size());
   for (unsigned u = 0; u < g.Size(); ++u) {
     for (auto v : g.Edges(u)) {
@@ -21,8 +21,9 @@ void Convert(const graph::Graph<directed_edges>& g,
 }
 
 template <class TEdgeInfo, class TEdgeData, bool directed_edges>
-void Convert(const graph::GraphEI<TEdgeInfo, directed_edges>& g,
-             graph::dynamic::Graph<TEdgeData, directed_edges>& output) {
+constexpr void Convert(
+    const graph::GraphEI<TEdgeInfo, directed_edges>& g,
+    graph::dynamic::Graph<TEdgeData, directed_edges>& output) {
   output.Resize(g.Size());
   for (unsigned u = 0; u < g.Size(); ++u) {
     auto& ue = g.Edges(u);

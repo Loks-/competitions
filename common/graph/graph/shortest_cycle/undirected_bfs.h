@@ -21,20 +21,20 @@ inline void BFSI(const graph::dynamic::UndirectedGraph<TEmpty>& g,
                  unsigned source, unsigned& best_cost, std::queue<unsigned>& q,
                  std::vector<unsigned>& vd, ds::UnsignedSet& us,
                  std::vector<unsigned>& vf) {
-  const unsigned none = -1;
+  constexpr unsigned none = -1;
   // Run BFS
   us.Insert(source);
   vf[source] = none;
   vd[source] = 0;
   for (q.push(source); !q.empty(); q.pop()) {
-    unsigned u = q.front();
-    auto ucost = vd[u];
+    const unsigned u = q.front();
+    const auto ucost = vd[u];
     if (2 * ucost + 1 >= best_cost) {
       for (; !q.empty();) q.pop();
       break;
     }
     for (auto e : g.Edges(u)) {
-      auto v = e->Other(u);
+      const auto v = e->Other(u);
       if (v == vf[u]) continue;
       if (vd[v] != none) {
         best_cost = std::min(best_cost, vd[v] + ucost + 1u);
@@ -68,13 +68,13 @@ inline unsigned BFS(const UndirectedGraph& g) {
   for (unsigned i = 0; i < vpc.size(); ++i) vpc[i] = dg.Edges(i).size();
   heap::ukvm::DHeap<4u, unsigned, std::greater<unsigned>> qe(vpc, false);
   for (; !qe.Empty();) {
-    auto u = qe.ExtractKey();
+    const auto u = qe.ExtractKey();
     if (qe.Get(u) == 0) break;
     hidden::BFSI(dg, u, best_cost, q, vd, us, vf);
     auto edges = dg.Edges(u);
     std::reverse(edges.begin(), edges.end());
     for (auto& e : edges) {
-      auto v = e->Other(u);
+      const auto v = e->Other(u);
       dg.DeleteEdge(e);
       qe.Set(v, dg.Edges(v).size());
     }

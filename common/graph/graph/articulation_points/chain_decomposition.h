@@ -13,7 +13,7 @@ namespace ap {
 // Current realization works only for connected graphs.
 inline std::vector<unsigned> ChainDecomposition(const UndirectedGraph& g) {
   graph::ChainDecomposition cd;
-  bool b = cd.Build(g);
+  const bool b = cd.Build(g);
   assert(b);
   FakeUse(b);
   return cd.ArticulationPoints();

@@ -11,7 +11,9 @@ namespace graph {
 // Time: O(E sqrt(V))
 class BipartiteMatching {
  protected:
-  const unsigned inf = unsigned(-1);
+  static constexpr unsigned inf = unsigned(-1);
+
+ protected:
   unsigned size, matched;
   std::vector<unsigned> vpair;
   std::vector<unsigned> vdist;
@@ -30,10 +32,10 @@ class BipartiteMatching {
       }
     }
     for (; !q.empty(); q.pop()) {
-      unsigned u = q.front();
+      const unsigned u = q.front();
       if (vdist[u] < vdist[size]) {
         for (unsigned v : g.Edges(u)) {
-          unsigned vp = vpair[v];
+          const unsigned vp = vpair[v];
           if (vdist[vp] == inf) {
             vdist[vp] = vdist[u] + 1;
             q.push(vp);
@@ -48,7 +50,7 @@ class BipartiteMatching {
   bool DFS(const Bipartite<TGraph>& g, unsigned u) {
     if (u == size) return true;
     for (unsigned v : g.Edges(u)) {
-      unsigned vp = vpair[v];
+      const unsigned vp = vpair[v];
       if (vdist[vp] == vdist[u] + 1) {
         if (DFS(g, vp)) {
           vpair[v] = u;

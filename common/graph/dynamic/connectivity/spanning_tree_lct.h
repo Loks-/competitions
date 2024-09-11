@@ -52,7 +52,7 @@ class SpanningTreeLCT {
 
   void RemoveEdge(TEdgeID edge) {
     if (edge->data) {
-      auto u1 = edge->u1, u2 = edge->u2;
+      const auto u1 = edge->u1, u2 = edge->u2;
       auto n1 = Node(u1), n2 = Node(u2);
       g.DeleteEdge(edge);
       lct.SetRoot(n1);
@@ -66,9 +66,9 @@ class SpanningTreeLCT {
         unsigned u = s.top();
         s.pop();
         for (auto& e : g.Edges(u)) {
-          auto v = e->Other(u);
+          const auto v = e->Other(u);
           if (uset.HasKey(v)) continue;
-          auto r = lct.FindRoot(Node(v));
+          const auto r = lct.FindRoot(Node(v));
           if (r != n1) {
             assert(r == n2);
             found = true;

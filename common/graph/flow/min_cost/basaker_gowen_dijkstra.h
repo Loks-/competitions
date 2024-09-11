@@ -20,7 +20,7 @@ inline typename TCostProxy::TCost BasakerGowenDijkstra(
   using TFlow = typename TEdge::TFlow;
   using TCost = typename TCostProxy::TCost;
   g.ResetFlow();
-  unsigned source = g.Source(), sink = g.Sink(), gsize = g.Size();
+  const unsigned source = g.Source(), sink = g.Sink(), gsize = g.Size();
   std::vector<TEdge*> vp(gsize);
   std::vector<TCost> vu(gsize, TCost());
   bool vu_init_req = false;
@@ -43,7 +43,7 @@ inline typename TCostProxy::TCost BasakerGowenDijkstra(
   for (; flow < max_flow;) {
     distance::Dijkstra(g, f, vu, q, source, vp);
     if (vp[sink] == nullptr) break;
-    auto d = q.Get(sink) + vu[sink];
+    const auto d = q.Get(sink) + vu[sink];
     for (unsigned u = 0; u < gsize; ++u) {
       if (vp[u]) vu[u] = q.Get(u) + vu[u];
     }
