@@ -14,7 +14,7 @@ class Size : public bst::info::Size {
   template <class TNode>
   constexpr void SetN(const TNode* node) {
     assert(node);
-    FakeUse(node);
+    MetaUse(node);
     TBase::size = 1;
   }
 

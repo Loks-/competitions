@@ -73,7 +73,7 @@ class RedBlackTree
   }
 
  protected:
-  static TNode* InsertByKeyI(TNode* root, TNode* node, TFakeFalse) {
+  static TNode* InsertByKeyI(TNode* root, TNode* node, TMetaFalse) {
     thread_local std::vector<TNode*> node_to_root_path;
     if (!root) {
       node->info.black = true;
@@ -134,7 +134,7 @@ class RedBlackTree
     return nullptr;
   }
 
-  static TNode* InsertByKeyI(TNode* root, TNode* node, TFakeTrue) {
+  static TNode* InsertByKeyI(TNode* root, TNode* node, TMetaTrue) {
     bst::InsertByKey<TNode>(root, node);
     node->info.black = false;
     for (;;) {
@@ -169,12 +169,12 @@ class RedBlackTree
  public:
   static TNode* InsertByKey(TNode* root, TNode* node) {
     assert(node);
-    return InsertByKeyI(root, node, TFakeBool<use_parent>());
+    return InsertByKeyI(root, node, TMetaBool<use_parent>());
   }
 
  protected:
   static TNode* RemoveByKeyI(TNode* root, const TKey& key, TNode*& removed_node,
-                             TFakeFalse) {
+                             TMetaFalse) {
     thread_local std::vector<TNode*> node_to_root_path;
     // Find node
     if (!root) return root;
@@ -298,8 +298,8 @@ class RedBlackTree
   }
 
   static TNode* RemoveByKeyI(TNode* root, const TKey& key, TNode*& removed_node,
-                             TFakeTrue) {
-    return TTree::RemoveByKeyI(root, key, removed_node, TFakeTrue{});
+                             TMetaTrue) {
+    return TTree::RemoveByKeyI(root, key, removed_node, TMetaTrue{});
   }
 
   static TNode* RemoveByNodeI(TNode* node) {

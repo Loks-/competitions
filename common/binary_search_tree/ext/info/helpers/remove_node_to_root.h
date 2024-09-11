@@ -7,10 +7,10 @@ namespace ext {
 namespace info {
 namespace hidden {
 template <class TNode>
-inline void RemoveNodeToRootI(TNode*, TNode*, TFakeFalse) {}
+inline void RemoveNodeToRootI(TNode*, TNode*, TMetaFalse) {}
 
 template <class TNode>
-inline void RemoveNodeToRootI(TNode* node, TNode* rem, TFakeTrue) {
+inline void RemoveNodeToRootI(TNode* node, TNode* rem, TMetaTrue) {
   static_assert(TNode::use_parent, "use_parent should be true");
   for (; node; node = node->p) node->RemoveInfo(rem);
 }
@@ -18,7 +18,7 @@ inline void RemoveNodeToRootI(TNode* node, TNode* rem, TFakeTrue) {
 
 template <class TNode>
 inline void RemoveNodeToRoot(TNode* node, TNode* rem) {
-  hidden::RemoveNodeToRootI(node, rem, TFakeBool<!TNode::TInfo::is_none>());
+  hidden::RemoveNodeToRootI(node, rem, TMetaBool<!TNode::TInfo::is_none>());
 }
 }  // namespace info
 }  // namespace ext

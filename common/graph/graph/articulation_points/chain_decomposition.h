@@ -15,7 +15,7 @@ inline std::vector<unsigned> ChainDecomposition(const UndirectedGraph& g) {
   graph::ChainDecomposition cd;
   const bool b = cd.Build(g);
   assert(b);
-  FakeUse(b);
+  MetaUse(b);
   return cd.ArticulationPoints();
 }
 }  // namespace ap

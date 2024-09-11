@@ -202,7 +202,7 @@ class HolmLCTE {
         }
         lcte.SetRoot(node1);
         auto root2 = lcte.FindRoot(node2);
-        FakeUse(root2);
+        MetaUse(root2);
         assert(root2 != node1);
         for (; !found && node1->info.tmax; lcte.Access(node1)) {
           const auto value = node1->info.tmax;

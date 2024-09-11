@@ -13,25 +13,25 @@ namespace base {
 namespace hidden {
 template <class TNode, class TKey>
 inline TNode* RemoveByKeyI(TNode* root, const TKey& key, TNode*& removed_node,
-                           TNode*& first_changed_node, TFakeFalse, TFakeFalse) {
+                           TNode*& first_changed_node, TMetaFalse, TMetaFalse) {
   return RemoveByKeyDefault(root, key, removed_node, first_changed_node);
 }
 
 template <class TNode, class TKey>
 inline TNode* RemoveByKeyI(TNode* root, const TKey& key, TNode*& removed_node,
-                           TNode*& first_changed_node, TFakeFalse, TFakeTrue) {
+                           TNode*& first_changed_node, TMetaFalse, TMetaTrue) {
   return RemoveByKeyUseParent(root, key, removed_node, first_changed_node);
 }
 
 template <class TNode, class TKey>
 inline TNode* RemoveByKeyI(TNode* root, const TKey& key, TNode*& removed_node,
-                           TNode*& first_changed_node, TFakeTrue, TFakeFalse) {
+                           TNode*& first_changed_node, TMetaTrue, TMetaFalse) {
   return RemoveByKeySkipUpdate(root, key, removed_node, first_changed_node);
 }
 
 template <class TNode, class TKey>
 inline TNode* RemoveByKeyI(TNode* root, const TKey& key, TNode*& removed_node,
-                           TNode*& first_changed_node, TFakeTrue, TFakeTrue) {
+                           TNode*& first_changed_node, TMetaTrue, TMetaTrue) {
   return RemoveByKeySkipUpdate(root, key, removed_node, first_changed_node);
 }
 }  // namespace hidden
@@ -42,8 +42,8 @@ inline TNode* RemoveByKey(TNode* root, const TKey& key, TNode*& removed_node,
   static_assert(TNode::use_key, "use_key should be true");
   if (!root) return root;
   return hidden::RemoveByKeyI(root, key, removed_node, first_changed_node,
-                              TFakeBool<TNode::TInfo::is_none>(),
-                              TFakeBool<TNode::use_parent>());
+                              TMetaBool<TNode::TInfo::is_none>(),
+                              TMetaBool<TNode::use_parent>());
 }
 }  // namespace base
 }  // namespace ext

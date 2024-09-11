@@ -33,13 +33,13 @@ class VectorStaticSize {
 
   constexpr explicit VectorStaticSize(unsigned vsize) {
     assert(vsize == size);
-    FakeUse(vsize);
+    MetaUse(vsize);
     Clear();
   }
 
   constexpr VectorStaticSize(unsigned vsize, const TValue& v) {
     assert(vsize == size);
-    FakeUse(vsize);
+    MetaUse(vsize);
     Fill(v);
   }
 

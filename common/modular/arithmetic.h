@@ -29,18 +29,18 @@ class Arithmetic {
 
  protected:
   static constexpr TValue ApplyTI(TValue value, TValue mod,
-                                  TFakeType<uint64_t>) {
+                                  TMetaType<uint64_t>) {
     return ApplyU(value, mod);
   }
 
   static constexpr TValue ApplyTI(TValue value, TValue mod,
-                                  TFakeType<int64_t>) {
+                                  TMetaType<int64_t>) {
     return ApplyS(value, mod);
   }
 
  public:
   static constexpr TValue ApplyT(TValue value, TValue mod) {
-    return ApplyTI(value, mod, TFakeType<TValue>());
+    return ApplyTI(value, mod, TMetaType<TValue>());
   }
 
   static constexpr TValue Add(TValue lvalue, TValue rvalue, TValue mod) {
@@ -123,26 +123,26 @@ class Arithmetic {
 
  protected:
   static constexpr TValue MultI(TValue lvalue, TValue rvalue, TValue mod,
-                                TFakeTrue) {
+                                TMetaTrue) {
     return Mult_32(lvalue, rvalue, mod);
   }
 
   static constexpr TValue MultI(TValue lvalue, TValue rvalue, TValue mod,
-                                TFakeFalse) {
+                                TMetaFalse) {
     return Mult_64(lvalue, rvalue, mod);
   }
 
-  static constexpr TValue SqrI(TValue value, TValue mod, TFakeTrue) {
+  static constexpr TValue SqrI(TValue value, TValue mod, TMetaTrue) {
     return Sqr_32(value, mod);
   }
 
-  static constexpr TValue SqrI(TValue value, TValue mod, TFakeFalse) {
+  static constexpr TValue SqrI(TValue value, TValue mod, TMetaFalse) {
     return Sqr_64(value, mod);
   }
 
  public:
   static constexpr TValue Mult(TValue lvalue, TValue rvalue, TValue mod) {
-    return MultI(lvalue, rvalue, mod, TFakeBool<is_32bit>());
+    return MultI(lvalue, rvalue, mod, TMetaBool<is_32bit>());
   }
 
   static constexpr TValue MultSafe(TValue lvalue, TValue rvalue, TValue mod) {
@@ -150,7 +150,7 @@ class Arithmetic {
   }
 
   static constexpr TValue Sqr(TValue value, TValue mod) {
-    return SqrI(value, mod, TFakeBool<is_32bit>());
+    return SqrI(value, mod, TMetaBool<is_32bit>());
   }
 
   static constexpr TValue SqrSafe(TValue value, TValue mod) {
@@ -214,27 +214,27 @@ class Arithmetic {
   }
 
  protected:
-  static constexpr TValue InverseI(TValue value, TValue mod, TFakeTrue) {
+  static constexpr TValue InverseI(TValue value, TValue mod, TMetaTrue) {
     return Inverse_Prime(value, mod);
   }
 
-  static constexpr TValue InverseI(TValue value, TValue mod, TFakeFalse) {
+  static constexpr TValue InverseI(TValue value, TValue mod, TMetaFalse) {
     return Inverse_Composite(value, mod);
   }
 
   static constexpr TValue DivI(TValue numerator, TValue denominator, TValue mod,
-                               TFakeTrue) {
+                               TMetaTrue) {
     return Div_Prime(numerator, denominator, mod);
   }
 
   static constexpr TValue DivI(TValue numerator, TValue denominator, TValue mod,
-                               TFakeFalse) {
+                               TMetaFalse) {
     return Div_Composite(numerator, denominator, mod);
   }
 
  public:
   static constexpr TValue Inverse(TValue value, TValue mod) {
-    return InverseI(value, mod, TFakeBool<is_prime>());
+    return InverseI(value, mod, TMetaBool<is_prime>());
   }
 
   static constexpr TValue InverseSafe(TValue value, TValue mod) {
@@ -243,7 +243,7 @@ class Arithmetic {
 
   static constexpr TValue Div(TValue numerator, TValue denominator,
                               TValue mod) {
-    return DivI(numerator, denominator, mod, TFakeBool<is_prime>());
+    return DivI(numerator, denominator, mod, TMetaBool<is_prime>());
   }
 
   static constexpr TValue DivSafe(TValue numerator, TValue denominator,

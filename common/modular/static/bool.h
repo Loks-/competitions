@@ -66,13 +66,13 @@ class Bool {
   }
 
   constexpr TSelf operator/(TSelf rvalue) const {
-    FakeUse(rvalue);
+    MetaUse(rvalue);
     assert(rvalue.value);
     return *this;
   }
 
   constexpr TSelf& operator/=(TSelf rvalue) {
-    FakeUse(rvalue);
+    MetaUse(rvalue);
     assert(rvalue.value);
     return *this;
   }

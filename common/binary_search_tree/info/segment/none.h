@@ -16,13 +16,13 @@ class None : public bst::info::None {
   template <class TNode>
   constexpr void SetN(const TNode* node) {
     assert(node);
-    FakeUse(node);
+    MetaUse(node);
   }
 
   template <class TNode>
   constexpr void SetS(const TNode* node) {
     assert(node);
-    FakeUse(node);
+    MetaUse(node);
   }
 
   template <class TNode>

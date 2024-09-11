@@ -50,7 +50,7 @@ uint64_t PrimesCount_Table(uint64_t n) {
 uint64_t PrimesCount_PrimesGeneration(uint64_t n) {
   uint64_t c = 0;
   for (auto x : factorization::PrimesRange(n)) {
-    FakeUse(x);
+    MetaUse(x);
     ++c;
   }
   return c;
@@ -60,8 +60,8 @@ uint64_t PrimesCount_Legendre(uint64_t n) {
   uint64_t nsqrt = USqrt(n);
   auto primes = GeneratePrimes(nsqrt);
 
-  std::function<uint64_t(uint64_t, unsigned)> Count = [&](
-      uint64_t k, unsigned i) -> uint64_t {
+  std::function<uint64_t(uint64_t, unsigned)> Count =
+      [&](uint64_t k, unsigned i) -> uint64_t {
     uint64_t s = k;
     for (; i < primes.size(); ++i) {
       uint64_t p = primes[i], kp = k / p;
@@ -303,8 +303,8 @@ uint64_t PrimesCount_LucyHedgehogRecursive(uint64_t n) {
   uint64_t nsqrt = USqrt(n);
   auto primes = GeneratePrimes(nsqrt);
 
-  std::function<uint64_t(uint64_t, unsigned)> Count = [&](
-      uint64_t k, unsigned i) -> uint64_t {
+  std::function<uint64_t(uint64_t, unsigned)> Count =
+      [&](uint64_t k, unsigned i) -> uint64_t {
     uint64_t s = k - 1;
     for (unsigned j = 0; j < i; ++j) {
       uint64_t p = primes[j], kp = k / p;
@@ -330,8 +330,8 @@ uint64_t PrimesCount_LucyHedgehogRecursive2(uint64_t n) {
   }
   for (; ii <= nsqrt; ++ii) vc[ii] = vc[ii - 1];
 
-  std::function<uint64_t(uint64_t, unsigned)> Count = [&](
-      uint64_t k, unsigned i) -> uint64_t {
+  std::function<uint64_t(uint64_t, unsigned)> Count =
+      [&](uint64_t k, unsigned i) -> uint64_t {
     if (i == 0) return k - 1;
     uint64_t pi = primes[i - 1];
     if ((k <= nsqrt) && (k < pi * pi)) return vc[k];

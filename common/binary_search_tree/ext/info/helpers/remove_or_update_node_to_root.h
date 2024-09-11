@@ -9,12 +9,12 @@ namespace ext {
 namespace info {
 namespace hidden {
 template <class TNode>
-inline void RemoveOrUpdateNodeToRootI(TNode* node, TNode* rem, TFakeFalse) {
+inline void RemoveOrUpdateNodeToRootI(TNode* node, TNode* rem, TMetaFalse) {
   bst::info::UpdateNodeToRoot(node);
 }
 
 template <class TNode>
-inline void RemoveOrUpdateNodeToRootI(TNode* node, TNode* rem, TFakeTrue) {
+inline void RemoveOrUpdateNodeToRootI(TNode* node, TNode* rem, TMetaTrue) {
   RemoveNodeToRoot(node, rem);
 }
 }  // namespace hidden
@@ -22,7 +22,7 @@ inline void RemoveOrUpdateNodeToRootI(TNode* node, TNode* rem, TFakeTrue) {
 template <class TNode>
 inline void RemoveOrUpdateNodeToRoot(TNode* node, TNode* rem) {
   hidden::RemoveOrUpdateNodeToRootI(node, rem,
-                                    TFakeBool<TNode::support_remove>());
+                                    TMetaBool<TNode::support_remove>());
 }
 }  // namespace info
 }  // namespace ext

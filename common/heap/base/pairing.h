@@ -106,7 +106,7 @@ class Pairing {
     }
   }
 
-  constexpr void AddNode(Node* node, TFakeFalse) {
+  constexpr void AddNode(Node* node, TMetaFalse) {
     if (!head) {
       head = node;
     } else {
@@ -115,7 +115,7 @@ class Pairing {
     ++size;
   }
 
-  constexpr void AddNode(Node* node, TFakeTrue) {
+  constexpr void AddNode(Node* node, TMetaTrue) {
     if (!head) {
       head = node;
     } else {
@@ -125,9 +125,9 @@ class Pairing {
     ++size;
   }
 
-  constexpr void AddNode(Node* node) { AddNode(node, TFakeBool<auxiliary>()); }
+  constexpr void AddNode(Node* node) { AddNode(node, TMetaBool<auxiliary>()); }
 
-  constexpr Node* Compress(Node* f, TFakeFalse) {
+  constexpr Node* Compress(Node* f, TMetaFalse) {
     if (f && f->r) {
       Node* l = nullptr;
       for (; f && f->r;) {
@@ -152,7 +152,7 @@ class Pairing {
     return f;
   }
 
-  constexpr Node* Compress(Node* f, TFakeTrue) {
+  constexpr Node* Compress(Node* f, TMetaTrue) {
     if (f && f->r) {
       Node* l = f->r;
       for (; l->r;) l = l->r;
@@ -168,20 +168,20 @@ class Pairing {
   }
 
   constexpr Node* Compress(Node* f) {
-    return Compress(f, TFakeBool<multipass>());
+    return Compress(f, TMetaBool<multipass>());
   }
 
-  constexpr void ProcessAux(TFakeFalse) {}
+  constexpr void ProcessAux(TMetaFalse) {}
 
-  constexpr void ProcessAux(TFakeTrue) {
+  constexpr void ProcessAux(TMetaTrue) {
     if (head->r) {
-      Node* t = Compress(head->r, TFakeTrue());
+      Node* t = Compress(head->r, TMetaTrue());
       head->r = nullptr;
       ComparisonLinkHead(t);
     }
   }
 
-  constexpr void ProcessAux() { ProcessAux(TFakeBool<auxiliary>()); }
+  constexpr void ProcessAux() { ProcessAux(TMetaBool<auxiliary>()); }
 
   constexpr Node* TopNode() {
     ProcessAux();

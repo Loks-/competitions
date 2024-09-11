@@ -19,7 +19,7 @@ constexpr unsigned DeepI(const TNode* node) {
 template <class TNode>
 inline unsigned Deep(const TNode* node) {
   bst::action::hidden::ApplyRootToNodeI(
-      node, TFakeBool<TNode::TAction::modify_tree>{});
+      node, TMetaBool<TNode::TAction::modify_tree>{});
   return hidden::DeepI(node);
 }
 }  // namespace base

@@ -10,22 +10,22 @@ namespace ext {
 namespace base {
 namespace hidden {
 template <class TNode>
-inline void InsertByKeyI(TNode* root, TNode* node, TFakeFalse, TFakeFalse) {
+inline void InsertByKeyI(TNode* root, TNode* node, TMetaFalse, TMetaFalse) {
   InsertByKeyDefault<TNode>(root, node);
 }
 
 template <class TNode>
-inline void InsertByKeyI(TNode* root, TNode* node, TFakeFalse, TFakeTrue) {
+inline void InsertByKeyI(TNode* root, TNode* node, TMetaFalse, TMetaTrue) {
   InsertByKeyUseParent<TNode>(root, node);
 }
 
 template <class TNode>
-inline void InsertByKeyI(TNode* root, TNode* node, TFakeTrue, TFakeFalse) {
+inline void InsertByKeyI(TNode* root, TNode* node, TMetaTrue, TMetaFalse) {
   InsertByKeyUseInsert<TNode>(root, node);
 }
 
 template <class TNode>
-inline void InsertByKeyI(TNode* root, TNode* node, TFakeTrue, TFakeTrue) {
+inline void InsertByKeyI(TNode* root, TNode* node, TMetaTrue, TMetaTrue) {
   InsertByKeyUseInsert<TNode>(root, node);
 }
 }  // namespace hidden
@@ -34,8 +34,8 @@ template <class TNode>
 inline void InsertByKey(TNode* root, TNode* node) {
   static_assert(TNode::use_key, "use_key should be true");
   if (!root || !node) return;
-  hidden::InsertByKeyI<TNode>(root, node, TFakeBool<TNode::support_insert>(),
-                              TFakeBool<TNode::use_parent>());
+  hidden::InsertByKeyI<TNode>(root, node, TMetaBool<TNode::support_insert>(),
+                              TMetaBool<TNode::use_parent>());
 }
 }  // namespace base
 }  // namespace ext

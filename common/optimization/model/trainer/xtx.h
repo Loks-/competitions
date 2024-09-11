@@ -71,7 +71,7 @@ class XTX : public Trainer {
     bool b1 = d.Build(temp);
     bool b2 = d.Solve(xty, m.b);
     assert(b1 && b2);
-    FakeUse(b1 == b2);
+    MetaUse(b1 == b2);
   }
 
   Linear GetModel() { return m; }

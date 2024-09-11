@@ -7,10 +7,10 @@ namespace ext {
 namespace info {
 namespace hidden {
 template <class TNode>
-inline void InsertNodeToRootI(TNode*, TNode*, TFakeFalse) {}
+inline void InsertNodeToRootI(TNode*, TNode*, TMetaFalse) {}
 
 template <class TNode>
-inline void InsertNodeToRootI(TNode* node, TNode* ins, TFakeTrue) {
+inline void InsertNodeToRootI(TNode* node, TNode* ins, TMetaTrue) {
   static_assert(TNode::use_parent, "use_parent should be true");
   for (; node; node = node->p) node->InsertInfo(ins);
 }
@@ -18,7 +18,7 @@ inline void InsertNodeToRootI(TNode* node, TNode* ins, TFakeTrue) {
 
 template <class TNode>
 inline void InsertNodeToRoot(TNode* node, TNode* ins) {
-  hidden::InsertNodeToRootI(node, ins, TFakeBool<!TNode::TInfo::is_none>());
+  hidden::InsertNodeToRootI(node, ins, TMetaBool<!TNode::TInfo::is_none>());
 }
 }  // namespace info
 }  // namespace ext

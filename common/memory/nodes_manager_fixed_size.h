@@ -34,12 +34,12 @@ class NodesManagerFixedSize {
   constexpr NodesManagerFixedSize() : NodesManagerFixedSize(0) {}
 
   constexpr void Reserve(size_t new_max_nodes) {
-    FakeUse(new_max_nodes);
+    MetaUse(new_max_nodes);
     assert(new_max_nodes <= nodes.size());
   }
 
   constexpr void ReserveAdditional(size_t new_nodes) {
-    FakeUse(new_nodes);
+    MetaUse(new_nodes);
     assert(new_nodes <= Reserved());
   }
 

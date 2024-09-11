@@ -167,27 +167,27 @@ class ScapegoatTree
     return root;
   }
 
-  static TNode* InsertByKeyI(TNode* root, TNode* node, TFakeFalse, TFakeFalse) {
+  static TNode* InsertByKeyI(TNode* root, TNode* node, TMetaFalse, TMetaFalse) {
     return InsertByKeyDefault(root, node);
   }
 
-  static TNode* InsertByKeyI(TNode* root, TNode* node, TFakeFalse, TFakeTrue) {
+  static TNode* InsertByKeyI(TNode* root, TNode* node, TMetaFalse, TMetaTrue) {
     return InsertByKeyUseParent(root, node);
   }
 
-  static TNode* InsertByKeyI(TNode* root, TNode* node, TFakeTrue, TFakeFalse) {
+  static TNode* InsertByKeyI(TNode* root, TNode* node, TMetaTrue, TMetaFalse) {
     return InsertByKeyUseInsert(root, node);
   }
 
-  static TNode* InsertByKeyI(TNode* root, TNode* node, TFakeTrue, TFakeTrue) {
+  static TNode* InsertByKeyI(TNode* root, TNode* node, TMetaTrue, TMetaTrue) {
     return InsertByKeyUseInsert(root, node);
   }
 
  public:
   static TNode* InsertByKey(TNode* root, TNode* node) {
     if (!root) return node;
-    return InsertByKeyI(root, node, TFakeBool<TNode::support_insert>(),
-                        TFakeBool<TNode::use_parent>());
+    return InsertByKeyI(root, node, TMetaBool<TNode::support_insert>(),
+                        TMetaBool<TNode::use_parent>());
   }
 
  protected:

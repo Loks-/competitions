@@ -130,7 +130,7 @@ class VectorBool {
   }
 
   constexpr TSelf& operator/=(const TValue& v) {
-    FakeUse(v);
+    MetaUse(v);
     assert(v.Get());
     return *this;
   }
@@ -158,7 +158,7 @@ class VectorBool {
   }
 
   constexpr TSelf operator/(const TValue& v) const {
-    FakeUse(v);
+    MetaUse(v);
     assert(v.Get());
     return *this;
   }

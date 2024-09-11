@@ -6,7 +6,7 @@
 
 namespace nhash {
 // From boost 1.86
-constexpr uint32_t MixI(uint32_t x, TFakeUnsigned<32>) {
+constexpr uint32_t MixI(uint32_t x, TMetaUnsigned<32>) {
   x ^= x >> 16;
   x *= 0x21f0aaad;
   x ^= x >> 15;
@@ -16,7 +16,7 @@ constexpr uint32_t MixI(uint32_t x, TFakeUnsigned<32>) {
 }
 
 // // https://jonkagstrom.com/mx3/mx3_rev2.html
-// constexpr uint64_t MixI(uint64_t x, TFakeUnsigned<64>) {
+// constexpr uint64_t MixI(uint64_t x, TMetaUnsigned<64>) {
 //   x ^= x >> 32;
 //   x *= 0xe9846af9b1a615d;
 //   x ^= x >> 32;
@@ -26,7 +26,7 @@ constexpr uint32_t MixI(uint32_t x, TFakeUnsigned<32>) {
 // }
 
 // https://mostlymangling.blogspot.com/2019/12/stronger-better-morer-moremur-better.html
-constexpr uint64_t MixI(uint64_t x, TFakeUnsigned<64>) {
+constexpr uint64_t MixI(uint64_t x, TMetaUnsigned<64>) {
   x ^= x >> 27;
   x *= 0x3C79AC492BA7B653UL;
   x ^= x >> 33;
@@ -36,6 +36,6 @@ constexpr uint64_t MixI(uint64_t x, TFakeUnsigned<64>) {
 }
 
 constexpr size_t Mix(size_t x) {
-  return MixI(x, TFakeUnsigned<templates::SizeInBits<size_t>()>{});
+  return MixI(x, TMetaUnsigned<templates::SizeInBits<size_t>()>{});
 }
 }  // namespace nhash

@@ -22,7 +22,7 @@ class ISPTree
   using TNode = typename TBase::TNode;
 
  protected:
-  constexpr void SetI(const TPoint& pp, const TLData& ldata, TFakeFalse) {
+  constexpr void SetI(const TPoint& pp, const TLData& ldata, TMetaFalse) {
     auto p = TBase::root;
     auto pb = TBase::sb, pe = TBase::se;
     for (p->ApplyAction(); !p->IsLeaf(); p->ApplyAction()) {
@@ -50,7 +50,7 @@ class ISPTree
     info::UpdateNodeToRoot(p->p);
   }
 
-  constexpr void SetI(const TPoint& pp, const TLData& ldata, TFakeTrue) {
+  constexpr void SetI(const TPoint& pp, const TLData& ldata, TMetaTrue) {
     auto p = TBase::root;
     for (p->ApplyAction(); !p->IsLeaf(); p->ApplyAction())
       p = (pp[p->split_dim] < p->split_value) ? p->l : p->r;
@@ -66,7 +66,7 @@ class ISPTree
 
  public:
   constexpr void Set(const TPoint& pp, const TLData& ldata) {
-    SetI(pp, ldata, TFakeBool<TIData::support_box>());
+    SetI(pp, ldata, TMetaBool<TIData::support_box>());
   }
 
   constexpr void Add(const TPoint& pp, const TLData& ldata) {
@@ -120,12 +120,12 @@ class ISPTree
   }
 
   constexpr void SetRI(TNode* p, const TPoint& pb, const TPoint& pe,
-                       const TLData& ldata, unsigned dd, TFakeFalse) {
+                       const TLData& ldata, unsigned dd, TMetaFalse) {
     SetRIF(p, TBase::sb, TBase::se, pb, pe, ldata, dd);
   }
 
   constexpr void SetRI(TNode* p, const TPoint& pb, const TPoint& pe,
-                       const TLData& ldata, unsigned dd, TFakeTrue) {
+                       const TLData& ldata, unsigned dd, TMetaTrue) {
     SetRIT(p, pb, pe, ldata, dd);
   }
 
@@ -135,7 +135,7 @@ class ISPTree
     for (unsigned i = 0; i < dim; ++i)
       dd += ((TBase::sb[i] == pb[i]) ? 0u : 1u) +
             ((TBase::se[i] == pe[i]) ? 0u : 1u);
-    SetRI(TBase::root, pb, pe, ldata, dd, TFakeBool<TIData::support_box>());
+    SetRI(TBase::root, pb, pe, ldata, dd, TMetaBool<TIData::support_box>());
   }
 };
 }  // namespace kdtree

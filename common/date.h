@@ -23,7 +23,7 @@ class Date {
   }
 
   constexpr static void AssertMonth(unsigned month) {
-    FakeUse(month);
+    MetaUse(month);
     assert(IsMonthValid(month));
   }
 
@@ -73,7 +73,7 @@ class Date {
 
   constexpr static void AssertDate(unsigned day, unsigned month,
                                    unsigned year) {
-    FakeUse(day + month + year);
+    MetaUse(day + month + year);
     assert(IsDateValid(day, month, year));
   }
 
