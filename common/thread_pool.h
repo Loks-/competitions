@@ -103,7 +103,7 @@ class ThreadPool {
     }
   }
 
- private:
+ protected:
   std::vector<std::thread> workers;         ///< Vector of worker threads.
   std::queue<std::function<void()>> tasks;  ///< Queue of tasks.
 
