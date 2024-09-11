@@ -10,9 +10,19 @@
 #include <thread>
 #include <vector>
 
+/**
+ * @brief A simple thread pool implementation.
+ *
+ * This class manages a pool of worker threads to which tasks can be submitted.
+ */
 class ThreadPool {
  public:
-  // the constructor just launches some amount of workers
+  /**
+   * @brief Constructs a ThreadPool and launches the specified number of worker
+   * threads.
+   *
+   * @param threads The number of worker threads to launch.
+   */
   explicit ThreadPool(size_t threads) : stop(false) {
     for (size_t i = 0; i < threads; ++i)
       workers.emplace_back([this] {
@@ -35,7 +45,15 @@ class ThreadPool {
       });
   }
 
-  // add new work item to the pool
+  /**
+   * @brief Adds a new task to the pool.
+   *
+   * @tparam F The type of the function to be executed.
+   * @tparam Args The types of the arguments to be passed to the function.
+   * @param f The function to be executed.
+   * @param args The arguments to be passed to the function.
+   * @return A future that will hold the result of the function execution.
+   */
   template <class F, class... Args>
   auto Enqueue(F&& f, Args&&... args)
       -> std::future<typename std::result_of<F(Args...)>::type> {
@@ -46,7 +64,13 @@ class ThreadPool {
     return EnqueueTask(std::move(task));
   }
 
-  // add new work item to the pool
+  /**
+   * @brief Adds a new task to the pool.
+   *
+   * @tparam T The type of the task.
+   * @param task The task to be executed.
+   * @return A future that will hold the result of the task execution.
+   */
   template <class T>
   auto EnqueueTask(std::shared_ptr<std::packaged_task<T()>>&& task)
       -> std::future<T> {
@@ -65,7 +89,9 @@ class ThreadPool {
     return res;
   }
 
-  // the destructor joins all threads
+  /**
+   * @brief Destructs the ThreadPool and joins all threads.
+   */
   ~ThreadPool() {
     {
       std::unique_lock<std::mutex> lock(queue_mutex);
@@ -78,13 +104,12 @@ class ThreadPool {
   }
 
  private:
-  // need to keep track of threads so we can join them
-  std::vector<std::thread> workers;
-  // the task queue
-  std::queue<std::function<void()>> tasks;
+  std::vector<std::thread> workers;         ///< Vector of worker threads.
+  std::queue<std::function<void()>> tasks;  ///< Queue of tasks.
 
-  // synchronization
-  std::mutex queue_mutex;
-  std::condition_variable condition;
-  bool stop;
+  std::mutex
+      queue_mutex;  ///< Mutex for synchronizing access to the task queue.
+  std::condition_variable
+      condition;  ///< Condition variable for task notification.
+  bool stop;      ///< Flag indicating whether the pool is stopping.
 };
