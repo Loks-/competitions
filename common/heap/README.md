@@ -2,7 +2,7 @@
 
 ## Base Heaps
 
-Base heaps support the following operations:
+Base heaps support the following functions:
 
 - `bool Empty() const;` - Check if the heap is empty.
 - `unsigned Size() const;` - Get the number of elements in the heap.
@@ -11,19 +11,19 @@ Base heaps support the following operations:
 - `void Pop();` - Remove the top element from the heap.
 - `TData Extract();` - Extract the top element from the heap.
 
-Optional operations:
+Optional functions:
 
 - `void ExtractAll();` - Extract all elements from the heap.
 - `void Union(TSelf& heap);` - Union with another heap.
 
 ## Extended Heaps
 
-Extended heaps support the following operations in addition to the base operations:
+Extended heaps support the following functions in addition to the base functions:
 
 - `void DecreaseValue(unsigned key, const TValue& value);` - Decrease the value of an element.
 - `void DecreaseValueIfLess(unsigned key, const TValue& value);` - Decrease the value if the new value is less.
 
-Optional operations:
+Optional functions:
 
 - `void IncreaseValue(unsigned key, const TValue& value);` - Increase the value of an element.
 - `void Set(unsigned key, const TValue& value);` - Set the value of an element.
@@ -31,7 +31,7 @@ Optional operations:
 
 ## UKVM Heaps
 
-UKVM heaps support the following operations:
+UKVM heaps support the following functions:
 
 - `bool Empty() const;` - Check if the heap is empty.
 - `unsigned Size() const;` - Get the number of elements in the heap.
@@ -53,7 +53,7 @@ UKVM heaps support the following operations:
 - `const TValue& ExtractValue();` - Extract the value of the top element.
 - `TData Extract();` - Extract the top element from the heap.
 
-Optional operations:
+Optional functions:
 
 - `void ExtractAll();` - Extract all elements from the heap.
 
