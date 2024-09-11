@@ -21,7 +21,8 @@ template <class TTData, class TTCompare = std::less<TTData>,
           template <class TNode> class TTNodesManager = memory::NodesManager>
 class Fibonacci {
  public:
-  static const unsigned mask = (1u << 31);
+  static constexpr unsigned mask = (1u << 31);
+
   using TData = TTData;
   using TCompare = TTCompare;
   using TSelf = Fibonacci<TData, TCompare, TTNodesManager>;
@@ -32,15 +33,16 @@ class Fibonacci {
     Node *p, *l, *r, *c;
     unsigned d;
 
-    Node() { Clear(); }
-    Node(const TData& _value) : value(_value) { Clear(); }
+    constexpr Node() { Clear(); }
 
-    void Clear() {
+    constexpr Node(const TData& _value) : value(_value) { Clear(); }
+
+    constexpr void Clear() {
       p = l = r = c = nullptr;
       d = 0;
     }
 
-    void ClearReuse() { d = 0; }
+    constexpr void ClearReuse() { d = 0; }
   };
 
   using TNodesManager = TTNodesManager<Node>;
@@ -52,17 +54,21 @@ class Fibonacci {
   unsigned size;
   std::vector<Node*> vconsolidate;
 
-  bool Compare(Node* l, Node* r) const { return compare(l->value, r->value); }
+  constexpr bool Compare(Node* l, Node* r) const {
+    return compare(l->value, r->value);
+  }
 
  public:
-  explicit Fibonacci(TNodesManager& _nodes_manager)
+  constexpr explicit Fibonacci(TNodesManager& _nodes_manager)
       : nodes_manager(_nodes_manager), head(nullptr), size(0) {}
 
-  TSelf Make() const { return TSelf(nodes_manager); }
-  bool Empty() const { return !head; }
-  unsigned Size() const { return size; }
+  constexpr TSelf Make() const { return TSelf(nodes_manager); }
 
-  void AddNode(Node* node) {
+  constexpr bool Empty() const { return !head; }
+
+  constexpr unsigned Size() const { return size; }
+
+  constexpr void AddNode(Node* node) {
     if (!head) {
       node->l = node->r = node;
       head = node;
@@ -76,29 +82,29 @@ class Fibonacci {
     ++size;
   }
 
-  Node* Add(const TData& v) {
+  constexpr Node* Add(const TData& v) {
     Node* p = nodes_manager.New();
     p->value = v;
     AddNode(p);
     return p;
   }
 
-  const Node* TopNode() const {
+  constexpr const Node* TopNode() const {
     assert(head);
     return head;
   }
 
-  const TData& Top() const { return TopNode()->value; }
+  constexpr const TData& Top() const { return TopNode()->value; }
 
-  void Pop() { Delete(head); }
+  constexpr void Pop() { Delete(head); }
 
-  TData Extract() {
-    TData v = Top();
+  constexpr TData Extract() {
+    const TData v = Top();
     Pop();
     return v;
   }
 
-  void Union(TSelf& h) {
+  constexpr void Union(TSelf& h) {
     assert(&nodes_manager == &(h.nodes_manager));
     if (h.Empty()) return;
     if (Empty()) {
@@ -112,7 +118,7 @@ class Fibonacci {
     h.size = 0;
   }
 
-  void DecreaseValue(Node* node, const TData& new_value) {
+  constexpr void DecreaseValue(Node* node, const TData& new_value) {
     assert(node);
     node->value = new_value;
     if (node->p) {
@@ -125,12 +131,12 @@ class Fibonacci {
     }
   }
 
-  void DecreaseValueIfLess(Node* node, const TData& new_value) {
+  constexpr void DecreaseValueIfLess(Node* node, const TData& new_value) {
     assert(node);
     if (compare(new_value, node->value)) DecreaseValue(node, new_value);
   }
 
-  void IncreaseValue(Node* node, const TData& new_value) {
+  constexpr void IncreaseValue(Node* node, const TData& new_value) {
     assert(node);
     node->value = new_value;
     if (node->c) {
@@ -148,7 +154,7 @@ class Fibonacci {
     }
   }
 
-  void SetValue(Node* node, const TData& new_value) {
+  constexpr void SetValue(Node* node, const TData& new_value) {
     assert(node);
     if (compare(node->value, new_value))
       IncreaseValue(node, new_value);
@@ -156,7 +162,7 @@ class Fibonacci {
       DecreaseValue(node, new_value);
   }
 
-  void RemoveNode(Node* node) {
+  constexpr void RemoveNode(Node* node) {
     if (node->c) {
       ClearParentLink(node->c);
       Union(node->c);
@@ -187,22 +193,24 @@ class Fibonacci {
     --size;
   }
 
-  void Delete(Node* node) {
+  constexpr void Delete(Node* node) {
     RemoveNode(node);
     nodes_manager.Release(node);
   }
 
  protected:
-  static unsigned Degree(const Node* node) { return node->d & ~mask; }
-  static void Mark(Node* node) { node->d |= mask; }
-  static unsigned Marked(const Node* node) { return node->d & mask; }
+  static constexpr unsigned Degree(const Node* node) { return node->d & ~mask; }
 
-  Node* TopNode() {
+  static constexpr void Mark(Node* node) { node->d |= mask; }
+
+  static constexpr unsigned Marked(const Node* node) { return node->d & mask; }
+
+  constexpr Node* TopNode() {
     assert(head);
     return head;
   }
 
-  void Union(Node* node) {
+  constexpr void Union(Node* node) {
     if (!node) return;
     node->l->r = head->r;
     head->r->l = node->l;
@@ -210,17 +218,17 @@ class Fibonacci {
     node->l = head;
   }
 
-  static void ClearParentLink(Node* node) {
+  static constexpr void ClearParentLink(Node* node) {
     node->p = nullptr;
     for (Node* c = node->r; c != node; c = c->r) c->p = nullptr;
   }
 
-  static void RemoveFromList(Node* node) {
+  static constexpr void RemoveFromList(Node* node) {
     node->r->l = node->l;
     node->l->r = node->r;
   }
 
-  static void Link(Node* x, Node* y) {
+  static constexpr void Link(Node* x, Node* y) {
     if (y->c) {
       x->r = y->c->r;
       y->c->r = x;
@@ -235,16 +243,16 @@ class Fibonacci {
     x->d &= ~mask;
   }
 
-  void VCAdjust(unsigned d) {
+  constexpr void VCAdjust(unsigned d) {
     if (vconsolidate.size() <= d) vconsolidate.resize(d + 1);
   }
 
-  Node* VCGet(unsigned d) {
+  constexpr Node* VCGet(unsigned d) {
     VCAdjust(d);
     return vconsolidate[d];
   }
 
-  void Consolidate() {
+  constexpr void Consolidate() {
     std::fill(vconsolidate.begin(), vconsolidate.end(), nullptr);
     unsigned d = Degree(head);
     VCAdjust(d);
@@ -279,7 +287,7 @@ class Fibonacci {
     }
   }
 
-  void CutNode(Node* node) {
+  constexpr void CutNode(Node* node) {
     for (;;) {
       Node *p = node->p, *r = node->r;
       if (r != node) {

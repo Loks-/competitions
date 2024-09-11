@@ -13,12 +13,10 @@ namespace base {
 // Top     -- O(1) amortized
 // Pop     -- O(log N)
 // Union   -- O(log N)
-template <class TTData, class TTCompare = std::less<TTData>,
+template <class TData, class TCompare = std::less<TData>,
           template <class TNode> class TTNodesManager = memory::NodesManager>
 class Binomial {
  public:
-  using TData = TTData;
-  using TCompare = TTCompare;
   using TSelf = Binomial<TData, TCompare, TTNodesManager>;
 
   class Node : public memory::Node {
@@ -27,61 +25,58 @@ class Binomial {
     Node *l, *s;
     unsigned d;
 
-    Node() { Clear(); }
-    Node(const TData& _value) : value(_value) { Clear(); }
+   public:
+    constexpr Node() { Clear(); }
 
-    void Clear() {
+    constexpr Node(const TData& _value) : value(_value) { Clear(); }
+
+    constexpr void Clear() {
       l = s = nullptr;
       d = 0;
     }
 
-    void ClearReuse() { d = 0; }
+    constexpr void ClearReuse() { d = 0; }
+
+    constexpr const TData& GetValue() const { return value; }
   };
 
   using TNodesManager = TTNodesManager<Node>;
 
- protected:
-  TCompare compare;
-  TNodesManager& nodes_manager;
-  Node* head;
-  unsigned size;
-  mutable Node* top;
-
-  bool Compare(Node* l, Node* r) const { return compare(l->value, r->value); }
-
  public:
-  explicit Binomial(TNodesManager& _nodes_manager)
-      : nodes_manager(_nodes_manager), head(nullptr), size(0), top(nullptr) {}
+  constexpr explicit Binomial(TNodesManager& _manager)
+      : manager(_manager), head(nullptr), size(0), top(nullptr) {}
 
-  TSelf Make() const { return TSelf(nodes_manager); }
-  bool Empty() const { return !head; }
-  unsigned Size() const { return size; }
+  constexpr TSelf Make() const { return TSelf(manager); }
 
-  void Add(const TData& v) {
-    Node* pv = nodes_manager.New();
+  constexpr bool Empty() const { return !head; }
+
+  constexpr unsigned Size() const { return size; }
+
+  constexpr void Add(const TData& v) {
+    Node* pv = manager.New();
     pv->value = v;
     AddOneNode(pv);
     ++size;
   }
 
-  const Node* TopNode() const {
+  constexpr const Node* TopNode() const {
     assert(!Empty());
     if (!top) SetTopNode();
     return top;
   }
 
-  const TData& Top() const { return TopNode()->value; }
+  constexpr const TData& Top() const { return TopNode()->GetValue(); }
 
-  void Pop() { DeleteI(TopNode()); }
+  constexpr void Pop() { DeleteI(TopNode()); }
 
-  TData Extract() {
-    TData v = Top();
+  constexpr TData Extract() {
+    const TData v = Top();
     Pop();
     return v;
   }
 
-  void Union(TSelf& h) {
-    assert(&nodes_manager == &(h.nodes_manager));
+  constexpr void Union(TSelf& h) {
+    assert(&manager == &(h.manager));
     Union(h.head);
     h.head = nullptr;
     size += h.size;
@@ -90,28 +85,39 @@ class Binomial {
   }
 
  protected:
-  void ResetTopNode() const { top = nullptr; }
+  TCompare compare;
+  TNodesManager& manager;
+  Node* head;
+  unsigned size;
+  mutable Node* top;
 
-  void SetTopNode() const {
+ protected:
+  constexpr bool Compare(Node* l, Node* r) const {
+    return compare(l->GetValue(), r->GetValue());
+  }
+
+  constexpr void ResetTopNode() const { top = nullptr; }
+
+  constexpr void SetTopNode() const {
     top = head;
     for (Node* c = top->s; c; c = c->s) {
       if (Compare(c, top)) top = c;
     }
   }
 
-  Node* TopNode() {
+  constexpr Node* TopNode() {
     assert(!Empty());
     if (!top) SetTopNode();
     return top;
   }
 
-  static void Link(Node* x, Node* y) {
+  static constexpr void Link(Node* x, Node* y) {
     x->s = y->l;
     y->l = x;
     ++y->d;
   }
 
-  void AddOneNode(Node* p) {
+  constexpr void AddOneNode(Node* p) {
     ResetTopNode();
     p->s = head;
     head = p;
@@ -127,7 +133,7 @@ class Binomial {
     }
   }
 
-  static Node* Merge(Node* h1, Node* h2) {
+  static constexpr Node* Merge(Node* h1, Node* h2) {
     if (!h1) return h2;
     if (!h2) return h1;
     Node* r;
@@ -152,7 +158,7 @@ class Binomial {
     return r;
   }
 
-  void Compress() {
+  constexpr void Compress() {
     if (Empty()) return;
     ResetTopNode();
     Node *pp = nullptr, *pc = head, *pn = pc->s;
@@ -165,26 +171,27 @@ class Binomial {
           pc->s = pn->s;
           Link(pn, pc);
         } else {
-          if (pp)
+          if (pp) {
             pp->s = pn;
-          else
+          } else {
             head = pn;
-          Link(pc, pn);
-          pc = pn;
+            Link(pc, pn);
+            pc = pn;
+          }
         }
       }
     }
   }
 
-  void Union(Node* rhead) {
+  constexpr void Union(Node* rhead) {
     head = Merge(head, rhead);
     Compress();
   }
 
-  void CutTree(Node* node) {
-    if (head == node)
+  constexpr void CutTree(Node* node) {
+    if (head == node) {
       head = node->s;
-    else {
+    } else {
       Node* c = head;
       for (; c->s != node;) c = c->s;
       c->s = node->s;
@@ -192,7 +199,7 @@ class Binomial {
     node->s = nullptr;
   }
 
-  Node* CutChildren(Node* node) {
+  constexpr Node* CutChildren(Node* node) {
     Node* c = node->l;
     node->l = nullptr;
     if (!c) return c;
@@ -206,12 +213,12 @@ class Binomial {
     return c;
   }
 
-  void DeleteI(Node* node) {
+  constexpr void DeleteI(Node* node) {
     assert(node);
     ResetTopNode();
     CutTree(node);
     Union(CutChildren(node));
-    nodes_manager.Release(node);
+    manager.Release(node);
     --size;
   }
 };

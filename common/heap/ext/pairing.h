@@ -18,11 +18,9 @@ namespace ext {
 // Union   -- O(1)
 template <class TTData, class TTCompare = std::less<TTData>,
           template <class TNode> class TTNodesManager = memory::NodesManager,
-          bool _multipass = false, bool _auxiliary = false>
+          bool multipass = false, bool auxiliary = false>
 class Pairing {
  public:
-  static const bool multipass = _multipass;
-  static const bool auxiliary = _auxiliary;
   using TData = TTData;
   using TCompare = TTCompare;
   using TSelf = Pairing<TData, TCompare, TTNodesManager, multipass, auxiliary>;
@@ -32,10 +30,12 @@ class Pairing {
     TData value;
     Node *p, *l, *r;
 
-    Node() { Clear(); }
-    Node(const TData& _value) : value(_value) { Clear(); }
+   public:
+    constexpr Node() { Clear(); }
 
-    void Clear() { p = l = r = nullptr; }
+    constexpr Node(const TData& _value) : value(_value) { Clear(); }
+
+    constexpr void Clear() { p = l = r = nullptr; }
   };
 
   using TNodesManager = TTNodesManager<Node>;
@@ -46,39 +46,43 @@ class Pairing {
   Node* head;
   unsigned size;
 
-  bool Compare(Node* l, Node* r) const { return compare(l->value, r->value); }
+  constexpr bool Compare(Node* l, Node* r) const {
+    return compare(l->value, r->value);
+  }
 
  public:
-  explicit Pairing(TNodesManager& _nodes_manager)
+  constexpr explicit Pairing(TNodesManager& _nodes_manager)
       : nodes_manager(_nodes_manager), head(nullptr), size(0) {}
 
-  TSelf Make() const { return TSelf(nodes_manager); }
-  bool Empty() const { return !head; }
-  unsigned Size() const { return size; }
+  constexpr TSelf Make() const { return TSelf(nodes_manager); }
 
-  void AddNode(Node* node) { AddNode(node, TFakeBool<auxiliary>()); }
+  constexpr bool Empty() const { return !head; }
 
-  Node* Add(const TData& v) {
+  constexpr unsigned Size() const { return size; }
+
+  constexpr void AddNode(Node* node) { AddNode(node, TFakeBool<auxiliary>()); }
+
+  constexpr Node* Add(const TData& v) {
     Node* p = nodes_manager.New();
     p->value = v;
     AddNode(p);
     return p;
   }
 
-  const TData& Top() { return TopNode()->value; }
+  constexpr const TData& Top() { return TopNode()->value; }
 
-  void Pop() {
+  constexpr void Pop() {
     ProcessAux();
     Delete(head);
   }
 
-  TData Extract() {
-    TData v = Top();
+  constexpr TData Extract() {
+    const TData v = Top();
     Pop();
     return v;
   }
 
-  void Union(TSelf& h) {
+  constexpr void Union(TSelf& h) {
     assert(&nodes_manager == &(h.nodes_manager));
     if (h.Empty()) return;
     if (Empty()) {
@@ -93,7 +97,7 @@ class Pairing {
     h.size = 0;
   }
 
-  void DecreaseValue(Node* node, const TData& new_value) {
+  constexpr void DecreaseValue(Node* node, const TData& new_value) {
     assert(node);
     node->value = new_value;
     if (node != head) {
@@ -115,12 +119,12 @@ class Pairing {
     }
   }
 
-  void DecreaseValueIfLess(Node* node, const TData& new_value) {
+  constexpr void DecreaseValueIfLess(Node* node, const TData& new_value) {
     assert(node);
     if (compare(new_value, node->value)) DecreaseValue(node, new_value);
   }
 
-  void IncreaseValue(Node* node, const TData& new_value) {
+  constexpr void IncreaseValue(Node* node, const TData& new_value) {
     assert(node);
     node->value = new_value;
     if (auxiliary && (node == head)) ProcessAux();
@@ -139,7 +143,7 @@ class Pairing {
     }
   }
 
-  void SetValue(Node* node, const TData& new_value) {
+  constexpr void SetValue(Node* node, const TData& new_value) {
     assert(node);
     if (compare(node->value, new_value))
       IncreaseValue(node, new_value);
@@ -147,13 +151,13 @@ class Pairing {
       DecreaseValue(node, new_value);
   }
 
-  void Delete(Node* node) {
+  constexpr void Delete(Node* node) {
     RemoveNode(node);
     nodes_manager.Release(node);
   }
 
  protected:
-  static Node* Link(Node* x, Node* y) {
+  constexpr static Node* Link(Node* x, Node* y) {
     x->r = y->l;
     if (x->r) x->r->p = x;
     y->l = x;
@@ -161,14 +165,14 @@ class Pairing {
     return y;
   }
 
-  Node* ComparisonLink(Node* x, Node* y) {
+  constexpr Node* ComparisonLink(Node* x, Node* y) {
     if (Compare(x, y))
       return Link(y, x);
     else
       return Link(x, y);
   }
 
-  void ComparisonLinkHead(Node* x) {
+  constexpr void ComparisonLinkHead(Node* x) {
     if (Compare(x, head)) {
       Link(head, x);
       head = x;
@@ -177,7 +181,7 @@ class Pairing {
     }
   }
 
-  void AddNode(Node* node, TFakeFalse) {
+  constexpr void AddNode(Node* node, TFakeFalse) {
     if (!head)
       head = node;
     else
@@ -185,7 +189,7 @@ class Pairing {
     ++size;
   }
 
-  void AddNode(Node* node, TFakeTrue) {
+  constexpr void AddNode(Node* node, TFakeTrue) {
     if (!head) {
       head = node;
     } else {
@@ -197,7 +201,7 @@ class Pairing {
     ++size;
   }
 
-  Node* Compress(Node* f, TFakeFalse) {
+  constexpr Node* Compress(Node* f, TFakeFalse) {
     if (f && f->r) {
       Node* l = nullptr;
       for (; f && f->r;) {
@@ -222,7 +226,7 @@ class Pairing {
     return f;
   }
 
-  Node* Compress(Node* f, TFakeTrue) {
+  constexpr Node* Compress(Node* f, TFakeTrue) {
     if (f && f->r) {
       Node* l = f->r;
       for (; l->r;) l = l->r;
@@ -238,11 +242,13 @@ class Pairing {
     return f;
   }
 
-  Node* Compress(Node* f) { return Compress(f, TFakeBool<multipass>()); }
+  constexpr Node* Compress(Node* f) {
+    return Compress(f, TFakeBool<multipass>());
+  }
 
-  void ProcessAux(TFakeFalse) {}
+  constexpr void ProcessAux(TFakeFalse) {}
 
-  void ProcessAux(TFakeTrue) {
+  constexpr void ProcessAux(TFakeTrue) {
     if (head->r) {
       Node* t = Compress(head->r, TFakeTrue());
       head->r = nullptr;
@@ -250,15 +256,15 @@ class Pairing {
     }
   }
 
-  void ProcessAux() { ProcessAux(TFakeBool<auxiliary>()); }
+  constexpr void ProcessAux() { ProcessAux(TFakeBool<auxiliary>()); }
 
-  Node* TopNode() {
+  constexpr Node* TopNode() {
     assert(head);
     ProcessAux();
     return head;
   }
 
-  void RemoveNode(Node* x) {
+  constexpr void RemoveNode(Node* x) {
     if (x == head) {
       Node* t = Compress(x->l);
       x->l = nullptr;

@@ -81,10 +81,11 @@ class ProxySet {
   }
 
   void Set(unsigned key, TValue new_priority) {
-    if (InHeap(key))
+    if (InHeap(key)) {
       SetI(key, new_priority);
-    else
+    } else {
       AddNewKeyI(key, new_priority, false);
+    }
   }
 
   void DecreaseValue(unsigned key, TValue new_priority) {
@@ -116,13 +117,13 @@ class ProxySet {
   }
 
   TValue ExtractValue() {
-    TValue t = TopValue();
+    const TValue t = TopValue();
     Pop();
     return t;
   }
 
   TData Extract() {
-    TData t = Top();
+    const TData t = Top();
     Pop();
     return t;
   }
@@ -137,7 +138,7 @@ class ProxySet {
     priority[key] = p;
     if (!skip_heap) {
       TNode* pnode;
-      auto it = queue.find(p);
+      const auto it = queue.find(p);
       if (it == queue.end()) {
         pnode = manager_priority.New();
         pnode->next = pnode->prev = pnode;
@@ -165,7 +166,7 @@ class ProxySet {
   void RemoveNodeI(TNode* node) {
     if (node->next == node->prev) {
       const TValue& p = Get(Key(node));
-      auto it = queue.find(p);
+      const auto it = queue.find(p);
       assert(it != queue.end());
       manager_priority.Release(it->second);
       queue.erase(it);

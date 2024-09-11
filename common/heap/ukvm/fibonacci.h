@@ -32,50 +32,62 @@ class Fibonacci : public heap::ext::Fibonacci<TTValue, TCompare,
  protected:
   TNodesManager manager;
 
-  bool UnusedNode(const TNode* p) { return p->d == -1u; }
-  void SetUnused(TNode* p) { p->d = -1u; }
-  void CleanUnused(TNode* p) { p->d = 0; }
+ protected:
+  constexpr bool UnusedNode(const TNode* p) { return p->d == -1u; }
 
-  TNode* GetNode(unsigned key) { return manager.NodeByRawIndex(key); }
+  constexpr void SetUnused(TNode* p) { p->d = -1u; }
+
+  constexpr void CleanUnused(TNode* p) { p->d = 0; }
+
+  constexpr TNode* GetNode(unsigned key) { return manager.NodeByRawIndex(key); }
 
  public:
-  explicit Fibonacci(unsigned ukey_size) : TBase(manager), manager(ukey_size) {
+  constexpr explicit Fibonacci(unsigned ukey_size)
+      : TBase(manager), manager(ukey_size) {
     for (unsigned i = 0; i < ukey_size; ++i) SetUnused(manager.New());
   }
 
-  Fibonacci(const std::vector<TValue>& v, bool skip_heap)
+  constexpr Fibonacci(const std::vector<TValue>& v, bool skip_heap)
       : TBase(manager), manager(v.size()) {
     for (unsigned i = 0; i < v.size(); ++i) {
       auto p = manager.New();
       p->value = v[i];
-      if (skip_heap)
+      if (skip_heap) {
         SetUnused(p);
-      else
+      } else {
         TBase::AddNode(p);
+      }
     }
   }
 
-  unsigned UKeySize() const { return manager.Size(); }
+  constexpr unsigned UKeySize() const { return manager.Size(); }
 
-  const TNode* GetNode(unsigned key) const {
+  constexpr const TNode* GetNode(unsigned key) const {
     return manager.NodeByRawIndex(key);
   }
 
-  bool InHeap(unsigned key) const { return !UnusedNode(GetNode(key)); }
+  constexpr bool InHeap(unsigned key) const {
+    return !UnusedNode(GetNode(key));
+  }
 
-  const TValue& Get(unsigned key) const { return GetNode(key)->value; }
+  constexpr const TValue& Get(unsigned key) const {
+    return GetNode(key)->value;
+  }
 
-  std::vector<TValue> GetValues() const {
-    unsigned n = UKeySize();
+  constexpr std::vector<TValue> GetValues() const {
+    const unsigned n = UKeySize();
     std::vector<TValue> v(n);
     for (unsigned i = 0; i < n; ++i) v[i] = Get(i);
     return v;
   }
 
-  unsigned GetKey(const TNode* node) const { return manager.RawIndex(node); }
+  constexpr unsigned GetKey(const TNode* node) const {
+    return manager.RawIndex(node);
+  }
 
  protected:
-  void AddNewKeyI(TNode* node, const TValue& new_value, bool skip_heap) {
+  constexpr void AddNewKeyI(TNode* node, const TValue& new_value,
+                            bool skip_heap) {
     node->value = new_value;
     if (!skip_heap) {
       CleanUnused(node);
@@ -84,73 +96,76 @@ class Fibonacci : public heap::ext::Fibonacci<TTValue, TCompare,
   }
 
  public:
-  void AddNewKey(unsigned key, const TValue& new_value,
-                 bool skip_heap = false) {
+  constexpr void AddNewKey(unsigned key, const TValue& new_value,
+                           bool skip_heap = false) {
     TNode* node = GetNode(key);
     assert(UnusedNode(node));
     AddNewKeyI(node, new_value, skip_heap);
   }
 
-  void DecreaseValue(unsigned key, const TValue& new_value) {
+  constexpr void DecreaseValue(unsigned key, const TValue& new_value) {
     TNode* node = GetNode(key);
-    if (UnusedNode(node))
+    if (UnusedNode(node)) {
       AddNewKeyI(node, new_value, false);
-    else
+    } else {
       TBase::DecreaseValue(node, new_value);
+    }
   }
 
-  void DecreaseValueIfLess(unsigned key, const TValue& new_value) {
+  constexpr void DecreaseValueIfLess(unsigned key, const TValue& new_value) {
     TNode* node = GetNode(key);
     if (TBase::compare(new_value, node->value)) DecreaseValue(key, new_value);
   }
 
-  void IncreaseValue(unsigned key, const TValue& new_value) {
+  constexpr void IncreaseValue(unsigned key, const TValue& new_value) {
     TNode* node = GetNode(key);
     assert(!UnusedNode(node));
     TBase::IncreaseValue(node, new_value);
   }
 
-  void Set(unsigned key, const TValue& new_value) {
+  constexpr void Set(unsigned key, const TValue& new_value) {
     TNode* node = GetNode(key);
-    if (UnusedNode(node))
+    if (UnusedNode(node)) {
       AddNewKeyI(node, new_value, false);
-    else if (TBase::compare(new_value, node->value))
+    } else if (TBase::compare(new_value, node->value)) {
       TBase::DecreaseValue(node, new_value);
-    else
+    } else {
       TBase::IncreaseValue(node, new_value);
+    }
   }
 
-  void Add(const TData& x) { Set(x.key, x.value); }
+  constexpr void Add(const TData& x) { Set(x.key, x.value); }
 
-  unsigned TopKey() const { return GetKey(TBase::TopNode()); }
-  const TValue& TopValue() const { return TBase::Top(); }
+  constexpr unsigned TopKey() const { return GetKey(TBase::TopNode()); }
 
-  TData Top() const {
+  constexpr const TValue& TopValue() const { return TBase::Top(); }
+
+  constexpr TData Top() const {
     TNode* node = TBase::TopNode();
     return {GetKey(node), node->value};
   }
 
-  void Delete(TNode* node) {
+  constexpr void Delete(TNode* node) {
     TBase::RemoveNode(node);
     SetUnused(node);
   }
 
-  void Pop() { Delete(TBase::TopNode()); }
+  constexpr void Pop() { Delete(TBase::TopNode()); }
 
-  unsigned ExtractKey() {
-    unsigned t = TopKey();
+  constexpr unsigned ExtractKey() {
+    const unsigned t = TopKey();
     Pop();
     return t;
   }
 
-  const TValue& ExtractValue() {
+  constexpr const TValue& ExtractValue() {
     const TValue& t = TopValue();
     Pop();
     return t;
   }
 
-  TData Extract() {
-    TData t = Top();
+  constexpr TData Extract() {
+    const TData t = Top();
     Pop();
     return t;
   }

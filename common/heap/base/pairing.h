@@ -15,88 +15,89 @@ namespace base {
 // Top     -- O(1)
 // Pop     -- O(log N) amortized
 // Union   -- O(1)
-template <class TTData, class TTCompare = std::less<TTData>,
+template <class TData, class TCompare = std::less<TData>,
           template <class TNode> class TTNodesManager = memory::NodesManager,
-          bool _multipass = false, bool _auxiliary = false>
+          bool multipass = false, bool auxiliary = false>
 class Pairing {
  public:
-  static const bool multipass = _multipass;
-  static const bool auxiliary = _auxiliary;
-  using TData = TTData;
-  using TCompare = TTCompare;
-  using TSelf = Pairing<TData, TCompare, TTNodesManager, multipass, auxiliary>;
-
   class Node : public memory::Node {
    public:
     TData value;
     Node *l, *r;
 
-    Node() { Clear(); }
-    Node(const TData& _value) : value(_value) { Clear(); }
+   public:
+    constexpr Node() { Clear(); }
 
-    void Clear() { l = r = nullptr; }
+    constexpr Node(const TData& _value) : value(_value) { Clear(); }
+
+    constexpr void Clear() { l = r = nullptr; }
+
+    constexpr const TData& GetValue() const { return value; }
   };
-
-  using TNodesManager = TTNodesManager<Node>;
 
  protected:
   TCompare compare;
-  TNodesManager nodes_manager;
+  TTNodesManager<Node> manager;
   Node* head;
   unsigned size;
 
-  bool Compare(Node* l, Node* r) const { return compare(l->value, r->value); }
+ protected:
+  constexpr bool Compare(Node* l, Node* r) const {
+    return compare(l->GetValue(), r->GetValue());
+  }
 
  public:
-  explicit Pairing(unsigned expected_size)
-      : nodes_manager(expected_size), head(nullptr), size(0) {}
+  constexpr explicit Pairing(unsigned expected_size)
+      : manager(expected_size), head(nullptr), size(0) {}
 
-  explicit Pairing(const std::vector<TData>& v) : Pairing(v.size()) {
+  constexpr explicit Pairing(const std::vector<TData>& v) : Pairing(v.size()) {
     for (auto& u : v) Add(u);
   }
 
-  bool Empty() const { return !head; }
-  unsigned Size() const { return size; }
+  constexpr bool Empty() const { return !head; }
 
-  void Add(const TData& v) {
-    Node* p = nodes_manager.New();
+  constexpr unsigned Size() const { return size; }
+
+  constexpr void Add(const TData& v) {
+    Node* p = manager.New();
     p->value = v;
     AddNode(p);
   }
 
-  const TData& Top() { return TopNode()->value; }
+  constexpr const TData& Top() { return TopNode()->GetValue(); }
 
-  void Pop() {
+  constexpr void Pop() {
     assert(head);
     ProcessAux();
-    Node* t = head;
+    Node* old_head = head;
     head = Compress(head->l);
-    t->l = nullptr;
+    old_head->l = nullptr;
     --size;
-    nodes_manager.Release(t);
+    manager.Release(old_head);
   }
 
-  TData Extract() {
-    TData v = Top();
+  constexpr TData Extract() {
+    const TData v = Top();
     Pop();
     return v;
   }
 
  protected:
-  static Node* Link(Node* x, Node* y) {
+  constexpr static Node* Link(Node* x, Node* y) {
     x->r = y->l;
     y->l = x;
     return y;
   }
 
-  Node* ComparisonLink(Node* x, Node* y) {
-    if (Compare(x, y))
+  constexpr Node* ComparisonLink(Node* x, Node* y) {
+    if (Compare(x, y)) {
       return Link(y, x);
-    else
+    } else {
       return Link(x, y);
+    }
   }
 
-  void ComparisonLinkHead(Node* x) {
+  constexpr void ComparisonLinkHead(Node* x) {
     if (Compare(x, head)) {
       Link(head, x);
       head = x;
@@ -105,15 +106,16 @@ class Pairing {
     }
   }
 
-  void AddNode(Node* node, TFakeFalse) {
-    if (!head)
+  constexpr void AddNode(Node* node, TFakeFalse) {
+    if (!head) {
       head = node;
-    else
+    } else {
       ComparisonLinkHead(node);
+    }
     ++size;
   }
 
-  void AddNode(Node* node, TFakeTrue) {
+  constexpr void AddNode(Node* node, TFakeTrue) {
     if (!head) {
       head = node;
     } else {
@@ -123,9 +125,9 @@ class Pairing {
     ++size;
   }
 
-  void AddNode(Node* node) { AddNode(node, TFakeBool<auxiliary>()); }
+  constexpr void AddNode(Node* node) { AddNode(node, TFakeBool<auxiliary>()); }
 
-  Node* Compress(Node* f, TFakeFalse) {
+  constexpr Node* Compress(Node* f, TFakeFalse) {
     if (f && f->r) {
       Node* l = nullptr;
       for (; f && f->r;) {
@@ -135,10 +137,11 @@ class Pairing {
         f = frr;
         l = t;
       }
-      if (f)
+      if (f) {
         f->r = l;
-      else
+      } else {
         f = l;
+      }
       for (l = f->r; l;) {
         Node* lr = l->r;
         f = ComparisonLink(f, l);
@@ -149,7 +152,7 @@ class Pairing {
     return f;
   }
 
-  Node* Compress(Node* f, TFakeTrue) {
+  constexpr Node* Compress(Node* f, TFakeTrue) {
     if (f && f->r) {
       Node* l = f->r;
       for (; l->r;) l = l->r;
@@ -164,11 +167,13 @@ class Pairing {
     return f;
   }
 
-  Node* Compress(Node* f) { return Compress(f, TFakeBool<multipass>()); }
+  constexpr Node* Compress(Node* f) {
+    return Compress(f, TFakeBool<multipass>());
+  }
 
-  void ProcessAux(TFakeFalse) {}
+  constexpr void ProcessAux(TFakeFalse) {}
 
-  void ProcessAux(TFakeTrue) {
+  constexpr void ProcessAux(TFakeTrue) {
     if (head->r) {
       Node* t = Compress(head->r, TFakeTrue());
       head->r = nullptr;
@@ -176,9 +181,9 @@ class Pairing {
     }
   }
 
-  void ProcessAux() { ProcessAux(TFakeBool<auxiliary>()); }
+  constexpr void ProcessAux() { ProcessAux(TFakeBool<auxiliary>()); }
 
-  Node* TopNode() {
+  constexpr Node* TopNode() {
     ProcessAux();
     return head;
   }

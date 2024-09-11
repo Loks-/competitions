@@ -11,54 +11,56 @@ namespace base {
 // Pop     -- O(d log N / log d)
 // Init    -- O(N)
 // Union   -- O(N)
-template <unsigned d_, class TTData, class TTCompare = std::less<TTData>>
+template <unsigned d, class TData, class TCompare = std::less<TData>>
 class DHeap {
  public:
-  const unsigned d = d_;
-  using TData = TTData;
-  using TCompare = TTCompare;
-  using TSelf = DHeap<d_, TData, TCompare>;
+  using TSelf = DHeap<d, TData, TCompare>;
 
  protected:
   TCompare compare;
   std::vector<TData> data;
 
  public:
-  DHeap() {}
-  explicit DHeap(unsigned expected_size) { data.reserve(expected_size); }
-  explicit DHeap(const std::vector<TData>& v) : data(v) { Heapify(); }
+  constexpr DHeap() {}
 
-  bool Empty() const { return data.empty(); }
-  unsigned Size() const { return unsigned(data.size()); }
+  constexpr explicit DHeap(unsigned expected_size) {
+    data.reserve(expected_size);
+  }
 
-  void Add(const TData& value) {
+  constexpr explicit DHeap(const std::vector<TData>& v) : data(v) { Heapify(); }
+
+  constexpr bool Empty() const { return data.empty(); }
+
+  constexpr unsigned Size() const { return unsigned(data.size()); }
+
+  constexpr void Add(const TData& value) {
     data.push_back(value);
     SiftUp(unsigned(Size() - 1));
   }
 
-  const TData& Top() const { return data[0]; }
+  constexpr const TData& Top() const { return data[0]; }
 
-  void Pop() {
+  constexpr void Pop() {
     data[0] = data.back();
     data.pop_back();
     SiftDown(0);
   }
 
-  TData Extract() {
-    TData t = Top();
+  constexpr TData Extract() {
+    const TData t = Top();
     Pop();
     return t;
   }
 
-  void ExtractAll() { data.clear(); }
+  constexpr void ExtractAll() { data.clear(); }
 
-  void Union(const TSelf& r) {
+  constexpr void Union(const TSelf& r) {
     data.insert(data.end(), r.data.begin(), r.data.end());
     Heapify();
   }
 
  protected:
-  void SiftUp(unsigned pos) {
+  constexpr void SiftUp(unsigned pos) {
     if (pos == 0) return;
     unsigned npos = (pos - 1) / d;
     if (compare(data[pos], data[npos])) {
@@ -66,17 +68,19 @@ class DHeap {
       data[pos] = data[npos];
       for (pos = npos; pos; pos = npos) {
         npos = (pos - 1) / d;
-        if (compare(x, data[npos]))
+        if (compare(x, data[npos])) {
           data[pos] = data[npos];
-        else
+        } else {
           break;
+        }
       }
       data[pos] = x;
     }
   }
 
-  bool SiftDownNext(const TData& x, unsigned pos, unsigned& npos) const {
-    unsigned cb = d * pos + 1, ce = std::min(cb + d, Size());
+  constexpr bool SiftDownNext(const TData& x, unsigned pos,
+                              unsigned& npos) const {
+    const unsigned cb = d * pos + 1, ce = std::min(cb + d, Size());
     if (cb >= ce) return false;
     npos = cb;
     for (unsigned i = cb + 1; i < ce; ++i) {
@@ -85,22 +89,23 @@ class DHeap {
     return compare(data[npos], x);
   }
 
-  void SiftDown(unsigned pos) {
+  constexpr void SiftDown(unsigned pos) {
     unsigned npos;
     TData x = data[pos];
     if (SiftDownNext(x, pos, npos)) {
       data[pos] = data[npos];
       for (pos = npos;; pos = npos) {
-        if (SiftDownNext(x, pos, npos))
+        if (SiftDownNext(x, pos, npos)) {
           data[pos] = data[npos];
-        else
+        } else {
           break;
+        }
       }
       data[pos] = x;
     }
   }
 
-  void Heapify() {
+  constexpr void Heapify() {
     for (unsigned pos = Size() / d; pos;) SiftDown(--pos);
   }
 };

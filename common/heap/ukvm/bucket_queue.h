@@ -17,7 +17,8 @@ namespace ukvm {
 // Pop     -- O(1 + P / N) amortized if monotone, O(P) otherwise
 class BucketQueue {
  public:
-  static const unsigned not_in_queue = -1u;
+  static constexpr unsigned not_in_queue = -1u;
+
   using TValue = unsigned;
   using TData = Data<TValue>;
   using TSelf = BucketQueue;
@@ -30,7 +31,7 @@ class BucketQueue {
   unsigned size;
 
  public:
-  void Reset(unsigned ukey_size) {
+  constexpr void Reset(unsigned ukey_size) {
     priority.clear();
     priority.resize(ukey_size, -1u);
     position.clear();
@@ -40,9 +41,9 @@ class BucketQueue {
     size = 0;
   }
 
-  explicit BucketQueue(unsigned ukey_size) { Reset(ukey_size); }
+  constexpr explicit BucketQueue(unsigned ukey_size) { Reset(ukey_size); }
 
-  BucketQueue(const std::vector<unsigned>& v, bool skip_heap) {
+  constexpr BucketQueue(const std::vector<unsigned>& v, bool skip_heap) {
     Reset(v.size());
     priority = v;
     if (!skip_heap) {
@@ -57,79 +58,89 @@ class BucketQueue {
     }
   }
 
-  bool Empty() const { return size == 0; }
-  unsigned Size() const { return size; }
-  unsigned UKeySize() const { return unsigned(priority.size()); }
-  bool InHeap(unsigned key) const { return position[key] != not_in_queue; }
-  unsigned Get(unsigned key) const { return priority[key]; }
-  const std::vector<TValue>& GetValues() const { return priority; }
+  constexpr bool Empty() const { return size == 0; }
+
+  constexpr unsigned Size() const { return size; }
+
+  constexpr unsigned UKeySize() const { return unsigned(priority.size()); }
+
+  constexpr bool InHeap(unsigned key) const {
+    return position[key] != not_in_queue;
+  }
+
+  constexpr unsigned Get(unsigned key) const { return priority[key]; }
+
+  constexpr const std::vector<TValue>& GetValues() const { return priority; }
 
  public:
-  void AddNewKey(unsigned key, unsigned _priority, bool skip_heap = false) {
+  constexpr void AddNewKey(unsigned key, unsigned _priority,
+                           bool skip_heap = false) {
     assert(!InHeap(key));
     AddNewKeyI(key, _priority, skip_heap);
   }
 
-  void Set(unsigned key, unsigned new_priority) {
+  constexpr void Set(unsigned key, unsigned new_priority) {
     if (InHeap(key))
       SetI(key, new_priority);
     else
       AddNewKeyI(key, new_priority, false);
   }
 
-  void DecreaseValue(unsigned key, unsigned new_priority) {
+  constexpr void DecreaseValue(unsigned key, unsigned new_priority) {
     Set(key, new_priority);
   }
 
-  void DecreaseValueIfLess(unsigned key, unsigned new_priority) {
+  constexpr void DecreaseValueIfLess(unsigned key, unsigned new_priority) {
     if (new_priority < priority[key]) Set(key, new_priority);
   }
 
-  void IncreaseValue(unsigned key, unsigned new_priority) {
+  constexpr void IncreaseValue(unsigned key, unsigned new_priority) {
     Set(key, new_priority);
   }
 
-  void Add(const TData& x) { Set(x.key, x.value); }
-  unsigned TopKey() const { return queue[top_priority].back(); }
-  unsigned TopValue() const { return top_priority; }
+  constexpr void Add(const TData& x) { Set(x.key, x.value); }
 
-  TData Top() const { return {TopKey(), TopValue()}; }
+  constexpr unsigned TopKey() const { return queue[top_priority].back(); }
 
-  void Pop() { DeleteKey(TopKey()); }
+  constexpr unsigned TopValue() const { return top_priority; }
 
-  unsigned ExtractKey() {
-    unsigned t = TopKey();
+  constexpr TData Top() const { return {TopKey(), TopValue()}; }
+
+  constexpr void Pop() { DeleteKey(TopKey()); }
+
+  constexpr unsigned ExtractKey() {
+    const unsigned t = TopKey();
     Pop();
     return t;
   }
 
-  unsigned ExtractValue() {
-    unsigned t = TopValue();
+  constexpr unsigned ExtractValue() {
+    const unsigned t = TopValue();
     Pop();
     return t;
   }
 
-  TData Extract() {
-    TData t = Top();
+  constexpr TData Extract() {
+    const TData t = Top();
     Pop();
     return t;
   }
 
-  void DeleteKey(unsigned key) {
+  constexpr void DeleteKey(unsigned key) {
     DeleteI(key);
     position[key] = not_in_queue;
   }
 
  protected:
-  void AdjustQueueSize(unsigned p) {
+  constexpr void AdjustQueueSize(unsigned p) {
     if (queue.size() <= p) queue.resize(p + 1);
   }
 
-  void ShiftPriority() {
+  constexpr void ShiftPriority() {
     for (; queue[top_priority].size() == 0;) ++top_priority;
   }
 
-  void ResetPriority() {
+  constexpr void ResetPriority() {
     if (Empty()) {
       top_priority = -1u;
     } else {
@@ -138,7 +149,7 @@ class BucketQueue {
     }
   }
 
-  void AddNewKeyI(unsigned key, unsigned p, bool skip_heap) {
+  constexpr void AddNewKeyI(unsigned key, unsigned p, bool skip_heap) {
     priority[key] = p;
     if (!skip_heap) {
       AdjustQueueSize(p);
@@ -149,15 +160,15 @@ class BucketQueue {
     }
   }
 
-  void SetI(unsigned key, unsigned new_priority) {
+  constexpr void SetI(unsigned key, unsigned new_priority) {
     if (priority[key] != new_priority) {
       DeleteI(key);
       AddNewKeyI(key, new_priority, false);
     }
   }
 
-  void DeleteI(unsigned key) {
-    unsigned pos = position[key];
+  constexpr void DeleteI(unsigned key) {
+    const unsigned pos = position[key];
     assert(pos != not_in_queue);
     auto& qp = queue[priority[key]];
     if (pos < qp.size() - 1) {

@@ -39,14 +39,18 @@ class BucketQueueDLL {
   unsigned size;
 
  protected:
-  TNode* KNode(unsigned key) { return pkey0 + key; }
-  const TNode* KNode(unsigned key) const { return pkey0 + key; }
-  TNode* PNode(unsigned p) { return queue[p]; }
-  const TNode* PNode(unsigned p) const { return queue[p]; }
-  unsigned Key(const TNode* node) const { return node - pkey0; }
+  constexpr TNode* KNode(unsigned key) { return pkey0 + key; }
+
+  constexpr const TNode* KNode(unsigned key) const { return pkey0 + key; }
+
+  constexpr TNode* PNode(unsigned p) { return queue[p]; }
+
+  constexpr const TNode* PNode(unsigned p) const { return queue[p]; }
+
+  constexpr unsigned Key(const TNode* node) const { return node - pkey0; }
 
  public:
-  void Reset(unsigned ukey_size) {
+  constexpr void Reset(unsigned ukey_size) {
     nodes_key.clear();
     nodes_key.resize(ukey_size);
     manager_priority.ResetNodes();
@@ -58,9 +62,10 @@ class BucketQueueDLL {
     size = 0;
   }
 
-  explicit BucketQueueDLL(unsigned ukey_size) { Reset(ukey_size); }
+  constexpr explicit BucketQueueDLL(unsigned ukey_size) { Reset(ukey_size); }
 
-  BucketQueueDLL(const std::vector<unsigned>& v, bool skip_heap) : priority(v) {
+  constexpr BucketQueueDLL(const std::vector<unsigned>& v, bool skip_heap)
+      : priority(v) {
     Reset(v.size());
     priority = v;
     if (!skip_heap) {
@@ -78,70 +83,76 @@ class BucketQueueDLL {
     }
   }
 
-  bool Empty() const { return size == 0; }
-  unsigned Size() const { return size; }
-  unsigned UKeySize() const { return unsigned(priority.size()); }
-  bool InHeap(unsigned key) const { return KNode(key)->next; }
-  unsigned Get(unsigned key) const { return priority[key]; }
-  const std::vector<TValue>& GetValues() const { return priority; }
+  constexpr bool Empty() const { return size == 0; }
+
+  constexpr unsigned Size() const { return size; }
+
+  constexpr unsigned UKeySize() const { return unsigned(priority.size()); }
+
+  constexpr bool InHeap(unsigned key) const { return KNode(key)->next; }
+
+  constexpr unsigned Get(unsigned key) const { return priority[key]; }
+
+  constexpr const std::vector<TValue>& GetValues() const { return priority; }
 
  public:
-  void AddNewKey(unsigned key, unsigned _priority, bool skip_heap = false) {
+  constexpr void AddNewKey(unsigned key, unsigned _priority,
+                           bool skip_heap = false) {
     assert(!InHeap(key));
     AddNewKeyI(key, _priority, skip_heap);
   }
 
-  void Set(unsigned key, unsigned new_priority) {
+  constexpr void Set(unsigned key, unsigned new_priority) {
     if (InHeap(key))
       SetI(key, new_priority);
     else
       AddNewKeyI(key, new_priority, false);
   }
 
-  void DecreaseValue(unsigned key, unsigned new_priority) {
+  constexpr void DecreaseValue(unsigned key, unsigned new_priority) {
     Set(key, new_priority);
   }
 
-  void DecreaseValueIfLess(unsigned key, unsigned new_priority) {
+  constexpr void DecreaseValueIfLess(unsigned key, unsigned new_priority) {
     if (new_priority < priority[key]) Set(key, new_priority);
   }
 
-  void IncreaseValue(unsigned key, unsigned new_priority) {
+  constexpr void IncreaseValue(unsigned key, unsigned new_priority) {
     Set(key, new_priority);
   }
 
-  void Add(const TData& x) { Set(x.key, x.value); }
+  constexpr void Add(const TData& x) { Set(x.key, x.value); }
 
-  unsigned TopKey() const { return Key(TopNode()); }
+  constexpr unsigned TopKey() const { return Key(TopNode()); }
 
-  unsigned TopValue() const { return top_priority; }
+  constexpr unsigned TopValue() const { return top_priority; }
 
-  TData Top() const { return {TopKey(), TopValue()}; }
+  constexpr TData Top() const { return {TopKey(), TopValue()}; }
 
-  void Pop() { RemoveNodeI(TopNode()); }
+  constexpr void Pop() { RemoveNodeI(TopNode()); }
 
-  unsigned ExtractKey() {
+  constexpr unsigned ExtractKey() {
     auto node = TopNode();
     RemoveNodeI(node);
     return Key(node);
   }
 
-  unsigned ExtractValue() {
-    unsigned t = TopValue();
+  constexpr unsigned ExtractValue() {
+    const unsigned t = TopValue();
     Pop();
     return t;
   }
 
-  TData Extract() {
-    TData t = Top();
+  constexpr TData Extract() {
+    const TData t = Top();
     Pop();
     return t;
   }
 
-  void DeleteKey(unsigned key) { RemoveNodeI(KNode(key)); }
+  constexpr void DeleteKey(unsigned key) { RemoveNodeI(KNode(key)); }
 
  protected:
-  void AdjustQueueSize(unsigned p) {
+  constexpr void AdjustQueueSize(unsigned p) {
     unsigned s = queue.size();
     if (s <= p) {
       queue.resize(p + 1);
@@ -153,11 +164,11 @@ class BucketQueueDLL {
     }
   }
 
-  void ShiftPriority() {
+  constexpr void ShiftPriority() {
     for (; queue[top_priority]->next == queue[top_priority];) ++top_priority;
   }
 
-  void ResetPriority() {
+  constexpr void ResetPriority() {
     if (Empty()) {
       top_priority = -1u;
     } else {
@@ -166,10 +177,11 @@ class BucketQueueDLL {
     }
   }
 
-  TNode* TopNode() { return PNode(top_priority)->next; }
-  const TNode* TopNode() const { return PNode(top_priority)->next; }
+  constexpr TNode* TopNode() { return PNode(top_priority)->next; }
 
-  void AddNewKeyI(unsigned key, unsigned p, bool skip_heap) {
+  constexpr const TNode* TopNode() const { return PNode(top_priority)->next; }
+
+  constexpr void AddNewKeyI(unsigned key, unsigned p, bool skip_heap) {
     priority[key] = p;
     if (!skip_heap) {
       AdjustQueueSize(p);
@@ -183,7 +195,7 @@ class BucketQueueDLL {
     }
   }
 
-  void SetI(unsigned key, unsigned new_priority) {
+  constexpr void SetI(unsigned key, unsigned new_priority) {
     if (priority[key] != new_priority) {
       auto knode = KNode(key), pnode = PNode(new_priority);
       knode->next->prev = knode->prev;
@@ -201,7 +213,7 @@ class BucketQueueDLL {
     }
   }
 
-  void RemoveNodeI(TNode* node) {
+  constexpr void RemoveNodeI(TNode* node) {
     node->next->prev = node->prev;
     node->prev->next = node->next;
     node->prev = node->next = nullptr;

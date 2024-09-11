@@ -15,12 +15,9 @@ namespace base {
 // Add     -- O(1)
 // Top     -- O(1)
 // Pop     -- O(1 + P / N) amortized if monotone, O(P) otherwise
-template <class TTValue>
+template <class TValue>
 class BucketQueueLL {
  public:
-  using TValue = TTValue;
-  using TSelf = BucketQueueLL<TTValue>;
-
   class TData {
    public:
     unsigned priority;
@@ -40,16 +37,17 @@ class BucketQueueLL {
   unsigned size = 0;
 
  public:
-  BucketQueueLL() {}
+  constexpr BucketQueueLL() {}
 
-  explicit BucketQueueLL(unsigned expected_max_priority) {
+  constexpr explicit BucketQueueLL(unsigned expected_max_priority) {
     queue.resize(expected_max_priority + 1, nullptr);
   }
 
-  bool Empty() const { return size == 0; }
-  unsigned Size() const { return size; }
+  constexpr bool Empty() const { return size == 0; }
 
-  void Add(unsigned p, const TValue& value) {
+  constexpr unsigned Size() const { return size; }
+
+  constexpr void Add(unsigned p, const TValue& value) {
     AdjustQueueSize(p);
     auto node = manager.New();
     node->value = value;
@@ -59,51 +57,52 @@ class BucketQueueLL {
     top_priority = std::min(top_priority, p);
   }
 
-  unsigned TopPriority() const { return top_priority; }
+  constexpr unsigned TopPriority() const { return top_priority; }
 
-  const TValue& TopValue() const {
+  constexpr const TValue& TopValue() const {
     assert(!Empty());
     return queue[top_priority]->value;
   }
 
-  TData Top() const { return {TopPriority(), TopValue()}; }
+  constexpr TData Top() const { return {TopPriority(), TopValue()}; }
 
-  void Pop() {
+  constexpr void Pop() {
     assert(!Empty());
     auto node = queue[top_priority];
     queue[top_priority] = node->next;
     manager.Release(node);
     --size;
-    if (Empty())
+    if (Empty()) {
       top_priority = -1u;
-    else
+    } else {
       ShiftPriority();
+    }
   }
 
-  unsigned ExtractPriority() {
-    unsigned t = TopPriority();
+  constexpr unsigned ExtractPriority() {
+    const unsigned t = TopPriority();
     Pop();
     return t;
   }
 
-  TValue ExtractValue() {
-    TValue v = TopValue();
+  constexpr TValue ExtractValue() {
+    const TValue v = TopValue();
     Pop();
     return v;
   }
 
-  TData Extract() {
-    TData t = Top();
+  constexpr TData Extract() {
+    const TData t = Top();
     Pop();
     return t;
   }
 
  protected:
-  void AdjustQueueSize(unsigned p) {
+  constexpr void AdjustQueueSize(unsigned p) {
     if (queue.size() <= p) queue.resize(p + 1, nullptr);
   }
 
-  void ShiftPriority() {
+  constexpr void ShiftPriority() {
     for (; !queue[top_priority];) ++top_priority;
   }
 };
