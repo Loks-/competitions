@@ -7,6 +7,7 @@
 
 namespace alg {
 namespace assignment {
+
 // Hungarian algorithm.
 // https://en.wikipedia.org/wiki/Hungarian_algorithm
 // O(n^2 * m) time
@@ -100,5 +101,6 @@ class Hungarian {
   std::vector<unsigned> p;  // Array to store the matchings
   unsigned n, m;            // Dimensions of the cost matrix
 };
+
 }  // namespace assignment
 }  // namespace alg

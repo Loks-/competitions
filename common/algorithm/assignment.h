@@ -3,6 +3,7 @@
 #include "common/algorithm/assignment/hungarian.h"
 
 namespace alg {
+
 /**
  * @brief Solves the assignment problem using the Hungarian algorithm.
  *
@@ -21,4 +22,5 @@ inline typename TMatrix::TValue Assignment(
   assignment::Hungarian s;
   return s.Solve(a, max_value);
 }
+
 }  // namespace alg
