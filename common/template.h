@@ -49,4 +49,4 @@ class TMetaType {};
  * @param value The parameter to use.
  */
 template <class T>
-constexpr void MetaUse(const T&) {}
+constexpr void MetaUse(const T& /* value */) {}
