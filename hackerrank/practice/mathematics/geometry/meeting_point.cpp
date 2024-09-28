@@ -3,7 +3,6 @@
 #include "common/geometry/d2/point_io.h"
 #include "common/geometry/d2/utils/rotate_pi4s_points.h"
 #include "common/stl/base.h"
-#include "common/stl/pair.h"
 #include "common/vector/min.h"
 #include "common/vector/read.h"
 

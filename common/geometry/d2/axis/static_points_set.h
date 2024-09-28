@@ -6,7 +6,6 @@
 #include "common/binary_search_tree/persistent/treap.h"
 #include "common/geometry/d2/compare/point_xy.h"
 #include "common/geometry/d2/point.h"
-#include "common/stl/pair.h"
 #include "common/template.h"
 
 #include <algorithm>

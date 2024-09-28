@@ -6,7 +6,6 @@
 #include "common/hash/vector.h"
 #include "common/heap.h"
 #include "common/stl/full.h"
-#include "common/stl/pair.h"
 #include "common/stl/pair_io.h"
 #include "common/string/utils/split.h"
 #include "common/vector/read.h"

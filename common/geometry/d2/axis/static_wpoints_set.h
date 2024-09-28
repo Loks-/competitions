@@ -8,7 +8,6 @@
 #include "common/geometry/d2/compare/point_xy.h"
 #include "common/geometry/d2/point.h"
 #include "common/geometry/d2/wpoint.h"
-#include "common/stl/pair.h"
 
 #include <algorithm>
 #include <utility>

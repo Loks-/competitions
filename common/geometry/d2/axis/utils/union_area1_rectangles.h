@@ -2,7 +2,6 @@
 
 #include "common/geometry/d1/segment_union1.h"
 #include "common/geometry/d2/axis/rectangle.h"
-#include "common/stl/pair.h"
 #include "common/vector/unique.h"
 
 #include <algorithm>

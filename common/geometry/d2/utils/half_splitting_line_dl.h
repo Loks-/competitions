@@ -7,10 +7,10 @@
 #include "common/geometry/d2/utils/center_of_mass.h"
 #include "common/geometry/d2/utils/midpoint.h"
 #include "common/geometry/d2/vector.h"
-#include "common/stl/pair.h"
 
 #include <algorithm>
 #include <vector>
+#include <utility>
 
 // Find a line parallel to direction that split set of points into two halves.
 template <class T>

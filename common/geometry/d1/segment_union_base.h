@@ -1,10 +1,10 @@
 #pragma once
 
 #include "common/base.h"
-#include "common/stl/pair.h"
 
 #include <algorithm>
 #include <vector>
+#include <utility>
 
 namespace geometry {
 namespace d1 {
