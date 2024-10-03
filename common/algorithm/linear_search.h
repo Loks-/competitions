@@ -21,7 +21,9 @@ template <class TIterator, class TFunction>
 constexpr TIterator FirstIfB(TIterator begin, const TIterator end,
                              const TFunction& f) {
   for (; begin < end; ++begin) {
-    if (f(begin)) break;
+    if (f(begin)) {
+      break;
+    }
   }
   return begin;
 }
@@ -43,6 +45,8 @@ constexpr TIterator FirstIfB(TIterator begin, const TIterator end,
 template <class TIterator, class TFunction>
 constexpr TIterator FirstIfB(TIterator begin, const TFunction& f) {
   for (;; ++begin) {
-    if (f(begin)) return begin;
+    if (f(begin)) {
+      return begin;
+    }
   }
 }

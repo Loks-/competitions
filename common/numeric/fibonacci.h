@@ -133,8 +133,9 @@ class TFibonacci {
    * @param n The number of elements to ensure in the Fibonacci sequence.
    */
   constexpr void AdjustI(unsigned n) const {
-    for (auto i = unsigned(vf.size()); i <= n; ++i)
+    for (auto i = unsigned(vf.size()); i <= n; ++i) {
       vf.push_back(vf[i - 2] + vf[i - 1]);
+    }
   }
 
   /**
@@ -147,8 +148,9 @@ class TFibonacci {
    * @param value The value to ensure in the Fibonacci sequence.
    */
   constexpr void AdjustToValueI(const T& value) const {
-    for (auto i = vf.size() - 1; vf[i] < value; ++i)
+    for (auto i = vf.size() - 1; vf[i] < value; ++i) {
       vf.push_back(vf[i - 1] + vf[i]);
+    }
   }
 
  protected:

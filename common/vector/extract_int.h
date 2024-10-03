@@ -27,7 +27,9 @@ inline std::vector<T> ExtractInt(const std::string& s,
   for (const auto& si : ss) {
     char* p = nullptr;
     long ltemp = strtol(si.c_str(), &p, 10);
-    if (!*p) v.push_back(static_cast<T>(ltemp));
+    if (!*p) {
+      v.push_back(static_cast<T>(ltemp));
+    }
   }
   return v;
 }

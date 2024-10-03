@@ -15,7 +15,9 @@
  */
 inline int ProxyRun(const std::string& solution) {
   const auto it = solutions_map.find(solution);
-  if (it != solutions_map.end()) return it->second();
+  if (it != solutions_map.end()) {
+    return it->second();
+  }
   std::cout << "Unknown solution name" << std::endl;
   return -2;
 }
@@ -29,7 +31,9 @@ inline int ProxyRun(const std::string& solution) {
  */
 inline int ProxyRun(const std::string& solution,
                     const std::string& input_file_name) {
-  if (input_file_name.empty()) return ProxyRun(solution);
+  if (input_file_name.empty()) {
+    return ProxyRun(solution);
+  }
   std::ifstream input_file(input_file_name);
   auto cin_backup = std::cin.rdbuf(input_file.rdbuf());
   const int solution_results = ProxyRun(solution);
@@ -48,7 +52,9 @@ inline int ProxyRun(const std::string& solution,
 inline int ProxyRun(const std::string& solution,
                     const std::string& input_file_name,
                     const std::string& output_file_name) {
-  if (output_file_name.empty()) return ProxyRun(solution, input_file_name);
+  if (output_file_name.empty()) {
+    return ProxyRun(solution, input_file_name);
+  }
   std::ofstream output_file(output_file_name);
   auto cout_backup = std::cout.rdbuf(output_file.rdbuf());
   const int solution_results = ProxyRun(solution, input_file_name);
@@ -71,15 +77,18 @@ inline int ProxyTestOne(const std::string& solution,
   std::stringstream solution_output, expected_output;
   auto cout_backup = std::cout.rdbuf(solution_output.rdbuf());
   const int solution_results = ProxyRun(solution, input_file_name);
-  if (solution_results) return solution_results;
+  if (solution_results) {
+    return solution_results;
+  }
   std::cout.rdbuf(cout_backup);
 
   // Remove extra spaces and newlines from the solution output
   std::string sraw = solution_output.str(), sfixed;
   sfixed.reserve(sraw.size());
   for (unsigned i = 0; i < sraw.size(); ++i) {
-    if ((sraw[i] == ' ') && ((sraw[i + 1] == ' ') || (sraw[i + 1] == '\n')))
+    if ((sraw[i] == ' ') && ((sraw[i + 1] == ' ') || (sraw[i + 1] == '\n'))) {
       continue;
+    }
     sfixed.push_back(sraw[i]);
   }
 
@@ -111,11 +120,14 @@ inline int ProxyTestAll(const std::string& problem,
   for (auto it = solutions_map.lower_bound(problem); it != solutions_map.end();
        ++it) {
     if ((it->first != problem) &&
-        (it->first.substr(0, problem_prefix.size()) != problem_prefix))
+        (it->first.substr(0, problem_prefix.size()) != problem_prefix)) {
       break;
+    }
     const int solutions_results =
         ProxyTestOne(it->first, input_file_name, test_file_name);
-    if (solutions_results) return solutions_results;
+    if (solutions_results) {
+      return solutions_results;
+    }
     ++correct_solutions;
   }
   if (!correct_solutions) {

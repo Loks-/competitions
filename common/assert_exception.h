@@ -15,7 +15,9 @@ class AssertException {};
  * @throws AssertException if the condition is false.
  */
 inline void Assert(bool condition) {
-  if (!condition) throw AssertException();
+  if (!condition) {
+    throw AssertException();
+  }
 }
 
 /**

@@ -19,7 +19,9 @@ namespace nvector {
 template <class TValue>
 constexpr std::vector<TValue> Enumerate(TValue begin, TValue end) {
   std::vector<TValue> output;
-  for (; begin < end;) output.push_back(begin++);
+  for (; begin < end;) {
+    output.push_back(begin++);
+  }
   return output;
 }
 
@@ -38,7 +40,9 @@ constexpr std::vector<TValue> Enumerate(TValue begin, TValue end) {
 template <class TValue>
 constexpr std::vector<TValue> Enumerate(TValue begin, TValue end, TValue step) {
   std::vector<TValue> output;
-  for (; begin < end; begin += step) output.push_back(begin);
+  for (; begin < end; begin += step) {
+    output.push_back(begin);
+  }
   return output;
 }
 

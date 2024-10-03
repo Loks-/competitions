@@ -92,7 +92,9 @@ class Hungarian {
   std::vector<unsigned> Get() const {
     std::vector<unsigned> result(n);
     for (unsigned j = 0; j < m; ++j) {
-      if (p[j] != n) result[p[j]] = j;
+      if (p[j] != n) {
+        result[p[j]] = j;
+      }
     }
     return result;
   }

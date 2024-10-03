@@ -23,7 +23,9 @@ template <class TValue = size_t>
 constexpr std::vector<std::pair<TValue, TValue>> HRandomPair(size_t size,
                                                              size_t seed) {
   size_t h1 = 0, h2 = seed;
-  if (h1 == h2) nhash::DCombineH(h2, h1);
+  if (h1 == h2) {
+    nhash::DCombineH(h2, h1);
+  }
   std::vector<std::pair<TValue, TValue>> v(size);
   for (size_t i = 0; i < size; ++i) {
     nhash::DCombineH(h1, i);
@@ -52,7 +54,9 @@ constexpr std::vector<std::pair<TValue, TValue>> HRandomPair(size_t size,
                                                              size_t seed,
                                                              size_t max_value) {
   size_t h1 = 0, h2 = seed;
-  if (h1 == h2) nhash::DCombineH(h2, h1);
+  if (h1 == h2) {
+    nhash::DCombineH(h2, h1);
+  }
   std::vector<std::pair<TValue, TValue>> v(size);
   for (size_t i = 0; i < size; ++i) {
     nhash::DCombineH(h1, i);

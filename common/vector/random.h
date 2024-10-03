@@ -24,7 +24,9 @@ std::vector<TValue> Random(size_t size, size_t seed) {
   std::mt19937_64 generator(seed);
   std::uniform_int_distribution<TValue> distribution;
   std::vector<TValue> v(size);
-  for (auto& value : v) value = distribution(generator);
+  for (auto& value : v) {
+    value = distribution(generator);
+  }
   return v;
 }
 
@@ -47,7 +49,9 @@ std::vector<TValue> Random(size_t size, size_t seed, size_t max_value) {
   std::mt19937_64 generator(seed);
   std::uniform_int_distribution<TValue> distribution(0, max_value - 1);
   std::vector<TValue> v(size);
-  for (auto& value : v) value = distribution(generator);
+  for (auto& value : v) {
+    value = distribution(generator);
+  }
   return v;
 }
 

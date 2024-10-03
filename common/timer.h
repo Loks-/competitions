@@ -16,7 +16,9 @@ class Timer {
    * @param start If true, the timer starts immediately upon construction.
    */
   explicit Timer(bool start = true) : running(false) {
-    if (start) Start();
+    if (start) {
+      Start();
+    }
   }
 
   /**

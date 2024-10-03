@@ -26,7 +26,7 @@
 template <class TIterator, class TValue, class TFunction>
 constexpr TIterator LowerBoundF(TIterator begin, TIterator end,
                                 const TValue& value, const TFunction& f) {
-  for (; begin < end;) {
+  while (begin < end) {
     const TIterator m = (begin + end) / 2;
     if (f(m) < value) {
       begin = m + 1;
@@ -61,7 +61,7 @@ constexpr TIterator LowerBoundF(TIterator begin, TIterator end,
 template <class TIterator, class TValue, class TFunction>
 constexpr TIterator UpperBoundF(TIterator begin, TIterator end,
                                 const TValue& value, const TFunction& f) {
-  for (; begin < end;) {
+  while (begin < end) {
     const TIterator m = (begin + end) / 2;
     if (f(m) <= value) {
       begin = m + 1;
@@ -94,7 +94,7 @@ constexpr TIterator UpperBoundF(TIterator begin, TIterator end,
 template <class TIterator, class TFunction>
 constexpr TIterator LowerBoundB(TIterator begin, TIterator end,
                                 const TFunction& f) {
-  for (; begin < end;) {
+  while (begin < end) {
     const TIterator m = (begin + end) / 2;
     if (f(m)) {
       end = m;
@@ -124,6 +124,9 @@ constexpr TIterator LowerBoundB(TIterator begin, TIterator end,
 template <class TIterator, class TFunction>
 constexpr TIterator LowerBoundB(TIterator begin, const TFunction& f) {
   auto end = std::max(begin, TIterator(1));
-  for (; !f(end); end *= 2) begin = end + 1;
+  while (!f(end)) {
+    begin = end + 1;
+    end *= 2;
+  }
   return LowerBoundB(begin, end, f);
 }
