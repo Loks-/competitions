@@ -9,7 +9,7 @@ int main_weightlifting() {
   for (unsigned it = 1; it <= T; ++it) {
     cin >> E >> W;
     nvector::DVector<unsigned, 2> vv(E);
-    auto vr = nvector::Make<unsigned>(E, E + 1, -1u);
+    auto vr = nvector::MakeV<unsigned>(-1u, E, E + 1);
     for (unsigned e = 0; e < E; ++e) {
       vv[e] = nvector::Read<unsigned>(W);
       vr[e][e + 1] = nvector::Sum(vv[e]);

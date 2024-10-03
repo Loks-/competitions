@@ -10,7 +10,7 @@ int main_2120() {
   unsigned n = vs.size() - 2, m = vs[2].size();
   for (unsigned steps : {2, 50}) {
     unsigned shift = steps + 2, N = n + 2 * shift, M = m + 2 * shift;
-    auto v = nvector::Make<unsigned>(N, M, 0u);
+    auto v = nvector::Make<unsigned>(N, M);
     for (unsigned i = 0; i < n; ++i) {
       auto& s = vs[i + 2];
       for (unsigned j = 0; j < s.size(); ++j)

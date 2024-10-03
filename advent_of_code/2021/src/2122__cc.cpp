@@ -38,7 +38,7 @@ int main_2122__cc() {
     vector<ds::CoordinateCompression<int64_t>> vcc(3);
     for (unsigned i = 0; i < 3; ++i) vcc[i].InitUnsorted(vv3[i]);
     auto vvv =
-        nvector::Make<unsigned>(vcc[0].Size(), vcc[1].Size(), vcc[2].Size(), 0);
+        nvector::Make<unsigned>(vcc[0].Size(), vcc[1].Size(), vcc[2].Size());
     for (auto& s : vi) {
       auto x0 = vcc[0].GetNew(s.p1.x), x1 = vcc[0].GetNew(s.p2.x);
       auto y0 = vcc[1].GetNew(s.p1.y), y1 = vcc[1].GetNew(s.p2.y);

@@ -35,7 +35,7 @@ int main_hey_google_drive() {
       auto itd = m.find(cd);
       if (itd == m.end()) continue;
       auto kd = itd->second;
-      auto g = nvector::Make<unsigned>(RC, RC, 0u);
+      auto g = nvector::Make<unsigned>(RC, RC);
       for (unsigned i = 0; i < R; ++i) {
         for (unsigned j = 0; j < C; ++j) {
           if (vs[i][j] != '.') continue;

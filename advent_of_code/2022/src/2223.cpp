@@ -8,7 +8,7 @@ int main_2223() {
   vector<unsigned> vdo{3, 1, 2, 0};
   auto vs = nvector::ReadLines();
   unsigned N = 3 * max(vs.size(), vs[0].size()), t = 0;
-  auto vm = nvector::Make<unsigned>(N, N, 0u);
+  auto vm = nvector::Make<unsigned>(N, N);
   vector<I2Point> aelfs, aelfs3;
   vector<pair<I2Point, I2Point>> aelfs4;
   for (unsigned i = 0; i < vs.size(); ++i) {

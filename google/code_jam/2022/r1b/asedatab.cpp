@@ -8,7 +8,7 @@
 int main_asedatab() {
   unsigned L = 8, M = 256;
   std::vector<unsigned> vl(M), vu(M), vs(M, M), vm(M);
-  auto vt = nvector::Make<unsigned>(M, M, L, 0);
+  auto vt = nvector::Make<unsigned>(M, M, L);
   for (unsigned i = 0; i < M; ++i) {
     vl[i] = numeric::BitsCount(i);
     vu[i] = i;

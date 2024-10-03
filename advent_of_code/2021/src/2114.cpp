@@ -8,8 +8,8 @@ int main_2114() {
   auto vs = nvector::ReadLines();
   auto s = vs[0] + 'Z';
   unsigned l = 'Z' - 'A' + 1;
-  auto vi = nvector::Make<uint64_t>(l, l, 0);
-  auto vm = nvector::Make<unsigned>(l, l, l);
+  auto vi = nvector::Make<uint64_t>(l, l);
+  auto vm = nvector::MakeV<unsigned>(l, l, l);
   for (unsigned i = 1; i < s.size(); ++i) vi[s[i - 1] - 'A'][s[i] - 'A'] += 1;
   for (unsigned i = 2; i < vs.size(); ++i) {
     auto ss = Split(vs[i], ' ');

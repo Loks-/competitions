@@ -15,7 +15,7 @@ int main_saving_the_jelly() {
     cin >> N;
     auto vp1 = nvector::Read<I2Point>(N);
     auto vp2 = nvector::Read<I2Point>(N + 1);
-    auto vvd = nvector::Make<int64_t>(N, N, 0);
+    auto vvd = nvector::Make<int64_t>(N, N);
     auto vdj = vector<int64_t>(N);
     BipartiteGraph g(N, N);
     for (unsigned i = 0; i < N; ++i) {

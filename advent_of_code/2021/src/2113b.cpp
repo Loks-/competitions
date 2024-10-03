@@ -23,7 +23,7 @@ int main_2113b() {
       if (z > l) z = 2 * l - z;
     }
   }
-  auto vv = nvector::Make<unsigned>(6, 40, 0);
+  auto vv = nvector::Make<unsigned>(6, 40);
   for (auto p : vp) vv[p.y][p.x] = 1;
   for (auto& v : vv) {
     for (auto u : v) cout << (u ? '#' : '.');
