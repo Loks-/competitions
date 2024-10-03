@@ -5,8 +5,8 @@
 #include "common/stl/base.h"
 #include "common/timer.h"
 #include "common/vector/enumerate.h"
-#include "common/vector/munion.h"
 #include "common/vector/sum.h"
+#include "common/vector/union_multiset.h"
 
 #include <functional>
 #include <unordered_map>
@@ -50,7 +50,8 @@ int main_revenge_of_gorosort_analysis() {
       for (auto& p1 : m) {
         for (auto& p2 : r.m) {
           // if (p1.second * p2.second < 1e-12) continue;
-          t.m[nvector::MUnionV(p1.first, p2.first)] += p1.second * p2.second;
+          t.m[nvector::UnionMultisetV(p1.first, p2.first)] +=
+              p1.second * p2.second;
         }
       }
       // t.Compress();
