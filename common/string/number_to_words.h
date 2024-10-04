@@ -6,11 +6,52 @@
 #include <vector>
 
 namespace nstring {
+
+/**
+ * @brief A class to convert numbers to their word representation.
+ */
 class NumberToWords {
  public:
-  constexpr static std::string ConvertZero() { return "Zero"; }
+  /**
+   * @brief Converts a number to its word representation.
+   * @param n The number to convert.
+   * @return The word representation of the number.
+   */
+  static constexpr std::string Convert(uint64_t n) {
+    const std::vector<std::string> vbase{"", "Thousand", "Million", "Billion",
+                                         "Trillion"};
+    if (n == 0) {
+      return ConvertZero();
+    }
+    const uint64_t h = 1000;
+    std::string s;
+    for (unsigned i = 0; n; ++i, n /= h) {
+      const uint64_t nh = n % h;
+      if (nh == 0) {
+        continue;
+      }
+      std::string st = ConvertThousand(nh);
+      if (i) {
+        st = st + " " + vbase[i];
+      }
+      s = (s.empty() ? st : st + " " + s);
+    }
+    return s;
+  }
 
-  constexpr static std::string ConvertHundred(uint64_t n) {
+ protected:
+  /**
+   * @brief Converts the number zero to its word representation.
+   * @return The string "Zero".
+   */
+  static constexpr std::string ConvertZero() { return "Zero"; }
+
+  /**
+   * @brief Converts a number less than 100 to its word representation.
+   * @param n The number to convert (must be less than 100).
+   * @return The word representation of the number.
+   */
+  static constexpr std::string ConvertHundred(uint64_t n) {
     assert(n < 100);
     switch (n) {
       case 0:
@@ -74,33 +115,24 @@ class NumberToWords {
     }
   }
 
-  constexpr static std::string ConvertThousand(uint64_t n) {
+  /**
+   * @brief Converts a number less than 1000 to its word representation.
+   * @param n The number to convert (must be less than 1000).
+   * @return The word representation of the number.
+   */
+  static constexpr std::string ConvertThousand(uint64_t n) {
     assert(n < 1000);
     std::string s;
     if (n >= 100) {
       s = ConvertHundred(n / 100) + " " + "Hundred";
     }
     if (n % 100) {
-      if (!s.empty()) s += " ";
+      if (!s.empty()) {
+        s += " ";
+      }
       s += ConvertHundred(n % 100);
     }
     return s;
   }
-
-  constexpr static std::string Convert(uint64_t n) {
-    const std::vector<std::string> vbase{"", "Thousand", "Million", "Billion",
-                                         "Trillion"};
-    if (n == 0) return ConvertZero();
-    uint64_t h = 1000;
-    std::string s;
-    for (unsigned i = 0; n; ++i, n /= h) {
-      const uint64_t nh = n % h;
-      if (nh == 0) continue;
-      std::string st = ConvertThousand(nh);
-      if (i) st = st + " " + vbase[i];
-      s = (s.empty() ? st : st + " " + s);
-    }
-    return s;
-  }
 };
-};  // namespace nstring
+}  // namespace nstring
