@@ -33,6 +33,17 @@ class CSVReader {
     if (use_header) InitHeader();
   }
 
+  unsigned ColumnIndex(const std::string& column_name) const {
+    auto it = header.find(column_name);
+    if (it == header.end()) {
+      std::cerr << "Column name " << column_name << " is missed in header."
+                << std::endl;
+      assert(false);
+      return -1u;
+    }
+    return it->second;
+  }
+
   bool NextLine() {
     if (!file.good()) return false;
     if (!std::getline(file, raw_line)) return false;
@@ -52,14 +63,7 @@ class CSVReader {
   }
 
   std::string operator()(const std::string& column_name) const {
-    auto it = header.find(column_name);
-    if (it == header.end()) {
-      std::cerr << "Column name " << column_name << " is missed in header."
-                << std::endl;
-      assert(false);
-      return "";
-    }
-    return operator()(it->second);
+    return operator()(ColumnIndex(column_name));
   }
 
   unsigned Size() const { return current_line.size(); }
