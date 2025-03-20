@@ -1,4 +1,0 @@
-eight
-nine
-even
-odd
