@@ -6,4 +6,4 @@
  * This variable is set to true for local runs and will be set to false
  * for external runs.
  */
-static constexpr bool local_run = true;
+[[maybe_unused]] static constexpr bool local_run = true;
