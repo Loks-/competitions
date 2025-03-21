@@ -54,7 +54,7 @@ class ThreadPool {
    * @param args The arguments to be passed to the function.
    * @return A future that will hold the result of the function execution.
    */
-  template <class F, class... Args>
+  template <typename F, typename... Args>
   auto Enqueue(F&& f, Args&&... args)
       -> std::future<typename std::invoke_result<F(Args...)>::type> {
     using return_type = typename std::invoke_result<F(Args...)>::type;
@@ -71,7 +71,7 @@ class ThreadPool {
    * @param task The task to be executed.
    * @return A future that will hold the result of the task execution.
    */
-  template <class T>
+  template <typename T>
   auto EnqueueTask(std::shared_ptr<std::packaged_task<T()>>&& task)
       -> std::future<T> {
     std::future<T> res = task->get_future();
