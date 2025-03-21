@@ -58,7 +58,7 @@ size_t TesterBinarySearchTreeSplitJoin::TestBase(
     }
     nhash::DCombineH(h, root ? root->info.sum_keys : 0);
   }
-  Assert(!root);
+  assert_exception(!root);
   std::cout << "Test results [" << name << "]: " << h << "\t"
             << t.GetMilliseconds() << std::endl;
   return h;

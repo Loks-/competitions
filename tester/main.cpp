@@ -16,87 +16,87 @@ int main(int nargs, char **pargs) {
 
   try {
     if (tester_mode == "binary_search_tree")
-      Assert(TestBinarySearchTree(false));
+      assert_exception(TestBinarySearchTree(false));
     else if (tester_mode == "bst_split_join")
-      Assert(TestBinarySearchTreeSplitJoin(false));
+      assert_exception(TestBinarySearchTreeSplitJoin(false));
     else if (tester_mode == "convergent")
-      Assert(TestContinuedFractionConvergent());
+      assert_exception(TestContinuedFractionConvergent());
     else if (tester_mode == "find_primes_for_modular_fft")
       FindPrimesForModularFFT(10);
     else if (tester_mode == "fixed_universe_successor")
-      Assert(TestFixedUniverseSuccessor(false));
+      assert_exception(TestFixedUniverseSuccessor(false));
     else if (tester_mode == "generating_function")
-      Assert(TestGeneratingFunction());
+      assert_exception(TestGeneratingFunction());
     else if (tester_mode == "graph_distance")
-      Assert(TestGraphEIDistance(false));
+      assert_exception(TestGraphEIDistance(false));
     else if (tester_mode == "graph_distance_unsigned")
-      Assert(TestGraphEIDistanceUnsigned(false));
+      assert_exception(TestGraphEIDistanceUnsigned(false));
     else if (tester_mode == "graph_distance_positive_cost")
-      Assert(TestGraphEIDistancePositiveCost(false));
+      assert_exception(TestGraphEIDistancePositiveCost(false));
     else if (tester_mode == "graph_dynamic_connectivity")
-      Assert(TestGraphDynamicConnectivity(false));
+      assert_exception(TestGraphDynamicConnectivity(false));
     else if (tester_mode == "heap_base")
-      Assert(TestHeapBase(false));
+      assert_exception(TestHeapBase(false));
     else if (tester_mode == "heap_ext")
-      Assert(TestHeapExt(false));
+      assert_exception(TestHeapExt(false));
     else if (tester_mode == "interpolation")
-      Assert(TestInterpolation());
+      assert_exception(TestInterpolation());
     else if (tester_mode == "long_mult")
-      Assert(TestLongMult());
+      assert_exception(TestLongMult());
     else if (tester_mode == "lowest_common_ancestor")
-      Assert(TestLowestCommonAncestor(false));
+      assert_exception(TestLowestCommonAncestor(false));
     else if (tester_mode == "mertens")
-      Assert(TestMertens());
+      assert_exception(TestMertens());
     else if (tester_mode == "mertens_compact")
-      Assert(TestMertensCompact());
+      assert_exception(TestMertensCompact());
     else if (tester_mode == "minimum_spanning_tree")
-      Assert(TestMinimumSpanningTree(false));
+      assert_exception(TestMinimumSpanningTree(false));
     else if (tester_mode == "modular_fft")
-      Assert(TestModularFFT());
+      assert_exception(TestModularFFT());
     else if (tester_mode == "primes_count")
-      Assert(TestPrimesCount(false));
+      assert_exception(TestPrimesCount(false));
     else if (tester_mode == "primes_generation")
-      Assert(TestPrimesGeneration(false));
+      assert_exception(TestPrimesGeneration(false));
     else if (tester_mode == "range_minimum_query")
-      Assert(TestRangeMinimumQuery(false));
+      assert_exception(TestRangeMinimumQuery(false));
     else if (tester_mode == "time_binary_search_tree")
-      Assert(TestBinarySearchTree(true));
+      assert_exception(TestBinarySearchTree(true));
     else if (tester_mode == "time_bst_split_join")
-      Assert(TestBinarySearchTreeSplitJoin(true));
+      assert_exception(TestBinarySearchTreeSplitJoin(true));
     else if (tester_mode == "time_disjoint_set")
-      Assert(TestDisjointSet());
+      assert_exception(TestDisjointSet());
     else if (tester_mode == "time_fixed_universe_successor")
-      Assert(TestFixedUniverseSuccessor(true));
+      assert_exception(TestFixedUniverseSuccessor(true));
     else if (tester_mode == "time_graph_distance")
-      Assert(TestGraphEIDistance(true));
+      assert_exception(TestGraphEIDistance(true));
     else if (tester_mode == "time_graph_distance_unsigned")
-      Assert(TestGraphEIDistanceUnsigned(true));
+      assert_exception(TestGraphEIDistanceUnsigned(true));
     else if (tester_mode == "time_graph_distance_positive_cost")
-      Assert(TestGraphEIDistancePositiveCost(true));
+      assert_exception(TestGraphEIDistancePositiveCost(true));
     else if (tester_mode == "time_graph_dynamic_connectivity")
-      Assert(TestGraphDynamicConnectivity(true));
+      assert_exception(TestGraphDynamicConnectivity(true));
     else if (tester_mode == "time_heap_base")
-      Assert(TestHeapBase(true));
+      assert_exception(TestHeapBase(true));
     else if (tester_mode == "time_heap_ext")
-      Assert(TestHeapExt(true));
+      assert_exception(TestHeapExt(true));
     else if (tester_mode == "time_lowest_common_ancestor")
-      Assert(TestLowestCommonAncestor(true));
+      assert_exception(TestLowestCommonAncestor(true));
     else if (tester_mode == "time_matrix_mult")
-      Assert(TestMatrixMult());
+      assert_exception(TestMatrixMult());
     else if (tester_mode == "time_minimum_spanning_tree")
-      Assert(TestMinimumSpanningTree(true));
+      assert_exception(TestMinimumSpanningTree(true));
     else if (tester_mode == "time_primes_count")
-      Assert(TestPrimesCount(true));
+      assert_exception(TestPrimesCount(true));
     else if (tester_mode == "time_primes_generation")
-      Assert(TestPrimesGeneration(true));
+      assert_exception(TestPrimesGeneration(true));
     else if (tester_mode == "time_range_minimum_query")
-      Assert(TestRangeMinimumQuery(true));
+      assert_exception(TestRangeMinimumQuery(true));
     else if (tester_mode == "time_tree_path_maxima")
-      Assert(TestTreePathMaxima(true));
+      assert_exception(TestTreePathMaxima(true));
     else if (tester_mode == "tree_path_maxima")
-      Assert(TestTreePathMaxima(false));
+      assert_exception(TestTreePathMaxima(false));
     else
-      Assert(false, "Unknown tester mode");
+      assert_exception(false, "Unknown tester mode");
   } catch (AssertException) {
     std::cout << "Test failed." << std::endl;
     return -1;

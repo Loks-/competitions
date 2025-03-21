@@ -43,7 +43,7 @@ uint64_t PrimesCount_Table(uint64_t n) {
     if (n == n10) return table[i];
     n10 *= 10;
   }
-  Assert(false, "Unknown n for table");
+  assert_exception(false, "Unknown n for table");
   return 0;
 }
 

@@ -36,7 +36,7 @@ class TesterBinarySearchTree {
   std::vector<std::vector<TKey>*> keys;
 
   const std::vector<TKey>& GetKeys(TBSTKeysType type) const {
-    Assert(type < type_end);
+    assert_exception(type < type_end);
     return *keys[type];
   }
 
@@ -85,11 +85,11 @@ class TesterBinarySearchTree {
       s.pop();
       if (root->l) {
         s.push(root->l);
-        Assert(root->l->p == root, "Parent link is incorrect!");
+        assert_exception(root->l->p == root, "Parent link is incorrect!");
       }
       if (root->r) {
         s.push(root->r);
-        Assert(root->r->p == root, "Parent link is incorrect!");
+        assert_exception(root->r->p == root, "Parent link is incorrect!");
       }
     }
   }
@@ -153,7 +153,7 @@ class TesterBinarySearchTree {
     size_t h = 0;
     for (unsigned i = 0; i < Size(); ++i) {
       typename TTree::TNode* node = tree.FindByOrder(root, i);
-      Assert(node);
+      assert_exception(node);
       nhash::DCombineH(h, node->key);
     }
     AddResult("FindO", type, h, t.GetMilliseconds());
@@ -168,7 +168,7 @@ class TesterBinarySearchTree {
     size_t h = 0;
     for (unsigned i = 0; i <= Size(); ++i) {
       typename TTree::TNode* node = tree.FindByKey(root, 2 * i);
-      Assert(!node);
+      assert_exception(!node);
       nhash::DCombineH(h, reinterpret_cast<size_t>(node));
     }
     AddResult("FindK0", type, h, t.GetMilliseconds());
@@ -184,7 +184,7 @@ class TesterBinarySearchTree {
     size_t h = 0;
     for (const TKey& key : vkeys) {
       typename TTree::TNode* node = tree.FindByKey(root, key);
-      Assert(node);
+      assert_exception(node);
       nhash::DCombineH(h, (type <= shuffled) ? node->data : node->key);
     }
     AddResult("FindK1", type, h, t.GetMilliseconds());
@@ -297,7 +297,7 @@ class TesterBinarySearchTree {
   typename TTree::TNode* TestInsertDelete(TTree& tree, TBSTKeysType type) {
     return TestInsertDeleteI(
         tree, type,
-        TMetaBool < TTree::support_insert && TTree::support_remove > ());
+        TMetaBool<TTree::support_insert && TTree::support_remove>());
   }
 
   template <class TTree>
@@ -311,16 +311,16 @@ class TesterBinarySearchTree {
       root = TestBuild<TTree>(tree, ktype);
       root = TestDeleteByNode(tree, root, ktype);
       // tree.ReleaseTree(root); root = 0;
-      Assert(!root);
+      assert_exception(!root);
       root = TestInsert<TTree>(tree, ktype);
       root = TestFindByOrder<TTree>(tree, root, ktype);
       root = TestFindByKey0<TTree>(tree, root, ktype);
       root = TestFindByKey1<TTree>(tree, root, ktype);
       root = TestDeleteByKey<TTree>(tree, root, ktype);
       // tree.ReleaseTree(root); root = 0;
-      Assert(!root);
+      assert_exception(!root);
       root = TestInsertDelete<TTree>(tree, ktype);
-      Assert(!root);
+      assert_exception(!root);
       tree.ResetNodes();
     }
   }

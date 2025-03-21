@@ -10,25 +10,26 @@
 class AssertException {};
 
 /**
- * @brief Asserts that a condition is true.
+ * @brief Asserts that a condition is true and throws an exception if it fails.
  *
  * @param condition The condition to check.
  * @throws AssertException if the condition is false.
  */
-inline void Assert(bool condition) {
+inline void assert_exception(bool condition) {
   if (!condition) {
     throw AssertException();
   }
 }
 
 /**
- * @brief Asserts that a condition is true, with a custom message.
+ * @brief Asserts that a condition is true and throws an exception if it fails,
+ * with a custom message.
  *
  * @param condition The condition to check.
  * @param message The message to display if the assertion fails.
  * @throws AssertException if the condition is false.
  */
-inline void Assert(bool condition, std::string_view message) {
+inline void assert_exception(bool condition, std::string_view message) {
   if (!condition) {
     std::cerr << std::format("Assertion failed: {}\n", message);
     throw AssertException();
@@ -36,7 +37,8 @@ inline void Assert(bool condition, std::string_view message) {
 }
 
 /**
- * @brief Asserts that a condition is true, with a formatted message.
+ * @brief Asserts that a condition is true and throws an exception if it fails,
+ * with a formatted message.
  *
  * @param condition The condition to check.
  * @param format The format string.
@@ -44,8 +46,8 @@ inline void Assert(bool condition, std::string_view message) {
  * @throws AssertException if the condition is false.
  */
 template <typename... Args>
-inline void Assert(bool condition, std::format_string<Args...> format,
-                   Args&&... args) {
+inline void assert_exception(bool condition, std::format_string<Args...> format,
+                             Args&&... args) {
   if (!condition) {
     std::string message = std::format(format, std::forward<Args>(args)...);
     std::cerr << std::format("Assertion failed: {}\n", message);
