@@ -9,7 +9,7 @@
  * This is an alias for nhash::HashSafe<T>, providing a default
  * hash implementation for the given type T.
  *
- * @tparam T The type to hash.
+ * @tparam ValueType The type to hash.
  */
-template <typename T>
-using DHash = nhash::HashSafe<T>;
+template <typename ValueType>
+using DHash = nhash::HashSafe<ValueType>;
