@@ -18,7 +18,7 @@ inline void DijkstraMask(const TGraph& g, const TEdgeCostFunction& f,
                          const ds::UnsignedSet& mask,
                          std::vector<TEdgeCost>& output) {
   using TPair = std::pair<TEdgeCost, unsigned>;
-  using THeap = HeapMinOnTop<TPair>;
+  using THeap = MinHeap<TPair>;
   thread_local std::vector<unsigned> visited;
   if (visited.size() < g.Size()) visited.resize(g.Size());
   for (auto u : mask.List()) {
