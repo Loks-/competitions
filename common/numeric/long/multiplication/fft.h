@@ -13,8 +13,8 @@ namespace multiplication {
 // Max supported length for product is 2^25.
 class FFT {
  public:
-  using TModular1 = TModular_P32<2013265921>;  // 2^27*3*5 + 1
-  using TModular2 = TModular_P32<1811939329>;  // 2^26*3^2 + 1
+  using TModular1 = ModularPrime32<2013265921>;  // 2^27*3*5 + 1
+  using TModular2 = ModularPrime32<1811939329>;  // 2^26*3^2 + 1
 
  protected:
   static constexpr uint32_t mask16 = (1u << 16) - 1;

@@ -9,16 +9,17 @@ class TesterInterpolation {
   static const unsigned power1 = 10, power2 = 100, n = 1000, k = 100;
 
  protected:
-  std::vector<TModularD> vp1, vp2;
+  std::vector<ModularDefault> vp1, vp2;
 
  public:
   void Init();
   TesterInterpolation();
 
-  static bool TestSumOfPowers(unsigned power, const std::vector<TModularD>& vp);
+  static bool TestSumOfPowers(unsigned power,
+                              const std::vector<ModularDefault>& vp);
   static bool TestBaseNewtonPolynomial(unsigned power,
-                                       const std::vector<TModularD>& vp);
-  static bool TestAll(unsigned power, const std::vector<TModularD>& vp);
+                                       const std::vector<ModularDefault>& vp);
+  static bool TestAll(unsigned power, const std::vector<ModularDefault>& vp);
 
   bool TestAll() const;
 };

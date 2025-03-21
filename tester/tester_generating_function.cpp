@@ -8,17 +8,17 @@ bool TestGenetatingFunctionOperatorsPartition() {
   auto f_uint64_t = gf::operators::MakePartition(
       gf::functions::MakePGeometricOne<uint64_t>());
   auto f_modular = gf::operators::MakePartition(
-      gf::functions::MakePGeometricOne<TModularD>());
+      gf::functions::MakePGeometricOne<ModularDefault>());
   return (f_uint64_t->Get(n) == expected) &&
-         (f_modular->Get(n) == TModularD(expected));
+         (f_modular->Get(n) == ModularDefault(expected));
 }
 
 bool TestGenetatingFunctionFunctionsPartition() {
   uint64_t n = 100, expected = 190569292;
   auto f_uint64_t = gf::functions::MakePartition<uint64_t>();
-  auto f_modular = gf::functions::MakePartition<TModularD>();
+  auto f_modular = gf::functions::MakePartition<ModularDefault>();
   return (f_uint64_t->Get(n) == expected) &&
-         (f_modular->Get(n) == TModularD(expected));
+         (f_modular->Get(n) == ModularDefault(expected));
 }
 
 bool TestGeneratingFunction() {

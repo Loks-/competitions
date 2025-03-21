@@ -17,9 +17,9 @@ class ConvolutionFFT {
   static constexpr unsigned log2_maxn = 26;
 
   using TModularA = modular::TArithmetic_P32U;
-  using TModular1 = TModular_P32<2013265921>;  // 2^27*3*5 + 1
-  using TModular2 = TModular_P32<1811939329>;  // 2^26*3^2 + 1
-  using TModular3 = TModular_P32<469762049>;   // 2^26*7 + 1, 3
+  using TModular1 = ModularPrime32<2013265921>;  // 2^27*3*5 + 1
+  using TModular2 = ModularPrime32<1811939329>;  // 2^26*3^2 + 1
+  using TModular3 = ModularPrime32<469762049>;   // 2^26*7 + 1, 3
   using TMFFT1 = modular::mstatic::FFT<TModular1, log2_maxn, 31>;
   using TMFFT2 = modular::mstatic::FFT<TModular2, log2_maxn, 13>;
   using TMFFT3 = modular::mstatic::FFT<TModular3, log2_maxn, 3>;

@@ -6,7 +6,7 @@
 #include <iostream>
 #include <vector>
 
-using TModular = TModular_P32<7340033>;
+using TModular = ModularPrime32<7340033>;
 using TFactorial = modular::mstatic::Factorial<TModular>;
 using TFFT = modular::mstatic::FFT<TModular, 16, 3>;
 

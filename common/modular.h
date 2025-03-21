@@ -7,33 +7,49 @@
 /**
  * @brief Alias for a modular arithmetic class with a 32-bit prime modulus.
  *
- * This alias is used for performing modular arithmetic operations
- * with a 32-bit prime number as the modulus.
+ * This alias provides a type-safe modular arithmetic implementation optimized
+ * for 32-bit prime moduli. It supports all basic arithmetic operations (+, -,
+ * *, /) with automatic modular reduction.
  *
- * @tparam mod The prime modulus. Must be greater than 1 and less than 2^32.
+ * @tparam modulus The prime modulus. Must be greater than 1 and less than 2^32.
+ *                 The modulus must be prime for division operations to work
+ * correctly.
  */
-template <uint64_t mod>
-  requires((mod > 1) && (mod < (1ULL << 32)))
-using TModular_P32 = modular::mstatic::Modular<mod, true, true>;
+template <uint64_t modulus>
+  requires((modulus > 1) && (modulus < (1ULL << 32)))
+using ModularPrime32 = modular::mstatic::Modular<modulus, true, true>;
 
 /**
  * @brief Alias for a modular arithmetic class with a 32-bit composite modulus.
  *
- * This alias is used for performing modular arithmetic operations
- * with a 32-bit composite number as the modulus.
+ * This alias provides a type-safe modular arithmetic implementation optimized
+ * for 32-bit composite moduli. It supports all basic arithmetic operations (+,
+ * -, *, /) with automatic modular reduction.
  *
- * @tparam mod The composite modulus. Must be greater than 1 and less than 2^32.
+ * @tparam modulus The composite modulus. Must be greater than 1 and less than
+ * 2^32.
  */
-template <uint64_t mod>
-  requires((mod > 1) && (mod < (1ULL << 32)))
-using TModular_C32 = modular::mstatic::Modular<mod, false, true>;
+template <uint64_t modulus>
+  requires((modulus > 1) && (modulus < (1ULL << 32)))
+using ModularComposite32 = modular::mstatic::Modular<modulus, false, true>;
 
 /**
- * @brief Alias for a modular arithmetic class with a prime modulus of
+ * @brief Alias for a modular arithmetic class with the default prime modulus
  * 1000000007.
  *
- * This alias is used for performing modular arithmetic operations
- * with the prime number 1000000007 as the modulus.
- * This is a commonly used prime modulus in competitive programming.
+ * This alias provides a type-safe modular arithmetic implementation using
+ * the prime number 1000000007 as the modulus. This is a commonly used prime
+ * modulus in competitive programming due to its properties:
+ * - It's large enough to avoid overflow in most cases
+ * - It's prime, allowing efficient division operations
+ * - It's easy to remember (10^9 + 7)
+ *
+ * Example usage:
+ * @code
+ * ModularDefault a(5), b(3);
+ * auto sum = a + b;      // Modular addition
+ * auto prod = a * b;     // Modular multiplication
+ * auto quotient = a / b; // Modular division (efficient for prime modulus)
+ * @endcode
  */
-using TModularD = TModular_P32<1000000007>;
+using ModularDefault = ModularPrime32<1000000007>;
