@@ -12,7 +12,7 @@
  *
  * @tparam TValue The type of the values stored in the heap.
  */
-template <class TValue>
+template <typename TValue>
 using HeapMinOnTop = heap::base::DHeap<4u, TValue, std::less<TValue>>;
 
 /**
@@ -23,5 +23,5 @@ using HeapMinOnTop = heap::base::DHeap<4u, TValue, std::less<TValue>>;
  *
  * @tparam TValue The type of the values stored in the heap.
  */
-template <class TValue>
+template <typename TValue>
 using HeapMaxOnTop = heap::base::DHeap<4u, TValue, std::greater<TValue>>;

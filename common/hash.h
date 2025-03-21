@@ -11,5 +11,5 @@
  *
  * @tparam T The type to hash.
  */
-template <class T>
+template <typename T>
 using DHash = nhash::HashSafe<T>;
