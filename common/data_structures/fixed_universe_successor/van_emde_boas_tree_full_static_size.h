@@ -64,11 +64,11 @@ class VanEmdeBoasTreeFullStaticSizeI {
   constexpr void Init(size_t) { Clear(); }
 
   constexpr void Clear() {
-    min_value = max_value = Empty;
+    min_value = max_value = kEmpty;
     children.resize((1ull << nbits_high));
   }
 
-  constexpr bool IsEmpty() const { return (min_value == Empty); }
+  constexpr bool IsEmpty() const { return (min_value == kEmpty); }
 
   constexpr size_t Min() const { return min_value; }
 
@@ -81,7 +81,7 @@ class VanEmdeBoasTreeFullStaticSizeI {
   }
 
   constexpr void Insert(size_t x) {
-    if (min_value == Empty) {
+    if (min_value == kEmpty) {
       min_value = max_value = x;
     } else {
       if (x < min_value)
@@ -99,7 +99,7 @@ class VanEmdeBoasTreeFullStaticSizeI {
   constexpr void Delete(size_t x) {
     if (x == min_value) {
       if (min_value == max_value) {
-        min_value = max_value = Empty;
+        min_value = max_value = kEmpty;
         return;
       }
       const auto x1 = aux_tree.Min();
@@ -121,7 +121,7 @@ class VanEmdeBoasTreeFullStaticSizeI {
 
   constexpr size_t Successor(size_t x) const {
     if (x < min_value) return min_value;
-    if (x >= max_value) return Empty;
+    if (x >= max_value) return kEmpty;
     size_t x1 = (x >> nbits_low), x2 = (x & mask_low);
     if (!children[x1].IsEmpty() && (x2 < children[x1].Max()))
       return (x1 << nbits_low) + children[x1].Successor(x2);
@@ -131,12 +131,12 @@ class VanEmdeBoasTreeFullStaticSizeI {
 
   constexpr size_t Predecessor(size_t x) const {
     if (x > max_value) return max_value;
-    if (x <= min_value) return Empty;
+    if (x <= min_value) return kEmpty;
     size_t x1 = (x >> nbits_low), x2 = (x & mask_low);
     if (x2 > children[x1].Min())
       return (x1 << nbits_low) + children[x1].Predecessor(x2);
     x1 = aux_tree.Predecessor(x1);
-    return (x1 == Empty) ? min_value : (x1 << nbits_low) + children[x1].Max();
+    return (x1 == kEmpty) ? min_value : (x1 << nbits_low) + children[x1].Max();
   }
 };
 

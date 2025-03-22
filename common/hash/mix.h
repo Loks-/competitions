@@ -16,7 +16,7 @@ namespace nhash {
  * @param x The 32-bit unsigned integer to be mixed.
  * @return The mixed 32-bit unsigned integer.
  */
-constexpr uint32_t MixI(uint32_t x, TMetaUnsigned<32>) {
+constexpr uint32_t MixI(uint32_t x, MetaUnsigned<32>) {
   x ^= x >> 16;
   x *= 0x21f0aaad;
   x ^= x >> 15;
@@ -36,7 +36,7 @@ constexpr uint32_t MixI(uint32_t x, TMetaUnsigned<32>) {
  * @param x The 64-bit unsigned integer to be mixed.
  * @return The mixed 64-bit unsigned integer.
  */
-constexpr uint64_t MixI(uint64_t x, TMetaUnsigned<64>) {
+constexpr uint64_t MixI(uint64_t x, MetaUnsigned<64>) {
   x ^= x >> 27;
   x *= 0x3C79AC492BA7B653UL;
   x ^= x >> 33;
@@ -55,7 +55,7 @@ constexpr uint64_t MixI(uint64_t x, TMetaUnsigned<64>) {
  * @return The mixed size_t value.
  */
 constexpr size_t Mix(size_t x) {
-  return MixI(x, TMetaUnsigned<templates::SizeInBits<size_t>()>{});
+  return MixI(x, MetaUnsigned<templates::SizeInBits<size_t>()>{});
 }
 
 }  // namespace nhash

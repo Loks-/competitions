@@ -132,7 +132,7 @@ class BTrie {
 
  protected:
   constexpr size_t MinI(const Node* node, size_t x) const {
-    if (node->mask.IsEmpty()) return Empty;
+    if (node->mask.IsEmpty()) return kEmpty;
     for (; !node->children.empty();) {
       const auto v = node->mask.Min();
       x = (x << bits_per_level) + v;
@@ -142,7 +142,7 @@ class BTrie {
   }
 
   constexpr size_t MaxI(const Node* node, size_t x) const {
-    if (node->mask.IsEmpty()) return Empty;
+    if (node->mask.IsEmpty()) return kEmpty;
     for (; !node->children.empty();) {
       const auto v = node->mask.Max();
       x = (x << bits_per_level) + v;
@@ -167,13 +167,13 @@ class BTrie {
     for (; node; ++h) {
       const auto idx = Index(x, h);
       const auto idx1 = node->mask.Successor(idx);
-      if (idx1 != Empty) {
+      if (idx1 != kEmpty) {
         auto xa = (x >> (bits_per_level * h)) - idx + idx1;
         return node->children.empty() ? xa : MinI(node->children[idx1], xa);
       }
       node = node->p;
     }
-    return Empty;
+    return kEmpty;
   }
 
   constexpr size_t Predecessor(size_t x) const {
@@ -187,13 +187,13 @@ class BTrie {
     for (; node; ++h) {
       const auto idx = Index(x, h);
       const auto idx1 = node->mask.Predecessor(idx);
-      if (idx1 != Empty) {
+      if (idx1 != kEmpty) {
         auto xa = (x >> (bits_per_level * h)) - idx + idx1;
         return node->children.empty() ? xa : MaxI(node->children[idx1], xa);
       }
       node = node->p;
     }
-    return Empty;
+    return kEmpty;
   }
 };
 }  // namespace fus

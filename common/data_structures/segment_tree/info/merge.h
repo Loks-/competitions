@@ -11,7 +11,7 @@ inline TInfo MergeLR(const TInfo& l, const TInfo& r) {
       !TInfo::use_sinfo_in_update_lr,
       "Merge LR doesn't support info with access to SInfo for UpdateLR.");
   TInfo t;
-  t.UpdateLR(l, r, TEmpty{});
+  t.UpdateLR(l, r, MetaEmpty{});
   return t;
 }
 }  // namespace info

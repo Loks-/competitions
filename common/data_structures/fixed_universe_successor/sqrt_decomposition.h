@@ -76,28 +76,28 @@ class SqrtDecomposition {
 
   constexpr size_t Min() const {
     const auto xh = vhigh.Min();
-    return (xh == Empty) ? Empty : xh * usize_sqrt + vlow[xh].Min();
+    return (xh == kEmpty) ? kEmpty : xh * usize_sqrt + vlow[xh].Min();
   }
 
   constexpr size_t Max() const {
     const auto xh = vhigh.Max();
-    return (xh == Empty) ? Empty : xh * usize_sqrt + vlow[xh].Max();
+    return (xh == kEmpty) ? kEmpty : xh * usize_sqrt + vlow[xh].Max();
   }
 
   constexpr size_t Successor(size_t x) const {
     auto xh = x / usize_sqrt, xl = x % usize_sqrt;
     const auto rl = vlow[xh].Successor(xl);
-    if (rl != Empty) return xh * usize_sqrt + rl;
+    if (rl != kEmpty) return xh * usize_sqrt + rl;
     xh = vhigh.Successor(xh);
-    return (xh == Empty) ? Empty : xh * usize_sqrt + vlow[xh].Min();
+    return (xh == kEmpty) ? kEmpty : xh * usize_sqrt + vlow[xh].Min();
   }
 
   constexpr size_t Predecessor(size_t x) const {
     auto xh = x / usize_sqrt, xl = x % usize_sqrt;
     const auto rl = vlow[xh].Predecessor(xl);
-    if (rl != Empty) return xh * usize_sqrt + rl;
+    if (rl != kEmpty) return xh * usize_sqrt + rl;
     xh = vhigh.Predecessor(xh);
-    return (xh == Empty) ? Empty : xh * usize_sqrt + vlow[xh].Max();
+    return (xh == kEmpty) ? kEmpty : xh * usize_sqrt + vlow[xh].Max();
   }
 };
 }  // namespace fus

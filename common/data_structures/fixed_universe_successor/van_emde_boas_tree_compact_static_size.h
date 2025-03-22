@@ -59,7 +59,7 @@ class VanEmdeBoasTreeCompactStaticSizeI {
   static std::shared_ptr<VanEmdeBoasTreeCompactStaticSize<nbits>> Make(
       size_t x) {
     auto p = std::make_shared<VanEmdeBoasTreeCompactStaticSize<nbits>>();
-    if (x != Empty) p->Insert(x);
+    if (x != kEmpty) p->Insert(x);
     return p;
   }
 
@@ -69,13 +69,13 @@ class VanEmdeBoasTreeCompactStaticSizeI {
   void Clear() {
     aux_tree = nullptr;
     children.clear();
-    min_value = max_value = Empty;
+    min_value = max_value = kEmpty;
   }
 
  public:
   void Init(size_t) { Clear(); }
 
-  bool IsEmpty() const { return (min_value == Empty); }
+  bool IsEmpty() const { return (min_value == kEmpty); }
 
   size_t Min() const { return min_value; }
 
@@ -89,7 +89,7 @@ class VanEmdeBoasTreeCompactStaticSizeI {
   }
 
   void Insert(size_t x) {
-    if (min_value == Empty) {
+    if (min_value == kEmpty) {
       min_value = max_value = x;
     } else {
       if (x < min_value)
@@ -113,7 +113,7 @@ class VanEmdeBoasTreeCompactStaticSizeI {
   void Delete(size_t x) {
     if (x == min_value) {
       if (min_value == max_value) {
-        min_value = max_value = Empty;
+        min_value = max_value = kEmpty;
         return;
       }
       assert(aux_tree);
@@ -145,7 +145,7 @@ class VanEmdeBoasTreeCompactStaticSizeI {
 
   size_t Successor(size_t x) const {
     if (x < min_value) return min_value;
-    if (x >= max_value) return Empty;
+    if (x >= max_value) return kEmpty;
     size_t x1 = (x >> nbits_low), x2 = (x & mask_low);
     auto it1 = children.find(x1);
     if ((it1 != children.end()) && (x2 < it1->second->Max()))
@@ -158,14 +158,14 @@ class VanEmdeBoasTreeCompactStaticSizeI {
 
   size_t Predecessor(size_t x) const {
     if (x > max_value) return max_value;
-    if (x <= min_value) return Empty;
+    if (x <= min_value) return kEmpty;
     size_t x1 = (x >> nbits_low), x2 = (x & mask_low);
     auto it1 = children.find(x1);
     if ((it1 != children.end()) && (x2 > it1->second->Min()))
       return (x1 << nbits_low) + it1->second->Predecessor(x2);
     assert(aux_tree);
     x1 = aux_tree->Predecessor(x1);
-    if (x1 == Empty) return min_value;
+    if (x1 == kEmpty) return min_value;
     it1 = children.find(x1);
     return (x1 << nbits_low) + it1->second->Max();
   }

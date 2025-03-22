@@ -62,7 +62,7 @@ class FLSetB8 {
     for (unsigned i = 0; i < length; ++i) {
       if (vmask[i]) return (i << 6) + numeric::Lowest0Bits(vmask[i]);
     }
-    return Empty;
+    return kEmpty;
   }
 
   constexpr size_t Max() const {
@@ -70,7 +70,7 @@ class FLSetB8 {
       auto mask = vmask[--i];
       if (mask) return (i << 6) + numeric::HighestBit(mask);
     }
-    return Empty;
+    return kEmpty;
   }
 
   // Support extra function from U64Set class.
@@ -84,7 +84,7 @@ class FLSetB8 {
     for (++i; i < length; ++i) {
       if (vmask[i]) return (i << 6) + numeric::Lowest0Bits(vmask[i]);
     }
-    return Empty;
+    return kEmpty;
   }
 
   constexpr size_t Predecessor(size_t x) const {
@@ -94,7 +94,7 @@ class FLSetB8 {
     for (--i; i < length; --i) {
       if (vmask[i]) return (i << 6) + numeric::HighestBit(vmask[i]);
     }
-    return Empty;
+    return kEmpty;
   }
 };
 }  // namespace fus

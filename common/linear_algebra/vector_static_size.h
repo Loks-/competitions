@@ -1,7 +1,6 @@
 #pragma once
 
 #include "common/base.h"
-#include "common/template.h"
 
 #include <array>
 #include <initializer_list>
@@ -31,15 +30,13 @@ class VectorStaticSize {
 
   constexpr VectorStaticSize() { Clear(); }
 
-  constexpr explicit VectorStaticSize(unsigned vsize) {
+  constexpr explicit VectorStaticSize([[maybe_unused]] unsigned vsize) {
     assert(vsize == size);
-    MetaUse(vsize);
     Clear();
   }
 
-  constexpr VectorStaticSize(unsigned vsize, const TValue& v) {
+  constexpr VectorStaticSize([[maybe_unused]] unsigned vsize, const TValue& v) {
     assert(vsize == size);
-    MetaUse(vsize);
     Fill(v);
   }
 

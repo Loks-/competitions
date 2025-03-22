@@ -1,7 +1,6 @@
 #pragma once
 
 #include "common/base.h"
-#include "common/template.h"
 
 namespace modular {
 namespace mstatic {
@@ -65,14 +64,12 @@ class Bool {
     return *this;
   }
 
-  constexpr TSelf operator/(TSelf rvalue) const {
-    MetaUse(rvalue);
+  constexpr TSelf operator/([[maybe_unused]] TSelf rvalue) const {
     assert(rvalue.value);
     return *this;
   }
 
-  constexpr TSelf& operator/=(TSelf rvalue) {
-    MetaUse(rvalue);
+  constexpr TSelf& operator/=([[maybe_unused]] TSelf rvalue) {
     assert(rvalue.value);
     return *this;
   }

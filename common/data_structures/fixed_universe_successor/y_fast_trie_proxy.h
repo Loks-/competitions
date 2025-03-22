@@ -67,14 +67,14 @@ class YFastTrieProxy {
   bool HasKey(size_t x) const {
     if (xtrie.HasKey(x)) return true;
     auto p = Find2(x);
-    if (p.first != Empty) {
+    if (p.first != kEmpty) {
       auto it1 = groups.find(p.first);
       assert(it1 != groups.end());
       if (x <= it1->max_value) {
         return gtree.FindByKey(it1->root, x);
       }
     }
-    if (p.second != Empty) {
+    if (p.second != kEmpty) {
       auto it2 = groups.find(p.second);
       assert(it2 != groups.end());
       if (x >= it2->min_value) {
@@ -85,7 +85,7 @@ class YFastTrieProxy {
   }
 
   size_t Min() const {
-    if (IsEmpty()) return Empty;
+    if (IsEmpty()) return kEmpty;
     auto x = xtrie.Min();
     auto it = groups.find(x);
     assert(it != groups.end());
@@ -93,7 +93,7 @@ class YFastTrieProxy {
   }
 
   size_t Max() const {
-    if (IsEmpty()) return Empty;
+    if (IsEmpty()) return kEmpty;
     auto x = xtrie.Maxn();
     auto it = groups.find(x);
     assert(it != groups.end());
@@ -214,14 +214,14 @@ class YFastTrieProxy {
         return node->key;
       } else {
         auto xs = xtrie.Successor(x);
-        if (xs == Empty) return xs;
+        if (xs == kEmpty) return xs;
         auto its = groups.find(xs);
         assert(its != groups.end());
         return its->min_value;
       }
     } else {
       auto p = Find2(x);
-      if (p.first != Empty) {
+      if (p.first != kEmpty) {
         auto it1 = groups.find(p.first);
         assert(it1 != groups.end());
         if (x < it1->max_value) {
@@ -230,7 +230,7 @@ class YFastTrieProxy {
           return node->key;
         }
       }
-      if (p.second != Empty) {
+      if (p.second != kEmpty) {
         auto it2 = groups.find(p.second);
         assert(it2 != groups.end());
         if (x < it2->min_value) return it2->min_value;
@@ -240,7 +240,7 @@ class YFastTrieProxy {
           return node->key;
         }
       }
-      return Empty;
+      return kEmpty;
     }
   }
 
@@ -254,14 +254,14 @@ class YFastTrieProxy {
         return node->key;
       } else {
         auto xs = xtrie.Predecessor(x);
-        if (xs == Empty) return xs;
+        if (xs == kEmpty) return xs;
         auto its = groups.find(xs);
         assert(its != groups.end());
         return its->max_value;
       }
     } else {
       auto p = Find2(x);
-      if (p.second != Empty) {
+      if (p.second != kEmpty) {
         auto it2 = groups.find(p.second);
         assert(it2 != groups.end());
         if (x > it2->min_value) {
@@ -270,7 +270,7 @@ class YFastTrieProxy {
           return node->key;
         }
       }
-      if (p.first != Empty) {
+      if (p.first != kEmpty) {
         auto it1 = groups.find(p.first);
         assert(it1 != groups.end());
         if (x > it1->max_value) return it1->max_value;
@@ -280,7 +280,7 @@ class YFastTrieProxy {
           return node->key;
         }
       }
-      return Empty;
+      return kEmpty;
     }
   }
 };

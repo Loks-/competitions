@@ -2,7 +2,6 @@
 
 #include "common/base.h"
 #include "common/binary_search_tree/info/none.h"
-#include "common/template.h"
 
 namespace bst {
 namespace info {
@@ -14,15 +13,13 @@ class None : public bst::info::None {
 
  public:
   template <class TNode>
-  constexpr void SetN(const TNode* node) {
+  constexpr void SetN([[maybe_unused]] const TNode* node) {
     assert(node);
-    MetaUse(node);
   }
 
   template <class TNode>
-  constexpr void SetS(const TNode* node) {
+  constexpr void SetS([[maybe_unused]] const TNode* node) {
     assert(node);
-    MetaUse(node);
   }
 
   template <class TNode>

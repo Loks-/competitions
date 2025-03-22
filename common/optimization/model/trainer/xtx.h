@@ -7,7 +7,6 @@
 #include "common/optimization/model/linear.h"
 #include "common/optimization/model/trainer/datapoint.h"
 #include "common/optimization/model/trainer/trainer.h"
-#include "common/template.h"
 
 namespace opt {
 namespace model {
@@ -68,10 +67,9 @@ class XTX : public Trainer {
     for (unsigned i = 0; i < temp.Rows(); ++i) {
       temp(i, i) = (1.0 + ridge_mult) * temp(i, i) + ridge_add;
     }
-    bool b1 = d.Build(temp);
-    bool b2 = d.Solve(xty, m.b);
+    [[maybe_unused]] bool b1 = d.Build(temp);
+    [[maybe_unused]] bool b2 = d.Solve(xty, m.b);
     assert(b1 && b2);
-    MetaUse(b1 == b2);
   }
 
   Linear GetModel() { return m; }

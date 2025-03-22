@@ -54,7 +54,7 @@ class BaseTree
   }
 
  protected:
-  constexpr void SetI(const TPoint& pp, const TLData& ldata, TMetaFalse) {
+  constexpr void SetI(const TPoint& pp, const TLData& ldata, MetaFalse) {
     const auto pp1 = base::Shift(pp, TValue(1));
     auto p = TBase::root;
     auto pb = TBase::sb, pe = TBase::se;
@@ -83,7 +83,7 @@ class BaseTree
     info::UpdateNodeToRoot(p->p);
   }
 
-  constexpr void SetI(const TPoint& pp, const TLData& ldata, TMetaTrue) {
+  constexpr void SetI(const TPoint& pp, const TLData& ldata, MetaTrue) {
     const auto pp1 = base::Shift(pp, TValue(1));
     auto p = TBase::root;
     for (p->ApplyAction(); !p->IsLeaf(); p->ApplyAction())
@@ -100,7 +100,7 @@ class BaseTree
 
  public:
   constexpr void Set(const TPoint& pp, const TLData& ldata) {
-    SetI(pp, ldata, TMetaBool<TIData::support_box>());
+    SetI(pp, ldata, MetaBool<TIData::support_box>());
   }
 
  protected:
@@ -150,12 +150,12 @@ class BaseTree
   }
 
   constexpr void SetRI(TNode* p, const TPoint& pb, const TPoint& pe,
-                       const TLData& ldata, unsigned dd, TMetaFalse) {
+                       const TLData& ldata, unsigned dd, MetaFalse) {
     SetRIF(p, TBase::sb, TBase::se, pb, pe, ldata, dd);
   }
 
   constexpr void SetRI(TNode* p, const TPoint& pb, const TPoint& pe,
-                       const TLData& ldata, unsigned dd, TMetaTrue) {
+                       const TLData& ldata, unsigned dd, MetaTrue) {
     SetRIT(p, pb, pe, ldata, dd);
   }
 
@@ -165,7 +165,7 @@ class BaseTree
     for (unsigned i = 0; i < dim; ++i)
       dd += ((TBase::sb[i] == pb[i]) ? 0u : 1u) +
             ((TBase::se[i] == pe[i]) ? 0u : 1u);
-    SetRI(TBase::root, pb, pe, ldata, dd, TMetaBool<TIData::support_box>());
+    SetRI(TBase::root, pb, pe, ldata, dd, MetaBool<TIData::support_box>());
   }
 };
 }  // namespace kdtree

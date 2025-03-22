@@ -11,25 +11,25 @@ namespace base {
 namespace hidden {
 template <class TNode>
 inline void RemoveRightI(TNode* root, TNode*& removed_node, TNode*& old_parent,
-                         TMetaFalse, TMetaFalse) {
+                         MetaFalse, MetaFalse) {
   RemoveRightDefault(root, removed_node, old_parent);
 }
 
 template <class TNode>
 inline void RemoveRightI(TNode* root, TNode*& removed_node, TNode*& old_parent,
-                         TMetaFalse, TMetaTrue) {
+                         MetaFalse, MetaTrue) {
   RemoveRightUseParent(root, removed_node, old_parent);
 }
 
 template <class TNode>
 inline void RemoveRightI(TNode* root, TNode*& removed_node, TNode*& old_parent,
-                         TMetaTrue, TMetaFalse) {
+                         MetaTrue, MetaFalse) {
   RemoveRightSkipUpdate(root, removed_node, old_parent);
 }
 
 template <class TNode>
 inline void RemoveRightI(TNode* root, TNode*& removed_node, TNode*& old_parent,
-                         TMetaTrue, TMetaTrue) {
+                         MetaTrue, MetaTrue) {
   RemoveRightSkipUpdate(root, removed_node, old_parent);
 }
 }  // namespace hidden
@@ -41,8 +41,8 @@ inline TNode* RemoveRight(TNode* root, TNode*& removed_node,
   root->ApplyAction();
   if (root->r) {
     hidden::RemoveRightI(root, removed_node, old_parent,
-                         TMetaBool<TNode::TInfo::is_none>(),
-                         TMetaBool<TNode::use_parent>());
+                         MetaBool<TNode::TInfo::is_none>(),
+                         MetaBool<TNode::use_parent>());
     return root;
   } else {
     removed_node = root;

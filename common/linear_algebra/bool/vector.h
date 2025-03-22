@@ -2,7 +2,6 @@
 
 #include "common/base.h"
 #include "common/modular/static/bool.h"
-#include "common/template.h"
 #include "common/templates/bits.h"
 
 #include <algorithm>
@@ -129,8 +128,7 @@ class VectorBool {
     return *this;
   }
 
-  constexpr TSelf& operator/=(const TValue& v) {
-    MetaUse(v);
+  constexpr TSelf& operator/=([[maybe_unused]] const TValue& v) {
     assert(v.Get());
     return *this;
   }
@@ -157,8 +155,7 @@ class VectorBool {
     return (v.Get() ? *this : TSelf(size));
   }
 
-  constexpr TSelf operator/(const TValue& v) const {
-    MetaUse(v);
+  constexpr TSelf operator/([[maybe_unused]] const TValue& v) const {
     assert(v.Get());
     return *this;
   }

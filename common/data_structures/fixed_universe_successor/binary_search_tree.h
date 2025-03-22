@@ -22,7 +22,7 @@ namespace fus {
 // Predecessor -- O(log S)
 class BinarySearchTree {
  protected:
-  using TTree = bst::RedBlackTree<TEmpty, bst::info::None, bst::action::None,
+  using TTree = bst::RedBlackTree<MetaEmpty, bst::info::None, bst::action::None,
                                   size_t, memory::NodesManager>;
   using TNode = TTree::TNode;
 
@@ -48,7 +48,7 @@ class BinarySearchTree {
 
   void Insert(size_t x) {
     if (HasKey(x)) return;
-    root = tree.InsertNewNode(root, TEmpty(), x);
+    root = tree.InsertNewNode(root, MetaEmpty(), x);
   }
 
   bool HasKey(size_t x) const { return tree.FindByKey(root, x); }
@@ -62,18 +62,18 @@ class BinarySearchTree {
 
   size_t USize() const { return usize; }
 
-  size_t Min() const { return root ? bst::base::Left(root)->key : Empty; }
+  size_t Min() const { return root ? bst::base::Left(root)->key : kEmpty; }
 
-  size_t Max() const { return root ? bst::base::Right(root)->key : Empty; }
+  size_t Max() const { return root ? bst::base::Right(root)->key : kEmpty; }
 
   size_t Successor(size_t x) const {
     auto node = bst::base::FindByKeyGreater(root, x + 1);
-    return node ? node->key : Empty;
+    return node ? node->key : kEmpty;
   }
 
   size_t Predecessor(size_t x) const {
     auto node = x ? bst::base::FindByKeyLess(root, x - 1) : nullptr;
-    return node ? node->key : Empty;
+    return node ? node->key : kEmpty;
   }
 };
 }  // namespace fus

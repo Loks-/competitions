@@ -55,7 +55,7 @@ class VanEmdeBoasTreeFull {
       aux_tree = Make(m - mh);
       children.resize((1ull << (m - mh)));
       for (auto& c : children) c.InitL(mh);
-      min_value = max_value = Empty;
+      min_value = max_value = kEmpty;
     }
   }
 
@@ -63,7 +63,7 @@ class VanEmdeBoasTreeFull {
   void Init(size_t u) { InitL(u ? numeric::ULog2(uint64_t(u - 1)) + 1 : 1); }
 
   bool IsEmpty() const {
-    return Flat() ? leaf.IsEmpty() : (min_value == Empty);
+    return Flat() ? leaf.IsEmpty() : (min_value == kEmpty);
   }
 
   size_t Min() const { return Flat() ? leaf.Min() : min_value; }
@@ -79,7 +79,7 @@ class VanEmdeBoasTreeFull {
 
   void Insert(size_t x) {
     if (Flat()) return leaf.Insert(x);
-    if (min_value == Empty) {
+    if (min_value == kEmpty) {
       min_value = max_value = x;
     } else {
       if (x < min_value)
@@ -98,7 +98,7 @@ class VanEmdeBoasTreeFull {
     if (Flat()) return leaf.Delete(x);
     if (x == min_value) {
       if (min_value == max_value) {
-        min_value = max_value = Empty;
+        min_value = max_value = kEmpty;
         return;
       }
       const auto x1 = aux_tree->Min();
@@ -121,7 +121,7 @@ class VanEmdeBoasTreeFull {
   size_t Successor(size_t x) const {
     if (Flat()) return leaf.Successor(x);
     if (x < min_value) return min_value;
-    if (x >= max_value) return Empty;
+    if (x >= max_value) return kEmpty;
     size_t x1 = (x >> mh), x2 = (x & mask_low);
     if (!children[x1].IsEmpty() && (x2 < children[x1].Max()))
       return (x1 << mh) + children[x1].Successor(x2);
@@ -132,12 +132,12 @@ class VanEmdeBoasTreeFull {
   size_t Predecessor(size_t x) const {
     if (Flat()) return leaf.Predecessor(x);
     if (x > max_value) return max_value;
-    if (x <= min_value) return Empty;
+    if (x <= min_value) return kEmpty;
     size_t x1 = (x >> mh), x2 = (x & mask_low);
     if (x2 > children[x1].Min())
       return (x1 << mh) + children[x1].Predecessor(x2);
     x1 = aux_tree->Predecessor(x1);
-    return (x1 == Empty) ? min_value : (x1 << mh) + children[x1].Max();
+    return (x1 == kEmpty) ? min_value : (x1 << mh) + children[x1].Max();
   }
 };
 }  // namespace fus

@@ -31,17 +31,17 @@ class BTree {
 
   class Node : public memory::Node {
    public:
-    size_t min_value = Empty;
-    size_t max_value = Empty;
+    size_t min_value = kEmpty;
+    size_t max_value = kEmpty;
     TFLS mask;
     Node** children = nullptr;
 
    public:
-    constexpr bool IsEmpty() const { return min_value == Empty; }
+    constexpr bool IsEmpty() const { return min_value == kEmpty; }
     constexpr bool IsSplit() const { return children != nullptr; }
 
     constexpr void Clear() {
-      min_value = max_value = Empty;
+      min_value = max_value = kEmpty;
       mask.Clear();
       children = nullptr;
     }
@@ -186,7 +186,7 @@ class BTree {
   constexpr size_t Max() const { return root.max_value; }
 
   constexpr size_t Successor(size_t x) const {
-    if (root.IsEmpty() || (x >= root.max_value)) return Empty;
+    if (root.IsEmpty() || (x >= root.max_value)) return kEmpty;
     const Node* node = &root;
     for (size_t h = maxh; h; --h) {
       if (!node->IsSplit()) return node->max_value;
@@ -201,7 +201,7 @@ class BTree {
   }
 
   constexpr size_t Predecessor(size_t x) const {
-    if (root.IsEmpty() || (x <= root.min_value)) return Empty;
+    if (root.IsEmpty() || (x <= root.min_value)) return kEmpty;
     const Node* node = &root;
     for (size_t h = maxh; h; --h) {
       if (!node->IsSplit()) return node->min_value;

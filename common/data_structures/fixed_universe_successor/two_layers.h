@@ -74,28 +74,28 @@ class TwoLayers {
 
   constexpr size_t Min() const {
     const auto xh = vhigh.Min();
-    return (xh == Empty) ? Empty : (xh << low_level_bits) + vlow[xh].MinI();
+    return (xh == kEmpty) ? kEmpty : (xh << low_level_bits) + vlow[xh].MinI();
   }
 
   constexpr size_t Max() const {
     const auto xh = vhigh.Max();
-    return (xh == Empty) ? Empty : (xh << low_level_bits) + vlow[xh].MaxI();
+    return (xh == kEmpty) ? kEmpty : (xh << low_level_bits) + vlow[xh].MaxI();
   }
 
   constexpr size_t Successor(size_t x) const {
     auto xh = x >> low_level_bits, xl = x & mask;
     const auto rl = vlow[xh].Successor(xl);
-    if (rl != Empty) return (xh << low_level_bits) + rl;
+    if (rl != kEmpty) return (xh << low_level_bits) + rl;
     xh = vhigh.Successor(xh);
-    return (xh == Empty) ? Empty : (xh << low_level_bits) + vlow[xh].MinI();
+    return (xh == kEmpty) ? kEmpty : (xh << low_level_bits) + vlow[xh].MinI();
   }
 
   constexpr size_t Predecessor(size_t x) const {
     auto xh = x >> low_level_bits, xl = x & mask;
     const auto rl = vlow[xh].Predecessor(xl);
-    if (rl != Empty) return (xh << low_level_bits) + rl;
+    if (rl != kEmpty) return (xh << low_level_bits) + rl;
     xh = vhigh.Predecessor(xh);
-    return (xh == Empty) ? Empty : (xh << low_level_bits) + vlow[xh].MaxI();
+    return (xh == kEmpty) ? kEmpty : (xh << low_level_bits) + vlow[xh].MaxI();
   }
 };
 }  // namespace fus

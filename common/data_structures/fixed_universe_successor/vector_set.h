@@ -58,7 +58,7 @@ class VectorSet {
     for (size_t x = 0; x < vs.size(); ++x) {
       if (vs[x]) return x;
     }
-    return Empty;
+    return kEmpty;
   }
 
   constexpr size_t Max() const { return Predecessor(vs.size()); }
@@ -67,14 +67,14 @@ class VectorSet {
     for (++x; x < vs.size(); ++x) {
       if (vs[x]) return x;
     }
-    return Empty;
+    return kEmpty;
   }
 
   constexpr size_t Predecessor(size_t x) const {
     for (--x; x < vs.size(); --x) {
       if (vs[x]) return x;
     }
-    return Empty;
+    return kEmpty;
   }
 };
 }  // namespace fus

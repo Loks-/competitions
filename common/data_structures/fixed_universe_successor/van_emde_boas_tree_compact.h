@@ -56,18 +56,18 @@ class VanEmdeBoasTreeCompact {
       mask_low = (1ull << mh) - 1;
       aux_tree = 0;
       min_value = max_value = x;
-    } else if (x != Empty) {
+    } else if (x != kEmpty) {
       leaf.Insert(x);
     }
   }
 
  public:
   void Init(size_t u) {
-    InitL(u ? numeric::ULog2(uint64_t(u - 1)) + 1 : 1, Empty);
+    InitL(u ? numeric::ULog2(uint64_t(u - 1)) + 1 : 1, kEmpty);
   }
 
   bool IsEmpty() const {
-    return Flat() ? leaf.IsEmpty() : (min_value == Empty);
+    return Flat() ? leaf.IsEmpty() : (min_value == kEmpty);
   }
 
   size_t Min() const { return Flat() ? leaf.Min() : min_value; }
@@ -84,7 +84,7 @@ class VanEmdeBoasTreeCompact {
 
   void Insert(size_t x) {
     if (Flat()) return leaf.Insert(x);
-    if (min_value == Empty) {
+    if (min_value == kEmpty) {
       min_value = max_value = x;
     } else {
       if (x < min_value)
@@ -109,7 +109,7 @@ class VanEmdeBoasTreeCompact {
     if (Flat()) return leaf.Delete(x);
     if (x == min_value) {
       if (min_value == max_value) {
-        min_value = max_value = Empty;
+        min_value = max_value = kEmpty;
         return;
       }
       assert(aux_tree);
@@ -142,7 +142,7 @@ class VanEmdeBoasTreeCompact {
   size_t Successor(size_t x) const {
     if (Flat()) return leaf.Successor(x);
     if (x < min_value) return min_value;
-    if (x >= max_value) return Empty;
+    if (x >= max_value) return kEmpty;
     size_t x1 = (x >> mh), x2 = (x & mask_low);
     auto it1 = children.find(x1);
     if ((it1 != children.end()) && (x2 < it1->second->Max()))
@@ -156,14 +156,14 @@ class VanEmdeBoasTreeCompact {
   size_t Predecessor(size_t x) const {
     if (Flat()) return leaf.Predecessor(x);
     if (x > max_value) return max_value;
-    if (x <= min_value) return Empty;
+    if (x <= min_value) return kEmpty;
     size_t x1 = (x >> mh), x2 = (x & mask_low);
     auto it1 = children.find(x1);
     if ((it1 != children.end()) && (x2 > it1->second->Min()))
       return (x1 << mh) + it1->second->Predecessor(x2);
     assert(aux_tree);
     x1 = aux_tree->Predecessor(x1);
-    if (x1 == Empty) return min_value;
+    if (x1 == kEmpty) return min_value;
     it1 = children.find(x1);
     return (x1 << mh) + it1->second->Max();
   }

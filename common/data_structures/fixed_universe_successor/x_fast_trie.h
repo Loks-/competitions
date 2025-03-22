@@ -45,7 +45,7 @@ class XFastTrie {
 
   void Clear() {
     size = 0;
-    empty_node.value = Empty;
+    empty_node.value = kEmpty;
     empty_node.l = empty_node.r = &empty_node;
     node_manager.ResetNodes();
     for (auto &m : vm) m.clear();

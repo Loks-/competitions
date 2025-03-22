@@ -22,7 +22,7 @@ class StaticPointsSet {
   using TWeight = unsigned;
   using TPoint = Point<T>;
   using TTree =
-      bst::persistent::Treap<true, false, TEmpty, bst::info::segment::Size,
+      bst::persistent::Treap<true, false, MetaEmpty, bst::info::segment::Size,
                              bst::action::None, T>;
   using TNode = typename TTree::TNode;
   using TPair = std::pair<T, TNode*>;
@@ -47,7 +47,7 @@ class StaticPointsSet {
               [](auto& l, auto& r) { return CompareXY(l, r); });
     TNode* root = nullptr;
     for (auto p : vp) {
-      root = tree.InsertNewNode(root, TEmpty(), p.y);
+      root = tree.InsertNewNode(root, {}, p.y);
       vx.push_back({p.x, root});
     }
   }

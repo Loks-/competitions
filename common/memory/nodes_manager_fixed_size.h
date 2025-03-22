@@ -1,7 +1,6 @@
 #pragma once
 
 #include "common/base.h"
-#include "common/template.h"
 
 #include <stack>
 #include <vector>
@@ -33,13 +32,11 @@ class NodesManagerFixedSize {
 
   constexpr NodesManagerFixedSize() : NodesManagerFixedSize(0) {}
 
-  constexpr void Reserve(size_t new_max_nodes) {
-    MetaUse(new_max_nodes);
+  constexpr void Reserve([[maybe_unused]] size_t new_max_nodes) {
     assert(new_max_nodes <= nodes.size());
   }
 
-  constexpr void ReserveAdditional(size_t new_nodes) {
-    MetaUse(new_nodes);
+  constexpr void ReserveAdditional([[maybe_unused]] size_t new_nodes) {
     assert(new_nodes <= Reserved());
   }
 

@@ -167,27 +167,27 @@ class ScapegoatTree
     return root;
   }
 
-  static TNode* InsertByKeyI(TNode* root, TNode* node, TMetaFalse, TMetaFalse) {
+  static TNode* InsertByKeyI(TNode* root, TNode* node, MetaFalse, MetaFalse) {
     return InsertByKeyDefault(root, node);
   }
 
-  static TNode* InsertByKeyI(TNode* root, TNode* node, TMetaFalse, TMetaTrue) {
+  static TNode* InsertByKeyI(TNode* root, TNode* node, MetaFalse, MetaTrue) {
     return InsertByKeyUseParent(root, node);
   }
 
-  static TNode* InsertByKeyI(TNode* root, TNode* node, TMetaTrue, TMetaFalse) {
+  static TNode* InsertByKeyI(TNode* root, TNode* node, MetaTrue, MetaFalse) {
     return InsertByKeyUseInsert(root, node);
   }
 
-  static TNode* InsertByKeyI(TNode* root, TNode* node, TMetaTrue, TMetaTrue) {
+  static TNode* InsertByKeyI(TNode* root, TNode* node, MetaTrue, MetaTrue) {
     return InsertByKeyUseInsert(root, node);
   }
 
  public:
   static TNode* InsertByKey(TNode* root, TNode* node) {
     if (!root) return node;
-    return InsertByKeyI(root, node, TMetaBool<TNode::support_insert>(),
-                        TMetaBool<TNode::use_parent>());
+    return InsertByKeyI(root, node, MetaBool<TNode::support_insert>(),
+                        MetaBool<TNode::use_parent>());
   }
 
  protected:

@@ -30,22 +30,22 @@ class FLSetB6 {
 
   constexpr size_t Min() const {
     auto p = numeric::FirstBit(mask);
-    return p ? p - 1 : Empty;
+    return p ? p - 1 : kEmpty;
   }
 
   constexpr size_t Max() const {
-    return mask ? numeric::HighestBit(mask) : Empty;
+    return mask ? numeric::HighestBit(mask) : kEmpty;
   }
 
   constexpr size_t Successor(size_t x) const {
-    if (x == 63) return Empty;
+    if (x == 63) return kEmpty;
     const auto p = numeric::FirstBit(mask >> (x + 1));
-    return p ? p + x : Empty;
+    return p ? p + x : kEmpty;
   }
 
   constexpr size_t Predecessor(size_t x) const {
     const uint64_t t = mask & ((1ull << x) - 1ull);
-    return t ? numeric::HighestBit(t) : Empty;
+    return t ? numeric::HighestBit(t) : kEmpty;
   }
 
  public:

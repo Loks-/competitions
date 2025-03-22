@@ -25,25 +25,25 @@ class VectorPrecomputed {
 
  public:
   constexpr void Clear() {
-    std::fill(vnext.begin(), vnext.end(), Empty);
-    std::fill(vprev.begin(), vprev.end(), Empty);
+    std::fill(vnext.begin(), vnext.end(), kEmpty);
+    std::fill(vprev.begin(), vprev.end(), kEmpty);
     size = 0;
   }
 
   constexpr void Init(size_t u) {
     assert(u > 1);
     vnext.clear();
-    vnext.resize(u, Empty);
+    vnext.resize(u, kEmpty);
     vprev.clear();
-    vprev.resize(u, Empty);
+    vprev.resize(u, kEmpty);
     size = 0;
   }
 
   constexpr void Insert(size_t x) {
     if (!HasKey(x)) {
       const auto xp = Predecessor(x), xn = Successor(x);
-      for (auto y = ((xp == Empty) ? 0 : xp); y < x; ++y) vnext[y] = x;
-      for (auto y = x + 1, z = ((xn == Empty) ? vprev.size() : xn + 1); y < z;
+      for (auto y = ((xp == kEmpty) ? 0 : xp); y < x; ++y) vnext[y] = x;
+      for (auto y = x + 1, z = ((xn == kEmpty) ? vprev.size() : xn + 1); y < z;
            ++y)
         vprev[y] = x;
       ++size;
@@ -57,8 +57,8 @@ class VectorPrecomputed {
   constexpr void Delete(size_t x) {
     if (HasKey(x)) {
       const auto xp = Predecessor(x), xn = Successor(x);
-      for (auto y = ((xp == Empty) ? 0 : xp); y < x; ++y) vnext[y] = xn;
-      for (auto y = x + 1, z = ((xn == Empty) ? vprev.size() : xn + 1); y < z;
+      for (auto y = ((xp == kEmpty) ? 0 : xp); y < x; ++y) vnext[y] = xn;
+      for (auto y = x + 1, z = ((xn == kEmpty) ? vprev.size() : xn + 1); y < z;
            ++y)
         vprev[y] = xp;
       --size;
@@ -72,7 +72,8 @@ class VectorPrecomputed {
   constexpr size_t Min() const { return (vprev[1] == 0) ? 0 : vnext[0]; }
 
   constexpr size_t Max() const {
-    return (vnext[vnext.size() - 2] != Empty) ? vnext.size() - 1 : vprev.back();
+    return (vnext[vnext.size() - 2] != kEmpty) ? vnext.size() - 1
+                                               : vprev.back();
   }
 
   constexpr size_t Successor(size_t x) const { return vnext[x]; }

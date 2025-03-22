@@ -8,10 +8,10 @@ namespace bst {
 namespace base {
 namespace hidden {
 template <class TNode>
-inline void ResetParentLinksI(TNode* root, TMetaFalse) {}
+inline void ResetParentLinksI(TNode* root, MetaFalse) {}
 
 template <class TNode>
-inline void ResetParentLinksI(TNode* root, TMetaTrue) {
+inline void ResetParentLinksI(TNode* root, MetaTrue) {
   root->p = nullptr;
   std::stack<TNode*> s;
   for (s.push(root); !s.empty();) {
@@ -31,7 +31,7 @@ inline void ResetParentLinksI(TNode* root, TMetaTrue) {
 
 template <class TNode>
 inline void ResetParentLinks(TNode* root) {
-  hidden::ResetParentLinksI(root, TMetaBool<TNode::use_parent>());
+  hidden::ResetParentLinksI(root, MetaBool<TNode::use_parent>());
 }
 }  // namespace base
 }  // namespace bst

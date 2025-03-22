@@ -29,17 +29,17 @@ class MultiSearchTreeHashTable {
 
   class Node : public memory::Node {
    public:
-    size_t min_value = Empty;
-    size_t max_value = Empty;
+    size_t min_value = kEmpty;
+    size_t max_value = kEmpty;
     TFLS mask;
 
    public:
-    constexpr bool IsEmpty() const { return min_value == Empty; }
+    constexpr bool IsEmpty() const { return min_value == kEmpty; }
 
     constexpr bool IsSplit() const { return min_value != max_value; }
 
     constexpr void Clear() {
-      min_value = max_value = Empty;
+      min_value = max_value = kEmpty;
       mask.Clear();
     }
   };
@@ -203,7 +203,7 @@ class MultiSearchTreeHashTable {
 
   size_t Successor(size_t x) const {
     if (maxh == 0) return root.mask.Successor(x);
-    if (root.IsEmpty() || (x >= root.max_value)) return Empty;
+    if (root.IsEmpty() || (x >= root.max_value)) return kEmpty;
     unsigned h0 = 0, h1 = maxh;
     for (; h0 < h1;) {
       const unsigned h = (h0 + h1) / 2;
@@ -224,7 +224,7 @@ class MultiSearchTreeHashTable {
 
   size_t Predecessor(size_t x) const {
     if (maxh == 0) return root.mask.Predecessor(x);
-    if (root.IsEmpty() || (x <= root.min_value)) return Empty;
+    if (root.IsEmpty() || (x <= root.min_value)) return kEmpty;
     unsigned h0 = 0, h1 = maxh;
     for (; h0 < h1;) {
       const unsigned h = (h0 + h1) / 2;

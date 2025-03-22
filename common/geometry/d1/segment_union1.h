@@ -15,7 +15,7 @@ namespace d1 {
 template <class TValue>
 class SegmentUnion1 {
  public:
-  using TTree = ds::st::SegmentTree<TEmpty, ds::st::info::LSum1<int, TValue>,
+  using TTree = ds::st::SegmentTree<MetaEmpty, ds::st::info::LSum1<int, TValue>,
                                     ds::st::action::AddEachLSum0<int>,
                                     ds::st::sinfo::Position<TValue>, false>;
   using TNode = typename TTree::TNode;
@@ -38,7 +38,7 @@ class SegmentUnion1 {
     assert(!v.empty());
     Clear();
     tree.ResetNodes(v.size());
-    root = tree.BuildTree(std::vector<TEmpty>(v.size() - 1), v);
+    root = tree.BuildTree(std::vector<MetaEmpty>(v.size() - 1), v);
     l = v.back() - v[0];
   }
 

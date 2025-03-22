@@ -67,23 +67,24 @@ size_t TesterBinarySearchTreeSplitJoin::TestBase(
 bool TesterBinarySearchTreeSplitJoin::TestAll(bool small_test) const {
   std::unordered_set<size_t> hs;
   if (small_test) {
-    hs.insert(TestBase<bst::BaseTree<true, TEmpty, TInfo, TAction, TKey>>(
+    hs.insert(TestBase<bst::BaseTree<true, MetaEmpty, TInfo, TAction, TKey>>(
         "Base  UPT"));
-    hs.insert(TestBase<bst::ScapegoatTree<true, TEmpty, TInfo, TAction, TKey>>(
-        "Scape UPT"));
+    hs.insert(
+        TestBase<bst::ScapegoatTree<true, MetaEmpty, TInfo, TAction, TKey>>(
+            "Scape UPT"));
   }
-  hs.insert(
-      TestBase<bst::AVLTree<true, TEmpty, TInfo, TAction, TKey>>("AVL   UPT"));
-  hs.insert(
-      TestBase<bst::RedBlackTree<TEmpty, TInfo, TAction, TKey>>("RBTree   "));
-  hs.insert(TestBase<bst::SplayTree<true, TEmpty, TInfo, TAction, TKey>>(
+  hs.insert(TestBase<bst::AVLTree<true, MetaEmpty, TInfo, TAction, TKey>>(
+      "AVL   UPT"));
+  hs.insert(TestBase<bst::RedBlackTree<MetaEmpty, TInfo, TAction, TKey>>(
+      "RBTree   "));
+  hs.insert(TestBase<bst::SplayTree<true, MetaEmpty, TInfo, TAction, TKey>>(
       "Splay    "));
-  hs.insert(TestBase<bst::Treap<true, false, TEmpty, TInfo, TAction, TKey>>(
+  hs.insert(TestBase<bst::Treap<true, false, MetaEmpty, TInfo, TAction, TKey>>(
       "Treap UPF"));
-  hs.insert(TestBase<bst::Treap<true, true, TEmpty, TInfo, TAction, TKey>>(
+  hs.insert(TestBase<bst::Treap<true, true, MetaEmpty, TInfo, TAction, TKey>>(
       "Treap UPT"));
-  hs.insert(
-      TestBase<bst::WAVLTree<true, TEmpty, TInfo, TAction, TKey>>("WAVL  UPT"));
+  hs.insert(TestBase<bst::WAVLTree<true, MetaEmpty, TInfo, TAction, TKey>>(
+      "WAVL  UPT"));
   return hs.size() <= 1;
 }
 

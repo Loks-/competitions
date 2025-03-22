@@ -13,25 +13,25 @@ namespace base {
 namespace hidden {
 template <class TNode, class TKey>
 inline TNode* RemoveByKeyI(TNode* root, const TKey& key, TNode*& removed_node,
-                           TNode*& first_changed_node, TMetaFalse, TMetaFalse) {
+                           TNode*& first_changed_node, MetaFalse, MetaFalse) {
   return RemoveByKeyDefault(root, key, removed_node, first_changed_node);
 }
 
 template <class TNode, class TKey>
 inline TNode* RemoveByKeyI(TNode* root, const TKey& key, TNode*& removed_node,
-                           TNode*& first_changed_node, TMetaFalse, TMetaTrue) {
+                           TNode*& first_changed_node, MetaFalse, MetaTrue) {
   return RemoveByKeyUseParent(root, key, removed_node, first_changed_node);
 }
 
 template <class TNode, class TKey>
 inline TNode* RemoveByKeyI(TNode* root, const TKey& key, TNode*& removed_node,
-                           TNode*& first_changed_node, TMetaTrue, TMetaFalse) {
+                           TNode*& first_changed_node, MetaTrue, MetaFalse) {
   return RemoveByKeySkipUpdate(root, key, removed_node, first_changed_node);
 }
 
 template <class TNode, class TKey>
 inline TNode* RemoveByKeyI(TNode* root, const TKey& key, TNode*& removed_node,
-                           TNode*& first_changed_node, TMetaTrue, TMetaTrue) {
+                           TNode*& first_changed_node, MetaTrue, MetaTrue) {
   return RemoveByKeySkipUpdate(root, key, removed_node, first_changed_node);
 }
 }  // namespace hidden
@@ -42,8 +42,8 @@ inline TNode* RemoveByKey(TNode* root, const TKey& key, TNode*& removed_node,
   static_assert(TNode::use_key, "use_key should be true");
   if (!root) return root;
   return hidden::RemoveByKeyI(root, key, removed_node, first_changed_node,
-                              TMetaBool<TNode::TInfo::is_none>(),
-                              TMetaBool<TNode::use_parent>());
+                              MetaBool<TNode::TInfo::is_none>(),
+                              MetaBool<TNode::use_parent>());
 }
 }  // namespace base
 }  // namespace ext

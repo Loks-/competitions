@@ -18,7 +18,7 @@ namespace connectivity {
 // Keep spannig tree based on EulerTourTreesSplayTree.
 class SpanningTreeETTST {
  public:
-  using TGraph = graph::dynamic::UndirectedGraph<TEmpty>;
+  using TGraph = graph::dynamic::UndirectedGraph<Empty>;
   using TEdge = typename TGraph::TEdge;
   using TEdgeID = TEdge*;
   using TNode = typename graph::EulerTourTreesSplayTree::TNode;

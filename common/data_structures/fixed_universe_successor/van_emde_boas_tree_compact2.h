@@ -36,7 +36,7 @@ class VanEmdeBoasTreeCompact2 {
 
    public:
     constexpr void Clear() {
-      min_value = max_value = Empty;
+      min_value = max_value = kEmpty;
       aux_tree = nullptr;
     }
   };
@@ -59,7 +59,7 @@ class VanEmdeBoasTreeCompact2 {
     }
 
     constexpr bool IsEmpty(unsigned h) const {
-      return (h == 1) ? leaf.IsEmpty() : (node.min_value == Empty);
+      return (h == 1) ? leaf.IsEmpty() : (node.min_value == kEmpty);
     }
 
     constexpr size_t Min(unsigned h) const {
@@ -210,7 +210,7 @@ class VanEmdeBoasTreeCompact2 {
     const auto hl = h / 2;
     if (x == node->node.min_value) {
       if (node->node.min_value == node->node.max_value) {
-        node->node.min_value = node->node.max_value = Empty;
+        node->node.min_value = node->node.max_value = kEmpty;
         return;
       }
       assert(node->node.aux_tree);
@@ -252,7 +252,7 @@ class VanEmdeBoasTreeCompact2 {
                     unsigned h) const {
     if (h == 1) return node->leaf.Successor(x);
     if (x < node->node.min_value) return node->node.min_value;
-    if (x >= node->node.max_value) return Empty;
+    if (x >= node->node.max_value) return kEmpty;
     const unsigned hl = h / 2;
     size_t x1 = (x >> (bits_per_level * hl)),
            x2 = x & ((1ull << (bits_per_level * hl)) - 1);
@@ -270,7 +270,7 @@ class VanEmdeBoasTreeCompact2 {
                       unsigned h) const {
     if (h == 1) return node->leaf.Predecessor(x);
     if (x > node->node.max_value) return node->node.max_value;
-    if (x <= node->node.min_value) return Empty;
+    if (x <= node->node.min_value) return kEmpty;
     const unsigned hl = h / 2;
     size_t x1 = (x >> (bits_per_level * hl)),
            x2 = x & ((1ull << (bits_per_level * hl)) - 1);
@@ -279,7 +279,7 @@ class VanEmdeBoasTreeCompact2 {
       return x - x2 + PredecessorI(child, x0, x2, h0, hl);
     assert(node->node.aux_tree);
     x1 = PredecessorI(node->node.aux_tree, x0, x1, h0 + hl, h - hl);
-    if (x1 == Empty) return node->node.min_value;
+    if (x1 == kEmpty) return node->node.min_value;
     child = FindNode(Replace(x0, x1, h0 + hl, h - hl), h0, hl);
     assert(child);
     return (x1 << (bits_per_level * hl)) + child->Max(hl);

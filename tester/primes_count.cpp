@@ -11,7 +11,6 @@
 #include "common/numeric/utils/pow.h"
 #include "common/numeric/utils/ucbrt.h"
 #include "common/numeric/utils/usqrt.h"
-#include "common/template.h"
 
 #include <algorithm>
 #include <functional>
@@ -49,8 +48,7 @@ uint64_t PrimesCount_Table(uint64_t n) {
 
 uint64_t PrimesCount_PrimesGeneration(uint64_t n) {
   uint64_t c = 0;
-  for (auto x : factorization::PrimesRange(n)) {
-    MetaUse(x);
+  for ([[maybe_unused]] auto x : factorization::PrimesRange(n)) {
     ++c;
   }
   return c;

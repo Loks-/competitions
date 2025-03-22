@@ -18,7 +18,7 @@ class SpanningTreeLCT {
   using TGraph = graph::dynamic::UndirectedGraph<bool>;
   using TEdge = typename TGraph::TEdge;
   using TEdgeID = TEdge*;
-  using TLCT = graph::LinkCutTree<TEmpty, bst::info::None>;
+  using TLCT = graph::LinkCutTree<MetaEmpty, bst::info::None>;
   using TNode = typename TLCT::TNode;
 
  protected:

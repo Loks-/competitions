@@ -72,9 +72,9 @@ class ImplicitBinaryTree {
   }
 
  public:
-  constexpr size_t Min() const { return Size() ? MinI(1) : Empty; }
+  constexpr size_t Min() const { return Size() ? MinI(1) : kEmpty; }
 
-  constexpr size_t Max() const { return Size() ? MaxI(1) : Empty; }
+  constexpr size_t Max() const { return Size() ? MaxI(1) : kEmpty; }
 
   constexpr size_t Successor(size_t x) const {
     x += usize_adj + 1;
@@ -82,7 +82,7 @@ class ImplicitBinaryTree {
       if (vs[x]) return MinI(x);
       x = x / 2 + (x & 1);
     }
-    return Empty;
+    return kEmpty;
   }
 
   constexpr size_t Predecessor(size_t x) const {
@@ -91,7 +91,7 @@ class ImplicitBinaryTree {
       if (vs[x]) return MaxI(x);
       x = x / 2 + (x & 1) - 1;
     }
-    return Empty;
+    return kEmpty;
   }
 };
 }  // namespace fus

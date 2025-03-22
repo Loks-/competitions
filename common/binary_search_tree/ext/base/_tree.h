@@ -94,7 +94,7 @@ class Tree : public TTNodesManager {
     static_assert(TMe::support_insert, "Insert should be supported");
     static_assert(use_key, "use_key should be true");
     assert(node);
-    return root ? TMe::InsertByKeyI(root, node, TMetaBool<use_parent>()) : node;
+    return root ? TMe::InsertByKeyI(root, node, MetaBool<use_parent>()) : node;
   }
 
   TNode* InsertNewNode(TNode* root, const TData& data, const TKey& key) {
@@ -104,14 +104,14 @@ class Tree : public TTNodesManager {
   static TNode* RemoveByKey(TNode* root, const TKey& key,
                             TNode*& removed_node) {
     static_assert(TMe::support_remove, "Remove should be supported");
-    return TMe::RemoveByKeyI(root, key, removed_node, TMetaBool<use_parent>());
+    return TMe::RemoveByKeyI(root, key, removed_node, MetaBool<use_parent>());
   }
 
   static TNode* RemoveByOrder(TNode* root, size_t order_index,
                               TNode*& removed_node) {
     static_assert(TMe::support_remove, "Remove should be supported");
     return TMe::RemoveByOrderI(root, order_index, removed_node,
-                               TMetaBool<use_parent>());
+                               MetaBool<use_parent>());
   }
 
   static TNode* RemoveByNode(TNode* node) {
@@ -164,13 +164,13 @@ class Tree : public TTNodesManager {
   }
 
   static TNode* RemoveByKeyI(TNode* root, const TKey& key, TNode*& removed_node,
-                             TMetaTrue) {
+                             MetaTrue) {
     removed_node = TMe::FindByKey(root, key);
     return (removed_node ? TMe::RemoveByNodeI(removed_node) : root);
   }
 
   static TNode* RemoveByOrderI(TNode* root, size_t order_index,
-                               TNode*& removed_node, TMetaTrue) {
+                               TNode*& removed_node, MetaTrue) {
     removed_node = TMe::FindByOrder(root, order_index);
     return (removed_node ? TMe::RemoveByNodeI(removed_node) : root);
   }

@@ -28,17 +28,17 @@ class MultiSearchTree {
   class Node {
    public:
     size_t key = 0;
-    size_t min_value = Empty;
-    size_t max_value = Empty;
+    size_t min_value = kEmpty;
+    size_t max_value = kEmpty;
     TFLS mask;
 
    public:
-    constexpr bool IsEmpty() const { return min_value == Empty; }
+    constexpr bool IsEmpty() const { return min_value == kEmpty; }
 
     constexpr bool IsSplit() const { return min_value != max_value; }
 
     constexpr void Clear() {
-      min_value = max_value = Empty;
+      min_value = max_value = kEmpty;
       mask.Clear();
     }
   };
@@ -240,7 +240,7 @@ class MultiSearchTree {
   constexpr size_t Max() const { return root.max_value; }
 
   constexpr size_t Successor(size_t x) const {
-    if (root.IsEmpty() || (x >= root.max_value)) return Empty;
+    if (root.IsEmpty() || (x >= root.max_value)) return kEmpty;
     const Node *node = &root;
     for (size_t h = maxh;; --h) {
       if (!node->IsSplit()) return node->max_value;
@@ -257,11 +257,11 @@ class MultiSearchTree {
       return FindNode(x + ((idx2 - idx) << (h * bits_per_level)), h - 1)
           ->min_value;
     }
-    return Empty;
+    return kEmpty;
   }
 
   constexpr size_t Predecessor(size_t x) const {
-    if (root.IsEmpty() || (x <= root.min_value)) return Empty;
+    if (root.IsEmpty() || (x <= root.min_value)) return kEmpty;
     const Node *node = &root;
     for (size_t h = maxh;; --h) {
       if (!node->IsSplit()) return node->min_value;
@@ -278,7 +278,7 @@ class MultiSearchTree {
       return FindNode(x - ((idx - idx2) << (h * bits_per_level)), h - 1)
           ->max_value;
     }
-    return Empty;
+    return kEmpty;
   }
 };
 }  // namespace fus

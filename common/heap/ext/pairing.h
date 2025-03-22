@@ -60,7 +60,7 @@ class Pairing {
 
   constexpr unsigned Size() const { return size; }
 
-  constexpr void AddNode(Node* node) { AddNode(node, TMetaBool<auxiliary>()); }
+  constexpr void AddNode(Node* node) { AddNode(node, MetaBool<auxiliary>()); }
 
   constexpr Node* Add(const TData& v) {
     Node* p = nodes_manager.New();
@@ -181,7 +181,7 @@ class Pairing {
     }
   }
 
-  constexpr void AddNode(Node* node, TMetaFalse) {
+  constexpr void AddNode(Node* node, MetaFalse) {
     if (!head)
       head = node;
     else
@@ -189,7 +189,7 @@ class Pairing {
     ++size;
   }
 
-  constexpr void AddNode(Node* node, TMetaTrue) {
+  constexpr void AddNode(Node* node, MetaTrue) {
     if (!head) {
       head = node;
     } else {
@@ -201,7 +201,7 @@ class Pairing {
     ++size;
   }
 
-  constexpr Node* Compress(Node* f, TMetaFalse) {
+  constexpr Node* Compress(Node* f, MetaFalse) {
     if (f && f->r) {
       Node* l = nullptr;
       for (; f && f->r;) {
@@ -226,7 +226,7 @@ class Pairing {
     return f;
   }
 
-  constexpr Node* Compress(Node* f, TMetaTrue) {
+  constexpr Node* Compress(Node* f, MetaTrue) {
     if (f && f->r) {
       Node* l = f->r;
       for (; l->r;) l = l->r;
@@ -243,20 +243,20 @@ class Pairing {
   }
 
   constexpr Node* Compress(Node* f) {
-    return Compress(f, TMetaBool<multipass>());
+    return Compress(f, MetaBool<multipass>());
   }
 
-  constexpr void ProcessAux(TMetaFalse) {}
+  constexpr void ProcessAux(MetaFalse) {}
 
-  constexpr void ProcessAux(TMetaTrue) {
+  constexpr void ProcessAux(MetaTrue) {
     if (head->r) {
-      Node* t = Compress(head->r, TMetaTrue());
+      Node* t = Compress(head->r, MetaTrue());
       head->r = nullptr;
       ComparisonLinkHead(t);
     }
   }
 
-  constexpr void ProcessAux() { ProcessAux(TMetaBool<auxiliary>()); }
+  constexpr void ProcessAux() { ProcessAux(MetaBool<auxiliary>()); }
 
   constexpr Node* TopNode() {
     assert(head);
