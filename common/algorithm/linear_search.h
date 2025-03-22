@@ -9,19 +9,20 @@
  * search stops and the iterator to that element is returned. If no element
  * satisfies the predicate, the end iterator is returned.
  *
- * @tparam TIterator The type of the iterator.
- * @tparam TFunction The type of the predicate function.
+ * @tparam Iterator The type of the iterator.
+ * @tparam Predicate The type of the predicate function.
  * @param begin The beginning of the range to search.
  * @param end The end of the range to search.
- * @param f The predicate function to apply to each element.
+ * @param predicate The predicate function to apply to each element.
  * @return The iterator to the first element that satisfies the predicate, or
  * end if no such element is found.
  */
-template <class TIterator, class TFunction>
-constexpr TIterator FirstIfB(TIterator begin, const TIterator end,
-                             const TFunction& f) {
-  for (; begin < end; ++begin) {
-    if (f(begin)) {
+template <typename Iterator, typename Predicate>
+[[nodiscard]] constexpr Iterator find_first_if(Iterator begin,
+                                               const Iterator end,
+                                               const Predicate& predicate) {
+  for (; begin != end; ++begin) {
+    if (predicate(begin)) {
       break;
     }
   }
@@ -36,16 +37,17 @@ constexpr TIterator FirstIfB(TIterator begin, const TIterator end,
  * applying the predicate f to each element. If an element satisfies the
  * predicate, the search stops and the iterator to that element is returned.
  *
- * @tparam TIterator The type of the iterator.
- * @tparam TFunction The type of the predicate function.
+ * @tparam Iterator The type of the iterator.
+ * @tparam Predicate The type of the predicate function.
  * @param begin The beginning of the range to search.
- * @param f The predicate function to apply to each element.
+ * @param predicate The predicate function to apply to each element.
  * @return The iterator to the first element that satisfies the predicate.
  */
-template <class TIterator, class TFunction>
-constexpr TIterator FirstIfB(TIterator begin, const TFunction& f) {
+template <typename Iterator, typename Predicate>
+[[nodiscard]] constexpr Iterator find_first_if(Iterator begin,
+                                               const Predicate& predicate) {
   for (;; ++begin) {
-    if (f(begin)) {
+    if (predicate(begin)) {
       return begin;
     }
   }
