@@ -13,25 +13,26 @@
  *
  * The comparator function f should be monotonic.
  *
- * @tparam TIterator The type of the iterator.
- * @tparam TValue The type of the value to compare.
- * @tparam TFunction The type of the comparator function.
+ * @tparam Iterator The type of the iterator.
+ * @tparam Value The type of the value to compare.
+ * @tparam Comparator The type of the comparator function.
  * @param begin The beginning of the range to search.
  * @param end The end of the range to search.
  * @param value The value to compare.
- * @param f The comparator function to apply to each element.
+ * @param comparator The comparator function to apply to each element.
  * @return The iterator to the first element that is not less than the given
  * value, or end if no such element is found.
  */
-template <class TIterator, class TValue, class TFunction>
-constexpr TIterator LowerBoundF(TIterator begin, TIterator end,
-                                const TValue& value, const TFunction& f) {
-  while (begin < end) {
-    const TIterator m = (begin + end) / 2;
-    if (f(m) < value) {
-      begin = m + 1;
+template <typename Iterator, typename Value, typename Comparator>
+[[nodiscard]] constexpr Iterator lower_bound_with_comparator(
+    Iterator begin, Iterator end, const Value& value,
+    const Comparator& comparator) {
+  while (begin != end) {
+    const Iterator mid = (begin + end) / 2;
+    if (comparator(mid) < value) {
+      begin = mid + 1;
     } else {
-      end = m;
+      end = mid;
     }
   }
   return begin;
@@ -48,25 +49,26 @@ constexpr TIterator LowerBoundF(TIterator begin, TIterator end,
  *
  * The comparator function f should be monotonic.
  *
- * @tparam TIterator The type of the iterator.
- * @tparam TValue The type of the value to compare.
- * @tparam TFunction The type of the comparator function.
+ * @tparam Iterator The type of the iterator.
+ * @tparam Value The type of the value to compare.
+ * @tparam Comparator The type of the comparator function.
  * @param begin The beginning of the range to search.
  * @param end The end of the range to search.
  * @param value The value to compare.
- * @param f The comparator function to apply to each element.
+ * @param comparator The comparator function to apply to each element.
  * @return The iterator to the first element that is greater than the given
  * value, or end if no such element is found.
  */
-template <class TIterator, class TValue, class TFunction>
-constexpr TIterator UpperBoundF(TIterator begin, TIterator end,
-                                const TValue& value, const TFunction& f) {
-  while (begin < end) {
-    const TIterator m = (begin + end) / 2;
-    if (f(m) <= value) {
-      begin = m + 1;
+template <typename Iterator, typename Value, typename Comparator>
+[[nodiscard]] constexpr Iterator upper_bound_with_comparator(
+    Iterator begin, Iterator end, const Value& value,
+    const Comparator& comparator) {
+  while (begin != end) {
+    const Iterator mid = (begin + end) / 2;
+    if (comparator(mid) <= value) {
+      begin = mid + 1;
     } else {
-      end = m;
+      end = mid;
     }
   }
   return begin;
@@ -83,23 +85,23 @@ constexpr TIterator UpperBoundF(TIterator begin, TIterator end,
  *
  * The predicate function f should be monotonic.
  *
- * @tparam TIterator The type of the iterator.
- * @tparam TFunction The type of the predicate function.
+ * @tparam Iterator The type of the iterator.
+ * @tparam Predicate The type of the predicate function.
  * @param begin The beginning of the range to search.
  * @param end The end of the range to search.
- * @param f The predicate function to apply to each element.
+ * @param predicate The predicate function to apply to each element.
  * @return The iterator to the first element that satisfies the predicate, or
  * end if no such element is found.
  */
-template <class TIterator, class TFunction>
-constexpr TIterator LowerBoundB(TIterator begin, TIterator end,
-                                const TFunction& f) {
-  while (begin < end) {
-    const TIterator m = (begin + end) / 2;
-    if (f(m)) {
-      end = m;
+template <typename Iterator, typename Predicate>
+[[nodiscard]] constexpr Iterator lower_bound_with_predicate(
+    Iterator begin, Iterator end, const Predicate& predicate) {
+  while (begin != end) {
+    const Iterator mid = (begin + end) / 2;
+    if (predicate(mid)) {
+      end = mid;
     } else {
-      begin = m + 1;
+      begin = mid + 1;
     }
   }
   return begin;
@@ -115,18 +117,19 @@ constexpr TIterator LowerBoundB(TIterator begin, TIterator end,
  *
  * The predicate function f should be monotonic.
  *
- * @tparam TIterator The type of the iterator.
- * @tparam TFunction The type of the predicate function.
+ * @tparam Iterator The type of the iterator.
+ * @tparam Predicate The type of the predicate function.
  * @param begin The beginning of the range to search.
- * @param f The predicate function to apply to each element.
+ * @param predicate The predicate function to apply to each element.
  * @return The iterator to the first element that satisfies the predicate.
  */
-template <class TIterator, class TFunction>
-constexpr TIterator LowerBoundB(TIterator begin, const TFunction& f) {
-  auto end = std::max(begin, TIterator(1));
-  while (!f(end)) {
+template <typename Iterator, typename Predicate>
+[[nodiscard]] constexpr Iterator lower_bound_with_predicate(
+    Iterator begin, const Predicate& predicate) {
+  auto end = std::max(begin, Iterator(1));
+  while (!predicate(end)) {
     begin = end + 1;
     end *= 2;
   }
-  return LowerBoundB(begin, end, f);
+  return lower_bound_with_predicate(begin, end, predicate);
 }
