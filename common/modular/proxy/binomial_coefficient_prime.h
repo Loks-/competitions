@@ -8,9 +8,9 @@
 namespace modular {
 namespace proxy {
 constexpr uint64_t BinomialCoefficientPrime(uint64_t n, uint64_t k,
-                                            Factorial<TModularProxy_P32U>& f) {
+                                            Factorial<ModularProxyPrime32>& f) {
   if (k > n) return 0;
-  const TModularProxy_P32U& proxy = f.GetProxy();
+  const ModularProxyPrime32& proxy = f.GetProxy();
   const uint64_t p = proxy.GetMod();
   uint64_t r = 1;
   for (; n; n /= p, k /= p) {
@@ -23,7 +23,7 @@ constexpr uint64_t BinomialCoefficientPrime(uint64_t n, uint64_t k,
 
 constexpr uint64_t BinomialCoefficientPrime(uint64_t n, uint64_t k,
                                             unsigned prime) {
-  Factorial<TModularProxy_P32U> f(prime);
+  Factorial<ModularProxyPrime32> f(prime);
   return BinomialCoefficientPrime(n, k, f);
 }
 }  // namespace proxy

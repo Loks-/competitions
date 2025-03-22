@@ -16,8 +16,9 @@ namespace modular {
 namespace proxy {
 class BinomialCoefficient {
  public:
-  using TPrimeFactorialProxy = Factorial<TModularProxy_P32U, true, false>;
-  using TPrimePowerFactorialProxy = Factorial<TModularProxy_C32U, true, true>;
+  using TPrimeFactorialProxy = Factorial<ModularProxyPrime32, true, false>;
+  using TPrimePowerFactorialProxy =
+      Factorial<ModularProxyComposite32, true, true>;
 
   static constexpr uint64_t GetPPower(uint64_t n, uint64_t p) {
     uint64_t s = 0;

@@ -9,8 +9,8 @@
 namespace modular {
 namespace proxy {
 constexpr uint64_t FactorialExtendedPrimeCoprimeOnly(
-    uint64_t n, Factorial<TModularProxy_P32U, false>& f) {
-  const TModularProxy_P32U& mp = f.GetProxy();
+    uint64_t n, Factorial<ModularProxyPrime32, false>& f) {
+  const ModularProxyPrime32& mp = f.GetProxy();
   const uint64_t p = mp.GetMod();
   uint64_t r = f.Get(n % p);
   if ((n / p) & 1) r = mp.Minus(r);
@@ -18,16 +18,16 @@ constexpr uint64_t FactorialExtendedPrimeCoprimeOnly(
 }
 
 constexpr uint64_t FactorialExtendedPrime(
-    uint64_t n, Factorial<TModularProxy_P32U, false>& f) {
+    uint64_t n, Factorial<ModularProxyPrime32, false>& f) {
   if (n == 0) return 1;
-  const TModularProxy_P32U& mp = f.GetProxy();
+  const ModularProxyPrime32& mp = f.GetProxy();
   const uint64_t p = mp.GetMod();
   return mp.Mult(FactorialExtendedPrimeCoprimeOnly(n, f),
                  FactorialExtendedPrime(n / p, f));
 }
 
 constexpr uint64_t FactorialExtendedPrime(uint64_t n, unsigned prime) {
-  Factorial<TModularProxy_P32U, false> f(prime);
+  Factorial<ModularProxyPrime32, false> f(prime);
   return FactorialExtendedPrime(n, f);
 }
 }  // namespace proxy
