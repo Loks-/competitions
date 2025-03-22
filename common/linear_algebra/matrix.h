@@ -9,6 +9,7 @@ template <class TTValue>
 class Matrix : public Vector<TTValue> {
  public:
   using TValue = TTValue;
+  using ValueType = TValue;
   using TSelf = Matrix<TValue>;
   using TBase = Vector<TValue>;
   using TVector = Vector<TValue>;

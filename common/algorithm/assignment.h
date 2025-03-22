@@ -11,16 +11,16 @@ namespace alg {
  * assignment problem. It takes a cost matrix and a maximum value, and returns
  * the minimum cost of the assignment.
  *
- * @tparam TMatrix The type of the matrix.
- * @param a The cost matrix.
+ * @tparam Matrix The type of the matrix.
+ * @param cost_matrix The cost matrix.
  * @param max_value The maximum value in the cost matrix.
  * @return The minimum cost of the assignment.
  */
-template <class TMatrix>
-inline typename TMatrix::TValue Assignment(
-    const TMatrix& a, const typename TMatrix::TValue& max_value) {
-  assignment::Hungarian s;
-  return s.Solve(a, max_value);
+template <typename Matrix>
+[[nodiscard]] inline typename Matrix::ValueType assignment_cost(
+    const Matrix& cost_matrix, const typename Matrix::ValueType& max_value) {
+  assignment::Hungarian solver;
+  return solver.solve(cost_matrix, max_value);
 }
 
 }  // namespace alg

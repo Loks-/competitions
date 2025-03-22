@@ -17,40 +17,40 @@ class Hungarian {
   /**
    * @brief Solves the assignment problem using the Hungarian algorithm.
    *
-   * @tparam TMatrix The type of the matrix.
-   * @param a The cost matrix.
+   * @tparam Matrix The type of the matrix.
+   * @param cost_matrix The cost matrix.
    * @param max_value The maximum value in the cost matrix.
    * @return The minimum cost of the assignment.
    */
-  template <class TMatrix>
-  typename TMatrix::TValue Solve(const TMatrix& a,
-                                 const typename TMatrix::TValue& max_value) {
-    using TValue = typename TMatrix::TValue;
-    n = a.Rows();
-    m = a.Columns();
-    assert(n <= m);  // Ensure the number of rows is less than or equal to the
-                     // number of columns
-    p.resize(m + 1);
-    std::fill(p.begin(), p.end(), n);
-    std::vector<unsigned> used(m + 1), way(m);
-    std::vector<TValue> u(n + 1), v(m + 1), vt(m + 1);
+  template <typename Matrix>
+  typename Matrix::ValueType solve(
+      const Matrix& cost_matrix, const typename Matrix::ValueType& max_value) {
+    using ValueType = typename Matrix::ValueType;
+    rows_ = cost_matrix.Rows();
+    cols_ = cost_matrix.Columns();
+    assert(rows_ <= cols_);  // Ensure the number of rows is less than or equal
+                             // to the number of columns
+    matches_.resize(cols_ + 1);
+    std::fill(matches_.begin(), matches_.end(), rows_);
+    std::vector<unsigned> used(cols_ + 1), way(cols_);
+    std::vector<ValueType> u(rows_ + 1), v(cols_ + 1), vt(cols_ + 1);
 
-    for (unsigned i = 0; i < n; ++i) {
-      p[m] = i;
+    for (unsigned i = 0; i < rows_; ++i) {
+      matches_[cols_] = i;
       std::fill(used.begin(), used.end(), 0);
       std::fill(vt.begin(), vt.end(), max_value);
-      unsigned j0 = m, j1 = m;
+      unsigned j0 = cols_, j1 = cols_;
 
       // Main loop to find the minimum cost matching
-      while (p[j0] != n) {
+      while (matches_[j0] != rows_) {
         used[j0] = true;
-        const unsigned i0 = p[j0];
-        TValue delta = max_value;
+        const unsigned i0 = matches_[j0];
+        ValueType delta = max_value;
 
         // Update potentials and find the minimum delta
-        for (unsigned j = 0; j < m; ++j) {
+        for (unsigned j = 0; j < cols_; ++j) {
           if (!used[j]) {
-            const auto c = a(i0, j) - u[i0] - v[j];
+            const auto c = cost_matrix(i0, j) - u[i0] - v[j];
             if (c < vt[j]) {
               vt[j] = c;
               way[j] = j0;
@@ -63,9 +63,9 @@ class Hungarian {
         }
 
         // Update dual variables
-        for (unsigned j = 0; j <= m; ++j) {
+        for (unsigned j = 0; j <= cols_; ++j) {
           if (used[j]) {
-            u[p[j]] += delta;
+            u[matches_[j]] += delta;
             v[j] -= delta;
           } else {
             vt[j] -= delta;
@@ -75,13 +75,13 @@ class Hungarian {
       }
 
       // Update the matching
-      while (j0 < m) {
+      while (j0 < cols_) {
         j1 = way[j0];
-        p[j0] = p[j1];
+        matches_[j0] = matches_[j1];
         j0 = j1;
       }
     }
-    return -v[m];
+    return -v[cols_];
   }
 
   /**
@@ -89,19 +89,19 @@ class Hungarian {
    *
    * @return A vector containing the optimal assignment.
    */
-  std::vector<unsigned> Get() const {
-    std::vector<unsigned> result(n);
-    for (unsigned j = 0; j < m; ++j) {
-      if (p[j] != n) {
-        result[p[j]] = j;
+  [[nodiscard]] std::vector<unsigned> get_assignment() const {
+    std::vector<unsigned> result(rows_);
+    for (unsigned j = 0; j < cols_; ++j) {
+      if (matches_[j] != rows_) {
+        result[matches_[j]] = j;
       }
     }
     return result;
   }
 
  protected:
-  std::vector<unsigned> p;  // Array to store the matchings
-  unsigned n, m;            // Dimensions of the cost matrix
+  std::vector<unsigned> matches_;  // Array to store the matchings
+  unsigned rows_, cols_;           // Dimensions of the cost matrix
 };
 
 }  // namespace assignment
