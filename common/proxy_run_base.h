@@ -10,7 +10,7 @@
  * This type is used to store pointers to solution functions that can be
  * called dynamically based on the solution name.
  */
-using TSolutionPtr = int (*)();
+using SolutionFunction = int (*)();
 
 /**
  * @brief Type alias for a map of solution names to solution function pointers.
@@ -19,7 +19,7 @@ using TSolutionPtr = int (*)();
  * corresponding solution functions, allowing for dynamic solution selection
  * at runtime.
  */
-using TSolutionsMap = std::map<std::string, TSolutionPtr>;
+using SolutionsMap = std::map<std::string, SolutionFunction>;
 
 /**
  * @brief Global map of solution names to their corresponding solution
@@ -29,6 +29,6 @@ using TSolutionsMap = std::map<std::string, TSolutionPtr>;
  * and execute solutions by name. It provides a central registry for all
  * available solutions in the system.
  *
- * @note This map should be populated before any calls to ProxyRun functions.
+ * @note This map should be populated before any calls to solution functions.
  */
-extern TSolutionsMap solutions_map;
+extern SolutionsMap solutions_map;

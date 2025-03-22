@@ -18,7 +18,7 @@
  *         Returns -2 if the solution is not found.
  *         Returns the solution's return value otherwise.
  */
-inline int ProxyRun(const std::string& solution) {
+inline int run_solution(const std::string& solution) {
   const auto it = solutions_map.find(solution);
   if (it != solutions_map.end()) {
     try {
@@ -44,10 +44,10 @@ inline int ProxyRun(const std::string& solution) {
  *         Returns -3 if the input file cannot be opened.
  *         Returns the solution's return value otherwise.
  */
-inline int ProxyRun(const std::string& solution,
-                    const std::string& input_file_name) {
+inline int run_solution(const std::string& solution,
+                        const std::string& input_file_name) {
   if (input_file_name.empty()) {
-    return ProxyRun(solution);
+    return run_solution(solution);
   }
   std::ifstream input_file(input_file_name);
   if (!input_file.is_open()) {
@@ -56,7 +56,7 @@ inline int ProxyRun(const std::string& solution,
     return -3;
   }
   auto cin_backup = std::cin.rdbuf(input_file.rdbuf());
-  const int solution_results = ProxyRun(solution);
+  const int solution_results = run_solution(solution);
   std::cin.rdbuf(cin_backup);
   return solution_results;
 }
@@ -74,11 +74,11 @@ inline int ProxyRun(const std::string& solution,
  *         Returns -4 if the output file cannot be opened.
  *         Returns the solution's return value otherwise.
  */
-inline int ProxyRun(const std::string& solution,
-                    const std::string& input_file_name,
-                    const std::string& output_file_name) {
+inline int run_solution(const std::string& solution,
+                        const std::string& input_file_name,
+                        const std::string& output_file_name) {
   if (output_file_name.empty()) {
-    return ProxyRun(solution, input_file_name);
+    return run_solution(solution, input_file_name);
   }
   std::ofstream output_file(output_file_name);
   if (!output_file.is_open()) {
@@ -87,7 +87,7 @@ inline int ProxyRun(const std::string& solution,
     return -4;
   }
   auto cout_backup = std::cout.rdbuf(output_file.rdbuf());
-  const int solution_results = ProxyRun(solution, input_file_name);
+  const int solution_results = run_solution(solution, input_file_name);
   std::cout.rdbuf(cout_backup);
   return solution_results;
 }
@@ -106,12 +106,12 @@ inline int ProxyRun(const std::string& solution,
  *         Returns -6 if the solution output doesn't match the expected output.
  *         Returns 0 if the test passes successfully.
  */
-inline int ProxyTestOne(const std::string& solution,
-                        const std::string& input_file_name,
-                        const std::string& test_file_name) {
+inline int test_solution(const std::string& solution,
+                         const std::string& input_file_name,
+                         const std::string& test_file_name) {
   std::stringstream solution_output, expected_output;
   auto cout_backup = std::cout.rdbuf(solution_output.rdbuf());
-  const int solution_results = ProxyRun(solution, input_file_name);
+  const int solution_results = run_solution(solution, input_file_name);
   if (solution_results) {
     return solution_results;
   }
@@ -159,9 +159,9 @@ inline int ProxyTestOne(const std::string& solution,
  *         Returns -7 if no solutions were found for the given problem.
  *         Returns 0 if all tests pass successfully.
  */
-inline int ProxyTestAll(const std::string& problem,
-                        const std::string& input_file_name,
-                        const std::string& test_file_name) {
+inline int test_all_solutions(const std::string& problem,
+                              const std::string& input_file_name,
+                              const std::string& test_file_name) {
   const std::string problem_prefix = problem + "__";
   unsigned correct_solutions = 0;
   for (auto it = solutions_map.lower_bound(problem); it != solutions_map.end();
@@ -171,7 +171,7 @@ inline int ProxyTestAll(const std::string& problem,
       break;
     }
     const int solutions_results =
-        ProxyTestOne(it->first, input_file_name, test_file_name);
+        test_solution(it->first, input_file_name, test_file_name);
     if (solutions_results) {
       return solutions_results;
     }
@@ -202,10 +202,10 @@ inline int ProxyTestAll(const std::string& problem,
  *         Returns -7 if no solutions were found for the given problem.
  *         Returns 0 if the execution or testing is successful.
  */
-inline int ProxyAuto(const std::string& solution,
-                     const std::string& input_file_name,
-                     const std::string& test_file_name) {
+inline int auto_run_or_test(const std::string& solution,
+                            const std::string& input_file_name,
+                            const std::string& test_file_name) {
   return test_file_name.empty()
-             ? ProxyRun(solution, input_file_name)
-             : ProxyTestAll(solution, input_file_name, test_file_name);
+             ? run_solution(solution, input_file_name)
+             : test_all_solutions(solution, input_file_name, test_file_name);
 }
