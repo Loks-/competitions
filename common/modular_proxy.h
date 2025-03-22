@@ -5,15 +5,23 @@
 /**
  * @brief Alias for a modular proxy class with a 32-bit prime modulus.
  *
- * This alias is used for performing modular arithmetic operations
- * with a 32-bit prime number as the modulus, using a proxy pattern.
+ * This alias provides a type-safe modular arithmetic implementation using
+ * a proxy pattern, optimized for 32-bit prime moduli. It supports all basic
+ * arithmetic operations (+, -, *, /) with automatic modular reduction.
+ *
+ * @tparam ValueType The type used for internal calculations (uint64_t).
+ *                   Must be large enough to handle intermediate results.
  */
-using TModularProxy_P32U = modular::proxy::Proxy<true, true, uint64_t>;
+using ModularProxyPrime32 = modular::proxy::Proxy<true, true, uint64_t>;
 
 /**
  * @brief Alias for a modular proxy class with a 32-bit composite modulus.
  *
- * This alias is used for performing modular arithmetic operations
- * with a 32-bit composite number as the modulus, using a proxy pattern.
+ * This alias provides a type-safe modular arithmetic implementation using
+ * a proxy pattern, optimized for 32-bit composite moduli. It supports all
+ * basic arithmetic operations (+, -, *, /) with automatic modular reduction.
+ *
+ * @tparam ValueType The type used for internal calculations (uint64_t).
+ *                   Must be large enough to handle intermediate results.
  */
-using TModularProxy_C32U = modular::proxy::Proxy<false, true, uint64_t>;
+using ModularProxyComposite32 = modular::proxy::Proxy<false, true, uint64_t>;
