@@ -56,7 +56,7 @@ size_t TesterBinarySearchTreeSplitJoin::TestBase(
     } else {
       root = tree.InsertNewNode(root, {}, key);
     }
-    nhash::DCombineH(h, root ? root->info.sum_keys : 0);
+    nhash::DCombineH(h, root ? root->subtree_data.sum_keys : 0);
   }
   assert_exception(!root);
   std::cout << "Test results [" << name << "]: " << h << "\t"

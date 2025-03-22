@@ -36,7 +36,7 @@ constexpr void SwapNotRelated(TNode* node1, TNode* parent1, TNode* node2,
   } else {
     node1->SetP(nullptr);
   }
-  node1->info.BTISwap(node2);
+  node1->subtree_data.bti_swap(node2);
 }
 
 template <class TNode>
@@ -63,7 +63,7 @@ constexpr void SwapChildParent(TNode* child, TNode* parent, TNode* gparent) {
   } else {
     child->SetP(nullptr);
   }
-  child->info.BTISwap(parent);
+  child->subtree_data.bti_swap(parent);
 }
 
 template <class TNode>

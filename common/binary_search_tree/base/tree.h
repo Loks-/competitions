@@ -53,7 +53,7 @@ class Tree : public TTNodesManager {
   TNode* New(const TData& data) {
     auto p = New();
     p->data = data;
-    p->info.BTIReset();
+    p->subtree_data.bti_reset();
     p->UpdateInfo();
     return p;
   }
@@ -63,7 +63,7 @@ class Tree : public TTNodesManager {
     auto p = New();
     p->data = data;
     p->key = key;
-    p->info.BTIReset();
+    p->subtree_data.bti_reset();
     p->UpdateInfo();
     return p;
   }
@@ -118,7 +118,7 @@ class Tree : public TTNodesManager {
       assert(order_index == 0);
       return node;
     } else {
-      assert(order_index <= root->info.size);
+      assert(order_index <= root->subtree_data.size);
       TNode *l = nullptr, *r = nullptr;
       TMe::SplitBySize(root, order_index, l, r);
       return TMe::Join3(l, node, r);

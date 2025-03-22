@@ -25,9 +25,7 @@ class EulerTourTreesSplayTree {
     }
   }
 
-  unsigned RawIndex(TNode* node) const {
-    return bstree.RawIndex(node);
-  }
+  unsigned RawIndex(TNode* node) const { return bstree.RawIndex(node); }
 
   unsigned Index(TNode* node) const {
     return node->data;
@@ -69,7 +67,8 @@ class EulerTourTreesSplayTree {
 
   // Link root to node
   void Link(unsigned index_root, unsigned index_node) {
-    auto node_c = Node(index_root, false), node_p0 = Node(index_node, false), node_p1 = Node(index_node, true);
+    auto node_c = Node(index_root, false), node_p0 = Node(index_node, false),
+         node_p1 = Node(index_node, true);
     if (Order(node_p1) < Order(node_p0)) node_p0 = node_p1;
     Splay(node_c);
     auto r = bstree.SplitR(node_p0);
@@ -82,7 +81,7 @@ class EulerTourTreesSplayTree {
   }
 
   void RemoveEdge(unsigned from, unsigned to) {
-    auto u0 = Order(Node(from, false)), u1 = Order(Node(from, true)), 
+    auto u0 = Order(Node(from, false)), u1 = Order(Node(from, true)),
          v0 = Order(Node(to, false)), v1 = Order(Node(to, true));
     if (u1 < u0) std::swap(u0, u1);
     if (v1 < v0) std::swap(v0, v1);
@@ -92,7 +91,7 @@ class EulerTourTreesSplayTree {
   unsigned TreeSize(unsigned index) {
     auto node = Node(index, false);
     Splay(node);
-    return node->info.size;
+    return node->subtree_data.size;
   }
 
   bool SameTree(unsigned index1, unsigned index2) {

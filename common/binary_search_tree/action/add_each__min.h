@@ -14,7 +14,7 @@ class AddEachMin : public AddEach<TData> {
  public:
   template <class TNode>
   constexpr void Add(TNode* node, const TData& value) {
-    node->info.min += value;
+    node->subtree_data.min_value += value;
     TBase::Add(node, value);
   }
 };

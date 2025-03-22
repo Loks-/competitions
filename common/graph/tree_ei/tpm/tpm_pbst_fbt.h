@@ -1,10 +1,10 @@
 #pragma once
 
 #include "common/base.h"
-#include "common/binary_search_tree/info/segment/get_by_key.h"
-#include "common/binary_search_tree/info/segment/max.h"
-#include "common/binary_search_tree/info/segment/none.h"
 #include "common/binary_search_tree/persistent/treap.h"
+#include "common/binary_search_tree/subtree_data/segment/get_by_key.h"
+#include "common/binary_search_tree/subtree_data/segment/max.h"
+#include "common/binary_search_tree/subtree_data/segment/none.h"
 #include "common/graph/tree.h"
 #include "common/graph/tree/lca.h"
 #include "common/graph/tree_ei.h"
@@ -22,9 +22,10 @@ inline std::vector<typename TEdgeCostFunction::TEdgeCost> TPM_PBST_FBT(
     const TreeEI<TEdgeInfo>& tree, const TEdgeCostFunction& f,
     const std::vector<std::pair<unsigned, unsigned>>& paths) {
   using TValue = typename TEdgeCostFunction::TEdgeCost;
-  using TTree = bst::persistent::Treap<
-      true, false, TValue,
-      bst::info::segment::Max<TValue, bst::info::segment::None>>;
+  using TTree =
+      bst::persistent::Treap<true, false, TValue,
+                             bst::subtree_data::segment::Max<
+                                 TValue, bst::subtree_data::segment::None>>;
   using TNode = typename TTree::TNode;
 
   if (tree.Size() <= 1) return std::vector<TValue>(paths.size(), TValue());
@@ -48,9 +49,11 @@ inline std::vector<typename TEdgeCostFunction::TEdgeCost> TPM_PBST_FBT(
       output.push_back(0);
     } else {
       unsigned a = lca.GetLCA(p.first, p.second), da = lca.deep[a] + 1;
-      output.push_back(
-          std::max(bst::info::segment::GetByKey(roots[p.first], da, d).max,
-                   bst::info::segment::GetByKey(roots[p.second], da, d).max));
+      output.push_back(std::max(
+          bst::subtree_data::segment::get_by_key(roots[p.first], da, d)
+              .max_value,
+          bst::subtree_data::segment::get_by_key(roots[p.second], da, d)
+              .max_value));
     }
   }
   return output;

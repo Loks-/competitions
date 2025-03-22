@@ -1,7 +1,7 @@
 #pragma once
 
 #include "common/binary_search_tree/ext/info/helpers/insert_node_to_root.h"
-#include "common/binary_search_tree/info/update_node_to_root.h"
+#include "common/binary_search_tree/subtree_data/update_node_to_root.h"
 #include "common/template.h"
 
 namespace bst {
@@ -10,7 +10,7 @@ namespace info {
 namespace hidden {
 template <class TNode>
 inline void InsertOrUpdateNodeToRootI(TNode* node, TNode* ins, MetaFalse) {
-  bst::info::UpdateNodeToRoot(node);
+  bst::subtree_data::update_node_to_root(node);
 }
 
 template <class TNode>

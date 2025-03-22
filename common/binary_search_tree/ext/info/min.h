@@ -20,14 +20,14 @@ class Min : public TInfo {
   void Update(TNode* node) {
     TBase::Update(node);
     min = node->data;
-    if (node->l) min = std::min(min, node->l->info.min);
-    if (node->r) min = std::min(min, node->r->info.min);
+    if (node->l) min = std::min(min, node->l->subtree_data.min);
+    if (node->r) min = std::min(min, node->r->subtree_data.min);
   }
 
   template <class TNode>
   void Insert(const TNode* node) {
     TBase::Insert(node);
-    min = std::min(min, node->info.min);
+    min = std::min(min, node->subtree_data.min);
   }
 };
 }  // namespace info

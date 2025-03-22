@@ -6,13 +6,13 @@
 #include "common/binary_search_tree/base/node.h"
 #include "common/binary_search_tree/base/rotate.h"
 #include "common/binary_search_tree/base/tree.h"
-#include "common/binary_search_tree/info/size.h"
+#include "common/binary_search_tree/subtree_data/size.h"
 #include "common/memory/nodes_manager_fixed_size.h"
 
 #include <algorithm>
 
 namespace bst {
-template <bool use_key, class TData, class TInfo = info::Size,
+template <bool use_key, class TData, class TInfo = subtree_data::Size,
           class TAction = action::None, class TKey = int64_t,
           template <class> class TTNodesManager = memory::NodesManagerFixedSize>
 class SplayTree
@@ -158,7 +158,7 @@ class SplayTree
 
   static size_t Order(TNode* node) {
     Splay(node);
-    return node->l ? node->l->info.size : 0;
+    return node->l ? node->l->subtree_data.size : 0;
   }
 
   static TNode* FindByOrder(TNode*& root, size_t order_index) {
@@ -177,7 +177,7 @@ class SplayTree
     } else if (lsize == 0) {
       output_l = nullptr;
       output_r = root;
-    } else if (lsize >= root->info.size) {
+    } else if (lsize >= root->subtree_data.size) {
       output_l = root;
       output_r = nullptr;
     } else {
@@ -203,8 +203,9 @@ class SplayTree
     static_assert(TInfo::has_size, "info should contain size");
     if (!root1) return root2;
     if (!root2) return root1;
-    if (root1->info.size < root2->info.size) std::swap(root1, root2);
-    TNode *m = FindByOrder(root1, root1->info.size / 2), *r2l = nullptr,
+    if (root1->subtree_data.size < root2->subtree_data.size)
+      std::swap(root1, root2);
+    TNode *m = FindByOrder(root1, root1->subtree_data.size / 2), *r2l = nullptr,
           *r2r = nullptr;
     SplitByKey(root2, m->key, r2l, r2r);
     if (m->l) m->l->p = nullptr;

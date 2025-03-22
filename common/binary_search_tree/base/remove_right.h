@@ -1,7 +1,7 @@
 #pragma once
 
 #include "common/base.h"
-#include "common/binary_search_tree/info/update_node_to_root.h"
+#include "common/binary_search_tree/subtree_data/update_node_to_root.h"
 
 namespace bst {
 namespace base {
@@ -18,7 +18,7 @@ inline TNode* RemoveRight(TNode* root, TNode*& removed_node,
     node->SetR(removed_node->l);
     removed_node->ResetLinksAndUpdateInfo();
     old_parent = node;
-    bst::info::UpdateNodeToRoot(old_parent);
+    bst::subtree_data::update_node_to_root(old_parent);
     return root;
   } else {
     removed_node = root;

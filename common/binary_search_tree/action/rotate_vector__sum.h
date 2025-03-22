@@ -34,8 +34,8 @@ class RotateVectorSum : public None {
 
   template <class TNode>
   void Add(TNode* node, size_t _r) {
-    Rotate(node->info.sum, _r);
-    r = (r + _r) % node->info.sum.Size();
+    Rotate(node->subtree_data.sum_value, _r);
+    r = (r + _r) % node->subtree_data.sum_value.Size();
   }
 
   template <class TNode>

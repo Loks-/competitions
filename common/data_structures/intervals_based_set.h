@@ -3,7 +3,7 @@
 #include "common/base.h"
 #include "common/binary_search_tree/base/left.h"
 #include "common/binary_search_tree/base/traversal.h"
-#include "common/binary_search_tree/info/size.h"
+#include "common/binary_search_tree/subtree_data/size.h"
 #include "common/binary_search_tree/treap.h"
 #include "common/memory/nodes_manager.h"
 
@@ -29,10 +29,10 @@ class IntervalsBasedSet {
     constexpr TValue Size() const { return e - b; }
   };
 
-  class Info : public bst::info::Size {
+  class BSTSubtreeData : public bst::subtree_data::Size {
    public:
-    using TBase = bst::info::Size;
-    using TSelf = Info;
+    using Base = bst::subtree_data::Size;
+    using Self = BSTSubtreeData;
 
     static constexpr bool use_data = true;
 
@@ -41,15 +41,16 @@ class IntervalsBasedSet {
 
    public:
     template <class TNode>
-    constexpr void Update(TNode* node) {
-      TBase::Update(node);
-      set_size = node->data.Size() + (node->l ? node->l->info.set_size : 0) +
-                 (node->r ? node->r->info.set_size : 0);
+    constexpr void update(TNode* node) {
+      Base::update(node);
+      set_size = node->data.Size() +
+                 (node->l ? node->l->subtree_data.set_size : 0) +
+                 (node->r ? node->r->subtree_data.set_size : 0);
     }
   };
 
-  using TTree = bst::Treap<true, true, Interval, Info, bst::action::None,
-                           TValue, memory::NodesManager>;
+  using TTree = bst::Treap<true, true, Interval, BSTSubtreeData,
+                           bst::action::None, TValue, memory::NodesManager>;
   using TNode = typename TTree::TNode;
 
  protected:
@@ -65,9 +66,9 @@ class IntervalsBasedSet {
 
   bool Empty() const { return root == nullptr; }
 
-  TValue Size() const { return Empty() ? 0 : root->info.set_size; }
+  TValue Size() const { return Empty() ? 0 : root->subtree_data.set_size; }
 
-  size_t TreeSize() const { return Empty() ? 0 : root->info.size; }
+  size_t TreeSize() const { return Empty() ? 0 : root->subtree_data.size; }
 
   std::vector<Interval> ToVector() const {
     return bst::base::Traverse<TNode, Interval>(

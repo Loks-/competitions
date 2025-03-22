@@ -9,7 +9,7 @@ inline typename TTree::TNode* GetSegmentInfoByKey(
   TNode *l, *m, *r;
   TTree::SplitByKey(root, end, m, r);
   TTree::SplitByKey(m, begin, l, m);
-  if (m) output = m->info;
+  if (m) output = m->subtree_data;
   return TTree::Join(TTree::Join(l, m), r);
 }
 }  // namespace bst

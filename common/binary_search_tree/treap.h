@@ -4,9 +4,9 @@
 #include "common/binary_search_tree/base/node.h"
 #include "common/binary_search_tree/base/root.h"
 #include "common/binary_search_tree/base/tree.h"
-#include "common/binary_search_tree/info/size.h"
-#include "common/binary_search_tree/info/treap_height.h"
-#include "common/binary_search_tree/info/update_node_to_root.h"
+#include "common/binary_search_tree/subtree_data/size.h"
+#include "common/binary_search_tree/subtree_data/treap_height.h"
+#include "common/binary_search_tree/subtree_data/update_node_to_root.h"
 #include "common/memory/nodes_manager_fixed_size.h"
 
 #include <algorithm>
@@ -14,23 +14,24 @@
 #include <vector>
 
 namespace bst {
-template <bool use_key, bool use_parent, class TData, class TTInfo = info::Size,
-          class TAction = action::None, class TKey = int64_t,
+template <bool use_key, bool use_parent, class TData,
+          class TTInfo = subtree_data::Size, class TAction = action::None,
+          class TKey = int64_t,
           template <class> class TTNodesManager = memory::NodesManagerFixedSize>
 class Treap
-    : public base::Tree<
-          TTNodesManager<base::Node<TData, info::TreapHeight<unsigned, TTInfo>,
-                                    TAction, use_key, use_parent, TKey>>,
-          Treap<use_key, use_parent, TData, TTInfo, TAction, TKey,
-                TTNodesManager>> {
+    : public base::Tree<TTNodesManager<base::Node<
+                            TData, subtree_data::TreapHeight<unsigned, TTInfo>,
+                            TAction, use_key, use_parent, TKey>>,
+                        Treap<use_key, use_parent, TData, TTInfo, TAction, TKey,
+                              TTNodesManager>> {
  public:
   static constexpr bool support_remove = true;
   static constexpr bool support_join = true;
   static constexpr bool support_join3 = true;
   static constexpr bool support_split = true;
 
-  using TInfo = info::TreapHeight<unsigned, TTInfo>;
-  using THeight = typename TInfo::THeight;
+  using THeight = unsigned;
+  using TInfo = subtree_data::TreapHeight<THeight, TTInfo>;
   using TNode = base::Node<TData, TInfo, TAction, use_key, use_parent, TKey>;
   using TSelf =
       Treap<use_key, use_parent, TData, TTInfo, TAction, TKey, TTNodesManager>;
@@ -39,7 +40,7 @@ class Treap
 
  protected:
   static constexpr const THeight& Height(const TNode* node) {
-    return node->info.treap_height;
+    return node->subtree_data.treap_height;
   }
 
  public:
@@ -142,7 +143,7 @@ class Treap
   static void SplitBySizeI(TNode* p, size_t lsize, TNode*& output_l,
                            TNode*& output_r) {
     p->ApplyAction();
-    const size_t hlsize = (p->l ? p->l->info.size : 0);
+    const size_t hlsize = (p->l ? p->l->subtree_data.size : 0);
     if (lsize < hlsize) {
       output_r = p;
       SplitBySizeI(p->l, lsize, output_l, p->l);
@@ -172,7 +173,7 @@ class Treap
     } else if (lsize == 0) {
       output_l = nullptr;
       output_r = root;
-    } else if (lsize >= root->info.size) {
+    } else if (lsize >= root->subtree_data.size) {
       output_l = root;
       output_r = nullptr;
     } else {
@@ -226,7 +227,8 @@ class Treap
   static TNode* Union(TNode* p1, TNode* p2) {
     if (!p1) return p2;
     if (!p2) return p1;
-    if (p1->info.treap_height < p2->info.treap_height) std::swap(p1, p2);
+    if (p1->subtree_data.treap_height < p2->subtree_data.treap_height)
+      std::swap(p1, p2);
     TNode *pt1 = nullptr, *pt2 = nullptr;
     SplitByKey(p2, p1->key, pt1, pt2);
     p1->SetL(Union(p1->l, pt1));
@@ -249,7 +251,7 @@ class Treap
       p->SetL(m);
     else
       p->SetR(m);
-    info::UpdateNodeToRoot(p);
+    subtree_data::update_node_to_root(p);
     return Root(p);
   }
 };

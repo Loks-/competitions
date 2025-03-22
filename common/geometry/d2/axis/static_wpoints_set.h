@@ -1,10 +1,10 @@
 #pragma once
 
 #include "common/base.h"
-#include "common/binary_search_tree/info/segment/get_by_key.h"
-#include "common/binary_search_tree/info/segment/none.h"
-#include "common/binary_search_tree/info/segment/sum.h"
 #include "common/binary_search_tree/persistent/treap.h"
+#include "common/binary_search_tree/subtree_data/segment/get_by_key.h"
+#include "common/binary_search_tree/subtree_data/segment/none.h"
+#include "common/binary_search_tree/subtree_data/segment/sum.h"
 #include "common/geometry/d2/compare/point_xy.h"
 #include "common/geometry/d2/point.h"
 #include "common/geometry/d2/wpoint.h"
@@ -24,7 +24,8 @@ class StaticWPointsSet {
   using TPoint = Point<T1>;
   using TWPoint = WPoint<T1, T2>;
   using TTree = bst::persistent::Treap<
-      true, false, T2, bst::info::segment::Sum<T2, bst::info::segment::None>,
+      true, false, T2,
+      bst::subtree_data::segment::Sum<T2, bst::subtree_data::segment::None>,
       bst::action::None, T1>;
   using TNode = typename TTree::TNode;
   using TPair = std::pair<T1, TNode*>;
@@ -70,7 +71,8 @@ class StaticWPointsSet {
   TNode* UpperBound(T1 x) const { return LowerBound(x + 1); }
 
   T2 CountQ(const TPoint& p) const {
-    return bst::info::segment::GetByKey(LowerBound(p.x), p.y).sum;
+    return bst::subtree_data::segment::get_by_key(LowerBound(p.x), p.y)
+        .sum_value;
   }
 };
 }  // namespace axis

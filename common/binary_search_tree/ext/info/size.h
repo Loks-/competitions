@@ -15,18 +15,18 @@ class Size : public None {
 
   template <class TNode>
   void Update(TNode* node) {
-    size = 1 + (node->l ? node->l->info.size : 0) +
-           (node->r ? node->r->info.size : 0);
+    size = 1 + (node->l ? node->l->subtree_data.size : 0) +
+           (node->r ? node->r->subtree_data.size : 0);
   }
 
   template <class TNode>
   void Insert(const TNode* node) {
-    size += node->info.size;
+    size += node->subtree_data.size;
   }
 
   template <class TNode>
   void Remove(const TNode* node) {
-    size -= node->info.size;
+    size -= node->subtree_data.size;
   }
 };
 }  // namespace info

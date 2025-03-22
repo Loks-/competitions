@@ -3,14 +3,14 @@
 #include "common/binary_search_tree/action/none.h"
 #include "common/binary_search_tree/base/balanced_tree.h"
 #include "common/binary_search_tree/base/node.h"
-#include "common/binary_search_tree/info/size.h"
+#include "common/binary_search_tree/subtree_data/size.h"
 #include "common/memory/nodes_manager_fixed_size.h"
 
 namespace bst {
 // In this implementation delete operation is different from wiki Scapegoat
 // tree. It removes node from tree (similar to other trees), not just mark for
 // future deletion.
-template <bool use_parent, class TData, class TInfo = info::Size,
+template <bool use_parent, class TData, class TInfo = subtree_data::Size,
           class TAction = action::None, class TKey = int64_t>
 class ScapegoatTree
     : public base::BalancedTree<
@@ -34,7 +34,9 @@ class ScapegoatTree
  public:
   explicit ScapegoatTree(size_t max_nodes) : TBTree(max_nodes) {}
 
-  static size_t Size(const TNode* root) { return root ? root->info.size : 0; }
+  static size_t Size(const TNode* root) {
+    return root ? root->subtree_data.size : 0;
+  }
 
  protected:
   static void TraverseInorder(TNode* node, std::vector<TNode*>& output) {

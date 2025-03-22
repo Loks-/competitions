@@ -3,7 +3,7 @@
 #include "common/base.h"
 #include "common/binary_search_tree/action/none.h"
 #include "common/binary_search_tree/base/node.h"
-#include "common/binary_search_tree/info/none.h"
+#include "common/binary_search_tree/subtree_data/none.h"
 #include "common/graph/tree.h"
 #include "common/graph/tree/lca.h"
 #include "common/memory/nodes_manager_fixed_size.h"
@@ -21,8 +21,8 @@ class LCA {
  public:
   using TValue = TTValue;
   using TPositionValue = PositionValue<TValue>;
-  using TNode =
-      bst::base::Node<TValue, bst::info::None, bst::action::None, false, false>;
+  using TNode = bst::base::Node<TValue, bst::subtree_data::None,
+                                bst::action::None, false, false>;
 
  protected:
   std::vector<TValue> vv;

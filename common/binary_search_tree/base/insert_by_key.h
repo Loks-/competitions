@@ -1,6 +1,6 @@
 #pragma once
 
-#include "common/binary_search_tree/info/update_node_to_root.h"
+#include "common/binary_search_tree/subtree_data/update_node_to_root.h"
 
 namespace bst {
 namespace base {
@@ -24,7 +24,7 @@ inline void InsertByKey(TNode* root, TNode* node) {
       }
     }
   }
-  bst::info::UpdateNodeToRoot(root);
+  bst::subtree_data::update_node_to_root(root);
 }
 }  // namespace base
 }  // namespace bst

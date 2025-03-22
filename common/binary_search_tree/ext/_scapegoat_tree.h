@@ -4,9 +4,9 @@
 #include "common/binary_search_tree/action/none.h"
 #include "common/binary_search_tree/base/insert_by_key.h"
 #include "common/binary_search_tree/base/swap.h"
-#include "common/binary_search_tree/info/helpers/update_node_to_root.h"
-#include "common/binary_search_tree/info/size.h"
 #include "common/binary_search_tree/node.h"
+#include "common/binary_search_tree/subtree_data/helpers/update_node_to_root.h"
+#include "common/binary_search_tree/subtree_data/size.h"
 #include "common/binary_search_tree/tree.h"
 #include "common/memory/nodes_manager_fixed_size.h"
 #include "common/template.h"
@@ -18,7 +18,7 @@ namespace bst {
 // In this implementation delete operation is different from wiki Scapegoat
 // tree. It removes node from tree (similar to other trees), not just mark for
 // future deletion.
-template <bool use_parent, class TData, class TInfo = info::Size,
+template <bool use_parent, class TData, class TInfo = subtree_data::Size,
           class TAction = action::None, class TKey = int64_t,
           template <class> class TTNodesManager = NodesManagerFixedSize>
 class ScapegoatTree
@@ -57,14 +57,18 @@ class ScapegoatTree
 
   static bool RebuildRequired(TNode* node) {
     assert(node);
-    return ((node->l && node->l->info.size > alpha * node->info.size) ||
-            (node->r && node->r->info.size > alpha * node->info.size));
+    return ((node->l &&
+             node->l->subtree_data.size > alpha * node->subtree_data.size) ||
+            (node->r &&
+             node->r->subtree_data.size > alpha * node->subtree_data.size));
   }
 
   static TNode* UpdateAndFixSubtree(TNode* node) {
     node->UpdateInfo();
-    return ((node->l && node->l->info.size > alpha * node->info.size) ||
-            (node->r && node->r->info.size > alpha * node->info.size))
+    return ((node->l &&
+             node->l->subtree_data.size > alpha * node->subtree_data.size) ||
+            (node->r &&
+             node->r->subtree_data.size > alpha * node->subtree_data.size))
                ? RebuildSubtree(node)
                : node;
   }
@@ -80,7 +84,7 @@ class ScapegoatTree
         r->SetP(p);
         return root;
       }
-      node->info.Insert(new_node);
+      node->subtree_data.Insert(new_node);
       p = node;
       if (node->key < new_node->key) {
         if (node->r) {
@@ -131,7 +135,7 @@ class ScapegoatTree
         }
       }
     }
-    info::UpdateNodeToRoot(node);
+    subtree_data::update_node_to_root(node);
     return root;
   }
 
@@ -196,7 +200,7 @@ class ScapegoatTree
     if (!root->r) return root->l;
     thread_local std::stack<TNode*> s;
     TNode *l = root->l, *r = root->r, *new_root;
-    if (l->info.size < r->info.size) {
+    if (l->subtree_data.size < r->subtree_data.size) {
       new_root = r;
       for (new_root->ApplyAction(); new_root->l; new_root->ApplyAction()) {
         s.push(new_root);

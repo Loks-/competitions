@@ -74,7 +74,7 @@ class Node : public TNodeProxyParent<
 
  public:
   TData data;
-  TInfo info;
+  TInfo subtree_data;
   TAction action;
 
  public:
@@ -84,7 +84,7 @@ class Node : public TNodeProxyParent<
 
   constexpr void ClearAction() { action.Clear(); }
 
-  void UpdateInfo() { info.Update(this); }
+  void UpdateInfo() { subtree_data.update(this); }
 
   template <class TActionValue>
   void AddAction(const TActionValue& value) {
@@ -95,12 +95,12 @@ class Node : public TNodeProxyParent<
 
   void ResetLinksAndUpdateInfo() {
     TProxyParent::ResetLinks();
-    info.BTIReset();
+    subtree_data.bti_reset();
     UpdateInfo();
   }
 
   constexpr void ClearCreate(unsigned raw_index) {
-    info.ClearCreate(raw_index);
+    subtree_data.clear_create(raw_index);
   }
 
   constexpr void ClearReuse() {

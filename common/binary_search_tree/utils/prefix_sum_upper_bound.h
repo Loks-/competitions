@@ -6,10 +6,10 @@ namespace bst {
 template <class TNode, class TValue>
 inline TNode* PrefixSumUpperBound(TNode* root, TValue value) {
   if (!root) return nullptr;
-  if (value >= root->info.sum) return nullptr;
+  if (value >= root->subtree_data.sum_value) return nullptr;
   for (TNode* node = root; node;) {
     node->ApplyAction();
-    TValue ls = (node->l ? node->l->info.sum : 0);
+    TValue ls = (node->l ? node->l->subtree_data.sum_value : 0);
     if (value < ls) {
       node = node->l;
     } else if (value < ls + node->data) {

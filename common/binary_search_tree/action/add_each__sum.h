@@ -14,7 +14,7 @@ class AddEachSum : public AddEach<TData> {
  public:
   template <class TNode>
   constexpr void Add(TNode* node, const TData& value) {
-    node->info.sum += value * node->info.size;
+    node->subtree_data.sum_value += value * node->subtree_data.size;
     TBase::Add(node, value);
   }
 };

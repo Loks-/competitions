@@ -3,10 +3,10 @@
 #include "common/binary_search_tree/action/none.h"
 #include "common/binary_search_tree/base/node.h"
 #include "common/binary_search_tree/base/root.h"
-#include "common/binary_search_tree/info/size.h"
-#include "common/binary_search_tree/info/treap_height.h"
-#include "common/binary_search_tree/info/update_node_to_root.h"
 #include "common/binary_search_tree/persistent/tree.h"
+#include "common/binary_search_tree/subtree_data/size.h"
+#include "common/binary_search_tree/subtree_data/treap_height.h"
+#include "common/binary_search_tree/subtree_data/update_node_to_root.h"
 #include "common/memory/nodes_manager.h"
 
 #include <stack>
@@ -15,21 +15,20 @@
 namespace bst {
 namespace persistent {
 template <bool use_key, bool use_parent, class TData,
-          class TTInfo = bst::info::Size, class TAction = bst::action::None,
-          class TKey = int64_t>
-class Treap
-    : public bst::persistent::Tree<
-          memory::NodesManager<
-              bst::base::Node<TData, bst::info::TreapHeight<unsigned, TTInfo>,
-                              TAction, use_key, use_parent, TKey>>,
-          Treap<use_key, use_parent, TData, TTInfo, TAction, TKey>> {
+          class TTInfo = bst::subtree_data::Size,
+          class TAction = bst::action::None, class TKey = int64_t>
+class Treap : public bst::persistent::Tree<
+                  memory::NodesManager<bst::base::Node<
+                      TData, bst::subtree_data::TreapHeight<unsigned, TTInfo>,
+                      TAction, use_key, use_parent, TKey>>,
+                  Treap<use_key, use_parent, TData, TTInfo, TAction, TKey>> {
  public:
   static constexpr bool support_remove = true;
   static constexpr bool support_join = true;
   static constexpr bool support_split = true;
 
-  using TInfo = bst::info::TreapHeight<unsigned, TTInfo>;
-  using THeight = typename TInfo::THeight;
+  using THeight = unsigned;
+  using TInfo = bst::subtree_data::TreapHeight<THeight, TTInfo>;
   using TNode =
       bst::base::Node<TData, TInfo, TAction, use_key, use_parent, TKey>;
   using TSelf = Treap<use_key, use_parent, TData, TTInfo, TAction, TKey>;
@@ -39,7 +38,7 @@ class Treap
 
  protected:
   static constexpr THeight& Height(TNode* node) {
-    return node->info.treap_height;
+    return node->subtree_data.treap_height;
   }
 
  public:

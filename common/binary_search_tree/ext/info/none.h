@@ -1,11 +1,11 @@
 #pragma once
 
-#include "common/binary_search_tree/info/none.h"
+#include "common/binary_search_tree/subtree_data/none.h"
 
 namespace bst {
 namespace ext {
 namespace info {
-class None : public bst::info::None {
+class None : public bst::subtree_data::None {
  public:
   using TSelf = None;
   static const bool support_insert = true;

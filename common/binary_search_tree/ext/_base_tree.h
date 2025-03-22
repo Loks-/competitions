@@ -5,8 +5,8 @@
 #include "common/binary_search_tree/base/insert_by_key.h"
 #include "common/binary_search_tree/base/remove_by_key.h"
 #include "common/binary_search_tree/base/remove_by_node.h"
-#include "common/binary_search_tree/info/size.h"
 #include "common/binary_search_tree/node.h"
+#include "common/binary_search_tree/subtree_data/size.h"
 #include "common/binary_search_tree/tree.h"
 #include "common/memory/nodes_manager_fixed_size.h"
 
@@ -16,7 +16,7 @@
 
 namespace bst {
 // Base BST without auto balance
-template <bool use_parent, class TData, class TInfo = info::Size,
+template <bool use_parent, class TData, class TInfo = subtree_data::Size,
           class TAction = action::None, class TKey = int64_t>
 class BaseTree
     : public Tree<NodesManagerFixedSize<Node<TData, TInfo, TAction, true,

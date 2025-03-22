@@ -98,70 +98,75 @@ bool TesterBinarySearchTree::TestAllTrees() {
   std::cout << "Testing base trees:" << std::endl;
   current_job = "base";
   if (mode == hash_test) {
-    TestAll<
-        bst::BaseTree<false, TKey, bst::info::Size, bst::action::None, TKey>>(
-        "base_upf");
-    TestAll<
-        bst::BaseTree<true, TKey, bst::info::Size, bst::action::None, TKey>>(
-        "base_upt");
+    TestAll<bst::BaseTree<false, TKey, bst::subtree_data::Size,
+                          bst::action::None, TKey>>("base_upf");
+    TestAll<bst::BaseTree<true, TKey, bst::subtree_data::Size,
+                          bst::action::None, TKey>>("base_upt");
   }
-  TestAll<bst::AVLTree<false, TKey, bst::info::Size, bst::action::None, TKey>>(
-      "avltree_upf");
-  TestAll<bst::AVLTree<true, TKey, bst::info::Size, bst::action::None, TKey>>(
-      "avltree_upt");
-  TestAll<
-      bst::PerfectTree<false, TKey, bst::info::Size, bst::action::None, TKey>>(
-      "perfect_upf");
-  TestAll<
-      bst::PerfectTree<true, TKey, bst::info::Size, bst::action::None, TKey>>(
-      "perfect_upt");
-  TestAll<bst::RedBlackTree<TKey, bst::info::Size, bst::action::None, TKey>>(
-      "rbtree");
-  TestAll<bst::ScapegoatTree<false, TKey, bst::info::Size, bst::action::None,
-                             TKey>>("scape_upf");
-  TestAll<
-      bst::ScapegoatTree<true, TKey, bst::info::Size, bst::action::None, TKey>>(
-      "scape_upt");
-  TestAll<bst::SplayTree<true, TKey, bst::info::Size, bst::action::None, TKey>>(
-      "splay_upt");
-  TestAll<
-      bst::Treap<true, false, TKey, bst::info::Size, bst::action::None, TKey>>(
-      "treap_upf");
-  TestAll<
-      bst::Treap<true, true, TKey, bst::info::Size, bst::action::None, TKey>>(
-      "treap_upt");
-  TestAll<bst::WAVLTree<false, TKey, bst::info::Size, bst::action::None, TKey>>(
-      "wavltree_upf");
-  TestAll<bst::WAVLTree<true, TKey, bst::info::Size, bst::action::None, TKey>>(
-      "wavltree_upt");
+  TestAll<bst::AVLTree<false, TKey, bst::subtree_data::Size, bst::action::None,
+                       TKey>>("avltree_upf");
+  TestAll<bst::AVLTree<true, TKey, bst::subtree_data::Size, bst::action::None,
+                       TKey>>("avltree_upt");
+  TestAll<bst::PerfectTree<false, TKey, bst::subtree_data::Size,
+                           bst::action::None, TKey>>("perfect_upf");
+  TestAll<bst::PerfectTree<true, TKey, bst::subtree_data::Size,
+                           bst::action::None, TKey>>("perfect_upt");
+  TestAll<bst::RedBlackTree<TKey, bst::subtree_data::Size, bst::action::None,
+                            TKey>>("rbtree");
+  TestAll<bst::ScapegoatTree<false, TKey, bst::subtree_data::Size,
+                             bst::action::None, TKey>>("scape_upf");
+  TestAll<bst::ScapegoatTree<true, TKey, bst::subtree_data::Size,
+                             bst::action::None, TKey>>("scape_upt");
+  TestAll<bst::SplayTree<true, TKey, bst::subtree_data::Size, bst::action::None,
+                         TKey>>("splay_upt");
+  TestAll<bst::Treap<true, false, TKey, bst::subtree_data::Size,
+                     bst::action::None, TKey>>("treap_upf");
+  TestAll<bst::Treap<true, true, TKey, bst::subtree_data::Size,
+                     bst::action::None, TKey>>("treap_upt");
+  TestAll<bst::WAVLTree<false, TKey, bst::subtree_data::Size, bst::action::None,
+                        TKey>>("wavltree_upf");
+  TestAll<bst::WAVLTree<true, TKey, bst::subtree_data::Size, bst::action::None,
+                        TKey>>("wavltree_upt");
 
   std::cout << "Testing full trees:" << std::endl;
   current_job = "full";
   if (mode == hash_test) {
-    TestAll<bst::BaseTree<false, TKey, bst::info::Sum<TKey, bst::info::Size>,
+    TestAll<bst::BaseTree<false, TKey,
+                          bst::subtree_data::Sum<TKey, bst::subtree_data::Size>,
                           bst::action::AddEachSum<TKey>, TKey>>("base_upf");
-    TestAll<bst::BaseTree<true, TKey, bst::info::Sum<TKey, bst::info::Size>,
+    TestAll<bst::BaseTree<true, TKey,
+                          bst::subtree_data::Sum<TKey, bst::subtree_data::Size>,
                           bst::action::AddEachSum<TKey>, TKey>>("base_upt");
   }
-  TestAll<bst::AVLTree<false, TKey, bst::info::Sum<TKey, bst::info::Size>,
+  TestAll<bst::AVLTree<false, TKey,
+                       bst::subtree_data::Sum<TKey, bst::subtree_data::Size>,
                        bst::action::AddEachSum<TKey>, TKey>>("avltree_upf");
-  TestAll<bst::AVLTree<true, TKey, bst::info::Sum<TKey, bst::info::Size>,
+  TestAll<bst::AVLTree<true, TKey,
+                       bst::subtree_data::Sum<TKey, bst::subtree_data::Size>,
                        bst::action::AddEachSum<TKey>, TKey>>("avltree_upt");
-  TestAll<bst::RedBlackTree<TKey, bst::info::Sum<TKey, bst::info::Size>,
-                            bst::action::AddEachSum<TKey>, TKey>>("rbtree");
-  TestAll<bst::ScapegoatTree<false, TKey, bst::info::Sum<TKey, bst::info::Size>,
-                             bst::action::AddEachSum<TKey>, TKey>>("scape_upf");
-  TestAll<bst::ScapegoatTree<true, TKey, bst::info::Sum<TKey, bst::info::Size>,
-                             bst::action::AddEachSum<TKey>, TKey>>("scape_upt");
-  TestAll<bst::SplayTree<true, TKey, bst::info::Sum<TKey, bst::info::Size>,
+  TestAll<bst::RedBlackTree<
+      TKey, bst::subtree_data::Sum<TKey, bst::subtree_data::Size>,
+      bst::action::AddEachSum<TKey>, TKey>>("rbtree");
+  TestAll<bst::ScapegoatTree<
+      false, TKey, bst::subtree_data::Sum<TKey, bst::subtree_data::Size>,
+      bst::action::AddEachSum<TKey>, TKey>>("scape_upf");
+  TestAll<bst::ScapegoatTree<
+      true, TKey, bst::subtree_data::Sum<TKey, bst::subtree_data::Size>,
+      bst::action::AddEachSum<TKey>, TKey>>("scape_upt");
+  TestAll<bst::SplayTree<true, TKey,
+                         bst::subtree_data::Sum<TKey, bst::subtree_data::Size>,
                          bst::action::AddEachSum<TKey>, TKey>>("splay_upt");
-  TestAll<bst::Treap<true, false, TKey, bst::info::Sum<TKey, bst::info::Size>,
+  TestAll<bst::Treap<true, false, TKey,
+                     bst::subtree_data::Sum<TKey, bst::subtree_data::Size>,
                      bst::action::AddEachSum<TKey>, TKey>>("treap_upf");
-  TestAll<bst::Treap<true, true, TKey, bst::info::Sum<TKey, bst::info::Size>,
+  TestAll<bst::Treap<true, true, TKey,
+                     bst::subtree_data::Sum<TKey, bst::subtree_data::Size>,
                      bst::action::AddEachSum<TKey>, TKey>>("treap_upt");
-  TestAll<bst::WAVLTree<false, TKey, bst::info::Sum<TKey, bst::info::Size>,
+  TestAll<bst::WAVLTree<false, TKey,
+                        bst::subtree_data::Sum<TKey, bst::subtree_data::Size>,
                         bst::action::AddEachSum<TKey>, TKey>>("wavltree_upf");
-  TestAll<bst::WAVLTree<true, TKey, bst::info::Sum<TKey, bst::info::Size>,
+  TestAll<bst::WAVLTree<true, TKey,
+                        bst::subtree_data::Sum<TKey, bst::subtree_data::Size>,
                         bst::action::AddEachSum<TKey>, TKey>>("wavltree_upt");
 
   bool output = TestHash();

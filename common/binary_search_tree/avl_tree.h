@@ -5,21 +5,21 @@
 #include "common/binary_search_tree/base/balanced_tree.h"
 #include "common/binary_search_tree/base/node.h"
 #include "common/binary_search_tree/base/rotate.h"
-#include "common/binary_search_tree/info/height.h"
-#include "common/binary_search_tree/info/size.h"
+#include "common/binary_search_tree/subtree_data/height.h"
+#include "common/binary_search_tree/subtree_data/size.h"
 #include "common/memory/nodes_manager_fixed_size.h"
 
 namespace bst {
-template <bool use_parent, class TData, class TInfo = info::Size,
+template <bool use_parent, class TData, class TInfo = subtree_data::Size,
           class TAction = action::None, class TKey = int64_t>
-class AVLTree
-    : public base::BalancedTree<
-          memory::NodesManagerFixedSize<base::Node<
-              TData, info::Height<TInfo>, TAction, true, use_parent, TKey>>,
-          AVLTree<use_parent, TData, TInfo, TAction, TKey>> {
+class AVLTree : public base::BalancedTree<
+                    memory::NodesManagerFixedSize<
+                        base::Node<TData, subtree_data::Height<TInfo>, TAction,
+                                   true, use_parent, TKey>>,
+                    AVLTree<use_parent, TData, TInfo, TAction, TKey>> {
  public:
-  using TNode =
-      base::Node<TData, info::Height<TInfo>, TAction, true, use_parent, TKey>;
+  using TNode = base::Node<TData, subtree_data::Height<TInfo>, TAction, true,
+                           use_parent, TKey>;
   using TSelf = AVLTree<use_parent, TData, TInfo, TAction, TKey>;
   using TBTree =
       base::BalancedTree<memory::NodesManagerFixedSize<TNode>, TSelf>;
@@ -34,7 +34,7 @@ class AVLTree
 
  protected:
   static constexpr int Height(TNode* node) {
-    return node ? int(node->info.height) : 0;
+    return node ? int(node->subtree_data.height) : 0;
   }
 
   static constexpr int Balance(TNode* node) {

@@ -4,12 +4,12 @@
 #include "common/binary_search_tree/action/none.h"
 #include "common/binary_search_tree/base/balanced_tree.h"
 #include "common/binary_search_tree/base/node.h"
-#include "common/binary_search_tree/info/size.h"
+#include "common/binary_search_tree/subtree_data/size.h"
 #include "common/memory/nodes_manager_fixed_size.h"
 
 namespace bst {
 // Base BST without auto balance
-template <bool use_parent, class TData, class TInfo = info::Size,
+template <bool use_parent, class TData, class TInfo = subtree_data::Size,
           class TAction = action::None, class TKey = int64_t>
 class BaseTree
     : public base::BalancedTree<

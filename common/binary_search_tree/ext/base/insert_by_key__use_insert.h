@@ -7,7 +7,7 @@ template <class TNode>
 inline void InsertByKeyUseInsert(TNode* root, TNode* node) {
   for (;;) {
     root->ApplyAction();
-    root->info.Insert(node);
+    root->subtree_data.Insert(node);
     if (root->key < node->key) {
       if (root->r) {
         root = root->r;

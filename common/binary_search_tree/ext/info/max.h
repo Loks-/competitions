@@ -20,14 +20,14 @@ class Max : public TInfo {
   void Update(TNode* node) {
     TBase::Update(node);
     max = node->data;
-    if (node->l) max = std::max(max, node->l->info.max);
-    if (node->r) max = std::max(max, node->r->info.max);
+    if (node->l) max = std::max(max, node->l->subtree_data.max);
+    if (node->r) max = std::max(max, node->r->subtree_data.max);
   }
 
   template <class TNode>
   void Insert(const TNode* node) {
     TBase::Insert(node);
-    max = std::max(max, node->info.max);
+    max = std::max(max, node->subtree_data.max);
   }
 };
 }  // namespace info

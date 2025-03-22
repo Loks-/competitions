@@ -12,10 +12,10 @@ size_t Order(TNode* node) {
   assert(node);
   bst::action::ApplyRootToNode_ModifyTree(node);
   size_t order = 0;
-  if (node->l) order += node->l->info.size;
+  if (node->l) order += node->l->subtree_data.size;
   for (; node->p; node = node->p) {
     if (node->p->r == node) {
-      if (node->p->l) order += node->p->l->info.size;
+      if (node->p->l) order += node->p->l->subtree_data.size;
       ++order;
     }
   }

@@ -11,7 +11,7 @@ inline typename TTree::TNode* GetSegmentInfoByIndex(
   TNode *l, *m, *r;
   TTree::SplitBySize(root, end, m, r);
   TTree::SplitBySize(m, begin, l, m);
-  if (m) output = m->info;
+  if (m) output = m->subtree_data;
   return TTree::Join(TTree::Join(l, m), r);
 }
 }  // namespace bst

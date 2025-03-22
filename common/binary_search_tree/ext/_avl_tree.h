@@ -4,14 +4,14 @@
 #include "common/binary_search_tree/action/apply_root_to_node.h"
 #include "common/binary_search_tree/action/none.h"
 #include "common/binary_search_tree/base/rotate.h"
-#include "common/binary_search_tree/info/height.h"
-#include "common/binary_search_tree/info/size.h"
 #include "common/binary_search_tree/node.h"
+#include "common/binary_search_tree/subtree_data/height.h"
+#include "common/binary_search_tree/subtree_data/size.h"
 #include "common/binary_search_tree/tree.h"
 #include "common/memory/nodes_manager_fixed_size.h"
 
 namespace bst {
-template <bool _use_parent, class TTData, class TTInfo = info::Size,
+template <bool _use_parent, class TTData, class TTInfo = subtree_data::Size,
           class TTAction = action::None, class TTKey = int64_t,
           template <class> class TTNodesManager = NodesManagerFixedSize>
 class AVLTree
@@ -38,7 +38,9 @@ class AVLTree
  public:
   explicit AVLTree(size_t max_nodes) : TTree(max_nodes) {}
 
-  static int Height(TNode* node) { return node ? int(node->info.height) : 0; }
+  static int Height(TNode* node) {
+    return node ? int(node->subtree_data.height) : 0;
+  }
 
   static int Balance(TNode* node) {
     return node ? Height(node->l) - Height(node->r) : 0;

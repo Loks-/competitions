@@ -16,20 +16,20 @@ class Sum : public TInfo {
   template <class TNode>
   void Update(TNode* node) {
     TBase::Update(node);
-    sum = node->data + (node->l ? node->l->info.sum : TSumType(0)) +
-          (node->r ? node->r->info.sum : TSumType(0));
+    sum = node->data + (node->l ? node->l->subtree_data.sum : TSumType(0)) +
+          (node->r ? node->r->subtree_data.sum : TSumType(0));
   }
 
   template <class TNode>
   void Insert(const TNode* node) {
     TBase::Insert(node);
-    sum += node->info.sum;
+    sum += node->subtree_data.sum;
   }
 
   template <class TNode>
   void Remove(const TNode* node) {
     TBase::Remove(node);
-    sum -= node->info.sum;
+    sum -= node->subtree_data.sum;
   }
 };
 }  // namespace info

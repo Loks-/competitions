@@ -102,7 +102,7 @@ class TesterBinarySearchTree {
 
   template <class TNode>
   void VerifyParentLinksLazy(TNode* root) {
-    if (root && !(root->info.size & (root->info.size - 1)))
+    if (root && !(root->subtree_data.size & (root->subtree_data.size - 1)))
       VerifyParentLinks(root);
   }
 
@@ -210,7 +210,7 @@ class TesterBinarySearchTree {
       root = tree.RemoveAndReleaseByKey(root, key);
       VerifyParentLinksLazy(root);
       nhash::DCombineH(h, (type <= shuffled) ? GetInfoValue(root)
-                          : root             ? root->info.size
+                          : root             ? root->subtree_data.size
                                              : 0);
     }
     AddResult("DelKey", type, h, t.get_milliseconds());

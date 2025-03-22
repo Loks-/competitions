@@ -10,25 +10,25 @@
 #include "common/binary_search_tree/base/rotate.h"
 #include "common/binary_search_tree/base/sibling.h"
 #include "common/binary_search_tree/base/tree.h"
-#include "common/binary_search_tree/info/rbt_color.h"
-#include "common/binary_search_tree/info/size.h"
-#include "common/binary_search_tree/info/update_node_to_root.h"
+#include "common/binary_search_tree/subtree_data/rbt_color.h"
+#include "common/binary_search_tree/subtree_data/size.h"
+#include "common/binary_search_tree/subtree_data/update_node_to_root.h"
 #include "common/memory/nodes_manager_fixed_size.h"
 
 #include <vector>
 
 namespace bst {
-template <class TData, class TInfo = info::Size, class TAction = action::None,
-          class TKey = int64_t,
+template <class TData, class TInfo = subtree_data::Size,
+          class TAction = action::None, class TKey = int64_t,
           template <class> class TTNodesManager = memory::NodesManagerFixedSize>
 class RedBlackTree
     : public base::Tree<
-          TTNodesManager<base::Node<TData, info::RBTColor<TInfo>, TAction, true,
-                                    true, TKey>>,
+          TTNodesManager<base::Node<TData, subtree_data::RBTColor<TInfo>,
+                                    TAction, true, true, TKey>>,
           RedBlackTree<TData, TInfo, TAction, TKey, TTNodesManager>> {
  public:
-  using TNode =
-      base::Node<TData, info::RBTColor<TInfo>, TAction, true, true, TKey>;
+  using TNode = base::Node<TData, subtree_data::RBTColor<TInfo>, TAction, true,
+                           true, TKey>;
   using TSelf = RedBlackTree<TData, TInfo, TAction, TKey, TTNodesManager>;
   using TTree = base::Tree<TTNodesManager<TNode>, TSelf>;
   friend TTree;
@@ -38,10 +38,10 @@ class RedBlackTree
 
  protected:
   static constexpr bool IsBlack(const TNode* node) {
-    return !node || node->info.black;
+    return !node || node->subtree_data.black;
   }
   static constexpr bool IsRed(const TNode* node) {
-    return node && !node->info.black;
+    return node && !node->subtree_data.black;
   }
 
  public:
@@ -52,11 +52,11 @@ class RedBlackTree
     assert(root || !height);
     if (!root) return;
     if (height) {
-      root->info.black = true;
+      root->subtree_data.black = true;
       BuildTreeIFixColorsR(root->l, height - 1);
       BuildTreeIFixColorsR(root->r, height - 1);
     } else {
-      root->info.black = false;
+      root->subtree_data.black = false;
       assert(!root->l && !root->r);
     }
   }
@@ -68,25 +68,25 @@ class RedBlackTree
     for (; nodes.size() >= (1ull << h);) ++h;
     TNode* root = TTree::BuildTree(nodes);
     BuildTreeIFixColorsR(root, h - 1);
-    root->info.black = true;
+    root->subtree_data.black = true;
     return root;
   }
 
   static TNode* InsertByKey(TNode* root, TNode* node) {
     assert(node);
     if (!root) {
-      node->info.black = true;
+      node->subtree_data.black = true;
       return node;
     }
     base::InsertByKey<TNode>(root, node);
-    node->info.black = false;
+    node->subtree_data.black = false;
     for (;;) {
       TNode* parent = node->p;
       if (!parent) {
-        node->info.black = true;
+        node->subtree_data.black = true;
         return node;
       }
-      if (parent->info.black) return root;
+      if (parent->subtree_data.black) return root;
       TNode* gparent = parent->p;
       TNode* uncle = base::Sibling(parent, gparent);
       if (IsBlack(uncle)) {
@@ -97,13 +97,13 @@ class RedBlackTree
           parent = node;
         }
         base::RotateUp<TNode, true, false>(parent);
-        gparent->info.black = false;
-        parent->info.black = true;
+        gparent->subtree_data.black = false;
+        parent->subtree_data.black = true;
         return parent->p ? root : parent;
       }
-      parent->info.black = true;
-      uncle->info.black = true;
-      gparent->info.black = false;
+      parent->subtree_data.black = true;
+      uncle->subtree_data.black = true;
+      gparent->subtree_data.black = false;
       node = gparent;
     }
     assert(false);
@@ -113,7 +113,7 @@ class RedBlackTree
  protected:
   static TNode* RemoveByNodeI(TNode* node) {
     base::RemovePushDown<TNode, false>(node);
-    const bool black = node->info.black;
+    const bool black = node->subtree_data.black;
 
     // Drop node from tree
     TNode* child = node->l ? node->l : node->r;
@@ -126,58 +126,60 @@ class RedBlackTree
     }
     if (child) child->p = parent;
     node->ResetLinksAndUpdateInfo();
-    info::UpdateNodeToRoot(parent);
+    subtree_data::update_node_to_root(parent);
 
     // Fix colors
     if (!black) return (parent ? base::Root(parent) : child);
     for (;;) {
       if (IsRed(child)) {
-        child->info.black = true;
+        child->subtree_data.black = true;
         return base::Root(child);
       }
       if (!parent) return child;
       TNode* sibling = base::Sibling(child, parent);
       assert(sibling);
       sibling->ApplyAction();
-      if (!sibling->info.black) {
-        assert(parent->info.black);
+      if (!sibling->subtree_data.black) {
+        assert(parent->subtree_data.black);
         base::RotateUp<TNode, true, false>(sibling);
-        sibling->info.black = true;
-        parent->info.black = false;
+        sibling->subtree_data.black = true;
+        parent->subtree_data.black = false;
         sibling = base::Sibling(child, parent);
         sibling->ApplyAction();
       }
-      assert(sibling && sibling->info.black);
-      if (parent->info.black && IsBlack(sibling->l) && IsBlack(sibling->r)) {
-        sibling->info.black = false;
+      assert(sibling && sibling->subtree_data.black);
+      if (parent->subtree_data.black && IsBlack(sibling->l) &&
+          IsBlack(sibling->r)) {
+        sibling->subtree_data.black = false;
         child = parent;
         parent = child->p;
         continue;
       }
-      if (!parent->info.black && IsBlack(sibling->l) && IsBlack(sibling->r)) {
-        sibling->info.black = false;
-        parent->info.black = true;
+      if (!parent->subtree_data.black && IsBlack(sibling->l) &&
+          IsBlack(sibling->r)) {
+        sibling->subtree_data.black = false;
+        parent->subtree_data.black = true;
         return base::Root(parent);
       }
       if ((parent->l == child) && IsBlack(sibling->r)) {
         assert(IsRed(sibling->l));
         base::RotateUp<TNode, false, true>(sibling->l);
-        sibling->info.black = false;
+        sibling->subtree_data.black = false;
         sibling = sibling->p;
-        sibling->info.black = true;
+        sibling->subtree_data.black = true;
       } else if ((parent->r == child) && IsBlack(sibling->l)) {
         assert(IsRed(sibling->r));
         base::RotateUp<TNode, false, true>(sibling->r);
-        sibling->info.black = false;
+        sibling->subtree_data.black = false;
         sibling = sibling->p;
-        sibling->info.black = true;
+        sibling->subtree_data.black = true;
       }
-      sibling->info.black = parent->info.black;
-      parent->info.black = true;
+      sibling->subtree_data.black = parent->subtree_data.black;
+      parent->subtree_data.black = true;
       if (parent->l == child)
-        sibling->r->info.black = true;
+        sibling->r->subtree_data.black = true;
       else
-        sibling->l->info.black = true;
+        sibling->l->subtree_data.black = true;
       base::RotateUp<TNode, true, false>(sibling);
       return base::Root(sibling);
     }
@@ -207,24 +209,24 @@ class RedBlackTree
     int h = 0;
     for (; root; root = root->l) {
       root->ApplyAction();
-      if (root->info.black) ++h;
+      if (root->subtree_data.black) ++h;
     }
     return h;
   }
 
   static TNode* Join3IBase(TNode* l, TNode* m1, TNode* r) {
     TTree::Join3IBase(l, m1, r);
-    m1->info.black = false;
+    m1->subtree_data.black = false;
     return m1;
   }
 
   static TNode* Join3L(TNode* l, TNode* m1, TNode* r, int hd) {
     if (IsBlack(l) && (hd == 0)) return Join3IBase(l, m1, r);
     l->ApplyAction();
-    l->SetR(Join3L(l->r, m1, r, hd - (l->info.black ? 1 : 0)));
+    l->SetR(Join3L(l->r, m1, r, hd - (l->subtree_data.black ? 1 : 0)));
     r = l->r;
-    if (l->info.black && !r->info.black && IsRed(r->r)) {
-      r->r->info.black = true;
+    if (l->subtree_data.black && !r->subtree_data.black && IsRed(r->r)) {
+      r->r->subtree_data.black = true;
       base::Rotate<TNode, true, false>(r, l, l->p);
       return r;
     } else {
@@ -236,10 +238,10 @@ class RedBlackTree
   static TNode* Join3R(TNode* l, TNode* m1, TNode* r, int hd) {
     if (IsBlack(r) && (hd == 0)) return Join3IBase(l, m1, r);
     r->ApplyAction();
-    r->SetL(Join3R(l, m1, r->l, hd - (r->info.black ? 1 : 0)));
+    r->SetL(Join3R(l, m1, r->l, hd - (r->subtree_data.black ? 1 : 0)));
     l = r->l;
-    if (r->info.black && !l->info.black && IsRed(l->l)) {
-      l->l->info.black = true;
+    if (r->subtree_data.black && !l->subtree_data.black && IsRed(l->l)) {
+      l->l->subtree_data.black = true;
       base::Rotate<TNode, true, false>(l, r, r->p);
       return l;
     } else {
@@ -255,7 +257,7 @@ class RedBlackTree
     auto root = (hd > 0)   ? Join3L(l, m1, r, hd)
                 : (hd < 0) ? Join3R(l, m1, r, -hd)
                            : Join3IBase(l, m1, r);
-    root->info.black = true;
+    root->subtree_data.black = true;
     return root;
   }
 };

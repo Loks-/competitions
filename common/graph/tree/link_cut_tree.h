@@ -11,12 +11,12 @@ namespace graph {
 template <class TTData, class TTInfo, class TTAction = bst::action::Reverse>
 class LinkCutTree {
  public:
-  class LCTInfo : public TTInfo {
+  class LCTSubtreeData : public TTInfo {
    public:
-    using TBase = TTInfo;
-    using TSelf = LCTInfo;
+    using Base = TTInfo;
+    using Self = LCTSubtreeData;
 
-    static const bool is_none = false;
+    static constexpr bool is_none = false;
 
     void* lct_pp = nullptr;
 
@@ -25,21 +25,21 @@ class LinkCutTree {
     void SetPP(void* p) { lct_pp = p; }
 
     template <class TNode>
-    void Update(TNode* node) {
-      TBase::Update(node);
-      if (node->l && node->l->info.lct_pp) {
-        lct_pp = node->l->info.lct_pp;
-        node->l->info.lct_pp = nullptr;
+    void update(TNode* node) {
+      Base::update(node);
+      if (node->l && node->l->subtree_data.lct_pp) {
+        lct_pp = node->l->subtree_data.lct_pp;
+        node->l->subtree_data.lct_pp = nullptr;
       }
-      if (node->r && node->r->info.lct_pp) {
-        lct_pp = node->r->info.lct_pp;
-        node->r->info.lct_pp = nullptr;
+      if (node->r && node->r->subtree_data.lct_pp) {
+        lct_pp = node->r->subtree_data.lct_pp;
+        node->r->subtree_data.lct_pp = nullptr;
       }
     }
   };
 
   using TData = TTData;
-  using TInfo = LCTInfo;
+  using TInfo = LCTSubtreeData;
   using TAction = TTAction;
   using TSelf = LinkCutTree<TData, TTInfo, TAction>;
   using TSTree = bst::SplayTree<false, TData, TInfo, TAction>;
@@ -49,7 +49,7 @@ class LinkCutTree {
   void DisconnectR(TNode* node) {
     if (node->r) {
       node->r->SetP(nullptr);
-      node->r->info.SetPP(node);
+      node->r->subtree_data.SetPP(node);
       node->r = nullptr;
       node->UpdateInfo();
     }
@@ -61,12 +61,13 @@ class LinkCutTree {
     bst::action::ApplyRootToNode(node);
     TSTree::Splay(node);
     DisconnectR(node);
-    for (TNode* v; (v = reinterpret_cast<TNode*>(node->info.GetPP()));) {
+    for (TNode* v;
+         (v = reinterpret_cast<TNode*>(node->subtree_data.GetPP()));) {
       bst::action::ApplyRootToNode(v);
       TSTree::Splay(v);
       DisconnectR(v);
       v->r = node;
-      node->info.lct_pp = nullptr;
+      node->subtree_data.lct_pp = nullptr;
       bst::base::Rotate<TNode, true, false>(node, v, nullptr);
     }
   }
@@ -114,7 +115,7 @@ class LinkCutTree {
   void BuildR(const TreeGraph& tree, unsigned node, unsigned p) {
     for (unsigned c : tree.Edges(node)) {
       if (c == p) continue;
-      Node(c)->info.SetPP(Node(node));
+      Node(c)->subtree_data.SetPP(Node(node));
       BuildR(tree, c, node);
     }
   }
@@ -160,7 +161,7 @@ class LinkCutTree {
   const TInfo& GetPathInfo(unsigned x, unsigned y) {
     SetRoot(Node(x));
     Access(Node(y));
-    return Node(y)->info;
+    return Node(y)->subtree_data;
   }
 
   // Reset tree root

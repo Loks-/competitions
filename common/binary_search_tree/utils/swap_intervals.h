@@ -37,12 +37,12 @@ inline void IntervalRotateLeft(typename TTree::TNode*& root, size_t first,
 // Rotate all elements to right by shift
 template <class TTree>
 inline void VectorRotateRight(typename TTree::TNode*& root, size_t shift) {
-  if (root) IntervalRotateRight<TTree>(root, 0, root->info.size, shift);
+  if (root) IntervalRotateRight<TTree>(root, 0, root->subtree_data.size, shift);
 }
 
 // Rotate all elements to left by shift
 template <class TTree>
 inline void VectorRotateLeft(typename TTree::TNode*& root, size_t shift) {
-  if (root) IntervalRotateLeft<TTree>(root, 0, root->info.size, shift);
+  if (root) IntervalRotateLeft<TTree>(root, 0, root->subtree_data.size, shift);
 }
 }  // namespace bst
