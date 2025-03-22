@@ -55,7 +55,7 @@ size_t TesterPrimesCount::Test(const std::string& name, uint64_t n,
       r = PrimesCount_PCQ(n);
       break;
   }
-  std::cout << name << ": " << r << "\t" << t.GetMilliseconds() << std::endl;
+  std::cout << name << ": " << r << "\t" << t.get_milliseconds() << std::endl;
   return r;
 }
 

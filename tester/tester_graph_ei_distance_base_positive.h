@@ -56,7 +56,7 @@ class TesterGraphEIDistanceBasePositive
       for (auto d : v) nhash::DCombineH(h, d);
     }
     std::cout << "Test results  [DB" << name << "]: " << h << "\t"
-              << t.GetMilliseconds() << std::endl;
+              << t.get_milliseconds() << std::endl;
     TBase::hs.insert(h);
   }
 
@@ -70,7 +70,7 @@ class TesterGraphEIDistanceBasePositive
       for (auto d : v) nhash::DCombineH(h, d);
     }
     std::cout << "Test results  [DB" << name << "]: " << h << "\t"
-              << t.GetMilliseconds() << std::endl;
+              << t.get_milliseconds() << std::endl;
     TBase::hs.insert(h);
   }
 
@@ -85,7 +85,7 @@ class TesterGraphEIDistanceBasePositive
       for (auto d : v) nhash::DCombineH(h, d);
     }
     std::cout << "Test results  [DB" << name << "]: " << h << "\t"
-              << t.GetMilliseconds() << std::endl;
+              << t.get_milliseconds() << std::endl;
     TBase::hs.insert(h);
   }
 
@@ -99,7 +99,7 @@ class TesterGraphEIDistanceBasePositive
       for (auto d : v) nhash::DCombineH(h, d);
     }
     std::cout << "Test results  [DE" << name << "]: " << h << "\t"
-              << t.GetMilliseconds() << std::endl;
+              << t.get_milliseconds() << std::endl;
     TBase::hs.insert(h);
   }
 
@@ -113,7 +113,7 @@ class TesterGraphEIDistanceBasePositive
       for (auto d : v) nhash::DCombineH(h, d);
     }
     std::cout << "Test results  [DM" << name << "]: " << h << "\t"
-              << t.GetMilliseconds() << std::endl;
+              << t.get_milliseconds() << std::endl;
     TBase::hs.insert(h);
   }
 
@@ -128,7 +128,7 @@ class TesterGraphEIDistanceBasePositive
       for (auto d : v) nhash::DCombineH(h, d);
     }
     std::cout << "Test results  [DM" << name << "]: " << h << "\t"
-              << t.GetMilliseconds() << std::endl;
+              << t.get_milliseconds() << std::endl;
     TBase::hs.insert(h);
   }
 

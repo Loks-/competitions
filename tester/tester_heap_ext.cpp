@@ -55,7 +55,7 @@ size_t TesterHeapExt::TestPriorityQueue() const {
       in_heap[v.second] = 0;
     }
   }
-  std::cout << "Test results [B   PQ]: " << h << "\t" << t.GetMilliseconds()
+  std::cout << "Test results [B   PQ]: " << h << "\t" << t.get_milliseconds()
             << std::endl;
   return h;
 }
@@ -79,7 +79,7 @@ size_t TesterHeapExt::TestBase(const std::string& name) const {
     }
   }
   std::cout << "Test results [" << name << "]: " << h << "\t"
-            << t.GetMilliseconds() << std::endl;
+            << t.get_milliseconds() << std::endl;
   return h;
 }
 
@@ -103,7 +103,7 @@ size_t TesterHeapExt::TestBaseNodesManager(const std::string& name) const {
     }
   }
   std::cout << "Test results [" << name << "]: " << h << "\t"
-            << t.GetMilliseconds() << std::endl;
+            << t.get_milliseconds() << std::endl;
   return h;
 }
 
@@ -119,7 +119,7 @@ size_t TesterHeapExt::TestExt(const std::string& name) const {
   }
   for (; !heap.Empty();) nhash::DCombineH(h, heap.ExtractValue());
   std::cout << "Test results [" << name << "]: " << h << "\t"
-            << t.GetMilliseconds() << std::endl;
+            << t.get_milliseconds() << std::endl;
   return h;
 }
 
@@ -137,7 +137,7 @@ size_t TesterHeapExt::TestExtNodesManager(const std::string& name) const {
   }
   for (; !heap.Empty();) nhash::DCombineH(h, heap.Extract());
   std::cout << "Test results [" << name << "]: " << h << "\t"
-            << t.GetMilliseconds() << std::endl;
+            << t.get_milliseconds() << std::endl;
   return h;
 }
 
@@ -153,7 +153,7 @@ size_t TesterHeapExt::TestKVM(const std::string& name) const {
   }
   for (; !heap.Empty();) nhash::DCombineH(h, heap.ExtractValue());
   std::cout << "Test results [" << name << "]: " << h << "\t"
-            << t.GetMilliseconds() << std::endl;
+            << t.get_milliseconds() << std::endl;
   return h;
 }
 
@@ -190,7 +190,7 @@ size_t TesterHeapExt::TestKVME(const std::string& name, const TExtra& e) const {
   }
   for (; !heap.Empty();) nhash::DCombineH(h, heap.ExtractValue());
   std::cout << "Test results [" << name << "]: " << h << "\t"
-            << t.GetMilliseconds() << std::endl;
+            << t.get_milliseconds() << std::endl;
   return h;
 }
 

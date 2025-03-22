@@ -38,7 +38,7 @@ size_t TesterHeapBase::TestPriorityQueue() const {
     heap.push(vloop[i]);
   }
   for (; !heap.empty(); heap.pop()) nhash::DCombineH(h, heap.top());
-  std::cout << "Test results [B   PQ]: " << h << "\t" << t.GetMilliseconds()
+  std::cout << "Test results [B   PQ]: " << h << "\t" << t.get_milliseconds()
             << std::endl;
   return h;
 }
@@ -54,7 +54,7 @@ size_t TesterHeapBase::TestBase(const std::string& name) const {
   }
   for (; !heap.Empty();) nhash::DCombineH(h, heap.Extract());
   std::cout << "Test results [" << name << "]: " << h << "\t"
-            << t.GetMilliseconds() << std::endl;
+            << t.get_milliseconds() << std::endl;
   return h;
 }
 
@@ -71,7 +71,7 @@ size_t TesterHeapBase::TestNodesManager(const std::string& name) const {
   }
   for (; !heap.Empty();) nhash::DCombineH(h, heap.Extract());
   std::cout << "Test results [" << name << "]: " << h << "\t"
-            << t.GetMilliseconds() << std::endl;
+            << t.get_milliseconds() << std::endl;
   return h;
 }
 
@@ -87,7 +87,7 @@ size_t TesterHeapBase::TestKVM(const std::string& name) const {
   }
   for (; !heap.Empty();) nhash::DCombineH(h, heap.ExtractValue());
   std::cout << "Test results [" << name << "]: " << h << "\t"
-            << t.GetMilliseconds() << std::endl;
+            << t.get_milliseconds() << std::endl;
   return h;
 }
 

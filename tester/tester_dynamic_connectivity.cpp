@@ -57,7 +57,7 @@ size_t TesterDynamicConnectivity::Test(const std::string& name) const {
     nhash::DCombineH(h, s.Components());
   }
   std::cout << "Test results  [" << name << "]: " << h << "\t"
-            << t.GetMilliseconds() << std::endl;
+            << t.get_milliseconds() << std::endl;
   return h;
 }
 

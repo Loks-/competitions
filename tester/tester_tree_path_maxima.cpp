@@ -34,7 +34,7 @@ size_t TesterTreePathMaxima::TestHLD() const {
     total_cost += nvector::Sum(v);
   }
   std::cout << "Test results  [HLD    ]: " << total_cost << "\t"
-            << t.GetMilliseconds() << std::endl;
+            << t.get_milliseconds() << std::endl;
   return total_cost;
 }
 
@@ -49,7 +49,7 @@ size_t TesterTreePathMaxima::TestHLDFBT() const {
     total_cost += nvector::Sum(v);
   }
   std::cout << "Test results  [HLD FBT]: " << total_cost << "\t"
-            << t.GetMilliseconds() << std::endl;
+            << t.get_milliseconds() << std::endl;
   return total_cost;
 }
 
@@ -63,7 +63,7 @@ size_t TesterTreePathMaxima::TestPBST() const {
     total_cost += nvector::Sum(v);
   }
   std::cout << "Test results  [PT     ]: " << total_cost << "\t"
-            << t.GetMilliseconds() << std::endl;
+            << t.get_milliseconds() << std::endl;
   return total_cost;
 }
 
@@ -78,7 +78,7 @@ size_t TesterTreePathMaxima::TestPBSTFBT() const {
     total_cost += nvector::Sum(v);
   }
   std::cout << "Test results  [PT  FBT]: " << total_cost << "\t"
-            << t.GetMilliseconds() << std::endl;
+            << t.get_milliseconds() << std::endl;
   return total_cost;
 }
 
@@ -91,7 +91,7 @@ size_t TesterTreePathMaxima::TestPBST2() const {
     total_cost += nvector::Sum(v);
   }
   std::cout << "Test results  [PT2    ]: " << total_cost << "\t"
-            << t.GetMilliseconds() << std::endl;
+            << t.get_milliseconds() << std::endl;
   return total_cost;
 }
 

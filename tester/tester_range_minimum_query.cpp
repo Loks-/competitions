@@ -39,7 +39,7 @@ size_t RangeMinimumQuery::Test(const std::string& solver_name) const {
     }
   }
   std::cout << "Test results  [" << solver_name << "]: " << h << "\t"
-            << t.GetMilliseconds() << std::endl;
+            << t.get_milliseconds() << std::endl;
   return h;
 }
 

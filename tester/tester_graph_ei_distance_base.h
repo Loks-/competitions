@@ -96,7 +96,7 @@ class TesterGraphEIDistanceBase {
       for (auto d : vv[i]) nhash::DCombineH(h, d);
     }
     std::cout << "Test results  [" << name << "]: " << h << "\t"
-              << t.GetMilliseconds() << std::endl;
+              << t.get_milliseconds() << std::endl;
     hs.insert(h);
   }
 
@@ -110,7 +110,7 @@ class TesterGraphEIDistanceBase {
       for (auto d : v) nhash::DCombineH(h, d);
     }
     std::cout << "Test results  [" << name << "]: " << h << "\t"
-              << t.GetMilliseconds() << std::endl;
+              << t.get_milliseconds() << std::endl;
     hs.insert(h);
   }
 

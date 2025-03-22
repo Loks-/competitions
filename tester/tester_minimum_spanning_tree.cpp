@@ -46,7 +46,7 @@ uint64_t TesterMinimumSpanningTree::TestBoruvka() const {
   Timer t;
   uint64_t d = graph::mst::Boruvka(g, edge_proxy).second * g.Size();
   std::cout << "Test results Boruvka   : " << d << "\t"
-            << (t.GetMicroseconds() * g.Size()) / 1000 << std::endl;
+            << (t.get_microseconds() * g.Size()) / 1000 << std::endl;
   return d;
 }
 
@@ -54,7 +54,7 @@ uint64_t TesterMinimumSpanningTree::TestKruskal() const {
   Timer t;
   uint64_t d = graph::mst::Kruskal(g, edge_proxy).second * g.Size();
   std::cout << "Test results Kruskal   : " << d << "\t"
-            << (t.GetMicroseconds() * g.Size()) / 1000 << std::endl;
+            << (t.get_microseconds() * g.Size()) / 1000 << std::endl;
   return d;
 }
 
@@ -67,7 +67,7 @@ uint64_t TesterMinimumSpanningTree::TestPrimBaseBinaryHeap() const {
             g, edge_proxy, i)
             .second;
   std::cout << "Test results Prim BBH  : " << cost << "\t"
-            << t.GetMilliseconds() << std::endl;
+            << t.get_milliseconds() << std::endl;
   return cost;
 }
 
@@ -81,7 +81,7 @@ uint64_t TesterMinimumSpanningTree::TestPrimDHeap(
                 g, edge_proxy, -1ull, i)
                 .second;
   std::cout << "Test results Prim " << name << "  : " << cost << "\t"
-            << t.GetMilliseconds() << std::endl;
+            << t.get_milliseconds() << std::endl;
   return cost;
 }
 
@@ -94,7 +94,7 @@ uint64_t TesterMinimumSpanningTree::TestPrimKPM(const std::string& name) const {
                 g, edge_proxy, -1ull, i)
                 .second;
   std::cout << "Test results Prim " << name << " : " << cost << "\t"
-            << t.GetMilliseconds() << std::endl;
+            << t.get_milliseconds() << std::endl;
   return cost;
 }
 
@@ -107,7 +107,7 @@ uint64_t TesterMinimumSpanningTree::TestPrimKVM(const std::string& name) const {
                 g, edge_proxy, -1ull, i)
                 .second;
   std::cout << "Test results Prim " << name << " : " << cost << "\t"
-            << t.GetMilliseconds() << std::endl;
+            << t.get_milliseconds() << std::endl;
   return cost;
 }
 

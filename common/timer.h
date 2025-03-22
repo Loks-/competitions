@@ -18,37 +18,37 @@ class Timer {
   /**
    * @brief Constructs a Timer object.
    *
-   * @param start If true, the timer starts immediately upon construction.
+   * @param auto_start If true, the timer starts immediately upon construction.
    */
-  explicit Timer(bool start = true) : running(false) {
-    if (start) {
-      Start();
+  explicit Timer(bool auto_start = true) : running_(false) {
+    if (auto_start) {
+      start();
     }
   }
 
   /**
    * @brief Starts the timer.
    */
-  void Start() {
-    start_time = Clock::now();
-    running = true;
+  void start() {
+    start_time_ = Clock::now();
+    running_ = true;
   }
 
   /**
    * @brief Stops the timer.
    */
-  void Stop() {
-    end_time = Clock::now();
-    running = false;
+  void stop() {
+    end_time_ = Clock::now();
+    running_ = false;
   }
 
   /**
    * @brief Resets the timer to its initial state.
    */
-  void Reset() {
-    running = false;
-    start_time = TimePoint{};
-    end_time = TimePoint{};
+  void reset() {
+    running_ = false;
+    start_time_ = TimePoint{};
+    end_time_ = TimePoint{};
   }
 
   /**
@@ -56,9 +56,9 @@ class Timer {
    *
    * @return The elapsed duration in nanoseconds.
    */
-  [[nodiscard]] Duration GetDuration() const {
-    auto time = running ? Clock::now() : end_time;
-    return time - start_time;
+  [[nodiscard]] Duration get_duration() const {
+    auto time = running_ ? Clock::now() : end_time_;
+    return time - start_time_;
   }
 
   /**
@@ -66,15 +66,17 @@ class Timer {
    *
    * @return The elapsed time in nanoseconds.
    */
-  [[nodiscard]] size_t GetNanoseconds() const { return GetDuration().count(); }
+  [[nodiscard]] size_t get_nanoseconds() const {
+    return get_duration().count();
+  }
 
   /**
    * @brief Gets the elapsed time in microseconds.
    *
    * @return The elapsed time in microseconds.
    */
-  [[nodiscard]] size_t GetMicroseconds() const {
-    return std::chrono::duration_cast<std::chrono::microseconds>(GetDuration())
+  [[nodiscard]] size_t get_microseconds() const {
+    return std::chrono::duration_cast<std::chrono::microseconds>(get_duration())
         .count();
   }
 
@@ -83,8 +85,8 @@ class Timer {
    *
    * @return The elapsed time in milliseconds.
    */
-  [[nodiscard]] size_t GetMilliseconds() const {
-    return std::chrono::duration_cast<std::chrono::milliseconds>(GetDuration())
+  [[nodiscard]] size_t get_milliseconds() const {
+    return std::chrono::duration_cast<std::chrono::milliseconds>(get_duration())
         .count();
   }
 
@@ -93,8 +95,8 @@ class Timer {
    *
    * @return The elapsed time in seconds.
    */
-  [[nodiscard]] size_t GetSeconds() const {
-    return std::chrono::duration_cast<std::chrono::seconds>(GetDuration())
+  [[nodiscard]] size_t get_seconds() const {
+    return std::chrono::duration_cast<std::chrono::seconds>(get_duration())
         .count();
   }
 
@@ -103,8 +105,8 @@ class Timer {
    *
    * @return The elapsed time in minutes.
    */
-  [[nodiscard]] size_t GetMinutes() const {
-    return std::chrono::duration_cast<std::chrono::minutes>(GetDuration())
+  [[nodiscard]] size_t get_minutes() const {
+    return std::chrono::duration_cast<std::chrono::minutes>(get_duration())
         .count();
   }
 
@@ -113,20 +115,20 @@ class Timer {
    *
    * @return The elapsed time in hours.
    */
-  [[nodiscard]] size_t GetHours() const {
-    return std::chrono::duration_cast<std::chrono::hours>(GetDuration())
+  [[nodiscard]] size_t get_hours() const {
+    return std::chrono::duration_cast<std::chrono::hours>(get_duration())
         .count();
   }
 
   /**
    * @brief Gets the elapsed time in a specified unit.
    *
-   * @tparam T The duration type to convert to.
+   * @tparam DurationType The duration type to convert to.
    * @return The elapsed time in the specified unit.
    */
-  template <typename T>
-  [[nodiscard]] typename T::rep GetAs() const {
-    return std::chrono::duration_cast<T>(GetDuration()).count();
+  template <typename DurationType>
+  [[nodiscard]] typename DurationType::rep get_as() const {
+    return std::chrono::duration_cast<DurationType>(get_duration()).count();
   }
 
   /**
@@ -134,10 +136,10 @@ class Timer {
    *
    * @return true if the timer is running, false otherwise.
    */
-  [[nodiscard]] bool IsRunning() const noexcept { return running; }
+  [[nodiscard]] bool is_running() const noexcept { return running_; }
 
  protected:
-  bool running;          ///< Indicates whether the timer is currently running.
-  TimePoint start_time;  ///< The time when the timer was started.
-  TimePoint end_time;    ///< The time when the timer was stopped.
+  bool running_;          ///< Indicates whether the timer is currently running.
+  TimePoint start_time_;  ///< The time when the timer was started.
+  TimePoint end_time_;    ///< The time when the timer was stopped.
 };

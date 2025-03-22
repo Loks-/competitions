@@ -50,7 +50,7 @@ void TesterGraphEIDistanceUnsigned::TestDial() {
     v = graph::distance::Dial(g, edge_proxy, i, max_cost, max_edge_cost);
     for (auto d : v) nhash::DCombineH(h, d);
   }
-  std::cout << "Test results  [   Dial]: " << h << "\t" << t.GetMilliseconds()
+  std::cout << "Test results  [   Dial]: " << h << "\t" << t.get_milliseconds()
             << std::endl;
   hs.insert(h);
 }

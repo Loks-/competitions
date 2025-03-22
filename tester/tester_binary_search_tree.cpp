@@ -179,6 +179,6 @@ bool TestBinarySearchTree(bool time_test) {
                                         : TesterBinarySearchTree::hash_test);
   bool result = tbst.TestAllTrees();
   if (result && time_test)
-    std::cout << "Total time = " << t.GetMilliseconds() << std::endl;
+    std::cout << "Total time = " << t.get_milliseconds() << std::endl;
   return result;
 }

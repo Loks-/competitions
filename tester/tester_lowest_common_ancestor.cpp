@@ -36,7 +36,7 @@ size_t TesterLowestCommonAncestor::TestTarjanOffline() const {
     for (auto r : vr) nhash::DCombineH(h, r);
   }
   std::cout << "Test results  [Tarjan Offline  ]: " << h << "\t"
-            << t.GetMilliseconds() << std::endl;
+            << t.get_milliseconds() << std::endl;
   return h;
 }
 
@@ -49,7 +49,7 @@ size_t TesterLowestCommonAncestor::TestSchieberVishkin() const {
     for (auto r : vr) nhash::DCombineH(h, r);
   }
   std::cout << "Test results  [Schieber Vishkin]: " << h << "\t"
-            << t.GetMilliseconds() << std::endl;
+            << t.get_milliseconds() << std::endl;
   return h;
 }
 
@@ -64,7 +64,7 @@ size_t TesterLowestCommonAncestor::TestEulerTourRMQ() const {
     for (auto r : vr) nhash::DCombineH(h, r);
   }
   std::cout << "Test results  [Euler Tour RMQ  ]: " << h << "\t"
-            << t.GetMilliseconds() << std::endl;
+            << t.get_milliseconds() << std::endl;
   return h;
 }
 
@@ -78,7 +78,7 @@ size_t TesterLowestCommonAncestor::TestEulerTourRMQ1() const {
     for (auto r : vr) nhash::DCombineH(h, r);
   }
   std::cout << "Test results  [Euler Tour RMQ1 ]: " << h << "\t"
-            << t.GetMilliseconds() << std::endl;
+            << t.get_milliseconds() << std::endl;
   return h;
 }
 
@@ -91,7 +91,7 @@ size_t TesterLowestCommonAncestor::TestAlphabeticCode() const {
     for (auto r : vr) nhash::DCombineH(h, r);
   }
   std::cout << "Test results  [Alphabetic Code ]: " << h << "\t"
-            << t.GetMilliseconds() << std::endl;
+            << t.get_milliseconds() << std::endl;
   return h;
 }
 

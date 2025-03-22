@@ -32,7 +32,7 @@ class TesterDisjointSet {
       nhash::DCombineH(h, dsp.GetUnions());
     }
     std::cout << "Test results: " << int(pc) << "\t" << h << "\t"
-              << t.GetMilliseconds() << std::endl;
+              << t.get_milliseconds() << std::endl;
     return h;
   }
 

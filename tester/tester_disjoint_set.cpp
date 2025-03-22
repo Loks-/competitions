@@ -27,7 +27,7 @@ size_t TesterDisjointSet::TestExtended() const {
     dsp.Union(vunions[i].first, vunions[i].second);
     nhash::DCombineH(h, dsp.GetUnions());
   }
-  std::cout << "Test results: E\t" << h << "\t" << t.GetMilliseconds()
+  std::cout << "Test results: E\t" << h << "\t" << t.get_milliseconds()
             << std::endl;
   return h;
 }

@@ -60,7 +60,7 @@ size_t TesterBinarySearchTreeSplitJoin::TestBase(
   }
   assert_exception(!root);
   std::cout << "Test results [" << name << "]: " << h << "\t"
-            << t.GetMilliseconds() << std::endl;
+            << t.get_milliseconds() << std::endl;
   return h;
 }
 

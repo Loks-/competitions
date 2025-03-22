@@ -110,8 +110,8 @@ class TesterBinarySearchTree {
   typename TTree::TNode* TestBuild(TTree& tree, TBSTKeysType type) {
     Timer t;
     typename TTree::TNode* root = tree.Build(GetKeys(type), GetKeys(type));
-    t.Stop();
-    AddResult("Build", type, TreeHash(root, 0), t.GetMilliseconds());
+    t.stop();
+    AddResult("Build", type, TreeHash(root, 0), t.get_milliseconds());
     VerifyParentLinks(root);
     return root;
   }
@@ -134,7 +134,7 @@ class TesterBinarySearchTree {
       VerifyParentLinksLazy(root);
       nhash::DCombineH(h, GetInfoValue(root));
     }
-    AddResult("Insert", type, h, t.GetMilliseconds());
+    AddResult("Insert", type, h, t.get_milliseconds());
     VerifyParentLinks(root);
     return root;
   }
@@ -155,7 +155,7 @@ class TesterBinarySearchTree {
       assert_exception(node);
       nhash::DCombineH(h, node->key);
     }
-    AddResult("FindO", type, h, t.GetMilliseconds());
+    AddResult("FindO", type, h, t.get_milliseconds());
     return root;
   }
 
@@ -170,7 +170,7 @@ class TesterBinarySearchTree {
       assert_exception(!node);
       nhash::DCombineH(h, reinterpret_cast<size_t>(node));
     }
-    AddResult("FindK0", type, h, t.GetMilliseconds());
+    AddResult("FindK0", type, h, t.get_milliseconds());
     return root;
   }
 
@@ -186,7 +186,7 @@ class TesterBinarySearchTree {
       assert_exception(node);
       nhash::DCombineH(h, (type <= shuffled) ? node->data : node->key);
     }
-    AddResult("FindK1", type, h, t.GetMilliseconds());
+    AddResult("FindK1", type, h, t.get_milliseconds());
     return root;
   }
 
@@ -213,7 +213,7 @@ class TesterBinarySearchTree {
                           : root             ? root->info.size
                                              : 0);
     }
-    AddResult("DelKey", type, h, t.GetMilliseconds());
+    AddResult("DelKey", type, h, t.get_milliseconds());
     return root;
   }
 
@@ -245,7 +245,7 @@ class TesterBinarySearchTree {
       VerifyParentLinksLazy(root);
       nhash::DCombineH(h, GetInfoValue(root));
     }
-    AddResult("DelNode", type, h, t.GetMilliseconds());
+    AddResult("DelNode", type, h, t.get_milliseconds());
     return root;
   }
 
@@ -287,7 +287,7 @@ class TesterBinarySearchTree {
       root = tree.RemoveAndReleaseByKey(root, vkeys[s + 2 * i + 1]);
       nhash::DCombineH(h, GetInfoValue(root));
     }
-    AddResult("InsDel", type, h, t.GetMilliseconds());
+    AddResult("InsDel", type, h, t.get_milliseconds());
     VerifyParentLinks(root);
     return root;
   }

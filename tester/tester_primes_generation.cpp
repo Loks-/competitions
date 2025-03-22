@@ -58,7 +58,7 @@ size_t TesterPrimeGeneration::Test(const std::string& name, uint64_t maxn,
       break;
   }
   size_t h = DHash<std::vector<uint64_t>>{}(vp);
-  std::cout << name << ": " << h << "\t" << t.GetMilliseconds() << std::endl;
+  std::cout << name << ": " << h << "\t" << t.get_milliseconds() << std::endl;
   return h;
 }
 
@@ -70,7 +70,7 @@ size_t TesterPrimeGeneration::TestPG(uint64_t maxn, uint64_t block_size) {
   size_t h = DHash<std::vector<uint64_t>>{}(vprimes);
   std::string name_suffix = std::to_string(block_size);
   std::cout << "PG" << std::string(14 - name_suffix.size(), ' ') << name_suffix
-            << ": " << h << "\t" << t.GetMilliseconds() << std::endl;
+            << ": " << h << "\t" << t.get_milliseconds() << std::endl;
   return h;
 }
 

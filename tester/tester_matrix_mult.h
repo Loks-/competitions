@@ -156,9 +156,9 @@ class TesterMatrixMult {
                          const TMatrix& B, TMatrix& C) {
     Timer t;
     A.Mult(B, C);
-    t.Stop();
+    t.stop();
     size_t h = MatrixHash(C);
-    std::cout << text << " base\t" << h << "\t" << t.GetMilliseconds()
+    std::cout << text << " base\t" << h << "\t" << t.get_milliseconds()
               << std::endl;
     results.insert(h);
   }
@@ -168,9 +168,9 @@ class TesterMatrixMult {
                              const TMatrix& B, TMatrix& C) {
     Timer t;
     MatrixMultPointers(A, B, C);
-    t.Stop();
+    t.stop();
     size_t h = MatrixHash(C);
-    std::cout << text << " pntr\t" << h << "\t" << t.GetMilliseconds()
+    std::cout << text << " pntr\t" << h << "\t" << t.get_milliseconds()
               << std::endl;
     results.insert(h);
   }
@@ -180,9 +180,9 @@ class TesterMatrixMult {
                           const TMatrix& B, TMatrix& C) {
     Timer t;
     MatrixMultLoops(A, B, C);
-    t.Stop();
+    t.stop();
     size_t h = MatrixHash(C);
-    std::cout << text << " loop\t" << h << "\t" << t.GetMilliseconds()
+    std::cout << text << " loop\t" << h << "\t" << t.get_milliseconds()
               << std::endl;
     results.insert(h);
   }
@@ -197,9 +197,9 @@ class TesterMatrixMult {
       B.swap(C);
       ApplyMod(B);
     }
-    t.Stop();
+    t.stop();
     size_t h = MatrixHash(B);
-    std::cout << text << " base\t" << h << "\t" << t.GetMilliseconds()
+    std::cout << text << " base\t" << h << "\t" << t.get_milliseconds()
               << std::endl;
     results.insert(h);
   }
@@ -214,9 +214,9 @@ class TesterMatrixMult {
       B.swap(C);
       ApplyMod(B);
     }
-    t.Stop();
+    t.stop();
     size_t h = MatrixHash(B);
-    std::cout << text << " pntr\t" << h << "\t" << t.GetMilliseconds()
+    std::cout << text << " pntr\t" << h << "\t" << t.get_milliseconds()
               << std::endl;
     results.insert(h);
   }
@@ -231,9 +231,9 @@ class TesterMatrixMult {
       B.swap(C);
       ApplyMod(B);
     }
-    t.Stop();
+    t.stop();
     size_t h = MatrixHash(B);
-    std::cout << text << " loop\t" << h << "\t" << t.GetMilliseconds()
+    std::cout << text << " loop\t" << h << "\t" << t.get_milliseconds()
               << std::endl;
     results.insert(h);
   }
@@ -243,9 +243,9 @@ class TesterMatrixMult {
                         const TMatrix& B, TMatrix& C) {
     Timer t;
     A.Mult(B, C);
-    t.Stop();
+    t.stop();
     size_t h = MatrixHash(C, true);
-    std::cout << text << " base\t" << h << "\t" << t.GetMilliseconds()
+    std::cout << text << " base\t" << h << "\t" << t.get_milliseconds()
               << std::endl;
     results.insert(h);
   }
