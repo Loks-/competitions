@@ -142,7 +142,7 @@ class WAVLRank : public Base {
    * Used to maintain balance in WAVL trees.
    * By default, new nodes have rank 0.
    */
-  int rank = 0;
+  int rank{0};
 };
 
 }  // namespace subtree_data

@@ -179,7 +179,7 @@ class Min : public Base {
    * This value represents the minimum of all node values in the subtree,
    * including the root node.
    */
-  MinType value;
+  MinType value{};
 };
 
 }  // namespace subtree_data

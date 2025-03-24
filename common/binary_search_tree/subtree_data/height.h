@@ -66,7 +66,7 @@ class Height : public Base {
    * For an internal node, height = 1 + max(left_height, right_height).
    * For an empty subtree (null node), height = 0.
    */
-  unsigned height = 0;
+  unsigned height{0};
 };
 
 /**

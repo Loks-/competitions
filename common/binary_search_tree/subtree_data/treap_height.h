@@ -94,7 +94,7 @@ class TreapHeight : public Base {
    * The Treap uses this height to maintain heap property: a node's height
    * should be greater than its children's heights.
    */
-  unsigned treap_height;
+  unsigned treap_height{0};
 };
 
 }  // namespace subtree_data

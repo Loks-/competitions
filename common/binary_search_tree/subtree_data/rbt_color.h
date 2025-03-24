@@ -111,7 +111,7 @@ class RBTColor : public Base {
    * True represents black, false represents red.
    * By default, new nodes are red (is_black = false).
    */
-  bool is_black = false;
+  bool is_black{false};
 };
 
 }  // namespace subtree_data

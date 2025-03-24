@@ -141,7 +141,7 @@ class IsEmpty : public Base {
    * This value represents whether the subtree contains any nodes.
    * true indicates an empty subtree, false indicates a non-empty subtree.
    */
-  bool is_empty = true;
+  bool is_empty{true};
 };
 
 }  // namespace subtree_data

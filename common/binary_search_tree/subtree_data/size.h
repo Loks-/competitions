@@ -172,7 +172,7 @@ class Size : public Base {
    * This value represents the total number of nodes in the subtree,
    * including the root node.
    */
-  unsigned size = 0;
+  unsigned size{0};
 };
 
 /**

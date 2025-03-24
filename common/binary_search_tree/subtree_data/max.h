@@ -179,7 +179,7 @@ class Max : public Base {
    * This value represents the maximum of all node values in the subtree,
    * including the root node.
    */
-  MaxType value;
+  MaxType value{};
 };
 
 }  // namespace subtree_data
