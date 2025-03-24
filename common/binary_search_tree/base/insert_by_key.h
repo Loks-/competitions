@@ -1,6 +1,6 @@
 #pragma once
 
-#include "common/binary_search_tree/subtree_data/update_node_to_root.h"
+#include "common/binary_search_tree/subtree_data/utils/update_node_to_root.h"
 
 namespace bst {
 namespace base {

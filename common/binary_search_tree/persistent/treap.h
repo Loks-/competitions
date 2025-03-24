@@ -7,7 +7,7 @@
 #include "common/binary_search_tree/persistent/tree.h"
 #include "common/binary_search_tree/subtree_data/size.h"
 #include "common/binary_search_tree/subtree_data/treap_height.h"
-#include "common/binary_search_tree/subtree_data/update_node_to_root.h"
+#include "common/binary_search_tree/subtree_data/utils/update_node_to_root.h"
 #include "common/memory/nodes_manager.h"
 
 #include <stack>
