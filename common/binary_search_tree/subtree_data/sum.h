@@ -65,6 +65,17 @@ class Sum : public Base {
     return node ? get(node->subtree_data) : SumType{};
   }
 
+  /**
+   * @brief Gets a reference to the sum value in a subtree.
+   *
+   * Helper function to get a mutable reference to the sum value stored in a
+   * node. This is useful when you need to modify the sum value directly.
+   * Assumes the node exists.
+   *
+   * @tparam Node The BST node type.
+   * @param node The root of the subtree to get sum reference from.
+   * @return A reference to the sum value stored in the node.
+   */
   template <typename Node>
   static constexpr SumType& get_ref(Node* node) {
     assert(node);
