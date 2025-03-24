@@ -7,8 +7,9 @@
 template <class TNode>
 inline void AddAction(TNode*, MetaType<bst::action::None>) {}
 
-template <class TNode, class TData>
-inline void AddAction(TNode* root, MetaType<bst::action::AddEachSum<TData>>) {
+template <class TAggregatorSum, class TNode, class TData>
+inline void AddAction(
+    TNode* root, MetaType<bst::action::AddEachSum<TAggregatorSum, TData>>) {
   if (root) root->AddAction(1);
 }
 

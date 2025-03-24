@@ -5,22 +5,32 @@
 #include "common/binary_search_tree/base/balanced_tree.h"
 #include "common/binary_search_tree/base/node.h"
 #include "common/binary_search_tree/base/rotate.h"
+#include "common/binary_search_tree/base/subtree_data.h"
 #include "common/binary_search_tree/subtree_data/height.h"
 #include "common/binary_search_tree/subtree_data/size.h"
 #include "common/memory/nodes_manager_fixed_size.h"
+#include "common/templates/tuple.h"
+
+#include <tuple>
 
 namespace bst {
-template <bool use_parent, class TData, class TInfo = subtree_data::Size,
+template <bool use_parent, class TData,
+          class TAggregatorsTuple = std::tuple<subtree_data::Size>,
           class TAction = action::None, class TKey = int64_t>
-class AVLTree : public base::BalancedTree<
-                    memory::NodesManagerFixedSize<
-                        base::Node<TData, subtree_data::Height<TInfo>, TAction,
-                                   true, use_parent, TKey>>,
-                    AVLTree<use_parent, TData, TInfo, TAction, TKey>> {
+class AVLTree
+    : public base::BalancedTree<
+          memory::NodesManagerFixedSize<
+              base::Node<TData,
+                         base::SubtreeData<templates::PrependIfMissingT<
+                             subtree_data::Height, TAggregatorsTuple>>,
+                         TAction, true, use_parent, TKey>>,
+          AVLTree<use_parent, TData, TAggregatorsTuple, TAction, TKey>> {
  public:
-  using TNode = base::Node<TData, subtree_data::Height<TInfo>, TAction, true,
-                           use_parent, TKey>;
-  using TSelf = AVLTree<use_parent, TData, TInfo, TAction, TKey>;
+  using TSubtreeData = base::SubtreeData<
+      templates::PrependIfMissingT<subtree_data::Height, TAggregatorsTuple>>;
+  using TNode =
+      base::Node<TData, TSubtreeData, TAction, true, use_parent, TKey>;
+  using TSelf = AVLTree<use_parent, TData, TAggregatorsTuple, TAction, TKey>;
   using TBTree =
       base::BalancedTree<memory::NodesManagerFixedSize<TNode>, TSelf>;
   using TTree = typename TBTree::TTree;
@@ -33,8 +43,8 @@ class AVLTree : public base::BalancedTree<
   explicit AVLTree(size_t max_nodes) : TBTree(max_nodes) {}
 
  protected:
-  static constexpr int Height(TNode* node) {
-    return node ? int(node->subtree_data.height) : 0;
+  static constexpr int Height(const TNode* node) {
+    return bst::subtree_data::height(node);
   }
 
   static constexpr int Balance(TNode* node) {

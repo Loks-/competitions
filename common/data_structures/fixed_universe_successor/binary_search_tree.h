@@ -22,9 +22,8 @@ namespace fus {
 // Predecessor -- O(log S)
 class BinarySearchTree {
  protected:
-  using TTree =
-      bst::RedBlackTree<MetaEmpty, bst::subtree_data::None, bst::action::None,
-                        size_t, memory::NodesManager>;
+  using TTree = bst::RedBlackTree<MetaEmpty, std::tuple<>, bst::action::None,
+                                  size_t, memory::NodesManager>;
   using TNode = TTree::TNode;
 
  protected:

@@ -1,8 +1,10 @@
 #pragma once
 
 #include "common/base.h"
+#include "common/binary_search_tree/action/none.h"
 #include "common/binary_search_tree/base/left.h"
 #include "common/binary_search_tree/base/traversal.h"
+#include "common/binary_search_tree/subtree_data/base.h"
 #include "common/binary_search_tree/subtree_data/size.h"
 #include "common/binary_search_tree/treap.h"
 #include "common/memory/nodes_manager.h"
@@ -29,9 +31,8 @@ class IntervalsBasedSet {
     constexpr TValue Size() const { return e - b; }
   };
 
-  class BSTSubtreeData : public bst::subtree_data::Size {
+  class BSTSubtreeData : public bst::subtree_data::Base {
    public:
-    using Base = bst::subtree_data::Size;
     using Self = BSTSubtreeData;
 
     static constexpr bool use_data = true;
@@ -43,13 +44,15 @@ class IntervalsBasedSet {
     template <class TNode>
     constexpr void update(TNode* node) {
       Base::update(node);
-      set_size = node->data.Size() +
-                 (node->l ? node->l->subtree_data.set_size : 0) +
-                 (node->r ? node->r->subtree_data.set_size : 0);
+      set_size =
+          node->data.Size() +
+          (node->l ? node->l->subtree_data.template get<Self>().set_size : 0) +
+          (node->r ? node->r->subtree_data.template get<Self>().set_size : 0);
     }
   };
 
-  using TTree = bst::Treap<true, true, Interval, BSTSubtreeData,
+  using TTree = bst::Treap<true, true, Interval,
+                           std::tuple<bst::subtree_data::Size, BSTSubtreeData>,
                            bst::action::None, TValue, memory::NodesManager>;
   using TNode = typename TTree::TNode;
 
@@ -66,9 +69,12 @@ class IntervalsBasedSet {
 
   bool Empty() const { return root == nullptr; }
 
-  TValue Size() const { return Empty() ? 0 : root->subtree_data.set_size; }
+  TValue Size() const {
+    return Empty() ? 0
+                   : root->subtree_data.template get<BSTSubtreeData>().set_size;
+  }
 
-  size_t TreeSize() const { return Empty() ? 0 : root->subtree_data.size; }
+  size_t TreeSize() const { return bst::subtree_data::size(root); }
 
   std::vector<Interval> ToVector() const {
     return bst::base::Traverse<TNode, Interval>(

@@ -56,7 +56,7 @@ size_t TesterBinarySearchTreeSplitJoin::TestBase(
     } else {
       root = tree.InsertNewNode(root, {}, key);
     }
-    nhash::DCombineH(h, root ? root->subtree_data.sum_keys : 0);
+    nhash::DCombineH(h, TSum::get(root));
   }
   assert_exception(!root);
   std::cout << "Test results [" << name << "]: " << h << "\t"
@@ -67,24 +67,30 @@ size_t TesterBinarySearchTreeSplitJoin::TestBase(
 bool TesterBinarySearchTreeSplitJoin::TestAll(bool small_test) const {
   std::unordered_set<size_t> hs;
   if (small_test) {
-    hs.insert(TestBase<bst::BaseTree<true, MetaEmpty, TInfo, TAction, TKey>>(
-        "Base  UPT"));
     hs.insert(
-        TestBase<bst::ScapegoatTree<true, MetaEmpty, TInfo, TAction, TKey>>(
-            "Scape UPT"));
+        TestBase<bst::BaseTree<true, MetaEmpty, TAggregators, TAction, TKey>>(
+            "Base  UPT"));
+    hs.insert(TestBase<
+              bst::ScapegoatTree<true, MetaEmpty, TAggregators, TAction, TKey>>(
+        "Scape UPT"));
   }
-  hs.insert(TestBase<bst::AVLTree<true, MetaEmpty, TInfo, TAction, TKey>>(
-      "AVL   UPT"));
-  hs.insert(TestBase<bst::RedBlackTree<MetaEmpty, TInfo, TAction, TKey>>(
+  hs.insert(
+      TestBase<bst::AVLTree<true, MetaEmpty, TAggregators, TAction, TKey>>(
+          "AVL   UPT"));
+  hs.insert(TestBase<bst::RedBlackTree<MetaEmpty, TAggregators, TAction, TKey>>(
       "RBTree   "));
-  hs.insert(TestBase<bst::SplayTree<true, MetaEmpty, TInfo, TAction, TKey>>(
-      "Splay    "));
-  hs.insert(TestBase<bst::Treap<true, false, MetaEmpty, TInfo, TAction, TKey>>(
-      "Treap UPF"));
-  hs.insert(TestBase<bst::Treap<true, true, MetaEmpty, TInfo, TAction, TKey>>(
-      "Treap UPT"));
-  hs.insert(TestBase<bst::WAVLTree<true, MetaEmpty, TInfo, TAction, TKey>>(
-      "WAVL  UPT"));
+  hs.insert(
+      TestBase<bst::SplayTree<true, MetaEmpty, TAggregators, TAction, TKey>>(
+          "Splay    "));
+  hs.insert(
+      TestBase<bst::Treap<true, false, MetaEmpty, TAggregators, TAction, TKey>>(
+          "Treap UPF"));
+  hs.insert(
+      TestBase<bst::Treap<true, true, MetaEmpty, TAggregators, TAction, TKey>>(
+          "Treap UPT"));
+  hs.insert(
+      TestBase<bst::WAVLTree<true, MetaEmpty, TAggregators, TAction, TKey>>(
+          "WAVL  UPT"));
   return hs.size() <= 1;
 }
 

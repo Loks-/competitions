@@ -3,44 +3,52 @@
 #include "common/binary_search_tree/action/none.h"
 #include "common/binary_search_tree/base/node.h"
 #include "common/binary_search_tree/base/root.h"
+#include "common/binary_search_tree/base/subtree_data.h"
 #include "common/binary_search_tree/base/tree.h"
 #include "common/binary_search_tree/subtree_data/size.h"
 #include "common/binary_search_tree/subtree_data/treap_height.h"
 #include "common/binary_search_tree/subtree_data/update_node_to_root.h"
 #include "common/memory/nodes_manager_fixed_size.h"
+#include "common/templates/tuple.h"
 
 #include <algorithm>
 #include <stack>
+#include <tuple>
 #include <vector>
 
 namespace bst {
+
 template <bool use_key, bool use_parent, class TData,
-          class TTInfo = subtree_data::Size, class TAction = action::None,
-          class TKey = int64_t,
+          class TAggregatorsTuple = std::tuple<subtree_data::Size>,
+          class TAction = action::None, class TKey = int64_t,
           template <class> class TTNodesManager = memory::NodesManagerFixedSize>
 class Treap
     : public base::Tree<TTNodesManager<base::Node<
-                            TData, subtree_data::TreapHeight<unsigned, TTInfo>,
+                            TData,
+                            base::SubtreeData<templates::PrependT<
+                                subtree_data::TreapHeight, TAggregatorsTuple>>,
                             TAction, use_key, use_parent, TKey>>,
-                        Treap<use_key, use_parent, TData, TTInfo, TAction, TKey,
-                              TTNodesManager>> {
+                        Treap<use_key, use_parent, TData, TAggregatorsTuple,
+                              TAction, TKey, TTNodesManager>> {
  public:
   static constexpr bool support_remove = true;
   static constexpr bool support_join = true;
   static constexpr bool support_join3 = true;
   static constexpr bool support_split = true;
 
-  using THeight = unsigned;
-  using TInfo = subtree_data::TreapHeight<THeight, TTInfo>;
-  using TNode = base::Node<TData, TInfo, TAction, use_key, use_parent, TKey>;
-  using TSelf =
-      Treap<use_key, use_parent, TData, TTInfo, TAction, TKey, TTNodesManager>;
+  using TTreapHeight = subtree_data::TreapHeight;
+  using TSubtreeData = base::SubtreeData<
+      templates::PrependT<subtree_data::TreapHeight, TAggregatorsTuple>>;
+  using TNode =
+      base::Node<TData, TSubtreeData, TAction, use_key, use_parent, TKey>;
+  using TSelf = Treap<use_key, use_parent, TData, TAggregatorsTuple, TAction,
+                      TKey, TTNodesManager>;
   using TTree = base::Tree<TTNodesManager<TNode>, TSelf>;
   friend TTree;
 
  protected:
-  static constexpr const THeight& Height(const TNode* node) {
-    return node->subtree_data.treap_height;
+  static constexpr unsigned TreapHeight(const TNode* node) {
+    return subtree_data::TreapHeight::get(node);
   }
 
  public:
@@ -54,15 +62,16 @@ class Treap
     std::stack<TNode*> s;
     for (size_t j = 1; j < nodes.size(); ++j) {
       TNode* pj = nodes[j];
-      if (Height(pj) < Height(plast)) {
+      if (TreapHeight(pj) < TreapHeight(plast)) {
         plast->SetR(pj);
         s.push(plast);
-      } else if (Height(pj) >= Height(proot)) {
+      } else if (TreapHeight(pj) >= TreapHeight(proot)) {
         for (plast->UpdateInfo(); !s.empty(); s.pop()) s.top()->UpdateInfo();
         pj->SetL(proot);
         proot = pj;
       } else {
-        for (plast->UpdateInfo(); Height(pj) >= Height(s.top()); s.pop()) {
+        for (plast->UpdateInfo(); TreapHeight(pj) >= TreapHeight(s.top());
+             s.pop()) {
           plast = s.top();
           plast->UpdateInfo();
         }
@@ -77,7 +86,7 @@ class Treap
 
  protected:
   static TNode* JoinI(TNode* l, TNode* r) {
-    if (Height(l) > Height(r)) {
+    if (TreapHeight(l) > TreapHeight(r)) {
       l->ApplyAction();
       l->SetR(l->r ? JoinI(l->r, r) : r);
       l->UpdateInfo();
@@ -143,7 +152,7 @@ class Treap
   static void SplitBySizeI(TNode* p, size_t lsize, TNode*& output_l,
                            TNode*& output_r) {
     p->ApplyAction();
-    const size_t hlsize = (p->l ? p->l->subtree_data.size : 0);
+    const size_t hlsize = bst::subtree_data::size(p->l);
     if (lsize < hlsize) {
       output_r = p;
       SplitBySizeI(p->l, lsize, output_l, p->l);
@@ -167,13 +176,13 @@ class Treap
  public:
   static void SplitBySize(TNode* root, size_t lsize, TNode*& output_l,
                           TNode*& output_r) {
-    static_assert(TInfo::has_size, "info should contain size");
+    static_assert(TSubtreeData::has_size, "info should contain size");
     if (!root) {
       output_l = output_r = nullptr;
     } else if (lsize == 0) {
       output_l = nullptr;
       output_r = root;
-    } else if (lsize >= root->subtree_data.size) {
+    } else if (lsize >= subtree_data::size(root)) {
       output_l = root;
       output_r = nullptr;
     } else {
@@ -187,7 +196,7 @@ class Treap
     static_assert(use_key, "use_key should be true");
     if (!root) return node;
     root->ApplyAction();
-    if (Height(root) >= Height(node)) {
+    if (TreapHeight(root) >= TreapHeight(node)) {
       if (root->key < node->key)
         root->SetR(InsertByKey(root->r, node));
       else
@@ -227,8 +236,7 @@ class Treap
   static TNode* Union(TNode* p1, TNode* p2) {
     if (!p1) return p2;
     if (!p2) return p1;
-    if (p1->subtree_data.treap_height < p2->subtree_data.treap_height)
-      std::swap(p1, p2);
+    if (TreapHeight(p1) < TreapHeight(p2)) std::swap(p1, p2);
     TNode *pt1 = nullptr, *pt2 = nullptr;
     SplitByKey(p2, p1->key, pt1, pt2);
     p1->SetL(Union(p1->l, pt1));

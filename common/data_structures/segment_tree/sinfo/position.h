@@ -13,7 +13,7 @@ class Position : public None {
   using TSelf = Position<TCoordinate>;
 
  public:
-  static constexpr bool is_none = false;
+  static constexpr bool empty = false;
   static constexpr bool has_coordinate = true;
 
  public:

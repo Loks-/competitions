@@ -17,7 +17,7 @@ class LSum0 : public None {
   using TSelf = LSum0<TValue, TSumValue, TBase>;
 
  public:
-  static constexpr bool is_none = false;
+  static constexpr bool empty = false;
   static constexpr bool use_sinfo_in_update_data = true;
   static constexpr bool use_sinfo_in_update_lr = true;
   static constexpr bool use_update_node = true;

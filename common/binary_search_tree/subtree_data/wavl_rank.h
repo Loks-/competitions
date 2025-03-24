@@ -1,69 +1,148 @@
 #pragma once
 
 #include "common/base.h"
+#include "common/binary_search_tree/subtree_data/base.h"
 
-#include <algorithm>
+#include <utility>
 
 namespace bst {
 namespace subtree_data {
 
 /**
- * @brief A class that maintains the rank of a node in a WAVL tree.
+ * @brief A component that maintains node ranks in a Weak AVL tree.
  *
- * This class extends another subtree data class to add rank tracking
- * for WAVL (Weak AVL) tree operations. The rank is used to maintain
- * the weak AVL property of the tree.
- *
- * @tparam BaseData The base subtree data class to extend.
+ * This component stores the rank of each node without performing
+ * any aggregation. The actual rank management is handled by the WAVL
+ * tree implementation itself through the bti_* (Binary Tree Information)
+ * functions.
  */
-template <typename BaseData>
-class WAVLRank : public BaseData {
+class WAVLRank : public Base {
  public:
-  using Base = BaseData;
-  using Self = WAVLRank<BaseData>;
+  using Self = WAVLRank;
 
- public:
   /**
-   * @brief The rank of the node in the WAVL tree.
+   * @brief Component capability flags.
    *
-   * Used to maintain the weak AVL property. Initialized to 0.
+   * WAVLRank component only stores rank without aggregation.
+   * Rank management is handled by the WAVL tree implementation
+   * through bti_* functions during balancing operations.
    */
-  int rank = 0;
+  static constexpr bool support_segment = true;
+  static constexpr bool support_insert_node = true;
+  static constexpr bool support_insert_subtree = true;
+  static constexpr bool support_remove_node = true;
 
- public:
   /**
-   * @brief Resets the WAVL tree information.
+   * @brief Gets the rank of a node.
    *
-   * Sets the node rank to 0.
+   * Helper function to access the rank of a node in the WAVL Tree.
+   * Assumes the node exists.
+   *
+   * @tparam Node The BST node type.
+   * @param node The node to get rank from.
+   * @return The rank of the node.
    */
-  constexpr void bti_reset() {
-    Base::bti_reset();
-    rank = 0;
+  template <typename Node>
+  static constexpr int get(const Node* node) {
+    assert(node);
+    return node->subtree_data.template get<Self>().rank;
   }
 
   /**
-   * @brief Copies WAVL tree information from another node.
+   * @brief Sets the rank of a node.
    *
-   * @param node The source node to copy from.
+   * Helper function to set the rank of a node in the WAVL Tree.
+   * Assumes the node exists.
+   *
+   * @tparam Node The BST node type.
+   * @param node The node to set rank for.
+   * @param new_rank The new rank value to set.
+   */
+  template <typename Node>
+  static constexpr void set(Node* node, int new_rank) {
+    assert(node);
+    node->subtree_data.template get<Self>().rank = new_rank;
+  }
+
+  /**
+   * @brief Increments the rank of a node by 1.
+   *
+   * Helper function to efficiently increase a node's rank.
+   * Assumes the node exists.
+   *
+   * @tparam Node The BST node type.
+   * @param node The node to increment rank for.
+   */
+  template <typename Node>
+  static constexpr void inc(Node* node) {
+    assert(node);
+    ++node->subtree_data.template get<Self>().rank;
+  }
+
+  /**
+   * @brief Decrements the rank of a node by 1.
+   *
+   * Helper function to efficiently decrease a node's rank.
+   * Assumes the node exists.
+   *
+   * @tparam Node The BST node type.
+   * @param node The node to decrement rank for.
+   */
+  template <typename Node>
+  static constexpr void dec(Node* node) {
+    assert(node);
+    --node->subtree_data.template get<Self>().rank;
+  }
+
+  /**
+   * @brief Resets the node rank to 0.
+   *
+   * In WAVL trees, new nodes are initialized with rank 0.
+   * This function is called by the WAVL tree implementation during
+   * node initialization and rebalancing operations.
+   */
+  constexpr void bti_reset() {
+    rank = 0;  // New nodes have rank 0
+  }
+
+  /**
+   * @brief Copies rank from another node.
+   *
+   * Used during WAVL tree balancing operations when
+   * node ranks need to be copied.
+   *
+   * @tparam Node The BST node type.
+   * @param node The source node to copy rank from.
    */
   template <typename Node>
   constexpr void bti_copy(const Node* node) {
     assert(node);
-    Base::bti_copy(node);
-    rank = node->subtree_data.rank;
+    rank = get(node);
   }
 
   /**
-   * @brief Swaps WAVL tree information with another node.
+   * @brief Swaps ranks between two nodes.
    *
-   * @param node The node to swap with.
+   * Used during WAVL tree balancing operations when
+   * node ranks need to be exchanged (e.g., during rotations).
+   *
+   * @tparam Node The BST node type.
+   * @param node The node to swap ranks with.
    */
   template <typename Node>
   constexpr void bti_swap(Node* node) {
     assert(node);
-    Base::bti_swap(node);
-    std::swap(rank, node->subtree_data.rank);
+    std::swap(rank, node->subtree_data.template get<Self>().rank);
   }
+
+ protected:
+  /**
+   * @brief The rank of the node in the Weak AVL tree.
+   *
+   * Used to maintain balance in WAVL trees.
+   * By default, new nodes have rank 0.
+   */
+  int rank = 0;
 };
 
 }  // namespace subtree_data

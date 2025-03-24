@@ -1,20 +1,21 @@
 #pragma once
 
 #include "common/binary_search_tree/action/add_each.h"
+#include "common/binary_search_tree/subtree_data/size.h"
 
 namespace bst {
 namespace action {
 // Support info::Sum
-template <class TData>
+template <class TAggregatorSum, class TData>
 class AddEachSum : public AddEach<TData> {
  public:
   using TBase = AddEach<TData>;
-  using TSelf = AddEachSum<TData>;
+  using TSelf = AddEachSum<TAggregatorSum, TData>;
 
  public:
   template <class TNode>
   constexpr void Add(TNode* node, const TData& value) {
-    node->subtree_data.sum_value += value * node->subtree_data.size;
+    TAggregatorSum::get_ref(node) += value * bst::subtree_data::size(node);
     TBase::Add(node, value);
   }
 };

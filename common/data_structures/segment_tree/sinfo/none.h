@@ -9,7 +9,7 @@ class None {
   using TSelf = None;
 
  public:
-  static constexpr bool is_none = true;
+  static constexpr bool empty = true;
   static constexpr bool use_data = false;
   static constexpr bool has_coordinate = false;
 

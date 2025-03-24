@@ -4,21 +4,26 @@
 #include "common/binary_search_tree/action/none.h"
 #include "common/binary_search_tree/base/balanced_tree.h"
 #include "common/binary_search_tree/base/node.h"
+#include "common/binary_search_tree/base/subtree_data.h"
 #include "common/binary_search_tree/subtree_data/size.h"
 #include "common/memory/nodes_manager_fixed_size.h"
 
 namespace bst {
 // Base BST without auto balance
-template <bool use_parent, class TData, class TInfo = subtree_data::Size,
+template <bool use_parent, class TData,
+          class TAggregatorsTuple = std::tuple<subtree_data::Size>,
           class TAction = action::None, class TKey = int64_t>
 class BaseTree
     : public base::BalancedTree<
           memory::NodesManagerFixedSize<
-              base::Node<TData, TInfo, TAction, true, use_parent, TKey>>,
-          BaseTree<use_parent, TData, TInfo, TAction, TKey>> {
+              base::Node<TData, base::SubtreeData<TAggregatorsTuple>, TAction,
+                         true, use_parent, TKey>>,
+          BaseTree<use_parent, TData, TAggregatorsTuple, TAction, TKey>> {
  public:
-  using TNode = base::Node<TData, TInfo, TAction, true, use_parent, TKey>;
-  using TSelf = BaseTree<use_parent, TData, TInfo, TAction, TKey>;
+  using TSubtreeData = base::SubtreeData<TAggregatorsTuple>;
+  using TNode =
+      base::Node<TData, TSubtreeData, TAction, true, use_parent, TKey>;
+  using TSelf = BaseTree<use_parent, TData, TAggregatorsTuple, TAction, TKey>;
   using TBTree =
       base::BalancedTree<memory::NodesManagerFixedSize<TNode>, TSelf>;
   friend TBTree;

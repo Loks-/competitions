@@ -1,51 +1,203 @@
 #pragma once
 
+#include "common/base.h"
+#include "common/binary_search_tree/base/subtree_data.h"
+#include "common/binary_search_tree/subtree_data/base.h"
+
 namespace bst {
 namespace subtree_data {
 
 /**
- * @brief A class that maintains the sum of keys in a BST subtree.
+ * @brief A component that maintains the sum of node keys in a BST.
  *
- * This class extends another subtree data class to add key sum functionality.
- * It maintains the sum of the node's key and the sums of keys from its left
- * and right subtrees.
+ * This component tracks the sum of keys in each subtree and supports
+ * all basic operations including insertion, removal, and segment operations.
+ * The sum is maintained efficiently through local updates during tree
+ * modifications.
  *
- * @tparam SumType The type used for the sum calculation.
- * @tparam BaseData The base subtree data class to extend.
+ * @tparam SumType The type used for sum values.
  */
-template <typename SumType, typename BaseData>
-class SumKeys : public BaseData {
+template <typename SumType>
+class SumKeys : public Base {
  public:
-  using Base = BaseData;
-  using Self = SumKeys<SumType, BaseData>;
+  using Self = SumKeys<SumType>;
 
-  static constexpr bool is_none = false;
-  static constexpr bool use_keys = true;
-
- public:
   /**
-   * @brief The sum of all keys in the subtree.
+   * @brief Component capability flags.
    *
-   * Includes the node's key and the sums from both left and right subtrees.
+   * SumKeys component supports all operations and requires access to node keys
+   * to maintain the sum of values.
    */
-  SumType sum_keys;
+  static constexpr bool use_keys = true;
+  static constexpr bool support_segment = true;
+  static constexpr bool support_insert_node = true;
+  static constexpr bool support_insert_subtree = true;
+  static constexpr bool support_remove_node = true;
 
- public:
   /**
-   * @brief Updates the sum of keys in the subtree.
+   * @brief Gets the sum from a SubtreeData instance.
    *
-   * Calculates the total sum as the node's key plus the sums from
-   * the left and right subtrees.
+   * Helper function to access the sum directly from a SubtreeData object.
+   * Assumes that SumKeys is one of the aggregators in the tuple.
    *
-   * @param node The node to update.
+   * @tparam TAggregators The tuple of aggregator types.
+   * @param subtree_data The SubtreeData instance to get sum from.
+   * @return The sum stored in the subtree data.
+   */
+  template <typename TAggregators>
+  static constexpr SumType get(
+      const bst::base::SubtreeData<TAggregators>& subtree_data) {
+    return subtree_data.template get<Self>().value;
+  }
+
+  /**
+   * @brief Gets the sum of keys in a subtree.
+   *
+   * Helper function to access the sum of keys in a subtree through its root
+   * node. Returns default-constructed SumType for null nodes.
+   *
+   * @tparam Node The BST node type.
+   * @param node The root of the subtree to get sum from.
+   * @return The sum of keys in the subtree.
    */
   template <typename Node>
-  constexpr void update(Node* node) {
-    Base::update(node);
-    sum_keys = node->key;
-    if (node->l) sum_keys += node->l->subtree_data.sum_keys;
-    if (node->r) sum_keys += node->r->subtree_data.sum_keys;
+  static constexpr SumType get(const Node* node) {
+    return node ? get(node->subtree_data) : SumType{};
   }
+
+  template <typename Node>
+  static constexpr SumType& get_ref(Node* node) {
+    assert(node);
+    return node->subtree_data.template get<Self>().value;
+  }
+
+  /**
+   * @brief Sets the sum of keys in a subtree.
+   *
+   * Helper function to set the sum of keys in a subtree through its root node.
+   * Assumes the node exists.
+   *
+   * @tparam Node The BST node type.
+   * @param node The root of the subtree to set sum for.
+   * @param value The new sum value to set.
+   */
+  template <typename Node>
+  static constexpr void set(Node* node, const SumType& value) {
+    assert(node);
+    node->subtree_data.template get<Self>().value = value;
+  }
+
+  /**
+   * @brief Sets sum to the node's key.
+   *
+   * For a single node, the sum is equal to its key.
+   *
+   * @tparam Node The BST node type.
+   * @param node The node to set sum from.
+   */
+  template <typename Node>
+  constexpr void set_node(const Node* node) {
+    assert(node);
+    value = SumType(node->key);
+  }
+
+  /**
+   * @brief Copies sum from another subtree.
+   *
+   * Used when replacing one subtree with another to maintain correct sum.
+   *
+   * @tparam Node The BST node type.
+   * @param node The root of the subtree to copy sum from.
+   */
+  template <typename Node>
+  constexpr void set_subtree(const Node* node) {
+    assert(node);
+    value = get(node);
+  }
+
+  /**
+   * @brief Adds node's key to the sum.
+   *
+   * Used in order-independent operations where a single node
+   * is being added to the subtree.
+   *
+   * @tparam Node The BST node type.
+   * @param node The node being added.
+   */
+  template <typename Node>
+  constexpr void add_node(const Node* node) {
+    assert(node);
+    value += SumType(node->key);
+  }
+
+  /**
+   * @brief Adds sum of another subtree.
+   *
+   * Used in order-independent operations where an entire subtree
+   * is being added to the current subtree.
+   *
+   * @tparam Node The BST node type.
+   * @param node The root of the subtree being added.
+   */
+  template <typename Node>
+  constexpr void add_subtree(const Node* node) {
+    assert(node);
+    value += get(node);
+  }
+
+  /**
+   * @brief Adds node's key during insertion.
+   *
+   * Similar to add_node but specifically used during tree
+   * modification operations.
+   *
+   * @tparam Node The BST node type.
+   * @param node The node being inserted.
+   */
+  template <typename Node>
+  constexpr void insert_node(const Node* node) {
+    assert(node);
+    value += SumType(node->key);
+  }
+
+  /**
+   * @brief Adds sum of inserted subtree.
+   *
+   * Similar to add_subtree but specifically used during tree
+   * modification operations.
+   *
+   * @tparam Node The BST node type.
+   * @param node The root of the subtree being inserted.
+   */
+  template <typename Node>
+  constexpr void insert_subtree(const Node* node) {
+    assert(node);
+    value += get(node);
+  }
+
+  /**
+   * @brief Subtracts node's key during removal.
+   *
+   * Updates the subtree sum when a node is being removed
+   * from the tree.
+   *
+   * @tparam Node The BST node type.
+   * @param node The node being removed.
+   */
+  template <typename Node>
+  constexpr void remove_node(const Node* node) {
+    assert(node);
+    value -= SumType(node->key);
+  }
+
+ protected:
+  /**
+   * @brief The sum of keys in the subtree.
+   *
+   * This value represents the total sum of node keys in the subtree,
+   * including the root node.
+   */
+  SumType value{};
 };
 
 }  // namespace subtree_data

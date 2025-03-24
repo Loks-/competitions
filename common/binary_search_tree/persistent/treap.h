@@ -3,6 +3,7 @@
 #include "common/binary_search_tree/action/none.h"
 #include "common/binary_search_tree/base/node.h"
 #include "common/binary_search_tree/base/root.h"
+#include "common/binary_search_tree/base/subtree_data.h"
 #include "common/binary_search_tree/persistent/tree.h"
 #include "common/binary_search_tree/subtree_data/size.h"
 #include "common/binary_search_tree/subtree_data/treap_height.h"
@@ -15,30 +16,35 @@
 namespace bst {
 namespace persistent {
 template <bool use_key, bool use_parent, class TData,
-          class TTInfo = bst::subtree_data::Size,
+          class TAggregatorsTuple = std::tuple<subtree_data::Size>,
           class TAction = bst::action::None, class TKey = int64_t>
-class Treap : public bst::persistent::Tree<
-                  memory::NodesManager<bst::base::Node<
-                      TData, bst::subtree_data::TreapHeight<unsigned, TTInfo>,
-                      TAction, use_key, use_parent, TKey>>,
-                  Treap<use_key, use_parent, TData, TTInfo, TAction, TKey>> {
+class Treap
+    : public bst::persistent::Tree<
+          memory::NodesManager<bst::base::Node<
+              TData,
+              base::SubtreeData<templates::PrependT<subtree_data::TreapHeight,
+                                                    TAggregatorsTuple>>,
+              TAction, use_key, use_parent, TKey>>,
+          Treap<use_key, use_parent, TData, TAggregatorsTuple, TAction, TKey>> {
  public:
   static constexpr bool support_remove = true;
   static constexpr bool support_join = true;
   static constexpr bool support_split = true;
 
-  using THeight = unsigned;
-  using TInfo = bst::subtree_data::TreapHeight<THeight, TTInfo>;
+  using TTreapHeight = subtree_data::TreapHeight;
+  using TSubtreeData = base::SubtreeData<
+      templates::PrependT<subtree_data::TreapHeight, TAggregatorsTuple>>;
   using TNode =
-      bst::base::Node<TData, TInfo, TAction, use_key, use_parent, TKey>;
-  using TSelf = Treap<use_key, use_parent, TData, TTInfo, TAction, TKey>;
+      bst::base::Node<TData, TSubtreeData, TAction, use_key, use_parent, TKey>;
+  using TSelf =
+      Treap<use_key, use_parent, TData, TAggregatorsTuple, TAction, TKey>;
   using TBase = bst::persistent::Tree<memory::NodesManager<TNode>, TSelf>;
   using TTree = bst::base::Tree<memory::NodesManager<TNode>, TSelf>;
   friend TTree;
 
  protected:
-  static constexpr THeight& Height(TNode* node) {
-    return node->subtree_data.treap_height;
+  static constexpr unsigned TreapHeight(const TNode* node) {
+    return bst::subtree_data::TreapHeight::get(node);
   }
 
  public:
@@ -54,15 +60,16 @@ class Treap : public bst::persistent::Tree<
     std::stack<TNode*> s;
     for (size_t j = 1; j < nodes.size(); ++j) {
       TNode* pj = nodes[j];
-      if (Height(pj) < Height(plast)) {
+      if (TreapHeight(pj) < TreapHeight(plast)) {
         plast->SetR(pj);
         s.push(plast);
-      } else if (Height(pj) >= Height(proot)) {
+      } else if (TreapHeight(pj) >= TreapHeight(proot)) {
         for (plast->UpdateInfo(); !s.empty(); s.pop()) s.top()->UpdateInfo();
         pj->SetL(proot);
         proot = pj;
       } else {
-        for (plast->UpdateInfo(); Height(pj) >= Height(s.top()); s.pop()) {
+        for (plast->UpdateInfo(); TreapHeight(pj) >= TreapHeight(s.top());
+             s.pop()) {
           plast = s.top();
           plast->UpdateInfo();
         }
@@ -121,7 +128,7 @@ class Treap : public bst::persistent::Tree<
     static_assert(use_key, "use_key should be true");
     if (!root) return node;
     root->ApplyAction();
-    if (Height(root) >= Height(node)) {
+    if (TreapHeight(root) >= TreapHeight(node)) {
       root = TBase::PClone(root);
       if (root->key < node->key)
         root->r = InsertByKey(root->r, node);

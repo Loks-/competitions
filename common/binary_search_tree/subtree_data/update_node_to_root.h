@@ -7,7 +7,7 @@ namespace subtree_data {
 namespace hidden {
 
 /**
- * @brief No-op implementation for nodes with no subtree data.
+ * @brief No-op implementation for nodes with empty subtree data.
  *
  * @tparam Node The node type.
  */
@@ -37,7 +37,7 @@ inline void update_node_to_root_i(Node* node, MetaTrue) {
  */
 template <typename Node>
 inline void update_node_to_root(Node* node) {
-  hidden::update_node_to_root_i(node, MetaBool<!Node::TInfo::is_none>{});
+  hidden::update_node_to_root_i(node, MetaBool<!Node::TInfo::empty>{});
 }
 
 /**

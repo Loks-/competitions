@@ -1,6 +1,7 @@
 #pragma once
 
 #include "common/base.h"
+#include "common/binary_search_tree/subtree_data/base.h"
 
 #include <utility>
 
@@ -8,63 +9,109 @@ namespace bst {
 namespace subtree_data {
 
 /**
- * @brief A class that maintains the color of a node in a Red-Black Tree.
+ * @brief A component that maintains node colors in a Red-Black Tree.
  *
- * This class extends another subtree data class to add color tracking
- * for Red-Black Tree operations. A node can be either red (black = false)
- * or black (black = true).
- *
- * @tparam BaseData The base subtree data class to extend.
+ * This component tracks whether each node is black or red, which is used
+ * to maintain the Red-Black Tree invariants. The color is stored as a boolean
+ * where true represents black and false represents red.
  */
-template <typename BaseData>
-class RBTColor : public BaseData {
+class RBTColor : public Base {
  public:
-  using Base = BaseData;
-  using Self = RBTColor<BaseData>;
+  using Self = RBTColor;
 
- public:
   /**
-   * @brief The color of the node.
+   * @brief Component capability flags.
    *
-   * true for black, false for red.
-   * Initialized to false (red).
+   * RBTColor component only stores color without aggregation.
+   * Color management is handled by the Red-Black Tree implementation
+   * through bti_* functions during balancing operations.
    */
-  bool black = false;
+  static constexpr bool support_segment = true;
+  static constexpr bool support_insert_node = true;
+  static constexpr bool support_insert_subtree = true;
+  static constexpr bool support_remove_node = true;
 
- public:
   /**
-   * @brief Resets the Red-Black Tree information.
+   * @brief Gets whether a node is black.
    *
-   * Sets the node color to red (black = false).
+   * Helper function to check if a node is black in the Red-Black Tree.
+   * Assumes the node exists.
+   *
+   * @tparam Node The BST node type.
+   * @param node The node to check color for.
+   * @return True if the node is black, false if red.
    */
-  constexpr void bti_reset() {
-    Base::bti_reset();
-    black = false;
+  template <typename Node>
+  static constexpr bool get(const Node* node) {
+    assert(node);
+    return node->subtree_data.template get<Self>().is_black;
   }
 
   /**
-   * @brief Copies Red-Black Tree information from another node.
+   * @brief Sets whether a node is black.
    *
-   * @param node The source node to copy from.
+   * Helper function to set the color of a node in the Red-Black Tree.
+   * Assumes the node exists.
+   *
+   * @tparam Node The BST node type.
+   * @param node The node to set color for.
+   * @param black True to set the node black, false to set it red.
+   */
+  template <typename Node>
+  static constexpr void set(Node* node, bool black) {
+    assert(node);
+    node->subtree_data.template get<Self>().is_black = black;
+  }
+
+  /**
+   * @brief Resets the node color to red.
+   *
+   * In Red-Black trees, new nodes are initialized as red.
+   * This function is called by the Red-Black tree implementation during
+   * node initialization and rebalancing operations.
+   */
+  constexpr void bti_reset() {
+    is_black = false;  // New nodes are red
+  }
+
+  /**
+   * @brief Copies color from another node.
+   *
+   * Used during Red-Black tree balancing operations when
+   * node colors need to be copied.
+   *
+   * @tparam Node The BST node type.
+   * @param node The source node to copy color from.
    */
   template <typename Node>
   constexpr void bti_copy(const Node* node) {
     assert(node);
-    Base::bti_copy(node);
-    black = node->subtree_data.black;
+    is_black = get(node);
   }
 
   /**
-   * @brief Swaps Red-Black Tree information with another node.
+   * @brief Swaps colors between two nodes.
    *
-   * @param node The node to swap with.
+   * Used during Red-Black tree balancing operations when
+   * node colors need to be exchanged (e.g., during rotations).
+   *
+   * @tparam Node The BST node type.
+   * @param node The node to swap colors with.
    */
   template <typename Node>
   constexpr void bti_swap(Node* node) {
     assert(node);
-    Base::bti_swap(node);
-    std::swap(black, node->subtree_data.black);
+    std::swap(is_black, node->subtree_data.template get<Self>().is_black);
   }
+
+ protected:
+  /**
+   * @brief The color of the node in the Red-Black Tree.
+   *
+   * True represents black, false represents red.
+   * By default, new nodes are red (is_black = false).
+   */
+  bool is_black = false;
 };
 
 }  // namespace subtree_data

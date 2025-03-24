@@ -3,6 +3,7 @@
 #include "common/base.h"
 #include "common/binary_search_tree/action/none.h"
 #include "common/binary_search_tree/base/node.h"
+#include "common/binary_search_tree/base/subtree_data.h"
 #include "common/binary_search_tree/base/tree.h"
 #include "common/binary_search_tree/subtree_data/size.h"
 #include "common/memory/nodes_manager_fixed_size.h"
@@ -13,20 +14,26 @@
 
 namespace bst {
 // Doesn't support add and delete operations.
-template <bool use_parent, class TData, class TInfo = subtree_data::Size,
+template <bool use_parent, class TData,
+          class TAggregatorsTuple = std::tuple<subtree_data::Size>,
           class TAction = action::None, class TKey = int64_t>
 class PerfectTree
-    : public base::Tree<memory::NodesManagerFixedSize<base::Node<
-                            TData, TInfo, TAction, true, use_parent, TKey>>,
-                        PerfectTree<use_parent, TData, TInfo, TAction, TKey>> {
+    : public base::Tree<
+          memory::NodesManagerFixedSize<
+              base::Node<TData, base::SubtreeData<TAggregatorsTuple>, TAction,
+                         true, use_parent, TKey>>,
+          PerfectTree<use_parent, TData, TAggregatorsTuple, TAction, TKey>> {
  public:
   static constexpr bool support_insert = false;
   static constexpr bool support_remove = false;
   static constexpr bool support_join3 = false;
   static constexpr bool support_split = false;
 
-  using TNode = base::Node<TData, TInfo, TAction, true, use_parent, TKey>;
-  using TSelf = PerfectTree<use_parent, TData, TInfo, TAction, TKey>;
+  using TSubtreeData = base::SubtreeData<TAggregatorsTuple>;
+  using TNode =
+      base::Node<TData, TSubtreeData, TAction, true, use_parent, TKey>;
+  using TSelf =
+      PerfectTree<use_parent, TData, TAggregatorsTuple, TAction, TKey>;
   using TTree = base::Tree<memory::NodesManagerFixedSize<TNode>, TSelf>;
   friend TTree;
 

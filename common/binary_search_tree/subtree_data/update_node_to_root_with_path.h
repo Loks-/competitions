@@ -7,18 +7,19 @@
 
 namespace bst {
 namespace subtree_data {
+namespace hidden {
 
 /**
- * @brief No-op implementation for nodes with no subtree data.
+ * @brief No-op implementation for nodes with empty subtree data.
  *
  * @tparam Node The node type.
  * @param node_to_root_path The path from a node to the root.
  * @param start_from_index The index in the path to start updating from.
  */
 template <typename Node>
-constexpr void update_node_to_root_with_path(
-    const std::vector<Node*>& node_to_root_path, size_t start_from_index,
-    MetaFalse) {}
+constexpr void update_node_to_root_with_path_i(
+    [[maybe_unused]] const std::vector<Node*>& node_to_root_path,
+    [[maybe_unused]] size_t start_from_index, MetaFalse) {}
 
 /**
  * @brief Updates subtree data for nodes along a path from a node to the root.
@@ -28,13 +29,15 @@ constexpr void update_node_to_root_with_path(
  * @param start_from_index The index in the path to start updating from.
  */
 template <typename Node>
-inline void update_node_to_root_with_path(
+inline void update_node_to_root_with_path_i(
     const std::vector<Node*>& node_to_root_path, size_t start_from_index,
     MetaTrue) {
   for (auto it = node_to_root_path.begin() + start_from_index;
        it != node_to_root_path.end(); ++it)
     (*it)->UpdateInfo();
 }
+
+}  // namespace hidden
 
 /**
  * @brief Updates subtree data for nodes along a path from a node to the root.
@@ -49,8 +52,8 @@ inline void update_node_to_root_with_path(
 template <typename Node>
 inline void update_node_to_root_with_path(
     const std::vector<Node*>& node_to_root_path, size_t start_from_index = 0) {
-  update_node_to_root_with_path(node_to_root_path, start_from_index,
-                                MetaBool<!Node::TInfo::is_none>());
+  update_node_to_root_with_path_i(node_to_root_path, start_from_index,
+                                  MetaBool<!Node::TInfo::empty>());
 }
 
 /**
@@ -68,8 +71,8 @@ inline void update_node_to_root_with_path(
 template <typename Node>
 inline void update_node_to_root_with_path_data_updated(
     const std::vector<Node*>& node_to_root_path, size_t start_from_index = 0) {
-  update_node_to_root_with_path(node_to_root_path, start_from_index,
-                                MetaBool<Node::TInfo::use_data>());
+  update_node_to_root_with_path_i(node_to_root_path, start_from_index,
+                                  MetaBool<Node::TInfo::use_data>());
 }
 
 /**
@@ -87,8 +90,8 @@ inline void update_node_to_root_with_path_data_updated(
 template <typename Node>
 inline void update_node_to_root_with_path_keys_updated(
     const std::vector<Node*>& node_to_root_path, size_t start_from_index = 0) {
-  update_node_to_root_with_path(node_to_root_path, start_from_index,
-                                MetaBool<Node::TInfo::use_keys>());
+  update_node_to_root_with_path_i(node_to_root_path, start_from_index,
+                                  MetaBool<Node::TInfo::use_keys>());
 }
 
 }  // namespace subtree_data

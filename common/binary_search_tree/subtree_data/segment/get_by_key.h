@@ -22,7 +22,7 @@ inline typename Node::TInfo get_by_key(const Node* root,
   typename Node::TInfo output;
   for (; root;) {
     if (root->key < end) {
-      output.add_subtree(root->l);
+      if (root->l) output.add_subtree(root->l);
       output.add_node(root);
       root = root->r;
     } else {
@@ -36,9 +36,9 @@ inline typename Node::TInfo get_by_key(const Node* root,
  * @brief Gets subtree data for all nodes with keys in the given range.
  *
  * This function traverses the BST and accumulates subtree data for all nodes
- * whose keys are in the range [begin, end). It first finds the common ancestor
- * of nodes in the range, then traverses its left and right subtrees to collect
- * all relevant nodes and their subtrees.
+ * whose keys are in the range [begin, end). It first finds the common
+ * ancestor of nodes in the range, then traverses its left and right subtrees
+ * to collect all relevant nodes and their subtrees.
  *
  * @tparam Node The BST node type.
  * @param root The root of the BST to traverse.
@@ -51,12 +51,13 @@ inline typename Node::TInfo get_by_key(const Node* root,
                                        const typename Node::TKey& begin,
                                        const typename Node::TKey& end) {
   for (; root;) {
-    if (root->key < begin)
+    if (root->key < begin) {
       root = root->r;
-    else if (root->key >= end)
+    } else if (root->key >= end) {
       root = root->l;
-    else
+    } else {
       break;
+    }
   }
   typename Node::TInfo output;
   if (!root) return output;
@@ -66,13 +67,13 @@ inline typename Node::TInfo get_by_key(const Node* root,
       node = node->r;
     } else {
       output.add_node(node);
-      output.add_subtree(node->r);
+      if (node->r) output.add_subtree(node->r);
       node = node->l;
     }
   }
   for (const Node* node = root->r; node;) {
     if (node->key < end) {
-      output.add_subtree(node->l);
+      if (node->l) output.add_subtree(node->l);
       output.add_node(node);
       node = node->r;
     } else {

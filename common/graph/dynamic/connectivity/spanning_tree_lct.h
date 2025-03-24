@@ -1,7 +1,6 @@
 #pragma once
 
 #include "common/base.h"
-#include "common/binary_search_tree/subtree_data/none.h"
 #include "common/data_structures/unsigned_set.h"
 #include "common/graph/dynamic/graph.h"
 #include "common/graph/tree/link_cut_tree.h"
@@ -18,7 +17,7 @@ class SpanningTreeLCT {
   using TGraph = graph::dynamic::UndirectedGraph<bool>;
   using TEdge = typename TGraph::TEdge;
   using TEdgeID = TEdge*;
-  using TLCT = graph::LinkCutTree<MetaEmpty, bst::subtree_data::None>;
+  using TLCT = graph::LinkCutTree<MetaEmpty, std::tuple<>>;
   using TNode = typename TLCT::TNode;
 
  protected:

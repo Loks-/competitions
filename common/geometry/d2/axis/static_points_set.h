@@ -3,7 +3,7 @@
 #include "common/base.h"
 #include "common/binary_search_tree/persistent/treap.h"
 #include "common/binary_search_tree/subtree_data/segment/get_by_key.h"
-#include "common/binary_search_tree/subtree_data/segment/size.h"
+#include "common/binary_search_tree/subtree_data/size.h"
 #include "common/geometry/d2/compare/point_xy.h"
 #include "common/geometry/d2/point.h"
 #include "common/template.h"
@@ -22,7 +22,7 @@ class StaticPointsSet {
   using TWeight = unsigned;
   using TPoint = Point<T>;
   using TTree = bst::persistent::Treap<true, false, MetaEmpty,
-                                       bst::subtree_data::segment::Size,
+                                       std::tuple<bst::subtree_data::Size>,
                                        bst::action::None, T>;
   using TNode = typename TTree::TNode;
   using TPair = std::pair<T, TNode*>;
@@ -61,7 +61,8 @@ class StaticPointsSet {
   TNode* UpperBound(T x) const { return LowerBound(x + 1); }
 
   unsigned CountQ(const TPoint& p) const {
-    return bst::subtree_data::segment::get_by_key(LowerBound(p.x), p.y).size;
+    return bst::subtree_data::size(
+        bst::subtree_data::segment::get_by_key(LowerBound(p.x), p.y));
   }
 };
 }  // namespace axis

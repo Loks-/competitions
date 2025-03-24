@@ -11,7 +11,7 @@ class MinWithIndex : public TInfo {
   using TSelf = MinWithIndex<TValue, TBase>;
 
  public:
-  static constexpr bool is_none = false;
+  static constexpr bool empty = false;
   static constexpr bool use_data = true;
   static constexpr bool use_sinfo_in_update_data = true;
 

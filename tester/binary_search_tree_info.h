@@ -4,24 +4,16 @@
 #include "common/binary_search_tree/subtree_data/size.h"
 #include "common/binary_search_tree/subtree_data/sum.h"
 
-inline size_t GetInfoValueI(const bst::subtree_data::Size& info) {
-  return info.size;
-}
-
-inline size_t GetInfoValueI(
-    const bst::subtree_data::RBTColor<bst::subtree_data::Size>& info) {
-  return info.size;
-}
-
-template <class T1, class T2>
-inline size_t GetInfoValueI(const bst::subtree_data::Sum<T1, T2>& info) {
-  return info.sum_value;
-}
-
-template <class T1, class T2>
-inline size_t GetInfoValueI(
-    const bst::subtree_data::RBTColor<bst::subtree_data::Sum<T1, T2>>& info) {
-  return info.sum_value;
+template <class TSubtreeInfo>
+inline size_t GetInfoValueI(const TSubtreeInfo& info) {
+  using TSum = bst::subtree_data::Sum<uint64_t>;
+  if constexpr (info.template has<TSum>()) {
+    return TSum::get(info);
+  } else if constexpr (info.template has<bst::subtree_data::Size>()) {
+    return bst::subtree_data::size(info);
+  } else {
+    return 0;
+  }
 }
 
 template <class TNode>

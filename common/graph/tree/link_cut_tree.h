@@ -5,18 +5,17 @@
 #include "common/binary_search_tree/action/reverse.h"
 #include "common/binary_search_tree/base/rotate.h"
 #include "common/binary_search_tree/splay_tree.h"
+#include "common/binary_search_tree/subtree_data/base.h"
 #include "common/graph/tree.h"
+#include "common/templates/tuple.h"
 
 namespace graph {
 template <class TTData, class TTInfo, class TTAction = bst::action::Reverse>
 class LinkCutTree {
  public:
-  class LCTSubtreeData : public TTInfo {
+  class LCTSubtreeData : public bst::subtree_data::Base {
    public:
-    using Base = TTInfo;
     using Self = LCTSubtreeData;
-
-    static constexpr bool is_none = false;
 
     void* lct_pp = nullptr;
 
@@ -26,30 +25,30 @@ class LinkCutTree {
 
     template <class TNode>
     void update(TNode* node) {
-      Base::update(node);
-      if (node->l && node->l->subtree_data.lct_pp) {
-        lct_pp = node->l->subtree_data.lct_pp;
-        node->l->subtree_data.lct_pp = nullptr;
+      if (node->l && node->l->subtree_data.template get<Self>().lct_pp) {
+        lct_pp = node->l->subtree_data.template get<Self>().lct_pp;
+        node->l->subtree_data.template get<Self>().lct_pp = nullptr;
       }
-      if (node->r && node->r->subtree_data.lct_pp) {
-        lct_pp = node->r->subtree_data.lct_pp;
-        node->r->subtree_data.lct_pp = nullptr;
+      if (node->r && node->r->subtree_data.template get<Self>().lct_pp) {
+        lct_pp = node->r->subtree_data.template get<Self>().lct_pp;
+        node->r->subtree_data.template get<Self>().lct_pp = nullptr;
       }
     }
   };
 
   using TData = TTData;
-  using TInfo = LCTSubtreeData;
+  using TAggregators = templates::AppendT<LCTSubtreeData, TTInfo>;
   using TAction = TTAction;
   using TSelf = LinkCutTree<TData, TTInfo, TAction>;
-  using TSTree = bst::SplayTree<false, TData, TInfo, TAction>;
+  using TSTree = bst::SplayTree<false, TData, TAggregators, TAction>;
+  using TInfo = typename TSTree::TInfo;
   using TNode = typename TSTree::TNode;
 
  protected:
   void DisconnectR(TNode* node) {
     if (node->r) {
       node->r->SetP(nullptr);
-      node->r->subtree_data.SetPP(node);
+      node->r->subtree_data.template get<LCTSubtreeData>().SetPP(node);
       node->r = nullptr;
       node->UpdateInfo();
     }
@@ -62,12 +61,13 @@ class LinkCutTree {
     TSTree::Splay(node);
     DisconnectR(node);
     for (TNode* v;
-         (v = reinterpret_cast<TNode*>(node->subtree_data.GetPP()));) {
+         (v = reinterpret_cast<TNode*>(
+              node->subtree_data.template get<LCTSubtreeData>().GetPP()));) {
       bst::action::ApplyRootToNode(v);
       TSTree::Splay(v);
       DisconnectR(v);
       v->r = node;
-      node->subtree_data.lct_pp = nullptr;
+      node->subtree_data.template get<LCTSubtreeData>().lct_pp = nullptr;
       bst::base::Rotate<TNode, true, false>(node, v, nullptr);
     }
   }
@@ -115,7 +115,7 @@ class LinkCutTree {
   void BuildR(const TreeGraph& tree, unsigned node, unsigned p) {
     for (unsigned c : tree.Edges(node)) {
       if (c == p) continue;
-      Node(c)->subtree_data.SetPP(Node(node));
+      Node(c)->subtree_data.template get<LCTSubtreeData>().SetPP(Node(node));
       BuildR(tree, c, node);
     }
   }

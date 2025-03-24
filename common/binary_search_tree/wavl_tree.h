@@ -6,22 +6,32 @@
 #include "common/binary_search_tree/base/node.h"
 #include "common/binary_search_tree/base/rotate.h"
 #include "common/binary_search_tree/base/sibling.h"
+#include "common/binary_search_tree/base/subtree_data.h"
 #include "common/binary_search_tree/subtree_data/size.h"
 #include "common/binary_search_tree/subtree_data/wavl_rank.h"
 #include "common/memory/nodes_manager_fixed_size.h"
+#include "common/templates/tuple.h"
+
+#include <tuple>
 
 namespace bst {
-template <bool use_parent, class TData, class TInfo = subtree_data::Size,
+template <bool use_parent, class TData,
+          class TAggregatorsTuple = std::tuple<subtree_data::Size>,
           class TAction = action::None, class TKey = int64_t>
-class WAVLTree : public base::BalancedTree<
-                     memory::NodesManagerFixedSize<
-                         base::Node<TData, subtree_data::WAVLRank<TInfo>,
-                                    TAction, true, use_parent, TKey>>,
-                     WAVLTree<use_parent, TData, TInfo, TAction, TKey>> {
+class WAVLTree
+    : public base::BalancedTree<
+          memory::NodesManagerFixedSize<
+              base::Node<TData,
+                         base::SubtreeData<templates::PrependT<
+                             subtree_data::WAVLRank, TAggregatorsTuple>>,
+                         TAction, true, use_parent, TKey>>,
+          WAVLTree<use_parent, TData, TAggregatorsTuple, TAction, TKey>> {
  public:
-  using TNode = base::Node<TData, subtree_data::WAVLRank<TInfo>, TAction, true,
-                           use_parent, TKey>;
-  using TSelf = WAVLTree<use_parent, TData, TInfo, TAction, TKey>;
+  using TSubtreeData = base::SubtreeData<
+      templates::PrependT<subtree_data::WAVLRank, TAggregatorsTuple>>;
+  using TNode =
+      base::Node<TData, TSubtreeData, TAction, true, use_parent, TKey>;
+  using TSelf = WAVLTree<use_parent, TData, TAggregatorsTuple, TAction, TKey>;
   using TBTree =
       base::BalancedTree<memory::NodesManagerFixedSize<TNode>, TSelf>;
   using TTree = typename TBTree::TTree;
@@ -35,15 +45,27 @@ class WAVLTree : public base::BalancedTree<
 
  protected:
   static constexpr int Rank(TNode* node) {
-    return node ? int(node->subtree_data.rank) : -1;
+    return node ? subtree_data::WAVLRank::get(node) : -1;
   }
 
   static constexpr int RankDiff(TNode* p, TNode* c) {
     return p ? Rank(p) - Rank(c) : 1;
   }
 
+  static constexpr void SetRank(TNode* node, int rank) {
+    subtree_data::WAVLRank::set(node, rank);
+  }
+
   static constexpr void UpdateRank(TNode* p) {
-    p->subtree_data.rank = std::max(Rank(p->l), Rank(p->r)) + 1;
+    SetRank(p, std::max(Rank(p->l), Rank(p->r)) + 1);
+  }
+
+  static constexpr void IncRank(TNode* node) {
+    subtree_data::WAVLRank::inc(node);
+  }
+
+  static constexpr void DecRank(TNode* node) {
+    subtree_data::WAVLRank::dec(node);
   }
 
   static TNode* BuildTreeI(const std::vector<TNode*>& vnodes, size_t first,
@@ -59,7 +81,7 @@ class WAVLTree : public base::BalancedTree<
   }
 
   static TNode* FixBalanceInsertRotate1(TNode* child, TNode* parent) {
-    --parent->subtree_data.rank;
+    DecRank(parent);
     base::Rotate<TNode, true, false>(child, parent, nullptr);
     return child;
   }
@@ -68,9 +90,9 @@ class WAVLTree : public base::BalancedTree<
                                         TNode* parent) {
     assert(RankDiff(child, gchild) == 1);
     assert(RankDiff(child, Sibling(gchild, child)) == 2);
-    --parent->subtree_data.rank;
-    --child->subtree_data.rank;
-    ++gchild->subtree_data.rank;
+    DecRank(parent);
+    DecRank(child);
+    IncRank(gchild);
     base::Rotate<TNode, false, true>(gchild, child, parent);
     base::Rotate<TNode, true, false>(gchild, parent, nullptr);
     return gchild;
@@ -79,7 +101,7 @@ class WAVLTree : public base::BalancedTree<
   static TNode* FixBalanceInsert(TNode* root) {
     if (RankDiff(root, root->r) == 0) {
       if (RankDiff(root, root->l) == 1) {
-        ++root->subtree_data.rank;
+        IncRank(root);
       } else if (RankDiff(root->r, root->r->r) == 1) {
         assert(RankDiff(root->r, root->r->l) == 2);
         return FixBalanceInsertRotate1(root->r, root);
@@ -88,7 +110,7 @@ class WAVLTree : public base::BalancedTree<
       }
     } else if (RankDiff(root, root->l) == 0) {
       if (RankDiff(root, root->r) == 1) {
-        ++root->subtree_data.rank;
+        IncRank(root);
       } else if (RankDiff(root->l, root->l->l) == 1) {
         assert(RankDiff(root->l, root->l->r) == 2);
         return FixBalanceInsertRotate1(root->l, root);
@@ -100,11 +122,11 @@ class WAVLTree : public base::BalancedTree<
   }
 
   static TNode* FixBalanceRemoveRotate1(TNode* child, TNode* parent) {
-    --parent->subtree_data.rank;
-    ++child->subtree_data.rank;
+    DecRank(parent);
+    IncRank(child);
     base::Rotate<TNode, true, true>(child, parent, nullptr);
     if (!parent->l && !parent->r) {
-      parent->subtree_data.rank = 0;
+      SetRank(parent, 0);
     }
     return child;
   }
@@ -112,9 +134,9 @@ class WAVLTree : public base::BalancedTree<
   static TNode* FixBalanceRemoveRotate2(TNode* gchild, TNode* child,
                                         TNode* parent) {
     assert(gchild);
-    parent->subtree_data.rank -= 2;
-    child->subtree_data.rank -= 1;
-    gchild->subtree_data.rank += 2;
+    SetRank(parent, Rank(parent) - 2);
+    DecRank(child);
+    SetRank(gchild, Rank(gchild) + 2);
     base::Rotate<TNode, false, true>(gchild, child, parent);
     base::Rotate<TNode, true, false>(gchild, parent, nullptr);
     return gchild;
@@ -122,7 +144,7 @@ class WAVLTree : public base::BalancedTree<
 
   static TNode* FixBalanceRemove(TNode* root) {
     if (!root->l && !root->r) {
-      root->subtree_data.rank = 0;
+      SetRank(root, 0);
       return root;
     }
     TNode* child = (RankDiff(root, root->l) > 2)   ? root->l
@@ -132,14 +154,14 @@ class WAVLTree : public base::BalancedTree<
     assert(RankDiff(root, child) == 3);
     TNode* sibling = base::Sibling(child, root);
     if (RankDiff(root, sibling) == 2) {
-      --root->subtree_data.rank;
+      DecRank(root);
       return root;
     }
     assert((RankDiff(root, sibling) == 1));
     if ((RankDiff(sibling, sibling->l) == 2) &&
         (RankDiff(sibling, sibling->r) == 2)) {
-      --sibling->subtree_data.rank;
-      --root->subtree_data.rank;
+      DecRank(sibling);
+      DecRank(root);
       return root;
     } else if (child == root->l) {
       if (RankDiff(sibling, sibling->r) == 1) {

@@ -5,6 +5,7 @@
 #include "common/binary_search_tree/action/none.h"
 #include "common/binary_search_tree/base/node.h"
 #include "common/binary_search_tree/base/rotate.h"
+#include "common/binary_search_tree/base/subtree_data.h"
 #include "common/binary_search_tree/base/tree.h"
 #include "common/binary_search_tree/subtree_data/size.h"
 #include "common/memory/nodes_manager_fixed_size.h"
@@ -12,22 +13,26 @@
 #include <algorithm>
 
 namespace bst {
-template <bool use_key, class TData, class TInfo = subtree_data::Size,
+template <bool use_key, class TData,
+          class TAggregatorsTuple = std::tuple<subtree_data::Size>,
           class TAction = action::None, class TKey = int64_t,
           template <class> class TTNodesManager = memory::NodesManagerFixedSize>
 class SplayTree
     : public base::Tree<
-          TTNodesManager<
-              base::Node<TData, TInfo, TAction, use_key, true, TKey>>,
-          SplayTree<use_key, TData, TInfo, TAction, TKey, TTNodesManager>> {
+          TTNodesManager<base::Node<TData, base::SubtreeData<TAggregatorsTuple>,
+                                    TAction, use_key, true, TKey>>,
+          SplayTree<use_key, TData, TAggregatorsTuple, TAction, TKey,
+                    TTNodesManager>> {
  public:
   static constexpr bool support_remove = true;
   static constexpr bool support_join = true;
   static constexpr bool support_join3 = true;
   static constexpr bool support_split = true;
 
-  using TNode = base::Node<TData, TInfo, TAction, use_key, true, TKey>;
-  using TSelf = SplayTree<use_key, TData, TInfo, TAction, TKey, TTNodesManager>;
+  using TSubtreeData = base::SubtreeData<TAggregatorsTuple>;
+  using TNode = base::Node<TData, TSubtreeData, TAction, use_key, true, TKey>;
+  using TSelf = SplayTree<use_key, TData, TAggregatorsTuple, TAction, TKey,
+                          TTNodesManager>;
   using TTree = base::Tree<TTNodesManager<TNode>, TSelf>;
   friend TTree;
 
@@ -158,11 +163,11 @@ class SplayTree
 
   static size_t Order(TNode* node) {
     Splay(node);
-    return node->l ? node->l->subtree_data.size : 0;
+    return subtree_data::size(node->l);
   }
 
   static TNode* FindByOrder(TNode*& root, size_t order_index) {
-    static_assert(TInfo::has_size, "info should contain size");
+    static_assert(TSubtreeData::has_size, "info should contain size");
     auto node = TTree::FindByOrder(root, order_index);
     Splay(node);
     if (node) root = node;
@@ -171,13 +176,13 @@ class SplayTree
 
   static void SplitBySize(TNode* root, size_t lsize, TNode*& output_l,
                           TNode*& output_r) {
-    static_assert(TInfo::has_size, "info should contain size");
+    static_assert(TSubtreeData::has_size, "info should contain size");
     if (!root) {
       output_l = output_r = nullptr;
     } else if (lsize == 0) {
       output_l = nullptr;
       output_r = root;
-    } else if (lsize >= root->subtree_data.size) {
+    } else if (lsize >= subtree_data::size(root)) {
       output_l = root;
       output_r = nullptr;
     } else {
@@ -200,13 +205,13 @@ class SplayTree
 
   static TNode* Union(TNode* root1, TNode* root2) {
     static_assert(use_key, "use_key should be true");
-    static_assert(TInfo::has_size, "info should contain size");
+    static_assert(TSubtreeData::has_size, "info should contain size");
     if (!root1) return root2;
     if (!root2) return root1;
-    if (root1->subtree_data.size < root2->subtree_data.size)
+    if (subtree_data::size(root1) < subtree_data::size(root2))
       std::swap(root1, root2);
-    TNode *m = FindByOrder(root1, root1->subtree_data.size / 2), *r2l = nullptr,
-          *r2r = nullptr;
+    TNode* m = FindByOrder(root1, subtree_data::size(root1) / 2);
+    TNode *r2l = nullptr, *r2r = nullptr;
     SplitByKey(root2, m->key, r2l, r2r);
     if (m->l) m->l->p = nullptr;
     if (m->r) m->r->p = nullptr;

@@ -2,9 +2,8 @@
 
 #include "common/base.h"
 #include "common/binary_search_tree/persistent/treap.h"
+#include "common/binary_search_tree/subtree_data/max.h"
 #include "common/binary_search_tree/subtree_data/segment/get_by_key.h"
-#include "common/binary_search_tree/subtree_data/segment/max.h"
-#include "common/binary_search_tree/subtree_data/segment/none.h"
 #include "common/graph/tree.h"
 #include "common/graph/tree/lca.h"
 
@@ -21,10 +20,8 @@ inline std::vector<TValue> TPM_PBST(
     const Tree<TGraph>& tree, const std::vector<TValue>& nodes_values,
     const std::vector<std::pair<unsigned, unsigned>>& paths,
     bool ignore_lca = false) {
-  using TTree =
-      bst::persistent::Treap<true, false, TValue,
-                             bst::subtree_data::segment::Max<
-                                 TValue, bst::subtree_data::segment::None>>;
+  using TMax = bst::subtree_data::Max<TValue>;
+  using TTree = bst::persistent::Treap<true, false, TValue, std::tuple<TMax>>;
   using TNode = typename TTree::TNode;
 
   assert(tree.Size() == nodes_values.size());
@@ -50,14 +47,12 @@ inline std::vector<TValue> TPM_PBST(
     } else {
       unsigned a = lca.GetLCA(p.first, p.second);
       output.push_back(
-          std::max(bst::subtree_data::segment::get_by_key(
+          std::max(TMax::get(bst::subtree_data::segment::get_by_key(
                        roots[p.first], lca.deep[a] + (ignore_lca ? 1 : 0),
-                       lca.deep[p.first] + 1)
-                       .max_value,
-                   bst::subtree_data::segment::get_by_key(
+                       lca.deep[p.first] + 1)),
+                   TMax::get(bst::subtree_data::segment::get_by_key(
                        roots[p.second], lca.deep[a] + (ignore_lca ? 1 : 0),
-                       lca.deep[p.second] + 1)
-                       .max_value));
+                       lca.deep[p.second] + 1))));
     }
   }
   return output;

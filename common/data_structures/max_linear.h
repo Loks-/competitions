@@ -4,6 +4,7 @@
 #include "common/binary_search_tree/base/left.h"
 #include "common/binary_search_tree/base/right.h"
 #include "common/binary_search_tree/splay_tree.h"
+#include "common/binary_search_tree/subtree_data/size.h"
 #include "common/memory/nodes_manager.h"
 
 #include <algorithm>
@@ -31,8 +32,9 @@ class MaxLinear {
     double xl, xr;
   };
 
-  using TTree = bst::SplayTree<true, LinearExt, bst::subtree_data::Size,
-                               bst::action::None, TValue, memory::NodesManager>;
+  using TTree =
+      bst::SplayTree<true, LinearExt, std::tuple<bst::subtree_data::Size>,
+                     bst::action::None, TValue, memory::NodesManager>;
   using TNode = typename TTree::TNode;
 
  public:

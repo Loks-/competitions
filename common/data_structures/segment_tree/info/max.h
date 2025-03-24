@@ -15,7 +15,7 @@ class Max : public TInfo {
   using TSelf = Max<TValue, TBase>;
 
  public:
-  static constexpr bool is_none = false;
+  static constexpr bool empty = false;
   static constexpr bool use_data = true;
 
  public:

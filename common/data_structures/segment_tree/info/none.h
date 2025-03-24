@@ -7,7 +7,7 @@ class None {
  public:
   using TSelf = None;
 
-  static constexpr bool is_none = true;
+  static constexpr bool empty = true;
   static constexpr bool use_data = false;
 
   static constexpr bool use_sinfo_in_update_data = false;

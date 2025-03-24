@@ -3,6 +3,7 @@
 #include "common/binary_search_tree/action/none.h"
 #include "common/binary_search_tree/base/balanced_tree.h"
 #include "common/binary_search_tree/base/node.h"
+#include "common/binary_search_tree/base/subtree_data.h"
 #include "common/binary_search_tree/subtree_data/size.h"
 #include "common/memory/nodes_manager_fixed_size.h"
 
@@ -10,19 +11,27 @@ namespace bst {
 // In this implementation delete operation is different from wiki Scapegoat
 // tree. It removes node from tree (similar to other trees), not just mark for
 // future deletion.
-template <bool use_parent, class TData, class TInfo = subtree_data::Size,
+template <bool use_parent, class TData,
+          class TAggregatorsTuple = std::tuple<subtree_data::Size>,
           class TAction = action::None, class TKey = int64_t>
 class ScapegoatTree
     : public base::BalancedTree<
           memory::NodesManagerFixedSize<
-              base::Node<TData, TInfo, TAction, true, use_parent, TKey>>,
-          ScapegoatTree<use_parent, TData, TInfo, TAction, TKey>> {
+              base::Node<TData,
+                         base::SubtreeData<templates::PrependIfMissingT<
+                             subtree_data::Size, TAggregatorsTuple>>,
+                         TAction, true, use_parent, TKey>>,
+          ScapegoatTree<use_parent, TData, TAggregatorsTuple, TAction, TKey>> {
  public:
   // Height is less or equal to 2 * height(fully balanced tree).
   static constexpr double alpha = 0.7;
 
-  using TNode = base::Node<TData, TInfo, TAction, true, use_parent, TKey>;
-  using TSelf = ScapegoatTree<use_parent, TData, TInfo, TAction, TKey>;
+  using TSubtreeData = base::SubtreeData<
+      templates::PrependIfMissingT<subtree_data::Size, TAggregatorsTuple>>;
+  using TNode =
+      base::Node<TData, TSubtreeData, TAction, true, use_parent, TKey>;
+  using TSelf =
+      ScapegoatTree<use_parent, TData, TAggregatorsTuple, TAction, TKey>;
   using TBTree =
       base::BalancedTree<memory::NodesManagerFixedSize<TNode>, TSelf>;
   using TTree = typename TBTree::TTree;
@@ -33,10 +42,6 @@ class ScapegoatTree
 
  public:
   explicit ScapegoatTree(size_t max_nodes) : TBTree(max_nodes) {}
-
-  static size_t Size(const TNode* root) {
-    return root ? root->subtree_data.size : 0;
-  }
 
  protected:
   static void TraverseInorder(TNode* node, std::vector<TNode*>& output) {
@@ -56,14 +61,16 @@ class ScapegoatTree
 
   static TNode* FixBalance(TNode* node) {
     assert(node);
-    const auto s = size_t(alpha * Size(node));
-    return ((Size(node->l) > s) || (Size(node->r) > s)) ? RebuildSubtree(node)
-                                                        : node;
+    const auto s = size_t(alpha * subtree_data::size(node));
+    return ((subtree_data::size(node->l) > s) ||
+            (subtree_data::size(node->r) > s))
+               ? RebuildSubtree(node)
+               : node;
   }
 
   static TNode* Join3L(TNode* l, TNode* m1, TNode* r, size_t rsize) {
     if (l) l->ApplyAction();
-    if (Size(l) > 2 * rsize) {
+    if (subtree_data::size(l) > 2 * rsize) {
       l->SetR(Join3L(l->r, m1, r, rsize));
       l->UpdateInfo();
       return FixBalance(l);
@@ -74,7 +81,7 @@ class ScapegoatTree
 
   static TNode* Join3R(TNode* l, TNode* m1, TNode* r, size_t lsize) {
     if (r) r->ApplyAction();
-    if (Size(r) > 2 * lsize) {
+    if (subtree_data::size(r) > 2 * lsize) {
       r->SetL(Join3R(l, m1, r->l, lsize));
       r->UpdateInfo();
       return FixBalance(r);
@@ -86,7 +93,7 @@ class ScapegoatTree
  public:
   static TNode* Join3(TNode* l, TNode* m1, TNode* r) {
     assert(m1 && !m1->l && !m1->r);
-    const size_t lsize = Size(l), rsize = Size(r);
+    const size_t lsize = subtree_data::size(l), rsize = subtree_data::size(r);
     return lsize >= rsize ? Join3L(l, m1, r, rsize) : Join3R(l, m1, r, lsize);
   }
 };

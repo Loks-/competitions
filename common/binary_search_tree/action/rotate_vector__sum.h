@@ -2,13 +2,14 @@
 
 #include "common/base.h"
 #include "common/binary_search_tree/action/none.h"
+#include "common/binary_search_tree/subtree_data/sum.h"
 
 namespace bst {
 namespace action {
 // Support only VectorStaticSize from LinearAlgebra.
+template <class TVector>
 class RotateVectorSum : public None {
  protected:
-  template <class TVector>
   static void Rotate(TVector& v, size_t r) {
     if (r == 0) return;
     thread_local TVector vt;
@@ -20,6 +21,7 @@ class RotateVectorSum : public None {
  public:
   using TBase = None;
   using TSelf = RotateVectorSum;
+  using TSum = bst::subtree_data::Sum<TVector>;
 
   static constexpr bool is_none = false;
   static constexpr bool modify_data = true;
@@ -34,8 +36,8 @@ class RotateVectorSum : public None {
 
   template <class TNode>
   void Add(TNode* node, size_t _r) {
-    Rotate(node->subtree_data.sum_value, _r);
-    r = (r + _r) % node->subtree_data.sum_value.Size();
+    Rotate(TSum::get_ref(node), _r);
+    r = (r + _r) % TSum::get(node).Size();
   }
 
   template <class TNode>

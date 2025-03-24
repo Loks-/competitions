@@ -2,6 +2,7 @@
 
 #include "common/base.h"
 #include "common/binary_search_tree/action/apply_root_to_node.h"
+#include "common/binary_search_tree/subtree_data/size.h"
 
 namespace bst {
 namespace base {
@@ -11,12 +12,10 @@ size_t Order(TNode* node) {
   static_assert(TNode::TInfo::has_size, "info should contain size");
   assert(node);
   bst::action::ApplyRootToNode_ModifyTree(node);
-  size_t order = 0;
-  if (node->l) order += node->l->subtree_data.size;
+  size_t order = bst::subtree_data::size(node->l);
   for (; node->p; node = node->p) {
     if (node->p->r == node) {
-      if (node->p->l) order += node->p->l->subtree_data.size;
-      ++order;
+      order += bst::subtree_data::size(node->p->l) + 1;
     }
   }
   return order;

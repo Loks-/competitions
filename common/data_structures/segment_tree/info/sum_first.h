@@ -13,7 +13,7 @@ class SumFirst : public TInfo {
   using TSelf = SumFirst<TValue, TBase>;
 
  public:
-  static constexpr bool is_none = false;
+  static constexpr bool empty = false;
   static constexpr bool use_data = true;
 
  public:

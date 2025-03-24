@@ -1,6 +1,7 @@
 #pragma once
 
 #include "common/base.h"
+#include "common/binary_search_tree/subtree_data/size.h"
 
 namespace bst {
 // Swap intervals [first, middle) and [middle, last)
@@ -37,12 +38,13 @@ inline void IntervalRotateLeft(typename TTree::TNode*& root, size_t first,
 // Rotate all elements to right by shift
 template <class TTree>
 inline void VectorRotateRight(typename TTree::TNode*& root, size_t shift) {
-  if (root) IntervalRotateRight<TTree>(root, 0, root->subtree_data.size, shift);
+  if (root)
+    IntervalRotateRight<TTree>(root, 0, subtree_data::size(root), shift);
 }
 
 // Rotate all elements to left by shift
 template <class TTree>
 inline void VectorRotateLeft(typename TTree::TNode*& root, size_t shift) {
-  if (root) IntervalRotateLeft<TTree>(root, 0, root->subtree_data.size, shift);
+  if (root) IntervalRotateLeft<TTree>(root, 0, subtree_data::size(root), shift);
 }
 }  // namespace bst
