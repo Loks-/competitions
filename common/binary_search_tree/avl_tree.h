@@ -1,8 +1,8 @@
 #pragma once
 
 #include "common/base.h"
-#include "common/binary_search_tree/action/none.h"
 #include "common/binary_search_tree/base/balanced_tree.h"
+#include "common/binary_search_tree/base/deferred.h"
 #include "common/binary_search_tree/base/node.h"
 #include "common/binary_search_tree/base/rotate.h"
 #include "common/binary_search_tree/base/subtree_data.h"
@@ -16,21 +16,23 @@
 namespace bst {
 template <bool use_parent, class TData,
           class TAggregatorsTuple = std::tuple<subtree_data::Size>,
-          class TAction = action::None, class TKey = int64_t>
+          class TDeferredTuple = std::tuple<>, class TKey = int64_t>
 class AVLTree
     : public base::BalancedTree<
-          memory::NodesManagerFixedSize<
-              base::Node<TData,
-                         base::SubtreeData<templates::PrependIfMissingT<
-                             subtree_data::Height, TAggregatorsTuple>>,
-                         TAction, true, use_parent, TKey>>,
-          AVLTree<use_parent, TData, TAggregatorsTuple, TAction, TKey>> {
+          memory::NodesManagerFixedSize<base::Node<
+              TData,
+              base::SubtreeData<templates::PrependIfMissingT<
+                  subtree_data::Height, TAggregatorsTuple>>,
+              base::Deferred<TDeferredTuple>, true, use_parent, TKey>>,
+          AVLTree<use_parent, TData, TAggregatorsTuple, TDeferredTuple, TKey>> {
  public:
   using TSubtreeData = base::SubtreeData<
       templates::PrependIfMissingT<subtree_data::Height, TAggregatorsTuple>>;
+  using TDeferred = base::Deferred<TDeferredTuple>;
   using TNode =
-      base::Node<TData, TSubtreeData, TAction, true, use_parent, TKey>;
-  using TSelf = AVLTree<use_parent, TData, TAggregatorsTuple, TAction, TKey>;
+      base::Node<TData, TSubtreeData, TDeferred, true, use_parent, TKey>;
+  using TSelf =
+      AVLTree<use_parent, TData, TAggregatorsTuple, TDeferredTuple, TKey>;
   using TBTree =
       base::BalancedTree<memory::NodesManagerFixedSize<TNode>, TSelf>;
   using TTree = typename TBTree::TTree;

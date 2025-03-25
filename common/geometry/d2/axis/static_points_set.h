@@ -23,7 +23,7 @@ class StaticPointsSet {
   using TPoint = Point<T>;
   using TTree = bst::persistent::Treap<true, false, MetaEmpty,
                                        std::tuple<bst::subtree_data::Size>,
-                                       bst::action::None, T>;
+                                       std::tuple<>, T>;
   using TNode = typename TTree::TNode;
   using TPair = std::pair<T, TNode*>;
 

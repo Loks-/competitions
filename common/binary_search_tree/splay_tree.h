@@ -2,7 +2,7 @@
 
 #include "common/base.h"
 #include "common/binary_search_tree/action/apply_root_to_node.h"
-#include "common/binary_search_tree/action/none.h"
+#include "common/binary_search_tree/base/deferred.h"
 #include "common/binary_search_tree/base/node.h"
 #include "common/binary_search_tree/base/rotate.h"
 #include "common/binary_search_tree/base/subtree_data.h"
@@ -15,13 +15,14 @@
 namespace bst {
 template <bool use_key, class TData,
           class TAggregatorsTuple = std::tuple<subtree_data::Size>,
-          class TAction = action::None, class TKey = int64_t,
+          class TDeferredTuple = std::tuple<>, class TKey = int64_t,
           template <class> class TTNodesManager = memory::NodesManagerFixedSize>
 class SplayTree
     : public base::Tree<
-          TTNodesManager<base::Node<TData, base::SubtreeData<TAggregatorsTuple>,
-                                    TAction, use_key, true, TKey>>,
-          SplayTree<use_key, TData, TAggregatorsTuple, TAction, TKey,
+          TTNodesManager<
+              base::Node<TData, base::SubtreeData<TAggregatorsTuple>,
+                         base::Deferred<TDeferredTuple>, use_key, true, TKey>>,
+          SplayTree<use_key, TData, TAggregatorsTuple, TDeferredTuple, TKey,
                     TTNodesManager>> {
  public:
   static constexpr bool support_remove = true;
@@ -30,9 +31,10 @@ class SplayTree
   static constexpr bool support_split = true;
 
   using TSubtreeData = base::SubtreeData<TAggregatorsTuple>;
-  using TNode = base::Node<TData, TSubtreeData, TAction, use_key, true, TKey>;
-  using TSelf = SplayTree<use_key, TData, TAggregatorsTuple, TAction, TKey,
-                          TTNodesManager>;
+  using TDeferred = base::Deferred<TDeferredTuple>;
+  using TNode = base::Node<TData, TSubtreeData, TDeferred, use_key, true, TKey>;
+  using TSelf = SplayTree<use_key, TData, TAggregatorsTuple, TDeferredTuple,
+                          TKey, TTNodesManager>;
   using TTree = base::Tree<TTNodesManager<TNode>, TSelf>;
   friend TTree;
 

@@ -2,15 +2,16 @@
 
 #include "common/base.h"
 #include "common/binary_search_tree/action/apply_root_to_node.h"
-#include "common/binary_search_tree/action/reverse.h"
 #include "common/binary_search_tree/base/rotate.h"
+#include "common/binary_search_tree/deferred/reverse.h"
 #include "common/binary_search_tree/splay_tree.h"
 #include "common/binary_search_tree/subtree_data/base.h"
 #include "common/graph/tree.h"
 #include "common/templates/tuple.h"
 
 namespace graph {
-template <class TTData, class TTInfo, class TTAction = bst::action::Reverse>
+template <class TTData, class TAggregatorsTuple,
+          class TDeferredTuple = std::tuple<>>
 class LinkCutTree {
  public:
   class LCTSubtreeData : public bst::subtree_data::Base {
@@ -37,10 +38,11 @@ class LinkCutTree {
   };
 
   using TData = TTData;
-  using TAggregators = templates::AppendT<LCTSubtreeData, TTInfo>;
-  using TAction = TTAction;
-  using TSelf = LinkCutTree<TData, TTInfo, TAction>;
-  using TSTree = bst::SplayTree<false, TData, TAggregators, TAction>;
+  using TAggregators = templates::AppendT<LCTSubtreeData, TAggregatorsTuple>;
+  using TDeferreds =
+      templates::AppendIfMissingT<bst::deferred::Reverse, TDeferredTuple>;
+  using TSelf = LinkCutTree<TData, TAggregatorsTuple, TDeferredTuple>;
+  using TSTree = bst::SplayTree<false, TData, TAggregators, TDeferreds>;
   using TInfo = typename TSTree::TInfo;
   using TNode = typename TSTree::TNode;
 
@@ -105,7 +107,7 @@ class LinkCutTree {
   void SetRoot(TNode* node) {
     assert(node);
     Access(node);
-    node->action.ReverseSubtree(node);
+    bst::deferred::reverse_subtree(node);
   }
 
  protected:

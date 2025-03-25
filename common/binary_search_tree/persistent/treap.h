@@ -1,6 +1,6 @@
 #pragma once
 #include "common/base.h"
-#include "common/binary_search_tree/action/none.h"
+#include "common/binary_search_tree/base/deferred.h"
 #include "common/binary_search_tree/base/node.h"
 #include "common/binary_search_tree/base/root.h"
 #include "common/binary_search_tree/base/subtree_data.h"
@@ -17,15 +17,16 @@ namespace bst {
 namespace persistent {
 template <bool use_key, bool use_parent, class TData,
           class TAggregatorsTuple = std::tuple<subtree_data::Size>,
-          class TAction = bst::action::None, class TKey = int64_t>
+          class TDeferredTuple = std::tuple<>, class TKey = int64_t>
 class Treap
     : public bst::persistent::Tree<
           memory::NodesManager<bst::base::Node<
               TData,
               base::SubtreeData<templates::PrependT<subtree_data::TreapHeight,
                                                     TAggregatorsTuple>>,
-              TAction, use_key, use_parent, TKey>>,
-          Treap<use_key, use_parent, TData, TAggregatorsTuple, TAction, TKey>> {
+              base::Deferred<TDeferredTuple>, use_key, use_parent, TKey>>,
+          Treap<use_key, use_parent, TData, TAggregatorsTuple, TDeferredTuple,
+                TKey>> {
  public:
   static constexpr bool support_remove = true;
   static constexpr bool support_join = true;
@@ -34,10 +35,11 @@ class Treap
   using TTreapHeight = subtree_data::TreapHeight;
   using TSubtreeData = base::SubtreeData<
       templates::PrependT<subtree_data::TreapHeight, TAggregatorsTuple>>;
-  using TNode =
-      bst::base::Node<TData, TSubtreeData, TAction, use_key, use_parent, TKey>;
-  using TSelf =
-      Treap<use_key, use_parent, TData, TAggregatorsTuple, TAction, TKey>;
+  using TDeferred = base::Deferred<TDeferredTuple>;
+  using TNode = bst::base::Node<TData, TSubtreeData, TDeferred, use_key,
+                                use_parent, TKey>;
+  using TSelf = Treap<use_key, use_parent, TData, TAggregatorsTuple,
+                      TDeferredTuple, TKey>;
   using TBase = bst::persistent::Tree<memory::NodesManager<TNode>, TSelf>;
   using TTree = bst::base::Tree<memory::NodesManager<TNode>, TSelf>;
   friend TTree;

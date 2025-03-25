@@ -24,7 +24,7 @@ class StaticWPointsSet {
   using TWPoint = WPoint<T1, T2>;
   using TSum = bst::subtree_data::Sum<T2>;
   using TTree = bst::persistent::Treap<true, false, T2, std::tuple<TSum>,
-                                       bst::action::None, T1>;
+                                       std::tuple<>, T1>;
   using TNode = typename TTree::TNode;
   using TPair = std::pair<T1, TNode*>;
 

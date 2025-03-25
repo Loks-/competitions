@@ -75,23 +75,18 @@ class Node : public TNodeProxyParent<
  public:
   TData data;
   TInfo subtree_data;
-  TAction action;
+  TAction deferred;
 
  public:
   constexpr Node() : data() {}
 
   constexpr explicit Node(const TData& _data) : data(_data) {}
 
-  constexpr void ClearAction() { action.Clear(); }
+  constexpr void ClearAction() { deferred.clear(); }
 
   void UpdateInfo() { subtree_data.update(this); }
 
-  template <class TActionValue>
-  void AddAction(const TActionValue& value) {
-    action.Add(this, value);
-  }
-
-  void ApplyAction() { action.Apply(this); }
+  void ApplyAction() { deferred.apply(this); }
 
   void ResetLinksAndUpdateInfo() {
     TProxyParent::ResetLinks();

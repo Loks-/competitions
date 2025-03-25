@@ -21,7 +21,7 @@ inline void ApplyRootToNodeI(TNode* node, MetaTrue) {
 
 template <class TNode>
 inline void ApplyRootToNode(TNode* node) {
-  hidden::ApplyRootToNodeI(node, MetaBool<!TNode::TAction::is_none>{});
+  hidden::ApplyRootToNodeI(node, MetaBool<!TNode::TAction::empty>{});
 }
 
 template <class TNode>

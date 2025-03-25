@@ -1,7 +1,7 @@
 #pragma once
 
 #include "common/base.h"
-#include "common/binary_search_tree/action/none.h"
+#include "common/binary_search_tree/base/deferred.h"
 #include "common/binary_search_tree/base/insert_by_key.h"
 #include "common/binary_search_tree/base/node.h"
 #include "common/binary_search_tree/base/remove_push_down.h"
@@ -23,22 +23,24 @@
 namespace bst {
 
 template <class TData, class TAggregatorsTuple = std::tuple<subtree_data::Size>,
-          class TAction = action::None, class TKey = int64_t,
+          class TDeferredTuple = std::tuple<>, class TKey = int64_t,
           template <class> class TTNodesManager = memory::NodesManagerFixedSize>
 class RedBlackTree
     : public base::Tree<TTNodesManager<base::Node<
                             TData,
                             base::SubtreeData<templates::PrependT<
                                 subtree_data::RBTColor, TAggregatorsTuple>>,
-                            TAction, true, true, TKey>>,
-                        RedBlackTree<TData, TAggregatorsTuple, TAction, TKey,
-                                     TTNodesManager>> {
+                            base::Deferred<TDeferredTuple>, true, true, TKey>>,
+                        RedBlackTree<TData, TAggregatorsTuple, TDeferredTuple,
+                                     TKey, TTNodesManager>> {
  public:
   using TSubtreeData = base::SubtreeData<
       templates::PrependT<subtree_data::RBTColor, TAggregatorsTuple>>;
-  using TNode = base::Node<TData, TSubtreeData, TAction, true, true, TKey>;
-  using TSelf =
-      RedBlackTree<TData, TAggregatorsTuple, TAction, TKey, TTNodesManager>;
+  using TDeferred = base::Deferred<TDeferredTuple>;
+  using TNode = base::Node<TData, TSubtreeData, base::Deferred<TDeferredTuple>,
+                           true, true, TKey>;
+  using TSelf = RedBlackTree<TData, TAggregatorsTuple, TDeferredTuple, TKey,
+                             TTNodesManager>;
   using TTree = base::Tree<TTNodesManager<TNode>, TSelf>;
   friend TTree;
 

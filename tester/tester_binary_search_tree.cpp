@@ -2,10 +2,13 @@
 
 #include "common/binary_search_tree/avl_tree.h"
 #include "common/binary_search_tree/base_tree.h"
+#include "common/binary_search_tree/deferred/add_each.h"
 #include "common/binary_search_tree/perfect_tree.h"
 #include "common/binary_search_tree/red_black_tree.h"
 #include "common/binary_search_tree/scapegoat_tree.h"
 #include "common/binary_search_tree/splay_tree.h"
+#include "common/binary_search_tree/subtree_data/size.h"
+#include "common/binary_search_tree/subtree_data/sum.h"
 #include "common/binary_search_tree/treap.h"
 #include "common/binary_search_tree/wavl_tree.h"
 #include "common/timer.h"
@@ -95,101 +98,80 @@ TesterBinarySearchTree::TesterBinarySearchTree(unsigned size, TBSTMode _mode)
 }
 
 bool TesterBinarySearchTree::TestAllTrees() {
+  using TAggregatorsTuple1 = std::tuple<bst::subtree_data::Size>;
+  using TAggregatorsTuple2 =
+      std::tuple<bst::subtree_data::Size, bst::subtree_data::Sum<TKey>>;
+  using TDeferredTuple2 = std::tuple<bst::deferred::AddEach<TKey>>;
   std::cout << "Testing base trees:" << std::endl;
   current_job = "base";
   if (mode == hash_test) {
-    TestAll<bst::BaseTree<false, TKey, std::tuple<bst::subtree_data::Size>,
-                          bst::action::None, TKey>>("base_upf");
-    TestAll<bst::BaseTree<true, TKey, std::tuple<bst::subtree_data::Size>,
-                          bst::action::None, TKey>>("base_upt");
+    TestAll<bst::BaseTree<false, TKey, TAggregatorsTuple1, std::tuple<>, TKey>>(
+        "base_upf");
+    TestAll<bst::BaseTree<true, TKey, TAggregatorsTuple1, std::tuple<>, TKey>>(
+        "base_upt");
   }
-  TestAll<bst::AVLTree<false, TKey, std::tuple<bst::subtree_data::Size>,
-                       bst::action::None, TKey>>("avltree_upf");
-  TestAll<bst::AVLTree<true, TKey, std::tuple<bst::subtree_data::Size>,
-                       bst::action::None, TKey>>("avltree_upt");
-  TestAll<bst::PerfectTree<false, TKey, std::tuple<bst::subtree_data::Size>,
-                           bst::action::None, TKey>>("perfect_upf");
-  TestAll<bst::PerfectTree<true, TKey, std::tuple<bst::subtree_data::Size>,
-                           bst::action::None, TKey>>("perfect_upt");
-  TestAll<bst::RedBlackTree<TKey, std::tuple<bst::subtree_data::Size>,
-                            bst::action::None, TKey>>("rbtree");
-  TestAll<bst::ScapegoatTree<false, TKey, std::tuple<bst::subtree_data::Size>,
-                             bst::action::None, TKey>>("scape_upf");
-  TestAll<bst::ScapegoatTree<true, TKey, std::tuple<bst::subtree_data::Size>,
-                             bst::action::None, TKey>>("scape_upt");
-  TestAll<bst::SplayTree<true, TKey, std::tuple<bst::subtree_data::Size>,
-                         bst::action::None, TKey>>("splay_upt");
-  TestAll<bst::Treap<true, false, TKey, std::tuple<bst::subtree_data::Size>,
-                     bst::action::None, TKey>>("treap_upf");
-  TestAll<bst::Treap<true, true, TKey, std::tuple<bst::subtree_data::Size>,
-                     bst::action::None, TKey>>("treap_upt");
-  TestAll<bst::WAVLTree<false, TKey, std::tuple<bst::subtree_data::Size>,
-                        bst::action::None, TKey>>("wavltree_upf");
-  TestAll<bst::WAVLTree<true, TKey, std::tuple<bst::subtree_data::Size>,
-                        bst::action::None, TKey>>("wavltree_upt");
+  TestAll<bst::AVLTree<false, TKey, TAggregatorsTuple1, std::tuple<>, TKey>>(
+      "avltree_upf");
+  TestAll<bst::AVLTree<true, TKey, TAggregatorsTuple1, std::tuple<>, TKey>>(
+      "avltree_upt");
+  TestAll<
+      bst::PerfectTree<false, TKey, TAggregatorsTuple1, std::tuple<>, TKey>>(
+      "perfect_upf");
+  TestAll<bst::PerfectTree<true, TKey, TAggregatorsTuple1, std::tuple<>, TKey>>(
+      "perfect_upt");
+  TestAll<bst::RedBlackTree<TKey, TAggregatorsTuple1, std::tuple<>, TKey>>(
+      "rbtree");
+  TestAll<
+      bst::ScapegoatTree<false, TKey, TAggregatorsTuple1, std::tuple<>, TKey>>(
+      "scape_upf");
+  TestAll<
+      bst::ScapegoatTree<true, TKey, TAggregatorsTuple1, std::tuple<>, TKey>>(
+      "scape_upt");
+  TestAll<bst::SplayTree<true, TKey, TAggregatorsTuple1, std::tuple<>, TKey>>(
+      "splay_upt");
+  TestAll<
+      bst::Treap<true, false, TKey, TAggregatorsTuple1, std::tuple<>, TKey>>(
+      "treap_upf");
+  TestAll<bst::Treap<true, true, TKey, TAggregatorsTuple1, std::tuple<>, TKey>>(
+      "treap_upt");
+  TestAll<bst::WAVLTree<false, TKey, TAggregatorsTuple1, std::tuple<>, TKey>>(
+      "wavltree_upf");
+  TestAll<bst::WAVLTree<true, TKey, TAggregatorsTuple1, std::tuple<>, TKey>>(
+      "wavltree_upt");
 
   std::cout << "Testing full trees:" << std::endl;
   current_job = "full";
   if (mode == hash_test) {
-    TestAll<bst::BaseTree<
-        false, TKey,
-        std::tuple<bst::subtree_data::Size, bst::subtree_data::Sum<TKey>>,
-        bst::action::AddEachSum<bst::subtree_data::Sum<TKey>, TKey>, TKey>>(
+    TestAll<
+        bst::BaseTree<false, TKey, TAggregatorsTuple2, TDeferredTuple2, TKey>>(
         "base_upf");
-    TestAll<bst::BaseTree<
-        true, TKey,
-        std::tuple<bst::subtree_data::Size, bst::subtree_data::Sum<TKey>>,
-        bst::action::AddEachSum<bst::subtree_data::Sum<TKey>, TKey>, TKey>>(
+    TestAll<
+        bst::BaseTree<true, TKey, TAggregatorsTuple2, TDeferredTuple2, TKey>>(
         "base_upt");
   }
-  TestAll<bst::AVLTree<
-      false, TKey,
-      std::tuple<bst::subtree_data::Size, bst::subtree_data::Sum<TKey>>,
-      bst::action::AddEachSum<bst::subtree_data::Sum<TKey>, TKey>, TKey>>(
+  TestAll<bst::AVLTree<false, TKey, TAggregatorsTuple2, TDeferredTuple2, TKey>>(
       "avltree_upf");
-  TestAll<bst::AVLTree<
-      true, TKey,
-      std::tuple<bst::subtree_data::Size, bst::subtree_data::Sum<TKey>>,
-      bst::action::AddEachSum<bst::subtree_data::Sum<TKey>, TKey>, TKey>>(
+  TestAll<bst::AVLTree<true, TKey, TAggregatorsTuple2, TDeferredTuple2, TKey>>(
       "avltree_upt");
-  TestAll<bst::RedBlackTree<
-      TKey, std::tuple<bst::subtree_data::Size, bst::subtree_data::Sum<TKey>>,
-      bst::action::AddEachSum<bst::subtree_data::Sum<TKey>, TKey>, TKey>>(
+  TestAll<bst::RedBlackTree<TKey, TAggregatorsTuple2, TDeferredTuple2, TKey>>(
       "rbtree");
-  TestAll<bst::ScapegoatTree<
-      false, TKey,
-      std::tuple<bst::subtree_data::Size, bst::subtree_data::Sum<TKey>>,
-      bst::action::AddEachSum<bst::subtree_data::Sum<TKey>, TKey>, TKey>>(
-      "scape_upf");
-  TestAll<bst::ScapegoatTree<
-      true, TKey,
-      std::tuple<bst::subtree_data::Size, bst::subtree_data::Sum<TKey>>,
-      bst::action::AddEachSum<bst::subtree_data::Sum<TKey>, TKey>, TKey>>(
-      "scape_upt");
-  TestAll<bst::SplayTree<
-      true, TKey,
-      std::tuple<bst::subtree_data::Size, bst::subtree_data::Sum<TKey>>,
-      bst::action::AddEachSum<bst::subtree_data::Sum<TKey>, TKey>, TKey>>(
+  TestAll<bst::ScapegoatTree<false, TKey, TAggregatorsTuple2, TDeferredTuple2,
+                             TKey>>("scape_upf");
+  TestAll<bst::ScapegoatTree<true, TKey, TAggregatorsTuple2, TDeferredTuple2,
+                             TKey>>("scape_upt");
+  TestAll<
+      bst::SplayTree<true, TKey, TAggregatorsTuple2, TDeferredTuple2, TKey>>(
       "splay_upt");
-  TestAll<bst::Treap<
-      true, false, TKey,
-      std::tuple<bst::subtree_data::Size, bst::subtree_data::Sum<TKey>>,
-      bst::action::AddEachSum<bst::subtree_data::Sum<TKey>, TKey>, TKey>>(
+  TestAll<
+      bst::Treap<true, false, TKey, TAggregatorsTuple2, TDeferredTuple2, TKey>>(
       "treap_upf");
-  TestAll<bst::Treap<
-      true, true, TKey,
-      std::tuple<bst::subtree_data::Size, bst::subtree_data::Sum<TKey>>,
-      bst::action::AddEachSum<bst::subtree_data::Sum<TKey>, TKey>, TKey>>(
+  TestAll<
+      bst::Treap<true, true, TKey, TAggregatorsTuple2, TDeferredTuple2, TKey>>(
       "treap_upt");
-  TestAll<bst::WAVLTree<
-      false, TKey,
-      std::tuple<bst::subtree_data::Size, bst::subtree_data::Sum<TKey>>,
-      bst::action::AddEachSum<bst::subtree_data::Sum<TKey>, TKey>, TKey>>(
+  TestAll<
+      bst::WAVLTree<false, TKey, TAggregatorsTuple2, TDeferredTuple2, TKey>>(
       "wavltree_upf");
-  TestAll<bst::WAVLTree<
-      true, TKey,
-      std::tuple<bst::subtree_data::Size, bst::subtree_data::Sum<TKey>>,
-      bst::action::AddEachSum<bst::subtree_data::Sum<TKey>, TKey>, TKey>>(
+  TestAll<bst::WAVLTree<true, TKey, TAggregatorsTuple2, TDeferredTuple2, TKey>>(
       "wavltree_upt");
 
   bool output = TestHash();

@@ -130,7 +130,7 @@ class TesterBinarySearchTree {
     typename TTree::TNode* root = 0;
     size_t h = 0;
     for (TKey key : vkeys) {
-      AddAction(root);
+      AddAction<typename TTree::TNode, TKey>(root);
       root = tree.InsertNewNode(root, key, key);
       VerifyParentLinksLazy(root);
       nhash::DCombineH(h, GetInfoValue(root));
@@ -208,7 +208,7 @@ class TesterBinarySearchTree {
     Timer t;
     size_t h = 0;
     for (const TKey& key : vkeys) {
-      AddAction(root);
+      AddAction<typename TTree::TNode, TKey>(root);
       root = tree.RemoveAndReleaseByKey(root, key);
       VerifyParentLinksLazy(root);
       nhash::DCombineH(h, (type <= shuffled) ? GetInfoValue(root)
@@ -241,7 +241,7 @@ class TesterBinarySearchTree {
     Timer t;
     size_t h = 0;
     for (unsigned i = 0; i < Size(); ++i) {
-      AddAction(root);
+      AddAction<typename TTree::TNode, TKey>(root);
       root = tree.RemoveAndReleaseByNode(tree.NodeByRawIndex(i));
       VerifyParentLinksLazy(root);
       nhash::DCombineH(h, GetInfoValue(root));
@@ -273,7 +273,7 @@ class TesterBinarySearchTree {
     typename TTree::TNode* root = 0;
     size_t h = 0;
     for (size_t i = 0; i < s; ++i) {
-      AddAction(root);
+      AddAction<typename TTree::TNode, TKey>(root);
       VerifyParentLinksLazy(root);
       root = tree.InsertNewNode(root, vkeys[2 * i], vkeys[2 * i]);
       root = tree.InsertNewNode(root, vkeys[2 * i + 1], vkeys[2 * i + 1]);
@@ -281,7 +281,7 @@ class TesterBinarySearchTree {
       nhash::DCombineH(h, GetInfoValue(root));
     }
     for (size_t i = 0; i < s; ++i) {
-      AddAction(root);
+      AddAction<typename TTree::TNode, TKey>(root);
       VerifyParentLinksLazy(root);
       root = tree.InsertNewNode(root, vkeys[2 * s + i], vkeys[2 * s + i]);
       root = tree.RemoveAndReleaseByKey(root, vkeys[s + 2 * i]);

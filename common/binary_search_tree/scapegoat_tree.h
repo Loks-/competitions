@@ -1,7 +1,7 @@
 #pragma once
 
-#include "common/binary_search_tree/action/none.h"
 #include "common/binary_search_tree/base/balanced_tree.h"
+#include "common/binary_search_tree/base/deferred.h"
 #include "common/binary_search_tree/base/node.h"
 #include "common/binary_search_tree/base/subtree_data.h"
 #include "common/binary_search_tree/subtree_data/size.h"
@@ -13,25 +13,27 @@ namespace bst {
 // future deletion.
 template <bool use_parent, class TData,
           class TAggregatorsTuple = std::tuple<subtree_data::Size>,
-          class TAction = action::None, class TKey = int64_t>
+          class TDeferredTuple = std::tuple<>, class TKey = int64_t>
 class ScapegoatTree
     : public base::BalancedTree<
-          memory::NodesManagerFixedSize<
-              base::Node<TData,
-                         base::SubtreeData<templates::PrependIfMissingT<
-                             subtree_data::Size, TAggregatorsTuple>>,
-                         TAction, true, use_parent, TKey>>,
-          ScapegoatTree<use_parent, TData, TAggregatorsTuple, TAction, TKey>> {
+          memory::NodesManagerFixedSize<base::Node<
+              TData,
+              base::SubtreeData<templates::PrependIfMissingT<
+                  subtree_data::Size, TAggregatorsTuple>>,
+              base::Deferred<TDeferredTuple>, true, use_parent, TKey>>,
+          ScapegoatTree<use_parent, TData, TAggregatorsTuple, TDeferredTuple,
+                        TKey>> {
  public:
   // Height is less or equal to 2 * height(fully balanced tree).
   static constexpr double alpha = 0.7;
 
   using TSubtreeData = base::SubtreeData<
       templates::PrependIfMissingT<subtree_data::Size, TAggregatorsTuple>>;
-  using TNode =
-      base::Node<TData, TSubtreeData, TAction, true, use_parent, TKey>;
+  using TDeferred = base::Deferred<TDeferredTuple>;
+  using TNode = base::Node<TData, TSubtreeData, base::Deferred<TDeferredTuple>,
+                           true, use_parent, TKey>;
   using TSelf =
-      ScapegoatTree<use_parent, TData, TAggregatorsTuple, TAction, TKey>;
+      ScapegoatTree<use_parent, TData, TAggregatorsTuple, TDeferredTuple, TKey>;
   using TBTree =
       base::BalancedTree<memory::NodesManagerFixedSize<TNode>, TSelf>;
   using TTree = typename TBTree::TTree;

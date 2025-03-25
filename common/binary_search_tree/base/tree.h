@@ -4,6 +4,7 @@
 #include "common/binary_search_tree/action/apply_root_to_node.h"
 #include "common/binary_search_tree/base/find_by_key.h"
 #include "common/binary_search_tree/base/find_by_order.h"
+#include "common/binary_search_tree/subtree_data/size.h"
 #include "common/template.h"
 
 #include <algorithm>

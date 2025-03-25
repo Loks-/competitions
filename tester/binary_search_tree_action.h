@@ -1,19 +1,17 @@
 #pragma once
 
-#include "common/binary_search_tree/action/add_each__sum.h"
-#include "common/binary_search_tree/action/none.h"
+#include "common/binary_search_tree/deferred/add_each.h"
 #include "common/template.h"
 
-template <class TNode>
-inline void AddAction(TNode*, MetaType<bst::action::None>) {}
+template <class TNode, typename TData>
+inline void AddAction(TNode*, MetaTrue) {}
 
-template <class TAggregatorSum, class TNode, class TData>
-inline void AddAction(
-    TNode* root, MetaType<bst::action::AddEachSum<TAggregatorSum, TData>>) {
-  if (root) root->AddAction(1);
+template <class TNode, typename TData>
+inline void AddAction(TNode* root, MetaFalse) {
+  if (root) bst::deferred::add_to_each<TNode, TData>(root, 1);
 }
 
-template <class TNode>
+template <class TNode, typename TData>
 inline void AddAction(TNode* root) {
-  AddAction(root, MetaType<typename TNode::TAction>());
+  AddAction<TNode, TData>(root, MetaBool<TNode::TAction::empty>{});
 }

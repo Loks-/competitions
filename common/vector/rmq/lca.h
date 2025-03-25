@@ -1,7 +1,7 @@
 #pragma once
 
 #include "common/base.h"
-#include "common/binary_search_tree/action/none.h"
+#include "common/binary_search_tree/base/deferred.h"
 #include "common/binary_search_tree/base/node.h"
 #include "common/binary_search_tree/base/subtree_data.h"
 #include "common/graph/tree.h"
@@ -21,8 +21,9 @@ class LCA {
  public:
   using TValue = TTValue;
   using TPositionValue = PositionValue<TValue>;
-  using TNode = bst::base::Node<TValue, bst::base::SubtreeData<std::tuple<>>,
-                                bst::action::None, false, false>;
+  using TNode =
+      bst::base::Node<TValue, bst::base::SubtreeData<std::tuple<>>,
+                      bst::base::Deferred<std::tuple<>>, false, false>;
 
  protected:
   std::vector<TValue> vv;

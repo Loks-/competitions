@@ -1,7 +1,6 @@
 #pragma once
 
 #include "common/base.h"
-#include "common/binary_search_tree/action/none.h"
 #include "common/binary_search_tree/base/left.h"
 #include "common/binary_search_tree/base/traversal.h"
 #include "common/binary_search_tree/subtree_data/base.h"
@@ -53,7 +52,7 @@ class IntervalsBasedSet {
 
   using TTree = bst::Treap<true, true, Interval,
                            std::tuple<bst::subtree_data::Size, BSTSubtreeData>,
-                           bst::action::None, TValue, memory::NodesManager>;
+                           std::tuple<>, TValue, memory::NodesManager>;
   using TNode = typename TTree::TNode;
 
  protected:
