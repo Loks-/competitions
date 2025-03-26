@@ -119,7 +119,7 @@ class Tree : public TTNodesManager {
       assert(order_index == 0);
       return node;
     } else {
-      assert(order_index <= root->subtree_data.size);
+      assert(order_index <= bst::subtree_data::size(root));
       TNode *l = nullptr, *r = nullptr;
       TMe::SplitBySize(root, order_index, l, r);
       return TMe::Join3(l, node, r);
