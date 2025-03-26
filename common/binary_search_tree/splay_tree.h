@@ -1,12 +1,12 @@
 #pragma once
 
 #include "common/base.h"
-#include "common/binary_search_tree/action/apply_root_to_node.h"
 #include "common/binary_search_tree/base/deferred.h"
 #include "common/binary_search_tree/base/node.h"
 #include "common/binary_search_tree/base/rotate.h"
 #include "common/binary_search_tree/base/subtree_data.h"
 #include "common/binary_search_tree/base/tree.h"
+#include "common/binary_search_tree/deferred/utils/propagate_to_node.h"
 #include "common/binary_search_tree/subtree_data/size.h"
 #include "common/memory/nodes_manager_fixed_size.h"
 
@@ -88,7 +88,7 @@ class SplayTree
   // everything left will go to the left tree.
   static TNode* SplitL(TNode* p) {
     if (!p) return nullptr;
-    action::ApplyRootToNode(p);
+    deferred::propagate_to_node(p);
     Splay(p);
     TNode* l = p->l;
     if (l) {
@@ -104,7 +104,7 @@ class SplayTree
   // everything right will go to the right tree.
   static TNode* SplitR(TNode* p) {
     if (!p) return nullptr;
-    action::ApplyRootToNode(p);
+    deferred::propagate_to_node(p);
     Splay(p);
     TNode* r = p->r;
     if (r) {

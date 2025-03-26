@@ -1,9 +1,9 @@
 #pragma once
 
 #include "common/base.h"
-#include "common/binary_search_tree/action/apply_root_to_node.h"
 #include "common/binary_search_tree/action/none.h"
 #include "common/binary_search_tree/base/rotate.h"
+#include "common/binary_search_tree/deferred/utils/propagate_to_node.h"
 #include "common/binary_search_tree/node.h"
 #include "common/binary_search_tree/subtree_data/height.h"
 #include "common/binary_search_tree/subtree_data/size.h"

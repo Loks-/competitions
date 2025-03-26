@@ -1,9 +1,9 @@
 #pragma once
 
 #include "common/base.h"
-#include "common/binary_search_tree/action/apply_root_to_node.h"
 #include "common/binary_search_tree/base/find_by_key.h"
 #include "common/binary_search_tree/base/find_by_order.h"
+#include "common/binary_search_tree/deferred/utils/propagate_to_node.h"
 #include "common/template.h"
 
 #include <algorithm>
@@ -119,7 +119,7 @@ class Tree : public TTNodesManager {
                   "Remove by node should be supported");
     static_assert(use_parent, "use_parent should be true");
     assert(node);
-    action::ApplyRootToNode(node);
+    deferred::propagate_to_node(node);
     return TMe::RemoveByNodeI(node);
   }
 

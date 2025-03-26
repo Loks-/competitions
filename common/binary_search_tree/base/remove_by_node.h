@@ -1,13 +1,13 @@
 #pragma once
 
-#include "common/binary_search_tree/action/apply_root_to_node.h"
 #include "common/binary_search_tree/base/remove_right.h"
+#include "common/binary_search_tree/deferred/utils/propagate_to_node.h"
 
 namespace bst {
 namespace base {
 template <class TNode, bool apply_action>
 inline TNode* RemoveByNode(TNode* node, TNode*& first_changed_node) {
-  if (apply_action) bst::action::ApplyRootToNode(node);
+  if (apply_action) bst::deferred::propagate_to_node(node);
   TNode *p = node->p, *c;
   if (node->l && node->r) {
     node->l->SetP(nullptr);

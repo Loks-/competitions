@@ -1,7 +1,7 @@
 #pragma once
 
-#include "common/binary_search_tree/action/apply_root_to_node.h"
 #include "common/binary_search_tree/base/node.h"
+#include "common/binary_search_tree/deferred/utils/propagate_to_node.h"
 #include "common/template.h"
 
 namespace bst {
@@ -18,8 +18,9 @@ constexpr unsigned DeepI(const TNode* node) {
 
 template <class TNode>
 inline unsigned Deep(const TNode* node) {
-  bst::action::hidden::ApplyRootToNodeI(
-      node, MetaBool<TNode::TAction::modify_tree>{});
+  // bst::action::hidden::ApplyRootToNodeI(
+  //     node, MetaBool<TNode::TAction::modify_tree>{});
+  bst::deferred::propagate_to_node(node);
   return hidden::DeepI(node);
 }
 }  // namespace base

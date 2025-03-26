@@ -1,9 +1,9 @@
 #pragma once
 
 #include "common/base.h"
-#include "common/binary_search_tree/action/apply_root_to_node.h"
 #include "common/binary_search_tree/base/rotate.h"
 #include "common/binary_search_tree/deferred/reverse.h"
+#include "common/binary_search_tree/deferred/utils/propagate_to_node.h"
 #include "common/binary_search_tree/splay_tree.h"
 #include "common/binary_search_tree/subtree_data/base.h"
 #include "common/graph/tree.h"
@@ -59,13 +59,13 @@ class LinkCutTree {
  public:
   void Access(TNode* node) {
     assert(node);
-    bst::action::ApplyRootToNode(node);
+    bst::deferred::propagate_to_node(node);
     TSTree::Splay(node);
     DisconnectR(node);
     for (TNode* v;
          (v = reinterpret_cast<TNode*>(
               node->subtree_data.template get<LCTSubtreeData>().GetPP()));) {
-      bst::action::ApplyRootToNode(v);
+      bst::deferred::propagate_to_node(v);
       TSTree::Splay(v);
       DisconnectR(v);
       v->r = node;
