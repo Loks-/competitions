@@ -328,7 +328,7 @@ class RedBlackTree
     }
     if (child) child->p = parent;
     node->ResetLinksAndUpdateInfo();
-    subtree_data::update_node_to_root(parent);
+    subtree_data::propagate_to_root(parent);
 
     // Fix colors
     if (!node->subtree_data.black) {

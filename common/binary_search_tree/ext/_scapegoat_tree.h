@@ -135,7 +135,7 @@ class ScapegoatTree
         }
       }
     }
-    subtree_data::update_node_to_root(node);
+    subtree_data::propagate_to_root(node);
     return root;
   }
 

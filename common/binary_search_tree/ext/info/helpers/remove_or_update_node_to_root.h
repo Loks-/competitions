@@ -1,7 +1,7 @@
 #pragma once
 
 #include "common/binary_search_tree/ext/info/helpers/remove_node_to_root.h"
-#include "common/binary_search_tree/subtree_data/utils/update_node_to_root.h"
+#include "common/binary_search_tree/subtree_data/utils/propagate_to_root.h"
 #include "common/template.h"
 
 namespace bst {
@@ -10,7 +10,7 @@ namespace info {
 namespace hidden {
 template <class TNode>
 inline void RemoveOrUpdateNodeToRootI(TNode* node, TNode* rem, MetaFalse) {
-  bst::subtree_data::update_node_to_root(node);
+  bst::subtree_data::propagate_to_root(node);
 }
 
 template <class TNode>

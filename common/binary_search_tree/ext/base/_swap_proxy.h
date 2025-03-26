@@ -3,7 +3,7 @@
 #include "common/base.h"
 #include "common/binary_search_tree/action/apply_root_to_node.h"
 #include "common/binary_search_tree/base/swap.h"
-#include "common/binary_search_tree/subtree_data/utils/update_node_to_root.h"
+#include "common/binary_search_tree/subtree_data/utils/propagate_to_root.h"
 
 namespace bst {
 template <class TNode, bool update_info, bool apply_action>
