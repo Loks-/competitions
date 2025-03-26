@@ -86,7 +86,7 @@ class Base {
    *
    * @param raw_index The raw index of the node.
    */
-  constexpr void clear_create([[maybe_unused]] unsigned raw_index) {}
+  constexpr void clear_create(unsigned) {}
 
   /**
    * @brief Resets the balance tree data.
