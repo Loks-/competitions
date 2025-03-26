@@ -58,8 +58,14 @@ class Reverse : public Base {
    * This function indicates that the current subtree should be reversed.
    * The actual reversal will be deferred until apply() is called, and
    * even then, the reversal will be propagated to child nodes.
+   *
+   * @tparam Node The BST node type.
+   * @param node The root of the subtree to be reversed.
    */
-  constexpr void reverse_subtree() { reverse_required = !reverse_required; }
+  template <class Node>
+  constexpr void reverse_subtree(Node*) {
+    reverse_required = !reverse_required;
+  }
 
   /**
    * @brief Applies pending subtree reversals.
@@ -122,8 +128,11 @@ class Reverse : public Base {
  */
 template <class Node>
 constexpr void reverse_subtree(Node* node) {
+  static_assert(Node::TAction::template has<Reverse>(),
+                "Node's Deferred class must contain Reverse class to use "
+                "reverse_subtree");
   if (node) {
-    node->deferred.template get<Reverse>().reverse_subtree();
+    node->deferred.reverse_subtree(node);
   }
 }
 

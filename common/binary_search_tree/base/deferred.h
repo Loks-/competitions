@@ -142,6 +142,22 @@ class Deferred {
     std::apply([node](auto&... x) { (x.apply(node), ...); }, deferred);
   }
 
+  /**
+   * @brief Notifies that a subtree has been reversed.
+   *
+   * This function is called when a subtree is reversed, allowing all deferred
+   * computations to update their state accordingly. It calls reverse_subtree
+   * on each deferred computation in the tuple.
+   *
+   * @tparam Node The BST node type.
+   * @param node The root of the reversed subtree.
+   */
+  template <class Node>
+  constexpr void reverse_subtree(Node* node) {
+    std::apply([node](auto&... x) { (x.reverse_subtree(node), ...); },
+               deferred);
+  }
+
  protected:
   /**
    * @brief Tuple containing all deferred computations.

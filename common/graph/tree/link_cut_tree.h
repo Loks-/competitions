@@ -40,7 +40,7 @@ class LinkCutTree {
   using TData = TTData;
   using TAggregators = templates::AppendT<LCTSubtreeData, TAggregatorsTuple>;
   using TDeferreds =
-      templates::AppendIfMissingT<bst::deferred::Reverse, TDeferredTuple>;
+      templates::PrependIfMissingT<bst::deferred::Reverse, TDeferredTuple>;
   using TSelf = LinkCutTree<TData, TAggregatorsTuple, TDeferredTuple>;
   using TSTree = bst::SplayTree<false, TData, TAggregators, TDeferreds>;
   using TInfo = typename TSTree::TInfo;
@@ -167,11 +167,11 @@ class LinkCutTree {
   }
 
   // Reset tree root
-  template <class TActionValue>
+  template <class TAction, class TActionValue>
   void AddActionOnPath(unsigned x, unsigned y, const TActionValue& value) {
     SetRoot(Node(x));
     Access(Node(y));
-    Node(y)->AddAction(value);
+    TAction::add(Node(y), value);
   }
 };
 }  // namespace graph

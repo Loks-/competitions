@@ -72,9 +72,12 @@ class Base {
    *
    * This function processes all queued computations. After successful
    * application, apply_required() should return false.
+   *
+   * @tparam Node The BST node type.
+   * @param node The root of the subtree to apply computations to.
    */
   template <class Node>
-  constexpr void apply([[maybe_unused]] Node* node) {}
+  constexpr void apply(Node*) {}
 
   /**
    * @brief Static interface for adding deferred computations.
@@ -96,6 +99,20 @@ class Base {
    */
   template <class Node, typename ValueType>
   static constexpr void add(Node*, const ValueType&) {}
+
+  /**
+   * @brief Notifies that a subtree has been reversed.
+   *
+   * This function is called when a subtree is reversed, allowing deferred
+   * computations to update their state accordingly. By default, it does
+   * nothing. Derived classes that need to track subtree reversals should
+   * override this.
+   *
+   * @tparam Node The BST node type.
+   * @param node The root of the reversed subtree.
+   */
+  template <class Node>
+  constexpr void reverse_subtree(Node*) {}
 };
 
 }  // namespace deferred
