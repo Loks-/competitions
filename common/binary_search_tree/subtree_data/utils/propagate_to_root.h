@@ -9,8 +9,9 @@ namespace subtree_data {
  * @brief Updates subtree data from a node up to the root.
  *
  * This function ensures that all subtree data aggregators are updated along the
- * path from the given node to the root. It's used when node's data or its
- * subtree structure has changed and we need to propagate these changes upward.
+ * path from the given node to the root. It's used when node's data, keys,
+ * structure, or node order has changed and we need to propagate these changes
+ * upward.
  *
  * The updates are performed from the node up to the root to ensure that each
  * node's subtree data is updated with the latest changes from its children.
@@ -33,7 +34,9 @@ inline void propagate_to_root(Node* node) {
 /**
  * @brief Updates only data-related subtree aggregators from node to root.
  *
- * Used when only the node's data has changed, not its structure or keys.
+ * Used when only the node's data has changed, not its structure, keys, or
+ * node order. This is typically used for simple data updates that don't
+ * affect the tree's structure or ordering.
  *
  * @tparam Node The BST node type.
  * @param node The starting node to update from.
@@ -48,7 +51,9 @@ inline void propagate_for_data_update(Node* node) {
 /**
  * @brief Updates only key-related subtree aggregators from node to root.
  *
- * Used when only the node's keys have changed, not its data or structure.
+ * Used when only the node's keys have changed, not its data, structure, or
+ * node order. This is typically used for key updates that don't affect
+ * the tree's structure or ordering.
  *
  * @tparam Node The BST node type.
  * @param node The starting node to update from.
@@ -64,7 +69,9 @@ inline void propagate_for_key_update(Node* node) {
  * @brief Updates only tree structure-related subtree aggregators from node to
  * root.
  *
- * Used when only the tree structure has changed, not its data or keys.
+ * Used when only the tree structure has changed (e.g., rotations, rebalancing),
+ * not its data, keys, or node order. This is typically used for structural
+ * changes that don't affect the data or ordering of nodes.
  *
  * @tparam Node The BST node type.
  * @param node The starting node to update from.
@@ -76,5 +83,22 @@ inline void propagate_for_structure_update(Node* node) {
   }
 }
 
+/**
+ * @brief Updates only nodes order-related subtree aggregators from node to
+ * root.
+ *
+ * Used when only the order of nodes in the subtree has changed, not its
+ * data, structure, or keys. This is typically used for operations that
+ * reorder nodes but don't change their data or the tree's structure.
+ *
+ * @tparam Node The BST node type.
+ * @param node The starting node to update from.
+ */
+template <class Node>
+inline void propagate_for_nodes_order_update(Node* node) {
+  if constexpr (Node::SubtreeDataType::use_nodes_order) {
+    propagate_to_root(node);
+  }
+}
 }  // namespace subtree_data
 }  // namespace bst
