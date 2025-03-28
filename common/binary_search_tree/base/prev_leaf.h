@@ -7,7 +7,7 @@ namespace bst {
 namespace base {
 template <class TNode>
 inline TNode* PrevLeaf(TNode* node) {
-  for (node = Prev(node); node && !IsLeaf(node);) node = Prev(node);
+  for (node = prev(node); node && !IsLeaf(node);) node = prev(node);
   return node;
 }
 }  // namespace base
