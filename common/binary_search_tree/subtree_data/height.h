@@ -13,7 +13,7 @@ namespace subtree_data {
  *
  * This component tracks the height of each subtree, where height is defined
  * as the length of the longest path from the root to any leaf. A single node
- * has height 1, and an empty subtree has height 0.
+ * has height 1, and an empty subtree (nullptr) has height 0.
  */
 class Height : public Base {
  public:
@@ -22,11 +22,12 @@ class Height : public Base {
   /**
    * @brief Component capability flags.
    *
-   * Height component doesn't require access to node data or keys,
-   * and supports only basic update operations. Insert and remove
-   * operations are not supported as they would require recomputation
-   * of heights along the path.
+   * Height component depends on tree structure since it needs to know
+   * the heights of child subtrees to compute a subtree's height. Insert and
+   * remove operations are not supported as they would require recomputation of
+   * heights along the path.
    */
+  static constexpr bool use_tree_structure = true;
 
   /**
    * @brief Gets the height of a subtree.
@@ -46,11 +47,11 @@ class Height : public Base {
   /**
    * @brief Updates the height of a subtree.
    *
-   * Computes the height as 1 plus the maximum height of the left and right
-   * subtrees. For null children, their height is considered 0.
+   * The height of a subtree is one more than the maximum height of its
+   * child subtrees. If a child is null, its height is considered 0.
    *
    * @tparam Node The BST node type.
-   * @param node The node to update height for.
+   * @param node The root of the subtree to update height for.
    */
   template <typename Node>
   constexpr void update(const Node* node) {
@@ -62,9 +63,10 @@ class Height : public Base {
   /**
    * @brief The height of the subtree.
    *
-   * For a leaf node, height = 1.
-   * For an internal node, height = 1 + max(left_height, right_height).
-   * For an empty subtree (null node), height = 0.
+   * This value represents the length of the longest path from the root
+   * to any leaf in the subtree. A leaf node has height 1, and an internal
+   * node's height is one more than the maximum height of its child subtrees.
+   * A null node has height 0.
    */
   unsigned height{0};
 };

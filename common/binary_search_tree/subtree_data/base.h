@@ -33,6 +33,29 @@ class Base {
   static constexpr bool use_keys = false;
 
   /**
+   * @brief Flag indicating whether this subtree data class depends on tree
+   * structure.
+   *
+   * When true, the component requires access to tree structure information
+   * (like node heights, depths, or other structural properties) for its
+   * operations. This can be used to optimize operations when no components need
+   * structural information.
+   */
+  static constexpr bool use_tree_structure = false;
+
+  /**
+   * @brief Flag indicating whether this subtree data class's value depends on
+   * the order of nodes in the subtree.
+   *
+   * When true, the component's aggregated value will change if the order of
+   * nodes in the subtree changes. For example, a sum aggregator is order
+   * independent (order doesn't matter), while a sequence-specific aggregator
+   * would be order dependent. This flag helps optimize updates by determining
+   * when subtree data needs to be recalculated after structural changes.
+   */
+  static constexpr bool use_nodes_order = false;
+
+  /**
    * @brief Flag indicating whether this subtree data class maintains subtree
    * size.
    *

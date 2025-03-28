@@ -49,6 +49,10 @@ class SubtreeData {
     // OR flags - true if any aggregator needs it
     static constexpr bool use_data = empty ? false : (Types::use_data || ...);
     static constexpr bool use_keys = empty ? false : (Types::use_keys || ...);
+    static constexpr bool use_tree_structure =
+        empty ? false : (Types::use_tree_structure || ...);
+    static constexpr bool use_nodes_order =
+        empty ? false : (Types::use_nodes_order || ...);
     static constexpr bool has_size = empty ? false : (Types::has_size || ...);
 
     // AND flags - true only if all aggregators support it
@@ -71,6 +75,8 @@ class SubtreeData {
   static constexpr bool empty = Flags::empty;
   static constexpr bool use_data = Flags::use_data;
   static constexpr bool use_keys = Flags::use_keys;
+  static constexpr bool use_tree_structure = Flags::use_tree_structure;
+  static constexpr bool use_nodes_order = Flags::use_nodes_order;
   static constexpr bool has_size = Flags::has_size;
   static constexpr bool support_segment = Flags::support_segment;
   static constexpr bool order_independent = Flags::order_independent;
