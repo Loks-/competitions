@@ -43,19 +43,19 @@ class NodesManagerFixedSize {
   constexpr TNode* New() {
     if (!released_nodes.empty()) {
       TNode* p = released_nodes.top();
-      p->clear_reuse();
+      p->reuse();
       released_nodes.pop();
       return p;
     } else {
       assert(used_nodes < nodes.size());
       TNode* p = &(nodes[used_nodes]);
-      p->clear_create(used_nodes++);
+      p->initialize(used_nodes++);
       return p;
     }
   }
 
   constexpr void Release(TNode* p) {
-    p->clear_release();
+    p->release();
     released_nodes.push(p);
   }
 
@@ -77,8 +77,8 @@ class NodesManagerFixedSize {
     std::stack<TNode*>().swap(released_nodes);
     used_nodes = 0;
     for (TNode& node : nodes) {
-      node.clear_release();
-      node.clear_reuse();
+      node.release();
+      node.reuse();
     }
   }
 };

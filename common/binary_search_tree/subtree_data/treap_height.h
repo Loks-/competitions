@@ -77,12 +77,12 @@ class TreapHeight : public Base {
    * The nhash::PolicySafe ensures a good distribution of heights while
    * maintaining deterministic behavior.
    *
-   * @param raw_index The unique index of the node, used as seed for height
+   * @param index The unique index of the node, used as seed for height
    * generation.
    */
-  constexpr void clear_create(unsigned raw_index) {
-    Base::clear_create(raw_index);
-    treap_height = nhash::HValue<nhash::PolicySafe>(raw_index);
+  constexpr void initialize(unsigned index) {
+    Base::initialize(index);
+    treap_height = nhash::HValue<nhash::PolicySafe>(index);
   }
 
  protected:

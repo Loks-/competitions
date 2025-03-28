@@ -170,24 +170,23 @@ class Node : public memory::Node {
   }
 
   /**
-   * @brief Clears node's data for creation.
+   * @brief Initializes a newly allocated node.
    *
-   * This function prepares the node for use in a new tree position,
-   * resetting its data to initial state.
+   * This method is called by NodesManager when memory is first allocated
+   * for a node. It initializes all node fields to their default values.
    *
-   * @param raw_index The index in the raw storage
+   * @param index A unique index assigned to this node by NodesManager
    */
-  constexpr void clear_create(unsigned raw_index) {
-    subtree_data.clear_create(raw_index);
-  }
+  constexpr void initialize(unsigned index) { subtree_data.initialize(index); }
 
   /**
-   * @brief Clears node's data for reuse.
+   * @brief Prepares a node for reuse from the free pool.
    *
-   * This function resets the node to a clean state for reuse,
-   * clearing all links and deferred computations.
+   * This method is called by NodesManager when a node is being retrieved
+   * from the free pool for reuse. It resets all linkes and deferred
+   * computations.
    */
-  constexpr void clear_reuse() {
+  constexpr void reuse() {
     reset_links();
     clear_deferred();
   }

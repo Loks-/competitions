@@ -33,7 +33,7 @@ class Binomial {
       d = 0;
     }
 
-    constexpr void clear_reuse() { d = 0; }
+    constexpr void reuse() { d = 0; }
 
     constexpr const TData& GetValue() const { return value; }
   };

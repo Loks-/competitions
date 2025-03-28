@@ -16,6 +16,9 @@ namespace base {
  * tuple storage. It automatically computes capability flags across all
  * aggregators and provides unified access to aggregator operations.
  *
+ * The class works in conjunction with the memory management system:
+ * - initialize: Called when a node is first allocated
+ *
  * @tparam Tuple A std::tuple containing aggregator types.
  */
 template <typename Tuple>
@@ -109,15 +112,17 @@ class SubtreeData {
   }
 
   /**
-   * @brief Initializes a new node by calling clear_create on all aggregators.
+   * @brief Initializes a new node by calling initialize on all aggregators.
    *
-   * @param raw_index The unique index of the node to initialize.
+   * This method is called by NodesManager when memory is first allocated
+   * for a node. It initializes all aggregators with their default values
+   * and any node-specific initialization they require.
+   *
+   * @param index The unique index of the node to initialize.
    */
-  constexpr void clear_create(unsigned raw_index) {
+  constexpr void initialize(unsigned index) {
     std::apply(
-        [raw_index](auto&... aggregators) {
-          (aggregators.clear_create(raw_index), ...);
-        },
+        [index](auto&... aggregators) { (aggregators.initialize(index), ...); },
         aggregators_);
   }
 
@@ -159,6 +164,10 @@ class SubtreeData {
 
   /**
    * @brief Updates the subtree data for all aggregators.
+   *
+   * This method maintains the correct aggregated values for the subtree
+   * rooted at the given node. The update strategy depends on whether
+   * segment operations are supported:
    *
    * For segment-supporting case:
    * 1. Sets data from the current node

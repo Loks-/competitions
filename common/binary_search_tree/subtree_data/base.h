@@ -84,9 +84,9 @@ class Base {
   /**
    * @brief Clears and initializes the subtree data for a new node.
    *
-   * @param raw_index The raw index of the node.
+   * @param index The unique index of the node.
    */
-  constexpr void clear_create(unsigned) {}
+  constexpr void initialize(unsigned) {}
 
   /**
    * @brief Resets the balance tree data.
