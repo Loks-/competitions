@@ -11,57 +11,57 @@ template <class TNode>
 constexpr void SwapNotRelated(TNode* node1, TNode* parent1, TNode* node2,
                               TNode* parent2) {
   assert(node1 != node2);
-  TNode *child1l = node1->l, *child1r = node1->r;
-  node1->SetL(node2->l);
-  node1->SetR(node2->r);
-  node2->SetL(child1l);
-  node2->SetR(child1r);
+  TNode *child1l = node1->left, *child1r = node1->right;
+  node1->set_left(node2->left);
+  node1->set_right(node2->right);
+  node2->set_left(child1l);
+  node2->set_right(child1r);
   if (parent1 && parent1 == parent2) {
-    std::swap(parent1->l, parent1->r);
+    std::swap(parent1->left, parent1->right);
     return;
   }
   if (parent1) {
-    if (node1 == parent1->l)
-      parent1->SetL(node2);
+    if (node1 == parent1->left)
+      parent1->set_left(node2);
     else
-      parent1->SetR(node2);
+      parent1->set_right(node2);
   } else {
-    node2->SetP(nullptr);
+    node2->set_parent(nullptr);
   }
   if (parent2) {
-    if (node2 == parent2->l)
-      parent2->SetL(node1);
+    if (node2 == parent2->left)
+      parent2->set_left(node1);
     else
-      parent2->SetR(node1);
+      parent2->set_right(node1);
   } else {
-    node1->SetP(nullptr);
+    node1->set_parent(nullptr);
   }
   node1->subtree_data.bti_swap(node2);
 }
 
 template <class TNode>
 constexpr void SwapChildParent(TNode* child, TNode* parent, TNode* gparent) {
-  if (child == parent->l) {
-    TNode* sibling = parent->r;
-    parent->SetL(child->l);
-    parent->SetR(child->r);
-    child->SetL(parent);
-    child->SetR(sibling);
+  if (child == parent->left) {
+    TNode* sibling = parent->right;
+    parent->set_left(child->left);
+    parent->set_right(child->right);
+    child->set_left(parent);
+    child->set_right(sibling);
   } else {
-    TNode* sibling = parent->l;
-    parent->SetL(child->l);
-    parent->SetR(child->r);
-    child->SetL(sibling);
-    child->SetR(parent);
+    TNode* sibling = parent->left;
+    parent->set_left(child->left);
+    parent->set_right(child->right);
+    child->set_left(sibling);
+    child->set_right(parent);
   }
   if (gparent) {
-    if (parent == gparent->l) {
-      gparent->SetL(child);
+    if (parent == gparent->left) {
+      gparent->set_left(child);
     } else {
-      gparent->SetR(child);
+      gparent->set_right(child);
     }
   } else {
-    child->SetP(nullptr);
+    child->set_parent(nullptr);
   }
   child->subtree_data.bti_swap(parent);
 }
@@ -71,12 +71,13 @@ constexpr void SwapAuto(TNode* node1, TNode* parent1, TNode* node2,
                         TNode* parent2) {
   assert(node1 && node2);
   if (node1 == node2) return;
-  if (parent1 == node2)
+  if (parent1 == node2) {
     SwapChildParent(node1, node2, parent2);
-  else if (parent2 == node1)
+  } else if (parent2 == node1) {
     SwapChildParent(node2, node1, parent1);
-  else
+  } else {
     SwapNotRelated(node1, parent1, node2, parent2);
+  }
 }
 }  // namespace base
 }  // namespace bst

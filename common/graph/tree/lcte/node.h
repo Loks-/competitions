@@ -74,7 +74,7 @@ class CNode : public memory::Node {
 
   CNode() { ResetLinks(); }
 
-  void ClearReuse() {
+  void clear_reuse() {
     ResetLinks();
     ClearAction();
   }

@@ -28,14 +28,14 @@ inline TNode* RemoveByKeySkipUpdate(TNode* root, const TKey& key,
   if (node->l && node->r) {
     TNode* l = RemoveRightSkipUpdate<TNode>(node->l, c, first_changed_node);
     (p ? ((node == p->l) ? p->l : p->r) : root) = c;
-    c->SetL(l);
-    c->SetR(node->r);
-    c->SetP(p);
+    c->set_left(l);
+    c->set_right(node->r);
+    c->set_parent(p);
   } else {
     first_changed_node = p;
     c = (node->l ? node->l : node->r);
     (p ? ((node == p->l) ? p->l : p->r) : root) = c;
-    if (c) c->SetP(p);
+    if (c) c->set_parent(p);
   }
   node->ResetLinksAndUpdateInfo();
   return root;

@@ -15,14 +15,14 @@ inline void InsertByKeyDefault(TNode* root, TNode* node) {
       if (root->r) {
         root = root->r;
       } else {
-        root->SetR(node);
+        root->set_right(node);
         break;
       }
     } else {
       if (root->l) {
         root = root->l;
       } else {
-        root->SetL(node);
+        root->set_left(node);
         break;
       }
     }

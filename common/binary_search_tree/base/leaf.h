@@ -6,8 +6,8 @@ namespace bst {
 namespace base {
 template <class TNode>
 inline bool IsLeaf(TNode* node) {
-  if (TNode::TAction::modify_tree) node->ApplyAction();
-  return (node->l == nullptr) && (node->r == nullptr);
+  if (TNode::DeferredType::modify_tree) node->apply_deferred();
+  return (node->left == nullptr) && (node->right == nullptr);
 }
 }  // namespace base
 }  // namespace bst

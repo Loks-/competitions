@@ -7,7 +7,7 @@
 namespace bst {
 template <class TNode, class TValue>
 inline TValue Median(TNode* root) {
-  static_assert(TNode::TInfo::has_size, "info should contain size");
+  static_assert(TNode::SubtreeDataType::has_size, "info should contain size");
   assert(root);
   const size_t size = subtree_data::size(root);
   if (size & 1)

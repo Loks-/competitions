@@ -20,12 +20,12 @@ namespace subtree_data {
  */
 template <class Node>
 inline void propagate_to_root(Node* node) {
-  if constexpr (!Node::TInfo::empty) {
-    static_assert(Node::use_parent, "Node must have parent pointer enabled");
+  if constexpr (!Node::SubtreeDataType::empty) {
+    static_assert(Node::has_parent, "Node must have parent pointer enabled");
 
     // Update subtree data from node up to root
-    for (; node; node = node->p) {
-      node->UpdateInfo();
+    for (; node; node = node->parent) {
+      node->update_subtree_data();
     }
   }
 }
@@ -40,7 +40,7 @@ inline void propagate_to_root(Node* node) {
  */
 template <class Node>
 inline void propagate_for_data_update(Node* node) {
-  if constexpr (Node::TInfo::modify_data) {
+  if constexpr (Node::SubtreeDataType::use_data) {
     propagate_to_root(node);
   }
 }
@@ -55,7 +55,7 @@ inline void propagate_for_data_update(Node* node) {
  */
 template <class Node>
 inline void propagate_for_key_update(Node* node) {
-  if constexpr (Node::TInfo::modify_keys) {
+  if constexpr (Node::SubtreeDataType::use_keys) {
     propagate_to_root(node);
   }
 }
@@ -71,7 +71,7 @@ inline void propagate_for_key_update(Node* node) {
  */
 template <class Node>
 inline void propagate_for_structure_update(Node* node) {
-  if constexpr (Node::TInfo::modify_tree) {
+  if constexpr (Node::SubtreeDataType::use_tree_structure) {
     propagate_to_root(node);
   }
 }

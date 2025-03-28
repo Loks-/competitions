@@ -28,7 +28,7 @@ class Treap
               TData,
               base::SubtreeData<templates::PrependT<subtree_data::TreapHeight,
                                                     TAggregatorsTuple>>,
-              base::Deferred<TDeferredTuple>, use_key, use_parent, TKey>>,
+              base::Deferred<TDeferredTuple>, use_parent, use_key, TKey>>,
           Treap<use_key, use_parent, TData, TAggregatorsTuple, TDeferredTuple,
                 TKey, TTNodesManager>> {
  public:
@@ -42,7 +42,7 @@ class Treap
       templates::PrependT<subtree_data::TreapHeight, TAggregatorsTuple>>;
   using TDeferred = base::Deferred<TDeferredTuple>;
   using TNode =
-      base::Node<TData, TSubtreeData, TDeferred, use_key, use_parent, TKey>;
+      base::Node<TData, TSubtreeData, TDeferred, use_parent, use_key, TKey>;
   using TSelf = Treap<use_key, use_parent, TData, TAggregatorsTuple,
                       TDeferredTuple, TKey, TTNodesManager>;
   using TTree = base::Tree<TTNodesManager<TNode>, TSelf>;
@@ -65,38 +65,40 @@ class Treap
     for (size_t j = 1; j < nodes.size(); ++j) {
       TNode* pj = nodes[j];
       if (TreapHeight(pj) < TreapHeight(plast)) {
-        plast->SetR(pj);
+        plast->set_right(pj);
         s.push(plast);
       } else if (TreapHeight(pj) >= TreapHeight(proot)) {
-        for (plast->UpdateInfo(); !s.empty(); s.pop()) s.top()->UpdateInfo();
-        pj->SetL(proot);
+        for (plast->update_subtree_data(); !s.empty(); s.pop())
+          s.top()->update_subtree_data();
+        pj->set_left(proot);
         proot = pj;
       } else {
-        for (plast->UpdateInfo(); TreapHeight(pj) >= TreapHeight(s.top());
-             s.pop()) {
+        for (plast->update_subtree_data();
+             TreapHeight(pj) >= TreapHeight(s.top()); s.pop()) {
           plast = s.top();
-          plast->UpdateInfo();
+          plast->update_subtree_data();
         }
-        pj->SetL(plast);
-        s.top()->SetR(pj);
+        pj->set_left(plast);
+        s.top()->set_right(pj);
       }
       plast = pj;
     }
-    for (plast->UpdateInfo(); !s.empty(); s.pop()) s.top()->UpdateInfo();
+    for (plast->update_subtree_data(); !s.empty(); s.pop())
+      s.top()->update_subtree_data();
     return proot;
   }
 
  protected:
   static TNode* JoinI(TNode* l, TNode* r) {
     if (TreapHeight(l) > TreapHeight(r)) {
-      l->ApplyAction();
-      l->SetR(l->r ? JoinI(l->r, r) : r);
-      l->UpdateInfo();
+      l->apply_deferred();
+      l->set_right(l->right ? JoinI(l->right, r) : r);
+      l->update_subtree_data();
       return l;
     } else {
-      r->ApplyAction();
-      r->SetL(r->l ? JoinI(l, r->l) : l);
-      r->UpdateInfo();
+      r->apply_deferred();
+      r->set_left(r->left ? JoinI(l, r->left) : l);
+      r->update_subtree_data();
       return r;
     }
   }
@@ -113,23 +115,23 @@ class Treap
  protected:
   static void SplitByKeyI(TNode* p, const TKey& key, TNode*& output_l,
                           TNode*& output_r) {
-    p->ApplyAction();
+    p->apply_deferred();
     if (p->key < key) {
-      if (p->r) {
+      if (p->right) {
         output_l = p;
-        SplitByKeyI(p->r, key, p->r, output_r);
-        p->UpdateInfo();
-        if (p->r) p->r->SetP(p);
+        SplitByKeyI(p->right, key, p->right, output_r);
+        p->update_subtree_data();
+        if (p->right) p->right->set_parent(p);
       } else {
         output_l = p;
         output_r = nullptr;
       }
     } else {
-      if (p->l) {
+      if (p->left) {
         output_r = p;
-        SplitByKeyI(p->l, key, output_l, p->l);
-        p->UpdateInfo();
-        if (p->l) p->l->SetP(p);
+        SplitByKeyI(p->left, key, output_l, p->left);
+        p->update_subtree_data();
+        if (p->left) p->left->set_parent(p);
       } else {
         output_l = nullptr;
         output_r = p;
@@ -145,34 +147,34 @@ class Treap
       output_l = output_r = nullptr;
     } else {
       SplitByKeyI(root, key, output_l, output_r);
-      if (output_l) output_l->SetP(nullptr);
-      if (output_r) output_r->SetP(nullptr);
+      if (output_l) output_l->set_parent(nullptr);
+      if (output_r) output_r->set_parent(nullptr);
     }
   }
 
  protected:
   static void SplitBySizeI(TNode* p, size_t lsize, TNode*& output_l,
                            TNode*& output_r) {
-    p->ApplyAction();
-    const size_t hlsize = bst::subtree_data::size(p->l);
+    p->apply_deferred();
+    const size_t hlsize = bst::subtree_data::size(p->left);
     if (lsize < hlsize) {
       output_r = p;
-      SplitBySizeI(p->l, lsize, output_l, p->l);
-      if (p->l) p->l->SetP(p);
+      SplitBySizeI(p->left, lsize, output_l, p->left);
+      if (p->left) p->left->set_parent(p);
     } else if (lsize == hlsize) {
-      output_l = p->l;
+      output_l = p->left;
       output_r = p;
-      p->l = nullptr;
+      p->left = nullptr;
     } else if (lsize == hlsize + 1) {
       output_l = p;
-      output_r = p->r;
-      p->r = nullptr;
+      output_r = p->right;
+      p->right = nullptr;
     } else {
       output_l = p;
-      SplitBySizeI(p->r, lsize - hlsize - 1, p->r, output_r);
-      if (p->r) p->r->SetP(p);
+      SplitBySizeI(p->right, lsize - hlsize - 1, p->right, output_r);
+      if (p->right) p->right->set_parent(p);
     }
-    p->UpdateInfo();
+    p->update_subtree_data();
   }
 
  public:
@@ -189,27 +191,27 @@ class Treap
       output_r = nullptr;
     } else {
       SplitBySizeI(root, lsize, output_l, output_r);
-      if (output_l) output_l->SetP(nullptr);
-      if (output_r) output_r->SetP(nullptr);
+      if (output_l) output_l->set_parent(nullptr);
+      if (output_r) output_r->set_parent(nullptr);
     }
   }
 
   static TNode* InsertByKey(TNode* root, TNode* node) {
     static_assert(use_key, "use_key should be true");
     if (!root) return node;
-    root->ApplyAction();
+    root->apply_deferred();
     if (TreapHeight(root) >= TreapHeight(node)) {
       if (root->key < node->key)
-        root->SetR(InsertByKey(root->r, node));
+        root->set_right(InsertByKey(root->right, node));
       else
-        root->SetL(InsertByKey(root->l, node));
+        root->set_left(InsertByKey(root->left, node));
     } else {
-      SplitByKeyI(root, node->key, node->l, node->r);
-      if (node->l) node->l->SetP(node);
-      if (node->r) node->r->SetP(node);
+      SplitByKeyI(root, node->key, node->left, node->right);
+      if (node->left) node->left->set_parent(node);
+      if (node->right) node->right->set_parent(node);
       root = node;
     }
-    root->UpdateInfo();
+    root->update_subtree_data();
     return root;
   }
 
@@ -217,21 +219,21 @@ class Treap
                             TNode*& removed_node) {
     static_assert(use_key, "use_key should be true");
     if (!root) return root;
-    root->ApplyAction();
+    root->apply_deferred();
     if (root->key < key) {
-      root->SetR(RemoveByKey(root->r, key, removed_node));
+      root->set_right(RemoveByKey(root->right, key, removed_node));
     } else if (root->key > key) {
-      root->SetL(RemoveByKey(root->l, key, removed_node));
+      root->set_left(RemoveByKey(root->left, key, removed_node));
     } else {
       removed_node = root;
-      TNode* l = root->l;
-      if (l) l->SetP(nullptr);
-      TNode* r = root->r;
-      if (r) r->SetP(nullptr);
-      root->ResetLinksAndUpdateInfo();
+      TNode* l = root->left;
+      if (l) l->set_parent(nullptr);
+      TNode* r = root->right;
+      if (r) r->set_parent(nullptr);
+      root->reset_links_and_update_subtree_data();
       return Join(l, r);
     }
-    root->UpdateInfo();
+    root->update_subtree_data();
     return root;
   }
 
@@ -241,26 +243,27 @@ class Treap
     if (TreapHeight(p1) < TreapHeight(p2)) std::swap(p1, p2);
     TNode *pt1 = nullptr, *pt2 = nullptr;
     SplitByKey(p2, p1->key, pt1, pt2);
-    p1->SetL(Union(p1->l, pt1));
-    p1->SetR(Union(p1->r, pt2));
-    p1->UpdateInfo();
+    p1->set_left(Union(p1->left, pt1));
+    p1->set_right(Union(p1->right, pt2));
+    p1->update_subtree_data();
     return p1;
   }
 
  protected:
   static TNode* RemoveByNodeI(TNode* node) {
-    TNode* l = node->l;
-    if (l) l->SetP(nullptr);
-    TNode* r = node->r;
-    if (r) r->SetP(nullptr);
-    TNode* p = node->p;
-    node->ResetLinksAndUpdateInfo();
+    TNode* l = node->left;
+    if (l) l->set_parent(nullptr);
+    TNode* r = node->right;
+    if (r) r->set_parent(nullptr);
+    TNode* p = node->parent;
+    node->reset_links_and_update_subtree_data();
     TNode* m = Join(l, r);
     if (!p) return m;
-    if (node == p->l)
-      p->SetL(m);
-    else
-      p->SetR(m);
+    if (node == p->left) {
+      p->set_left(m);
+    } else {
+      p->set_right(m);
+    }
     subtree_data::propagate_to_root(p);
     return Root(p);
   }

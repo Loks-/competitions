@@ -77,7 +77,8 @@ class AddEach : public Base {
    * This function queues a value to be added to each node's data in the
    * subtree. The actual addition will be deferred until apply() is called.
    *
-   * If the node's TInfo includes aggregators, they will be updated immediately:
+   * If the node's SubtreeDataType includes aggregators, they will be updated
+   * immediately:
    * - Sum: adds (value * subtree_size) to maintain the sum
    * - Max: adds value to maintain the maximum
    * - Min: adds value to maintain the minimum
@@ -91,15 +92,15 @@ class AddEach : public Base {
   constexpr void add_value(Node* node, const ValueType& value) {
     deferred_value += value;
     // Update Sum aggregator if present in node's TInfo
-    if constexpr (Node::TInfo::template has<SDSum>()) {
+    if constexpr (Node::SubtreeDataType::template has<SDSum>()) {
       SDSum::get_ref(node) += value * bst::subtree_data::size(node);
     }
     // Update Max aggregator if present
-    if constexpr (Node::TInfo::template has<SDMax>()) {
+    if constexpr (Node::SubtreeDataType::template has<SDMax>()) {
       SDMax::get_ref(node) += value;
     }
     // Update Min aggregator if present
-    if constexpr (Node::TInfo::template has<SDMin>()) {
+    if constexpr (Node::SubtreeDataType::template has<SDMin>()) {
       SDMin::get_ref(node) += value;
     }
   }
@@ -120,8 +121,8 @@ class AddEach : public Base {
     assert(node);
     if (deferred_value != ValueType{}) {
       node->data += deferred_value;
-      add_to_each(node->l, deferred_value);
-      add_to_each(node->r, deferred_value);
+      add_to_each(node->left, deferred_value);
+      add_to_each(node->right, deferred_value);
       deferred_value = ValueType{};
     }
   }

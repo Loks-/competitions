@@ -17,7 +17,7 @@ inline void RemoveRightDefault(TNode* root, TNode*& removed_node,
     root = root->r;
   }
   removed_node = root->r;
-  root->SetR(removed_node->l);
+  root->set_right(removed_node->l);
   removed_node->ResetLinksAndUpdateInfo();
   old_parent = root;
   for (s.push(root); !s.empty(); s.pop())

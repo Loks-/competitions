@@ -23,14 +23,14 @@ class AVLTree
               TData,
               base::SubtreeData<templates::PrependIfMissingT<
                   subtree_data::Height, TAggregatorsTuple>>,
-              base::Deferred<TDeferredTuple>, true, use_parent, TKey>>,
+              base::Deferred<TDeferredTuple>, use_parent, true, TKey>>,
           AVLTree<use_parent, TData, TAggregatorsTuple, TDeferredTuple, TKey>> {
  public:
   using TSubtreeData = base::SubtreeData<
       templates::PrependIfMissingT<subtree_data::Height, TAggregatorsTuple>>;
   using TDeferred = base::Deferred<TDeferredTuple>;
   using TNode =
-      base::Node<TData, TSubtreeData, TDeferred, true, use_parent, TKey>;
+      base::Node<TData, TSubtreeData, TDeferred, use_parent, true, TKey>;
   using TSelf =
       AVLTree<use_parent, TData, TAggregatorsTuple, TDeferredTuple, TKey>;
   using TBTree =
@@ -50,22 +50,22 @@ class AVLTree
   }
 
   static constexpr int Balance(TNode* node) {
-    return node ? Height(node->l) - Height(node->r) : 0;
+    return node ? Height(node->left) - Height(node->right) : 0;
   }
 
   static TNode* FixBalance(TNode* root) {
     if (Balance(root) == 2) {
-      root->l->ApplyAction();
-      if (Balance(root->l) == -1)
-        base::Rotate<TNode, false, true>(root->l->r, root->l, root);
-      TNode* child = root->l;
+      root->left->apply_deferred();
+      if (Balance(root->left) == -1)
+        base::Rotate<TNode, false, true>(root->left->right, root->left, root);
+      TNode* child = root->left;
       base::Rotate<TNode, true, false>(child, root, nullptr);
       return child;
     } else if (Balance(root) == -2) {
-      root->r->ApplyAction();
-      if (Balance(root->r) == 1)
-        base::Rotate<TNode, false, true>(root->r->l, root->r, root);
-      TNode* child = root->r;
+      root->right->apply_deferred();
+      if (Balance(root->right) == 1)
+        base::Rotate<TNode, false, true>(root->right->left, root->right, root);
+      TNode* child = root->right;
       base::Rotate<TNode, true, false>(child, root, nullptr);
       return child;
     }
@@ -74,9 +74,9 @@ class AVLTree
 
   static TNode* Join3L(TNode* l, TNode* m1, TNode* r, int hr) {
     if (Height(l) > hr + 1) {
-      l->ApplyAction();
-      l->SetR(Join3L(l->r, m1, r, hr));
-      l->UpdateInfo();
+      l->apply_deferred();
+      l->set_right(Join3L(l->right, m1, r, hr));
+      l->update_subtree_data();
       return l;
     } else {
       return TTree::Join3IBase(l, m1, r);
@@ -85,9 +85,9 @@ class AVLTree
 
   static TNode* Join3R(TNode* l, TNode* m1, TNode* r, int hl) {
     if (Height(r) > hl + 1) {
-      r->ApplyAction();
-      r->SetL(Join3R(l, m1, r->l, hl));
-      r->UpdateInfo();
+      r->apply_deferred();
+      r->set_left(Join3R(l, m1, r->left, hl));
+      r->update_subtree_data();
       return r;
     } else {
       return TTree::Join3IBase(l, m1, r);
@@ -96,7 +96,7 @@ class AVLTree
 
  public:
   static TNode* Join3(TNode* l, TNode* m1, TNode* r) {
-    assert(m1 && !m1->l && !m1->r);
+    assert(m1 && !m1->left && !m1->right);
     const auto hl = Height(l), hr = Height(r), hd = hl - hr;
     return (hd > 1)    ? Join3L(l, m1, r, hr)
            : (hd < -1) ? Join3R(l, m1, r, hl)

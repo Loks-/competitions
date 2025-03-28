@@ -19,18 +19,18 @@ namespace deferred {
  */
 template <class Node>
 inline void propagate_to_node(Node* node) {
-  if constexpr (!Node::TAction::empty) {
-    static_assert(Node::use_parent, "Node must have parent pointer enabled");
+  if constexpr (!Node::DeferredType::empty) {
+    static_assert(Node::has_parent, "Node must have parent pointer enabled");
     thread_local std::stack<Node*> path;
 
     // Build path from root to node
-    for (; node; node = node->p) {
+    for (; node; node = node->parent) {
       path.push(node);
     }
 
     // Apply computations from root to target node
     while (!path.empty()) {
-      path.top()->ApplyAction();
+      path.top()->apply_deferred();
       path.pop();
     }
   }
@@ -47,7 +47,7 @@ inline void propagate_to_node(Node* node) {
  */
 template <class Node>
 inline void propagate_for_data_access(Node* node) {
-  if constexpr (Node::TAction::modify_data) {
+  if constexpr (Node::DeferredType::modify_data) {
     propagate_to_node(node);
   }
 }
@@ -63,7 +63,7 @@ inline void propagate_for_data_access(Node* node) {
  */
 template <class Node>
 inline void propagate_for_key_access(Node* node) {
-  if constexpr (Node::TAction::modify_keys) {
+  if constexpr (Node::DeferredType::modify_keys) {
     propagate_to_node(node);
   }
 }
@@ -79,7 +79,7 @@ inline void propagate_for_key_access(Node* node) {
  */
 template <class Node>
 inline void propagate_for_structure_access(Node* node) {
-  if constexpr (Node::TAction::modify_tree) {
+  if constexpr (Node::DeferredType::modify_tree) {
     propagate_to_node(node);
   }
 }

@@ -13,5 +13,5 @@ inline void AddAction(TNode* root, MetaFalse) {
 
 template <class TNode, typename TData>
 inline void AddAction(TNode* root) {
-  AddAction<TNode, TData>(root, MetaBool<TNode::TAction::empty>{});
+  AddAction<TNode, TData>(root, MetaBool<TNode::DeferredType::empty>{});
 }

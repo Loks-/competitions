@@ -4,9 +4,9 @@ namespace bst {
 namespace base {
 template <class TNode>
 constexpr TNode* Root(TNode* node) {
-  static_assert(TNode::use_parent, "use_parent should be true");
+  static_assert(TNode::has_parent, "has_parent should be true");
   if (!node) return node;
-  for (; node->p;) node = node->p;
+  for (; node->parent;) node = node->parent;
   return node;
 }
 }  // namespace base

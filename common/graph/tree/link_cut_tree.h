@@ -26,13 +26,14 @@ class LinkCutTree {
 
     template <class TNode>
     void update(TNode* node) {
-      if (node->l && node->l->subtree_data.template get<Self>().lct_pp) {
-        lct_pp = node->l->subtree_data.template get<Self>().lct_pp;
-        node->l->subtree_data.template get<Self>().lct_pp = nullptr;
+      if (node->left && node->left->subtree_data.template get<Self>().lct_pp) {
+        lct_pp = node->left->subtree_data.template get<Self>().lct_pp;
+        node->left->subtree_data.template get<Self>().lct_pp = nullptr;
       }
-      if (node->r && node->r->subtree_data.template get<Self>().lct_pp) {
-        lct_pp = node->r->subtree_data.template get<Self>().lct_pp;
-        node->r->subtree_data.template get<Self>().lct_pp = nullptr;
+      if (node->right &&
+          node->right->subtree_data.template get<Self>().lct_pp) {
+        lct_pp = node->right->subtree_data.template get<Self>().lct_pp;
+        node->right->subtree_data.template get<Self>().lct_pp = nullptr;
       }
     }
   };
@@ -48,11 +49,11 @@ class LinkCutTree {
 
  protected:
   void DisconnectR(TNode* node) {
-    if (node->r) {
-      node->r->SetP(nullptr);
-      node->r->subtree_data.template get<LCTSubtreeData>().SetPP(node);
-      node->r = nullptr;
-      node->UpdateInfo();
+    if (node->right) {
+      node->right->set_parent(nullptr);
+      node->right->subtree_data.template get<LCTSubtreeData>().SetPP(node);
+      node->right = nullptr;
+      node->update_subtree_data();
     }
   }
 
@@ -68,7 +69,7 @@ class LinkCutTree {
       bst::deferred::propagate_to_node(v);
       TSTree::Splay(v);
       DisconnectR(v);
-      v->r = node;
+      v->right = node;
       node->subtree_data.template get<LCTSubtreeData>().lct_pp = nullptr;
       bst::base::Rotate<TNode, true, false>(node, v, nullptr);
     }
@@ -76,9 +77,9 @@ class LinkCutTree {
 
   TNode* FindRoot(TNode* node) {
     Access(node);
-    while (node->l) {
-      node = node->l;
-      node->ApplyAction();
+    while (node->left) {
+      node = node->left;
+      node->apply_deferred();
     }
     TSTree::Splay(node);
     return node;
@@ -86,21 +87,21 @@ class LinkCutTree {
 
   void Cut(TNode* node) {
     Access(node);
-    if (node->l) {
-      node->l->SetP(nullptr);
-      node->l = nullptr;
-      node->UpdateInfo();
+    if (node->left) {
+      node->left->set_parent(nullptr);
+      node->left = nullptr;
+      node->update_subtree_data();
     }
   }
 
   // Link root to node
   void Link(TNode* root, TNode* node) {
     Access(root);
-    assert(root->l == nullptr);
+    assert(root->left == nullptr);
     Access(node);
-    node->SetP(root);
-    root->l = node;
-    root->UpdateInfo();
+    node->set_parent(root);
+    root->left = node;
+    root->update_subtree_data();
   }
 
   // Set new root
@@ -156,7 +157,7 @@ class LinkCutTree {
     auto node = Node(x);
     Access(node);
     node->data = data;
-    node->UpdateInfo();
+    node->update_subtree_data();
   }
 
   // Reset tree root

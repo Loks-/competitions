@@ -46,16 +46,16 @@ class LCA {
       TNode* pj = m.New();
       pj->data = v[j];
       if (!(pj->data < plast->data)) {
-        plast->r = pj;
+        plast->right = pj;
         s.push(plast);
       } else if (pj->data < proot->data) {
         for (; !s.empty();) s.pop();
-        pj->l = proot;
+        pj->left = proot;
         proot = pj;
       } else {
         for (; pj->data < s.top()->data; s.pop()) plast = s.top();
-        pj->l = plast;
-        s.top()->r = pj;
+        pj->left = plast;
+        s.top()->right = pj;
       }
       plast = pj;
     }
@@ -64,8 +64,8 @@ class LCA {
     t.SetRoot(proot - p0);
     for (size_t j = 0; j < n; ++j) {
       auto p = m.NodeByRawIndex(j);
-      if (p->l) t.AddEdge(j, p->l - p0);
-      if (p->r) t.AddEdge(j, p->r - p0);
+      if (p->left) t.AddEdge(j, p->left - p0);
+      if (p->right) t.AddEdge(j, p->right - p0);
     }
     lca.Build(t);
   }

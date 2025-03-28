@@ -7,19 +7,19 @@ namespace base {
 template <class TNode>
 inline void InsertByKey(TNode* root, TNode* node) {
   for (;;) {
-    root->ApplyAction();
+    root->apply_deferred();
     if (root->key < node->key) {
-      if (root->r) {
-        root = root->r;
+      if (root->right) {
+        root = root->right;
       } else {
-        root->SetR(node);
+        root->set_right(node);
         break;
       }
     } else {
-      if (root->l) {
-        root = root->l;
+      if (root->left) {
+        root = root->left;
       } else {
-        root->SetL(node);
+        root->set_left(node);
         break;
       }
     }

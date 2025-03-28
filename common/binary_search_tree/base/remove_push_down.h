@@ -9,11 +9,12 @@ namespace base {
 template <class TNode, bool apply_action_to_node>
 inline void RemovePushDown(TNode* node) {
   if (apply_action_to_node) bst::deferred::propagate_to_node(node);
-  if (!node->l || !node->r) return;
-  TNode* swap_node = node->l;
-  for (swap_node->ApplyAction(); swap_node->r; swap_node->ApplyAction())
-    swap_node = swap_node->r;
-  SwapAuto(node, node->p, swap_node, swap_node->p);
+  if (!node->left || !node->right) return;
+  TNode* swap_node = node->left;
+  for (swap_node->apply_deferred(); swap_node->right;
+       swap_node->apply_deferred())
+    swap_node = swap_node->right;
+  SwapAuto(node, node->parent, swap_node, swap_node->parent);
 }
 }  // namespace base
 }  // namespace bst

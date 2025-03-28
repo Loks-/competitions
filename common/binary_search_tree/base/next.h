@@ -8,10 +8,10 @@ namespace base {
 template <class TNode>
 inline TNode* Next(TNode* node) {
   if (!node) return nullptr;
-  if (TNode::TAction::modify_tree) node->ApplyAction();
-  if (node->r) return Left(node->r);
-  for (; node->p && (node->p->r == node);) node = node->p;
-  return node->p;
+  if (TNode::DeferredType::modify_tree) node->apply_deferred();
+  if (node->right) return Left(node->right);
+  for (; node->parent && (node->parent->right == node);) node = node->parent;
+  return node->parent;
 }
 }  // namespace base
 }  // namespace bst

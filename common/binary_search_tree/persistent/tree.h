@@ -9,8 +9,8 @@ class Tree : public bst::base::Tree<TTNodesManager, TTMe> {
  public:
   using TNodesManager = TTNodesManager;
   using TNode = typename TNodesManager::TNode;
-  using TData = typename TNode::TData;
-  using TKey = typename TNode::TKey;
+  using TData = typename TNode::DataType;
+  using TKey = typename TNode::KeyType;
   using TBase = bst::base::Tree<TTNodesManager, TTMe>;
   using TMe = TTMe;
 
@@ -32,8 +32,8 @@ class Tree : public bst::base::Tree<TTNodesManager, TTMe> {
 
   static void UpdatePForChildren(TNode* node) {
     if (node) {
-      if (node->l) node->l->SetP(node);
-      if (node->r) node->r->SetP(node);
+      if (node->left) node->left->set_parent(node);
+      if (node->right) node->right->set_parent(node);
     }
   }
 };

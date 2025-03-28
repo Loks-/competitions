@@ -89,7 +89,7 @@ class AddArithmeticSequence : public Base {
     d += d_;
 
     // Update Sum aggregator if present
-    if constexpr (Node::TInfo::template has<SDSum>()) {
+    if constexpr (Node::SubtreeDataType::template has<SDSum>()) {
       const auto subtree_size = ValueType(bst::subtree_data::size(node));
       SDSum::get_ref(node) += subtree_size * a_ + subtree_size *
                                                       (subtree_size - 1) * d_ /
@@ -118,14 +118,14 @@ class AddArithmeticSequence : public Base {
     assert(node);
     if (apply_required()) {
       // Apply any tree structure modifications first
-      if constexpr (Node::TAction::template has<Reverse>()) {
+      if constexpr (Node::DeferredType::template has<Reverse>()) {
         node->deferred.template get<Reverse>().apply(node);
       }
 
-      const auto left_size = ValueType(bst::subtree_data::size(node->l));
-      add_arithmetic_sequence(node->l, a, d);
+      const auto left_size = ValueType(bst::subtree_data::size(node->left));
+      add_arithmetic_sequence(node->left, a, d);
       node->data += a + left_size * d;
-      add_arithmetic_sequence(node->r, a + (left_size + 1) * d, d);
+      add_arithmetic_sequence(node->right, a + (left_size + 1) * d, d);
       clear();
     }
   }

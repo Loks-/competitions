@@ -8,15 +8,15 @@ inline TNode* PrefixSumUpperBound(TNode* root, TValue value) {
   if (!root) return nullptr;
   if (value >= TSTDSumAggregator::get(root)) return nullptr;
   for (TNode* node = root; node;) {
-    node->ApplyAction();
-    TValue ls = TSTDSumAggregator::get(node->l);
+    node->apply_deferred();
+    TValue ls = TSTDSumAggregator::get(node->left);
     if (value < ls) {
-      node = node->l;
+      node = node->left;
     } else if (value < ls + node->data) {
       return node;
     } else {
       value -= (ls + node->data);
-      node = node->r;
+      node = node->right;
     }
   }
   assert(false);

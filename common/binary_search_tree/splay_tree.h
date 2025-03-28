@@ -21,7 +21,7 @@ class SplayTree
     : public base::Tree<
           TTNodesManager<
               base::Node<TData, base::SubtreeData<TAggregatorsTuple>,
-                         base::Deferred<TDeferredTuple>, use_key, true, TKey>>,
+                         base::Deferred<TDeferredTuple>, true, use_key, TKey>>,
           SplayTree<use_key, TData, TAggregatorsTuple, TDeferredTuple, TKey,
                     TTNodesManager>> {
  public:
@@ -32,7 +32,7 @@ class SplayTree
 
   using TSubtreeData = base::SubtreeData<TAggregatorsTuple>;
   using TDeferred = base::Deferred<TDeferredTuple>;
-  using TNode = base::Node<TData, TSubtreeData, TDeferred, use_key, true, TKey>;
+  using TNode = base::Node<TData, TSubtreeData, TDeferred, true, use_key, TKey>;
   using TSelf = SplayTree<use_key, TData, TAggregatorsTuple, TDeferredTuple,
                           TKey, TTNodesManager>;
   using TTree = base::Tree<TTNodesManager<TNode>, TSelf>;
@@ -46,40 +46,40 @@ class SplayTree
   static void Splay(TNode* node) {
     if (!node) return;
     for (;;) {
-      TNode* parent = node->p;
+      TNode* parent = node->parent;
       if (!parent) break;
-      TNode* gparent = parent->p;
+      TNode* gparent = parent->parent;
       if (!gparent) {
         base::Rotate<TNode, false, false>(node, parent, gparent);
         break;
       }
-      bool zigzig = ((gparent->l == parent) == (parent->l == node));
+      bool zigzig = ((gparent->left == parent) == (parent->left == node));
       base::RotateUp<TNode, false, false>(zigzig ? parent : node);
       base::RotateUp<TNode, false, false>(node);
     }
-    node->UpdateInfo();
+    node->update_subtree_data();
   }
 
   static TNode* Join(TNode* l, TNode* r) {
     if (!l) return r;
     if (!r) return l;
-    assert(!r->p);
+    assert(!r->parent);
     TNode* p = l;
-    for (;; p = p->r) {
-      p->ApplyAction();
-      if (!p->r) break;
+    for (;; p = p->right) {
+      p->apply_deferred();
+      if (!p->right) break;
     }
     Splay(p);
-    p->SetR(r);
-    p->UpdateInfo();
+    p->set_right(r);
+    p->update_subtree_data();
     return p;
   }
 
   static TNode* Join3(TNode* l, TNode* m1, TNode* r) {
-    assert(m1 && !m1->l && !m1->r);
-    m1->SetL(l);
-    m1->SetR(r);
-    m1->UpdateInfo();
+    assert(m1 && !m1->left && !m1->right);
+    m1->set_left(l);
+    m1->set_right(r);
+    m1->update_subtree_data();
     return m1;
   }
 
@@ -90,11 +90,11 @@ class SplayTree
     if (!p) return nullptr;
     deferred::propagate_to_node(p);
     Splay(p);
-    TNode* l = p->l;
+    TNode* l = p->left;
     if (l) {
-      l->p = nullptr;
-      p->l = nullptr;
-      p->UpdateInfo();
+      l->parent = nullptr;
+      p->left = nullptr;
+      p->update_subtree_data();
     }
     return l;
   }
@@ -106,11 +106,11 @@ class SplayTree
     if (!p) return nullptr;
     deferred::propagate_to_node(p);
     Splay(p);
-    TNode* r = p->r;
+    TNode* r = p->right;
     if (r) {
-      r->p = nullptr;
-      p->r = nullptr;
-      p->UpdateInfo();
+      r->parent = nullptr;
+      p->right = nullptr;
+      p->update_subtree_data();
     }
     return r;
   }
@@ -120,13 +120,14 @@ class SplayTree
     TNode *node = root, *last_node = nullptr;
     for (; node;) {
       last_node = node;
-      node->ApplyAction();
-      if (node->key < key)
-        node = node->r;
-      else if (key < node->key)
-        node = node->l;
-      else
+      node->apply_deferred();
+      if (node->key < key) {
+        node = node->right;
+      } else if (key < node->key) {
+        node = node->left;
+      } else {
         break;
+      }
     }
     Splay(last_node);
     root = last_node;
@@ -137,13 +138,13 @@ class SplayTree
     static_assert(use_key, "use_key should be true");
     TNode *last_less = nullptr, *last_node = root;
     for (TNode* node = root; node;) {
-      node->ApplyAction();
+      node->apply_deferred();
       if (node->key < key) {
         last_less = node;
-        node = node->r;
+        node = node->right;
       } else {
         last_node = node;
-        node = node->l;
+        node = node->left;
       }
     }
     root = last_less ? last_less : last_node;
@@ -165,7 +166,7 @@ class SplayTree
 
   static size_t Order(TNode* node) {
     Splay(node);
-    return subtree_data::size(node->l);
+    return subtree_data::size(node->left);
   }
 
   static TNode* FindByOrder(TNode*& root, size_t order_index) {
@@ -198,10 +199,10 @@ class SplayTree
     static_assert(use_key, "use_key should be true");
     assert(node);
     if (!root) return node;
-    SplitByKey(root, node->key, node->l, node->r);
-    if (node->l) node->l->p = node;
-    if (node->r) node->r->p = node;
-    node->UpdateInfo();
+    SplitByKey(root, node->key, node->left, node->right);
+    if (node->left) node->left->parent = node;
+    if (node->right) node->right->parent = node;
+    node->update_subtree_data();
     return node;
   }
 
@@ -215,28 +216,29 @@ class SplayTree
     TNode* m = FindByOrder(root1, subtree_data::size(root1) / 2);
     TNode *r2l = nullptr, *r2r = nullptr;
     SplitByKey(root2, m->key, r2l, r2r);
-    if (m->l) m->l->p = nullptr;
-    if (m->r) m->r->p = nullptr;
-    m->SetL(Union(m->l, r2l));
-    m->SetR(Union(m->r, r2r));
-    m->UpdateInfo();
+    if (m->left) m->left->parent = nullptr;
+    if (m->right) m->right->parent = nullptr;
+    m->set_left(Union(m->left, r2l));
+    m->set_right(Union(m->right, r2r));
+    m->update_subtree_data();
     return m;
   }
 
  protected:
   static TNode* RemoveByNodeI(TNode* node) {
-    TNode* l = node->l;
-    if (l) l->SetP(nullptr);
-    TNode* r = node->r;
-    if (r) r->SetP(nullptr);
-    TNode* p = node->p;
-    node->ResetLinksAndUpdateInfo();
+    TNode* l = node->left;
+    if (l) l->set_parent(nullptr);
+    TNode* r = node->right;
+    if (r) r->set_parent(nullptr);
+    TNode* p = node->parent;
+    node->reset_links_and_update_subtree_data();
     TNode* m = Join(l, r);
     if (!p) return m;
-    if (node == p->l)
-      p->SetL(m);
-    else
-      p->SetR(m);
+    if (node == p->left) {
+      p->set_left(m);
+    } else {
+      p->set_right(m);
+    }
     Splay(p);
     return p;
   }

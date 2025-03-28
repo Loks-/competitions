@@ -55,7 +55,7 @@ class Height : public Base {
   template <typename Node>
   constexpr void update(const Node* node) {
     assert(node);
-    height = 1 + std::max(get(node->l), get(node->r));
+    height = 1 + std::max(get(node->left), get(node->right));
   }
 
  protected:

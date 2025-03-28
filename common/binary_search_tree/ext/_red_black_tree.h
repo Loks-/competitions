@@ -87,14 +87,14 @@ class RedBlackTree
         if (current->r) {
           current = current->r;
         } else {
-          current->SetR(node);
+          current->set_right(node);
           break;
         }
       } else {
         if (current->l) {
           current = current->l;
         } else {
-          current->SetL(node);
+          current->set_left(node);
           break;
         }
       }
@@ -219,11 +219,11 @@ class RedBlackTree
         node_to_root_path.size() > 1 ? node_to_root_path[1] : nullptr;
     if (parent) {
       if (parent->l == node)
-        parent->SetL(child);
+        parent->set_left(child);
       else
-        parent->SetR(child);
+        parent->set_right(child);
     } else if (child) {
-      child->SetP(nullptr);
+      child->set_parent(nullptr);
     }
     node->ResetLinksAndUpdateInfo();
     info::UpdateNodeToRootWithPath(node_to_root_path, 1);

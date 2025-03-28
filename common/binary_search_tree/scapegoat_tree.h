@@ -20,7 +20,7 @@ class ScapegoatTree
               TData,
               base::SubtreeData<templates::PrependIfMissingT<
                   subtree_data::Size, TAggregatorsTuple>>,
-              base::Deferred<TDeferredTuple>, true, use_parent, TKey>>,
+              base::Deferred<TDeferredTuple>, use_parent, true, TKey>>,
           ScapegoatTree<use_parent, TData, TAggregatorsTuple, TDeferredTuple,
                         TKey>> {
  public:
@@ -31,7 +31,7 @@ class ScapegoatTree
       templates::PrependIfMissingT<subtree_data::Size, TAggregatorsTuple>>;
   using TDeferred = base::Deferred<TDeferredTuple>;
   using TNode = base::Node<TData, TSubtreeData, base::Deferred<TDeferredTuple>,
-                           true, use_parent, TKey>;
+                           use_parent, true, TKey>;
   using TSelf =
       ScapegoatTree<use_parent, TData, TAggregatorsTuple, TDeferredTuple, TKey>;
   using TBTree =
@@ -48,10 +48,10 @@ class ScapegoatTree
  protected:
   static void TraverseInorder(TNode* node, std::vector<TNode*>& output) {
     if (!node) return;
-    node->ApplyAction();
-    TraverseInorder(node->l, output);
+    node->apply_deferred();
+    TraverseInorder(node->left, output);
     output.push_back(node);
-    TraverseInorder(node->r, output);
+    TraverseInorder(node->right, output);
   }
 
   static TNode* RebuildSubtree(TNode* node) {
@@ -64,17 +64,17 @@ class ScapegoatTree
   static TNode* FixBalance(TNode* node) {
     assert(node);
     const auto s = size_t(alpha * subtree_data::size(node));
-    return ((subtree_data::size(node->l) > s) ||
-            (subtree_data::size(node->r) > s))
+    return ((subtree_data::size(node->left) > s) ||
+            (subtree_data::size(node->right) > s))
                ? RebuildSubtree(node)
                : node;
   }
 
   static TNode* Join3L(TNode* l, TNode* m1, TNode* r, size_t rsize) {
-    if (l) l->ApplyAction();
+    if (l) l->apply_deferred();
     if (subtree_data::size(l) > 2 * rsize) {
-      l->SetR(Join3L(l->r, m1, r, rsize));
-      l->UpdateInfo();
+      l->set_right(Join3L(l->right, m1, r, rsize));
+      l->update_subtree_data();
       return FixBalance(l);
     } else {
       return TTree::Join3IBase(l, m1, r);
@@ -82,10 +82,10 @@ class ScapegoatTree
   }
 
   static TNode* Join3R(TNode* l, TNode* m1, TNode* r, size_t lsize) {
-    if (r) r->ApplyAction();
+    if (r) r->apply_deferred();
     if (subtree_data::size(r) > 2 * lsize) {
-      r->SetL(Join3R(l, m1, r->l, lsize));
-      r->UpdateInfo();
+      r->set_left(Join3R(l, m1, r->left, lsize));
+      r->update_subtree_data();
       return FixBalance(r);
     } else {
       return TTree::Join3IBase(l, m1, r);
@@ -94,7 +94,7 @@ class ScapegoatTree
 
  public:
   static TNode* Join3(TNode* l, TNode* m1, TNode* r) {
-    assert(m1 && !m1->l && !m1->r);
+    assert(m1 && !m1->left && !m1->right);
     const size_t lsize = subtree_data::size(l), rsize = subtree_data::size(r);
     return lsize >= rsize ? Join3L(l, m1, r, rsize) : Join3R(l, m1, r, lsize);
   }

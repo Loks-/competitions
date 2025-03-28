@@ -157,8 +157,8 @@ class Tree : public TTNodesManager {
     if (first >= last) return nullptr;
     size_t m = (first + last) / 2;
     TNode* root = vnodes[m];
-    root->SetL(BuildTreeI(vnodes, first, m));
-    root->SetR(BuildTreeI(vnodes, m + 1, last));
+    root->set_left(BuildTreeI(vnodes, first, m));
+    root->set_right(BuildTreeI(vnodes, m + 1, last));
     root->UpdateInfo();
     return root;
   }

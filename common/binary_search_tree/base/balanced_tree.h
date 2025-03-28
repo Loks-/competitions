@@ -27,12 +27,13 @@ class BalancedTree : public Tree<TTNodesManager, TTMe> {
 
   static TNode* InsertByKeyIR(TNode* root, TNode* node) {
     if (!root) return node;
-    root->ApplyAction();
-    if (root->key < node->key)
-      root->SetR(InsertByKeyIR(root->r, node));
-    else
-      root->SetL(InsertByKeyIR(root->l, node));
-    root->UpdateInfo();
+    root->apply_deferred();
+    if (root->key < node->key) {
+      root->set_right(InsertByKeyIR(root->right, node));
+    } else {
+      root->set_left(InsertByKeyIR(root->left, node));
+    }
+    root->update_subtree_data();
     return TMe::FixBalanceInsert(root);
   }
 
@@ -44,13 +45,14 @@ class BalancedTree : public Tree<TTNodesManager, TTMe> {
     TNode *new_root, *fcn = nullptr;
     new_root = bst::base::RemoveByNode<TNode, false>(node, fcn);
     if (!fcn) return new_root;
-    for (TNode* p = fcn->p; p; p = (fcn = p)->p) {
+    for (TNode* p = fcn->parent; p; p = (fcn = p)->parent) {
       TNode* t = TMe::FixBalanceRemove(fcn);
       if (t != fcn) {
-        if (fcn == p->l)
-          p->SetL(t);
-        else
-          p->SetR(t);
+        if (fcn == p->left) {
+          p->set_left(t);
+        } else {
+          p->set_right(t);
+        }
       }
     }
     return TMe::FixBalanceRemove(fcn);
@@ -59,16 +61,16 @@ class BalancedTree : public Tree<TTNodesManager, TTMe> {
  public:
   static TNode* RemoveRight(TNode* root, TNode*& removed_node) {
     assert(root);
-    root->ApplyAction();
-    if (root->r) {
-      root->SetR(RemoveRight(root->r, removed_node));
-      root->UpdateInfo();
+    root->apply_deferred();
+    if (root->right) {
+      root->set_right(RemoveRight(root->right, removed_node));
+      root->update_subtree_data();
       return TMe::FixBalanceRemove(root);
     } else {
       removed_node = root;
-      TNode* node = root->l;
-      if (node) node->SetP(nullptr);
-      root->ResetLinksAndUpdateInfo();
+      TNode* node = root->left;
+      if (node) node->set_parent(nullptr);
+      root->reset_links_and_update_subtree_data();
       return node;
     }
   }

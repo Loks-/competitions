@@ -24,7 +24,7 @@ class WAVLTree
               TData,
               base::SubtreeData<templates::PrependT<subtree_data::WAVLRank,
                                                     TAggregatorsTuple>>,
-              base::Deferred<TDeferredTuple>, true, use_parent, TKey>>,
+              base::Deferred<TDeferredTuple>, use_parent, true, TKey>>,
           WAVLTree<use_parent, TData, TAggregatorsTuple, TDeferredTuple,
                    TKey>> {
  public:
@@ -32,7 +32,7 @@ class WAVLTree
       templates::PrependT<subtree_data::WAVLRank, TAggregatorsTuple>>;
   using TDeferred = base::Deferred<TDeferredTuple>;
   using TNode =
-      base::Node<TData, TSubtreeData, TDeferred, true, use_parent, TKey>;
+      base::Node<TData, TSubtreeData, TDeferred, use_parent, true, TKey>;
   using TSelf =
       WAVLTree<use_parent, TData, TAggregatorsTuple, TDeferredTuple, TKey>;
   using TBTree =
@@ -60,7 +60,7 @@ class WAVLTree
   }
 
   static constexpr void UpdateRank(TNode* p) {
-    SetRank(p, std::max(Rank(p->l), Rank(p->r)) + 1);
+    SetRank(p, std::max(Rank(p->left), Rank(p->right)) + 1);
   }
 
   static constexpr void IncRank(TNode* node) {
@@ -76,9 +76,9 @@ class WAVLTree
     if (first >= last) return nullptr;
     size_t m = (first + last) / 2;
     TNode* root = vnodes[m];
-    root->SetL(BuildTreeI(vnodes, first, m));
-    root->SetR(BuildTreeI(vnodes, m + 1, last));
-    root->UpdateInfo();
+    root->set_left(BuildTreeI(vnodes, first, m));
+    root->set_right(BuildTreeI(vnodes, m + 1, last));
+    root->update_subtree_data();
     UpdateRank(root);
     return root;
   }
@@ -102,23 +102,23 @@ class WAVLTree
   }
 
   static TNode* FixBalanceInsert(TNode* root) {
-    if (RankDiff(root, root->r) == 0) {
-      if (RankDiff(root, root->l) == 1) {
+    if (RankDiff(root, root->right) == 0) {
+      if (RankDiff(root, root->left) == 1) {
         IncRank(root);
-      } else if (RankDiff(root->r, root->r->r) == 1) {
-        assert(RankDiff(root->r, root->r->l) == 2);
-        return FixBalanceInsertRotate1(root->r, root);
+      } else if (RankDiff(root->right, root->right->right) == 1) {
+        assert(RankDiff(root->right, root->right->left) == 2);
+        return FixBalanceInsertRotate1(root->right, root);
       } else {
-        return FixBalanceInsertRotate2(root->r->l, root->r, root);
+        return FixBalanceInsertRotate2(root->right->left, root->right, root);
       }
-    } else if (RankDiff(root, root->l) == 0) {
-      if (RankDiff(root, root->r) == 1) {
+    } else if (RankDiff(root, root->left) == 0) {
+      if (RankDiff(root, root->right) == 1) {
         IncRank(root);
-      } else if (RankDiff(root->l, root->l->l) == 1) {
-        assert(RankDiff(root->l, root->l->r) == 2);
-        return FixBalanceInsertRotate1(root->l, root);
+      } else if (RankDiff(root->left, root->left->left) == 1) {
+        assert(RankDiff(root->left, root->left->right) == 2);
+        return FixBalanceInsertRotate1(root->left, root);
       } else {
-        return FixBalanceInsertRotate2(root->l->r, root->l, root);
+        return FixBalanceInsertRotate2(root->left->right, root->left, root);
       }
     }
     return root;
@@ -128,7 +128,7 @@ class WAVLTree
     DecRank(parent);
     IncRank(child);
     base::Rotate<TNode, true, true>(child, parent, nullptr);
-    if (!parent->l && !parent->r) {
+    if (!parent->left && !parent->right) {
       SetRank(parent, 0);
     }
     return child;
@@ -146,13 +146,13 @@ class WAVLTree
   }
 
   static TNode* FixBalanceRemove(TNode* root) {
-    if (!root->l && !root->r) {
+    if (!root->left && !root->right) {
       SetRank(root, 0);
       return root;
     }
-    TNode* child = (RankDiff(root, root->l) > 2)   ? root->l
-                   : (RankDiff(root, root->r) > 2) ? root->r
-                                                   : root;
+    TNode* child = (RankDiff(root, root->left) > 2)    ? root->left
+                   : (RankDiff(root, root->right) > 2) ? root->right
+                                                       : root;
     if (child == root) return root;
     assert(RankDiff(root, child) == 3);
     TNode* sibling = base::Sibling(child, root);
@@ -161,22 +161,22 @@ class WAVLTree
       return root;
     }
     assert((RankDiff(root, sibling) == 1));
-    if ((RankDiff(sibling, sibling->l) == 2) &&
-        (RankDiff(sibling, sibling->r) == 2)) {
+    if ((RankDiff(sibling, sibling->left) == 2) &&
+        (RankDiff(sibling, sibling->right) == 2)) {
       DecRank(sibling);
       DecRank(root);
       return root;
-    } else if (child == root->l) {
-      if (RankDiff(sibling, sibling->r) == 1) {
+    } else if (child == root->left) {
+      if (RankDiff(sibling, sibling->right) == 1) {
         return FixBalanceRemoveRotate1(sibling, root);
       } else {
-        return FixBalanceRemoveRotate2(sibling->l, sibling, root);
+        return FixBalanceRemoveRotate2(sibling->left, sibling, root);
       }
     } else {
-      if (RankDiff(sibling, sibling->l) == 1) {
+      if (RankDiff(sibling, sibling->left) == 1) {
         return FixBalanceRemoveRotate1(sibling, root);
       } else {
-        return FixBalanceRemoveRotate2(sibling->r, sibling, root);
+        return FixBalanceRemoveRotate2(sibling->right, sibling, root);
       }
     }
   }
@@ -189,10 +189,10 @@ class WAVLTree
 
   static TNode* Join3L(TNode* l, TNode* m1, TNode* r, int hr) {
     if (Rank(l) > hr + 1) {
-      l->ApplyAction();
-      l->SetR(Join3L(l->r, m1, r, hr));
-      l->UpdateInfo();
-      assert(Rank(l) >= Rank(l->r));
+      l->apply_deferred();
+      l->set_right(Join3L(l->right, m1, r, hr));
+      l->update_subtree_data();
+      assert(Rank(l) >= Rank(l->right));
       return FixBalanceInsert(l);
     } else {
       return Join3IBase(l, m1, r);
@@ -201,10 +201,10 @@ class WAVLTree
 
   static TNode* Join3R(TNode* l, TNode* m1, TNode* r, int hl) {
     if (Rank(r) > hl + 1) {
-      r->ApplyAction();
-      r->SetL(Join3R(l, m1, r->l, hl));
-      r->UpdateInfo();
-      assert(Rank(r) >= Rank(r->l));
+      r->apply_deferred();
+      r->set_left(Join3R(l, m1, r->left, hl));
+      r->update_subtree_data();
+      assert(Rank(r) >= Rank(r->left));
       return FixBalanceInsert(r);
     } else {
       return Join3IBase(l, m1, r);
@@ -213,7 +213,7 @@ class WAVLTree
 
  public:
   static TNode* Join3(TNode* l, TNode* m1, TNode* r) {
-    assert(m1 && !m1->l && !m1->r);
+    assert(m1 && !m1->left && !m1->right);
     const auto hl = Rank(l), hr = Rank(r), hd = hl - hr;
     return (hd > 1)    ? Join3L(l, m1, r, hr)
            : (hd < -1) ? Join3R(l, m1, r, hl)

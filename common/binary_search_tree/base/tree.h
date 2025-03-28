@@ -18,14 +18,14 @@ class Tree : public TTNodesManager {
  public:
   using TNodesManager = TTNodesManager;
   using TNode = typename TNodesManager::TNode;
-  using TData = typename TNode::TData;
-  using TKey = typename TNode::TKey;
-  using TInfo = typename TNode::TInfo;
-  using TAction = typename TNode::TAction;
+  using TData = typename TNode::DataType;
+  using TKey = typename TNode::KeyType;
+  using TInfo = typename TNode::SubtreeDataType;
+  using TAction = typename TNode::DeferredType;
   using TMe = TTMe;
 
-  static constexpr bool use_key = TNode::use_key;
-  static constexpr bool use_parent = TNode::use_parent;
+  static constexpr bool use_key = TNode::has_key;
+  static constexpr bool use_parent = TNode::has_parent;
 
   static constexpr bool support_insert = true;
   static constexpr bool support_remove = use_parent;
@@ -55,7 +55,7 @@ class Tree : public TTNodesManager {
     auto p = New();
     p->data = data;
     p->subtree_data.bti_reset();
-    p->UpdateInfo();
+    p->update_subtree_data();
     return p;
   }
 
@@ -65,13 +65,13 @@ class Tree : public TTNodesManager {
     p->data = data;
     p->key = key;
     p->subtree_data.bti_reset();
-    p->UpdateInfo();
+    p->update_subtree_data();
     return p;
   }
 
   static TNode* BuildTree(const std::vector<TNode*>& vnodes) {
     TNode* root = TMe::BuildTreeI(vnodes, 0, vnodes.size());
-    if (root) root->SetP(nullptr);
+    if (root) root->set_parent(nullptr);
     return root;
   }
 
@@ -84,7 +84,7 @@ class Tree : public TTNodesManager {
   }
 
   TNode* Build(const std::vector<TData>& data, const std::vector<TKey>& keys) {
-    static_assert(use_key, "use_key should be true");
+    static_assert(TNode::has_key, "has_key should be true");
     assert(data.size() == keys.size());
     if (data.size() == 0) return nullptr;
     TNodesManager::ReserveAdditional(data.size());
@@ -107,7 +107,7 @@ class Tree : public TTNodesManager {
 
   static TNode* InsertByKey(TNode* root, TNode* node) {
     static_assert(TMe::support_insert, "Insert should be supported");
-    static_assert(use_key, "use_key should be true");
+    static_assert(TNode::has_key, "has_key should be true");
     assert(node);
     return root ? TMe::InsertByKeyI(root, node) : node;
   }
@@ -191,8 +191,8 @@ class Tree : public TTNodesManager {
 
   void ReleaseTree(TNode* root) {
     if (root) {
-      ReleaseTree(root->l);
-      ReleaseTree(root->r);
+      ReleaseTree(root->left);
+      ReleaseTree(root->right);
       TNodesManager::Release(root);
     }
   }
@@ -203,9 +203,9 @@ class Tree : public TTNodesManager {
     if (first >= last) return nullptr;
     size_t m = (first + last) / 2;
     TNode* root = vnodes[m];
-    root->SetL(BuildTreeI(vnodes, first, m));
-    root->SetR(BuildTreeI(vnodes, m + 1, last));
-    root->UpdateInfo();
+    root->set_left(BuildTreeI(vnodes, first, m));
+    root->set_right(BuildTreeI(vnodes, m + 1, last));
+    root->update_subtree_data();
     return root;
   }
 
@@ -232,16 +232,16 @@ class Tree : public TTNodesManager {
     if (!l) return r;
     if (!r) return l;
     auto node = l;
-    for (; node->r; node = node->r) node->ApplyAction();
-    node->ApplyAction();
+    for (; node->right; node = node->right) node->apply_deferred();
+    node->apply_deferred();
     l = TMe::RemoveByNode(node);
     return TMe::Join3(l, node, r);
   }
 
   static TNode* Join3IBase(TNode* l, TNode* m1, TNode* r) {
-    m1->SetL(l);
-    m1->SetR(r);
-    m1->UpdateInfo();
+    m1->set_left(l);
+    m1->set_right(r);
+    m1->update_subtree_data();
     return m1;
   }
 
@@ -254,12 +254,12 @@ class Tree : public TTNodesManager {
       output_l = output_r = nullptr;
       return;
     }
-    root->ApplyAction();
-    TNode *l = root->l, *r = root->r, *m = nullptr;
-    root->SetL(nullptr);
-    root->SetR(nullptr);
-    if (l) l->SetP(nullptr);
-    if (r) r->SetP(nullptr);
+    root->apply_deferred();
+    TNode *l = root->left, *r = root->right, *m = nullptr;
+    root->set_left(nullptr);
+    root->set_right(nullptr);
+    if (l) l->set_parent(nullptr);
+    if (r) r->set_parent(nullptr);
     if (root->key < key) {
       SplitByKeyI(r, key, m, output_r);
       output_l = TMe::Join3(l, root, m);

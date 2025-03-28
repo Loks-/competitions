@@ -17,16 +17,16 @@ namespace segment {
  * @return The accumulated subtree data for nodes with keys less than end.
  */
 template <typename Node>
-inline typename Node::TInfo get_by_key(const Node* root,
-                                       const typename Node::TKey& end) {
-  typename Node::TInfo output;
+inline typename Node::SubtreeDataType get_by_key(
+    const Node* root, const typename Node::KeyType& end) {
+  typename Node::SubtreeDataType output;
   for (; root;) {
     if (root->key < end) {
-      if (root->l) output.add_subtree(root->l);
+      if (root->left) output.add_subtree(root->left);
       output.add_node(root);
-      root = root->r;
+      root = root->right;
     } else {
-      root = root->l;
+      root = root->left;
     }
   }
   return output;
@@ -47,37 +47,37 @@ inline typename Node::TInfo get_by_key(const Node* root,
  * @return The accumulated subtree data for nodes with keys in [begin, end).
  */
 template <typename Node>
-inline typename Node::TInfo get_by_key(const Node* root,
-                                       const typename Node::TKey& begin,
-                                       const typename Node::TKey& end) {
+inline typename Node::SubtreeDataType get_by_key(
+    const Node* root, const typename Node::KeyType& begin,
+    const typename Node::KeyType& end) {
   for (; root;) {
     if (root->key < begin) {
-      root = root->r;
+      root = root->right;
     } else if (root->key >= end) {
-      root = root->l;
+      root = root->left;
     } else {
       break;
     }
   }
-  typename Node::TInfo output;
+  typename Node::SubtreeDataType output;
   if (!root) return output;
   output.set_node(root);
-  for (const Node* node = root->l; node;) {
+  for (const Node* node = root->left; node;) {
     if (node->key < begin) {
-      node = node->r;
+      node = node->right;
     } else {
       output.add_node(node);
-      if (node->r) output.add_subtree(node->r);
-      node = node->l;
+      if (node->right) output.add_subtree(node->right);
+      node = node->left;
     }
   }
-  for (const Node* node = root->r; node;) {
+  for (const Node* node = root->right; node;) {
     if (node->key < end) {
-      if (node->l) output.add_subtree(node->l);
+      if (node->left) output.add_subtree(node->left);
       output.add_node(node);
-      node = node->r;
+      node = node->right;
     } else {
-      node = node->l;
+      node = node->left;
     }
   }
   return output;

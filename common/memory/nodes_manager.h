@@ -39,20 +39,20 @@ class NodesManager {
   constexpr TNode* New() {
     if (!released_nodes.empty()) {
       TNode* p = released_nodes.top();
-      p->ClearReuse();
+      p->clear_reuse();
       released_nodes.pop();
       return p;
     } else {
       ReserveAdditional(1);
       assert(used_nodes < nodes.size());
       TNode* p = &(nodes[used_nodes]);
-      p->ClearCreate(used_nodes++);
+      p->clear_create(used_nodes++);
       return p;
     }
   }
 
   constexpr void Release(TNode* p) {
-    p->ClearRelease();
+    p->clear_release();
     released_nodes.push(p);
   }
 
@@ -72,8 +72,8 @@ class NodesManager {
     std::stack<TNode*>().swap(released_nodes);
     used_nodes = 0;
     for (TNode& node : nodes) {
-      node.ClearRelease();
-      node.ClearReuse();
+      node.clear_release();
+      node.clear_reuse();
     }
   }
 };

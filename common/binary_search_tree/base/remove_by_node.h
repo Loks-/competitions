@@ -8,27 +8,28 @@ namespace base {
 template <class TNode, bool apply_action>
 inline TNode* RemoveByNode(TNode* node, TNode*& first_changed_node) {
   if (apply_action) bst::deferred::propagate_to_node(node);
-  TNode *p = node->p, *c;
-  if (node->l && node->r) {
-    node->l->SetP(nullptr);
-    TNode* l = RemoveRight<TNode>(node->l, c, first_changed_node);
-    c->SetL(l);
-    c->SetR(node->r);
+  TNode *p = node->parent, *c;
+  if (node->left && node->right) {
+    node->left->set_parent(nullptr);
+    TNode* l = RemoveRight<TNode>(node->left, c, first_changed_node);
+    c->set_left(l);
+    c->set_right(node->right);
     c->subtree_data.bti_copy(node);
-    c->UpdateInfo();
+    c->update_subtree_data();
     if (!first_changed_node) first_changed_node = c;
   } else {
     first_changed_node = p;
-    c = (node->l ? node->l : node->r);
-    if (c) c->SetP(p);
+    c = (node->left ? node->left : node->right);
+    if (c) c->set_parent(p);
   }
-  node->ResetLinksAndUpdateInfo();
+  node->reset_links_and_update_subtree_data();
   if (!p) return c;
-  if (node == p->l)
-    p->SetL(c);
-  else
-    p->SetR(c);
-  for (; p; p = (c = p)->p) p->UpdateInfo();
+  if (node == p->left) {
+    p->set_left(c);
+  } else {
+    p->set_right(c);
+  }
+  for (; p; p = (c = p)->parent) p->update_subtree_data();
   return c;
 }
 }  // namespace base

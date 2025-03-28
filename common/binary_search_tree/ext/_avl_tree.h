@@ -71,9 +71,9 @@ class AVLTree
     if (!root) return node;
     root->ApplyAction();
     if (root->key < node->key)
-      root->SetR(InsertByKey(root->r, node));
+      root->set_right(InsertByKey(root->r, node));
     else
-      root->SetL(InsertByKey(root->l, node));
+      root->set_left(InsertByKey(root->l, node));
     return FixBalance<false>(root);
   }
 
@@ -81,12 +81,12 @@ class AVLTree
   static TNode* SwapAndRemove(TNode* root, TNode* node) {
     root->ApplyAction();
     if (root->r) {
-      root->SetR(SwapAndRemove(root->r, node));
+      root->set_right(SwapAndRemove(root->r, node));
       return FixBalance<true>(root);
     } else {
       TNode* child = root->l;
-      root->SetL(node->l);
-      root->SetR(node->r);
+      root->set_left(node->l);
+      root->set_right(node->r);
       node->l = root;  // Save information about swapped node
       return child;
     }
@@ -98,9 +98,9 @@ class AVLTree
     if (!root) return root;
     root->ApplyAction();
     if (root->key < key) {
-      root->SetR(RemoveByKey(root->r, key, removed_node));
+      root->set_right(RemoveByKey(root->r, key, removed_node));
     } else if (root->key > key) {
-      root->SetL(RemoveByKey(root->l, key, removed_node));
+      root->set_left(RemoveByKey(root->l, key, removed_node));
     } else {
       removed_node = root;
       if (root->l && root->r) {
@@ -110,10 +110,10 @@ class AVLTree
           TNode* temp = SwapAndRemove(child, root);
           child = root->l;
           root->ResetLinksAndUpdateInfo();
-          child->SetL(temp);
+          child->set_left(temp);
           return FixBalance<true>(child);
         } else {
-          child->SetR(root->r);
+          child->set_right(root->r);
           root->ResetLinksAndUpdateInfo();
           return FixBalance<true>(child);
         }
@@ -135,10 +135,10 @@ class AVLTree
       if (child->r) {
         TNode* temp = SwapAndRemove(child, node);
         child = node->l;
-        child->SetL(temp);
+        child->set_left(temp);
         child = FixBalance<true>(child);
       } else {
-        child->SetR(node->r);
+        child->set_right(node->r);
         node->ResetLinksAndUpdateInfo();
         child = FixBalance<true>(child);
       }
@@ -149,14 +149,14 @@ class AVLTree
 
     for (; parent;) {
       if (parent->l == node)
-        parent->SetL(child);
+        parent->set_left(child);
       else
-        parent->SetR(child);
+        parent->set_right(child);
       node = parent;
       parent = node->p;
       child = FixBalance<true>(node);
     }
-    if (child) child->SetP(nullptr);
+    if (child) child->set_parent(nullptr);
     return child;
   }
 };

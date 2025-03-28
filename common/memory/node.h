@@ -3,8 +3,8 @@
 namespace memory {
 class Node {
  public:
-  constexpr void ClearCreate(unsigned /* raw_index */) {}
-  constexpr void ClearRelease() {}
-  constexpr void ClearReuse() {}
+  constexpr void clear_create(unsigned /* raw_index */) {}
+  constexpr void clear_release() {}
+  constexpr void clear_reuse() {}
 };
 }  // namespace memory

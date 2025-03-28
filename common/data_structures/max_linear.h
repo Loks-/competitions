@@ -116,9 +116,9 @@ class MaxLinear {
     TNode* node = root;
     for (; node;) {
       if (x < node->data.xl)
-        node = node->l;
+        node = node->left;
       else if (node->data.xr < x)
-        node = node->r;
+        node = node->right;
       else
         break;
     }

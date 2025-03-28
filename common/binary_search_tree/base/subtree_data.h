@@ -176,8 +176,8 @@ class SubtreeData {
     assert(node);
     if constexpr (support_segment) {
       set_node(node);
-      if (node->l) add_left_subtree(node->l);
-      if (node->r) add_right_subtree(node->r);
+      if (node->left) add_left_subtree(node->left);
+      if (node->right) add_right_subtree(node->right);
     } else {
       std::apply(
           [node](auto&... aggregators) {
@@ -414,8 +414,8 @@ class SubtreeData {
   static constexpr void update_one(Aggregator& aggregator, const Node* node) {
     if constexpr (Aggregator::support_segment) {
       set_node_one(aggregator, node);
-      if (node->l) add_left_subtree_one(aggregator, node->l);
-      if (node->r) add_right_subtree_one(aggregator, node->r);
+      if (node->left) add_left_subtree_one(aggregator, node->left);
+      if (node->right) add_right_subtree_one(aggregator, node->right);
     } else {
       aggregator.update(node);
     }

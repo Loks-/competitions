@@ -9,23 +9,24 @@ template <class TNode>
 inline TNode* RemoveRight(TNode* root, TNode*& removed_node,
                           TNode*& old_parent) {
   assert(root);
-  root->ApplyAction();
-  if (root->r) {
+  root->apply_deferred();
+  if (root->right) {
     TNode* node = root;
-    for (node->r->ApplyAction(); node->r->r; node->r->ApplyAction())
-      node = node->r;
-    removed_node = node->r;
-    node->SetR(removed_node->l);
-    removed_node->ResetLinksAndUpdateInfo();
+    for (node->right->apply_deferred(); node->right->right;
+         node->right->apply_deferred())
+      node = node->right;
+    removed_node = node->right;
+    node->set_right(removed_node->left);
+    removed_node->reset_links_and_update_subtree_data();
     old_parent = node;
     bst::subtree_data::propagate_to_root(old_parent);
     return root;
   } else {
     removed_node = root;
     old_parent = nullptr;
-    TNode* node = root->l;
-    if (node) node->SetP(nullptr);
-    root->ResetLinksAndUpdateInfo();
+    TNode* node = root->left;
+    if (node) node->set_parent(nullptr);
+    root->reset_links_and_update_subtree_data();
     return node;
   }
 }

@@ -20,8 +20,8 @@ class EulerTourTreesSplayTree {
     for (unsigned i = 0; i < size; ++i) {
       auto node_l = bstree.New(i);
       auto node_r = bstree.New(i);
-      node_l->SetR(node_r);
-      node_l->UpdateInfo();
+      node_l->set_right(node_r);
+      node_l->update_subtree_data();
     }
   }
 
@@ -41,7 +41,7 @@ class EulerTourTreesSplayTree {
 
   TNode* FindRoot(TNode* node) {
     Splay(node);
-    for (; node->l;) node = node->l;
+    for (; node->left;) node = node->left;
     Splay(node);
     return node;
   }
@@ -91,15 +91,16 @@ class EulerTourTreesSplayTree {
   unsigned TreeSize(unsigned index) {
     auto node = Node(index, false);
     Splay(node);
-    return node->subtree_data.size;
+    return bst::subtree_data::size(node);
   }
 
+  // TODO: check if this is correct
   bool SameTree(unsigned index1, unsigned index2) {
     auto node1 = Node(index1, false), node2 = Node(index2, false);
     // return FindRoot(node1) == FindRoot(node2);
     Splay(node1);
     Splay(node2);
-    return node1->p;
+    return node1->parent;
   }
 };
 }  // namespace graph

@@ -12,7 +12,7 @@ inline void RemoveRightSkipUpdate(TNode* root, TNode*& removed_node,
   for (root->r->ApplyAction(); root->r->r; root->r->ApplyAction())
     root = root->r;
   removed_node = root->r;
-  root->SetR(removed_node->l);
+  root->set_right(removed_node->l);
   removed_node->ResetLinksAndUpdateInfo();
   old_parent = root;
 }

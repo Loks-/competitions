@@ -81,7 +81,7 @@ class ScapegoatTree
         bst::InsertByKeySkipUpdate(node, new_node);
         TNode* r = RebuildSubtree(node);
         (p ? ((node == p->l) ? p->l : p->r) : root) = r;
-        r->SetP(p);
+        r->set_parent(p);
         return root;
       }
       node->subtree_data.Insert(new_node);
@@ -90,14 +90,14 @@ class ScapegoatTree
         if (node->r) {
           node = node->r;
         } else {
-          node->SetR(new_node);
+          node->set_right(new_node);
           break;
         }
       } else {
         if (node->l) {
           node = node->l;
         } else {
-          node->SetL(new_node);
+          node->set_left(new_node);
           break;
         }
       }
@@ -114,7 +114,7 @@ class ScapegoatTree
         TNode* p = node->p;
         TNode* r = RebuildSubtree(node);
         (p ? ((node == p->l) ? p->l : p->r) : root) = r;
-        r->SetP(p);
+        r->set_parent(p);
         if (!p) return r;
         node = p;
         break;
@@ -123,14 +123,14 @@ class ScapegoatTree
         if (node->r) {
           node = node->r;
         } else {
-          node->SetR(new_node);
+          node->set_right(new_node);
           break;
         }
       } else {
         if (node->l) {
           node = node->l;
         } else {
-          node->SetL(new_node);
+          node->set_left(new_node);
           break;
         }
       }
@@ -147,7 +147,7 @@ class ScapegoatTree
         bst::InsertByKeySkipUpdate(node, new_node);
         TNode *r = RebuildSubtree(node), *p = s.empty() ? nullptr : s.top();
         (p ? ((node == p->l) ? p->l : p->r) : root) = r;
-        r->SetP(p);
+        r->set_parent(p);
         return root;
       }
       s.push(node);
@@ -155,14 +155,14 @@ class ScapegoatTree
         if (node->r) {
           node = node->r;
         } else {
-          node->SetR(new_node);
+          node->set_right(new_node);
           break;
         }
       } else {
         if (node->l) {
           node = node->l;
         } else {
-          node->SetL(new_node);
+          node->set_left(new_node);
           break;
         }
       }
@@ -208,13 +208,13 @@ class ScapegoatTree
       }
       TNode* current = new_root->r;
       for (; !s.empty(); s.pop()) {
-        s.top()->SetL(current);
+        s.top()->set_left(current);
         current = s.top();
         current->UpdateInfo();
         current = UpdateAndFixSubtree(current);
       }
-      new_root->SetL(l);
-      new_root->SetR(current);
+      new_root->set_left(l);
+      new_root->set_right(current);
     } else {
       new_root = l;
       for (new_root->ApplyAction(); new_root->r; new_root->ApplyAction()) {
@@ -223,13 +223,13 @@ class ScapegoatTree
       }
       TNode* current = new_root->l;
       for (; !s.empty(); s.pop()) {
-        s.top()->SetR(current);
+        s.top()->set_right(current);
         current = s.top();
         current->UpdateInfo();
         current = UpdateAndFixSubtree(current);
       }
-      new_root->SetL(current);
-      new_root->SetR(r);
+      new_root->set_left(current);
+      new_root->set_right(r);
     }
     return UpdateAndFixSubtree(new_root);
   }
@@ -240,9 +240,9 @@ class ScapegoatTree
     if (!root) return root;
     root->ApplyAction();
     if (root->key < key) {
-      root->SetR(RemoveByKey(root->r, key, removed_node));
+      root->set_right(RemoveByKey(root->r, key, removed_node));
     } else if (root->key > key) {
-      root->SetL(RemoveByKey(root->l, key, removed_node));
+      root->set_left(RemoveByKey(root->l, key, removed_node));
     } else {
       removed_node = root;
       TNode* new_root = RemoveRootI(root);
@@ -279,7 +279,7 @@ class ScapegoatTree
       parent = node->p;
       child = UpdateAndFixSubtree(node);
       if (child != node) {
-        child->SetP(parent);
+        child->set_parent(parent);
         if (parent) {
           if (parent->l == node)
             parent->l = child;

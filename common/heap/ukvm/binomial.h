@@ -42,7 +42,7 @@ class Binomial {
       d = 0;
     }
 
-    constexpr void ClearReuse() { d = 0; }
+    constexpr void clear_reuse() { d = 0; }
   };
 
   using TNodesManager = memory::NodesManagerFixedSize<Node>;

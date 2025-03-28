@@ -95,7 +95,7 @@ class Node
     UpdateInfo();
   }
 
-  constexpr void ClearReuse() {
+  constexpr void clear_reuse() {
     TProxyParent::ResetLinks();
     ClearAction();
   }

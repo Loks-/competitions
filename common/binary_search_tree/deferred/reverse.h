@@ -82,9 +82,9 @@ class Reverse : public Base {
   constexpr void apply(Node* node) {
     assert(node);
     if (reverse_required) {
-      std::swap(node->l, node->r);
-      bst::deferred::reverse_subtree(node->l);
-      bst::deferred::reverse_subtree(node->r);
+      std::swap(node->left, node->right);
+      bst::deferred::reverse_subtree(node->left);
+      bst::deferred::reverse_subtree(node->right);
       reverse_required = false;
     }
   }
@@ -128,7 +128,7 @@ class Reverse : public Base {
  */
 template <class Node>
 constexpr void reverse_subtree(Node* node) {
-  static_assert(Node::TAction::template has<Reverse>(),
+  static_assert(Node::DeferredType::template has<Reverse>(),
                 "Node's Deferred class must contain Reverse class to use "
                 "reverse_subtree");
   if (node) {

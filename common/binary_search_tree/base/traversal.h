@@ -11,27 +11,27 @@ namespace hidden {
 template <class TNode, class TData>
 inline void TraversePreorder(TNode* node, std::vector<TData>& output) {
   if (!node) return;
-  node->ApplyAction();
+  node->apply_deferred();
   output.push_back(node->data);
-  TraversePreorder(node->l, output);
-  TraversePreorder(node->r, output);
+  TraversePreorder(node->left, output);
+  TraversePreorder(node->right, output);
 }
 
 template <class TNode, class TData>
 inline void TraverseInorder(TNode* node, std::vector<TData>& output) {
   if (!node) return;
-  node->ApplyAction();
-  TraverseInorder(node->l, output);
+  node->apply_deferred();
+  TraverseInorder(node->left, output);
   output.push_back(node->data);
-  TraverseInorder(node->r, output);
+  TraverseInorder(node->right, output);
 }
 
 template <class TNode, class TData>
 inline void TraversePostorder(TNode* node, std::vector<TData>& output) {
   if (!node) return;
-  node->ApplyAction();
-  TraversePostorder(node->l, output);
-  TraversePostorder(node->r, output);
+  node->apply_deferred();
+  TraversePostorder(node->left, output);
+  TraversePostorder(node->right, output);
   output.push_back(node->data);
 }
 
@@ -41,10 +41,10 @@ inline void TraverseLevelorder(TNode* node, std::vector<TData>& output) {
   thread_local std::queue<TNode*> q;
   for (q.push(node); !q.empty(); q.pop()) {
     node = q.front();
-    node->ApplyAction();
+    node->apply_deferred();
     output.push_back(node->data);
-    if (node->l) q.push(node->l);
-    if (node->r) q.push(node->r);
+    if (node->left) q.push(node->left);
+    if (node->right) q.push(node->right);
   }
 }
 }  // namespace hidden

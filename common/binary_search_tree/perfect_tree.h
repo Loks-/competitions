@@ -21,7 +21,7 @@ class PerfectTree
     : public base::Tree<
           memory::NodesManagerFixedSize<base::Node<
               TData, base::SubtreeData<TAggregatorsTuple>,
-              base::Deferred<TDeferredTuple>, true, use_parent, TKey>>,
+              base::Deferred<TDeferredTuple>, use_parent, true, TKey>>,
           PerfectTree<use_parent, TData, TAggregatorsTuple, TDeferredTuple,
                       TKey>> {
  public:
@@ -33,7 +33,7 @@ class PerfectTree
   using TSubtreeData = base::SubtreeData<TAggregatorsTuple>;
   using TDeferred = base::Deferred<TDeferredTuple>;
   using TNode =
-      base::Node<TData, TSubtreeData, TDeferred, true, use_parent, TKey>;
+      base::Node<TData, TSubtreeData, TDeferred, use_parent, true, TKey>;
   using TSelf =
       PerfectTree<use_parent, TData, TAggregatorsTuple, TDeferredTuple, TKey>;
   using TTree = base::Tree<memory::NodesManagerFixedSize<TNode>, TSelf>;

@@ -9,9 +9,9 @@ namespace base {
 namespace hidden {
 template <class TNode>
 constexpr unsigned DeepI(const TNode* node) {
-  static_assert(TNode::use_parent, "use_parent should be true");
+  static_assert(TNode::has_parent, "has_parent should be true");
   unsigned d = 0;
-  for (; node; node = node->p) ++d;
+  for (; node; node = node->parent) ++d;
   return d;
 }
 }  // namespace hidden

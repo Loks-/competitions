@@ -48,7 +48,7 @@ inline TNode* RemoveRight(TNode* root, TNode*& removed_node,
     removed_node = root;
     old_parent = nullptr;
     TNode* node = root->l;
-    if (node) node->SetP(nullptr);
+    if (node) node->set_parent(nullptr);
     root->ResetLinksAndUpdateInfo();
     return node;
   }

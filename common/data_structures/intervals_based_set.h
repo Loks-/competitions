@@ -37,16 +37,18 @@ class IntervalsBasedSet {
     static constexpr bool use_data = true;
 
    public:
-    TTValue set_size = 0;
+    TValue set_size = 0;
 
    public:
     template <class TNode>
     constexpr void update(TNode* node) {
       Base::update(node);
-      set_size =
-          node->data.Size() +
-          (node->l ? node->l->subtree_data.template get<Self>().set_size : 0) +
-          (node->r ? node->r->subtree_data.template get<Self>().set_size : 0);
+      set_size = node->data.Size() + get(node->left) + get(node->right);
+    }
+
+    template <class TNode>
+    constexpr TValue get(const TNode* node) const {
+      return node ? node->subtree_data.template get<Self>().set_size : 0;
     }
   };
 
@@ -82,12 +84,13 @@ class IntervalsBasedSet {
 
   bool HasKey(TValue key) const {
     for (TNode* node = root; node;) {
-      if (key < node->data.b)
-        node = node->l;
-      else if (key >= node->data.e)
-        node = node->r;
-      else
+      if (key < node->data.b) {
+        node = node->left;
+      } else if (key >= node->data.e) {
+        node = node->right;
+      } else {
         return true;
+      }
     }
     return false;
   }
@@ -119,8 +122,8 @@ class IntervalsBasedSet {
   void InsertIBSI(const TNode* node) {
     if (!node) return;
     Insert(node->data);
-    InsertIBSI(node->l);
-    InsertIBSI(node->r);
+    InsertIBSI(node->left);
+    InsertIBSI(node->right);
   }
 
  public:
@@ -132,8 +135,8 @@ class IntervalsBasedSet {
     node->data.b += shift;
     node->data.e += shift;
     node->key += shift;
-    ShiftValuesI(node->l, shift);
-    ShiftValuesI(node->r, shift);
+    ShiftValuesI(node->left, shift);
+    ShiftValuesI(node->right, shift);
   }
 
  public:

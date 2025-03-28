@@ -24,7 +24,7 @@ class Treap
               TData,
               base::SubtreeData<templates::PrependT<subtree_data::TreapHeight,
                                                     TAggregatorsTuple>>,
-              base::Deferred<TDeferredTuple>, use_key, use_parent, TKey>>,
+              base::Deferred<TDeferredTuple>, use_parent, use_key, TKey>>,
           Treap<use_key, use_parent, TData, TAggregatorsTuple, TDeferredTuple,
                 TKey>> {
  public:
@@ -36,8 +36,8 @@ class Treap
   using TSubtreeData = base::SubtreeData<
       templates::PrependT<subtree_data::TreapHeight, TAggregatorsTuple>>;
   using TDeferred = base::Deferred<TDeferredTuple>;
-  using TNode = bst::base::Node<TData, TSubtreeData, TDeferred, use_key,
-                                use_parent, TKey>;
+  using TNode = bst::base::Node<TData, TSubtreeData, TDeferred, use_parent,
+                                use_key, TKey>;
   using TSelf = Treap<use_key, use_parent, TData, TAggregatorsTuple,
                       TDeferredTuple, TKey>;
   using TBase = bst::persistent::Tree<memory::NodesManager<TNode>, TSelf>;
@@ -63,49 +63,51 @@ class Treap
     for (size_t j = 1; j < nodes.size(); ++j) {
       TNode* pj = nodes[j];
       if (TreapHeight(pj) < TreapHeight(plast)) {
-        plast->SetR(pj);
+        plast->set_right(pj);
         s.push(plast);
       } else if (TreapHeight(pj) >= TreapHeight(proot)) {
-        for (plast->UpdateInfo(); !s.empty(); s.pop()) s.top()->UpdateInfo();
-        pj->SetL(proot);
+        for (plast->update_subtree_data(); !s.empty(); s.pop())
+          s.top()->update_subtree_data();
+        pj->set_left(proot);
         proot = pj;
       } else {
-        for (plast->UpdateInfo(); TreapHeight(pj) >= TreapHeight(s.top());
-             s.pop()) {
+        for (plast->update_subtree_data();
+             TreapHeight(pj) >= TreapHeight(s.top()); s.pop()) {
           plast = s.top();
-          plast->UpdateInfo();
+          plast->update_subtree_data();
         }
-        pj->SetL(plast);
-        s.top()->SetR(pj);
+        pj->set_left(plast);
+        s.top()->set_right(pj);
       }
       plast = pj;
     }
-    for (plast->UpdateInfo(); !s.empty(); s.pop()) s.top()->UpdateInfo();
+    for (plast->update_subtree_data(); !s.empty(); s.pop())
+      s.top()->update_subtree_data();
     return proot;
   }
 
  protected:
   void SplitByKeyI(TNode* p, const TKey& key, TNode*& output_l,
                    TNode*& output_r) {
-    p->ApplyAction();
+    p->apply_deferred();
     if (p->key < key) {
-      if (p->r) {
+      if (p->right) {
         p = TBase::PClone(p);
         output_l = p;
-        SplitByKeyI(p->r, key, p->r, output_r);
+        SplitByKeyI(p->right, key, p->right, output_r);
         TBase::UpdatePForChildren(p);
-        p->UpdateInfo();
+        p->update_subtree_data();
       } else {
         output_l = p;
         output_r = nullptr;
       }
     } else {
-      if (p->l) {
+      if (p->left) {
         p = TBase::PClone(p);
         output_r = p;
-        SplitByKeyI(p->l, key, output_l, p->l);
+        SplitByKeyI(p->left, key, output_l, p->left);
         TBase::UpdatePForChildren(p);
-        p->UpdateInfo();
+        p->update_subtree_data();
       } else {
         output_l = nullptr;
         output_r = p;
@@ -121,27 +123,28 @@ class Treap
       output_l = output_r = nullptr;
     } else {
       SplitByKeyI(root, key, output_l, output_r);
-      if (output_l) output_l->SetP(nullptr);
-      if (output_r) output_r->SetP(nullptr);
+      if (output_l) output_l->set_parent(nullptr);
+      if (output_r) output_r->set_parent(nullptr);
     }
   }
 
   TNode* InsertByKey(TNode* root, TNode* node) {
     static_assert(use_key, "use_key should be true");
     if (!root) return node;
-    root->ApplyAction();
+    root->apply_deferred();
     if (TreapHeight(root) >= TreapHeight(node)) {
       root = TBase::PClone(root);
-      if (root->key < node->key)
-        root->r = InsertByKey(root->r, node);
-      else
-        root->l = InsertByKey(root->l, node);
+      if (root->key < node->key) {
+        root->right = InsertByKey(root->right, node);
+      } else {
+        root->left = InsertByKey(root->left, node);
+      }
     } else {
-      SplitByKeyI(root, node->key, node->l, node->r);
+      SplitByKeyI(root, node->key, node->left, node->right);
       root = node;
     }
     TBase::UpdatePForChildren(root);
-    root->UpdateInfo();
+    root->update_subtree_data();
     return root;
   }
 };

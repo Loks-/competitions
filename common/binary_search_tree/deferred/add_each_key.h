@@ -80,8 +80,8 @@ class AddEachKey : public Base {
   template <class Node>
   constexpr void add_value(Node* node, const ValueType& value) {
     deferred_value += value;
-    // Update SumKeys aggregator if present in node's TInfo
-    if constexpr (Node::TInfo::template has<SDSumKeys>()) {
+    // Update SumKeys aggregator if present in node's SubtreeDataType
+    if constexpr (Node::SubtreeDataType::template has<SDSumKeys>()) {
       SDSumKeys::get_ref(node) += value * bst::subtree_data::size(node);
     }
   }
@@ -102,8 +102,8 @@ class AddEachKey : public Base {
     assert(node);
     if (deferred_value != ValueType{}) {
       node->key += deferred_value;
-      add_to_each_key(node->l, deferred_value);
-      add_to_each_key(node->r, deferred_value);
+      add_to_each_key(node->left, deferred_value);
+      add_to_each_key(node->right, deferred_value);
       deferred_value = ValueType{};
     }
   }

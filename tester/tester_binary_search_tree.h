@@ -9,7 +9,6 @@
 #include "common/hash/combine.h"
 #include "common/timer.h"
 
-#include <iostream>
 #include <stack>
 #include <string>
 #include <vector>
@@ -69,9 +68,9 @@ class TesterBinarySearchTree {
   template <class TNode>
   size_t TreeHash(TNode* root, size_t h) {
     if (!root) return h;
-    h = TreeHash(root->l, h);
+    h = TreeHash(root->left, h);
     nhash::DCombineH(h, root->key);
-    return TreeHash(root->r, h);
+    return TreeHash(root->right, h);
   }
 
   template <class TNode>
@@ -84,13 +83,15 @@ class TesterBinarySearchTree {
     for (s.push(root); !s.empty();) {
       root = s.top();
       s.pop();
-      if (root->l) {
-        s.push(root->l);
-        assert_exception(root->l->p == root, "Parent link is incorrect!");
+      if (root->left) {
+        s.push(root->left);
+        assert_exception(root->left->parent == root,
+                         "Parent link is incorrect!");
       }
-      if (root->r) {
-        s.push(root->r);
-        assert_exception(root->r->p == root, "Parent link is incorrect!");
+      if (root->right) {
+        s.push(root->right);
+        assert_exception(root->right->parent == root,
+                         "Parent link is incorrect!");
       }
     }
   }
@@ -98,7 +99,7 @@ class TesterBinarySearchTree {
   template <class TNode>
   void VerifyParentLinks(TNode* root) {
     if (mode == hash_test)
-      VerifyParentLinksI(root, MetaBool<TNode::use_parent>());
+      VerifyParentLinksI(root, MetaBool<TNode::has_parent>());
   }
 
   template <class TNode>
