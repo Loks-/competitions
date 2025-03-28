@@ -7,10 +7,10 @@ namespace base {
 template <class TNode>
 inline TNode* Right(TNode* root) {
   if (!root) return nullptr;
-  if (TNode::DeferredType::modify_tree) root->apply_deferred();
+  if (TNode::DeferredType::modify_tree_structure) root->apply_deferred();
   for (; root->right;) {
     root = root->right;
-    if (TNode::DeferredType::modify_tree) root->apply_deferred();
+    if (TNode::DeferredType::modify_tree_structure) root->apply_deferred();
   }
   return root;
 }

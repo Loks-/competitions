@@ -13,7 +13,8 @@ namespace deferred {
  * The class tracks the nature of deferred computations through flags:
  * - modify_data: indicates if node data will be modified
  * - modify_keys: indicates if node keys will be modified
- * - modify_tree: indicates if tree structure will be modified
+ * - modify_tree_structure: indicates if tree structure will be modified
+ * - modify_nodes_order: indicates if node order will be modified
  *
  * These flags are used to optimize tree operations by avoiding unnecessary
  * updates or traversals when possible.
@@ -43,7 +44,16 @@ class Base {
    * structure of the tree (e.g., rotations, rebalancing). Used for
    * optimization purposes.
    */
-  static constexpr bool modify_tree = false;
+  static constexpr bool modify_tree_structure = false;
+
+  /**
+   * @brief Flag indicating if deferred operations modify node order.
+   *
+   * When true, indicates that pending operations will modify the
+   * order of nodes in the tree (e.g., reordering). Used for
+   * optimization purposes.
+   */
+  static constexpr bool modify_nodes_order = false;
 
   /**
    * @brief Resets the deferred computation state to empty.

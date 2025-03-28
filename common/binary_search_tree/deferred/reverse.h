@@ -14,16 +14,15 @@ template <class Node>
 constexpr void reverse_subtree(Node* node);
 
 /**
- * @brief A deferred computation manager for reversing subtrees in a BST.
+ * @brief Deferred computation for reversing a subtree.
  *
- * This class manages deferred subtree reversal operations in a binary search
- * tree. It allows multiple reversal operations to be queued and applied
- * efficiently by deferring actual reversals to child nodes until necessary.
+ * This class manages the deferred reversal of a subtree in a BST. When a
+ * subtree is reversed, the order of nodes in that subtree is inverted, which
+ * affects both the tree structure and the order of nodes.
  *
- * The class maintains a flag indicating if the current subtree needs to be
- * reversed. When applying reversals, it swaps children of the current node
- * and propagates the reversal request to child nodes. This lazy approach
- * allows for efficient handling of multiple reversal operations.
+ * The reversal operation is deferred to allow for batched processing of
+ * multiple reversals, improving performance by reducing the number of tree
+ * traversals.
  */
 class Reverse : public Base {
  public:
@@ -32,15 +31,23 @@ class Reverse : public Base {
   /**
    * @brief Flag indicating if deferred operations modify tree structure.
    *
-   * Set to true because reversing a subtree modifies the tree structure
-   * by swapping left and right children.
+   * Reversing a subtree modifies the structure of the tree by changing
+   * parent-child relationships.
    */
-  static constexpr bool modify_tree = true;
+  static constexpr bool modify_tree_structure = true;
+
+  /**
+   * @brief Flag indicating if deferred operations modify node order.
+   *
+   * Reversing a subtree modifies the order of nodes within that subtree.
+   */
+  static constexpr bool modify_nodes_order = true;
 
   /**
    * @brief Resets the deferred computation state to empty.
    *
-   * Clears the reversal flag.
+   * This function clears the reversed flag, indicating that there are
+   * no pending deferred computations.
    */
   constexpr void clear() { reverse_required = false; }
 
@@ -48,7 +55,12 @@ class Reverse : public Base {
    * @brief Checks if there are any deferred computations that need to be
    * applied.
    *
-   * @return true if the current subtree needs to be reversed, false otherwise.
+   * This function indicates whether there are any pending deferred computations
+   * that need to be processed by calling apply(). Returns true if there are
+   * computations waiting to be applied, false if all computations have been
+   * processed.
+   *
+   * @return true if there are pending computations to apply, false otherwise.
    */
   constexpr bool apply_required() const { return reverse_required; }
 

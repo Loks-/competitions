@@ -14,6 +14,10 @@ namespace deferred {
  * from root to the given node. It's used when we need to access the current
  * state of a node, ensuring all pending changes are applied.
  *
+ * The function handles different types of modifications:
+ * - Tree structure changes (e.g., rotations)
+ * - Node order changes (e.g., reversals)
+ *
  * @tparam Node The BST node type.
  * @param node The target node to apply computations to.
  */
@@ -78,8 +82,24 @@ inline void propagate_for_key_access(Node* node) {
  * @param node The target node to apply computations to.
  */
 template <class Node>
-inline void propagate_for_structure_access(Node* node) {
-  if constexpr (Node::DeferredType::modify_tree) {
+inline void propagate_for_tree_structure_access(Node* node) {
+  if constexpr (Node::DeferredType::modify_tree_structure) {
+    propagate_to_node(node);
+  }
+}
+
+/**
+ * @brief Propagates only node order-modifying computations from root to node.
+ *
+ * Used when only the order of nodes needs to be accessed, not their data,
+ * structure, or keys.
+ *
+ * @tparam Node The BST node type.
+ * @param node The target node to apply computations to.
+ */
+template <class Node>
+inline void propagate_for_nodes_order_access(Node* node) {
+  if constexpr (Node::DeferredType::modify_nodes_order) {
     propagate_to_node(node);
   }
 }

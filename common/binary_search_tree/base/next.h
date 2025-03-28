@@ -8,7 +8,7 @@ namespace base {
 template <class TNode>
 inline TNode* Next(TNode* node) {
   if (!node) return nullptr;
-  if (TNode::DeferredType::modify_tree) node->apply_deferred();
+  if (TNode::DeferredType::modify_nodes_order) node->apply_deferred();
   if (node->right) return Left(node->right);
   for (; node->parent && (node->parent->right == node);) node = node->parent;
   return node->parent;

@@ -6,7 +6,7 @@ namespace bst {
 namespace base {
 template <class TNode>
 inline bool IsLeaf(TNode* node) {
-  if (TNode::DeferredType::modify_tree) node->apply_deferred();
+  if (TNode::DeferredType::modify_tree_structure) node->apply_deferred();
   return (node->left == nullptr) && (node->right == nullptr);
 }
 }  // namespace base

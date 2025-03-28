@@ -50,8 +50,10 @@ class Deferred {
         empty ? false : (Types::modify_data || ...);
     static constexpr bool modify_keys =
         empty ? false : (Types::modify_keys || ...);
-    static constexpr bool modify_tree =
-        empty ? false : (Types::modify_tree || ...);
+    static constexpr bool modify_tree_structure =
+        empty ? false : (Types::modify_tree_structure || ...);
+    static constexpr bool modify_nodes_order =
+        empty ? false : (Types::modify_nodes_order || ...);
   };
 
   /**
@@ -77,7 +79,12 @@ class Deferred {
   /**
    * @brief Flag indicating if any deferred operations modify tree structure.
    */
-  static constexpr bool modify_tree = Flags::modify_tree;
+  static constexpr bool modify_tree_structure = Flags::modify_tree_structure;
+
+  /**
+   * @brief Flag indicating if any deferred operations modify node order.
+   */
+  static constexpr bool modify_nodes_order = Flags::modify_nodes_order;
 
   /**
    * @brief Checks at compile time if a specific deferred computation type is

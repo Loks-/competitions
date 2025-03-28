@@ -12,7 +12,7 @@ size_t Order(TNode* node) {
   static_assert(TNode::SubtreeDataType::has_size,
                 "subtree data should contain size");
   assert(node);
-  bst::deferred::propagate_for_structure_access(node);
+  bst::deferred::propagate_for_tree_structure_access(node);
   size_t order = bst::subtree_data::size(node->left);
   for (; node->parent; node = node->parent) {
     if (node->parent->right == node) {
