@@ -104,11 +104,11 @@ class IntervalsBasedSet {
     tree.SplitByKey(root, b, l, t);
     tree.SplitByKey(t, e, m, r);
     if (m) {
-      b = std::min(b, bst::base::Left(m)->data.b);
+      b = std::min(b, bst::base::left(m)->data.b);
       tree.ReleaseTree(m);
     }
     if (r) {
-      auto rf = bst::base::Left(r);
+      auto rf = bst::base::left(r);
       if (rf->data.b <= e) {
         e = rf->data.e;
         r = tree.RemoveAndReleaseByNode(rf);
@@ -153,11 +153,11 @@ class IntervalsBasedSet {
     tree.SplitByKey(t, i.e + 1, m, r);
     tree.ReleaseTree(l);
     if (m) {
-      const auto mf = bst::base::Left(m);
+      const auto mf = bst::base::left(m);
       mf->data.b = std::max(mf->data.b, i.b);
     }
     if (r) {
-      const auto rf = bst::base::Left(r);
+      const auto rf = bst::base::left(r);
       if (rf->data.b < i.e) {
         t = tree.New(Interval(rf->data.b, i.e), i.e);
         m = tree.Join(m, t);

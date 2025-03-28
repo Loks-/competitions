@@ -54,7 +54,7 @@ class MaxLinear {
     TNode *pl, *pr;
     tree.SplitByKey(root, l.a, pl, pr);
     for (; pr;) {
-      pr = bst::base::Left(pr);
+      pr = bst::base::left(pr);
       assert(pr);
       tree.Splay(pr);
       assert(l.a <= pr->key);

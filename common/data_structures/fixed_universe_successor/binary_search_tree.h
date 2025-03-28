@@ -62,7 +62,7 @@ class BinarySearchTree {
 
   size_t USize() const { return usize; }
 
-  size_t Min() const { return root ? bst::base::Left(root)->key : kEmpty; }
+  size_t Min() const { return root ? bst::base::left(root)->key : kEmpty; }
 
   size_t Max() const { return root ? bst::base::Right(root)->key : kEmpty; }
 
