@@ -64,7 +64,7 @@ class BinarySearchTree {
 
   size_t Min() const { return root ? bst::base::left(root)->key : kEmpty; }
 
-  size_t Max() const { return root ? bst::base::Right(root)->key : kEmpty; }
+  size_t Max() const { return root ? bst::base::right(root)->key : kEmpty; }
 
   size_t Successor(size_t x) const {
     auto node = bst::base::FindByKeyGreater(root, x + 1);

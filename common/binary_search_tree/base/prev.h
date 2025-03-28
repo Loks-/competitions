@@ -9,7 +9,7 @@ template <class TNode>
 inline TNode* Prev(TNode* node) {
   if (!node) return nullptr;
   if (TNode::DeferredType::modify_tree_structure) node->apply_deferred();
-  if (node->left) return Right(node->left);
+  if (node->left) return right(node->left);
   for (; node->parent && (node->parent->left == node);) node = node->parent;
   return node->parent;
 }

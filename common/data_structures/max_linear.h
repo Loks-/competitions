@@ -79,7 +79,7 @@ class MaxLinear {
       }
     }
     for (; pl;) {
-      pl = bst::base::Right(pl);
+      pl = bst::base::right(pl);
       assert(pl);
       tree.Splay(pl);
       assert(pl->key < l.a);
