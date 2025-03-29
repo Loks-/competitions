@@ -1,8 +1,8 @@
 #pragma once
 
 #include "common/base.h"
+#include "common/binary_search_tree/base/at.h"
 #include "common/binary_search_tree/base/find.h"
-#include "common/binary_search_tree/base/find_by_order.h"
 #include "common/binary_search_tree/deferred/utils/propagate_to_node.h"
 #include "common/template.h"
 
@@ -87,7 +87,7 @@ class Tree : public TTNodesManager {
   }
 
   static TNode* FindByOrder(TNode* root, size_t order_index) {
-    return bst::FindByOrder(root, order_index);
+    return bst::base::at(root, order_index);
   }
 
   static TNode* InsertByKey(TNode* root, TNode* node) {
