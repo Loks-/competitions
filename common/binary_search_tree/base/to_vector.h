@@ -2,6 +2,7 @@
 
 #include "common/binary_search_tree/subtree_data/size.h"
 
+#include <utility>
 #include <vector>
 
 namespace bst {
