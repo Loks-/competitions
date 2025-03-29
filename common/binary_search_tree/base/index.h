@@ -24,7 +24,7 @@ namespace base {
  * node, etc.).
  */
 template <class Node>
-[[nodiscard]] constexpr unsigned inorder_index(const Node* node) {
+[[nodiscard]] constexpr unsigned index(const Node* node) {
   assert(node);
   static_assert(Node::has_parent, "Node must have parent pointer enabled");
   static_assert(Node::SubtreeDataType::has_size,
