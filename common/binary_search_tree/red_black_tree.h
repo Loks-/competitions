@@ -105,7 +105,7 @@ class RedBlackTree
       }
       if (IsBlack(parent)) return root;
       TNode* gparent = parent->parent;
-      TNode* uncle = base::Sibling(parent, gparent);
+      TNode* uncle = base::sibling(parent, gparent);
       if (IsBlack(uncle)) {
         const bool rotate_required =
             ((gparent->left == parent) != (parent->left == node));
@@ -153,7 +153,7 @@ class RedBlackTree
         return base::root(child);
       }
       if (!parent) return child;
-      TNode* sibling = base::Sibling(child, parent);
+      TNode* sibling = base::sibling(child, parent);
       assert(sibling);
       sibling->apply_deferred();
       if (!IsBlack(sibling)) {
@@ -161,7 +161,7 @@ class RedBlackTree
         base::RotateUp<TNode, true, false>(sibling);
         SetColor(sibling, true);
         SetColor(parent, false);
-        sibling = base::Sibling(child, parent);
+        sibling = base::sibling(child, parent);
         sibling->apply_deferred();
       }
       assert(sibling && IsBlack(sibling));

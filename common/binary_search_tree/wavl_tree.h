@@ -92,7 +92,7 @@ class WAVLTree
   static TNode* FixBalanceInsertRotate2(TNode* gchild, TNode* child,
                                         TNode* parent) {
     assert(RankDiff(child, gchild) == 1);
-    assert(RankDiff(child, Sibling(gchild, child)) == 2);
+    assert(RankDiff(child, base::sibling(gchild, child)) == 2);
     DecRank(parent);
     DecRank(child);
     IncRank(gchild);
@@ -155,7 +155,7 @@ class WAVLTree
                                                        : root;
     if (child == root) return root;
     assert(RankDiff(root, child) == 3);
-    TNode* sibling = base::Sibling(child, root);
+    TNode* sibling = base::sibling(child, root);
     if (RankDiff(root, sibling) == 2) {
       DecRank(root);
       return root;
