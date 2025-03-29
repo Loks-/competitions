@@ -1,7 +1,7 @@
 #pragma once
 
 #include "common/base.h"
-#include "common/binary_search_tree/base/find_by_key.h"
+#include "common/binary_search_tree/base/find.h"
 #include "common/binary_search_tree/base/find_by_order.h"
 #include "common/binary_search_tree/deferred/utils/propagate_to_node.h"
 #include "common/binary_search_tree/subtree_data/size.h"
@@ -98,7 +98,7 @@ class Tree : public TTNodesManager {
   }
 
   static TNode* FindByKey(TNode* root, const TKey& key) {
-    return bst::base::FindByKey(root, key);
+    return bst::base::find(root, key);
   }
 
   static TNode* FindByOrder(TNode* root, size_t order_index) {
