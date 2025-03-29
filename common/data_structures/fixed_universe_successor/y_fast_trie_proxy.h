@@ -1,8 +1,8 @@
 #pragma once
 
 #include "common/base.h"
-#include "common/binary_search_tree/base/find_by_key_greater.h"
-#include "common/binary_search_tree/base/find_by_key_less.h"
+#include "common/binary_search_tree/base/floor.h"
+#include "common/binary_search_tree/base/lower_bound.h"
 #include "common/data_structures/fixed_universe_successor/empty.h"
 
 #include <algorithm>
@@ -209,7 +209,7 @@ class YFastTrieProxy {
       auto it = groups.find(x);
       assert(it != groups.end());
       if (it->max_value > x) {
-        auto node = bst::base::FindByKeyGreater(it->root, x + 1);
+        auto node = bst::base::lower_bound(it->root, x + 1);
         assert(node);
         return node->key;
       } else {
@@ -225,7 +225,7 @@ class YFastTrieProxy {
         auto it1 = groups.find(p.first);
         assert(it1 != groups.end());
         if (x < it1->max_value) {
-          auto node = bst::base::FindByKeyGreater(it1->root, x + 1);
+          auto node = bst::base::lower_bound(it1->root, x + 1);
           assert(node);
           return node->key;
         }
@@ -235,7 +235,7 @@ class YFastTrieProxy {
         assert(it2 != groups.end());
         if (x < it2->min_value) return it2->min_value;
         if (x < it2->max_value) {
-          auto node = bst::base::FindByKeyGreater(it2->root, x + 1);
+          auto node = bst::base::lower_bound(it2->root, x + 1);
           assert(node);
           return node->key;
         }
@@ -249,7 +249,7 @@ class YFastTrieProxy {
       auto it = groups.find(x);
       assert(it != groups.end());
       if (it->min_value < x) {
-        auto node = bst::base::FindByKeyLess(it->root, x - 1);
+        auto node = bst::base::floor(it->root, x - 1);
         assert(node);
         return node->key;
       } else {
@@ -265,7 +265,7 @@ class YFastTrieProxy {
         auto it2 = groups.find(p.second);
         assert(it2 != groups.end());
         if (x > it2->min_value) {
-          auto node = bst::base::FindByKeyLess(it2->root, x - 1);
+          auto node = bst::base::floor(it2->root, x - 1);
           assert(node);
           return node->key;
         }
@@ -275,7 +275,7 @@ class YFastTrieProxy {
         assert(it1 != groups.end());
         if (x > it1->max_value) return it1->max_value;
         if (x > it1->min_value) {
-          auto node = bst::base::FindByKeyLess(it1->root, x - 1);
+          auto node = bst::base::floor(it1->root, x - 1);
           assert(node);
           return node->key;
         }

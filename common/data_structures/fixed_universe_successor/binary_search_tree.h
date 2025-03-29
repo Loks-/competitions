@@ -1,8 +1,8 @@
 #pragma once
 
-#include "common/binary_search_tree/base/find_by_key_greater.h"
-#include "common/binary_search_tree/base/find_by_key_less.h"
+#include "common/binary_search_tree/base/floor.h"
 #include "common/binary_search_tree/base/left.h"
+#include "common/binary_search_tree/base/lower_bound.h"
 #include "common/binary_search_tree/base/right.h"
 #include "common/binary_search_tree/red_black_tree.h"
 #include "common/data_structures/fixed_universe_successor/empty.h"
@@ -67,12 +67,12 @@ class BinarySearchTree {
   size_t Max() const { return root ? bst::base::right(root)->key : kEmpty; }
 
   size_t Successor(size_t x) const {
-    auto node = bst::base::FindByKeyGreater(root, x + 1);
+    auto node = bst::base::lower_bound(root, x + 1);
     return node ? node->key : kEmpty;
   }
 
   size_t Predecessor(size_t x) const {
-    auto node = x ? bst::base::FindByKeyLess(root, x - 1) : nullptr;
+    auto node = x ? bst::base::floor(root, x - 1) : nullptr;
     return node ? node->key : kEmpty;
   }
 };
