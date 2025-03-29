@@ -32,6 +32,10 @@ class ContiguousNodesManager {
  public:
   using NodeType = TNode;
 
+  // Flags indicating supported operations
+  static constexpr bool support_at = true;
+  static constexpr bool support_index = true;
+
   /**
    * @brief Constructs a nodes manager with fixed capacity.
    *

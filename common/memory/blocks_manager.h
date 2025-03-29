@@ -33,6 +33,10 @@ class BlocksManager {
  public:
   using NodeType = TNode;
 
+  // Flags indicating supported operations
+  static constexpr bool support_at = false;
+  static constexpr bool support_index = false;
+
   /**
    * @brief Constructs a blocks manager with specified block size.
    *

@@ -28,6 +28,10 @@ class NodesManager {
  public:
   using NodeType = TNode;
 
+  // Flags indicating supported operations
+  static constexpr bool support_at = true;
+  static constexpr bool support_index = false;
+
   /**
    * @brief Constructs a nodes manager with initial capacity.
    *
