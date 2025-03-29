@@ -24,7 +24,7 @@ namespace memory {
  *
  * @tparam TNode The type of node to manage. Must be derived from memory::Node.
  */
-template <class TNode>
+template <typename TNode>
 class ContiguousNodesManager {
   static_assert(std::is_base_of_v<Node, TNode>,
                 "TNode must be derived from memory::Node");
@@ -156,7 +156,7 @@ class ContiguousNodesManager {
   /**
    * @brief Returns the total capacity of the node pool.
    *
-   * @return The maximum number of nodes that can be managed.
+   * @return The maximum number of nodes that can be stored in the pool.
    */
   [[nodiscard]] constexpr size_t capacity() const noexcept {
     return nodes_.size();
@@ -223,10 +223,10 @@ class ContiguousNodesManager {
    * After this call, the manager will be empty and ready for new allocations.
    */
   constexpr void clear_memory() {
-    std::stack<NodeType*>().swap(released_nodes_);
+    for (size_t i = 0; i < used_nodes_; ++i) nodes_[i].release();
     used_nodes_ = 0;
-    for (NodeType& node : nodes_) node.release();
-    nodes_.clear();
+    std::stack<NodeType*>().swap(released_nodes_);
+    std::vector<NodeType>().swap(nodes_);
     first_ = nullptr;
   }
 
@@ -238,12 +238,12 @@ class ContiguousNodesManager {
    * immediate reuse of the nodes.
    */
   constexpr void clear() {
-    std::stack<NodeType*>().swap(released_nodes_);
-    used_nodes_ = 0;
-    for (NodeType& node : nodes_) {
-      node.release();
-      node.reuse();
+    for (size_t i = 0; i < used_nodes_; ++i) {
+      nodes_[i].release();
+      nodes_[i].reuse();
     }
+    used_nodes_ = 0;
+    std::stack<NodeType*>().swap(released_nodes_);
   }
 
   /**
@@ -262,7 +262,7 @@ class ContiguousNodesManager {
 
  protected:
   std::vector<NodeType> nodes_;
-  size_t used_nodes_;
+  size_t used_nodes_{0};
   std::stack<NodeType*> released_nodes_;
   NodeType* first_;
 };

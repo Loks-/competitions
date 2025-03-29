@@ -20,7 +20,7 @@ namespace memory {
  *
  * @tparam TNode The type of node to manage. Must be derived from memory::Node.
  */
-template <class TNode>
+template <typename TNode>
 class NodesManager {
   static_assert(std::is_base_of_v<Node, TNode>,
                 "TNode must be derived from memory::Node");
@@ -35,7 +35,7 @@ class NodesManager {
    *                         Defaults to 0 if not specified.
    */
   [[nodiscard]] constexpr explicit NodesManager(size_t initial_capacity = 0)
-      : nodes_(initial_capacity), used_nodes_(0) {}
+      : nodes_(initial_capacity) {}
 
   /**
    * @brief Copy constructor is deleted.
@@ -199,10 +199,10 @@ class NodesManager {
    * After this call, the manager will be empty and ready for new allocations.
    */
   constexpr void clear_memory() {
-    std::stack<NodeType*>().swap(released_nodes_);
+    for (size_t i = 0; i < used_nodes_; ++i) nodes_[i].release();
     used_nodes_ = 0;
-    for (NodeType& node : nodes_) node.release();
-    nodes_.clear();
+    std::stack<NodeType*>().swap(released_nodes_);
+    std::deque<NodeType>().swap(nodes_);
   }
 
   /**
@@ -213,17 +213,17 @@ class NodesManager {
    * immediate reuse of the nodes.
    */
   constexpr void clear() {
-    std::stack<NodeType*>().swap(released_nodes_);
-    used_nodes_ = 0;
-    for (NodeType& node : nodes_) {
-      node.release();
-      node.reuse();
+    for (size_t i = 0; i < used_nodes_; ++i) {
+      nodes_[i].release();
+      nodes_[i].reuse();
     }
+    used_nodes_ = 0;
+    std::stack<NodeType*>().swap(released_nodes_);
   }
 
  protected:
   std::deque<NodeType> nodes_;
-  size_t used_nodes_;
+  size_t used_nodes_{0};
   std::stack<NodeType*> released_nodes_;
 };
 
