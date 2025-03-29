@@ -38,6 +38,22 @@ class NodesManager {
       : nodes_(initial_capacity), used_nodes_(0) {}
 
   /**
+   * @brief Copy constructor is deleted.
+   *
+   * NodesManager cannot be copied because it manages raw pointers and
+   * maintains internal state about node allocation.
+   */
+  NodesManager(const NodesManager&) = delete;
+
+  /**
+   * @brief Copy assignment operator is deleted.
+   *
+   * NodesManager cannot be copied because it manages raw pointers and
+   * maintains internal state about node allocation.
+   */
+  NodesManager& operator=(const NodesManager&) = delete;
+
+  /**
    * @brief Move constructor.
    *
    * @param other The nodes manager to move from. After the move,

@@ -44,6 +44,22 @@ class ContiguousNodesManager {
   }
 
   /**
+   * @brief Copy constructor is deleted.
+   *
+   * ContiguousNodesManager cannot be copied because it manages raw pointers and
+   * maintains internal state about node allocation.
+   */
+  ContiguousNodesManager(const ContiguousNodesManager&) = delete;
+
+  /**
+   * @brief Copy assignment operator is deleted.
+   *
+   * ContiguousNodesManager cannot be copied because it manages raw pointers and
+   * maintains internal state about node allocation.
+   */
+  ContiguousNodesManager& operator=(const ContiguousNodesManager&) = delete;
+
+  /**
    * @brief Move constructor.
    *
    * @param other The nodes manager to move from. After the move,
