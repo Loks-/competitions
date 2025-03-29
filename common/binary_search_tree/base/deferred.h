@@ -25,7 +25,7 @@ namespace base {
  *
  * @tparam TDeferredTuple A tuple of deferred computation types.
  */
-template <class TDeferredTuple>
+template <typename TDeferredTuple>
 class Deferred {
  public:
   using Self = Deferred;
@@ -105,7 +105,7 @@ class Deferred {
    * @tparam T The type of deferred computation to access.
    * @return Reference to the requested deferred computation.
    */
-  template <class T>
+  template <typename T>
   constexpr T& get() {
     return std::get<T>(deferred);
   }
@@ -116,7 +116,7 @@ class Deferred {
    * @tparam T The type of deferred computation to access.
    * @return Const reference to the requested deferred computation.
    */
-  template <class T>
+  template <typename T>
   constexpr const T& get() const {
     return std::get<T>(deferred);
   }
@@ -144,7 +144,7 @@ class Deferred {
    * @tparam Node The BST node type.
    * @param node The root of the subtree to apply computations to.
    */
-  template <class Node>
+  template <typename Node>
   constexpr void apply(Node* node) {
     std::apply([node](auto&... x) { (x.apply(node), ...); }, deferred);
   }
@@ -159,7 +159,7 @@ class Deferred {
    * @tparam Node The BST node type.
    * @param node The root of the reversed subtree.
    */
-  template <class Node>
+  template <typename Node>
   constexpr void reverse_subtree(Node* node) {
     std::apply([node](auto&... x) { (x.reverse_subtree(node), ...); },
                deferred);

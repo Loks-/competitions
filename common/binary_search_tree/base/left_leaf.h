@@ -23,7 +23,7 @@ namespace base {
  * @return Pointer to the leftmost leaf node, or nullptr if the subtree is
  * empty.
  */
-template <bool apply_deferred = true, class Node>
+template <bool apply_deferred = true, typename Node>
 [[nodiscard]] constexpr Node* left_leaf(Node* root) {
   if (!root) return nullptr;
 

@@ -25,7 +25,7 @@ namespace base {
  * @return Pointer to the previous leaf node in inorder traversal, or nullptr if
  *         there is no previous leaf (current node is the leftmost leaf).
  */
-template <bool apply_deferred = true, class Node>
+template <bool apply_deferred = true, typename Node>
 [[nodiscard]] constexpr Node* prev_leaf(Node* node) {
   if (!node) return nullptr;
 

@@ -25,7 +25,7 @@ namespace base {
  * @return Pointer to the next node in inorder traversal, or nullptr if there
  *         is no successor (current node is the rightmost node).
  */
-template <bool apply_deferred = true, class Node>
+template <bool apply_deferred = true, typename Node>
 [[nodiscard]] constexpr Node* next(Node* node) {
   if (!node) return nullptr;
 

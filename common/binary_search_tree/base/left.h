@@ -21,7 +21,7 @@ namespace base {
  * @param root The root of the subtree to search in.
  * @return Pointer to the leftmost node, or nullptr if the subtree is empty.
  */
-template <bool apply_deferred = true, class Node>
+template <bool apply_deferred = true, typename Node>
 [[nodiscard]] constexpr Node* left(Node* root) {
   if (!root) return nullptr;
 

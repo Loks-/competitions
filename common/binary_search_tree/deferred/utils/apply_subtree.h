@@ -18,8 +18,8 @@ namespace deferred {
  * @tparam Node The BST node type.
  * @param root The root of the subtree to apply deferred computations to.
  */
-template <class Node>
-inline void apply_subtree(Node* root) {
+template <typename Node>
+constexpr void apply_subtree(Node* root) {
   if (!root) return;
   root->apply_deferred();
   if (root->left) apply_subtree(root->left);

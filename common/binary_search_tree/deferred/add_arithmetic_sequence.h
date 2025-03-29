@@ -12,7 +12,7 @@ namespace bst {
 namespace deferred {
 
 // Forward declaration of the helper function
-template <class Node, class ValueType>
+template <typename Node, typename ValueType>
 constexpr void add_arithmetic_sequence(Node* node, const ValueType& a,
                                        const ValueType& d);
 
@@ -28,7 +28,7 @@ constexpr void add_arithmetic_sequence(Node* node, const ValueType& a,
  * when deferred computations are processed. The sequence is applied
  * in-order to ensure correct sequence of values.
  */
-template <class ValueType>
+template <typename ValueType>
 class AddArithmeticSequence : public Base {
  public:
   using Self = AddArithmeticSequence<ValueType>;
@@ -82,7 +82,7 @@ class AddArithmeticSequence : public Base {
    * @param a_ The starting value of the sequence to add.
    * @param d_ The common difference of the sequence to add.
    */
-  template <class Node>
+  template <typename Node>
   constexpr void add_sequence(Node* node, const ValueType& a_,
                               const ValueType& d_) {
     a += a_;
@@ -113,7 +113,7 @@ class AddArithmeticSequence : public Base {
    * @tparam Node The BST node type.
    * @param node The root of the subtree to apply sequence to.
    */
-  template <class Node>
+  template <typename Node>
   constexpr void apply(Node* node) {
     assert(node);
     if (apply_required()) {
@@ -140,7 +140,7 @@ class AddArithmeticSequence : public Base {
    * @param params A pair containing the starting value (first) and common
    * difference (second) of the sequence.
    */
-  template <class Node>
+  template <typename Node>
   static constexpr void add(Node* node,
                             const std::pair<ValueType, ValueType>& params) {
     bst::deferred::add_arithmetic_sequence(node, params.first, params.second);
@@ -156,7 +156,7 @@ class AddArithmeticSequence : public Base {
    * @tparam Node The BST node type.
    * @param node The root of the reversed subtree.
    */
-  template <class Node>
+  template <typename Node>
   constexpr void reverse_subtree(Node* node) {
     if (apply_required()) {
       const auto subtree_size = ValueType(bst::subtree_data::size(node));
@@ -191,7 +191,7 @@ class AddArithmeticSequence : public Base {
  * @param a The starting value of the sequence.
  * @param d The common difference of the sequence.
  */
-template <class Node, class ValueType>
+template <typename Node, typename ValueType>
 constexpr void add_arithmetic_sequence(Node* node, const ValueType& a,
                                        const ValueType& d) {
   if (node) {

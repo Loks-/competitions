@@ -21,7 +21,7 @@ namespace deferred {
  * @tparam Node The BST node type.
  * @param node The target node to apply computations to.
  */
-template <class Node>
+template <typename Node>
 inline void propagate_to_node(Node* node) {
   if constexpr (!Node::DeferredType::empty) {
     static_assert(Node::has_parent, "Node must have parent pointer enabled");
@@ -49,7 +49,7 @@ inline void propagate_to_node(Node* node) {
  * @tparam Node The BST node type.
  * @param node The target node to apply computations to.
  */
-template <class Node>
+template <typename Node>
 inline void propagate_for_data_access(Node* node) {
   if constexpr (Node::DeferredType::modify_data) {
     propagate_to_node(node);
@@ -65,7 +65,7 @@ inline void propagate_for_data_access(Node* node) {
  * @tparam Node The BST node type.
  * @param node The target node to apply computations to.
  */
-template <class Node>
+template <typename Node>
 inline void propagate_for_key_access(Node* node) {
   if constexpr (Node::DeferredType::modify_keys) {
     propagate_to_node(node);
@@ -81,7 +81,7 @@ inline void propagate_for_key_access(Node* node) {
  * @tparam Node The BST node type.
  * @param node The target node to apply computations to.
  */
-template <class Node>
+template <typename Node>
 inline void propagate_for_tree_structure_access(Node* node) {
   if constexpr (Node::DeferredType::modify_tree_structure) {
     propagate_to_node(node);
@@ -97,7 +97,7 @@ inline void propagate_for_tree_structure_access(Node* node) {
  * @tparam Node The BST node type.
  * @param node The target node to apply computations to.
  */
-template <class Node>
+template <typename Node>
 inline void propagate_for_nodes_order_access(Node* node) {
   if constexpr (Node::DeferredType::modify_nodes_order) {
     propagate_to_node(node);

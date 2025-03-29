@@ -20,7 +20,7 @@ namespace base {
  * @return Pointer to the sibling node, or nullptr if the node is the only
  *         child of its parent.
  */
-template <class Node>
+template <typename Node>
 [[nodiscard]] constexpr Node* sibling(Node* node, Node* parent) {
   return parent ? (parent->left == node ? parent->right : parent->left)
                 : nullptr;

@@ -19,7 +19,7 @@ namespace subtree_data {
  * @tparam Node The BST node type.
  * @param node The starting node to update from.
  */
-template <class Node>
+template <typename Node>
 inline void propagate_to_root(Node* node) {
   if constexpr (!Node::SubtreeDataType::empty) {
     static_assert(Node::has_parent, "Node must have parent pointer enabled");
@@ -41,7 +41,7 @@ inline void propagate_to_root(Node* node) {
  * @tparam Node The BST node type.
  * @param node The starting node to update from.
  */
-template <class Node>
+template <typename Node>
 inline void propagate_for_data_update(Node* node) {
   if constexpr (Node::SubtreeDataType::use_data) {
     propagate_to_root(node);
@@ -58,7 +58,7 @@ inline void propagate_for_data_update(Node* node) {
  * @tparam Node The BST node type.
  * @param node The starting node to update from.
  */
-template <class Node>
+template <typename Node>
 inline void propagate_for_key_update(Node* node) {
   if constexpr (Node::SubtreeDataType::use_keys) {
     propagate_to_root(node);
@@ -76,7 +76,7 @@ inline void propagate_for_key_update(Node* node) {
  * @tparam Node The BST node type.
  * @param node The starting node to update from.
  */
-template <class Node>
+template <typename Node>
 inline void propagate_for_structure_update(Node* node) {
   if constexpr (Node::SubtreeDataType::use_tree_structure) {
     propagate_to_root(node);
@@ -94,7 +94,7 @@ inline void propagate_for_structure_update(Node* node) {
  * @tparam Node The BST node type.
  * @param node The starting node to update from.
  */
-template <class Node>
+template <typename Node>
 inline void propagate_for_nodes_order_update(Node* node) {
   if constexpr (Node::SubtreeDataType::use_nodes_order) {
     propagate_to_root(node);

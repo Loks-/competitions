@@ -32,8 +32,9 @@ namespace base {
  * @tparam has_key_ Whether to store keys in nodes
  * @tparam Key Type of keys (if has_key_ is true)
  */
-template <class Data, class SubtreeData_, class Deferred_,
-          bool has_parent_ = true, bool has_key_ = false, class Key = int64_t>
+template <typename Data, typename SubtreeData_, typename Deferred_,
+          bool has_parent_ = true, bool has_key_ = false,
+          typename Key = int64_t>
 class Node : public memory::Node {
  public:
   /**

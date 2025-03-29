@@ -19,7 +19,7 @@ namespace base {
  * @return The depth of the node (1 for root, 2 for root's children, etc.),
  *         or 0 if the node is nullptr.
  */
-template <class Node>
+template <typename Node>
 [[nodiscard]] constexpr unsigned deep(const Node* node) {
   // Count parent links from node to root
   static_assert(Node::has_parent, "Node must have parent pointer enabled");

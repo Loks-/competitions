@@ -21,7 +21,7 @@ namespace base {
  * @param node The node to check.
  * @return true if the node is a leaf (has no children), false otherwise.
  */
-template <bool apply_deferred = true, class Node>
+template <bool apply_deferred = true, typename Node>
 [[nodiscard]] constexpr bool leaf(Node* node) {
   if (!node) return false;
 

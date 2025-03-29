@@ -10,7 +10,7 @@ namespace bst {
 namespace deferred {
 
 // Forward declaration of the helper function
-template <class Node>
+template <typename Node>
 constexpr void reverse_subtree(Node* node);
 
 /**
@@ -74,7 +74,7 @@ class Reverse : public Base {
    * @tparam Node The BST node type.
    * @param node The root of the subtree to be reversed.
    */
-  template <class Node>
+  template <typename Node>
   constexpr void reverse_subtree(Node*) {
     reverse_required = !reverse_required;
   }
@@ -90,7 +90,7 @@ class Reverse : public Base {
    * @tparam Node The BST node type.
    * @param node The root of the subtree to apply reversals to.
    */
-  template <class Node>
+  template <typename Node>
   constexpr void apply(Node* node) {
     assert(node);
     if (reverse_required) {
@@ -112,7 +112,7 @@ class Reverse : public Base {
    * @param node The root of the subtree to reverse.
    * @param _ Ignored parameter, reversal is just an action trigger.
    */
-  template <class Node>
+  template <typename Node>
   static constexpr void add(Node* node, MetaEmpty) {
     bst::deferred::reverse_subtree(node);
   }
@@ -138,7 +138,7 @@ class Reverse : public Base {
  * @tparam Node The BST node type.
  * @param node The root of the subtree to be reversed.
  */
-template <class Node>
+template <typename Node>
 constexpr void reverse_subtree(Node* node) {
   static_assert(Node::DeferredType::template has<Reverse>(),
                 "Node's Deferred class must contain Reverse class to use "

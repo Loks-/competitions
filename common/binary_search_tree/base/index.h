@@ -23,7 +23,7 @@ namespace base {
  * @return The inorder index of the node (0 for leftmost node, 1 for second
  * node, etc.).
  */
-template <class Node>
+template <typename Node>
 [[nodiscard]] constexpr unsigned index(const Node* node) {
   assert(node);
   static_assert(Node::has_parent, "Node must have parent pointer enabled");

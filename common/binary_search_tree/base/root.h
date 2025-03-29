@@ -18,7 +18,7 @@ namespace base {
  * @return Pointer to the root node of the tree, or nullptr if the input node
  *         is nullptr.
  */
-template <class Node>
+template <typename Node>
 [[nodiscard]] constexpr Node* root(Node* node) {
   if (!node) return nullptr;
 

@@ -86,7 +86,7 @@ class Base {
    * @tparam Node The BST node type.
    * @param node The root of the subtree to apply computations to.
    */
-  template <class Node>
+  template <typename Node>
   constexpr void apply(Node*) {}
 
   /**
@@ -107,7 +107,7 @@ class Base {
    * @param node The root of the subtree to apply computations to.
    * @param value The value to be used in the deferred computation.
    */
-  template <class Node, typename ValueType>
+  template <typename Node, typename ValueType>
   static constexpr void add(Node*, const ValueType&) {}
 
   /**
@@ -121,7 +121,7 @@ class Base {
    * @tparam Node The BST node type.
    * @param node The root of the reversed subtree.
    */
-  template <class Node>
+  template <typename Node>
   constexpr void reverse_subtree(Node*) {}
 };
 

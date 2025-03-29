@@ -9,7 +9,7 @@ namespace bst {
 namespace deferred {
 
 // Forward declaration of the helper function
-template <class Node, typename ValueType>
+template <typename Node, typename ValueType>
 constexpr void add_to_each_key(Node* node, const ValueType& value);
 
 /**
@@ -77,7 +77,7 @@ class AddEachKey : public Base {
    * @param node The root of the subtree to add value to.
    * @param value The value to be added to each node's key.
    */
-  template <class Node>
+  template <typename Node>
   constexpr void add_value(Node* node, const ValueType& value) {
     deferred_value += value;
     // Update SumKeys aggregator if present in node's SubtreeDataType
@@ -97,7 +97,7 @@ class AddEachKey : public Base {
    * @tparam Node The BST node type.
    * @param node The root of the subtree to apply additions to.
    */
-  template <class Node>
+  template <typename Node>
   constexpr void apply(Node* node) {
     assert(node);
     if (deferred_value != ValueType{}) {
@@ -118,7 +118,7 @@ class AddEachKey : public Base {
    * @param node The root of the subtree to modify.
    * @param value The value to add to each node's key.
    */
-  template <class Node>
+  template <typename Node>
   static constexpr void add(Node* node, const ValueType& value) {
     add_to_each_key(node, value);
   }
@@ -148,7 +148,7 @@ class AddEachKey : public Base {
  * @param node The root of the subtree to add value to.
  * @param value The value to add to each key.
  */
-template <class Node, typename ValueType>
+template <typename Node, typename ValueType>
 constexpr void add_to_each_key(Node* node, const ValueType& value) {
   if (node) {
     node->deferred.template get<AddEachKey<ValueType>>().add_value(node, value);

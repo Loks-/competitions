@@ -22,7 +22,7 @@ namespace subtree_data {
  * @param start_from_index The index in the path to start updating from
  * (default: 0).
  */
-template <class Node>
+template <typename Node>
 inline void propagate_to_root_with_path(const std::vector<Node*>& path,
                                         size_t start_from_index = 0) {
   if constexpr (!Node::SubtreeDataType::empty) {
@@ -45,7 +45,7 @@ inline void propagate_to_root_with_path(const std::vector<Node*>& path,
  * @param start_from_index The index in the path to start updating from
  * (default: 0).
  */
-template <class Node>
+template <typename Node>
 inline void propagate_for_data_update_with_path(const std::vector<Node*>& path,
                                                 size_t start_from_index = 0) {
   if constexpr (Node::SubtreeDataType::use_data) {
@@ -65,7 +65,7 @@ inline void propagate_for_data_update_with_path(const std::vector<Node*>& path,
  * @param start_from_index The index in the path to start updating from
  * (default: 0).
  */
-template <class Node>
+template <typename Node>
 inline void propagate_for_key_update_with_path(const std::vector<Node*>& path,
                                                size_t start_from_index = 0) {
   if constexpr (Node::SubtreeDataType::use_keys) {
@@ -86,7 +86,7 @@ inline void propagate_for_key_update_with_path(const std::vector<Node*>& path,
  * @param start_from_index The index in the path to start updating from
  * (default: 0).
  */
-template <class Node>
+template <typename Node>
 inline void propagate_for_structure_update_with_path(
     const std::vector<Node*>& path, size_t start_from_index = 0) {
   if constexpr (Node::SubtreeDataType::use_tree_structure) {
@@ -107,7 +107,7 @@ inline void propagate_for_structure_update_with_path(
  * @param start_from_index The index in the path to start updating from
  * (default: 0).
  */
-template <class Node>
+template <typename Node>
 inline void propagate_for_nodes_order_update_with_path(
     const std::vector<Node*>& path, size_t start_from_index = 0) {
   if constexpr (Node::SubtreeDataType::use_nodes_order) {
