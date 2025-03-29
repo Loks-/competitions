@@ -146,11 +146,11 @@ class RedBlackTree
     subtree_data::propagate_to_root(parent);
 
     // Fix colors
-    if (!black) return (parent ? base::Root(parent) : child);
+    if (!black) return (parent ? base::root(parent) : child);
     for (;;) {
       if (IsRed(child)) {
         SetColor(child, true);
-        return base::Root(child);
+        return base::root(child);
       }
       if (!parent) return child;
       TNode* sibling = base::Sibling(child, parent);
@@ -176,7 +176,7 @@ class RedBlackTree
           IsBlack(sibling->right)) {
         SetColor(sibling, false);
         SetColor(parent, true);
-        return base::Root(parent);
+        return base::root(parent);
       }
       if ((parent->left == child) && IsBlack(sibling->right)) {
         assert(IsRed(sibling->left));
@@ -199,7 +199,7 @@ class RedBlackTree
         SetColor(sibling->left, true);
       }
       base::RotateUp<TNode, true, false>(sibling);
-      return base::Root(sibling);
+      return base::root(sibling);
     }
     assert(false);
     return nullptr;

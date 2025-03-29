@@ -34,7 +34,7 @@ class SpanningTreeETTST {
 
   void Print(unsigned index) {
     auto v = bst::base::Traverse<TNode, unsigned>(
-        bst::base::Root(ett.Node(index, false)),
+        bst::base::root(ett.Node(index, false)),
         bst::base::ETraversalOrder::Inorder);
     for (auto x : v) std::cout << x << " ";
     std::cout << std::endl;
@@ -66,9 +66,9 @@ class SpanningTreeETTST {
       Print(u1);
       Print(u2);
       auto node = ett.Node(u1, false);
-      node = bst::base::Left(bst::base::Root(node));
+      node = bst::base::left(bst::base::root(node));
       bool found = false;
-      for (; !found && node; node = bst::base::Left(node->r)) {
+      for (; !found && node; node = bst::base::left(node->right)) {
         ett.Splay(node);
         unsigned raw_index = ett.RawIndex(node);
         if (raw_index & 1) continue;

@@ -265,7 +265,7 @@ class Treap
       p->set_right(m);
     }
     subtree_data::propagate_to_root(p);
-    return Root(p);
+    return base::root(p);
   }
 };
 }  // namespace bst
