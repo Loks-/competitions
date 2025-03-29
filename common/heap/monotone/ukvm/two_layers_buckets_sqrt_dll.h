@@ -55,7 +55,7 @@ class TwoLayersBucketsSqrtDLL {
     p1e = q1size;
     nodes.clear();
     nodes.resize(ukey_size + q1size);
-    manager.ResetNodes();
+    manager.clear();
     priority.clear();
     priority.resize(ukey_size, -1u);
     queue2.clear();
@@ -171,7 +171,7 @@ class TwoLayersBucketsSqrtDLL {
     if (s <= p) {
       queue2.resize(p + 1);
       for (; s <= p; ++s) {
-        auto n = manager.New();
+        auto n = manager.create();
         n->next = n->prev = n;
         queue2[s] = n;
       }

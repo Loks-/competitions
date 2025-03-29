@@ -3,7 +3,7 @@
 #include "common/base.h"
 #include "common/heap/ext/pairing.h"
 #include "common/heap/ukvm/data.h"
-#include "common/memory/nodes_manager_fixed_size.h"
+#include "common/memory/contiguous_nodes_manager.h"
 
 #include <functional>
 #include <vector>
@@ -20,13 +20,13 @@ namespace ukvm {
 template <class TTValue, class TCompare = std::less<TTValue>,
           bool multipass = false, bool auxiliary = false>
 class Pairing : public heap::ext::Pairing<TTValue, TCompare,
-                                          memory::NodesManagerFixedSize,
+                                          memory::ContiguousNodesManager,
                                           multipass, auxiliary> {
  public:
   using TValue = TTValue;
   using TData = Data<TValue>;
   using TBase =
-      heap::ext::Pairing<TValue, TCompare, memory::NodesManagerFixedSize,
+      heap::ext::Pairing<TValue, TCompare, memory::ContiguousNodesManager,
                          multipass, auxiliary>;
   using TSelf = Pairing<TValue, TCompare, multipass, auxiliary>;
   using TNode = typename TBase::Node;
@@ -40,18 +40,18 @@ class Pairing : public heap::ext::Pairing<TTValue, TCompare,
   constexpr void SetUnused(TNode* p) { p->p = p; }
   constexpr void CleanUnused(TNode* p) { p->p = nullptr; }
 
-  constexpr TNode* GetNode(unsigned key) { return manager.NodeByRawIndex(key); }
+  constexpr TNode* GetNode(unsigned key) { return manager.at(key); }
 
  public:
   constexpr explicit Pairing(unsigned ukey_size)
       : TBase(manager), manager(ukey_size) {
-    for (unsigned i = 0; i < ukey_size; ++i) SetUnused(manager.New());
+    for (unsigned i = 0; i < ukey_size; ++i) SetUnused(manager.create());
   }
 
   constexpr Pairing(const std::vector<TValue>& v, bool skip_heap)
       : TBase(manager), manager(v.size()) {
     for (unsigned i = 0; i < v.size(); ++i) {
-      auto p = manager.New();
+      auto p = manager.create();
       p->value = v[i];
       if (skip_heap) {
         SetUnused(p);
@@ -61,11 +61,9 @@ class Pairing : public heap::ext::Pairing<TTValue, TCompare,
     }
   }
 
-  constexpr unsigned UKeySize() const { return manager.Size(); }
+  constexpr unsigned UKeySize() const { return manager.capacity(); }
 
-  constexpr const TNode* GetNode(unsigned key) const {
-    return manager.NodeByRawIndex(key);
-  }
+  constexpr const TNode* GetNode(unsigned key) const { return manager.at(key); }
 
   constexpr bool InHeap(unsigned key) const {
     return !UnusedNode(GetNode(key));
@@ -83,7 +81,7 @@ class Pairing : public heap::ext::Pairing<TTValue, TCompare,
   }
 
   constexpr unsigned GetKey(const TNode* node) const {
-    return manager.RawIndex(node);
+    return manager.index(node);
   }
 
  protected:

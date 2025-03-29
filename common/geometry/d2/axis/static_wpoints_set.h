@@ -39,7 +39,7 @@ class StaticWPointsSet {
 
   void Clear() {
     vx.clear();
-    tree.ResetNodes();
+    tree.clear();
   }
 
   void Init(const std::vector<TPoint>& points) {

@@ -59,7 +59,7 @@ class Pairing {
   constexpr unsigned Size() const { return size; }
 
   constexpr void Add(const TData& v) {
-    Node* p = manager.New();
+    Node* p = manager.create();
     p->value = v;
     AddNode(p);
   }
@@ -73,7 +73,7 @@ class Pairing {
     head = Compress(head->l);
     old_head->l = nullptr;
     --size;
-    manager.Release(old_head);
+    manager.release(old_head);
   }
 
   constexpr TData Extract() {

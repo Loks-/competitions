@@ -13,7 +13,7 @@
 #include "common/binary_search_tree/subtree_data/rbt_color.h"
 #include "common/binary_search_tree/subtree_data/size.h"
 #include "common/binary_search_tree/tree.h"
-#include "common/memory/nodes_manager_fixed_size.h"
+#include "common/memory/contiguous_nodes_manager.h"
 
 #include <algorithm>
 #include <utility>
@@ -22,7 +22,8 @@
 namespace bst {
 template <bool _use_parent, class TTData, class TTInfo = subtree_data::Size,
           class TTAction = action::None, class TTKey = int64_t,
-          template <class> class TTNodesManager = NodesManagerFixedSize>
+          template <class> class TTNodesManager =
+              memory::ContiguousNodesManager>
 class RedBlackTree
     : public Tree<TTNodesManager<Node<TTData, info::RBTColor<TTInfo>, TTAction,
                                       true, _use_parent, false, TTKey>>,

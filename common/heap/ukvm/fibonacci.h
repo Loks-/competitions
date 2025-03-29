@@ -3,7 +3,7 @@
 #include "common/base.h"
 #include "common/heap/ext/fibonacci.h"
 #include "common/heap/ukvm/data.h"
-#include "common/memory/nodes_manager_fixed_size.h"
+#include "common/memory/contiguous_nodes_manager.h"
 
 #include <functional>
 #include <vector>
@@ -19,12 +19,12 @@ namespace ukvm {
 // Union   -- O(1)
 template <class TTValue, class TCompare = std::less<TTValue>>
 class Fibonacci : public heap::ext::Fibonacci<TTValue, TCompare,
-                                              memory::NodesManagerFixedSize> {
+                                              memory::ContiguousNodesManager> {
  public:
   using TValue = TTValue;
   using TData = Data<TValue>;
   using TBase =
-      heap::ext::Fibonacci<TValue, TCompare, memory::NodesManagerFixedSize>;
+      heap::ext::Fibonacci<TValue, TCompare, memory::ContiguousNodesManager>;
   using TSelf = Fibonacci<TValue, TCompare>;
   using TNode = typename TBase::Node;
   using TNodesManager = typename TBase::TNodesManager;
@@ -39,18 +39,18 @@ class Fibonacci : public heap::ext::Fibonacci<TTValue, TCompare,
 
   constexpr void CleanUnused(TNode* p) { p->d = 0; }
 
-  constexpr TNode* GetNode(unsigned key) { return manager.NodeByRawIndex(key); }
+  constexpr TNode* GetNode(unsigned key) { return manager.at(key); }
 
  public:
   constexpr explicit Fibonacci(unsigned ukey_size)
       : TBase(manager), manager(ukey_size) {
-    for (unsigned i = 0; i < ukey_size; ++i) SetUnused(manager.New());
+    for (unsigned i = 0; i < ukey_size; ++i) SetUnused(manager.create());
   }
 
   constexpr Fibonacci(const std::vector<TValue>& v, bool skip_heap)
       : TBase(manager), manager(v.size()) {
     for (unsigned i = 0; i < v.size(); ++i) {
-      auto p = manager.New();
+      auto p = manager.create();
       p->value = v[i];
       if (skip_heap) {
         SetUnused(p);
@@ -60,11 +60,9 @@ class Fibonacci : public heap::ext::Fibonacci<TTValue, TCompare,
     }
   }
 
-  constexpr unsigned UKeySize() const { return manager.Size(); }
+  constexpr unsigned UKeySize() const { return manager.capacity(); }
 
-  constexpr const TNode* GetNode(unsigned key) const {
-    return manager.NodeByRawIndex(key);
-  }
+  constexpr const TNode* GetNode(unsigned key) const { return manager.at(key); }
 
   constexpr bool InHeap(unsigned key) const {
     return !UnusedNode(GetNode(key));
@@ -82,7 +80,7 @@ class Fibonacci : public heap::ext::Fibonacci<TTValue, TCompare,
   }
 
   constexpr unsigned GetKey(const TNode* node) const {
-    return manager.RawIndex(node);
+    return manager.index(node);
   }
 
  protected:

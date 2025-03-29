@@ -57,7 +57,7 @@ class RadixDLL {
   void Reset(unsigned ukey_size) {
     nodes_key.clear();
     nodes_key.resize(ukey_size);
-    manager_priority.ResetNodes();
+    manager_priority.clear();
     priority.clear();
     priority.resize(ukey_size, -1u);
     queue.clear();
@@ -68,7 +68,7 @@ class RadixDLL {
     vfirst.push_back(2);
     vlength.resize(2, 1);
     for (unsigned i = 0; i < 2; ++i) {
-      auto node = manager_priority.New();
+      auto node = manager_priority.create();
       node->next = node->prev = node;
       queue.push_back(node);
     }
@@ -180,7 +180,7 @@ class RadixDLL {
     for (; vfirst.back() <= p;) {
       vlength.push_back(vlength.back() * 2);
       vfirst.push_back(vfirst.back() + vlength.back());
-      auto n = manager_priority.New();
+      auto n = manager_priority.create();
       n->next = n->prev = n;
       queue.push_back(n);
     }

@@ -3,7 +3,7 @@
 #include "common/base.h"
 #include "common/heap/ext/fibonacci.h"
 #include "common/heap/ukvm/data.h"
-#include "common/memory/nodes_manager_fixed_size.h"
+#include "common/memory/contiguous_nodes_manager.h"
 #include "common/numeric/bits/ulog2.h"
 #include "common/numeric/utils/usqrt.h"
 
@@ -26,7 +26,7 @@ class TwoLayersRadixFibonacciDLL {
   using TData = heap::ukvm::Data<TValue>;
   using TSelf = TwoLayersRadixFibonacciDLL;
   using TFHeap = heap::ext::Fibonacci<unsigned, std::less<unsigned>,
-                                      memory::NodesManagerFixedSize>;
+                                      memory::ContiguousNodesManager>;
   using TFNode = typename TFHeap::Node;
   using TFNodesManager = typename TFHeap::TNodesManager;
 
@@ -90,10 +90,10 @@ class TwoLayersRadixFibonacciDLL {
     vshift.resize(k, 0);
     nodes.clear();
     nodes.resize(ukey_size + m);
-    fmanager.Reset(m);
+    fmanager.reset(m);
     pkey0 = &(nodes[0]);
     pindex0 = pkey0 + ukey_size;
-    pfnode0 = fmanager.NodeByRawIndex(0);
+    pfnode0 = fmanager.at(0);
     for (unsigned i = 0; i < m; ++i) {
       auto node = INode(i);
       node->next = node->prev = node;

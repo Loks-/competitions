@@ -6,7 +6,7 @@
 #include "common/binary_search_tree/base/subtree_data.h"
 #include "common/graph/tree.h"
 #include "common/graph/tree/lca.h"
-#include "common/memory/nodes_manager_fixed_size.h"
+#include "common/memory/contiguous_nodes_manager.h"
 #include "common/vector/rmq/position_value.h"
 
 #include <stack>
@@ -38,12 +38,12 @@ class LCA {
     vv = v;
     size_t n = v.size();
     // Build Cartesian Tree
-    memory::NodesManagerFixedSize<TNode> m(n);
-    TNode *proot = m.New(), *plast = proot, *p0 = proot;
+    memory::ContiguousNodesManager<TNode> m(n);
+    TNode *proot = m.create(), *plast = proot, *p0 = proot;
     proot->data = v[0];
     std::stack<TNode*> s;
     for (size_t j = 1; j < n; ++j) {
-      TNode* pj = m.New();
+      TNode* pj = m.create();
       pj->data = v[j];
       if (!(pj->data < plast->data)) {
         plast->right = pj;
@@ -63,7 +63,7 @@ class LCA {
     TreeGraph t(n);
     t.SetRoot(proot - p0);
     for (size_t j = 0; j < n; ++j) {
-      auto p = m.NodeByRawIndex(j);
+      auto p = m.at(j);
       if (p->left) t.AddEdge(j, p->left - p0);
       if (p->right) t.AddEdge(j, p->right - p0);
     }

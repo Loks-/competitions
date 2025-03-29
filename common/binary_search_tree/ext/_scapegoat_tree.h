@@ -8,7 +8,7 @@
 #include "common/binary_search_tree/subtree_data/helpers/update_node_to_root.h"
 #include "common/binary_search_tree/subtree_data/size.h"
 #include "common/binary_search_tree/tree.h"
-#include "common/memory/nodes_manager_fixed_size.h"
+#include "common/memory/contiguous_nodes_manager.h"
 #include "common/template.h"
 
 #include <stack>
@@ -20,7 +20,8 @@ namespace bst {
 // future deletion.
 template <bool use_parent, class TData, class TInfo = subtree_data::Size,
           class TAction = action::None, class TKey = int64_t,
-          template <class> class TTNodesManager = NodesManagerFixedSize>
+          template <class> class TTNodesManager =
+              memory::ContiguousNodesManager>
 class ScapegoatTree
     : public Tree<TTNodesManager<Node<TData, TInfo, TAction, true, use_parent,
                                       false, TKey>>,

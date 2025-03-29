@@ -132,7 +132,7 @@ size_t TesterHeapExt::TestExtNodesManager(const std::string& name) const {
   for (unsigned i = 0; i < size; ++i) heap.Add(vinf[i]);
   for (unsigned j = 0; j < dpm; ++j) {
     for (unsigned i = 0; i < size; ++i)
-      heap.DecreaseValueIfLess(nodes_manager.NodeByRawIndex(i), v[i * dpm + j]);
+      heap.DecreaseValueIfLess(nodes_manager.at(i), v[i * dpm + j]);
     nhash::DCombineH(h, heap.Top());
   }
   for (; !heap.Empty();) nhash::DCombineH(h, heap.Extract());

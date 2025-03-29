@@ -46,7 +46,7 @@ class TwoLayersBucketsDLL {
   void Reset(unsigned ukey_size) {
     nodes.clear();
     nodes.resize(ukey_size + fl_size);
-    manager.ResetNodes();
+    manager.clear();
     priority.clear();
     priority.resize(ukey_size, -1u);
     queue2.clear();
@@ -160,7 +160,7 @@ class TwoLayersBucketsDLL {
     if (s <= p / fl_size) {
       queue2.resize(p / fl_size + 1);
       for (; s < queue2.size(); ++s) {
-        auto n = manager.New();
+        auto n = manager.create();
         n->next = n->prev = n;
         queue2[s] = n;
       }

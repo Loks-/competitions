@@ -8,7 +8,7 @@
 #include "common/binary_search_tree/base/tree.h"
 #include "common/binary_search_tree/deferred/utils/propagate_to_node.h"
 #include "common/binary_search_tree/subtree_data/size.h"
-#include "common/memory/nodes_manager_fixed_size.h"
+#include "common/memory/contiguous_nodes_manager.h"
 
 #include <algorithm>
 
@@ -16,7 +16,8 @@ namespace bst {
 template <bool use_key, class TData,
           class TAggregatorsTuple = std::tuple<subtree_data::Size>,
           class TDeferredTuple = std::tuple<>, class TKey = int64_t,
-          template <class> class TTNodesManager = memory::NodesManagerFixedSize>
+          template <class> class TTNodesManager =
+              memory::ContiguousNodesManager>
 class SplayTree
     : public base::Tree<
           TTNodesManager<

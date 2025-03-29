@@ -53,7 +53,7 @@ class BucketQueueDLL {
   constexpr void Reset(unsigned ukey_size) {
     nodes_key.clear();
     nodes_key.resize(ukey_size);
-    manager_priority.ResetNodes();
+    manager_priority.clear();
     priority.clear();
     priority.resize(ukey_size, -1u);
     queue.clear();
@@ -157,7 +157,7 @@ class BucketQueueDLL {
     if (s <= p) {
       queue.resize(p + 1);
       for (; s <= p; ++s) {
-        auto n = manager_priority.New();
+        auto n = manager_priority.create();
         n->next = n->prev = n;
         queue[s] = n;
       }

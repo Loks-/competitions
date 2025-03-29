@@ -2,8 +2,8 @@
 
 #include "common/base.h"
 #include "common/heap/ukvm/data.h"
+#include "common/memory/contiguous_nodes_manager.h"
 #include "common/memory/node.h"
-#include "common/memory/nodes_manager_fixed_size.h"
 
 #include <functional>
 
@@ -45,7 +45,7 @@ class Binomial {
     constexpr void reuse() { d = 0; }
   };
 
-  using TNodesManager = memory::NodesManagerFixedSize<Node>;
+  using TNodesManager = memory::ContiguousNodesManager<Node>;
 
   struct TPositionValue {
     Node* heap_position;
@@ -108,7 +108,7 @@ class Binomial {
                             bool skip_heap) {
     key_map[key].value = new_value;
     if (!skip_heap) {
-      Node* pv = nodes_manager.New();
+      Node* pv = nodes_manager.create();
       pv->pv = pv_begin + key;
       key_map[key].heap_position = pv;
       if (top && Compare(pv, top)) top = pv;
@@ -189,7 +189,7 @@ class Binomial {
     node = ForceSiftUp(node);
     CutNode(node);
     node->pv->heap_position = nullptr;
-    nodes_manager.Release(node);
+    nodes_manager.release(node);
     --size;
   }
 

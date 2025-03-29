@@ -52,7 +52,7 @@ class Binomial {
   constexpr unsigned Size() const { return size; }
 
   constexpr void Add(const TData& v) {
-    Node* pv = manager.New();
+    Node* pv = manager.create();
     pv->value = v;
     AddOneNode(pv);
     ++size;
@@ -217,7 +217,7 @@ class Binomial {
     ResetTopNode();
     CutTree(node);
     Union(CutChildren(node));
-    manager.Release(node);
+    manager.release(node);
     --size;
   }
 };

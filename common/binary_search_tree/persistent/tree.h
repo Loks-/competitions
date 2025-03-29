@@ -8,7 +8,7 @@ template <class TTNodesManager, class TTMe>
 class Tree : public bst::base::Tree<TTNodesManager, TTMe> {
  public:
   using TNodesManager = TTNodesManager;
-  using TNode = typename TNodesManager::TNode;
+  using TNode = typename TNodesManager::NodeType;
   using TData = typename TNode::DataType;
   using TKey = typename TNode::KeyType;
   using TBase = bst::base::Tree<TTNodesManager, TTMe>;

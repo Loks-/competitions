@@ -58,7 +58,7 @@ class BinarySearchTree {
     if (node) root = tree.RemoveAndReleaseByNode(node);
   }
 
-  size_t Size() const { return tree.Used(); }
+  size_t Size() const { return tree.used(); }
 
   size_t USize() const { return usize; }
 

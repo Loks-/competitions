@@ -8,7 +8,7 @@
 #include "common/binary_search_tree/base/subtree_data.h"
 #include "common/binary_search_tree/subtree_data/height.h"
 #include "common/binary_search_tree/subtree_data/size.h"
-#include "common/memory/nodes_manager_fixed_size.h"
+#include "common/memory/contiguous_nodes_manager.h"
 #include "common/templates/tuple.h"
 
 #include <tuple>
@@ -19,7 +19,7 @@ template <bool use_parent, class TData,
           class TDeferredTuple = std::tuple<>, class TKey = int64_t>
 class AVLTree
     : public base::BalancedTree<
-          memory::NodesManagerFixedSize<base::Node<
+          memory::ContiguousNodesManager<base::Node<
               TData,
               base::SubtreeData<templates::PrependIfMissingT<
                   subtree_data::Height, TAggregatorsTuple>>,
@@ -34,7 +34,7 @@ class AVLTree
   using TSelf =
       AVLTree<use_parent, TData, TAggregatorsTuple, TDeferredTuple, TKey>;
   using TBTree =
-      base::BalancedTree<memory::NodesManagerFixedSize<TNode>, TSelf>;
+      base::BalancedTree<memory::ContiguousNodesManager<TNode>, TSelf>;
   using TTree = typename TBTree::TTree;
   friend TBTree;
   friend TTree;

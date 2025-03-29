@@ -38,7 +38,7 @@ class Tree : public TTNodesManager {
   TMe* Me() { return static_cast<TMe*>(this); }
   const TMe* Me() const { return static_cast<const TMe*>(this); }
 
-  TNode* New() { return TNodesManager::New(); }
+  TNode* New() { return TNodesManager::create(); }
 
   TNode* New(const TData& data) {
     auto p = New();
@@ -61,7 +61,7 @@ class Tree : public TTNodesManager {
   }
 
   TNode* Build(const std::vector<TData>& data) {
-    TNodesManager::ReserveAdditional(data.size());
+    TNodesManager::reserve_additional(data.size());
     if (data.size() == 0) return nullptr;
     std::vector<TNode*> v(data.size());
     for (size_t i = 0; i < data.size(); ++i) v[i] = New(data[i]);
@@ -71,7 +71,7 @@ class Tree : public TTNodesManager {
   TNode* Build(const std::vector<TData>& data, const std::vector<TKey>& keys) {
     static_assert(use_key, "use_key should be true");
     assert(data.size() == keys.size());
-    TNodesManager::ReserveAdditional(data.size());
+    TNodesManager::reserve_additional(data.size());
     if (data.size() == 0) return nullptr;
     std::vector<std::pair<TKey, TNode*>> vp(data.size());
     for (size_t i = 0; i < data.size(); ++i)
@@ -125,21 +125,21 @@ class Tree : public TTNodesManager {
 
   TNode* RemoveAndReleaseByNode(TNode* node) {
     TNode* new_root = TMe::RemoveByNode(node);
-    TNodesManager::Release(node);
+    TNodesManager::release(node);
     return new_root;
   }
 
   TNode* RemoveAndReleaseByKey(TNode* root, const TKey& key) {
     TNode *removed_node = nullptr,
           *new_root = TMe::RemoveByKey(root, key, removed_node);
-    if (removed_node) TNodesManager::Release(removed_node);
+    if (removed_node) TNodesManager::release(removed_node);
     return new_root;
   }
 
   TNode* RemoveAndReleaseByOrder(TNode* root, size_t order_index) {
     TNode *removed_node = nullptr,
           *new_root = TMe::RemoveByOrder(root, order_index, removed_node);
-    if (removed_node) TNodesManager::Release(removed_node);
+    if (removed_node) TNodesManager::release(removed_node);
     return new_root;
   }
 
@@ -147,7 +147,7 @@ class Tree : public TTNodesManager {
     if (root) {
       ReleaseTree(root->l);
       ReleaseTree(root->r);
-      TNodesManager::Release(root);
+      TNodesManager::release(root);
     }
   }
 

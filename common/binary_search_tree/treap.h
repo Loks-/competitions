@@ -8,7 +8,7 @@
 #include "common/binary_search_tree/subtree_data/size.h"
 #include "common/binary_search_tree/subtree_data/treap_height.h"
 #include "common/binary_search_tree/subtree_data/utils/propagate_to_root.h"
-#include "common/memory/nodes_manager_fixed_size.h"
+#include "common/memory/contiguous_nodes_manager.h"
 #include "common/templates/tuple.h"
 
 #include <algorithm>
@@ -21,7 +21,8 @@ namespace bst {
 template <bool use_key, bool use_parent, class TData,
           class TAggregatorsTuple = std::tuple<subtree_data::Size>,
           class TDeferredTuple = std::tuple<>, class TKey = int64_t,
-          template <class> class TTNodesManager = memory::NodesManagerFixedSize>
+          template <class> class TTNodesManager =
+              memory::ContiguousNodesManager>
 class Treap
     : public base::Tree<
           TTNodesManager<base::Node<

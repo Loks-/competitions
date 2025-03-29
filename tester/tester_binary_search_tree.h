@@ -243,7 +243,7 @@ class TesterBinarySearchTree {
     size_t h = 0;
     for (unsigned i = 0; i < Size(); ++i) {
       AddAction<typename TTree::TNode, TKey>(root);
-      root = tree.RemoveAndReleaseByNode(tree.NodeByRawIndex(i));
+      root = tree.RemoveAndReleaseByNode(tree.at(i));
       VerifyParentLinksLazy(root);
       nhash::DCombineH(h, GetInfoValue(root));
     }
@@ -321,7 +321,7 @@ class TesterBinarySearchTree {
       assert_exception(!root, "Root is not null after deleting all nodes");
       root = TestInsertDelete<TTree>(tree, ktype);
       assert_exception(!root, "Root is not null after inserting and deleting");
-      tree.ResetNodes();
+      tree.clear();
     }
   }
 

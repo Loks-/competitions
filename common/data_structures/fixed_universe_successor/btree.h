@@ -70,7 +70,7 @@ class BTree {
   }
 
   constexpr Node* NewNode(size_t x, unsigned h) {
-    auto node = manager1.New();
+    auto node = manager1.create();
     Set1(node, x, h);
     return node;
   }
@@ -79,7 +79,7 @@ class BTree {
   constexpr BTree() { manager2.InitBlockSize(level_size); }
 
   constexpr void Clear() {
-    manager1.ResetNodes();
+    manager1.clear();
     manager2.Clear();
     root.Clear();
   }
@@ -139,7 +139,7 @@ class BTree {
       if (node->min_value == node->max_value) {
         if (node->min_value != x) return;  // Removing missing element
         if (prev_node) {
-          manager1.Release(node);
+          manager1.release(node);
           prev_node->mask.Delete(idx);
           prev_node->children[idx] = nullptr;
         }
@@ -172,7 +172,7 @@ class BTree {
       }
       if (node->min_value == node->max_value) {
         auto child = node->children[Index(node->min_value, h)];
-        manager1.Release(child);
+        manager1.release(child);
         manager2.ReleaseBlock(node->children);
         node->children = nullptr;
       }

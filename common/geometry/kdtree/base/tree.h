@@ -35,7 +35,7 @@ class Tree : protected memory::NodesManager<
     if (p) {
       ReleaseSubtree(p->l);
       ReleaseSubtree(p->r);
-      TNodesManager::Release(p);
+      TNodesManager::release(p);
     }
   }
 
@@ -58,7 +58,7 @@ class Tree : protected memory::NodesManager<
 
   constexpr const TNode* Root() const { return root; }
 
-  constexpr TNode* New() { return TNodesManager::New(); }
+  constexpr TNode* New() { return TNodesManager::create(); }
 
   constexpr TNode* New(const TLData& ldata, const TPoint& pb,
                        const TPoint& pe) {

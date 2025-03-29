@@ -6,7 +6,7 @@
 #include "common/binary_search_tree/base/subtree_data.h"
 #include "common/binary_search_tree/base/tree.h"
 #include "common/binary_search_tree/subtree_data/size.h"
-#include "common/memory/nodes_manager_fixed_size.h"
+#include "common/memory/contiguous_nodes_manager.h"
 
 #include <algorithm>
 #include <utility>
@@ -19,7 +19,7 @@ template <bool use_parent, class TData,
           class TDeferredTuple = std::tuple<>, class TKey = int64_t>
 class PerfectTree
     : public base::Tree<
-          memory::NodesManagerFixedSize<base::Node<
+          memory::ContiguousNodesManager<base::Node<
               TData, base::SubtreeData<TAggregatorsTuple>,
               base::Deferred<TDeferredTuple>, use_parent, true, TKey>>,
           PerfectTree<use_parent, TData, TAggregatorsTuple, TDeferredTuple,
@@ -36,7 +36,7 @@ class PerfectTree
       base::Node<TData, TSubtreeData, TDeferred, use_parent, true, TKey>;
   using TSelf =
       PerfectTree<use_parent, TData, TAggregatorsTuple, TDeferredTuple, TKey>;
-  using TTree = base::Tree<memory::NodesManagerFixedSize<TNode>, TSelf>;
+  using TTree = base::Tree<memory::ContiguousNodesManager<TNode>, TSelf>;
   friend TTree;
 
  public:

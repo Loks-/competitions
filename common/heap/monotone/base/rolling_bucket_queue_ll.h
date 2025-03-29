@@ -54,7 +54,7 @@ class RollingBucketQueueLL {
   unsigned Size() const { return size; }
 
   void Add(unsigned p, const TValue& value) {
-    auto node = manager.New();
+    auto node = manager.create();
     node->value = value;
     node->next = queue[p % window];
     queue[p % window] = node;
@@ -80,7 +80,7 @@ class RollingBucketQueueLL {
     ShiftPriority();
     auto node = queue[top_priority_adj];
     queue[top_priority_adj] = node->next;
-    manager.Release(node);
+    manager.release(node);
     --size;
   }
 

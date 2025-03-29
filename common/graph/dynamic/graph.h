@@ -27,7 +27,7 @@ class Graph {
  public:
   constexpr void Clear() {
     nvertices = 0;
-    manager.ResetNodes();
+    manager.clear();
     edges.clear();
     inverted_edges.clear();
   }
@@ -93,7 +93,7 @@ class Graph {
 
  public:
   constexpr TEdge* AddEdge(unsigned u1, unsigned u2, const TEdgeData& data) {
-    auto e = manager.New();
+    auto e = manager.create();
     e->u1 = u1;
     e->u2 = u2;
     e->data = data;
@@ -127,7 +127,7 @@ class Graph {
  public:
   constexpr void DeleteEdge(TEdge* edge) {
     DeleteEdgeI(edge);
-    manager.Release(edge);
+    manager.release(edge);
   }
 
   constexpr void MoveEdge(TEdge* edge, unsigned new_u1, unsigned new_u2) {

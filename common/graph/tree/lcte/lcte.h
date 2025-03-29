@@ -3,7 +3,7 @@
 #include "common/base.h"
 #include "common/graph/tree.h"
 #include "common/graph/tree/lcte/node.h"
-#include "common/memory/nodes_manager_fixed_size.h"
+#include "common/memory/contiguous_nodes_manager.h"
 
 #include <stack>
 #include <vector>
@@ -23,8 +23,8 @@ class LCTE {
   using TSelf = LCTE<TData, TPInfo, TVInfo, TAction>;
 
  protected:
-  memory::NodesManagerFixedSize<TPNode> pmanager;
-  memory::NodesManagerFixedSize<TVNode> vmanager;
+  memory::ContiguousNodesManager<TPNode> pmanager;
+  memory::ContiguousNodesManager<TVNode> vmanager;
 
  public:
   template <class TNode>
@@ -41,19 +41,19 @@ class LCTE {
 
  protected:
   TPNode* PNew(const TData& data) {
-    auto node = pmanager.New();
+    auto node = pmanager.create();
     node->data = data;
     return node;
   }
 
   TVNode* VNew(TPNode* p, TPNode* c) {
-    auto node = vmanager.New();
+    auto node = vmanager.create();
     node->vp = p;
     node->vc = c;
     return node;
   }
 
-  void ReleaseV(TVNode* node) { vmanager.Release(node); }
+  void ReleaseV(TVNode* node) { vmanager.release(node); }
 
   void DisconnectR(TPNode* node) {
     if (node->r) {
@@ -255,19 +255,19 @@ class LCTE {
     Build(tree, data);
   }
 
-  TPNode* Node(unsigned x) { return pmanager.NodeByRawIndex(x); }
-  const TPNode* Node(unsigned x) const { return pmanager.NodeByRawIndex(x); }
+  TPNode* Node(unsigned x) { return pmanager.at(x); }
+  const TPNode* Node(unsigned x) const { return pmanager.at(x); }
 
   void BuildEmpty(const std::vector<TData>& data) {
-    pmanager.Reset(data.size());
-    vmanager.Reset(data.size());
+    pmanager.reset(data.size());
+    vmanager.reset(data.size());
     for (unsigned i = 0; i < data.size(); ++i) PNew(data[i])->UpdateInfo();
   }
 
   void Build(const TreeGraph& tree, const std::vector<TData>& data) {
     assert(tree.Size() == data.size());
-    pmanager.Reset(tree.Size());
-    vmanager.Reset(tree.Size());
+    pmanager.reset(tree.Size());
+    vmanager.reset(tree.Size());
     for (unsigned i = 0; i < tree.Size(); ++i) PNew(data[i]);
     BuildR(tree, tree.GetRoot(), CNone);
     UpdateTreeInfo(Node(tree.GetRoot()));

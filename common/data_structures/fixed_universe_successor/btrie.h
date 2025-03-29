@@ -48,7 +48,7 @@ class BTrie {
   }
 
   constexpr void ReleaseNode(Node* node) {
-    (node->children.empty() ? manager2 : manager1).Release(node);
+    (node->children.empty() ? manager2 : manager1).release(node);
   }
 
   constexpr void ReleaseR(Node* node) {
@@ -92,10 +92,10 @@ class BTrie {
       if (!node->children[idx]) {
         Node* child = nullptr;
         if (h > 1) {
-          child = manager1.New();
+          child = manager1.create();
           child->children.resize(level_size, nullptr);
         } else {
-          child = manager2.New();
+          child = manager2.create();
         }
         node->children[idx] = child;
         child->p = node;

@@ -122,7 +122,7 @@ class VanEmdeBoasTreeCompact2 {
   }
 
   Node* Make1(size_t x, unsigned h) {
-    auto node = nodes_manager.New();
+    auto node = nodes_manager.create();
     node->Set1(x, h);
     return node;
   }
@@ -133,7 +133,7 @@ class VanEmdeBoasTreeCompact2 {
   }
 
   void DeleteNode(uint64_t hkey, Node* node) {
-    nodes_manager.Release(node);
+    nodes_manager.release(node);
     nodes.erase(hkey);
   }
 
@@ -141,7 +141,7 @@ class VanEmdeBoasTreeCompact2 {
   VanEmdeBoasTreeCompact2() { Init(1); }
 
   void Clear() {
-    nodes_manager.ResetNodes();
+    nodes_manager.clear();
     nodes.clear();
     root.Clear(maxh);
   }
@@ -230,7 +230,7 @@ class VanEmdeBoasTreeCompact2 {
       DeleteI(node->node.aux_tree, x0, x >> (bits_per_level * hl), h0 + hl,
               h - hl);
       if (node->node.aux_tree->IsEmpty(h - hl)) {
-        nodes_manager.Release(node->node.aux_tree);
+        nodes_manager.release(node->node.aux_tree);
         node->node.aux_tree = nullptr;
       }
       DeleteNode(child_key, child);

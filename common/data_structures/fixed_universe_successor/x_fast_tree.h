@@ -49,7 +49,7 @@ class XFastTree {
     size = 0;
     empty_node.value = kEmpty;
     empty_node.l = empty_node.r = &empty_node;
-    node_manager.ResetNodes();
+    node_manager.clear();
     lm.clear();
     for (auto &m : vm) m.clear();
   }
@@ -84,7 +84,7 @@ class XFastTree {
   }
 
   void InsertFirstNode(size_t x) {
-    auto node = node_manager.New();
+    auto node = node_manager.create();
     node->value = x;
     node->l = node->r = &empty_node;
     empty_node.l = empty_node.r = node;
@@ -101,7 +101,7 @@ class XFastTree {
     const auto sx = snode->value;
     auto noder = (x < sx) ? snode : snode->r;
     auto nodel = noder->l;
-    auto node = node_manager.New();
+    auto node = node_manager.create();
     node->value = x;
     node->l = nodel;
     node->r = noder;
@@ -146,7 +146,7 @@ class XFastTree {
     nodel->r = noder;
     noder->l = nodel;
     lm.erase(it);
-    node_manager.Release(node);
+    node_manager.release(node);
     auto h1 = FindH(x);
     auto xh = x >> h1;
     for (; vm[h1].find(xh ^ 1) == vm[h1].end(); ++h1, xh >>= 1)

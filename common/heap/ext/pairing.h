@@ -63,7 +63,7 @@ class Pairing {
   constexpr void AddNode(Node* node) { AddNode(node, MetaBool<auxiliary>()); }
 
   constexpr Node* Add(const TData& v) {
-    Node* p = nodes_manager.New();
+    Node* p = nodes_manager.create();
     p->value = v;
     AddNode(p);
     return p;
@@ -153,7 +153,7 @@ class Pairing {
 
   constexpr void Delete(Node* node) {
     RemoveNode(node);
-    nodes_manager.Release(node);
+    nodes_manager.release(node);
   }
 
  protected:

@@ -132,24 +132,24 @@ class LinkCutTree {
     Build(tree, data);
   }
 
-  TNode* Node(unsigned x) { return stree.NodeByRawIndex(x); }
-  const TNode* Node(unsigned x) const { return stree.NodeByRawIndex(x); }
+  TNode* Node(unsigned x) { return stree.at(x); }
+  const TNode* Node(unsigned x) const { return stree.at(x); }
 
   void Build(const TreeGraph& tree) {
-    stree.Reset(tree.Size());
+    stree.reset(tree.Size());
     for (unsigned i = 0; i < tree.Size(); ++i) stree.New();
     BuildR(tree, tree.GetRoot(), CNone);
   }
 
   void Build(const TreeGraph& tree, const std::vector<TData>& data) {
     assert(tree.Size() == data.size());
-    stree.Reset(tree.Size());
+    stree.reset(tree.Size());
     for (unsigned i = 0; i < tree.Size(); ++i) stree.New(data[i]);
     BuildR(tree, tree.GetRoot(), CNone);
   }
 
   void Build(const std::vector<TData>& data) {
-    stree.Reset(data.size());
+    stree.reset(data.size());
     for (unsigned i = 0; i < data.size(); ++i) stree.New(data[i]);
   }
 

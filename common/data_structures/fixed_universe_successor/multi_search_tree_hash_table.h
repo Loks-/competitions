@@ -83,7 +83,7 @@ class MultiSearchTreeHashTable {
   }
 
   void AddNode(size_t x, size_t h) {
-    auto node = nodes_manager.New();
+    auto node = nodes_manager.create();
     hash_table[HKey(x, h)] = node;
     Set1(node, x, h);
   }
@@ -92,7 +92,7 @@ class MultiSearchTreeHashTable {
     auto key = HKey(x, h);
     auto it = hash_table.find(key);
     if (it != hash_table.end()) {
-      nodes_manager.Release(it->second);
+      nodes_manager.release(it->second);
       hash_table.erase(it);
     }
   }

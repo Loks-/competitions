@@ -8,7 +8,7 @@
 #include "common/binary_search_tree/node.h"
 #include "common/binary_search_tree/subtree_data/size.h"
 #include "common/binary_search_tree/tree.h"
-#include "common/memory/nodes_manager_fixed_size.h"
+#include "common/memory/contiguous_nodes_manager.h"
 
 #include <algorithm>
 #include <utility>
@@ -19,14 +19,14 @@ namespace bst {
 template <bool use_parent, class TData, class TInfo = subtree_data::Size,
           class TAction = action::None, class TKey = int64_t>
 class BaseTree
-    : public Tree<NodesManagerFixedSize<Node<TData, TInfo, TAction, true,
-                                             use_parent, false, TKey>>,
+    : public Tree<memory::ContiguousNodesManager<Node<
+                      TData, TInfo, TAction, true, use_parent, false, TKey>>,
                   BaseTree<use_parent, TData, TInfo, TAction, TKey>> {
  public:
   using TNode = Node<TData, TInfo, TAction, true, use_parent, false, TKey>;
   using TSelf = BaseTree<use_parent, TData, TInfo, TAction, TKey>;
-  using TTree = Tree<NodesManagerFixedSize<TNode>, TSelf>;
-  friend class Tree<NodesManagerFixedSize<TNode>, TSelf>;
+  using TTree = Tree<memory::ContiguousNodesManager<TNode>, TSelf>;
+  friend class Tree<memory::ContiguousNodesManager<TNode>, TSelf>;
 
  public:
   explicit BaseTree(size_t max_nodes) : TTree(max_nodes) {}

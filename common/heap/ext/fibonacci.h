@@ -83,7 +83,7 @@ class Fibonacci {
   }
 
   constexpr Node* Add(const TData& v) {
-    Node* p = nodes_manager.New();
+    Node* p = nodes_manager.create();
     p->value = v;
     AddNode(p);
     return p;
@@ -195,7 +195,7 @@ class Fibonacci {
 
   constexpr void Delete(Node* node) {
     RemoveNode(node);
-    nodes_manager.Release(node);
+    nodes_manager.release(node);
   }
 
  protected:

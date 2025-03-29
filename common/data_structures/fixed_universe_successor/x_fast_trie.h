@@ -47,7 +47,7 @@ class XFastTrie {
     size = 0;
     empty_node.value = kEmpty;
     empty_node.l = empty_node.r = &empty_node;
-    node_manager.ResetNodes();
+    node_manager.clear();
     for (auto &m : vm) m.clear();
   }
 
@@ -67,14 +67,14 @@ class XFastTrie {
 
  protected:
   void InsertFirstNode(size_t x) {
-    auto node = node_manager.New();
+    auto node = node_manager.create();
     node->value = x;
     node->l = node->r = &empty_node;
     empty_node.l = empty_node.r = node;
     vm[0][x] = node;
     auto last_node = node;
     for (unsigned h = 1; h <= maxh; ++h) {
-      auto hnode = node_manager.New();
+      auto hnode = node_manager.create();
       if ((x >> (h - 1)) & 1) {
         hnode->l = node;
         hnode->r = last_node;
@@ -93,7 +93,7 @@ class XFastTrie {
     if (++size == 1) return InsertFirstNode(x);
     auto noder = (Node *)SuccessorI(x);
     auto nodel = noder->l;
-    auto node = node_manager.New();
+    auto node = node_manager.create();
     node->value = x;
     node->l = nodel;
     node->r = noder;
@@ -106,7 +106,7 @@ class XFastTrie {
     for (;; ++h, xh >>= 1) {
       auto it = vm[h].find(xh >> 1);
       if (it == vm[h].end()) {
-        auto hnode = node_manager.New();
+        auto hnode = node_manager.create();
         if (xh & 1) {
           hnode->l = node;
           hnode->r = last_node;
@@ -154,14 +154,14 @@ class XFastTrie {
     nodel->r = noder;
     noder->l = nodel;
     vm[0].erase(x);
-    node_manager.Release(node);
+    node_manager.release(node);
     unsigned h = 1;
     uint64_t xh = x;
     for (;; ++h, xh >>= 1) {
       auto hnode = vm[h][xh >> 1];
       if (vm[h - 1].find(xh ^ 1) == vm[h - 1].end()) {
         vm[h].erase(xh >> 1);
-        node_manager.Release(hnode);
+        node_manager.release(hnode);
       } else {
         if (xh & 1) {
           hnode->r = nodel;

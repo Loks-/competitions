@@ -17,7 +17,7 @@ template <class TTNodesManager, class TTMe>
 class Tree : public TTNodesManager {
  public:
   using TNodesManager = TTNodesManager;
-  using TNode = typename TNodesManager::TNode;
+  using TNode = typename TNodesManager::NodeType;
   using TData = typename TNode::DataType;
   using TKey = typename TNode::KeyType;
   using TInfo = typename TNode::SubtreeDataType;
@@ -49,7 +49,7 @@ class Tree : public TTNodesManager {
 
   const TMe* Me() const { return static_cast<const TMe*>(this); }
 
-  TNode* New() { return TNodesManager::New(); }
+  TNode* New() { return TNodesManager::create(); }
 
   TNode* New(const TData& data) {
     auto p = New();
@@ -77,7 +77,7 @@ class Tree : public TTNodesManager {
 
   TNode* Build(const std::vector<TData>& data) {
     if (data.size() == 0) return nullptr;
-    TNodesManager::ReserveAdditional(data.size());
+    TNodesManager::reserve_additional(data.size());
     std::vector<TNode*> v(data.size());
     for (size_t i = 0; i < data.size(); ++i) v[i] = New(data[i]);
     return TMe::BuildTree(v);
@@ -87,7 +87,7 @@ class Tree : public TTNodesManager {
     static_assert(TNode::has_key, "has_key should be true");
     assert(data.size() == keys.size());
     if (data.size() == 0) return nullptr;
-    TNodesManager::ReserveAdditional(data.size());
+    TNodesManager::reserve_additional(data.size());
     std::vector<std::pair<TKey, TNode*>> vp(data.size());
     for (size_t i = 0; i < data.size(); ++i)
       vp[i] = std::make_pair(keys[i], New(data[i], keys[i]));
@@ -159,21 +159,21 @@ class Tree : public TTNodesManager {
 
   TNode* RemoveAndReleaseByNode(TNode* node) {
     TNode* new_root = TMe::RemoveByNode(node);
-    TNodesManager::Release(node);
+    TNodesManager::release(node);
     return new_root;
   }
 
   TNode* RemoveAndReleaseByKey(TNode* root, const TKey& key) {
     TNode *removed_node = nullptr,
           *new_root = TMe::RemoveByKey(root, key, removed_node);
-    if (removed_node) TNodesManager::Release(removed_node);
+    if (removed_node) TNodesManager::release(removed_node);
     return new_root;
   }
 
   TNode* RemoveAndReleaseByOrder(TNode* root, size_t order_index) {
     TNode *removed_node = nullptr,
           *new_root = TMe::RemoveByOrder(root, order_index, removed_node);
-    if (removed_node) TNodesManager::Release(removed_node);
+    if (removed_node) TNodesManager::release(removed_node);
     return new_root;
   }
 
@@ -193,7 +193,7 @@ class Tree : public TTNodesManager {
     if (root) {
       ReleaseTree(root->left);
       ReleaseTree(root->right);
-      TNodesManager::Release(root);
+      TNodesManager::release(root);
     }
   }
 

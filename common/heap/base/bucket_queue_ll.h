@@ -49,7 +49,7 @@ class BucketQueueLL {
 
   constexpr void Add(unsigned p, const TValue& value) {
     AdjustQueueSize(p);
-    auto node = manager.New();
+    auto node = manager.create();
     node->value = value;
     node->next = queue[p];
     queue[p] = node;
@@ -70,7 +70,7 @@ class BucketQueueLL {
     assert(!Empty());
     auto node = queue[top_priority];
     queue[top_priority] = node->next;
-    manager.Release(node);
+    manager.release(node);
     --size;
     if (Empty()) {
       top_priority = -1u;
