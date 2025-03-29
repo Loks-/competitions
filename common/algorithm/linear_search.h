@@ -20,7 +20,7 @@
 template <typename Iterator, typename Predicate>
 [[nodiscard]] constexpr Iterator find_first_if(Iterator begin,
                                                const Iterator end,
-                                               const Predicate& predicate) {
+                                               Predicate&& predicate) {
   for (; begin != end; ++begin) {
     if (predicate(begin)) {
       break;
@@ -45,7 +45,7 @@ template <typename Iterator, typename Predicate>
  */
 template <typename Iterator, typename Predicate>
 [[nodiscard]] constexpr Iterator find_first_if(Iterator begin,
-                                               const Predicate& predicate) {
+                                               Predicate&& predicate) {
   for (;; ++begin) {
     if (predicate(begin)) {
       return begin;

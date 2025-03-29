@@ -1,6 +1,7 @@
 #pragma once
 
 #include <algorithm>
+#include <utility>
 
 /**
  * @brief Finds the first element in the range [begin, end) that is not less
@@ -25,8 +26,7 @@
  */
 template <typename Iterator, typename Value, typename Comparator>
 [[nodiscard]] constexpr Iterator lower_bound_with_comparator(
-    Iterator begin, Iterator end, const Value& value,
-    const Comparator& comparator) {
+    Iterator begin, Iterator end, const Value& value, Comparator&& comparator) {
   while (begin != end) {
     const Iterator mid = (begin + end) / 2;
     if (comparator(mid) < value) {
@@ -61,8 +61,7 @@ template <typename Iterator, typename Value, typename Comparator>
  */
 template <typename Iterator, typename Value, typename Comparator>
 [[nodiscard]] constexpr Iterator upper_bound_with_comparator(
-    Iterator begin, Iterator end, const Value& value,
-    const Comparator& comparator) {
+    Iterator begin, Iterator end, const Value& value, Comparator&& comparator) {
   while (begin != end) {
     const Iterator mid = (begin + end) / 2;
     if (comparator(mid) <= value) {
@@ -95,7 +94,7 @@ template <typename Iterator, typename Value, typename Comparator>
  */
 template <typename Iterator, typename Predicate>
 [[nodiscard]] constexpr Iterator lower_bound_with_predicate(
-    Iterator begin, Iterator end, const Predicate& predicate) {
+    Iterator begin, Iterator end, Predicate&& predicate) {
   while (begin != end) {
     const Iterator mid = (begin + end) / 2;
     if (predicate(mid)) {
@@ -125,11 +124,12 @@ template <typename Iterator, typename Predicate>
  */
 template <typename Iterator, typename Predicate>
 [[nodiscard]] constexpr Iterator lower_bound_with_predicate(
-    Iterator begin, const Predicate& predicate) {
+    Iterator begin, Predicate&& predicate) {
   auto end = std::max(begin, Iterator(1));
   while (!predicate(end)) {
     begin = end + 1;
     end *= 2;
   }
-  return lower_bound_with_predicate(begin, end, predicate);
+  return lower_bound_with_predicate(begin, end,
+                                    std::forward<Predicate>(predicate));
 }
