@@ -23,8 +23,8 @@ namespace subtree_data {
  * (default: 0).
  */
 template <typename Node>
-inline void propagate_to_root_with_path(const std::vector<Node*>& path,
-                                        size_t start_from_index = 0) {
+constexpr void propagate_to_root_with_path(const std::vector<Node*>& path,
+                                           size_t start_from_index = 0) {
   if constexpr (!Node::SubtreeDataType::empty) {
     // Update subtree data from node up to root
     for (auto it = path.begin() + start_from_index; it != path.end(); ++it) {
@@ -46,8 +46,8 @@ inline void propagate_to_root_with_path(const std::vector<Node*>& path,
  * (default: 0).
  */
 template <typename Node>
-inline void propagate_for_data_update_with_path(const std::vector<Node*>& path,
-                                                size_t start_from_index = 0) {
+constexpr void propagate_for_data_update_with_path(
+    const std::vector<Node*>& path, size_t start_from_index = 0) {
   if constexpr (Node::SubtreeDataType::use_data) {
     propagate_to_root_with_path<Node>(path, start_from_index);
   }
@@ -66,8 +66,8 @@ inline void propagate_for_data_update_with_path(const std::vector<Node*>& path,
  * (default: 0).
  */
 template <typename Node>
-inline void propagate_for_key_update_with_path(const std::vector<Node*>& path,
-                                               size_t start_from_index = 0) {
+constexpr void propagate_for_key_update_with_path(
+    const std::vector<Node*>& path, size_t start_from_index = 0) {
   if constexpr (Node::SubtreeDataType::use_keys) {
     propagate_to_root_with_path<Node>(path, start_from_index);
   }
@@ -87,7 +87,7 @@ inline void propagate_for_key_update_with_path(const std::vector<Node*>& path,
  * (default: 0).
  */
 template <typename Node>
-inline void propagate_for_structure_update_with_path(
+constexpr void propagate_for_structure_update_with_path(
     const std::vector<Node*>& path, size_t start_from_index = 0) {
   if constexpr (Node::SubtreeDataType::use_tree_structure) {
     propagate_to_root_with_path<Node>(path, start_from_index);
@@ -108,7 +108,7 @@ inline void propagate_for_structure_update_with_path(
  * (default: 0).
  */
 template <typename Node>
-inline void propagate_for_nodes_order_update_with_path(
+constexpr void propagate_for_nodes_order_update_with_path(
     const std::vector<Node*>& path, size_t start_from_index = 0) {
   if constexpr (Node::SubtreeDataType::use_nodes_order) {
     propagate_to_root_with_path<Node>(path, start_from_index);
