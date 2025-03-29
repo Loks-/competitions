@@ -1,27 +1,32 @@
 #pragma once
 
-#include "common/binary_search_tree/base/node.h"
-#include "common/binary_search_tree/deferred/utils/propagate_to_node.h"
-#include "common/template.h"
-
 namespace bst {
 namespace base {
-namespace hidden {
-template <class TNode>
-constexpr unsigned DeepI(const TNode* node) {
-  static_assert(TNode::has_parent, "has_parent should be true");
-  unsigned d = 0;
-  for (; node; node = node->parent) ++d;
-  return d;
-}
-}  // namespace hidden
 
-template <class TNode>
-inline unsigned Deep(const TNode* node) {
-  // bst::action::hidden::ApplyRootToNodeI(
-  //     node, MetaBool<TNode::TAction::modify_tree>{});
-  bst::deferred::propagate_to_node(node);
-  return hidden::DeepI(node);
+/**
+ * @brief Gets the depth of a node relative to the root.
+ *
+ * This function calculates how deep a node is in the tree, with the root
+ * node having depth 1. The depth is calculated by counting the number of
+ * parent links from the node to the root.
+ *
+ * Since this is a read-only operation that only traverses parent links,
+ * no deferred computations are applied. If a pointer to a node is available,
+ * it is assumed that all deferred computations have already been applied.
+ *
+ * @tparam Node The BST node type.
+ * @param node The node to calculate depth for.
+ * @return The depth of the node (1 for root, 2 for root's children, etc.),
+ *         or 0 if the node is nullptr.
+ */
+template <class Node>
+[[nodiscard]] constexpr unsigned deep(const Node* node) {
+  // Count parent links from node to root
+  static_assert(Node::has_parent, "Node must have parent pointer enabled");
+  unsigned depth = 0;
+  for (; node; node = node->parent) ++depth;
+  return depth;
 }
+
 }  // namespace base
 }  // namespace bst
