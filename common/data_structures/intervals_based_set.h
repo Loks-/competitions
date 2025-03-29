@@ -2,7 +2,7 @@
 
 #include "common/base.h"
 #include "common/binary_search_tree/base/left.h"
-#include "common/binary_search_tree/base/traversal.h"
+#include "common/binary_search_tree/base/to_vector.h"
 #include "common/binary_search_tree/subtree_data/base.h"
 #include "common/binary_search_tree/subtree_data/size.h"
 #include "common/binary_search_tree/treap.h"
@@ -77,10 +77,7 @@ class IntervalsBasedSet {
 
   size_t TreeSize() const { return bst::subtree_data::size(root); }
 
-  std::vector<Interval> ToVector() const {
-    return bst::base::Traverse<TNode, Interval>(
-        root, bst::base::ETraversalOrder::Inorder);
-  }
+  std::vector<Interval> ToVector() const { return bst::base::to_vector(root); }
 
   bool HasKey(TValue key) const {
     for (TNode* node = root; node;) {
