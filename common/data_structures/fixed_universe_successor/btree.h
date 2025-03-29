@@ -48,7 +48,7 @@ class BTree {
   };
 
   using TNodeManager1 = memory::NodesManager<Node>;
-  using TNodeManager2 = memory::BlocksManager<Node*>;
+  using TNodeManager2 = memory::BlocksManager<Node*, false>;
 
  protected:
   TNodeManager1 manager1;
@@ -76,11 +76,11 @@ class BTree {
   }
 
  public:
-  constexpr BTree() { manager2.InitBlockSize(level_size); }
+  constexpr BTree() { manager2.init_block_size(level_size); }
 
   constexpr void Clear() {
     manager1.clear();
-    manager2.Clear();
+    manager2.clear();
     root.Clear();
   }
 
@@ -108,7 +108,7 @@ class BTree {
       // Split node if needed
       if (!node->IsSplit()) {
         if (node->min_value == x) return;  // Adding same value
-        node->children = manager2.NewBlock();
+        node->children = manager2.new_block();
         memset(node->children, 0, level_size * sizeof(Node*));
         node->children[Index(node->min_value, h)] =
             NewNode(node->min_value, h - 1);
@@ -173,7 +173,7 @@ class BTree {
       if (node->min_value == node->max_value) {
         auto child = node->children[Index(node->min_value, h)];
         manager1.release(child);
-        manager2.ReleaseBlock(node->children);
+        manager2.release_block(node->children);
         node->children = nullptr;
       }
     }
