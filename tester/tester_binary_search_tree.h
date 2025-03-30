@@ -112,8 +112,7 @@ class TesterBinarySearchTree {
   template <class TTree>
   typename TTree::TNode* TestBuild(TTree& tree, TBSTKeysType type) {
     Timer t;
-    typename TTree::TNode* root =
-        tree.build_from_data(GetKeys(type), GetKeys(type));
+    typename TTree::TNode* root = tree.build(GetKeys(type), GetKeys(type));
     t.stop();
     AddResult("Build", type, TreeHash(root, 0), t.get_milliseconds());
     VerifyParentLinks(root);
@@ -123,7 +122,7 @@ class TesterBinarySearchTree {
   template <class TTree>
   typename TTree::TNode* TestInsertI(TTree& tree, TBSTKeysType type,
                                      MetaFalse) {
-    return tree.build_from_data(GetKeys(type), GetKeys(type));
+    return tree.build(GetKeys(type), GetKeys(type));
   }
 
   template <class TTree>

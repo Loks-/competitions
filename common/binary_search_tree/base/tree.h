@@ -179,8 +179,7 @@ class Tree {
    * @param data Vector of data elements to create nodes from
    * @return Pointer to the root of the newly built tree
    */
-  [[nodiscard]] constexpr NodeType* build_from_data(
-      const std::vector<DataType>& data) {
+  [[nodiscard]] constexpr NodeType* build(const std::vector<DataType>& data) {
     if (data.empty()) return nullptr;
     nodes_manager_.reserve_additional(data.size());
     std::vector<NodeType*> nodes(data.size());
@@ -195,8 +194,8 @@ class Tree {
    * @param keys Vector of keys corresponding to the data elements
    * @return Pointer to the root of the newly built tree
    */
-  [[nodiscard]] constexpr NodeType* build_from_data(
-      const std::vector<DataType>& data, const std::vector<KeyType>& keys) {
+  [[nodiscard]] constexpr NodeType* build(const std::vector<DataType>& data,
+                                          const std::vector<KeyType>& keys) {
     static_assert(has_key, "has_key should be true");
     assert(data.size() == keys.size());
     if (data.empty()) return nullptr;
