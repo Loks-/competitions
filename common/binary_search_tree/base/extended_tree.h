@@ -32,6 +32,32 @@ class ExtendedTree : public BasicTree<NodesManager, Derived> {
   using typename Base::SubtreeDataType;
 
   /**
+   * @brief Operation support flags.
+   *
+   * These flags determine which operations are supported by the tree:
+   * - support_insert: Whether insertion operations are supported
+   * - support_remove: Whether removal operations are supported (requires parent
+   * links)
+   * - support_remove_by_node: Whether node-based removal is supported
+   * - support_join3: Whether three-way join operations are supported
+   * - support_join: Whether two-way join operations are supported
+   * - support_split: Whether split operations are supported
+   * - support_insert_at: Whether order-based insertion is supported
+   */
+  static constexpr bool support_insert = true;
+  static constexpr bool support_remove = Base::has_parent;
+  static constexpr bool support_remove_by_node =
+      Base::has_parent && Derived::support_remove;
+  static constexpr bool support_join3 = false;
+  static constexpr bool support_join =
+      Derived::support_join3 && Derived::support_remove_by_node;
+  static constexpr bool support_split = Derived::support_join3;
+  static constexpr bool support_insert_at =
+      !Base::has_key && SubtreeDataType::has_size && Derived::support_join3 &&
+      Derived::support_split;
+
+ public:
+  /**
    * @brief Constructs a tree with the specified maximum number of nodes.
    *
    * @param max_nodes The maximum number of nodes to reserve
@@ -105,7 +131,7 @@ class ExtendedTree : public BasicTree<NodesManager, Derived> {
    */
   [[nodiscard]] static NodeType* insert_at(NodeType* root, NodeType* node,
                                            size_t index) {
-    static_assert(Base::support_insert_at);
+    static_assert(support_insert_at);
     assert(node);
     if (!root) {
       assert(index == 0);

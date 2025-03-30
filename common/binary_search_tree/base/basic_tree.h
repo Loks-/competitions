@@ -38,46 +38,23 @@ class BasicTree {
   static constexpr bool has_key = NodeType::has_key;
   static constexpr bool has_parent = NodeType::has_parent;
 
-  /**
-   * @brief Operation support flags.
-   *
-   * These flags determine which operations are supported by the tree:
-   * - support_insert: Whether insertion operations are supported
-   * - support_remove: Whether removal operations are supported (requires parent
-   * links)
-   * - support_remove_by_node: Whether node-based removal is supported
-   * - support_join3: Whether three-way join operations are supported
-   * - support_join: Whether two-way join operations are supported
-   * - support_split: Whether split operations are supported
-   * - support_insert_at: Whether order-based insertion is supported
-   */
-  static constexpr bool support_insert = true;
-  static constexpr bool support_remove = has_parent;
-  static constexpr bool support_remove_by_node =
-      has_parent && Derived::support_remove;
-  static constexpr bool support_join3 = false;
-  static constexpr bool support_join =
-      Derived::support_join3 && Derived::support_remove_by_node;
-  static constexpr bool support_split = Derived::support_join3;
-  static constexpr bool support_insert_at =
-      !has_key && SubtreeDataType::has_size && Derived::support_join3 &&
-      Derived::support_split;
-
   static constexpr bool is_persistent = false;
 
+ public:
   /**
    * @brief Constructs a tree with the specified maximum number of nodes.
    *
    * @param max_nodes The maximum number of nodes to reserve
    */
-  explicit constexpr BasicTree(size_t max_nodes) : nodes_manager_(max_nodes) {}
+  [[nodiscard]] explicit constexpr BasicTree(size_t max_nodes)
+      : nodes_manager_(max_nodes) {}
 
   /**
    * @brief Default constructor.
    *
    * Creates a tree with no initial capacity.
    */
-  constexpr BasicTree() : BasicTree(0) {}
+  [[nodiscard]] constexpr BasicTree() : BasicTree(0) {}
 
   /**
    * @brief Returns a pointer to the derived class instance.
