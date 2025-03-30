@@ -78,7 +78,7 @@ class BasicTree {
    * @param data The data to store in the new node
    * @return Pointer to the newly created node
    */
-  NodeType* create_node(const DataType& data) {
+  constexpr NodeType* create_node(const DataType& data) {
     auto p = nodes_manager_.create();
     p->data = data;
     p->subtree_data.bti_reset();
@@ -93,7 +93,7 @@ class BasicTree {
    * @param key The key value for the node
    * @return Pointer to the newly created node
    */
-  NodeType* create_node(const DataType& data, const KeyType& key) {
+  constexpr NodeType* create_node(const DataType& data, const KeyType& key) {
     static_assert(has_key, "has_key should be true");
     auto p = nodes_manager_.create();
     p->data = data;
@@ -147,8 +147,9 @@ class BasicTree {
    * @param key The key for the new node
    * @return Pointer to the new root of the tree
    */
-  [[nodiscard]] NodeType* insert_new(NodeType* root, const DataType& data,
-                                     const KeyType& key) {
+  [[nodiscard]] constexpr NodeType* insert_new(NodeType* root,
+                                               const DataType& data,
+                                               const KeyType& key) {
     return Derived::insert(root, create_node(data, key));
   }
 
@@ -160,8 +161,9 @@ class BasicTree {
    * @param index The zero-based index where to insert
    * @return Pointer to the new root of the tree
    */
-  [[nodiscard]] NodeType* insert_new_at(NodeType* root, const DataType& data,
-                                        size_t index) {
+  [[nodiscard]] constexpr NodeType* insert_new_at(NodeType* root,
+                                                  const DataType& data,
+                                                  size_t index) {
     return Derived::insert_at(root, create_node(data), index);
   }
 
@@ -170,14 +172,14 @@ class BasicTree {
    *
    * @param node The node to release
    */
-  void release(NodeType* node) { nodes_manager_.release(node); }
+  constexpr void release(NodeType* node) { nodes_manager_.release(node); }
 
   /**
    * @brief Recursively releases all nodes in a tree.
    *
    * @param root The root of the tree to release
    */
-  void release_tree(NodeType* root) {
+  constexpr void release_tree(NodeType* root) {
     if (root) {
       release_tree(root->left);
       release_tree(root->right);
@@ -191,7 +193,7 @@ class BasicTree {
    * @param node The node to remove and release
    * @return Pointer to the new root of the tree
    */
-  [[nodiscard]] NodeType* remove_and_release_node(NodeType* node) {
+  [[nodiscard]] constexpr NodeType* remove_and_release_node(NodeType* node) {
     NodeType* new_root = Derived::remove_node(node);
     release(node);
     return new_root;
@@ -204,8 +206,8 @@ class BasicTree {
    * @param key The key of the node to remove
    * @return Pointer to the new root of the tree
    */
-  [[nodiscard]] NodeType* remove_and_release(NodeType* root,
-                                             const KeyType& key) {
+  [[nodiscard]] constexpr NodeType* remove_and_release(NodeType* root,
+                                                       const KeyType& key) {
     NodeType* removed_node = nullptr;
     NodeType* new_root = Derived::remove(root, key, removed_node);
     if (removed_node) release(removed_node);
@@ -219,7 +221,8 @@ class BasicTree {
    * @param index The zero-based index of the node to remove
    * @return Pointer to the new root of the tree
    */
-  [[nodiscard]] NodeType* remove_and_release_at(NodeType* root, size_t index) {
+  [[nodiscard]] constexpr NodeType* remove_and_release_at(NodeType* root,
+                                                          size_t index) {
     NodeType* removed_node = nullptr;
     NodeType* new_root = Derived::remove_at(root, index, removed_node);
     if (removed_node) release(removed_node);
@@ -229,14 +232,14 @@ class BasicTree {
   /**
    * @brief Clears all nodes from the node manager.
    */
-  void clear() { nodes_manager_.clear(); }
+  constexpr void clear() { nodes_manager_.clear(); }
 
   /**
    * @brief Initializes the node manager with a new capacity.
    *
    * @param max_nodes The maximum number of nodes to reserve
    */
-  void init(size_t max_nodes) { nodes_manager_.init(max_nodes); }
+  constexpr void init(size_t max_nodes) { nodes_manager_.init(max_nodes); }
 
   /**
    * @brief Returns the number of nodes currently in use.
@@ -251,7 +254,7 @@ class BasicTree {
    * @param index The index of the node to retrieve
    * @return Pointer to the node at the given index
    */
-  [[nodiscard]] NodeType* manager_at(size_t index) {
+  [[nodiscard]] constexpr NodeType* manager_at(size_t index) {
     static_assert(NodesManagerType::support_at,
                   "nodes manager should support at");
     return nodes_manager_.at(index);
@@ -263,7 +266,7 @@ class BasicTree {
    * @param index The index of the node to retrieve
    * @return Const pointer to the node at the given index
    */
-  [[nodiscard]] const NodeType* manager_at(size_t index) const {
+  [[nodiscard]] constexpr const NodeType* manager_at(size_t index) const {
     static_assert(NodesManagerType::support_at,
                   "nodes manager should support at");
     return nodes_manager_.at(index);
@@ -275,7 +278,7 @@ class BasicTree {
    * @param node The node to find the index for
    * @return The index of the node
    */
-  [[nodiscard]] size_t manager_index(const NodeType* node) const {
+  [[nodiscard]] constexpr size_t manager_index(const NodeType* node) const {
     static_assert(NodesManagerType::support_index,
                   "nodes manager should support index");
     return nodes_manager_.index(node);
