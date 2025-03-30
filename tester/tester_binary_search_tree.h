@@ -5,6 +5,8 @@
 
 #include "common/assert_exception.h"
 #include "common/base.h"
+#include "common/binary_search_tree/auto/at.h"
+#include "common/binary_search_tree/auto/find.h"
 #include "common/binary_search_tree/deferred/utils/propagate_to_node.h"
 #include "common/binary_search_tree/subtree_data/size.h"
 #include "common/hash/combine.h"
@@ -148,13 +150,13 @@ class TesterBinarySearchTree {
   }
 
   template <class TTree>
-  typename TTree::TNode* TestFindByOrder(TTree& tree,
+  typename TTree::TNode* TestFindByOrder([[maybe_unused]] TTree& tree,
                                          typename TTree::TNode* root,
                                          TBSTKeysType type) {
     Timer t;
     size_t h = 0;
     for (unsigned i = 0; i < Size(); ++i) {
-      typename TTree::TNode* node = tree.at(root, i);
+      typename TTree::TNode* node = bst::auto_::at<TTree>(root, i);
       assert_exception(node,
                        "Node is not found by order id " + std::to_string(i));
       nhash::DCombineH(h, node->key);
@@ -164,13 +166,13 @@ class TesterBinarySearchTree {
   }
 
   template <class TTree>
-  typename TTree::TNode* TestFindByKey0(TTree& tree,
+  typename TTree::TNode* TestFindByKey0([[maybe_unused]] TTree& tree,
                                         typename TTree::TNode* root,
                                         TBSTKeysType type) {
     Timer t;
     size_t h = 0;
     for (unsigned i = 0; i <= Size(); ++i) {
-      typename TTree::TNode* node = tree.find(root, 2 * i);
+      typename TTree::TNode* node = bst::auto_::find<TTree>(root, 2 * i);
       assert_exception(!node, "Node is found but should not be");
       nhash::DCombineH(h, reinterpret_cast<size_t>(node));
     }
@@ -179,14 +181,14 @@ class TesterBinarySearchTree {
   }
 
   template <class TTree>
-  typename TTree::TNode* TestFindByKey1(TTree& tree,
+  typename TTree::TNode* TestFindByKey1([[maybe_unused]] TTree& tree,
                                         typename TTree::TNode* root,
                                         TBSTKeysType type) {
     const std::vector<TKey>& vkeys = GetKeys(type);
     Timer t;
     size_t h = 0;
     for (const TKey& key : vkeys) {
-      typename TTree::TNode* node = tree.find(root, key);
+      typename TTree::TNode* node = bst::auto_::find<TTree>(root, key);
       assert_exception(node, "Node is not found by key " + std::to_string(key));
       nhash::DCombineH(h, (type <= shuffled) ? node->data : node->key);
     }

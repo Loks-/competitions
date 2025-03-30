@@ -1,6 +1,7 @@
 #include "tester/tester_binary_search_tree_split_join.h"
 
 #include "common/assert_exception.h"
+#include "common/binary_search_tree/auto/find.h"
 #include "common/binary_search_tree/avl_tree.h"
 #include "common/binary_search_tree/base_tree.h"
 #include "common/binary_search_tree/deferred/add_each_key.h"
@@ -52,7 +53,7 @@ size_t TesterBinarySearchTreeSplitJoin::TestBase(
     Rotate(tree, root, vshift[i]);
     shift += vshift[i];
     int64_t key = mp.ApplyS(vkeys[i] - shift);
-    if (tree.find(root, key)) {
+    if (bst::auto_::find<TTree>(root, key)) {
       root = tree.remove_and_release(root, key);
     } else {
       root = tree.insert_new(root, {}, key);
