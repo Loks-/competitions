@@ -1,7 +1,7 @@
 #pragma once
 
+#include "common/binary_search_tree/base/extended_tree.h"
 #include "common/binary_search_tree/base/remove_by_node.h"
-#include "common/binary_search_tree/base/tree.h"
 
 namespace bst {
 namespace base {
@@ -20,9 +20,9 @@ namespace base {
  * @tparam Derived The derived class type (for CRTP)
  */
 template <class NodesManager, class Derived>
-class BalancedTree : public Tree<NodesManager, Derived> {
+class BalancedTree : public ExtendedTree<NodesManager, Derived> {
  public:
-  using Base = Tree<NodesManager, Derived>;
+  using Base = ExtendedTree<NodesManager, Derived>;
   using NodeType = typename Base::NodeType;
   using KeyType = typename Base::KeyType;
   friend Base;

@@ -41,7 +41,7 @@ class Treap
   using TSelf = Treap<use_key, use_parent, TData, TAggregatorsTuple,
                       TDeferredTuple, TKey>;
   using TBase = bst::persistent::Tree<memory::NodesManager<TNode>, TSelf>;
-  using TTree = bst::base::Tree<memory::NodesManager<TNode>, TSelf>;
+  using TTree = bst::base::ExtendedTree<memory::NodesManager<TNode>, TSelf>;
   friend TTree;
 
  protected:

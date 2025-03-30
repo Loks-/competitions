@@ -2,6 +2,7 @@
 
 #include "common/base.h"
 #include "common/binary_search_tree/base/deferred.h"
+#include "common/binary_search_tree/base/extended_tree.h"
 #include "common/binary_search_tree/base/insert_by_key.h"
 #include "common/binary_search_tree/base/node.h"
 #include "common/binary_search_tree/base/remove_push_down.h"
@@ -10,7 +11,6 @@
 #include "common/binary_search_tree/base/rotate.h"
 #include "common/binary_search_tree/base/sibling.h"
 #include "common/binary_search_tree/base/subtree_data.h"
-#include "common/binary_search_tree/base/tree.h"
 #include "common/binary_search_tree/subtree_data/rbt_color.h"
 #include "common/binary_search_tree/subtree_data/size.h"
 #include "common/binary_search_tree/subtree_data/utils/propagate_to_root.h"
@@ -27,13 +27,14 @@ template <class TData, class TAggregatorsTuple = std::tuple<subtree_data::Size>,
           template <class> class TTNodesManager =
               memory::ContiguousNodesManager>
 class RedBlackTree
-    : public base::Tree<TTNodesManager<base::Node<
-                            TData,
-                            base::SubtreeData<templates::PrependT<
-                                subtree_data::RBTColor, TAggregatorsTuple>>,
-                            base::Deferred<TDeferredTuple>, true, true, TKey>>,
-                        RedBlackTree<TData, TAggregatorsTuple, TDeferredTuple,
-                                     TKey, TTNodesManager>> {
+    : public base::ExtendedTree<
+          TTNodesManager<
+              base::Node<TData,
+                         base::SubtreeData<templates::PrependT<
+                             subtree_data::RBTColor, TAggregatorsTuple>>,
+                         base::Deferred<TDeferredTuple>, true, true, TKey>>,
+          RedBlackTree<TData, TAggregatorsTuple, TDeferredTuple, TKey,
+                       TTNodesManager>> {
  public:
   using TSubtreeData = base::SubtreeData<
       templates::PrependT<subtree_data::RBTColor, TAggregatorsTuple>>;
@@ -42,7 +43,7 @@ class RedBlackTree
                            true, true, TKey>;
   using TSelf = RedBlackTree<TData, TAggregatorsTuple, TDeferredTuple, TKey,
                              TTNodesManager>;
-  using TTree = base::Tree<TTNodesManager<TNode>, TSelf>;
+  using TTree = base::ExtendedTree<TTNodesManager<TNode>, TSelf>;
   friend TTree;
 
   static constexpr bool support_join3 = true;

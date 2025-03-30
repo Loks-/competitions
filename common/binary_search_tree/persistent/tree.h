@@ -1,17 +1,17 @@
 #pragma once
 
-#include "common/binary_search_tree/base/tree.h"
+#include "common/binary_search_tree/base/extended_tree.h"
 
 namespace bst {
 namespace persistent {
 template <class TTNodesManager, class TTMe>
-class Tree : public bst::base::Tree<TTNodesManager, TTMe> {
+class Tree : public bst::base::ExtendedTree<TTNodesManager, TTMe> {
  public:
   using TNodesManager = TTNodesManager;
   using TNode = typename TNodesManager::NodeType;
   using TData = typename TNode::DataType;
   using TKey = typename TNode::KeyType;
-  using TBase = bst::base::Tree<TTNodesManager, TTMe>;
+  using TBase = bst::base::ExtendedTree<TTNodesManager, TTMe>;
   using TMe = TTMe;
 
   static constexpr bool is_persistent = true;

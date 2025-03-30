@@ -1,10 +1,10 @@
 #pragma once
 #include "common/base.h"
 #include "common/binary_search_tree/base/deferred.h"
+#include "common/binary_search_tree/base/extended_tree.h"
 #include "common/binary_search_tree/base/node.h"
 #include "common/binary_search_tree/base/root.h"
 #include "common/binary_search_tree/base/subtree_data.h"
-#include "common/binary_search_tree/base/tree.h"
 #include "common/binary_search_tree/subtree_data/size.h"
 #include "common/binary_search_tree/subtree_data/treap_height.h"
 #include "common/binary_search_tree/subtree_data/utils/propagate_to_root.h"
@@ -24,7 +24,7 @@ template <bool use_key, bool use_parent, class TData,
           template <class> class TTNodesManager =
               memory::ContiguousNodesManager>
 class Treap
-    : public base::Tree<
+    : public base::ExtendedTree<
           TTNodesManager<base::Node<
               TData,
               base::SubtreeData<templates::PrependT<subtree_data::TreapHeight,
@@ -46,7 +46,7 @@ class Treap
       base::Node<TData, TSubtreeData, TDeferred, use_parent, use_key, TKey>;
   using TSelf = Treap<use_key, use_parent, TData, TAggregatorsTuple,
                       TDeferredTuple, TKey, TTNodesManager>;
-  using TTree = base::Tree<TTNodesManager<TNode>, TSelf>;
+  using TTree = base::ExtendedTree<TTNodesManager<TNode>, TSelf>;
   friend TTree;
 
  protected:

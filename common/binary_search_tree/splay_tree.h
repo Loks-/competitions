@@ -2,10 +2,10 @@
 
 #include "common/base.h"
 #include "common/binary_search_tree/base/deferred.h"
+#include "common/binary_search_tree/base/extended_tree.h"
 #include "common/binary_search_tree/base/node.h"
 #include "common/binary_search_tree/base/rotate.h"
 #include "common/binary_search_tree/base/subtree_data.h"
-#include "common/binary_search_tree/base/tree.h"
 #include "common/binary_search_tree/deferred/utils/propagate_to_node.h"
 #include "common/binary_search_tree/subtree_data/size.h"
 #include "common/memory/contiguous_nodes_manager.h"
@@ -19,7 +19,7 @@ template <bool use_key, class TData,
           template <class> class TTNodesManager =
               memory::ContiguousNodesManager>
 class SplayTree
-    : public base::Tree<
+    : public base::ExtendedTree<
           TTNodesManager<
               base::Node<TData, base::SubtreeData<TAggregatorsTuple>,
                          base::Deferred<TDeferredTuple>, true, use_key, TKey>>,
@@ -36,7 +36,7 @@ class SplayTree
   using TNode = base::Node<TData, TSubtreeData, TDeferred, true, use_key, TKey>;
   using TSelf = SplayTree<use_key, TData, TAggregatorsTuple, TDeferredTuple,
                           TKey, TTNodesManager>;
-  using TTree = base::Tree<TTNodesManager<TNode>, TSelf>;
+  using TTree = base::ExtendedTree<TTNodesManager<TNode>, TSelf>;
   friend TTree;
 
  public:

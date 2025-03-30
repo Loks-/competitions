@@ -2,9 +2,9 @@
 
 #include "common/base.h"
 #include "common/binary_search_tree/base/deferred.h"
+#include "common/binary_search_tree/base/extended_tree.h"
 #include "common/binary_search_tree/base/node.h"
 #include "common/binary_search_tree/base/subtree_data.h"
-#include "common/binary_search_tree/base/tree.h"
 #include "common/binary_search_tree/subtree_data/size.h"
 #include "common/memory/contiguous_nodes_manager.h"
 
@@ -18,7 +18,7 @@ template <bool use_parent, class TData,
           class TAggregatorsTuple = std::tuple<subtree_data::Size>,
           class TDeferredTuple = std::tuple<>, class TKey = int64_t>
 class PerfectTree
-    : public base::Tree<
+    : public base::ExtendedTree<
           memory::ContiguousNodesManager<base::Node<
               TData, base::SubtreeData<TAggregatorsTuple>,
               base::Deferred<TDeferredTuple>, use_parent, true, TKey>>,
@@ -36,7 +36,8 @@ class PerfectTree
       base::Node<TData, TSubtreeData, TDeferred, use_parent, true, TKey>;
   using TSelf =
       PerfectTree<use_parent, TData, TAggregatorsTuple, TDeferredTuple, TKey>;
-  using TTree = base::Tree<memory::ContiguousNodesManager<TNode>, TSelf>;
+  using TTree =
+      base::ExtendedTree<memory::ContiguousNodesManager<TNode>, TSelf>;
   friend TTree;
 
  public:
