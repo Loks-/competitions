@@ -1,9 +1,10 @@
 #pragma once
 
 #include "common/base.h"
+#include "common/binary_search_tree/base/at.h"
 #include "common/binary_search_tree/base/basic_tree.h"
+#include "common/binary_search_tree/base/find.h"
 
-#include <algorithm>
 #include <vector>
 
 namespace bst {
@@ -57,16 +58,14 @@ class ExtendedTree : public BasicTree<NodesManager, Derived> {
   }
 
   /**
-   * @brief Gets the node at the specified order index.
+   * @brief Gets a node at the specified inorder index in the tree.
    *
-   * @param root The root of the tree
-   * @param order_index The zero-based index to look up
-   * @return Pointer to the node at the given index, or nullptr if index is out
-   * of bounds
+   * @param root The root of the tree to search in
+   * @param index The index of the node to retrieve
+   * @return Pointer to the node at the given index, or nullptr if not found
    */
-  [[nodiscard]] static constexpr NodeType* at(NodeType* root,
-                                              size_t order_index) {
-    return bst::base::at(root, order_index);
+  [[nodiscard]] static constexpr NodeType* at(NodeType* root, size_t index) {
+    return bst::base::at(root, index);
   }
 
   /**
@@ -80,43 +79,6 @@ class ExtendedTree : public BasicTree<NodesManager, Derived> {
     NodeType* root = Derived::build_tree_impl(nodes, 0, nodes.size());
     if (root) root->set_parent(nullptr);
     return root;
-  }
-
-  /**
-   * @brief Builds a tree from a vector of data elements.
-   *
-   * @param data Vector of data elements to create nodes from
-   * @return Pointer to the root of the newly built tree
-   */
-  [[nodiscard]] constexpr NodeType* build(const std::vector<DataType>& data) {
-    if (data.empty()) return nullptr;
-    this->nodes_manager_.reserve_additional(data.size());
-    std::vector<NodeType*> nodes(data.size());
-    for (size_t i = 0; i < data.size(); ++i)
-      nodes[i] = this->create_node(data[i]);
-    return Derived::build_tree(nodes);
-  }
-
-  /**
-   * @brief Builds a tree from vectors of data and keys.
-   *
-   * @param data Vector of data elements to create nodes from
-   * @param keys Vector of keys corresponding to the data elements
-   * @return Pointer to the root of the newly built tree
-   */
-  [[nodiscard]] constexpr NodeType* build(const std::vector<DataType>& data,
-                                          const std::vector<KeyType>& keys) {
-    static_assert(Base::has_key, "has_key should be true");
-    assert(data.size() == keys.size());
-    if (data.empty()) return nullptr;
-    this->nodes_manager_.reserve_additional(data.size());
-    std::vector<NodeType*> nodes(data.size());
-    for (size_t i = 0; i < data.size(); ++i)
-      nodes[i] = this->create_node(data[i], keys[i]);
-    std::sort(
-        nodes.begin(), nodes.end(),
-        [](const NodeType* a, const NodeType* b) { return a->key < b->key; });
-    return Derived::build_tree(nodes);
   }
 
   /**
@@ -134,7 +96,7 @@ class ExtendedTree : public BasicTree<NodesManager, Derived> {
   }
 
   /**
-   * @brief Inserts a node at the specified order index.
+   * @brief Inserts a node at the specified inorder index.
    *
    * @param root The root of the tree
    * @param node The node to insert
@@ -170,7 +132,7 @@ class ExtendedTree : public BasicTree<NodesManager, Derived> {
   }
 
   /**
-   * @brief Creates and inserts a new node at the specified order index.
+   * @brief Creates and inserts a new node at the specified inorder index.
    *
    * @param root The root of the tree
    * @param data The data for the new node
@@ -198,17 +160,17 @@ class ExtendedTree : public BasicTree<NodesManager, Derived> {
   }
 
   /**
-   * @brief Removes the node at the specified order index.
+   * @brief Removes the node at the specified inorder index.
    *
    * @param root The root of the tree
-   * @param order_index The zero-based index of the node to remove
+   * @param index The zero-based index of the node to remove
    * @param removed_node Reference to store the removed node
    * @return Pointer to the new root of the tree
    */
-  [[nodiscard]] static NodeType* remove_at(NodeType* root, size_t order_index,
+  [[nodiscard]] static NodeType* remove_at(NodeType* root, size_t index,
                                            NodeType*& removed_node) {
     static_assert(Derived::support_remove, "Remove should be supported");
-    return Derived::remove_at_impl(root, order_index, removed_node);
+    return Derived::remove_at_impl(root, index, removed_node);
   }
 
   /**
@@ -253,16 +215,15 @@ class ExtendedTree : public BasicTree<NodesManager, Derived> {
   }
 
   /**
-   * @brief Removes a node at the specified order index and releases it.
+   * @brief Removes a node at the specified inorder index and releases it.
    *
    * @param root The root of the tree
-   * @param order_index The zero-based index of the node to remove
+   * @param index The zero-based index of the node to remove
    * @return Pointer to the new root of the tree
    */
-  [[nodiscard]] NodeType* remove_and_release_at(NodeType* root,
-                                                size_t order_index) {
+  [[nodiscard]] NodeType* remove_and_release_at(NodeType* root, size_t index) {
     NodeType *removed_node = nullptr,
-             *new_root = Derived::remove_at(root, order_index, removed_node);
+             *new_root = Derived::remove_at(root, index, removed_node);
     if (removed_node) this->release(removed_node);
     return new_root;
   }
@@ -302,7 +263,7 @@ class ExtendedTree : public BasicTree<NodesManager, Derived> {
   }
 
   /**
-   * @brief Splits a tree at a given order index.
+   * @brief Splits a tree at a given inorder index.
    *
    * @param root The root of the tree to split
    * @param lsize The size of the left part
@@ -361,13 +322,13 @@ class ExtendedTree : public BasicTree<NodesManager, Derived> {
    * classes.
    *
    * @param root The root of the tree
-   * @param order_index The zero-based index of the node to remove
+   * @param index The zero-based index of the node to remove
    * @param removed_node Reference to store the removed node
    * @return Pointer to the new root of the tree
    */
-  static NodeType* remove_at_impl(NodeType* root, size_t order_index,
+  static NodeType* remove_at_impl(NodeType* root, size_t index,
                                   NodeType*& removed_node) {
-    removed_node = Derived::at(root, order_index);
+    removed_node = Derived::at(root, index);
     return (removed_node ? Derived::remove_node_impl(removed_node) : root);
   }
 

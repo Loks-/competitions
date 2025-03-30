@@ -1,10 +1,8 @@
 #pragma once
 
 #include "common/base.h"
-#include "common/binary_search_tree/base/at.h"
-#include "common/binary_search_tree/base/find.h"
-#include "common/binary_search_tree/subtree_data/size.h"
 
+#include <algorithm>
 #include <vector>
 
 namespace bst {
@@ -202,7 +200,62 @@ class BasicTree {
     return nodes_manager_.index(node);
   }
 
+  /**
+   * @brief Builds a tree from a vector of data elements.
+   *
+   * @param data Vector of data elements to build the tree from
+   * @return Pointer to the root of the built tree
+   */
+  [[nodiscard]] constexpr NodeType* build(const std::vector<DataType>& data) {
+    if (data.empty()) return nullptr;
+    nodes_manager_.reserve_additional(data.size());
+    std::vector<NodeType*> nodes(data.size());
+    for (size_t i = 0; i < data.size(); ++i) nodes[i] = create_node(data[i]);
+    return Derived::build_tree(nodes);
+  }
+
+  /**
+   * @brief Builds a tree from vectors of data and keys.
+   *
+   * @param data Vector of data elements to build the tree from
+   * @param keys Vector of keys corresponding to the data elements
+   * @return Pointer to the root of the built tree
+   */
+  [[nodiscard]] constexpr NodeType* build(const std::vector<DataType>& data,
+                                          const std::vector<KeyType>& keys) {
+    static_assert(has_key, "has_key should be true");
+    assert(data.size() == keys.size());
+    if (data.empty()) return nullptr;
+    nodes_manager_.reserve_additional(data.size());
+    std::vector<NodeType*> nodes(data.size());
+    for (size_t i = 0; i < data.size(); ++i)
+      nodes[i] = create_node(data[i], keys[i]);
+    std::sort(
+        nodes.begin(), nodes.end(),
+        [](const NodeType* a, const NodeType* b) { return a->key < b->key; });
+    return Derived::build_tree(nodes);
+  }
+
  protected:
+  /**
+   * @brief Builds a tree from a vector of nodes.
+   *
+   * This function should be implemented in derived classes to define the
+   * specific tree building strategy.
+   *
+   * @param nodes Vector of nodes to build the tree from
+   * @return Pointer to the root of the built tree
+   */
+  static NodeType* build_tree(const std::vector<NodeType*>& nodes);
+
+ protected:
+  /**
+   * @brief Node manager instance that handles node allocation and management.
+   *
+   * This member is protected to allow derived classes to access the node
+   * manager for their specific implementations while keeping it hidden from
+   * external users.
+   */
   NodesManagerType nodes_manager_;
 };
 }  // namespace base
