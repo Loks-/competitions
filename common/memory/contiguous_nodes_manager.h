@@ -48,6 +48,16 @@ class ContiguousNodesManager {
   }
 
   /**
+   * @brief Initializes the nodes manager with the specified capacity.
+   *
+   * This function resets the manager with the specified maximum number of
+   * nodes. It's provided to maintain interface compatibility with NodesManager.
+   *
+   * @param max_nodes The maximum number of nodes that can be managed.
+   */
+  constexpr void init(size_t max_nodes) { reset(max_nodes); }
+
+  /**
    * @brief Copy constructor is deleted.
    *
    * ContiguousNodesManager cannot be copied because it manages raw pointers and

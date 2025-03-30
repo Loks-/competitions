@@ -243,7 +243,7 @@ class TesterBinarySearchTree {
     size_t h = 0;
     for (unsigned i = 0; i < Size(); ++i) {
       AddAction<typename TTree::TNode, TKey>(root);
-      root = tree.RemoveAndReleaseByNode(tree.at(i));
+      root = tree.RemoveAndReleaseByNode(tree.manager_at(i));
       VerifyParentLinksLazy(root);
       nhash::DCombineH(h, GetInfoValue(root));
     }

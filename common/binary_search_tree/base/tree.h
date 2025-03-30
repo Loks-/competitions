@@ -14,7 +14,7 @@
 namespace bst {
 namespace base {
 template <class TTNodesManager, class TTMe>
-class Tree : public TTNodesManager {
+class Tree {
  public:
   using TNodesManager = TTNodesManager;
   using TNode = typename TNodesManager::NodeType;
@@ -41,7 +41,7 @@ class Tree : public TTNodesManager {
   static constexpr bool is_persistent = false;
 
  public:
-  explicit Tree(size_t max_nodes) : TNodesManager(max_nodes) {}
+  explicit Tree(size_t max_nodes) : nodes_manager_(max_nodes) {}
 
   Tree() : Tree(0) {}
 
@@ -49,7 +49,7 @@ class Tree : public TTNodesManager {
 
   const TMe* Me() const { return static_cast<const TMe*>(this); }
 
-  TNode* New() { return TNodesManager::create(); }
+  TNode* New() { return nodes_manager_.create(); }
 
   TNode* New(const TData& data) {
     auto p = New();
@@ -77,7 +77,7 @@ class Tree : public TTNodesManager {
 
   TNode* Build(const std::vector<TData>& data) {
     if (data.size() == 0) return nullptr;
-    TNodesManager::reserve_additional(data.size());
+    nodes_manager_.reserve_additional(data.size());
     std::vector<TNode*> v(data.size());
     for (size_t i = 0; i < data.size(); ++i) v[i] = New(data[i]);
     return TMe::BuildTree(v);
@@ -87,7 +87,7 @@ class Tree : public TTNodesManager {
     static_assert(TNode::has_key, "has_key should be true");
     assert(data.size() == keys.size());
     if (data.size() == 0) return nullptr;
-    TNodesManager::reserve_additional(data.size());
+    nodes_manager_.reserve_additional(data.size());
     std::vector<std::pair<TKey, TNode*>> vp(data.size());
     for (size_t i = 0; i < data.size(); ++i)
       vp[i] = std::make_pair(keys[i], New(data[i], keys[i]));
@@ -157,23 +157,25 @@ class Tree : public TTNodesManager {
     return TMe::RemoveByNodeI(node);
   }
 
+  void release(TNode* node) { nodes_manager_.release(node); }
+
   TNode* RemoveAndReleaseByNode(TNode* node) {
     TNode* new_root = TMe::RemoveByNode(node);
-    TNodesManager::release(node);
+    release(node);
     return new_root;
   }
 
   TNode* RemoveAndReleaseByKey(TNode* root, const TKey& key) {
     TNode *removed_node = nullptr,
           *new_root = TMe::RemoveByKey(root, key, removed_node);
-    if (removed_node) TNodesManager::release(removed_node);
+    if (removed_node) release(removed_node);
     return new_root;
   }
 
   TNode* RemoveAndReleaseByOrder(TNode* root, size_t order_index) {
     TNode *removed_node = nullptr,
           *new_root = TMe::RemoveByOrder(root, order_index, removed_node);
-    if (removed_node) TNodesManager::release(removed_node);
+    if (removed_node) release(removed_node);
     return new_root;
   }
 
@@ -193,8 +195,24 @@ class Tree : public TTNodesManager {
     if (root) {
       ReleaseTree(root->left);
       ReleaseTree(root->right);
-      TNodesManager::release(root);
+      release(root);
     }
+  }
+
+  void clear() { nodes_manager_.clear(); }
+
+  void init(size_t max_nodes) { nodes_manager_.init(max_nodes); }
+
+  size_t used() const { return nodes_manager_.used(); }
+
+  typename std::enable_if_t<TNodesManager::support_at, TNode*> manager_at(
+      size_t index) {
+    return nodes_manager_.at(index);
+  }
+
+  typename std::enable_if_t<TNodesManager::support_at, const TNode*> manager_at(
+      size_t index) const {
+    return nodes_manager_.at(index);
   }
 
  protected:
@@ -268,6 +286,9 @@ class Tree : public TTNodesManager {
       output_r = TMe::Join3(m, root, r);
     }
   }
+
+ protected:
+  TNodesManager nodes_manager_;
 };
 }  // namespace base
 }  // namespace bst

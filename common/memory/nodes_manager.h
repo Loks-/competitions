@@ -42,6 +42,17 @@ class NodesManager {
       : nodes_(initial_capacity) {}
 
   /**
+   * @brief Initializes the nodes manager with the specified capacity.
+   *
+   * This function reserves space for the specified number of nodes.
+   * It's provided to maintain interface compatibility with
+   * ContiguousNodesManager.
+   *
+   * @param initial_capacity The initial number of nodes to reserve.
+   */
+  constexpr void init(size_t initial_capacity) { reserve(initial_capacity); }
+
+  /**
    * @brief Copy constructor is deleted.
    *
    * NodesManager cannot be copied because it manages raw pointers and
