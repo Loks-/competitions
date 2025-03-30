@@ -145,32 +145,6 @@ class ExtendedTree : public BasicTree<NodesManager, Derived> {
   }
 
   /**
-   * @brief Creates and inserts a new node with the given data and key.
-   *
-   * @param root The root of the tree
-   * @param data The data for the new node
-   * @param key The key for the new node
-   * @return Pointer to the new root of the tree
-   */
-  [[nodiscard]] NodeType* insert_new(NodeType* root, const DataType& data,
-                                     const KeyType& key) {
-    return Derived::insert(root, this->create_node(data, key));
-  }
-
-  /**
-   * @brief Creates and inserts a new node at the specified inorder index.
-   *
-   * @param root The root of the tree
-   * @param data The data for the new node
-   * @param index The zero-based index where to insert
-   * @return Pointer to the new root of the tree
-   */
-  [[nodiscard]] NodeType* insert_new_at(NodeType* root, const DataType& data,
-                                        size_t index) {
-    return Derived::insert_at(root, this->create_node(data), index);
-  }
-
-  /**
    * @brief Removes a node with the given key from the tree.
    *
    * @param root The root of the tree
@@ -211,47 +185,6 @@ class ExtendedTree : public BasicTree<NodesManager, Derived> {
     static_assert(Base::has_parent, "use_parent should be true");
     assert(node);
     return Derived::remove_node_impl(node);
-  }
-
-  /**
-   * @brief Removes a node and releases it back to the node manager.
-   *
-   * @param node The node to remove and release
-   * @return Pointer to the new root of the tree
-   */
-  [[nodiscard]] NodeType* remove_and_release_node(NodeType* node) {
-    NodeType* new_root = Derived::remove_node(node);
-    this->release(node);
-    return new_root;
-  }
-
-  /**
-   * @brief Removes a node with the given key and releases it.
-   *
-   * @param root The root of the tree
-   * @param key The key of the node to remove
-   * @return Pointer to the new root of the tree
-   */
-  [[nodiscard]] NodeType* remove_and_release(NodeType* root,
-                                             const KeyType& key) {
-    NodeType *removed_node = nullptr,
-             *new_root = Derived::remove(root, key, removed_node);
-    if (removed_node) this->release(removed_node);
-    return new_root;
-  }
-
-  /**
-   * @brief Removes a node at the specified inorder index and releases it.
-   *
-   * @param root The root of the tree
-   * @param index The zero-based index of the node to remove
-   * @return Pointer to the new root of the tree
-   */
-  [[nodiscard]] NodeType* remove_and_release_at(NodeType* root, size_t index) {
-    NodeType *removed_node = nullptr,
-             *new_root = Derived::remove_at(root, index, removed_node);
-    if (removed_node) this->release(removed_node);
-    return new_root;
   }
 
   /**

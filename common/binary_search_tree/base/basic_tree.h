@@ -37,6 +37,7 @@ class BasicTree {
    */
   static constexpr bool has_key = NodeType::has_key;
   static constexpr bool has_parent = NodeType::has_parent;
+  static constexpr bool has_size = SubtreeDataType::has_size;
 
   static constexpr bool is_persistent = false;
 
@@ -103,6 +104,68 @@ class BasicTree {
   }
 
   /**
+   * @brief Builds a tree from a vector of data elements.
+   *
+   * @param data Vector of data elements to build the tree from
+   * @return Pointer to the root of the built tree
+   */
+  [[nodiscard]] constexpr NodeType* build(const std::vector<DataType>& data) {
+    if (data.empty()) return nullptr;
+    nodes_manager_.reserve_additional(data.size());
+    std::vector<NodeType*> nodes(data.size());
+    for (size_t i = 0; i < data.size(); ++i) nodes[i] = create_node(data[i]);
+    return Derived::build_tree(nodes);
+  }
+
+  /**
+   * @brief Builds a tree from vectors of data and keys.
+   *
+   * @param data Vector of data elements to build the tree from
+   * @param keys Vector of keys corresponding to the data elements
+   * @return Pointer to the root of the built tree
+   */
+  [[nodiscard]] constexpr NodeType* build(const std::vector<DataType>& data,
+                                          const std::vector<KeyType>& keys) {
+    static_assert(has_key, "has_key should be true");
+    assert(data.size() == keys.size());
+    if (data.empty()) return nullptr;
+    nodes_manager_.reserve_additional(data.size());
+    std::vector<NodeType*> nodes(data.size());
+    for (size_t i = 0; i < data.size(); ++i)
+      nodes[i] = create_node(data[i], keys[i]);
+    std::sort(
+        nodes.begin(), nodes.end(),
+        [](const NodeType* a, const NodeType* b) { return a->key < b->key; });
+    return Derived::build_tree(nodes);
+  }
+
+  /**
+   * @brief Creates and inserts a new node with the given data and key.
+   *
+   * @param root The root of the tree
+   * @param data The data for the new node
+   * @param key The key for the new node
+   * @return Pointer to the new root of the tree
+   */
+  [[nodiscard]] NodeType* insert_new(NodeType* root, const DataType& data,
+                                     const KeyType& key) {
+    return Derived::insert(root, create_node(data, key));
+  }
+
+  /**
+   * @brief Creates and inserts a new node at the specified inorder index.
+   *
+   * @param root The root of the tree
+   * @param data The data for the new node
+   * @param index The zero-based index where to insert
+   * @return Pointer to the new root of the tree
+   */
+  [[nodiscard]] NodeType* insert_new_at(NodeType* root, const DataType& data,
+                                        size_t index) {
+    return Derived::insert_at(root, create_node(data), index);
+  }
+
+  /**
    * @brief Releases a node back to the node manager.
    *
    * @param node The node to release
@@ -120,6 +183,47 @@ class BasicTree {
       release_tree(root->right);
       release(root);
     }
+  }
+
+  /**
+   * @brief Removes a node and releases it back to the node manager.
+   *
+   * @param node The node to remove and release
+   * @return Pointer to the new root of the tree
+   */
+  [[nodiscard]] NodeType* remove_and_release_node(NodeType* node) {
+    NodeType* new_root = Derived::remove_node(node);
+    release(node);
+    return new_root;
+  }
+
+  /**
+   * @brief Removes a node with the given key and releases it.
+   *
+   * @param root The root of the tree
+   * @param key The key of the node to remove
+   * @return Pointer to the new root of the tree
+   */
+  [[nodiscard]] NodeType* remove_and_release(NodeType* root,
+                                             const KeyType& key) {
+    NodeType* removed_node = nullptr;
+    NodeType* new_root = Derived::remove(root, key, removed_node);
+    if (removed_node) release(removed_node);
+    return new_root;
+  }
+
+  /**
+   * @brief Removes a node at the specified inorder index and releases it.
+   *
+   * @param root The root of the tree
+   * @param index The zero-based index of the node to remove
+   * @return Pointer to the new root of the tree
+   */
+  [[nodiscard]] NodeType* remove_and_release_at(NodeType* root, size_t index) {
+    NodeType* removed_node = nullptr;
+    NodeType* new_root = Derived::remove_at(root, index, removed_node);
+    if (removed_node) release(removed_node);
+    return new_root;
   }
 
   /**
@@ -176,54 +280,6 @@ class BasicTree {
                   "nodes manager should support index");
     return nodes_manager_.index(node);
   }
-
-  /**
-   * @brief Builds a tree from a vector of data elements.
-   *
-   * @param data Vector of data elements to build the tree from
-   * @return Pointer to the root of the built tree
-   */
-  [[nodiscard]] constexpr NodeType* build(const std::vector<DataType>& data) {
-    if (data.empty()) return nullptr;
-    nodes_manager_.reserve_additional(data.size());
-    std::vector<NodeType*> nodes(data.size());
-    for (size_t i = 0; i < data.size(); ++i) nodes[i] = create_node(data[i]);
-    return Derived::build_tree(nodes);
-  }
-
-  /**
-   * @brief Builds a tree from vectors of data and keys.
-   *
-   * @param data Vector of data elements to build the tree from
-   * @param keys Vector of keys corresponding to the data elements
-   * @return Pointer to the root of the built tree
-   */
-  [[nodiscard]] constexpr NodeType* build(const std::vector<DataType>& data,
-                                          const std::vector<KeyType>& keys) {
-    static_assert(has_key, "has_key should be true");
-    assert(data.size() == keys.size());
-    if (data.empty()) return nullptr;
-    nodes_manager_.reserve_additional(data.size());
-    std::vector<NodeType*> nodes(data.size());
-    for (size_t i = 0; i < data.size(); ++i)
-      nodes[i] = create_node(data[i], keys[i]);
-    std::sort(
-        nodes.begin(), nodes.end(),
-        [](const NodeType* a, const NodeType* b) { return a->key < b->key; });
-    return Derived::build_tree(nodes);
-  }
-
- protected:
-  /**
-   * @brief Builds a tree from a vector of nodes.
-   *
-   * This function should be implemented in derived classes to define the
-   * specific tree building strategy.
-   *
-   * @param nodes Vector of nodes to build the tree from
-   * @return Pointer to the root of the built tree
-   */
-  static NodeType* build_tree(const std::vector<NodeType*>& nodes);
 
  protected:
   /**
