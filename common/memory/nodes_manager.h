@@ -208,6 +208,22 @@ class NodesManager {
   }
 
   /**
+   * @brief Gets the index of a node.
+   *
+   * This function is only supported in ContiguousNodesManager.
+   * Using it with other node managers will result in a compile error.
+   *
+   * @param node Pointer to the node
+   * @return Index of the node (0 in this case, but should never be called)
+   */
+  [[nodiscard]] constexpr size_t index(const NodeType*) {
+    static_assert(sizeof(NodeType) == 0,
+                  "index() is only supported in ContiguousNodesManager. "
+                  "Please use ContiguousNodesManager instead of NodesManager.");
+    return 0;
+  }
+
+  /**
    * @brief Removes all nodes and frees allocated memory.
    *
    * This function releases all nodes and frees the memory allocated for them.
