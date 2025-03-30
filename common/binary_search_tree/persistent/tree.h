@@ -25,7 +25,7 @@ class Tree : public bst::base::ExtendedTree<TTNodesManager, TTMe> {
   }
 
   TNode* PClone(TNode* node) {
-    TNode* new_node = TBase::create_empty_node();
+    TNode* new_node = TBase::nodes_manager_.create();
     *new_node = *node;
     return new_node;
   }

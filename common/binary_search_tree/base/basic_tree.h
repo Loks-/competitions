@@ -103,7 +103,7 @@ class BasicTree {
    * @return Pointer to the newly created node
    */
   NodeType* create_node(const DataType& data) {
-    auto p = create_empty_node();
+    auto p = nodes_manager_.create();
     p->data = data;
     p->subtree_data.bti_reset();
     p->update_subtree_data();
@@ -119,7 +119,7 @@ class BasicTree {
    */
   NodeType* create_node(const DataType& data, const KeyType& key) {
     static_assert(has_key, "has_key should be true");
-    auto p = create_empty_node();
+    auto p = nodes_manager_.create();
     p->data = data;
     p->key = key;
     p->subtree_data.bti_reset();
@@ -200,16 +200,6 @@ class BasicTree {
     static_assert(NodesManagerType::support_index,
                   "nodes manager should support index");
     return nodes_manager_.index(node);
-  }
-
- protected:
-  /**
-   * @brief Creates an empty node without initializing data.
-   *
-   * @return Pointer to the newly created empty node
-   */
-  [[nodiscard]] NodeType* create_empty_node() {
-    return nodes_manager_.create();
   }
 
  protected:
