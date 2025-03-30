@@ -205,14 +205,21 @@ class Tree {
 
   size_t used() const { return nodes_manager_.used(); }
 
-  typename std::enable_if_t<TNodesManager::support_at, TNode*> manager_at(
-      size_t index) {
+  template <bool enable = TNodesManager::support_at>
+  typename std::enable_if_t<enable, TNode*> manager_at(size_t index) {
     return nodes_manager_.at(index);
   }
 
-  typename std::enable_if_t<TNodesManager::support_at, const TNode*> manager_at(
+  template <bool enable = TNodesManager::support_at>
+  typename std::enable_if_t<enable, const TNode*> manager_at(
       size_t index) const {
     return nodes_manager_.at(index);
+  }
+
+  template <bool enable = TNodesManager::support_index>
+  typename std::enable_if_t<enable, size_t> manager_index(
+      const TNode* node) const {
+    return nodes_manager_.index(node);
   }
 
  protected:
