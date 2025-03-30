@@ -98,21 +98,21 @@ class IntervalsBasedSet {
     if (i.Empty()) return;
     auto b = i.b, e = i.e;
     TNode *l, *t, *m, *r;
-    tree.SplitByKey(root, b, l, t);
-    tree.SplitByKey(t, e, m, r);
+    tree.split(root, b, l, t);
+    tree.split(t, e, m, r);
     if (m) {
       b = std::min(b, bst::base::left(m)->data.b);
-      tree.ReleaseTree(m);
+      tree.release_tree(m);
     }
     if (r) {
       auto rf = bst::base::left(r);
       if (rf->data.b <= e) {
         e = rf->data.e;
-        r = tree.RemoveAndReleaseByNode(rf);
+        r = tree.remove_and_release_node(rf);
       }
     }
-    m = tree.New(Interval(b, e), e);
-    root = tree.Join(l, tree.Join(m, r));
+    m = tree.create_node(Interval(b, e), e);
+    root = tree.join(l, tree.join(m, r));
   }
 
  protected:
@@ -141,14 +141,14 @@ class IntervalsBasedSet {
 
   void Intersect(const Interval& i) {
     if (i.Empty()) {
-      tree.ReleaseTree(root);
+      tree.release_tree(root);
       root = nullptr;
       return;
     }
     TNode *l, *t, *m, *r;
-    tree.SplitByKey(root, i.b + 1, l, t);
-    tree.SplitByKey(t, i.e + 1, m, r);
-    tree.ReleaseTree(l);
+    tree.split(root, i.b + 1, l, t);
+    tree.split(t, i.e + 1, m, r);
+    tree.release_tree(l);
     if (m) {
       const auto mf = bst::base::left(m);
       mf->data.b = std::max(mf->data.b, i.b);
@@ -156,10 +156,10 @@ class IntervalsBasedSet {
     if (r) {
       const auto rf = bst::base::left(r);
       if (rf->data.b < i.e) {
-        t = tree.New(Interval(rf->data.b, i.e), i.e);
-        m = tree.Join(m, t);
+        t = tree.create_node(Interval(rf->data.b, i.e), i.e);
+        m = tree.join(m, t);
       }
-      tree.ReleaseTree(r);
+      tree.release_tree(r);
     }
     root = m;
   }

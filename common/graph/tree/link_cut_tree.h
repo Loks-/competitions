@@ -44,8 +44,8 @@ class LinkCutTree {
       templates::PrependIfMissingT<bst::deferred::Reverse, TDeferredTuple>;
   using TSelf = LinkCutTree<TData, TAggregatorsTuple, TDeferredTuple>;
   using TSTree = bst::SplayTree<false, TData, TAggregators, TDeferreds>;
-  using TInfo = typename TSTree::TInfo;
-  using TNode = typename TSTree::TNode;
+  using TInfo = typename TSTree::SubtreeDataType;
+  using TNode = typename TSTree::NodeType;
 
  protected:
   void DisconnectR(TNode* node) {
@@ -137,20 +137,20 @@ class LinkCutTree {
 
   void Build(const TreeGraph& tree) {
     stree.init(tree.Size());
-    for (unsigned i = 0; i < tree.Size(); ++i) stree.New();
+    for (unsigned i = 0; i < tree.Size(); ++i) stree.create_node({});
     BuildR(tree, tree.GetRoot(), CNone);
   }
 
   void Build(const TreeGraph& tree, const std::vector<TData>& data) {
     assert(tree.Size() == data.size());
     stree.init(tree.Size());
-    for (unsigned i = 0; i < tree.Size(); ++i) stree.New(data[i]);
+    for (unsigned i = 0; i < tree.Size(); ++i) stree.create_node(data[i]);
     BuildR(tree, tree.GetRoot(), CNone);
   }
 
   void Build(const std::vector<TData>& data) {
     stree.init(data.size());
-    for (unsigned i = 0; i < data.size(); ++i) stree.New(data[i]);
+    for (unsigned i = 0; i < data.size(); ++i) stree.create_node(data[i]);
   }
 
   void SetData(unsigned x, const TData& data) {

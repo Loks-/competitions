@@ -6,12 +6,12 @@ namespace bst {
 template <class TTree>
 inline typename TTree::TNode* GetSegmentInfoByIndex(
     typename TTree::TNode* root, size_t begin, size_t end,
-    typename TTree::TInfo& output) {
+    typename TTree::SubtreeDataType& output) {
   using TNode = typename TTree::TNode;
   TNode *l, *m, *r;
-  TTree::SplitBySize(root, end, m, r);
-  TTree::SplitBySize(m, begin, l, m);
+  TTree::split_at(root, end, m, r);
+  TTree::split_at(m, begin, l, m);
   if (m) output = m->subtree_data;
-  return TTree::Join(TTree::Join(l, m), r);
+  return TTree::join(TTree::join(l, m), r);
 }
 }  // namespace bst

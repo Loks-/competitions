@@ -37,8 +37,8 @@ inline std::vector<typename TEdgeCostFunction::TEdgeCost> TPM_PBST_FBT(
   TTree ptree;
   std::vector<TNode*> roots(s, nullptr);
   for (unsigned i = s - 1; i > 0; --i)
-    roots[i - 1] = ptree.InsertNewNode(roots[fbt.Edges(i - 1).back()],
-                                       nodes_values[i - 1], lca.deep[i - 1]);
+    roots[i - 1] = ptree.insert_new(roots[fbt.Edges(i - 1).back()],
+                                    nodes_values[i - 1], lca.deep[i - 1]);
 
   unsigned d = lca.deep[0] + 1;
   for (auto& p : paths) {

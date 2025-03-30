@@ -8,13 +8,13 @@ namespace bst {
 template <class TTree>
 inline void SwapIntervals(typename TTree::TNode*& root, size_t first,
                           size_t middle, size_t last) {
-  static_assert(!TTree::use_key, "use_key should be false");
+  static_assert(!TTree::has_key, "has_key should be false");
   if ((middle <= first) || (middle >= last)) return;
   typename TTree::TNode *p1, *p2, *p3, *p4;
-  TTree::SplitBySize(root, middle, p2, p3);
-  TTree::SplitBySize(p2, first, p1, p2);
-  TTree::SplitBySize(p3, last - middle, p3, p4);
-  root = TTree::Join(TTree::Join(p1, p3), TTree::Join(p2, p4));
+  TTree::split_at(root, middle, p2, p3);
+  TTree::split_at(p2, first, p1, p2);
+  TTree::split_at(p3, last - middle, p3, p4);
+  root = TTree::join(TTree::join(p1, p3), TTree::join(p2, p4));
 }
 
 // Rotate elements in interval [first, last) to right by shift

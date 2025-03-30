@@ -80,17 +80,17 @@ class RedBlackTree
   }
 
  public:
-  static TNode* BuildTree(const std::vector<TNode*>& nodes) {
+  static TNode* build_tree(const std::vector<TNode*>& nodes) {
     if (nodes.size() == 0) return nullptr;
     size_t h = 0;
     for (; nodes.size() >= (1ull << h);) ++h;
-    TNode* root = TTree::BuildTree(nodes);
+    TNode* root = TTree::build_tree(nodes);
     BuildTreeIFixColorsR(root, h - 1);
     SetColor(root, true);
     return root;
   }
 
-  static TNode* InsertByKey(TNode* root, TNode* node) {
+  static TNode* insert(TNode* root, TNode* node) {
     assert(node);
     if (!root) {
       SetColor(node, true);
@@ -129,7 +129,7 @@ class RedBlackTree
   }
 
  protected:
-  static TNode* RemoveByNodeI(TNode* node) {
+  static TNode* remove_node_impl(TNode* node) {
     base::RemovePushDown<TNode, false>(node);
     const bool black = IsBlack(node);
 
@@ -213,15 +213,15 @@ class RedBlackTree
     for (node->apply_deferred(); node->right; node->apply_deferred())
       node = node->right;
     removed_node = node;
-    return RemoveByNodeI(removed_node);
+    return remove_node_impl(removed_node);
   }
 
-  static TNode* Join(TNode* l, TNode* r) {
+  static TNode* join(TNode* l, TNode* r) {
     if (!l) return r;
     if (!r) return l;
     TNode* node = nullptr;
     l = RemoveRight(l, node);
-    return Join3(l, node, r);
+    return join3(l, node, r);
   }
 
  protected:
@@ -234,14 +234,14 @@ class RedBlackTree
     return h;
   }
 
-  static TNode* Join3IBase(TNode* l, TNode* m1, TNode* r) {
-    TTree::Join3IBase(l, m1, r);
+  static TNode* join3_impl(TNode* l, TNode* m1, TNode* r) {
+    TTree::join3_impl(l, m1, r);
     SetColor(m1, false);
     return m1;
   }
 
   static TNode* Join3L(TNode* l, TNode* m1, TNode* r, int hd) {
-    if (IsBlack(l) && (hd == 0)) return Join3IBase(l, m1, r);
+    if (IsBlack(l) && (hd == 0)) return join3_impl(l, m1, r);
     l->apply_deferred();
     l->set_right(Join3L(l->right, m1, r, hd - (IsBlack(l) ? 1 : 0)));
     r = l->right;
@@ -256,7 +256,7 @@ class RedBlackTree
   }
 
   static TNode* Join3R(TNode* l, TNode* m1, TNode* r, int hd) {
-    if (IsBlack(r) && (hd == 0)) return Join3IBase(l, m1, r);
+    if (IsBlack(r) && (hd == 0)) return join3_impl(l, m1, r);
     r->apply_deferred();
     r->set_left(Join3R(l, m1, r->left, hd - (IsBlack(r) ? 1 : 0)));
     l = r->left;
@@ -271,12 +271,12 @@ class RedBlackTree
   }
 
  public:
-  static TNode* Join3(TNode* l, TNode* m1, TNode* r) {
+  static TNode* join3(TNode* l, TNode* m1, TNode* r) {
     assert(m1 && !m1->left && !m1->right);
     const auto hl = BHeight(l), hr = BHeight(r), hd = hl - hr;
     auto root = (hd > 0)   ? Join3L(l, m1, r, hd)
                 : (hd < 0) ? Join3R(l, m1, r, -hd)
-                           : Join3IBase(l, m1, r);
+                           : join3_impl(l, m1, r);
     SetColor(root, true);
     return root;
   }

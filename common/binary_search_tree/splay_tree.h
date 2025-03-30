@@ -61,7 +61,7 @@ class SplayTree
     node->update_subtree_data();
   }
 
-  static TNode* Join(TNode* l, TNode* r) {
+  static TNode* join(TNode* l, TNode* r) {
     if (!l) return r;
     if (!r) return l;
     assert(!r->parent);
@@ -76,7 +76,7 @@ class SplayTree
     return p;
   }
 
-  static TNode* Join3(TNode* l, TNode* m1, TNode* r) {
+  static TNode* join3(TNode* l, TNode* m1, TNode* r) {
     assert(m1 && !m1->left && !m1->right);
     m1->set_left(l);
     m1->set_right(r);
@@ -116,7 +116,7 @@ class SplayTree
     return r;
   }
 
-  static TNode* FindByKey(TNode*& root, const TKey& key) {
+  static TNode* find(TNode*& root, const TKey& key) {
     static_assert(use_key, "use_key should be true");
     TNode *node = root, *last_node = nullptr;
     for (; node;) {
@@ -135,7 +135,7 @@ class SplayTree
     return node;
   }
 
-  static TNode* FindByKeyLess(TNode*& root, const TKey& key) {
+  static TNode* floor(TNode*& root, const TKey& key) {
     static_assert(use_key, "use_key should be true");
     TNode *last_less = nullptr, *last_node = root;
     for (TNode* node = root; node;) {
@@ -153,33 +153,33 @@ class SplayTree
     return last_less;
   }
 
-  static void SplitByKey(TNode* root, const TKey& key, TNode*& output_l,
-                         TNode*& output_r) {
+  static void split(TNode* root, const TKey& key, TNode*& output_l,
+                    TNode*& output_r) {
     static_assert(use_key, "use_key should be true");
     if (!root) {
       output_l = output_r = nullptr;
       return;
     }
-    TNode* p = FindByKeyLess(root, key);
+    TNode* p = floor(root, key);
     output_l = p;
     output_r = (p ? SplitR(p) : root);
   }
 
-  static size_t Order(TNode* node) {
+  static size_t index(TNode* node) {
     Splay(node);
     return subtree_data::size(node->left);
   }
 
-  static TNode* FindByOrder(TNode*& root, size_t order_index) {
+  static TNode* at(TNode*& root, size_t order_index) {
     static_assert(TSubtreeData::has_size, "info should contain size");
-    auto node = TTree::FindByOrder(root, order_index);
+    auto node = TTree::at(root, order_index);
     Splay(node);
     if (node) root = node;
     return node;
   }
 
-  static void SplitBySize(TNode* root, size_t lsize, TNode*& output_l,
-                          TNode*& output_r) {
+  static void split_at(TNode* root, size_t lsize, TNode*& output_l,
+                       TNode*& output_r) {
     static_assert(TSubtreeData::has_size, "info should contain size");
     if (!root) {
       output_l = output_r = nullptr;
@@ -190,17 +190,17 @@ class SplayTree
       output_l = root;
       output_r = nullptr;
     } else {
-      TNode* p = FindByOrder(root, lsize);
+      TNode* p = at(root, lsize);
       output_l = SplitL(p);
       output_r = p;
     }
   }
 
-  static TNode* InsertByKey(TNode* root, TNode* node) {
+  static TNode* insert(TNode* root, TNode* node) {
     static_assert(use_key, "use_key should be true");
     assert(node);
     if (!root) return node;
-    SplitByKey(root, node->key, node->left, node->right);
+    split(root, node->key, node->left, node->right);
     if (node->left) node->left->parent = node;
     if (node->right) node->right->parent = node;
     node->update_subtree_data();
@@ -214,9 +214,9 @@ class SplayTree
     if (!root2) return root1;
     if (subtree_data::size(root1) < subtree_data::size(root2))
       std::swap(root1, root2);
-    TNode* m = FindByOrder(root1, subtree_data::size(root1) / 2);
+    TNode* m = at(root1, subtree_data::size(root1) / 2);
     TNode *r2l = nullptr, *r2r = nullptr;
-    SplitByKey(root2, m->key, r2l, r2r);
+    split(root2, m->key, r2l, r2r);
     if (m->left) m->left->parent = nullptr;
     if (m->right) m->right->parent = nullptr;
     m->set_left(Union(m->left, r2l));
@@ -226,14 +226,14 @@ class SplayTree
   }
 
  protected:
-  static TNode* RemoveByNodeI(TNode* node) {
+  static TNode* remove_node_impl(TNode* node) {
     TNode* l = node->left;
     if (l) l->set_parent(nullptr);
     TNode* r = node->right;
     if (r) r->set_parent(nullptr);
     TNode* p = node->parent;
     node->reset_links_and_update_subtree_data();
-    TNode* m = Join(l, r);
+    TNode* m = join(l, r);
     if (!p) return m;
     if (node == p->left) {
       p->set_left(m);

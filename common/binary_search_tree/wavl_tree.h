@@ -37,7 +37,7 @@ class WAVLTree
       WAVLTree<use_parent, TData, TAggregatorsTuple, TDeferredTuple, TKey>;
   using TBTree =
       base::BalancedTree<memory::ContiguousNodesManager<TNode>, TSelf>;
-  using TTree = typename TBTree::TTree;
+  using TTree = typename TBTree::Base;
   friend TBTree;
   friend TTree;
 
@@ -71,13 +71,13 @@ class WAVLTree
     subtree_data::WAVLRank::dec(node);
   }
 
-  static TNode* BuildTreeI(const std::vector<TNode*>& vnodes, size_t first,
-                           size_t last) {
+  static TNode* build_tree_impl(const std::vector<TNode*>& vnodes, size_t first,
+                                size_t last) {
     if (first >= last) return nullptr;
     size_t m = (first + last) / 2;
     TNode* root = vnodes[m];
-    root->set_left(BuildTreeI(vnodes, first, m));
-    root->set_right(BuildTreeI(vnodes, m + 1, last));
+    root->set_left(build_tree_impl(vnodes, first, m));
+    root->set_right(build_tree_impl(vnodes, m + 1, last));
     root->update_subtree_data();
     UpdateRank(root);
     return root;
@@ -101,7 +101,7 @@ class WAVLTree
     return gchild;
   }
 
-  static TNode* FixBalanceInsert(TNode* root) {
+  static TNode* fix_balance_insert(TNode* root) {
     if (RankDiff(root, root->right) == 0) {
       if (RankDiff(root, root->left) == 1) {
         IncRank(root);
@@ -145,7 +145,7 @@ class WAVLTree
     return gchild;
   }
 
-  static TNode* FixBalanceRemove(TNode* root) {
+  static TNode* fix_balance_remove(TNode* root) {
     if (!root->left && !root->right) {
       SetRank(root, 0);
       return root;
@@ -181,8 +181,8 @@ class WAVLTree
     }
   }
 
-  static TNode* Join3IBase(TNode* l, TNode* m1, TNode* r) {
-    TTree::Join3IBase(l, m1, r);
+  static TNode* join3_impl(TNode* l, TNode* m1, TNode* r) {
+    TTree::join3_impl(l, m1, r);
     UpdateRank(m1);
     return m1;
   }
@@ -193,9 +193,9 @@ class WAVLTree
       l->set_right(Join3L(l->right, m1, r, hr));
       l->update_subtree_data();
       assert(Rank(l) >= Rank(l->right));
-      return FixBalanceInsert(l);
+      return fix_balance_insert(l);
     } else {
-      return Join3IBase(l, m1, r);
+      return join3_impl(l, m1, r);
     }
   }
 
@@ -205,19 +205,19 @@ class WAVLTree
       r->set_left(Join3R(l, m1, r->left, hl));
       r->update_subtree_data();
       assert(Rank(r) >= Rank(r->left));
-      return FixBalanceInsert(r);
+      return fix_balance_insert(r);
     } else {
-      return Join3IBase(l, m1, r);
+      return join3_impl(l, m1, r);
     }
   }
 
  public:
-  static TNode* Join3(TNode* l, TNode* m1, TNode* r) {
+  static TNode* join3(TNode* l, TNode* m1, TNode* r) {
     assert(m1 && !m1->left && !m1->right);
     const auto hl = Rank(l), hr = Rank(r), hd = hl - hr;
     return (hd > 1)    ? Join3L(l, m1, r, hr)
            : (hd < -1) ? Join3R(l, m1, r, hl)
-                       : Join3IBase(l, m1, r);
+                       : join3_impl(l, m1, r);
   }
 };
 }  // namespace bst

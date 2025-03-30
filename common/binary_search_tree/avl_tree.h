@@ -35,7 +35,7 @@ class AVLTree
       AVLTree<use_parent, TData, TAggregatorsTuple, TDeferredTuple, TKey>;
   using TBTree =
       base::BalancedTree<memory::ContiguousNodesManager<TNode>, TSelf>;
-  using TTree = typename TBTree::TTree;
+  using TTree = typename TBTree::Base;
   friend TBTree;
   friend TTree;
 
@@ -53,7 +53,7 @@ class AVLTree
     return node ? Height(node->left) - Height(node->right) : 0;
   }
 
-  static TNode* FixBalance(TNode* root) {
+  static TNode* fix_balance(TNode* root) {
     if (Balance(root) == 2) {
       root->left->apply_deferred();
       if (Balance(root->left) == -1)
@@ -79,7 +79,7 @@ class AVLTree
       l->update_subtree_data();
       return l;
     } else {
-      return TTree::Join3IBase(l, m1, r);
+      return TTree::join3_impl(l, m1, r);
     }
   }
 
@@ -90,17 +90,17 @@ class AVLTree
       r->update_subtree_data();
       return r;
     } else {
-      return TTree::Join3IBase(l, m1, r);
+      return TTree::join3_impl(l, m1, r);
     }
   }
 
  public:
-  static TNode* Join3(TNode* l, TNode* m1, TNode* r) {
+  static TNode* join3(TNode* l, TNode* m1, TNode* r) {
     assert(m1 && !m1->left && !m1->right);
     const auto hl = Height(l), hr = Height(r), hd = hl - hr;
     return (hd > 1)    ? Join3L(l, m1, r, hr)
            : (hd < -1) ? Join3R(l, m1, r, hl)
-                       : TTree::Join3IBase(l, m1, r);
+                       : TTree::join3_impl(l, m1, r);
   }
 };
 }  // namespace bst

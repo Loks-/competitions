@@ -47,7 +47,7 @@ class StaticPointsSet {
               [](auto& l, auto& r) { return CompareXY(l, r); });
     TNode* root = nullptr;
     for (auto p : vp) {
-      root = tree.InsertNewNode(root, {}, p.y);
+      root = tree.insert_new(root, {}, p.y);
       vx.push_back({p.x, root});
     }
   }

@@ -32,10 +32,10 @@ template <class TTree, class TNode>
 void TesterBinarySearchTreeSplitJoin::Rotate(TTree& tree, TNode*& root,
                                              TKey value) const {
   TNode *l = nullptr, *r = nullptr;
-  tree.SplitByKey(root, value, l, r);
+  tree.split(root, value, l, r);
   if (l) bst::deferred::add_to_each_key<TNode, TKey>(l, max_key - value);
   if (r) bst::deferred::add_to_each_key<TNode, TKey>(r, -value);
-  root = tree.Join(r, l);
+  root = tree.join(r, l);
 }
 
 template <class TTree>
@@ -52,10 +52,10 @@ size_t TesterBinarySearchTreeSplitJoin::TestBase(
     Rotate(tree, root, vshift[i]);
     shift += vshift[i];
     int64_t key = mp.ApplyS(vkeys[i] - shift);
-    if (tree.FindByKey(root, key)) {
-      root = tree.RemoveAndReleaseByKey(root, key);
+    if (tree.find(root, key)) {
+      root = tree.remove_and_release(root, key);
     } else {
-      root = tree.InsertNewNode(root, {}, key);
+      root = tree.insert_new(root, {}, key);
     }
     nhash::DCombineH(h, TSum::get(root));
   }

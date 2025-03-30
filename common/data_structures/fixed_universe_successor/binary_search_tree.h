@@ -37,7 +37,7 @@ class BinarySearchTree {
   BinarySearchTree(size_t u) : tree(u), root(nullptr), usize(u) {}
 
   void Clear() {
-    tree.ReleaseTree(root);
+    tree.release_tree(root);
     root = nullptr;
   }
 
@@ -48,14 +48,14 @@ class BinarySearchTree {
 
   void Insert(size_t x) {
     if (HasKey(x)) return;
-    root = tree.InsertNewNode(root, MetaEmpty(), x);
+    root = tree.insert_new(root, MetaEmpty(), x);
   }
 
-  bool HasKey(size_t x) const { return tree.FindByKey(root, x); }
+  bool HasKey(size_t x) const { return tree.find(root, x); }
 
   void Delete(size_t x) {
-    auto node = tree.FindByKey(root, x);
-    if (node) root = tree.RemoveAndReleaseByNode(node);
+    auto node = tree.find(root, x);
+    if (node) root = tree.remove_and_release_node(node);
   }
 
   size_t Size() const { return tree.used(); }

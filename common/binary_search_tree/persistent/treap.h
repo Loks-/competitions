@@ -55,7 +55,7 @@ class Treap
 
  public:
   // Same code as for bst::Treap::BuildTree
-  static TNode* BuildTree(const std::vector<TNode*>& nodes) {
+  static TNode* build_tree(const std::vector<TNode*>& nodes) {
     if (nodes.size() == 0) return nullptr;
     TNode* proot = nodes[0];
     TNode* plast = proot;
@@ -116,8 +116,7 @@ class Treap
   }
 
  public:
-  void SplitByKey(TNode* root, const TKey& key, TNode*& output_l,
-                  TNode*& output_r) {
+  void split(TNode* root, const TKey& key, TNode*& output_l, TNode*& output_r) {
     static_assert(use_key, "use_key should be true");
     if (!root) {
       output_l = output_r = nullptr;
@@ -128,16 +127,16 @@ class Treap
     }
   }
 
-  TNode* InsertByKey(TNode* root, TNode* node) {
+  TNode* insert(TNode* root, TNode* node) {
     static_assert(use_key, "use_key should be true");
     if (!root) return node;
     root->apply_deferred();
     if (TreapHeight(root) >= TreapHeight(node)) {
       root = TBase::PClone(root);
       if (root->key < node->key) {
-        root->right = InsertByKey(root->right, node);
+        root->right = insert(root->right, node);
       } else {
-        root->left = InsertByKey(root->left, node);
+        root->left = insert(root->left, node);
       }
     } else {
       SplitByKeyI(root, node->key, node->left, node->right);

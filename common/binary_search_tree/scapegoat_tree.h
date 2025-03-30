@@ -36,7 +36,7 @@ class ScapegoatTree
       ScapegoatTree<use_parent, TData, TAggregatorsTuple, TDeferredTuple, TKey>;
   using TBTree =
       base::BalancedTree<memory::ContiguousNodesManager<TNode>, TSelf>;
-  using TTree = typename TBTree::TTree;
+  using TTree = typename TBTree::Base;
   friend TBTree;
 
   // Split/Join is supported but it's slow.
@@ -58,10 +58,10 @@ class ScapegoatTree
     assert(node);
     std::vector<TNode*> nodes;
     TraverseInorder(node, nodes);
-    return TTree::BuildTree(nodes);
+    return TTree::build_tree(nodes);
   }
 
-  static TNode* FixBalance(TNode* node) {
+  static TNode* fix_balance(TNode* node) {
     assert(node);
     const auto s = size_t(alpha * subtree_data::size(node));
     return ((subtree_data::size(node->left) > s) ||
@@ -75,9 +75,9 @@ class ScapegoatTree
     if (subtree_data::size(l) > 2 * rsize) {
       l->set_right(Join3L(l->right, m1, r, rsize));
       l->update_subtree_data();
-      return FixBalance(l);
+      return fix_balance(l);
     } else {
-      return TTree::Join3IBase(l, m1, r);
+      return TTree::join3_impl(l, m1, r);
     }
   }
 
@@ -86,14 +86,14 @@ class ScapegoatTree
     if (subtree_data::size(r) > 2 * lsize) {
       r->set_left(Join3R(l, m1, r->left, lsize));
       r->update_subtree_data();
-      return FixBalance(r);
+      return fix_balance(r);
     } else {
-      return TTree::Join3IBase(l, m1, r);
+      return TTree::join3_impl(l, m1, r);
     }
   }
 
  public:
-  static TNode* Join3(TNode* l, TNode* m1, TNode* r) {
+  static TNode* join3(TNode* l, TNode* m1, TNode* r) {
     assert(m1 && !m1->left && !m1->right);
     const size_t lsize = subtree_data::size(l), rsize = subtree_data::size(r);
     return lsize >= rsize ? Join3L(l, m1, r, rsize) : Join3R(l, m1, r, lsize);

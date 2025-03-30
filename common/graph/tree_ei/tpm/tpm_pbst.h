@@ -33,8 +33,8 @@ inline std::vector<TValue> TPM_PBST(
   for (s.push(std::make_pair(tree.GetRoot(), CNone)); !s.empty();) {
     unsigned v = s.top().first, p = s.top().second;
     s.pop();
-    roots[v] = ptree.InsertNewNode((p == CNone) ? nullptr : roots[p],
-                                   nodes_values[v], lca.deep[v]);
+    roots[v] = ptree.insert_new((p == CNone) ? nullptr : roots[p],
+                                nodes_values[v], lca.deep[v]);
     for (auto u : tree.Edges(v)) {
       if (u == p) continue;
       s.push(std::make_pair(u, v));

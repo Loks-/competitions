@@ -20,12 +20,12 @@ class Tree : public bst::base::Tree<TTNodesManager, TTMe> {
   Tree() : TBase() {}
   explicit Tree(size_t expected_nodes) : TBase(expected_nodes) {}
 
-  TNode* InsertNewNode(TNode* root, const TData& data, const TKey& key) {
-    return TBase::Me()->InsertByKey(root, TBase::New(data, key));
+  TNode* insert_new(TNode* root, const TData& data, const TKey& key) {
+    return TBase::derived()->insert(root, TBase::create_node(data, key));
   }
 
   TNode* PClone(TNode* node) {
-    TNode* new_node = TBase::New();
+    TNode* new_node = TBase::create_empty_node();
     *new_node = *node;
     return new_node;
   }

@@ -5,6 +5,7 @@
 
 #include "common/assert_exception.h"
 #include "common/base.h"
+#include "common/binary_search_tree/deferred/utils/propagate_to_node.h"
 #include "common/binary_search_tree/subtree_data/size.h"
 #include "common/hash/combine.h"
 #include "common/timer.h"
@@ -111,7 +112,8 @@ class TesterBinarySearchTree {
   template <class TTree>
   typename TTree::TNode* TestBuild(TTree& tree, TBSTKeysType type) {
     Timer t;
-    typename TTree::TNode* root = tree.Build(GetKeys(type), GetKeys(type));
+    typename TTree::TNode* root =
+        tree.build_from_data(GetKeys(type), GetKeys(type));
     t.stop();
     AddResult("Build", type, TreeHash(root, 0), t.get_milliseconds());
     VerifyParentLinks(root);
@@ -121,7 +123,7 @@ class TesterBinarySearchTree {
   template <class TTree>
   typename TTree::TNode* TestInsertI(TTree& tree, TBSTKeysType type,
                                      MetaFalse) {
-    return tree.Build(GetKeys(type), GetKeys(type));
+    return tree.build_from_data(GetKeys(type), GetKeys(type));
   }
 
   template <class TTree>
@@ -132,7 +134,7 @@ class TesterBinarySearchTree {
     size_t h = 0;
     for (TKey key : vkeys) {
       AddAction<typename TTree::TNode, TKey>(root);
-      root = tree.InsertNewNode(root, key, key);
+      root = tree.insert_new(root, key, key);
       VerifyParentLinksLazy(root);
       nhash::DCombineH(h, GetInfoValue(root));
     }
@@ -153,7 +155,7 @@ class TesterBinarySearchTree {
     Timer t;
     size_t h = 0;
     for (unsigned i = 0; i < Size(); ++i) {
-      typename TTree::TNode* node = tree.FindByOrder(root, i);
+      typename TTree::TNode* node = tree.at(root, i);
       assert_exception(node,
                        "Node is not found by order id " + std::to_string(i));
       nhash::DCombineH(h, node->key);
@@ -169,7 +171,7 @@ class TesterBinarySearchTree {
     Timer t;
     size_t h = 0;
     for (unsigned i = 0; i <= Size(); ++i) {
-      typename TTree::TNode* node = tree.FindByKey(root, 2 * i);
+      typename TTree::TNode* node = tree.find(root, 2 * i);
       assert_exception(!node, "Node is found but should not be");
       nhash::DCombineH(h, reinterpret_cast<size_t>(node));
     }
@@ -185,7 +187,7 @@ class TesterBinarySearchTree {
     Timer t;
     size_t h = 0;
     for (const TKey& key : vkeys) {
-      typename TTree::TNode* node = tree.FindByKey(root, key);
+      typename TTree::TNode* node = tree.find(root, key);
       assert_exception(node, "Node is not found by key " + std::to_string(key));
       nhash::DCombineH(h, (type <= shuffled) ? node->data : node->key);
     }
@@ -197,7 +199,7 @@ class TesterBinarySearchTree {
   typename TTree::TNode* TestDeleteByKeyI(TTree& tree,
                                           typename TTree::TNode* root,
                                           TBSTKeysType, MetaFalse) {
-    tree.ReleaseTree(root);
+    tree.release_tree(root);
     return nullptr;
   }
 
@@ -210,7 +212,7 @@ class TesterBinarySearchTree {
     size_t h = 0;
     for (const TKey& key : vkeys) {
       AddAction<typename TTree::TNode, TKey>(root);
-      root = tree.RemoveAndReleaseByKey(root, key);
+      root = tree.remove_and_release(root, key);
       VerifyParentLinksLazy(root);
       nhash::DCombineH(h, (type <= shuffled) ? GetInfoValue(root)
                                              : bst::subtree_data::size(root));
@@ -231,7 +233,7 @@ class TesterBinarySearchTree {
   typename TTree::TNode* TestDeleteByNodeI(TTree& tree,
                                            typename TTree::TNode* root,
                                            TBSTKeysType, MetaFalse) {
-    tree.ReleaseTree(root);
+    tree.release_tree(root);
     return 0;
   }
 
@@ -243,7 +245,9 @@ class TesterBinarySearchTree {
     size_t h = 0;
     for (unsigned i = 0; i < Size(); ++i) {
       AddAction<typename TTree::TNode, TKey>(root);
-      root = tree.RemoveAndReleaseByNode(tree.manager_at(i));
+      auto node = tree.manager_at(i);
+      bst::deferred::propagate_to_node(node);
+      root = tree.remove_and_release_node(node);
       VerifyParentLinksLazy(root);
       nhash::DCombineH(h, GetInfoValue(root));
     }
@@ -276,17 +280,17 @@ class TesterBinarySearchTree {
     for (size_t i = 0; i < s; ++i) {
       AddAction<typename TTree::TNode, TKey>(root);
       VerifyParentLinksLazy(root);
-      root = tree.InsertNewNode(root, vkeys[2 * i], vkeys[2 * i]);
-      root = tree.InsertNewNode(root, vkeys[2 * i + 1], vkeys[2 * i + 1]);
-      root = tree.RemoveAndReleaseByKey(root, vkeys[i]);
+      root = tree.insert_new(root, vkeys[2 * i], vkeys[2 * i]);
+      root = tree.insert_new(root, vkeys[2 * i + 1], vkeys[2 * i + 1]);
+      root = tree.remove_and_release(root, vkeys[i]);
       nhash::DCombineH(h, GetInfoValue(root));
     }
     for (size_t i = 0; i < s; ++i) {
       AddAction<typename TTree::TNode, TKey>(root);
       VerifyParentLinksLazy(root);
-      root = tree.InsertNewNode(root, vkeys[2 * s + i], vkeys[2 * s + i]);
-      root = tree.RemoveAndReleaseByKey(root, vkeys[s + 2 * i]);
-      root = tree.RemoveAndReleaseByKey(root, vkeys[s + 2 * i + 1]);
+      root = tree.insert_new(root, vkeys[2 * s + i], vkeys[2 * s + i]);
+      root = tree.remove_and_release(root, vkeys[s + 2 * i]);
+      root = tree.remove_and_release(root, vkeys[s + 2 * i + 1]);
       nhash::DCombineH(h, GetInfoValue(root));
     }
     AddResult("InsDel", type, h, t.get_milliseconds());

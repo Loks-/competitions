@@ -5,48 +5,96 @@
 
 namespace bst {
 namespace base {
-template <class TTNodesManager, class TTMe>
-class BalancedTree : public Tree<TTNodesManager, TTMe> {
+/**
+ * @brief Base class for balanced binary search tree implementations.
+ *
+ * This class extends the base Tree class with balancing functionality.
+ * It provides common implementations for balanced tree operations like
+ * insertion, removal, and joining that maintain the tree's balance.
+ *
+ * Key features:
+ * - Automatic rebalancing after insertions and removals
+ * - Support for join operations with balance maintenance
+ * - Efficient node removal from the rightmost position
+ *
+ * @tparam Derived The derived class type (for CRTP)
+ */
+template <class NodesManager, class Derived>
+class BalancedTree : public Tree<NodesManager, Derived> {
  public:
-  using TTree = Tree<TTNodesManager, TTMe>;
-  using TNode = typename TTree::TNode;
-  using TMe = TTMe;
-  friend TTree;
+  using Base = Tree<NodesManager, Derived>;
+  using NodeType = typename Base::NodeType;
+  using KeyType = typename Base::KeyType;
+  friend Base;
 
-  static constexpr bool support_join = TMe::support_join3;
+  static constexpr bool support_join3 = Derived::support_join3;
 
- public:
-  explicit BalancedTree(size_t max_nodes) : TTree(max_nodes) {}
+  /**
+   * @brief Constructs a balanced tree with the specified maximum number of
+   * nodes.
+   *
+   * @param max_nodes The maximum number of nodes to reserve
+   */
+  explicit BalancedTree(size_t max_nodes) : Base(max_nodes) {}
 
  protected:
-  static TNode* FixBalance(TNode* node);
+  /**
+   * @brief Fixes the balance of a node after an operation.
+   *
+   * This function should be implemented by derived classes to provide
+   * specific balancing logic (e.g., AVL rotations, WAVL rebalancing).
+   *
+   * @param node The node that needs balance fixing
+   * @return The new root of the subtree after balancing
+   */
+  static NodeType* fix_balance(NodeType* node);
 
-  static TNode* FixBalanceInsert(TNode* node) { return TMe::FixBalance(node); }
+  /**
+   * @brief Fixes balance after insertion.
+   *
+   * By default, uses the same balancing logic as fix_balance.
+   * Can be overridden by derived classes if insertion-specific
+   * balancing is needed.
+   */
+  static NodeType* fix_balance_insert(NodeType* node) {
+    return Derived::fix_balance(node);
+  }
 
-  static TNode* FixBalanceRemove(TNode* node) { return TMe::FixBalance(node); }
+  /**
+   * @brief Fixes balance after removal.
+   *
+   * By default, uses the same balancing logic as fix_balance.
+   * Can be overridden by derived classes if removal-specific
+   * balancing is needed.
+   */
+  static NodeType* fix_balance_remove(NodeType* node) {
+    return Derived::fix_balance(node);
+  }
 
-  static TNode* InsertByKeyIR(TNode* root, TNode* node) {
+  /**
+   * @brief Implementation of insert operation with balance maintenance.
+   */
+  static NodeType* insert_impl(NodeType* root, NodeType* node) {
     if (!root) return node;
     root->apply_deferred();
     if (root->key < node->key) {
-      root->set_right(InsertByKeyIR(root->right, node));
+      root->set_right(insert_impl(root->right, node));
     } else {
-      root->set_left(InsertByKeyIR(root->left, node));
+      root->set_left(insert_impl(root->left, node));
     }
     root->update_subtree_data();
-    return TMe::FixBalanceInsert(root);
+    return Derived::fix_balance_insert(root);
   }
 
-  static TNode* InsertByKeyI(TNode* root, TNode* node) {
-    return TMe::InsertByKeyIR(root, node);
-  }
-
-  static TNode* RemoveByNodeI(TNode* node) {
-    TNode *new_root, *fcn = nullptr;
-    new_root = bst::base::RemoveByNode<TNode, false>(node, fcn);
+  /**
+   * @brief Implementation of node removal with balance maintenance.
+   */
+  static NodeType* remove_node_impl(NodeType* node) {
+    NodeType *new_root, *fcn = nullptr;
+    new_root = bst::base::RemoveByNode<NodeType, false>(node, fcn);
     if (!fcn) return new_root;
-    for (TNode* p = fcn->parent; p; p = (fcn = p)->parent) {
-      TNode* t = TMe::FixBalanceRemove(fcn);
+    for (NodeType* p = fcn->parent; p; p = (fcn = p)->parent) {
+      NodeType* t = Derived::fix_balance_remove(fcn);
       if (t != fcn) {
         if (fcn == p->left) {
           p->set_left(t);
@@ -55,33 +103,45 @@ class BalancedTree : public Tree<TTNodesManager, TTMe> {
         }
       }
     }
-    return TMe::FixBalanceRemove(fcn);
+    return Derived::fix_balance_remove(fcn);
   }
 
- public:
-  static TNode* RemoveRight(TNode* root, TNode*& removed_node) {
+  /**
+   * @brief Removes the rightmost node from a subtree.
+   *
+   * This is a helper function used by join operations to extract
+   * the rightmost node while maintaining balance.
+   *
+   * @param root The root of the subtree
+   * @param removed_node Output parameter for the removed node
+   * @return The new root of the subtree after removal
+   */
+  static NodeType* remove_right(NodeType* root, NodeType*& removed_node) {
     assert(root);
     root->apply_deferred();
     if (root->right) {
-      root->set_right(RemoveRight(root->right, removed_node));
+      root->set_right(remove_right(root->right, removed_node));
       root->update_subtree_data();
-      return TMe::FixBalanceRemove(root);
+      return Derived::fix_balance_remove(root);
     } else {
       removed_node = root;
-      TNode* node = root->left;
+      NodeType* node = root->left;
       if (node) node->set_parent(nullptr);
       root->reset_links_and_update_subtree_data();
       return node;
     }
   }
 
-  static TNode* Join(TNode* l, TNode* r) {
-    static_assert(TMe::support_join, "Join should be supported");
+  /**
+   * @brief Implementation of join operation with balance maintenance.
+   */
+  static NodeType* join_impl(NodeType* l, NodeType* r) {
+    static_assert(Derived::support_join3, "Join should be supported");
     if (!l) return r;
     if (!r) return l;
-    TNode* node = nullptr;
-    l = TMe::RemoveRight(l, node);
-    return TMe::Join3(l, node, r);
+    NodeType* node = nullptr;
+    l = Derived::remove_right(l, node);
+    return Derived::join3(l, node, r);
   }
 };
 }  // namespace base

@@ -58,7 +58,7 @@ class Treap
   explicit Treap(size_t max_nodes) : TTree(max_nodes) {}
 
  public:
-  static TNode* BuildTree(const std::vector<TNode*>& nodes) {
+  static TNode* build_tree(const std::vector<TNode*>& nodes) {
     if (nodes.size() == 0) return nullptr;
     TNode* proot = nodes[0];
     TNode* plast = proot;
@@ -105,12 +105,12 @@ class Treap
   }
 
  public:
-  static TNode* Join(TNode* l, TNode* r) {
+  static TNode* join(TNode* l, TNode* r) {
     return !l ? r : !r ? l : JoinI(l, r);
   }
 
-  static TNode* Join3(TNode* l, TNode* m1, TNode* r) {
-    return Join(l, Join(m1, r));
+  static TNode* join3(TNode* l, TNode* m1, TNode* r) {
+    return join(l, join(m1, r));
   }
 
  protected:
@@ -141,8 +141,8 @@ class Treap
   }
 
  public:
-  static void SplitByKey(TNode* root, const TKey& key, TNode*& output_l,
-                         TNode*& output_r) {
+  static void split(TNode* root, const TKey& key, TNode*& output_l,
+                    TNode*& output_r) {
     static_assert(use_key, "use_key should be true");
     if (!root) {
       output_l = output_r = nullptr;
@@ -179,8 +179,8 @@ class Treap
   }
 
  public:
-  static void SplitBySize(TNode* root, size_t lsize, TNode*& output_l,
-                          TNode*& output_r) {
+  static void split_at(TNode* root, size_t lsize, TNode*& output_l,
+                       TNode*& output_r) {
     static_assert(TSubtreeData::has_size, "info should contain size");
     if (!root) {
       output_l = output_r = nullptr;
@@ -197,15 +197,16 @@ class Treap
     }
   }
 
-  static TNode* InsertByKey(TNode* root, TNode* node) {
+  static TNode* insert(TNode* root, TNode* node) {
     static_assert(use_key, "use_key should be true");
     if (!root) return node;
     root->apply_deferred();
     if (TreapHeight(root) >= TreapHeight(node)) {
-      if (root->key < node->key)
-        root->set_right(InsertByKey(root->right, node));
-      else
-        root->set_left(InsertByKey(root->left, node));
+      if (root->key < node->key) {
+        root->set_right(insert(root->right, node));
+      } else {
+        root->set_left(insert(root->left, node));
+      }
     } else {
       SplitByKeyI(root, node->key, node->left, node->right);
       if (node->left) node->left->set_parent(node);
@@ -216,15 +217,14 @@ class Treap
     return root;
   }
 
-  static TNode* RemoveByKey(TNode* root, const TKey& key,
-                            TNode*& removed_node) {
+  static TNode* remove(TNode* root, const TKey& key, TNode*& removed_node) {
     static_assert(use_key, "use_key should be true");
     if (!root) return root;
     root->apply_deferred();
     if (root->key < key) {
-      root->set_right(RemoveByKey(root->right, key, removed_node));
+      root->set_right(remove(root->right, key, removed_node));
     } else if (root->key > key) {
-      root->set_left(RemoveByKey(root->left, key, removed_node));
+      root->set_left(remove(root->left, key, removed_node));
     } else {
       removed_node = root;
       TNode* l = root->left;
@@ -232,7 +232,7 @@ class Treap
       TNode* r = root->right;
       if (r) r->set_parent(nullptr);
       root->reset_links_and_update_subtree_data();
-      return Join(l, r);
+      return join(l, r);
     }
     root->update_subtree_data();
     return root;
@@ -243,7 +243,7 @@ class Treap
     if (!p2) return p1;
     if (TreapHeight(p1) < TreapHeight(p2)) std::swap(p1, p2);
     TNode *pt1 = nullptr, *pt2 = nullptr;
-    SplitByKey(p2, p1->key, pt1, pt2);
+    split(p2, p1->key, pt1, pt2);
     p1->set_left(Union(p1->left, pt1));
     p1->set_right(Union(p1->right, pt2));
     p1->update_subtree_data();
@@ -251,14 +251,14 @@ class Treap
   }
 
  protected:
-  static TNode* RemoveByNodeI(TNode* node) {
+  static TNode* remove_node_impl(TNode* node) {
     TNode* l = node->left;
     if (l) l->set_parent(nullptr);
     TNode* r = node->right;
     if (r) r->set_parent(nullptr);
     TNode* p = node->parent;
     node->reset_links_and_update_subtree_data();
-    TNode* m = Join(l, r);
+    TNode* m = join(l, r);
     if (!p) return m;
     if (node == p->left) {
       p->set_left(m);

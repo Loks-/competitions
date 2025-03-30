@@ -47,12 +47,12 @@ class MaxLinear {
 
   void Add(const Linear& l) {
     if (!root) {
-      root = tree.New(LinearExt{l, xl, xr}, l.a);
+      root = tree.create_node(LinearExt{l, xl, xr}, l.a);
       return;
     }
     double lxl = xl, lxr = xr;
     TNode *pl, *pr;
-    tree.SplitByKey(root, l.a, pl, pr);
+    tree.split(root, l.a, pl, pr);
     for (; pr;) {
       pr = bst::base::left(pr);
       assert(pr);
@@ -63,12 +63,12 @@ class MaxLinear {
           lxr = xl;
           break;
         }
-        pr = tree.RemoveByNode(pr);
+        pr = tree.remove_node(pr);
       } else {
         double x = (double(l.b) - double(pr->data.l.b)) /
                    (double(pr->data.l.a) - double(l.a));
         if (pr->data.xr <= x) {
-          pr = tree.RemoveByNode(pr);
+          pr = tree.remove_node(pr);
         } else if (x <= pr->data.xl) {
           lxr = pr->data.xl;
           break;
@@ -86,7 +86,7 @@ class MaxLinear {
       double x = (double(l.b) - double(pl->data.l.b)) /
                  (double(pl->data.l.a) - double(l.a));
       if (x <= pl->data.xl) {
-        pl = tree.RemoveByNode(pl);
+        pl = tree.remove_node(pl);
       } else if (pl->data.xr <= x) {
         lxl = pl->data.xr;
         break;
@@ -98,9 +98,9 @@ class MaxLinear {
     lxl = std::max(lxl, double(xl));
     lxr = std::min(lxr, double(xr));
     if (lxl < lxr) {
-      root = tree.Join3(pl, tree.New(LinearExt{l, lxl, lxr}, l.a), pr);
+      root = tree.join3(pl, tree.create_node(LinearExt{l, lxl, lxr}, l.a), pr);
     } else {
-      root = tree.Join(pl, pr);
+      root = tree.join(pl, pr);
     }
   }
 
