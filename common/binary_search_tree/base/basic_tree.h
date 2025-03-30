@@ -172,7 +172,10 @@ class BasicTree {
    *
    * @param node The node to release
    */
-  constexpr void release(NodeType* node) { nodes_manager_.release(node); }
+  constexpr void release(NodeType* node) {
+    assert(node);
+    nodes_manager_.release(node);
+  }
 
   /**
    * @brief Recursively releases all nodes in a tree.
