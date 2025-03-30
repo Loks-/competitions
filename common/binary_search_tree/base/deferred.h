@@ -141,11 +141,11 @@ class Deferred {
   /**
    * @brief Applies all pending deferred computations.
    *
-   * @tparam Node The BST node type.
+   * @tparam TNode The BST node type.
    * @param node The root of the subtree to apply computations to.
    */
-  template <typename Node>
-  constexpr void apply(Node* node) {
+  template <typename TNode>
+  constexpr void apply(TNode* node) {
     std::apply([node](auto&... x) { (x.apply(node), ...); }, deferred);
   }
 
@@ -156,11 +156,11 @@ class Deferred {
    * computations to update their state accordingly. It calls reverse_subtree
    * on each deferred computation in the tuple.
    *
-   * @tparam Node The BST node type.
+   * @tparam TNode The BST node type.
    * @param node The root of the reversed subtree.
    */
-  template <typename Node>
-  constexpr void reverse_subtree(Node* node) {
+  template <typename TNode>
+  constexpr void reverse_subtree(TNode* node) {
     std::apply([node](auto&... x) { (x.reverse_subtree(node), ...); },
                deferred);
   }

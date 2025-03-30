@@ -19,21 +19,22 @@ namespace base {
  * @tparam apply_deferred Whether to apply deferred computations to the node.
  *                        Defaults to true to ensure node state is up to date
  *                        when accessed externally.
- * @tparam Node The BST node type (automatically deduced as const or non-const).
+ * @tparam TNode The BST node type (automatically deduced as const or
+ * non-const).
  * @param root The root of the subtree to search in.
  * @param index The position in the inorder sequence (0-based).
  * @return Pointer to the node at the specified position, or nullptr if the
  *         index is out of bounds.
  */
-template <bool apply_deferred = true, typename Node>
-[[nodiscard]] constexpr Node* at(Node* root, size_t index) {
-  static_assert(Node::SubtreeDataType::has_size,
+template <bool apply_deferred = true, typename TNode>
+[[nodiscard]] constexpr TNode* at(TNode* root, size_t index) {
+  static_assert(TNode::SubtreeDataType::has_size,
                 "subtree data should contain size");
 
   if (!root) return nullptr;
   if (index >= bst::subtree_data::size(root)) return nullptr;
 
-  for (Node* node = root; node;) {
+  for (TNode* node = root; node;) {
     if constexpr (apply_deferred) {
       node->apply_deferred();
     }

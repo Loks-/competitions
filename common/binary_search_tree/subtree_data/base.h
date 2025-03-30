@@ -121,16 +121,16 @@ class Base {
    *
    * @param node The source node to copy from (unused in this implementation).
    */
-  template <typename Node>
-  constexpr void bti_copy(const Node*) {}
+  template <typename TNode>
+  constexpr void bti_copy(const TNode*) {}
 
   /**
    * @brief Swaps balance tree data with another node.
    *
    * @param node The node to swap with (unused in this implementation).
    */
-  template <typename Node>
-  constexpr void bti_swap(Node*) {}
+  template <typename TNode>
+  constexpr void bti_swap(TNode*) {}
 
   /**
    * @brief Updates the subtree data.
@@ -139,24 +139,24 @@ class Base {
    *
    * @param node The node to update (unused in this implementation).
    */
-  template <typename Node>
-  constexpr void update(const Node*) {}
+  template <typename TNode>
+  constexpr void update(const TNode*) {}
 
   /**
    * @brief Sets the subtree data from a single node.
    *
    * @param node The node to set subtree data from.
    */
-  template <typename Node>
-  constexpr void set_node(const Node*) {}
+  template <typename TNode>
+  constexpr void set_node(const TNode*) {}
 
   /**
    * @brief Sets the subtree data from a subtree.
    *
    * @param node The root of the subtree to set subtree data from.
    */
-  template <typename Node>
-  constexpr void set_subtree(const Node*) {}
+  template <typename TNode>
+  constexpr void set_subtree(const TNode*) {}
 
   /**
    * @brief Adds the subtree data from a single node.
@@ -165,8 +165,8 @@ class Base {
    *
    * @param node The node to add subtree data from.
    */
-  template <typename Node>
-  constexpr void add_node(const Node*) {}
+  template <typename TNode>
+  constexpr void add_node(const TNode*) {}
 
   /**
    * @brief Adds the subtree data from a subtree.
@@ -175,8 +175,8 @@ class Base {
    *
    * @param node The root of the subtree to add subtree data from.
    */
-  template <typename Node>
-  constexpr void add_subtree(const Node*) {}
+  template <typename TNode>
+  constexpr void add_subtree(const TNode*) {}
 
   /**
    * @brief Adds the subtree data from a single node.
@@ -185,8 +185,8 @@ class Base {
    *
    * @param node The node to add subtree data from.
    */
-  template <typename Node>
-  constexpr void add_left_node(const Node*) {}
+  template <typename TNode>
+  constexpr void add_left_node(const TNode*) {}
 
   /**
    * @brief Adds the subtree data from a single node.
@@ -195,8 +195,8 @@ class Base {
    *
    * @param node The node to add subtree data from.
    */
-  template <typename Node>
-  constexpr void add_right_node(const Node*) {}
+  template <typename TNode>
+  constexpr void add_right_node(const TNode*) {}
 
   /**
    * @brief Adds the subtree data from a subtree.
@@ -205,8 +205,8 @@ class Base {
    *
    * @param node The root of the subtree to add subtree data from.
    */
-  template <typename Node>
-  constexpr void add_left_subtree(const Node*) {}
+  template <typename TNode>
+  constexpr void add_left_subtree(const TNode*) {}
 
   /**
    * @brief Adds the subtree data from a subtree.
@@ -215,8 +215,8 @@ class Base {
    *
    * @param node The root of the subtree to add subtree data from.
    */
-  template <typename Node>
-  constexpr void add_right_subtree(const Node*) {}
+  template <typename TNode>
+  constexpr void add_right_subtree(const TNode*) {}
 
   /**
    * @brief Handles node insertion in the subtree data.
@@ -226,8 +226,8 @@ class Base {
    *
    * @param node The node being inserted.
    */
-  template <typename Node>
-  constexpr void insert_node(const Node*) {}
+  template <typename TNode>
+  constexpr void insert_node(const TNode*) {}
 
   /**
    * @brief Handles subtree insertion in the subtree data.
@@ -237,8 +237,8 @@ class Base {
    *
    * @param node The root of the subtree being inserted.
    */
-  template <typename Node>
-  constexpr void insert_subtree(const Node*) {}
+  template <typename TNode>
+  constexpr void insert_subtree(const TNode*) {}
 
   /**
    * @brief Handles node removal from the subtree data.
@@ -248,8 +248,8 @@ class Base {
    *
    * @param node The node being removed.
    */
-  template <typename Node>
-  constexpr void remove_node(const Node*) {}
+  template <typename TNode>
+  constexpr void remove_node(const TNode*) {}
 };
 
 }  // namespace subtree_data

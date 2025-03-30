@@ -53,12 +53,12 @@ class Size : public Base {
    * Helper function to access the size of a subtree through its root node.
    * Returns 0 for null nodes.
    *
-   * @tparam Node The BST node type.
+   * @tparam TNode The BST node type.
    * @param node The root of the subtree to get size from.
    * @return The size of the subtree.
    */
-  template <typename Node>
-  static constexpr unsigned get(const Node* node) {
+  template <typename TNode>
+  static constexpr unsigned get(const TNode* node) {
     return node ? get(node->subtree_data) : 0;
   }
 
@@ -67,11 +67,11 @@ class Size : public Base {
    *
    * For a single node, the size is equal to 1.
    *
-   * @tparam Node The BST node type.
+   * @tparam TNode The BST node type.
    * @param node The node to set size from.
    */
-  template <typename Node>
-  constexpr void set_node([[maybe_unused]] const Node* node) {
+  template <typename TNode>
+  constexpr void set_node([[maybe_unused]] const TNode* node) {
     assert(node);
     size = 1;
   }
@@ -81,11 +81,11 @@ class Size : public Base {
    *
    * Used when replacing one subtree with another to maintain correct size.
    *
-   * @tparam Node The BST node type.
+   * @tparam TNode The BST node type.
    * @param node The root of the subtree to copy size from.
    */
-  template <typename Node>
-  constexpr void set_subtree(const Node* node) {
+  template <typename TNode>
+  constexpr void set_subtree(const TNode* node) {
     assert(node);
     size = get(node);
   }
@@ -96,11 +96,11 @@ class Size : public Base {
    * Used in order-independent operations where a single node
    * is being added to the subtree.
    *
-   * @tparam Node The BST node type.
+   * @tparam TNode The BST node type.
    * @param node The node being added.
    */
-  template <typename Node>
-  constexpr void add_node([[maybe_unused]] const Node* node) {
+  template <typename TNode>
+  constexpr void add_node([[maybe_unused]] const TNode* node) {
     assert(node);
     size += 1;
   }
@@ -111,11 +111,11 @@ class Size : public Base {
    * Used in order-independent operations where an entire subtree
    * is being added to the current subtree.
    *
-   * @tparam Node The BST node type.
+   * @tparam TNode The BST node type.
    * @param node The root of the subtree being added.
    */
-  template <typename Node>
-  constexpr void add_subtree(const Node* node) {
+  template <typename TNode>
+  constexpr void add_subtree(const TNode* node) {
     assert(node);
     size += get(node);
   }
@@ -126,11 +126,11 @@ class Size : public Base {
    * Similar to add_node but specifically used during tree
    * modification operations.
    *
-   * @tparam Node The BST node type.
+   * @tparam TNode The BST node type.
    * @param node The node being inserted.
    */
-  template <typename Node>
-  constexpr void insert_node([[maybe_unused]] const Node* node) {
+  template <typename TNode>
+  constexpr void insert_node([[maybe_unused]] const TNode* node) {
     assert(node);
     size += 1;
   }
@@ -141,11 +141,11 @@ class Size : public Base {
    * Similar to add_subtree but specifically used during tree
    * modification operations.
    *
-   * @tparam Node The BST node type.
+   * @tparam TNode The BST node type.
    * @param node The root of the subtree being inserted.
    */
-  template <typename Node>
-  constexpr void insert_subtree(const Node* node) {
+  template <typename TNode>
+  constexpr void insert_subtree(const TNode* node) {
     assert(node);
     size += get(node);
   }
@@ -156,11 +156,11 @@ class Size : public Base {
    * Updates the subtree size when a node is being removed
    * from the tree.
    *
-   * @tparam Node The BST node type.
+   * @tparam TNode The BST node type.
    * @param node The node being removed.
    */
-  template <typename Node>
-  constexpr void remove_node([[maybe_unused]] const Node* node) {
+  template <typename TNode>
+  constexpr void remove_node([[maybe_unused]] const TNode* node) {
     assert(node);
     size -= 1;
   }
@@ -197,12 +197,12 @@ constexpr unsigned size(
  * Free function to access the size of a subtree through its root node.
  * Returns 0 for null nodes.
  *
- * @tparam Node The BST node type.
+ * @tparam TNode The BST node type.
  * @param node The root of the subtree to get size from.
  * @return The size of the subtree.
  */
-template <typename Node>
-constexpr unsigned size(const Node* node) {
+template <typename TNode>
+constexpr unsigned size(const TNode* node) {
   return Size::get(node);
 }
 

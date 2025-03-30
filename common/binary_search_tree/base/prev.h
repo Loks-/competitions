@@ -20,13 +20,14 @@ namespace base {
  * @tparam apply_deferred Whether to apply deferred computations to the node.
  *                        Defaults to true to ensure node state is up to date
  *                        when accessed externally.
- * @tparam Node The BST node type (automatically deduced as const or non-const).
+ * @tparam TNode The BST node type (automatically deduced as const or
+ * non-const).
  * @param node The current node to find predecessor for.
  * @return Pointer to the previous node in inorder traversal, or nullptr if
  * there is no predecessor (current node is the leftmost node).
  */
-template <bool apply_deferred = true, typename Node>
-[[nodiscard]] constexpr Node* prev(Node* node) {
+template <bool apply_deferred = true, typename TNode>
+[[nodiscard]] constexpr TNode* prev(TNode* node) {
   if (!node) return nullptr;
 
   // Apply deferred computations if requested
@@ -38,7 +39,7 @@ template <bool apply_deferred = true, typename Node>
   if (node->left) return right<apply_deferred>(node->left);
 
   // Otherwise, go up until we find a node that is a right child
-  static_assert(Node::has_parent, "Node must have parent pointer enabled");
+  static_assert(TNode::has_parent, "Node must have parent pointer enabled");
   while (node->parent && (node->parent->left == node)) node = node->parent;
 
   return node->parent;

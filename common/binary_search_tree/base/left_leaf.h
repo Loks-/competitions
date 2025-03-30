@@ -18,13 +18,14 @@ namespace base {
  * @tparam apply_deferred Whether to apply deferred computations to the node.
  *                        Defaults to true to ensure node state is up to date
  *                        when accessed externally.
- * @tparam Node The BST node type (automatically deduced as const or non-const).
+ * @tparam TNode The BST node type (automatically deduced as const or
+ * non-const).
  * @param root The root of the subtree to search in.
  * @return Pointer to the leftmost leaf node, or nullptr if the subtree is
  * empty.
  */
-template <bool apply_deferred = true, typename Node>
-[[nodiscard]] constexpr Node* left_leaf(Node* root) {
+template <bool apply_deferred = true, typename TNode>
+[[nodiscard]] constexpr TNode* left_leaf(TNode* root) {
   if (!root) return nullptr;
 
   // Traverse leftmost path until we find a leaf

@@ -14,14 +14,15 @@ namespace base {
  * The function automatically handles both const and non-const nodes through
  * template parameter deduction.
  *
- * @tparam Node The BST node type (automatically deduced as const or non-const).
+ * @tparam TNode The BST node type (automatically deduced as const or
+ * non-const).
  * @param node The node to find sibling for.
  * @param parent The parent node of the given node.
  * @return Pointer to the sibling node, or nullptr if the node is the only
  *         child of its parent.
  */
-template <typename Node>
-[[nodiscard]] constexpr Node* sibling(Node* node, Node* parent) {
+template <typename TNode>
+[[nodiscard]] constexpr TNode* sibling(TNode* node, TNode* parent) {
   return parent ? (parent->left == node ? parent->right : parent->left)
                 : nullptr;
 }

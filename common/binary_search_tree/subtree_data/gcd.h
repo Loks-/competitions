@@ -57,12 +57,12 @@ class GCD : public Base {
    * Helper function to access the GCD of values in a subtree through its root
    * node. Returns default-constructed GCDType for null nodes.
    *
-   * @tparam Node The BST node type.
+   * @tparam TNode The BST node type.
    * @param node The root of the subtree to get GCD from.
    * @return The GCD of values in the subtree.
    */
-  template <typename Node>
-  static constexpr GCDType get(const Node* node) {
+  template <typename TNode>
+  static constexpr GCDType get(const TNode* node) {
     return node ? get(node->subtree_data) : GCDType{};
   }
 
@@ -72,12 +72,12 @@ class GCD : public Base {
    * Helper function to set the GCD of values in a subtree through its root
    * node. Assumes the node exists.
    *
-   * @tparam Node The BST node type.
+   * @tparam TNode The BST node type.
    * @param node The root of the subtree to set GCD for.
    * @param value The new GCD value to set.
    */
-  template <typename Node>
-  static constexpr void set(Node* node, const GCDType& value) {
+  template <typename TNode>
+  static constexpr void set(TNode* node, const GCDType& value) {
     assert(node);
     node->subtree_data.template get<Self>().value = value;
   }
@@ -87,11 +87,11 @@ class GCD : public Base {
    *
    * For a single node, the GCD is equal to its value.
    *
-   * @tparam Node The BST node type.
+   * @tparam TNode The BST node type.
    * @param node The node to set GCD from.
    */
-  template <typename Node>
-  constexpr void set_node(const Node* node) {
+  template <typename TNode>
+  constexpr void set_node(const TNode* node) {
     assert(node);
     value = GCDType(node->data);
   }
@@ -101,11 +101,11 @@ class GCD : public Base {
    *
    * Used when replacing one subtree with another to maintain correct GCD.
    *
-   * @tparam Node The BST node type.
+   * @tparam TNode The BST node type.
    * @param node The root of the subtree to copy GCD from.
    */
-  template <typename Node>
-  constexpr void set_subtree(const Node* node) {
+  template <typename TNode>
+  constexpr void set_subtree(const TNode* node) {
     assert(node);
     value = get(node);
   }
@@ -116,11 +116,11 @@ class GCD : public Base {
    * Used in order-independent operations where a single node
    * is being added to the subtree.
    *
-   * @tparam Node The BST node type.
+   * @tparam TNode The BST node type.
    * @param node The node being added.
    */
-  template <typename Node>
-  constexpr void add_node(const Node* node) {
+  template <typename TNode>
+  constexpr void add_node(const TNode* node) {
     assert(node);
     value = ::GCD(value, GCDType(node->data));
   }
@@ -131,11 +131,11 @@ class GCD : public Base {
    * Used in order-independent operations where an entire subtree
    * is being added to the current subtree.
    *
-   * @tparam Node The BST node type.
+   * @tparam TNode The BST node type.
    * @param node The root of the subtree being added.
    */
-  template <typename Node>
-  constexpr void add_subtree(const Node* node) {
+  template <typename TNode>
+  constexpr void add_subtree(const TNode* node) {
     assert(node);
     value = ::GCD(value, get(node));
   }
@@ -146,11 +146,11 @@ class GCD : public Base {
    * Similar to add_node but specifically used during tree
    * modification operations.
    *
-   * @tparam Node The BST node type.
+   * @tparam TNode The BST node type.
    * @param node The node being inserted.
    */
-  template <typename Node>
-  constexpr void insert_node(const Node* node) {
+  template <typename TNode>
+  constexpr void insert_node(const TNode* node) {
     assert(node);
     value = ::GCD(value, GCDType(node->data));
   }
@@ -161,11 +161,11 @@ class GCD : public Base {
    * Similar to add_subtree but specifically used during tree
    * modification operations.
    *
-   * @tparam Node The BST node type.
+   * @tparam TNode The BST node type.
    * @param node The root of the subtree being inserted.
    */
-  template <typename Node>
-  constexpr void insert_subtree(const Node* node) {
+  template <typename TNode>
+  constexpr void insert_subtree(const TNode* node) {
     assert(node);
     value = ::GCD(value, get(node));
   }

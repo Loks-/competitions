@@ -18,16 +18,17 @@ namespace base {
  * no deferred computations are applied. If a pointer to a node is available,
  * it is assumed that all deferred computations have already been applied.
  *
- * @tparam Node The BST node type (automatically deduced as const or non-const).
+ * @tparam TNode The BST node type (automatically deduced as const or
+ * non-const).
  * @param node The node to calculate inorder index for (must not be nullptr).
  * @return The inorder index of the node (0 for leftmost node, 1 for second
  * node, etc.).
  */
-template <typename Node>
-[[nodiscard]] constexpr unsigned index(const Node* node) {
+template <typename TNode>
+[[nodiscard]] constexpr unsigned index(const TNode* node) {
   assert(node);
-  static_assert(Node::has_parent, "Node must have parent pointer enabled");
-  static_assert(Node::SubtreeDataType::has_size,
+  static_assert(TNode::has_parent, "Node must have parent pointer enabled");
+  static_assert(TNode::SubtreeDataType::has_size,
                 "Subtree data should contain size");
 
   // Count nodes that come before the current node in inorder traversal

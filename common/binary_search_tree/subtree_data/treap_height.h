@@ -38,12 +38,12 @@ class TreapHeight : public Base {
    * Helper function to access the height of a node in the Treap.
    * Assumes the node exists.
    *
-   * @tparam Node The BST node type.
+   * @tparam TNode The BST node type.
    * @param node The node to get height from.
    * @return The pseudo-random height of the node.
    */
-  template <typename Node>
-  static constexpr unsigned get(const Node* node) {
+  template <typename TNode>
+  static constexpr unsigned get(const TNode* node) {
     assert(node);
     return node->subtree_data.template get<Self>().treap_height;
   }
@@ -55,12 +55,12 @@ class TreapHeight : public Base {
    * Assumes the node exists. Note that this should be used with caution
    * as heights are typically only set during node creation.
    *
-   * @tparam Node The BST node type.
+   * @tparam TNode The BST node type.
    * @param node The node to set height for.
    * @param height The new height value to set.
    */
-  template <typename Node>
-  static constexpr void set(Node* node, unsigned height) {
+  template <typename TNode>
+  static constexpr void set(TNode* node, unsigned height) {
     assert(node);
     node->subtree_data.template get<Self>().treap_height = height;
   }

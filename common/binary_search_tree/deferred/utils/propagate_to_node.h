@@ -18,14 +18,14 @@ namespace deferred {
  * - Tree structure changes (e.g., rotations)
  * - Node order changes (e.g., reversals)
  *
- * @tparam Node The BST node type.
+ * @tparam TNode The BST node type.
  * @param node The target node to apply computations to.
  */
-template <typename Node>
-inline void propagate_to_node(Node* node) {
-  if constexpr (!Node::DeferredType::empty) {
-    static_assert(Node::has_parent, "Node must have parent pointer enabled");
-    thread_local std::stack<Node*> path;
+template <typename TNode>
+inline void propagate_to_node(TNode* node) {
+  if constexpr (!TNode::DeferredType::empty) {
+    static_assert(TNode::has_parent, "Node must have parent pointer enabled");
+    thread_local std::stack<TNode*> path;
 
     // Build path from root to node
     for (; node; node = node->parent) {
@@ -46,12 +46,12 @@ inline void propagate_to_node(Node* node) {
  * Used when only the node's data needs to be accessed, not its structure or
  * keys.
  *
- * @tparam Node The BST node type.
+ * @tparam TNode The BST node type.
  * @param node The target node to apply computations to.
  */
-template <typename Node>
-inline void propagate_for_data_access(Node* node) {
-  if constexpr (Node::DeferredType::modify_data) {
+template <typename TNode>
+inline void propagate_for_data_access(TNode* node) {
+  if constexpr (TNode::DeferredType::modify_data) {
     propagate_to_node(node);
   }
 }
@@ -62,12 +62,12 @@ inline void propagate_for_data_access(Node* node) {
  * Used when only the node's keys need to be accessed, not its data or
  * structure.
  *
- * @tparam Node The BST node type.
+ * @tparam TNode The BST node type.
  * @param node The target node to apply computations to.
  */
-template <typename Node>
-inline void propagate_for_key_access(Node* node) {
-  if constexpr (Node::DeferredType::modify_keys) {
+template <typename TNode>
+inline void propagate_for_key_access(TNode* node) {
+  if constexpr (TNode::DeferredType::modify_keys) {
     propagate_to_node(node);
   }
 }
@@ -78,12 +78,12 @@ inline void propagate_for_key_access(Node* node) {
  *
  * Used when only the tree structure needs to be accessed, not its data or keys.
  *
- * @tparam Node The BST node type.
+ * @tparam TNode The BST node type.
  * @param node The target node to apply computations to.
  */
-template <typename Node>
-inline void propagate_for_tree_structure_access(Node* node) {
-  if constexpr (Node::DeferredType::modify_tree_structure) {
+template <typename TNode>
+inline void propagate_for_tree_structure_access(TNode* node) {
+  if constexpr (TNode::DeferredType::modify_tree_structure) {
     propagate_to_node(node);
   }
 }
@@ -94,12 +94,12 @@ inline void propagate_for_tree_structure_access(Node* node) {
  * Used when only the order of nodes needs to be accessed, not their data,
  * structure, or keys.
  *
- * @tparam Node The BST node type.
+ * @tparam TNode The BST node type.
  * @param node The target node to apply computations to.
  */
-template <typename Node>
-inline void propagate_for_nodes_order_access(Node* node) {
-  if constexpr (Node::DeferredType::modify_nodes_order) {
+template <typename TNode>
+inline void propagate_for_nodes_order_access(TNode* node) {
+  if constexpr (TNode::DeferredType::modify_nodes_order) {
     propagate_to_node(node);
   }
 }

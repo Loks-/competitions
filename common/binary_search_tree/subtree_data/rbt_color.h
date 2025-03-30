@@ -37,12 +37,12 @@ class RBTColor : public Base {
    * Helper function to check if a node is black in the Red-Black Tree.
    * Assumes the node exists.
    *
-   * @tparam Node The BST node type.
+   * @tparam TNode The BST node type.
    * @param node The node to check color for.
    * @return True if the node is black, false if red.
    */
-  template <typename Node>
-  static constexpr bool get(const Node* node) {
+  template <typename TNode>
+  static constexpr bool get(const TNode* node) {
     assert(node);
     return node->subtree_data.template get<Self>().is_black;
   }
@@ -53,12 +53,12 @@ class RBTColor : public Base {
    * Helper function to set the color of a node in the Red-Black Tree.
    * Assumes the node exists.
    *
-   * @tparam Node The BST node type.
+   * @tparam TNode The BST node type.
    * @param node The node to set color for.
    * @param black True to set the node black, false to set it red.
    */
-  template <typename Node>
-  static constexpr void set(Node* node, bool black) {
+  template <typename TNode>
+  static constexpr void set(TNode* node, bool black) {
     assert(node);
     node->subtree_data.template get<Self>().is_black = black;
   }
@@ -80,11 +80,11 @@ class RBTColor : public Base {
    * Used during Red-Black tree balancing operations when
    * node colors need to be copied.
    *
-   * @tparam Node The BST node type.
+   * @tparam TNode The BST node type.
    * @param node The source node to copy color from.
    */
-  template <typename Node>
-  constexpr void bti_copy(const Node* node) {
+  template <typename TNode>
+  constexpr void bti_copy(const TNode* node) {
     assert(node);
     is_black = get(node);
   }
@@ -95,11 +95,11 @@ class RBTColor : public Base {
    * Used during Red-Black tree balancing operations when
    * node colors need to be exchanged (e.g., during rotations).
    *
-   * @tparam Node The BST node type.
+   * @tparam TNode The BST node type.
    * @param node The node to swap colors with.
    */
-  template <typename Node>
-  constexpr void bti_swap(Node* node) {
+  template <typename TNode>
+  constexpr void bti_swap(TNode* node) {
     assert(node);
     std::swap(is_black, node->subtree_data.template get<Self>().is_black);
   }

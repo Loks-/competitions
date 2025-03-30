@@ -15,11 +15,11 @@ namespace deferred {
  * This order ensures that changes in a node's state are properly propagated
  * to its children before processing them.
  *
- * @tparam Node The BST node type.
+ * @tparam TNode The BST node type.
  * @param root The root of the subtree to apply deferred computations to.
  */
-template <typename Node>
-constexpr void apply_subtree(Node* root) {
+template <typename TNode>
+constexpr void apply_subtree(TNode* root) {
   if (!root) return;
   root->apply_deferred();
   if (root->left) apply_subtree(root->left);

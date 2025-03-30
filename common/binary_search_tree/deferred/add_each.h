@@ -11,8 +11,8 @@ namespace bst {
 namespace deferred {
 
 // Forward declaration of the helper function
-template <typename Node, typename ValueType>
-constexpr void add_to_each(Node* node, const ValueType& value);
+template <typename TNode, typename ValueType>
+constexpr void add_to_each(TNode* node, const ValueType& value);
 
 /**
  * @brief A deferred computation manager for adding a value to each node's data
@@ -84,23 +84,23 @@ class AddEach : public Base {
    * - Min: adds value to maintain the minimum
    * These checks are performed at compile-time.
    *
-   * @tparam Node The BST node type.
+   * @tparam TNode The BST node type.
    * @param node The root of the subtree to add value to.
    * @param value The value to be added to each node's data.
    */
-  template <typename Node>
-  constexpr void add_value(Node* node, const ValueType& value) {
+  template <typename TNode>
+  constexpr void add_value(TNode* node, const ValueType& value) {
     deferred_value += value;
     // Update Sum aggregator if present in node's TInfo
-    if constexpr (Node::SubtreeDataType::template has<SDSum>()) {
+    if constexpr (TNode::SubtreeDataType::template has<SDSum>()) {
       SDSum::get_ref(node) += value * bst::subtree_data::size(node);
     }
     // Update Max aggregator if present
-    if constexpr (Node::SubtreeDataType::template has<SDMax>()) {
+    if constexpr (TNode::SubtreeDataType::template has<SDMax>()) {
       SDMax::get_ref(node) += value;
     }
     // Update Min aggregator if present
-    if constexpr (Node::SubtreeDataType::template has<SDMin>()) {
+    if constexpr (TNode::SubtreeDataType::template has<SDMin>()) {
       SDMin::get_ref(node) += value;
     }
   }
@@ -113,11 +113,11 @@ class AddEach : public Base {
    * 2. Propagates the addition request to child nodes
    * 3. Clears the value to be added
    *
-   * @tparam Node The BST node type.
+   * @tparam TNode The BST node type.
    * @param node The root of the subtree to apply additions to.
    */
-  template <typename Node>
-  constexpr void apply(Node* node) {
+  template <typename TNode>
+  constexpr void apply(TNode* node) {
     assert(node);
     if (deferred_value != ValueType{}) {
       node->data += deferred_value;
@@ -133,12 +133,12 @@ class AddEach : public Base {
    * This is the standardized way to queue an add operation.
    * The value parameter specifies the amount to add to each node's data.
    *
-   * @tparam Node The BST node type.
+   * @tparam TNode The BST node type.
    * @param node The root of the subtree to modify.
    * @param value The value to add to each node's data.
    */
-  template <typename Node>
-  static constexpr void add(Node* node, const ValueType& value) {
+  template <typename TNode>
+  static constexpr void add(TNode* node, const ValueType& value) {
     add_to_each(node, value);
   }
 
@@ -162,13 +162,13 @@ class AddEach : public Base {
  * manager. The actual addition will be performed when deferred computations
  * are applied.
  *
- * @tparam Node The BST node type.
+ * @tparam TNode The BST node type.
  * @tparam ValueType The type of value to add.
  * @param node The root of the subtree to add value to.
  * @param value The value to add to each node's data.
  */
-template <typename Node, typename ValueType>
-constexpr void add_to_each(Node* node, const ValueType& value) {
+template <typename TNode, typename ValueType>
+constexpr void add_to_each(TNode* node, const ValueType& value) {
   if (node) {
     node->deferred.template get<AddEach<ValueType>>().add_value(node, value);
   }

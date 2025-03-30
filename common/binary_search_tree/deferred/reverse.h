@@ -10,8 +10,8 @@ namespace bst {
 namespace deferred {
 
 // Forward declaration of the helper function
-template <typename Node>
-constexpr void reverse_subtree(Node* node);
+template <typename TNode>
+constexpr void reverse_subtree(TNode* node);
 
 /**
  * @brief Deferred computation for reversing a subtree.
@@ -71,11 +71,11 @@ class Reverse : public Base {
    * The actual reversal will be deferred until apply() is called, and
    * even then, the reversal will be propagated to child nodes.
    *
-   * @tparam Node The BST node type.
+   * @tparam TNode The BST node type.
    * @param node The root of the subtree to be reversed.
    */
-  template <typename Node>
-  constexpr void reverse_subtree(Node*) {
+  template <typename TNode>
+  constexpr void reverse_subtree(TNode*) {
     reverse_required = !reverse_required;
   }
 
@@ -87,11 +87,11 @@ class Reverse : public Base {
    * 2. Propagates the reversal request to child nodes
    * 3. Clears the reversal flag for the current node
    *
-   * @tparam Node The BST node type.
+   * @tparam TNode The BST node type.
    * @param node The root of the subtree to apply reversals to.
    */
-  template <typename Node>
-  constexpr void apply(Node* node) {
+  template <typename TNode>
+  constexpr void apply(TNode* node) {
     assert(node);
     if (reverse_required) {
       std::swap(node->left, node->right);
@@ -108,12 +108,12 @@ class Reverse : public Base {
    * The value parameter type is Empty since reversal is just an action
    * trigger and doesn't need any additional data.
    *
-   * @tparam Node The BST node type.
+   * @tparam TNode The BST node type.
    * @param node The root of the subtree to reverse.
    * @param _ Ignored parameter, reversal is just an action trigger.
    */
-  template <typename Node>
-  static constexpr void add(Node* node, MetaEmpty) {
+  template <typename TNode>
+  static constexpr void add(TNode* node, MetaEmpty) {
     bst::deferred::reverse_subtree(node);
   }
 
@@ -135,12 +135,12 @@ class Reverse : public Base {
  * through the node's deferred computation manager. The actual reversal
  * will be performed when deferred computations are applied.
  *
- * @tparam Node The BST node type.
+ * @tparam TNode The BST node type.
  * @param node The root of the subtree to be reversed.
  */
-template <typename Node>
-constexpr void reverse_subtree(Node* node) {
-  static_assert(Node::DeferredType::template has<Reverse>(),
+template <typename TNode>
+constexpr void reverse_subtree(TNode* node) {
+  static_assert(TNode::DeferredType::template has<Reverse>(),
                 "Node's Deferred class must contain Reverse class to use "
                 "reverse_subtree");
   if (node) {

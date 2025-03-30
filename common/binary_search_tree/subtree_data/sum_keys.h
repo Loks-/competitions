@@ -56,12 +56,12 @@ class SumKeys : public Base {
    * Helper function to access the sum of keys in a subtree through its root
    * node. Returns default-constructed SumType for null nodes.
    *
-   * @tparam Node The BST node type.
+   * @tparam TNode The BST node type.
    * @param node The root of the subtree to get sum from.
    * @return The sum of keys in the subtree.
    */
-  template <typename Node>
-  static constexpr SumType get(const Node* node) {
+  template <typename TNode>
+  static constexpr SumType get(const TNode* node) {
     return node ? get(node->subtree_data) : SumType{};
   }
 
@@ -72,12 +72,12 @@ class SumKeys : public Base {
    * node. This is useful when you need to modify the sum value directly.
    * Assumes the node exists.
    *
-   * @tparam Node The BST node type.
+   * @tparam TNode The BST node type.
    * @param node The root of the subtree to get sum reference from.
    * @return A reference to the sum of keys stored in the node.
    */
-  template <typename Node>
-  static constexpr SumType& get_ref(Node* node) {
+  template <typename TNode>
+  static constexpr SumType& get_ref(TNode* node) {
     assert(node);
     return node->subtree_data.template get<Self>().value;
   }
@@ -88,12 +88,12 @@ class SumKeys : public Base {
    * Helper function to set the sum of keys in a subtree through its root node.
    * Assumes the node exists.
    *
-   * @tparam Node The BST node type.
+   * @tparam TNode The BST node type.
    * @param node The root of the subtree to set sum for.
    * @param value The new sum value to set.
    */
-  template <typename Node>
-  static constexpr void set(Node* node, const SumType& value) {
+  template <typename TNode>
+  static constexpr void set(TNode* node, const SumType& value) {
     assert(node);
     node->subtree_data.template get<Self>().value = value;
   }
@@ -103,11 +103,11 @@ class SumKeys : public Base {
    *
    * For a single node, the sum is equal to its key.
    *
-   * @tparam Node The BST node type.
+   * @tparam TNode The BST node type.
    * @param node The node to set sum from.
    */
-  template <typename Node>
-  constexpr void set_node(const Node* node) {
+  template <typename TNode>
+  constexpr void set_node(const TNode* node) {
     assert(node);
     value = SumType(node->key);
   }
@@ -117,11 +117,11 @@ class SumKeys : public Base {
    *
    * Used when replacing one subtree with another to maintain correct sum.
    *
-   * @tparam Node The BST node type.
+   * @tparam TNode The BST node type.
    * @param node The root of the subtree to copy sum from.
    */
-  template <typename Node>
-  constexpr void set_subtree(const Node* node) {
+  template <typename TNode>
+  constexpr void set_subtree(const TNode* node) {
     assert(node);
     value = get(node);
   }
@@ -132,11 +132,11 @@ class SumKeys : public Base {
    * Used in order-independent operations where a single node
    * is being added to the subtree.
    *
-   * @tparam Node The BST node type.
+   * @tparam TNode The BST node type.
    * @param node The node being added.
    */
-  template <typename Node>
-  constexpr void add_node(const Node* node) {
+  template <typename TNode>
+  constexpr void add_node(const TNode* node) {
     assert(node);
     value += SumType(node->key);
   }
@@ -147,11 +147,11 @@ class SumKeys : public Base {
    * Used in order-independent operations where an entire subtree
    * is being added to the current subtree.
    *
-   * @tparam Node The BST node type.
+   * @tparam TNode The BST node type.
    * @param node The root of the subtree being added.
    */
-  template <typename Node>
-  constexpr void add_subtree(const Node* node) {
+  template <typename TNode>
+  constexpr void add_subtree(const TNode* node) {
     assert(node);
     value += get(node);
   }
@@ -162,11 +162,11 @@ class SumKeys : public Base {
    * Similar to add_node but specifically used during tree
    * modification operations.
    *
-   * @tparam Node The BST node type.
+   * @tparam TNode The BST node type.
    * @param node The node being inserted.
    */
-  template <typename Node>
-  constexpr void insert_node(const Node* node) {
+  template <typename TNode>
+  constexpr void insert_node(const TNode* node) {
     assert(node);
     value += SumType(node->key);
   }
@@ -177,11 +177,11 @@ class SumKeys : public Base {
    * Similar to add_subtree but specifically used during tree
    * modification operations.
    *
-   * @tparam Node The BST node type.
+   * @tparam TNode The BST node type.
    * @param node The root of the subtree being inserted.
    */
-  template <typename Node>
-  constexpr void insert_subtree(const Node* node) {
+  template <typename TNode>
+  constexpr void insert_subtree(const TNode* node) {
     assert(node);
     value += get(node);
   }
@@ -192,11 +192,11 @@ class SumKeys : public Base {
    * Updates the subtree sum when a node is being removed
    * from the tree.
    *
-   * @tparam Node The BST node type.
+   * @tparam TNode The BST node type.
    * @param node The node being removed.
    */
-  template <typename Node>
-  constexpr void remove_node(const Node* node) {
+  template <typename TNode>
+  constexpr void remove_node(const TNode* node) {
     assert(node);
     value -= SumType(node->key);
   }

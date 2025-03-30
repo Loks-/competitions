@@ -143,11 +143,11 @@ class SubtreeData {
   /**
    * @brief Copies balance tree data from another node for all aggregators.
    *
-   * @tparam Node The type of the source node.
+   * @tparam TNode The type of the source node.
    * @param node Pointer to the source node to copy from.
    */
-  template <typename Node>
-  constexpr void bti_copy(const Node* node) {
+  template <typename TNode>
+  constexpr void bti_copy(const TNode* node) {
     assert(node);
     std::apply(
         [node](auto&... aggregators) { (aggregators.bti_copy(node), ...); },
@@ -157,11 +157,11 @@ class SubtreeData {
   /**
    * @brief Swaps balance tree data with another node for all aggregators.
    *
-   * @tparam Node The type of the target node.
+   * @tparam TNode The type of the target node.
    * @param node Pointer to the node to swap with.
    */
-  template <typename Node>
-  constexpr void bti_swap(Node* node) {
+  template <typename TNode>
+  constexpr void bti_swap(TNode* node) {
     assert(node);
     std::apply(
         [node](auto&... aggregators) { (aggregators.bti_swap(node), ...); },
@@ -183,11 +183,11 @@ class SubtreeData {
    * For non-segment case:
    * Calls update_one for each aggregator.
    *
-   * @tparam Node The type of the node to update.
+   * @tparam TNode The type of the node to update.
    * @param node Pointer to the node whose subtree data needs to be updated.
    */
-  template <typename Node>
-  constexpr void update(const Node* node) {
+  template <typename TNode>
+  constexpr void update(const TNode* node) {
     assert(node);
     if constexpr (support_segment) {
       set_node(node);
@@ -205,11 +205,11 @@ class SubtreeData {
   /**
    * @brief Sets the subtree data from a single node for all aggregators.
    *
-   * @tparam Node The type of the source node.
+   * @tparam TNode The type of the source node.
    * @param node Pointer to the node to set data from.
    */
-  template <typename Node>
-  constexpr void set_node(const Node* node) {
+  template <typename TNode>
+  constexpr void set_node(const TNode* node) {
     assert(node);
     std::apply(
         [node](auto&... aggregators) {
@@ -221,11 +221,11 @@ class SubtreeData {
   /**
    * @brief Sets the subtree data from a subtree for all aggregators.
    *
-   * @tparam Node The type of the source node.
+   * @tparam TNode The type of the source node.
    * @param node Pointer to the root of the subtree to set data from.
    */
-  template <typename Node>
-  constexpr void set_subtree(const Node* node) {
+  template <typename TNode>
+  constexpr void set_subtree(const TNode* node) {
     assert(node);
     std::apply(
         [node](auto&... aggregators) {
@@ -238,11 +238,11 @@ class SubtreeData {
    * @brief Adds the subtree data from a single node for all aggregators.
    * Only available when all aggregators are order independent.
    *
-   * @tparam Node The type of the source node.
+   * @tparam TNode The type of the source node.
    * @param node Pointer to the node to add data from.
    */
-  template <typename Node>
-  constexpr void add_node(const Node* node) {
+  template <typename TNode>
+  constexpr void add_node(const TNode* node) {
     static_assert(order_independent,
                   "add_node can only be called when all aggregators are "
                   "order independent");
@@ -258,11 +258,11 @@ class SubtreeData {
    * @brief Adds the subtree data from a subtree for all aggregators.
    * Only available when all aggregators are order independent.
    *
-   * @tparam Node The type of the source node.
+   * @tparam TNode The type of the source node.
    * @param node Pointer to the root of the subtree to add data from.
    */
-  template <typename Node>
-  constexpr void add_subtree(const Node* node) {
+  template <typename TNode>
+  constexpr void add_subtree(const TNode* node) {
     static_assert(order_independent,
                   "add_subtree can only be called when all aggregators are "
                   "order independent");
@@ -278,11 +278,11 @@ class SubtreeData {
    * @brief Adds the subtree data from a single node for all aggregators.
    * Used for order-dependent operations.
    *
-   * @tparam Node The type of the source node.
+   * @tparam TNode The type of the source node.
    * @param node Pointer to the node to add data from.
    */
-  template <typename Node>
-  constexpr void add_left_node(const Node* node) {
+  template <typename TNode>
+  constexpr void add_left_node(const TNode* node) {
     assert(node);
     std::apply(
         [node](auto&... aggregators) {
@@ -295,11 +295,11 @@ class SubtreeData {
    * @brief Adds the subtree data from a single node for all aggregators.
    * Used for order-dependent operations.
    *
-   * @tparam Node The type of the source node.
+   * @tparam TNode The type of the source node.
    * @param node Pointer to the node to add data from.
    */
-  template <typename Node>
-  constexpr void add_right_node(const Node* node) {
+  template <typename TNode>
+  constexpr void add_right_node(const TNode* node) {
     assert(node);
     std::apply(
         [node](auto&... aggregators) {
@@ -312,11 +312,11 @@ class SubtreeData {
    * @brief Adds the subtree data from a subtree for all aggregators.
    * Used for order-dependent operations.
    *
-   * @tparam Node The type of the source node.
+   * @tparam TNode The type of the source node.
    * @param node Pointer to the root of the subtree to add data from.
    */
-  template <typename Node>
-  constexpr void add_left_subtree(const Node* node) {
+  template <typename TNode>
+  constexpr void add_left_subtree(const TNode* node) {
     assert(node);
     std::apply(
         [node](auto&... aggregators) {
@@ -329,11 +329,11 @@ class SubtreeData {
    * @brief Adds the subtree data from a subtree for all aggregators.
    * Used for order-dependent operations.
    *
-   * @tparam Node The type of the source node.
+   * @tparam TNode The type of the source node.
    * @param node Pointer to the root of the subtree to add data from.
    */
-  template <typename Node>
-  constexpr void add_right_subtree(const Node* node) {
+  template <typename TNode>
+  constexpr void add_right_subtree(const TNode* node) {
     assert(node);
     std::apply(
         [node](auto&... aggregators) {
@@ -346,11 +346,11 @@ class SubtreeData {
    * @brief Handles node insertion in the subtree data for all aggregators.
    * Only available when all aggregators support node insertion.
    *
-   * @tparam Node The type of the node to insert.
+   * @tparam TNode The type of the node to insert.
    * @param node Pointer to the node being inserted.
    */
-  template <typename Node>
-  constexpr void insert_node(const Node* node) {
+  template <typename TNode>
+  constexpr void insert_node(const TNode* node) {
     static_assert(support_insert_node,
                   "insert_node can only be called when all aggregators support "
                   "node insertion");
@@ -366,11 +366,11 @@ class SubtreeData {
    * @brief Handles subtree insertion in the subtree data for all aggregators.
    * Only available when all aggregators support subtree insertion.
    *
-   * @tparam Node The type of the node to insert.
+   * @tparam TNode The type of the node to insert.
    * @param node Pointer to the root of the subtree being inserted.
    */
-  template <typename Node>
-  constexpr void insert_subtree(const Node* node) {
+  template <typename TNode>
+  constexpr void insert_subtree(const TNode* node) {
     static_assert(
         support_insert_subtree,
         "insert_subtree can only be called when all aggregators support "
@@ -387,11 +387,11 @@ class SubtreeData {
    * @brief Handles node removal from the subtree data for all aggregators.
    * Only available when all aggregators support node removal.
    *
-   * @tparam Node The type of the node to remove.
+   * @tparam TNode The type of the node to remove.
    * @param node Pointer to the node being removed.
    */
-  template <typename Node>
-  constexpr void remove_node(const Node* node) {
+  template <typename TNode>
+  constexpr void remove_node(const TNode* node) {
     static_assert(support_remove_node,
                   "remove_node can only be called when all aggregators support "
                   "node removal");
@@ -421,12 +421,12 @@ class SubtreeData {
    * For non-segment aggregators, simply calls update.
    *
    * @tparam Aggregator The type of the aggregator to update.
-   * @tparam Node The type of the node to update from.
+   * @tparam TNode The type of the node to update from.
    * @param aggregator Reference to the aggregator to update.
    * @param node Pointer to the node whose data to use.
    */
-  template <typename Aggregator, typename Node>
-  static constexpr void update_one(Aggregator& aggregator, const Node* node) {
+  template <typename Aggregator, typename TNode>
+  static constexpr void update_one(Aggregator& aggregator, const TNode* node) {
     if constexpr (Aggregator::support_segment) {
       set_node_one(aggregator, node);
       if (node->left) add_left_subtree_one(aggregator, node->left);
@@ -440,12 +440,13 @@ class SubtreeData {
    * @brief Helper to set subtree data from a single node for one aggregator.
    *
    * @tparam Aggregator The type of the aggregator to set.
-   * @tparam Node The type of the source node.
+   * @tparam TNode The type of the source node.
    * @param aggregator Reference to the aggregator to set data for.
    * @param node Pointer to the node to set data from.
    */
-  template <typename Aggregator, typename Node>
-  static constexpr void set_node_one(Aggregator& aggregator, const Node* node) {
+  template <typename Aggregator, typename TNode>
+  static constexpr void set_node_one(Aggregator& aggregator,
+                                     const TNode* node) {
     aggregator.set_node(node);
   }
 
@@ -453,13 +454,13 @@ class SubtreeData {
    * @brief Helper to set subtree data from a subtree for one aggregator.
    *
    * @tparam Aggregator The type of the aggregator to set.
-   * @tparam Node The type of the source node.
+   * @tparam TNode The type of the source node.
    * @param aggregator Reference to the aggregator to set data for.
    * @param node Pointer to the root of the subtree to set data from.
    */
-  template <typename Aggregator, typename Node>
+  template <typename Aggregator, typename TNode>
   static constexpr void set_subtree_one(Aggregator& aggregator,
-                                        const Node* node) {
+                                        const TNode* node) {
     aggregator.set_subtree(node);
   }
 
@@ -467,12 +468,13 @@ class SubtreeData {
    * @brief Helper to add subtree data from a single node for one aggregator.
    *
    * @tparam Aggregator The type of the aggregator to add to.
-   * @tparam Node The type of the source node.
+   * @tparam TNode The type of the source node.
    * @param aggregator Reference to the aggregator to add data to.
    * @param node Pointer to the node to add data from.
    */
-  template <typename Aggregator, typename Node>
-  static constexpr void add_node_one(Aggregator& aggregator, const Node* node) {
+  template <typename Aggregator, typename TNode>
+  static constexpr void add_node_one(Aggregator& aggregator,
+                                     const TNode* node) {
     aggregator.add_node(node);
   }
 
@@ -480,13 +482,13 @@ class SubtreeData {
    * @brief Helper to add subtree data from a subtree for one aggregator.
    *
    * @tparam Aggregator The type of the aggregator to add to.
-   * @tparam Node The type of the source node.
+   * @tparam TNode The type of the source node.
    * @param aggregator Reference to the aggregator to add data to.
    * @param node Pointer to the root of the subtree to add data from.
    */
-  template <typename Aggregator, typename Node>
+  template <typename Aggregator, typename TNode>
   static constexpr void add_subtree_one(Aggregator& aggregator,
-                                        const Node* node) {
+                                        const TNode* node) {
     aggregator.add_subtree(node);
   }
 
@@ -495,13 +497,13 @@ class SubtreeData {
    * aggregator. For order-independent aggregators, calls add_node instead.
    *
    * @tparam Aggregator The type of the aggregator to add to.
-   * @tparam Node The type of the source node.
+   * @tparam TNode The type of the source node.
    * @param aggregator Reference to the aggregator to add data to.
    * @param node Pointer to the node to add data from.
    */
-  template <typename Aggregator, typename Node>
+  template <typename Aggregator, typename TNode>
   static constexpr void add_left_node_one(Aggregator& aggregator,
-                                          const Node* node) {
+                                          const TNode* node) {
     if constexpr (Aggregator::order_independent) {
       aggregator.add_node(node);
     } else {
@@ -514,13 +516,13 @@ class SubtreeData {
    * aggregator. For order-independent aggregators, calls add_node instead.
    *
    * @tparam Aggregator The type of the aggregator to add to.
-   * @tparam Node The type of the source node.
+   * @tparam TNode The type of the source node.
    * @param aggregator Reference to the aggregator to add data to.
    * @param node Pointer to the node to add data from.
    */
-  template <typename Aggregator, typename Node>
+  template <typename Aggregator, typename TNode>
   static constexpr void add_right_node_one(Aggregator& aggregator,
-                                           const Node* node) {
+                                           const TNode* node) {
     if constexpr (Aggregator::order_independent) {
       aggregator.add_node(node);
     } else {
@@ -533,13 +535,13 @@ class SubtreeData {
    * For order-independent aggregators, calls add_subtree instead.
    *
    * @tparam Aggregator The type of the aggregator to add to.
-   * @tparam Node The type of the source node.
+   * @tparam TNode The type of the source node.
    * @param aggregator Reference to the aggregator to add data to.
    * @param node Pointer to the root of the subtree to add data from.
    */
-  template <typename Aggregator, typename Node>
+  template <typename Aggregator, typename TNode>
   static constexpr void add_left_subtree_one(Aggregator& aggregator,
-                                             const Node* node) {
+                                             const TNode* node) {
     if constexpr (Aggregator::order_independent) {
       aggregator.add_subtree(node);
     } else {
@@ -552,13 +554,13 @@ class SubtreeData {
    * For order-independent aggregators, calls add_subtree instead.
    *
    * @tparam Aggregator The type of the aggregator to add to.
-   * @tparam Node The type of the source node.
+   * @tparam TNode The type of the source node.
    * @param aggregator Reference to the aggregator to add data to.
    * @param node Pointer to the root of the subtree to add data from.
    */
-  template <typename Aggregator, typename Node>
+  template <typename Aggregator, typename TNode>
   static constexpr void add_right_subtree_one(Aggregator& aggregator,
-                                              const Node* node) {
+                                              const TNode* node) {
     if constexpr (Aggregator::order_independent) {
       aggregator.add_subtree(node);
     } else {
@@ -570,13 +572,13 @@ class SubtreeData {
    * @brief Helper to handle node insertion for one aggregator.
    *
    * @tparam Aggregator The type of the aggregator to insert into.
-   * @tparam Node The type of the node to insert.
+   * @tparam TNode The type of the node to insert.
    * @param aggregator Reference to the aggregator to insert into.
    * @param node Pointer to the node being inserted.
    */
-  template <typename Aggregator, typename Node>
+  template <typename Aggregator, typename TNode>
   static constexpr void insert_node_one(Aggregator& aggregator,
-                                        const Node* node) {
+                                        const TNode* node) {
     aggregator.insert_node(node);
   }
 
@@ -584,13 +586,13 @@ class SubtreeData {
    * @brief Helper to handle subtree insertion for one aggregator.
    *
    * @tparam Aggregator The type of the aggregator to insert into.
-   * @tparam Node The type of the node to insert.
+   * @tparam TNode The type of the node to insert.
    * @param aggregator Reference to the aggregator to insert into.
    * @param node Pointer to the root of the subtree being inserted.
    */
-  template <typename Aggregator, typename Node>
+  template <typename Aggregator, typename TNode>
   static constexpr void insert_subtree_one(Aggregator& aggregator,
-                                           const Node* node) {
+                                           const TNode* node) {
     aggregator.insert_subtree(node);
   }
 
@@ -598,13 +600,13 @@ class SubtreeData {
    * @brief Helper to handle node removal for one aggregator.
    *
    * @tparam Aggregator The type of the aggregator to remove from.
-   * @tparam Node The type of the node to remove.
+   * @tparam TNode The type of the node to remove.
    * @param aggregator Reference to the aggregator to remove from.
    * @param node Pointer to the node being removed.
    */
-  template <typename Aggregator, typename Node>
+  template <typename Aggregator, typename TNode>
   static constexpr void remove_node_one(Aggregator& aggregator,
-                                        const Node* node) {
+                                        const TNode* node) {
     aggregator.remove_node(node);
   }
 };

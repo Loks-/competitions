@@ -35,12 +35,12 @@ class Height : public Base {
    * Helper function to access the height of a subtree through its root node.
    * Returns 0 for null nodes.
    *
-   * @tparam Node The BST node type.
+   * @tparam TNode The BST node type.
    * @param node The root of the subtree to get height from.
    * @return The height of the subtree.
    */
-  template <typename Node>
-  static constexpr unsigned get(const Node* node) {
+  template <typename TNode>
+  static constexpr unsigned get(const TNode* node) {
     return node ? node->subtree_data.template get<Self>().height : 0;
   }
 
@@ -50,11 +50,11 @@ class Height : public Base {
    * The height of a subtree is one more than the maximum height of its
    * child subtrees. If a child is null, its height is considered 0.
    *
-   * @tparam Node The BST node type.
+   * @tparam TNode The BST node type.
    * @param node The root of the subtree to update height for.
    */
-  template <typename Node>
-  constexpr void update(const Node* node) {
+  template <typename TNode>
+  constexpr void update(const TNode* node) {
     assert(node);
     height = 1 + std::max(get(node->left), get(node->right));
   }
@@ -77,12 +77,12 @@ class Height : public Base {
  * Free function to access the height of a subtree through its root node.
  * Returns 0 for null nodes.
  *
- * @tparam Node The BST node type.
+ * @tparam TNode The BST node type.
  * @param node The root of the subtree to get height from.
  * @return The height of the subtree.
  */
-template <typename Node>
-constexpr unsigned height(const Node* node) {
+template <typename TNode>
+constexpr unsigned height(const TNode* node) {
   return Height::get(node);
 }
 

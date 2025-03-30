@@ -9,8 +9,8 @@ namespace bst {
 namespace deferred {
 
 // Forward declaration of the helper function
-template <typename Node, typename ValueType>
-constexpr void add_to_each_key(Node* node, const ValueType& value);
+template <typename TNode, typename ValueType>
+constexpr void add_to_each_key(TNode* node, const ValueType& value);
 
 /**
  * @brief A deferred computation manager for adding a value to each node's key
@@ -73,15 +73,15 @@ class AddEachKey : public Base {
    * updated immediately by adding (value * subtree_size) to maintain the
    * correct sum of keys. This check is performed at compile-time.
    *
-   * @tparam Node The BST node type.
+   * @tparam TNode The BST node type.
    * @param node The root of the subtree to add value to.
    * @param value The value to be added to each node's key.
    */
-  template <typename Node>
-  constexpr void add_value(Node* node, const ValueType& value) {
+  template <typename TNode>
+  constexpr void add_value(TNode* node, const ValueType& value) {
     deferred_value += value;
     // Update SumKeys aggregator if present in node's SubtreeDataType
-    if constexpr (Node::SubtreeDataType::template has<SDSumKeys>()) {
+    if constexpr (TNode::SubtreeDataType::template has<SDSumKeys>()) {
       SDSumKeys::get_ref(node) += value * bst::subtree_data::size(node);
     }
   }
@@ -94,11 +94,11 @@ class AddEachKey : public Base {
    * 2. Propagates the addition request to child nodes
    * 3. Clears the value to be added
    *
-   * @tparam Node The BST node type.
+   * @tparam TNode The BST node type.
    * @param node The root of the subtree to apply additions to.
    */
-  template <typename Node>
-  constexpr void apply(Node* node) {
+  template <typename TNode>
+  constexpr void apply(TNode* node) {
     assert(node);
     if (deferred_value != ValueType{}) {
       node->key += deferred_value;
@@ -114,12 +114,12 @@ class AddEachKey : public Base {
    * This is the standardized way to queue an add operation.
    * The value parameter specifies the amount to add to each node's key.
    *
-   * @tparam Node The BST node type.
+   * @tparam TNode The BST node type.
    * @param node The root of the subtree to modify.
    * @param value The value to add to each node's key.
    */
-  template <typename Node>
-  static constexpr void add(Node* node, const ValueType& value) {
+  template <typename TNode>
+  static constexpr void add(TNode* node, const ValueType& value) {
     add_to_each_key(node, value);
   }
 
@@ -143,13 +143,13 @@ class AddEachKey : public Base {
  * The actual addition will be performed when deferred computations are
  * applied.
  *
- * @tparam Node The BST node type.
+ * @tparam TNode The BST node type.
  * @tparam ValueType The type of value to add.
  * @param node The root of the subtree to add value to.
  * @param value The value to add to each key.
  */
-template <typename Node, typename ValueType>
-constexpr void add_to_each_key(Node* node, const ValueType& value) {
+template <typename TNode, typename ValueType>
+constexpr void add_to_each_key(TNode* node, const ValueType& value) {
   if (node) {
     node->deferred.template get<AddEachKey<ValueType>>().add_value(node, value);
   }

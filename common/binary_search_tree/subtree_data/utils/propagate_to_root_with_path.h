@@ -17,15 +17,15 @@ namespace subtree_data {
  * instead of parent links. This is useful when parent links are not available
  * or when we already have the path computed for other purposes.
  *
- * @tparam Node The BST node type.
+ * @tparam TNode The BST node type.
  * @param path Vector containing the path from node to root (inclusive).
  * @param start_from_index The index in the path to start updating from
  * (default: 0).
  */
-template <typename Node>
-constexpr void propagate_to_root_with_path(const std::vector<Node*>& path,
+template <typename TNode>
+constexpr void propagate_to_root_with_path(const std::vector<TNode*>& path,
                                            size_t start_from_index = 0) {
-  if constexpr (!Node::SubtreeDataType::empty) {
+  if constexpr (!TNode::SubtreeDataType::empty) {
     // Update subtree data from node up to root
     for (auto it = path.begin() + start_from_index; it != path.end(); ++it) {
       (*it)->update_subtree_data();
@@ -40,16 +40,16 @@ constexpr void propagate_to_root_with_path(const std::vector<Node*>& path,
  * node order. This is typically used for simple data updates that don't
  * affect the tree's structure or ordering.
  *
- * @tparam Node The BST node type.
+ * @tparam TNode The BST node type.
  * @param path Vector containing the path from node to root (inclusive).
  * @param start_from_index The index in the path to start updating from
  * (default: 0).
  */
-template <typename Node>
+template <typename TNode>
 constexpr void propagate_for_data_update_with_path(
-    const std::vector<Node*>& path, size_t start_from_index = 0) {
-  if constexpr (Node::SubtreeDataType::use_data) {
-    propagate_to_root_with_path<Node>(path, start_from_index);
+    const std::vector<TNode*>& path, size_t start_from_index = 0) {
+  if constexpr (TNode::SubtreeDataType::use_data) {
+    propagate_to_root_with_path<TNode>(path, start_from_index);
   }
 }
 
@@ -60,16 +60,16 @@ constexpr void propagate_for_data_update_with_path(
  * node order. This is typically used for key updates that don't affect
  * the tree's structure or ordering.
  *
- * @tparam Node The BST node type.
+ * @tparam TNode The BST node type.
  * @param path Vector containing the path from node to root (inclusive).
  * @param start_from_index The index in the path to start updating from
  * (default: 0).
  */
-template <typename Node>
+template <typename TNode>
 constexpr void propagate_for_key_update_with_path(
-    const std::vector<Node*>& path, size_t start_from_index = 0) {
-  if constexpr (Node::SubtreeDataType::use_keys) {
-    propagate_to_root_with_path<Node>(path, start_from_index);
+    const std::vector<TNode*>& path, size_t start_from_index = 0) {
+  if constexpr (TNode::SubtreeDataType::use_keys) {
+    propagate_to_root_with_path<TNode>(path, start_from_index);
   }
 }
 
@@ -86,11 +86,11 @@ constexpr void propagate_for_key_update_with_path(
  * @param start_from_index The index in the path to start updating from
  * (default: 0).
  */
-template <typename Node>
+template <typename TNode>
 constexpr void propagate_for_structure_update_with_path(
-    const std::vector<Node*>& path, size_t start_from_index = 0) {
-  if constexpr (Node::SubtreeDataType::use_tree_structure) {
-    propagate_to_root_with_path<Node>(path, start_from_index);
+    const std::vector<TNode*>& path, size_t start_from_index = 0) {
+  if constexpr (TNode::SubtreeDataType::use_tree_structure) {
+    propagate_to_root_with_path<TNode>(path, start_from_index);
   }
 }
 
@@ -102,16 +102,16 @@ constexpr void propagate_for_structure_update_with_path(
  * data, structure, or keys. This is typically used for operations that
  * reorder nodes but don't change their data or the tree's structure.
  *
- * @tparam Node The BST node type.
+ * @tparam TNode The BST node type.
  * @param path Vector containing the path from node to root (inclusive).
  * @param start_from_index The index in the path to start updating from
  * (default: 0).
  */
-template <typename Node>
+template <typename TNode>
 constexpr void propagate_for_nodes_order_update_with_path(
-    const std::vector<Node*>& path, size_t start_from_index = 0) {
-  if constexpr (Node::SubtreeDataType::use_nodes_order) {
-    propagate_to_root_with_path<Node>(path, start_from_index);
+    const std::vector<TNode*>& path, size_t start_from_index = 0) {
+  if constexpr (TNode::SubtreeDataType::use_nodes_order) {
+    propagate_to_root_with_path<TNode>(path, start_from_index);
   }
 }
 

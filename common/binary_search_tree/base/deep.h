@@ -14,15 +14,15 @@ namespace base {
  * no deferred computations are applied. If a pointer to a node is available,
  * it is assumed that all deferred computations have already been applied.
  *
- * @tparam Node The BST node type.
+ * @tparam TNode The BST node type.
  * @param node The node to calculate depth for.
  * @return The depth of the node (1 for root, 2 for root's children, etc.),
  *         or 0 if the node is nullptr.
  */
-template <typename Node>
-[[nodiscard]] constexpr unsigned deep(const Node* node) {
+template <typename TNode>
+[[nodiscard]] constexpr unsigned deep(const TNode* node) {
   // Count parent links from node to root
-  static_assert(Node::has_parent, "Node must have parent pointer enabled");
+  static_assert(TNode::has_parent, "Node must have parent pointer enabled");
   unsigned depth = 0;
   for (; node; node = node->parent) ++depth;
   return depth;

@@ -13,17 +13,18 @@ namespace base {
  * The function automatically handles both const and non-const nodes through
  * template parameter deduction.
  *
- * @tparam Node The BST node type (automatically deduced as const or non-const).
+ * @tparam TNode The BST node type (automatically deduced as const or
+ * non-const).
  * @param node The node to start traversal from.
  * @return Pointer to the root node of the tree, or nullptr if the input node
  *         is nullptr.
  */
-template <typename Node>
-[[nodiscard]] constexpr Node* root(Node* node) {
+template <typename TNode>
+[[nodiscard]] constexpr TNode* root(TNode* node) {
   if (!node) return nullptr;
 
   // Go up until we reach the root
-  static_assert(Node::has_parent, "Node must have parent pointer enabled");
+  static_assert(TNode::has_parent, "Node must have parent pointer enabled");
   while (node->parent) node = node->parent;
 
   return node;

@@ -38,12 +38,12 @@ class WAVLRank : public Base {
    * Helper function to access the rank of a node in the WAVL Tree.
    * Assumes the node exists.
    *
-   * @tparam Node The BST node type.
+   * @tparam TNode The BST node type.
    * @param node The node to get rank from.
    * @return The rank of the node.
    */
-  template <typename Node>
-  static constexpr int get(const Node* node) {
+  template <typename TNode>
+  static constexpr int get(const TNode* node) {
     assert(node);
     return node->subtree_data.template get<Self>().rank;
   }
@@ -54,12 +54,12 @@ class WAVLRank : public Base {
    * Helper function to set the rank of a node in the WAVL Tree.
    * Assumes the node exists.
    *
-   * @tparam Node The BST node type.
+   * @tparam TNode The BST node type.
    * @param node The node to set rank for.
    * @param new_rank The new rank value to set.
    */
-  template <typename Node>
-  static constexpr void set(Node* node, int new_rank) {
+  template <typename TNode>
+  static constexpr void set(TNode* node, int new_rank) {
     assert(node);
     node->subtree_data.template get<Self>().rank = new_rank;
   }
@@ -70,11 +70,11 @@ class WAVLRank : public Base {
    * Helper function to efficiently increase a node's rank.
    * Assumes the node exists.
    *
-   * @tparam Node The BST node type.
+   * @tparam TNode The BST node type.
    * @param node The node to increment rank for.
    */
-  template <typename Node>
-  static constexpr void inc(Node* node) {
+  template <typename TNode>
+  static constexpr void inc(TNode* node) {
     assert(node);
     ++node->subtree_data.template get<Self>().rank;
   }
@@ -85,11 +85,11 @@ class WAVLRank : public Base {
    * Helper function to efficiently decrease a node's rank.
    * Assumes the node exists.
    *
-   * @tparam Node The BST node type.
+   * @tparam TNode The BST node type.
    * @param node The node to decrement rank for.
    */
-  template <typename Node>
-  static constexpr void dec(Node* node) {
+  template <typename TNode>
+  static constexpr void dec(TNode* node) {
     assert(node);
     --node->subtree_data.template get<Self>().rank;
   }
@@ -111,11 +111,11 @@ class WAVLRank : public Base {
    * Used during WAVL tree balancing operations when
    * node ranks need to be copied.
    *
-   * @tparam Node The BST node type.
+   * @tparam TNode The BST node type.
    * @param node The source node to copy rank from.
    */
-  template <typename Node>
-  constexpr void bti_copy(const Node* node) {
+  template <typename TNode>
+  constexpr void bti_copy(const TNode* node) {
     assert(node);
     rank = get(node);
   }
@@ -126,11 +126,11 @@ class WAVLRank : public Base {
    * Used during WAVL tree balancing operations when
    * node ranks need to be exchanged (e.g., during rotations).
    *
-   * @tparam Node The BST node type.
+   * @tparam TNode The BST node type.
    * @param node The node to swap ranks with.
    */
-  template <typename Node>
-  constexpr void bti_swap(Node* node) {
+  template <typename TNode>
+  constexpr void bti_swap(TNode* node) {
     assert(node);
     std::swap(rank, node->subtree_data.template get<Self>().rank);
   }

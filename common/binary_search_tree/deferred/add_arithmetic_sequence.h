@@ -12,8 +12,8 @@ namespace bst {
 namespace deferred {
 
 // Forward declaration of the helper function
-template <typename Node, typename ValueType>
-constexpr void add_arithmetic_sequence(Node* node, const ValueType& a,
+template <typename TNode, typename ValueType>
+constexpr void add_arithmetic_sequence(TNode* node, const ValueType& a,
                                        const ValueType& d);
 
 /**
@@ -77,19 +77,19 @@ class AddArithmeticSequence : public Base {
    * If the node has a Sum aggregator, it is updated immediately with the sum of
    * the arithmetic sequence: size * a + size * (size - 1) * d / 2
    *
-   * @tparam Node The BST node type.
+   * @tparam TNode The BST node type.
    * @param node The root of the subtree to add sequence to.
    * @param a_ The starting value of the sequence to add.
    * @param d_ The common difference of the sequence to add.
    */
-  template <typename Node>
-  constexpr void add_sequence(Node* node, const ValueType& a_,
+  template <typename TNode>
+  constexpr void add_sequence(TNode* node, const ValueType& a_,
                               const ValueType& d_) {
     a += a_;
     d += d_;
 
     // Update Sum aggregator if present
-    if constexpr (Node::SubtreeDataType::template has<SDSum>()) {
+    if constexpr (TNode::SubtreeDataType::template has<SDSum>()) {
       const auto subtree_size = ValueType(bst::subtree_data::size(node));
       SDSum::get_ref(node) += subtree_size * a_ + subtree_size *
                                                       (subtree_size - 1) * d_ /
@@ -110,15 +110,15 @@ class AddArithmeticSequence : public Base {
    * Before applying the sequence, any tree structure modifications (like
    * reversals) are applied first to ensure correct tree structure.
    *
-   * @tparam Node The BST node type.
+   * @tparam TNode The BST node type.
    * @param node The root of the subtree to apply sequence to.
    */
-  template <typename Node>
-  constexpr void apply(Node* node) {
+  template <typename TNode>
+  constexpr void apply(TNode* node) {
     assert(node);
     if (apply_required()) {
       // Apply any tree structure modifications first
-      if constexpr (Node::DeferredType::template has<Reverse>()) {
+      if constexpr (TNode::DeferredType::template has<Reverse>()) {
         node->deferred.template get<Reverse>().apply(node);
       }
 
@@ -135,13 +135,13 @@ class AddArithmeticSequence : public Base {
    *
    * This is the standardized way to queue a sequence operation.
    *
-   * @tparam Node The BST node type.
+   * @tparam TNode The BST node type.
    * @param node The root of the subtree to add sequence to.
    * @param params A pair containing the starting value (first) and common
    * difference (second) of the sequence.
    */
-  template <typename Node>
-  static constexpr void add(Node* node,
+  template <typename TNode>
+  static constexpr void add(TNode* node,
                             const std::pair<ValueType, ValueType>& params) {
     bst::deferred::add_arithmetic_sequence(node, params.first, params.second);
   }
@@ -153,11 +153,11 @@ class AddArithmeticSequence : public Base {
    * - The starting value becomes the last value of the original sequence
    * - The common difference becomes negative of the original difference
    *
-   * @tparam Node The BST node type.
+   * @tparam TNode The BST node type.
    * @param node The root of the reversed subtree.
    */
-  template <typename Node>
-  constexpr void reverse_subtree(Node* node) {
+  template <typename TNode>
+  constexpr void reverse_subtree(TNode* node) {
     if (apply_required()) {
       const auto subtree_size = ValueType(bst::subtree_data::size(node));
       a += (subtree_size - 1) * d;  // Make a the last value of the sequence
@@ -185,14 +185,14 @@ class AddArithmeticSequence : public Base {
  * sequence to each node's data through the node's deferred computation
  * manager.
  *
- * @tparam Node The BST node type.
+ * @tparam TNode The BST node type.
  * @tparam ValueType The type of values in the sequence.
  * @param node The root of the subtree to add sequence to.
  * @param a The starting value of the sequence.
  * @param d The common difference of the sequence.
  */
-template <typename Node, typename ValueType>
-constexpr void add_arithmetic_sequence(Node* node, const ValueType& a,
+template <typename TNode, typename ValueType>
+constexpr void add_arithmetic_sequence(TNode* node, const ValueType& a,
                                        const ValueType& d) {
   if (node) {
     node->deferred.template get<AddArithmeticSequence<ValueType>>()

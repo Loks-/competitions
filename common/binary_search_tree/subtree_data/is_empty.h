@@ -51,11 +51,11 @@ class IsEmpty : public Base {
    *
    * For a single node, the subtree is not empty.
    *
-   * @tparam Node The BST node type.
+   * @tparam TNode The BST node type.
    * @param node The node to set empty state from.
    */
-  template <typename Node>
-  constexpr void set_node([[maybe_unused]] const Node* node) {
+  template <typename TNode>
+  constexpr void set_node([[maybe_unused]] const TNode* node) {
     assert(node);
     assert(is_empty);
     is_empty = false;
@@ -64,11 +64,11 @@ class IsEmpty : public Base {
   /**
    * @brief Set empty state for a subtree.
    *
-   * @tparam Node The BST node type.
+   * @tparam TNode The BST node type.
    * @param node The root of the subtree to copy empty state from.
    */
-  template <typename Node>
-  constexpr void set_subtree([[maybe_unused]] const Node* node) {
+  template <typename TNode>
+  constexpr void set_subtree([[maybe_unused]] const TNode* node) {
     assert(node);
     assert(is_empty);
     is_empty = false;
@@ -77,11 +77,11 @@ class IsEmpty : public Base {
   /**
    * @brief Updates empty state when adding a node.
    *
-   * @tparam Node The BST node type.
+   * @tparam TNode The BST node type.
    * @param node The node being added.
    */
-  template <typename Node>
-  constexpr void add_node([[maybe_unused]] const Node* node) {
+  template <typename TNode>
+  constexpr void add_node([[maybe_unused]] const TNode* node) {
     assert(node);
     assert(!is_empty);
   }
@@ -89,11 +89,11 @@ class IsEmpty : public Base {
   /**
    * @brief Updates empty state when adding a subtree.
    *
-   * @tparam Node The BST node type.
+   * @tparam TNode The BST node type.
    * @param node The root of the subtree being added.
    */
-  template <typename Node>
-  constexpr void add_subtree([[maybe_unused]] const Node* node) {
+  template <typename TNode>
+  constexpr void add_subtree([[maybe_unused]] const TNode* node) {
     assert(node);
     assert(!is_empty);
   }
@@ -101,11 +101,11 @@ class IsEmpty : public Base {
   /**
    * @brief Updates empty state during node insertion.
    *
-   * @tparam Node The BST node type.
+   * @tparam TNode The BST node type.
    * @param node The node being inserted.
    */
-  template <typename Node>
-  constexpr void insert_node(const Node* node) {
+  template <typename TNode>
+  constexpr void insert_node([[maybe_unused]] const TNode* node) {
     assert(node);
     assert(!is_empty);
   }
@@ -113,11 +113,11 @@ class IsEmpty : public Base {
   /**
    * @brief Updates empty state during subtree insertion.
    *
-   * @tparam Node The BST node type.
+   * @tparam TNode The BST node type.
    * @param node The root of the subtree being inserted.
    */
-  template <typename Node>
-  constexpr void insert_subtree(const Node* node) {
+  template <typename TNode>
+  constexpr void insert_subtree([[maybe_unused]] const TNode* node) {
     assert(node);
     assert(!is_empty);
   }
@@ -125,11 +125,11 @@ class IsEmpty : public Base {
   /**
    * @brief Updates empty state during node removal.
    *
-   * @tparam Node The BST node type.
+   * @tparam TNode The BST node type.
    * @param node The node being removed.
    */
-  template <typename Node>
-  constexpr void remove_node(const Node* node) {
+  template <typename TNode>
+  constexpr void remove_node([[maybe_unused]] const TNode* node) {
     assert(node);
     assert(!is_empty);
   }

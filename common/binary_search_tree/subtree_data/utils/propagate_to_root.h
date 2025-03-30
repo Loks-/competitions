@@ -16,13 +16,13 @@ namespace subtree_data {
  * The updates are performed from the node up to the root to ensure that each
  * node's subtree data is updated with the latest changes from its children.
  *
- * @tparam Node The BST node type.
+ * @tparam TNode The BST node type.
  * @param node The starting node to update from.
  */
-template <typename Node>
-constexpr void propagate_to_root(Node* node) {
-  if constexpr (!Node::SubtreeDataType::empty) {
-    static_assert(Node::has_parent, "Node must have parent pointer enabled");
+template <typename TNode>
+constexpr void propagate_to_root(TNode* node) {
+  if constexpr (!TNode::SubtreeDataType::empty) {
+    static_assert(TNode::has_parent, "Node must have parent pointer enabled");
 
     // Update subtree data from node up to root
     for (; node; node = node->parent) {
@@ -38,12 +38,12 @@ constexpr void propagate_to_root(Node* node) {
  * node order. This is typically used for simple data updates that don't
  * affect the tree's structure or ordering.
  *
- * @tparam Node The BST node type.
+ * @tparam TNode The BST node type.
  * @param node The starting node to update from.
  */
-template <typename Node>
-constexpr void propagate_for_data_update(Node* node) {
-  if constexpr (Node::SubtreeDataType::use_data) {
+template <typename TNode>
+constexpr void propagate_for_data_update(TNode* node) {
+  if constexpr (TNode::SubtreeDataType::use_data) {
     propagate_to_root(node);
   }
 }
@@ -55,12 +55,12 @@ constexpr void propagate_for_data_update(Node* node) {
  * node order. This is typically used for key updates that don't affect
  * the tree's structure or ordering.
  *
- * @tparam Node The BST node type.
+ * @tparam TNode The BST node type.
  * @param node The starting node to update from.
  */
-template <typename Node>
-constexpr void propagate_for_key_update(Node* node) {
-  if constexpr (Node::SubtreeDataType::use_keys) {
+template <typename TNode>
+constexpr void propagate_for_key_update(TNode* node) {
+  if constexpr (TNode::SubtreeDataType::use_keys) {
     propagate_to_root(node);
   }
 }
@@ -73,12 +73,12 @@ constexpr void propagate_for_key_update(Node* node) {
  * not its data, keys, or node order. This is typically used for structural
  * changes that don't affect the data or ordering of nodes.
  *
- * @tparam Node The BST node type.
+ * @tparam TNode The BST node type.
  * @param node The starting node to update from.
  */
-template <typename Node>
-constexpr void propagate_for_structure_update(Node* node) {
-  if constexpr (Node::SubtreeDataType::use_tree_structure) {
+template <typename TNode>
+constexpr void propagate_for_structure_update(TNode* node) {
+  if constexpr (TNode::SubtreeDataType::use_tree_structure) {
     propagate_to_root(node);
   }
 }
@@ -91,12 +91,12 @@ constexpr void propagate_for_structure_update(Node* node) {
  * data, structure, or keys. This is typically used for operations that
  * reorder nodes but don't change their data or the tree's structure.
  *
- * @tparam Node The BST node type.
+ * @tparam TNode The BST node type.
  * @param node The starting node to update from.
  */
-template <typename Node>
-constexpr void propagate_for_nodes_order_update(Node* node) {
-  if constexpr (Node::SubtreeDataType::use_nodes_order) {
+template <typename TNode>
+constexpr void propagate_for_nodes_order_update(TNode* node) {
+  if constexpr (TNode::SubtreeDataType::use_nodes_order) {
     propagate_to_root(node);
   }
 }

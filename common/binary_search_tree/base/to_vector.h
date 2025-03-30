@@ -23,16 +23,17 @@ namespace base {
  * @tparam apply_deferred Whether to apply deferred computations to the node.
  *                        Defaults to true to ensure node state is up to date
  *                        when accessed externally.
- * @tparam Node The BST node type (automatically deduced as const or non-const).
+ * @tparam TNode The BST node type (automatically deduced as const or
+ * non-const).
  * @tparam F The type of the function to apply to each node.
  * @param node The root of the subtree to traverse.
  * @param output Vector to collect the results.
  * @param f Function to apply to each node.
  */
-template <bool apply_deferred = true, typename Node, typename F>
+template <bool apply_deferred = true, typename TNode, typename F>
 constexpr void collect_inorder(
-    Node* node,
-    std::vector<typename std::invoke_result<F, const Node*>::type>& output,
+    TNode* node,
+    std::vector<typename std::invoke_result<F, const TNode*>::type>& output,
     F&& f) {
   if (!node) return;
 
@@ -61,21 +62,22 @@ constexpr void collect_inorder(
  * @tparam apply_deferred Whether to apply deferred computations to the node.
  *                        Defaults to true to ensure node state is up to date
  *                        when accessed externally.
- * @tparam Node The BST node type (automatically deduced as const or non-const).
+ * @tparam TNode The BST node type (automatically deduced as const or
+ * non-const).
  * @tparam F The type of the function to apply to each node.
  * @param root The root of the tree to traverse.
  * @param f Function to apply to each node (defaults to returning node->data).
  * @return Vector containing the results of applying f to each node in inorder
  * order.
  */
-template <bool apply_deferred = true, typename Node,
-          typename F = decltype([](const Node* n) { return n->data; })>
+template <bool apply_deferred = true, typename TNode,
+          typename F = decltype([](const TNode* n) { return n->data; })>
 [[nodiscard]] constexpr std::vector<
-    typename std::invoke_result<F, const Node*>::type>
-to_vector(Node* root, F&& f = {}) {
-  std::vector<typename std::invoke_result<F, const Node*>::type> output;
+    typename std::invoke_result<F, const TNode*>::type>
+to_vector(TNode* root, F&& f = {}) {
+  std::vector<typename std::invoke_result<F, const TNode*>::type> output;
 
-  if constexpr (Node::SubtreeDataType::has_size) {
+  if constexpr (TNode::SubtreeDataType::has_size) {
     output.reserve(bst::subtree_data::size(root));
   }
 
