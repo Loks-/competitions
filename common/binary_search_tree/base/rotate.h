@@ -4,13 +4,10 @@
 
 namespace bst {
 namespace base {
-template <bool update_child, bool apply_action, class TNode>
+template <bool update_child, bool apply_action_to_child, class TNode>
 inline void Rotate(TNode* child, TNode* parent, TNode* gparent) {
   assert(child && parent);
-  if (apply_action) {
-    parent->apply_deferred();
-    child->apply_deferred();
-  }
+  if constexpr (apply_action_to_child) child->apply_deferred();
   if (gparent) {
     if (gparent->left == parent) {
       gparent->left = child;
@@ -30,12 +27,12 @@ inline void Rotate(TNode* child, TNode* parent, TNode* gparent) {
   if (update_child) child->update_subtree_data();
 }
 
-template <bool update_child, bool apply_action, class TNode>
+template <bool update_child, bool apply_action_to_node, class TNode>
 inline bool RotateUp(TNode* node) {
   static_assert(TNode::has_parent, "has_parent should be true");
   if (!node || !node->parent) return false;
-  Rotate<update_child, apply_action, TNode>(node, node->parent,
-                                            node->parent->parent);
+  Rotate<update_child, apply_action_to_node, TNode>(node, node->parent,
+                                                    node->parent->parent);
   return true;
 }
 }  // namespace base

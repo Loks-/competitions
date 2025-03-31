@@ -103,6 +103,7 @@ class WAVLTree
 
   static TNode* fix_balance_insert(TNode* root) {
     if (RankDiff(root, root->right) == 0) {
+      root->right->apply_deferred();
       if (RankDiff(root, root->left) == 1) {
         IncRank(root);
       } else if (RankDiff(root->right, root->right->right) == 1) {
@@ -112,6 +113,7 @@ class WAVLTree
         return FixBalanceInsertRotate2(root->right->left, root->right, root);
       }
     } else if (RankDiff(root, root->left) == 0) {
+      root->left->apply_deferred();
       if (RankDiff(root, root->right) == 1) {
         IncRank(root);
       } else if (RankDiff(root->left, root->left->left) == 1) {
@@ -170,12 +172,14 @@ class WAVLTree
       if (RankDiff(sibling, sibling->right) == 1) {
         return FixBalanceRemoveRotate1(sibling, root);
       } else {
+        sibling->apply_deferred();
         return FixBalanceRemoveRotate2(sibling->left, sibling, root);
       }
     } else {
       if (RankDiff(sibling, sibling->left) == 1) {
         return FixBalanceRemoveRotate1(sibling, root);
       } else {
+        sibling->apply_deferred();
         return FixBalanceRemoveRotate2(sibling->right, sibling, root);
       }
     }
