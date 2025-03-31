@@ -328,18 +328,16 @@ class Treap
     root->apply_deferred();
     if (root->key < key) {
       root->set_right(remove(root->right, key, removed_node));
+      root->update_subtree_data();
     } else if (root->key > key) {
       root->set_left(remove(root->left, key, removed_node));
+      root->update_subtree_data();
     } else {
       removed_node = root;
-      NodeType* l = root->left;
-      if (l) l->set_parent(nullptr);
-      NodeType* r = root->right;
-      if (r) r->set_parent(nullptr);
-      root->reset_links_and_update_subtree_data();
-      return join(l, r);
+      root = join(root->left, root->right);
+      if (root) root->set_parent(nullptr);
+      removed_node->reset_links_and_update_subtree_data();
     }
-    root->update_subtree_data();
     return root;
   }
 
@@ -493,15 +491,12 @@ class Treap
    * @return Pointer to the new root of the tree
    */
   [[nodiscard]] static constexpr NodeType* remove_node_impl(NodeType* node) {
-    NodeType* l = node->left;
-    if (l) l->set_parent(nullptr);
-    NodeType* r = node->right;
-    if (r) r->set_parent(nullptr);
-    NodeType* p = node->parent;
+    NodeType *p = node->parent, *m = join(node->left, node->right);
     node->reset_links_and_update_subtree_data();
-    NodeType* m = join(l, r);
-    if (!p) return m;
-    if (node == p->left) {
+    if (!p) {
+      if (m) m->set_parent(nullptr);
+      return m;
+    } else if (node == p->left) {
       p->set_left(m);
     } else {
       p->set_right(m);
