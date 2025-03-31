@@ -81,7 +81,6 @@ class TreapHeight : public Base {
    * generation.
    */
   constexpr void initialize(unsigned index) {
-    Base::initialize(index);
     treap_height = nhash::HValue<nhash::PolicySafe>(index);
   }
 
