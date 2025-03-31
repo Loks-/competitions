@@ -253,8 +253,9 @@ class Treap
   /**
    * @brief Inserts a node at the specified inorder index.
    *
-   * This operation splits the tree at the given index and inserts
-   * the new node between the resulting parts.
+   * This operation maintains both the binary search tree property
+   * and the heap property with respect to heights. It uses a similar
+   * approach to insert but based on inorder position rather than key.
    *
    * @param root The root of the tree
    * @param node The node to insert
@@ -269,12 +270,26 @@ class Treap
     if (!root) {
       assert(index == 0);
       return node;
-    } else {
-      assert(index <= bst::subtree_data::size(root));
-      NodeType *l = nullptr, *r = nullptr;
-      split_at(root, index, l, r);
-      return join3(l, node, r);
     }
+    assert(index <= bst::subtree_data::size(root));
+
+    root->apply_deferred();
+    if (height(root) >= height(node)) {
+      const size_t left_size = bst::subtree_data::size(root->left);
+      if (index <= left_size) {
+        root->set_left(insert_at(root->left, node, index));
+      } else {
+        root->set_right(insert_at(root->right, node, index - left_size - 1));
+      }
+    } else {
+      NodeType *l = nullptr, *r = nullptr;
+      split_at_impl(root, index, l, r);
+      node->set_left(l);
+      node->set_right(r);
+      root = node;
+    }
+    root->update_subtree_data();
+    return root;
   }
 
   /**
