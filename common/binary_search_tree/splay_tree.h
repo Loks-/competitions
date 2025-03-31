@@ -1,9 +1,12 @@
 #pragma once
 
 #include "common/base.h"
+#include "common/binary_search_tree/base/at.h"
+#include "common/binary_search_tree/base/basic_tree.h"
+#include "common/binary_search_tree/base/build_tree.h"
 #include "common/binary_search_tree/base/deferred.h"
-#include "common/binary_search_tree/base/extended_tree.h"
 #include "common/binary_search_tree/base/node.h"
+#include "common/binary_search_tree/base/right.h"
 #include "common/binary_search_tree/base/rotate.h"
 #include "common/binary_search_tree/base/splay.h"
 #include "common/binary_search_tree/base/subtree_data.h"
@@ -11,55 +14,131 @@
 #include "common/binary_search_tree/subtree_data/size.h"
 #include "common/memory/contiguous_nodes_manager.h"
 
-#include <algorithm>
-
 namespace bst {
-template <bool use_key, class TData,
-          class TAggregatorsTuple = std::tuple<subtree_data::Size>,
-          class TDeferredTuple = std::tuple<>, class TKey = int64_t,
-          template <class> class TTNodesManager =
-              memory::ContiguousNodesManager>
+
+/**
+ * @brief A SplayTree implementation of a binary search tree.
+ *
+ * A SplayTree is a self-adjusting binary search tree that uses splay operations
+ * to maintain amortized balance. Unlike traditional balanced trees, it doesn't
+ * maintain explicit balance information but achieves amortized O(log n)
+ * performance through splay operations.
+ *
+ * The splay tree maintains the following properties:
+ * - Binary search tree property with respect to keys
+ * - Self-adjusting: Automatically reorganizes based on access patterns
+ * - Amortized O(log n) operations
+ * - Support for deferred operations
+ * - Support for subtree data aggregation
+ *
+ * @tparam use_key Whether the tree uses keys for ordering
+ * @tparam Data The data type stored in each node
+ * @tparam AggregatorsTuple Tuple of aggregator types for subtree data
+ * @tparam DeferredTuple Tuple of deferred operation types
+ * @tparam Key The key type used for ordering (if use_key is true)
+ * @tparam NodesManager The node manager type for memory management
+ */
+template <bool use_key, typename Data,
+          typename AggregatorsTuple = std::tuple<subtree_data::Size>,
+          typename DeferredTuple = std::tuple<>, typename Key = int64_t,
+          template <class> class NodesManager = memory::ContiguousNodesManager>
 class SplayTree
-    : public base::ExtendedTree<
-          TTNodesManager<
-              base::Node<TData, base::SubtreeData<TAggregatorsTuple>,
-                         base::Deferred<TDeferredTuple>, true, use_key, TKey>>,
-          SplayTree<use_key, TData, TAggregatorsTuple, TDeferredTuple, TKey,
-                    TTNodesManager>> {
+    : public base::BasicTree<
+          NodesManager<
+              base::Node<Data, base::SubtreeData<AggregatorsTuple>,
+                         base::Deferred<DeferredTuple>, true, use_key, Key>>,
+          SplayTree<use_key, Data, AggregatorsTuple, DeferredTuple, Key,
+                    NodesManager>> {
  public:
+  using SubtreeDataType = base::SubtreeData<AggregatorsTuple>;
+  using DeferredType = base::Deferred<DeferredTuple>;
+  using NodeType =
+      base::Node<Data, SubtreeDataType, DeferredType, true, use_key, Key>;
+  using Self = SplayTree<use_key, Data, AggregatorsTuple, DeferredTuple, Key,
+                         NodesManager>;
+  using Base = base::BasicTree<NodesManager<NodeType>, Self>;
+
+  /**
+   * @brief Operation support flags.
+   *
+   * These flags determine which operations are supported by the splay tree:
+   * - support_insert: Whether insertion operations are supported
+   * - support_remove: Whether removal operations are supported
+   * - support_remove_by_node: Whether node-based removal is supported
+   * - support_join: Whether two-way join operations are supported
+   * - support_join3: Whether three-way join operations are supported
+   * - support_split: Whether split operations are supported
+   */
+  static constexpr bool support_insert = true;
   static constexpr bool support_remove = true;
+  static constexpr bool support_remove_by_node = true;
   static constexpr bool support_join = true;
   static constexpr bool support_join3 = true;
   static constexpr bool support_split = true;
 
-  using TSubtreeData = base::SubtreeData<TAggregatorsTuple>;
-  using TDeferred = base::Deferred<TDeferredTuple>;
-  using TNode = base::Node<TData, TSubtreeData, TDeferred, true, use_key, TKey>;
-  using TSelf = SplayTree<use_key, TData, TAggregatorsTuple, TDeferredTuple,
-                          TKey, TTNodesManager>;
-  using TTree = base::ExtendedTree<TTNodesManager<TNode>, TSelf>;
-  friend TTree;
-
  public:
-  explicit SplayTree(size_t max_nodes) : TTree(max_nodes) {}
-  SplayTree() : SplayTree(0) {}
+  /**
+   * @brief Constructs a splay tree with the specified maximum number of nodes.
+   *
+   * @param max_nodes The maximum number of nodes to reserve
+   */
+  [[nodiscard]] explicit constexpr SplayTree(size_t max_nodes)
+      : Base(max_nodes) {}
+  /**
+   * @brief Default constructor for SplayTree.
+   *
+   * This constructor creates a splay tree with no reserved nodes.
+   */
+  [[nodiscard]] constexpr SplayTree() : SplayTree(0) {}
 
-  static TNode* join(TNode* l, TNode* r) {
+  /**
+   * @brief Builds a splay tree from a vector of nodes.
+   *
+   * This implementation uses a divide-and-conquer approach to build a balanced
+   * tree from the given nodes.
+   *
+   * @param nodes Vector of node pointers to build the tree from
+   * @return Pointer to the root of the built tree
+   */
+  [[nodiscard]] static constexpr NodeType* build_tree(
+      const std::vector<NodeType*>& nodes) {
+    return base::build_tree(nodes, 0, nodes.size());
+  }
+
+  /**
+   * @brief Joins two trees into a single tree.
+   *
+   * The join operation combines two trees by finding the rightmost node in the
+   * left tree, splaying it to the root, and attaching the right tree as its
+   * right child.
+   *
+   * @param l The root of the left tree
+   * @param r The root of the right tree
+   * @return The root of the resulting tree
+   */
+  [[nodiscard]] static constexpr NodeType* join(NodeType* l, NodeType* r) {
     if (!l) return r;
     if (!r) return l;
     assert(!r->parent);
-    TNode* p = l;
-    for (;; p = p->right) {
-      p->apply_deferred();
-      if (!p->right) break;
-    }
+    NodeType* p = base::right(l);
     base::splay(p);
     p->set_right(r);
     p->update_subtree_data();
     return p;
   }
 
-  static TNode* join3(TNode* l, TNode* m1, TNode* r) {
+  /**
+   * @brief Joins three trees into a single tree.
+   *
+   * The join3 operation combines three trees by using the middle node as the
+   * root and attaching the left and right trees as its children.
+   *
+   * @param l The root of the left tree
+   * @param m1 The middle node (must be a leaf)
+   * @param r The root of the right tree
+   * @return The root of the resulting tree (m1)
+   */
+  static constexpr NodeType* join3(NodeType* l, NodeType* m1, NodeType* r) {
     assert(m1 && !m1->left && !m1->right);
     m1->set_left(l);
     m1->set_right(r);
@@ -67,14 +146,20 @@ class SplayTree
     return m1;
   }
 
-  // Split tree to 2 trees.
-  // p and everything rigth will go to the rigth tree (and p is root).
-  // everything left will go to the left tree.
-  static TNode* SplitL(TNode* p) {
+  /**
+   * @brief Splits a tree into two trees at a given node.
+   *
+   * The split operation divides the tree into two parts: everything to the
+   * left of the given node and the node itself with everything to its right.
+   *
+   * @param p The node at which to split
+   * @return The root of the left tree
+   */
+  [[nodiscard]] static constexpr NodeType* split_left(NodeType* p) {
     if (!p) return nullptr;
-    deferred::propagate_to_node(p);
+    deferred::propagate_to_node(p);  // check if this is needed
     base::splay(p);
-    TNode* l = p->left;
+    NodeType* l = p->left;
     if (l) {
       l->parent = nullptr;
       p->left = nullptr;
@@ -83,14 +168,20 @@ class SplayTree
     return l;
   }
 
-  // Split tree to 2 trees.
-  // p and everything left will go to the left tree (and p is root).
-  // everything right will go to the right tree.
-  static TNode* SplitR(TNode* p) {
+  /**
+   * @brief Splits a tree into two trees at a given node.
+   *
+   * The split operation divides the tree into two parts: the node itself with
+   * everything to its left and everything to its right.
+   *
+   * @param p The node at which to split
+   * @return The root of the right tree
+   */
+  [[nodiscard]] static constexpr NodeType* split_right(NodeType* p) {
     if (!p) return nullptr;
-    deferred::propagate_to_node(p);
+    deferred::propagate_to_node(p);  // check if this is needed
     base::splay(p);
-    TNode* r = p->right;
+    NodeType* r = p->right;
     if (r) {
       r->parent = nullptr;
       p->right = nullptr;
@@ -99,11 +190,22 @@ class SplayTree
     return r;
   }
 
-  static TNode* find(TNode*& root, const TKey& key) {
+  /**
+   * @brief Finds a node with a given key in the tree.
+   *
+   * The find operation searches for a node with the given key and splays the
+   * last accessed node to the root.
+   *
+   * @param root The root of the tree
+   * @param key The key to search for
+   * @return The node with the given key, or nullptr if not found
+   */
+  [[nodiscard]] static constexpr NodeType* find(NodeType*& root,
+                                                const Key& key) {
     static_assert(use_key, "use_key should be true");
-    TNode *node = root, *last_node = nullptr;
+    NodeType* node = root;
     for (; node;) {
-      last_node = node;
+      root = node;
       node->apply_deferred();
       if (node->key < key) {
         node = node->right;
@@ -113,15 +215,27 @@ class SplayTree
         break;
       }
     }
-    base::splay(last_node);
-    root = last_node;
+    base::splay(root);
     return node;
   }
 
-  static TNode* floor(TNode*& root, const TKey& key) {
+  /**
+   * @brief Finds the largest node with a key less than or equal to the given
+   * key.
+   *
+   * The floor operation finds the largest node with a key less than or equal to
+   * the given key and splays it to the root.
+   * TODO: redo this function
+   *
+   * @param root The root of the tree
+   * @param key The key to search for
+   * @return The largest node with a key less than or equal to the given key
+   */
+  [[nodiscard]] static constexpr NodeType* floor(NodeType*& root,
+                                                 const Key& key) {
     static_assert(use_key, "use_key should be true");
-    TNode *last_less = nullptr, *last_node = root;
-    for (TNode* node = root; node;) {
+    NodeType *last_less = nullptr, *last_node = root;
+    for (NodeType* node = root; node;) {
       node->apply_deferred();
       if (node->key < key) {
         last_less = node;
@@ -136,34 +250,78 @@ class SplayTree
     return last_less;
   }
 
-  static void split(TNode* root, const TKey& key, TNode*& output_l,
-                    TNode*& output_r) {
+  /**
+   * @brief Splits a tree into two trees based on a key.
+   *
+   * The split operation divides the tree into two parts based on the given key:
+   * nodes with keys less than or equal to the key go to the left tree, and
+   * nodes with keys greater than the key go to the right tree.
+   *
+   * @param root The root of the tree to split
+   * @param key The key at which to split
+   * @param output_l The root of the left tree
+   * @param output_r The root of the right tree
+   */
+  static constexpr void split(NodeType* root, const Key& key,
+                              NodeType*& output_l, NodeType*& output_r) {
     static_assert(use_key, "use_key should be true");
     if (!root) {
       output_l = output_r = nullptr;
       return;
     }
-    TNode* p = floor(root, key);
+    NodeType* p = floor(root, key);
     output_l = p;
-    output_r = (p ? SplitR(p) : root);
+    output_r = (p ? split_right(p) : root);
   }
 
-  static size_t index(TNode* node) {
+  /**
+   * @brief Gets the inorder index of a node.
+   *
+   * The index operation returns the position of a node in the inorder traversal
+   * of the tree.
+   *
+   * @param node The node to get the index of
+   * @return The inorder index of the node
+   */
+  [[nodiscard]] static constexpr size_t index(NodeType* node) {
     base::splay(node);
     return subtree_data::size(node->left);
   }
 
-  static TNode* at(TNode*& root, size_t order_index) {
-    static_assert(TSubtreeData::has_size, "info should contain size");
-    auto node = TTree::at(root, order_index);
+  /**
+   * @brief Gets the node at a given inorder index.
+   *
+   * The at operation finds the node at the given position in the inorder
+   * traversal of the tree and splays it to the root.
+   *
+   * @param root The root of the tree
+   * @param order_index The inorder index to search for
+   * @return The node at the given index
+   */
+  [[nodiscard]] static constexpr NodeType* at(NodeType*& root,
+                                              size_t order_index) {
+    static_assert(SubtreeDataType::has_size, "info should contain size");
+    auto node = base::at(root, order_index);
     base::splay(node);
     if (node) root = node;
     return node;
   }
 
-  static void split_at(TNode* root, size_t lsize, TNode*& output_l,
-                       TNode*& output_r) {
-    static_assert(TSubtreeData::has_size, "info should contain size");
+  /**
+   * @brief Splits a tree into two trees based on size.
+   *
+   * The split_at operation divides the tree into two parts based on the given
+   * size: the first lsize nodes in inorder traversal go to the left tree, and
+   * the remaining nodes go to the right tree.
+   *
+   * @param root The root of the tree to split
+   * @param lsize The size of the left tree
+   * @param output_l The root of the left tree
+   * @param output_r The root of the right tree
+   */
+  static constexpr void split_at(NodeType* root, size_t lsize,
+                                 NodeType*& output_l, NodeType*& output_r) {
+    static_assert(SubtreeDataType::has_size, "info should contain size");
     if (!root) {
       output_l = output_r = nullptr;
     } else if (lsize == 0) {
@@ -173,13 +331,24 @@ class SplayTree
       output_l = root;
       output_r = nullptr;
     } else {
-      TNode* p = at(root, lsize);
-      output_l = SplitL(p);
+      NodeType* p = at(root, lsize);
+      output_l = split_left(p);
       output_r = p;
     }
   }
 
-  static TNode* insert(TNode* root, TNode* node) {
+  /**
+   * @brief Inserts a node into the tree.
+   *
+   * The insert operation adds a new node to the tree while maintaining the
+   * binary search tree property.
+   *
+   * @param root The root of the tree
+   * @param node The node to insert
+   * @return The root of the resulting tree
+   */
+  [[nodiscard]] static constexpr NodeType* insert(NodeType* root,
+                                                  NodeType* node) {
     static_assert(use_key, "use_key should be true");
     assert(node);
     if (!root) return node;
@@ -190,33 +359,74 @@ class SplayTree
     return node;
   }
 
-  static TNode* Union(TNode* root1, TNode* root2) {
+  [[nodiscard]] static constexpr NodeType* remove(NodeType* root,
+                                                  const Key& key,
+                                                  NodeType*& removed_node) {
+    static_assert(Base::has_key, "has_key should be true");
+    removed_node = find(root, key);
+    return (removed_node ? remove_node_impl(removed_node) : root);
+  }
+
+  [[nodiscard]] static constexpr NodeType* remove_at(NodeType* root,
+                                                     size_t index,
+                                                     NodeType*& removed_node) {
+    static_assert(Base::has_size, "has_size should be true");
+    removed_node = at(root, index);
+    return (removed_node ? remove_node_impl(removed_node) : root);
+  }
+
+  [[nodiscard]] static constexpr NodeType* remove_node(NodeType* node) {
+    assert(node);
+    return remove_node_impl(node);
+  }
+
+  /**
+   * @brief Merges two trees into a single tree.
+   *
+   * The merge operation combines two trees by recursively splitting the smaller
+   * tree around the median of the larger tree.
+   *
+   * @param root1 The root of the first tree
+   * @param root2 The root of the second tree
+   * @return The root of the resulting tree
+   */
+  [[nodiscard]] static constexpr NodeType* merge(NodeType* root1,
+                                                 NodeType* root2) {
     static_assert(use_key, "use_key should be true");
-    static_assert(TSubtreeData::has_size, "info should contain size");
+    static_assert(SubtreeDataType::has_size, "info should contain size");
     if (!root1) return root2;
     if (!root2) return root1;
     if (subtree_data::size(root1) < subtree_data::size(root2))
       std::swap(root1, root2);
-    TNode* m = at(root1, subtree_data::size(root1) / 2);
-    TNode *r2l = nullptr, *r2r = nullptr;
+    NodeType* m = at(root1, subtree_data::size(root1) / 2);
+    NodeType *r2l = nullptr, *r2r = nullptr;
     split(root2, m->key, r2l, r2r);
     if (m->left) m->left->parent = nullptr;
     if (m->right) m->right->parent = nullptr;
-    m->set_left(Union(m->left, r2l));
-    m->set_right(Union(m->right, r2r));
+    m->set_left(merge(m->left, r2l));
+    m->set_right(merge(m->right, r2r));
     m->update_subtree_data();
     return m;
   }
 
  protected:
-  static TNode* remove_node_impl(TNode* node) {
-    TNode* l = node->left;
+  /**
+   * @brief Removes a node from the tree.
+   *
+   * The remove_node_impl operation removes a node from the tree by joining its
+   * left and right subtrees and updating the parent's child pointer.
+   *
+   * @param node The node to remove
+   * @return The root of the resulting tree
+   */
+  [[nodiscard]] static constexpr NodeType* remove_node_impl(NodeType* node) {
+    NodeType* l = node->left;
     if (l) l->set_parent(nullptr);
-    TNode* r = node->right;
+    NodeType* r = node->right;
     if (r) r->set_parent(nullptr);
-    TNode* p = node->parent;
+    NodeType* p = node->parent;
     node->reset_links_and_update_subtree_data();
-    TNode* m = join(l, r);
+    NodeType* m = join(l, r);
     if (!p) return m;
     if (node == p->left) {
       p->set_left(m);
@@ -227,4 +437,5 @@ class SplayTree
     return p;
   }
 };
+
 }  // namespace bst

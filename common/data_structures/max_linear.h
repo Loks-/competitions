@@ -35,7 +35,7 @@ class MaxLinear {
   using TTree =
       bst::SplayTree<true, LinearExt, std::tuple<bst::subtree_data::Size>,
                      std::tuple<>, TValue, memory::NodesManager>;
-  using TNode = typename TTree::TNode;
+  using TNode = typename TTree::NodeType;
 
  public:
   TValue xl, xr;
