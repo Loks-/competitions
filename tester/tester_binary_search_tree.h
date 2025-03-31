@@ -112,9 +112,9 @@ class TesterBinarySearchTree {
   }
 
   template <class TTree>
-  typename TTree::TNode* TestBuild(TTree& tree, TBSTKeysType type) {
+  typename TTree::NodeType* TestBuild(TTree& tree, TBSTKeysType type) {
     Timer t;
-    typename TTree::TNode* root = tree.build(GetKeys(type), GetKeys(type));
+    typename TTree::NodeType* root = tree.build(GetKeys(type), GetKeys(type));
     t.stop();
     AddResult("Build", type, TreeHash(root, 0), t.get_milliseconds());
     VerifyParentLinks(root);
@@ -122,19 +122,20 @@ class TesterBinarySearchTree {
   }
 
   template <class TTree>
-  typename TTree::TNode* TestInsertI(TTree& tree, TBSTKeysType type,
-                                     MetaFalse) {
+  typename TTree::NodeType* TestInsertI(TTree& tree, TBSTKeysType type,
+                                        MetaFalse) {
     return tree.build(GetKeys(type), GetKeys(type));
   }
 
   template <class TTree>
-  typename TTree::TNode* TestInsertI(TTree& tree, TBSTKeysType type, MetaTrue) {
+  typename TTree::NodeType* TestInsertI(TTree& tree, TBSTKeysType type,
+                                        MetaTrue) {
     const std::vector<TKey>& vkeys = GetKeys(type);
     Timer t;
-    typename TTree::TNode* root = 0;
+    typename TTree::NodeType* root = 0;
     size_t h = 0;
     for (TKey key : vkeys) {
-      AddAction<typename TTree::TNode, TKey>(root);
+      AddAction<typename TTree::NodeType, TKey>(root);
       root = tree.insert_new(root, key, key);
       VerifyParentLinksLazy(root);
       nhash::DCombineH(h, GetInfoValue(root));
@@ -145,18 +146,18 @@ class TesterBinarySearchTree {
   }
 
   template <class TTree>
-  typename TTree::TNode* TestInsert(TTree& tree, TBSTKeysType type) {
+  typename TTree::NodeType* TestInsert(TTree& tree, TBSTKeysType type) {
     return TestInsertI(tree, type, MetaBool<TTree::support_insert>());
   }
 
   template <class TTree>
-  typename TTree::TNode* TestFindByOrder([[maybe_unused]] TTree& tree,
-                                         typename TTree::TNode* root,
-                                         TBSTKeysType type) {
+  typename TTree::NodeType* TestFindByOrder([[maybe_unused]] TTree& tree,
+                                            typename TTree::NodeType* root,
+                                            TBSTKeysType type) {
     Timer t;
     size_t h = 0;
     for (unsigned i = 0; i < Size(); ++i) {
-      typename TTree::TNode* node = bst::auto_::at<TTree>(root, i);
+      typename TTree::NodeType* node = bst::auto_::at<TTree>(root, i);
       assert_exception(node,
                        "Node is not found by order id " + std::to_string(i));
       nhash::DCombineH(h, node->key);
@@ -166,13 +167,13 @@ class TesterBinarySearchTree {
   }
 
   template <class TTree>
-  typename TTree::TNode* TestFindByKey0([[maybe_unused]] TTree& tree,
-                                        typename TTree::TNode* root,
-                                        TBSTKeysType type) {
+  typename TTree::NodeType* TestFindByKey0([[maybe_unused]] TTree& tree,
+                                           typename TTree::NodeType* root,
+                                           TBSTKeysType type) {
     Timer t;
     size_t h = 0;
     for (unsigned i = 0; i <= Size(); ++i) {
-      typename TTree::TNode* node = bst::auto_::find<TTree>(root, 2 * i);
+      typename TTree::NodeType* node = bst::auto_::find<TTree>(root, 2 * i);
       assert_exception(!node, "Node is found but should not be");
       nhash::DCombineH(h, reinterpret_cast<size_t>(node));
     }
@@ -181,14 +182,14 @@ class TesterBinarySearchTree {
   }
 
   template <class TTree>
-  typename TTree::TNode* TestFindByKey1([[maybe_unused]] TTree& tree,
-                                        typename TTree::TNode* root,
-                                        TBSTKeysType type) {
+  typename TTree::NodeType* TestFindByKey1([[maybe_unused]] TTree& tree,
+                                           typename TTree::NodeType* root,
+                                           TBSTKeysType type) {
     const std::vector<TKey>& vkeys = GetKeys(type);
     Timer t;
     size_t h = 0;
     for (const TKey& key : vkeys) {
-      typename TTree::TNode* node = bst::auto_::find<TTree>(root, key);
+      typename TTree::NodeType* node = bst::auto_::find<TTree>(root, key);
       assert_exception(node, "Node is not found by key " + std::to_string(key));
       nhash::DCombineH(h, (type <= shuffled) ? node->data : node->key);
     }
@@ -197,22 +198,22 @@ class TesterBinarySearchTree {
   }
 
   template <class TTree>
-  typename TTree::TNode* TestDeleteByKeyI(TTree& tree,
-                                          typename TTree::TNode* root,
-                                          TBSTKeysType, MetaFalse) {
+  typename TTree::NodeType* TestDeleteByKeyI(TTree& tree,
+                                             typename TTree::NodeType* root,
+                                             TBSTKeysType, MetaFalse) {
     tree.release_tree(root);
     return nullptr;
   }
 
   template <class TTree>
-  typename TTree::TNode* TestDeleteByKeyI(TTree& tree,
-                                          typename TTree::TNode* root,
-                                          TBSTKeysType type, MetaTrue) {
+  typename TTree::NodeType* TestDeleteByKeyI(TTree& tree,
+                                             typename TTree::NodeType* root,
+                                             TBSTKeysType type, MetaTrue) {
     const std::vector<TKey>& vkeys = GetKeys(type);
     Timer t;
     size_t h = 0;
     for (const TKey& key : vkeys) {
-      AddAction<typename TTree::TNode, TKey>(root);
+      AddAction<typename TTree::NodeType, TKey>(root);
       root = tree.remove_and_release(root, key);
       VerifyParentLinksLazy(root);
       nhash::DCombineH(h, (type <= shuffled) ? GetInfoValue(root)
@@ -223,29 +224,29 @@ class TesterBinarySearchTree {
   }
 
   template <class TTree>
-  typename TTree::TNode* TestDeleteByKey(TTree& tree,
-                                         typename TTree::TNode* root,
-                                         TBSTKeysType type) {
+  typename TTree::NodeType* TestDeleteByKey(TTree& tree,
+                                            typename TTree::NodeType* root,
+                                            TBSTKeysType type) {
     return TestDeleteByKeyI(tree, root, type,
                             MetaBool<TTree::support_remove>());
   }
 
   template <class TTree>
-  typename TTree::TNode* TestDeleteByNodeI(TTree& tree,
-                                           typename TTree::TNode* root,
-                                           TBSTKeysType, MetaFalse) {
+  typename TTree::NodeType* TestDeleteByNodeI(TTree& tree,
+                                              typename TTree::NodeType* root,
+                                              TBSTKeysType, MetaFalse) {
     tree.release_tree(root);
     return 0;
   }
 
   template <class TTree>
-  typename TTree::TNode* TestDeleteByNodeI(TTree& tree,
-                                           typename TTree::TNode* root,
-                                           TBSTKeysType type, MetaTrue) {
+  typename TTree::NodeType* TestDeleteByNodeI(TTree& tree,
+                                              typename TTree::NodeType* root,
+                                              TBSTKeysType type, MetaTrue) {
     Timer t;
     size_t h = 0;
     for (unsigned i = 0; i < Size(); ++i) {
-      AddAction<typename TTree::TNode, TKey>(root);
+      AddAction<typename TTree::NodeType, TKey>(root);
       auto node = tree.manager_at(i);
       bst::deferred::propagate_to_node(node);
       root = tree.remove_and_release_node(node);
@@ -257,29 +258,29 @@ class TesterBinarySearchTree {
   }
 
   template <class TTree>
-  typename TTree::TNode* TestDeleteByNode(TTree& tree,
-                                          typename TTree::TNode* root,
-                                          TBSTKeysType type) {
+  typename TTree::NodeType* TestDeleteByNode(TTree& tree,
+                                             typename TTree::NodeType* root,
+                                             TBSTKeysType type) {
     return TestDeleteByNodeI(tree, root, type,
                              MetaBool<TTree::support_remove_by_node>());
   }
 
   template <class TTree>
-  typename TTree::TNode* TestInsertDeleteI(TTree&, TBSTKeysType, MetaFalse) {
+  typename TTree::NodeType* TestInsertDeleteI(TTree&, TBSTKeysType, MetaFalse) {
     return nullptr;
   }
 
   template <class TTree>
-  typename TTree::TNode* TestInsertDeleteI(TTree& tree, TBSTKeysType type,
-                                           MetaTrue) {
+  typename TTree::NodeType* TestInsertDeleteI(TTree& tree, TBSTKeysType type,
+                                              MetaTrue) {
     if (type > shuffled) return nullptr;
     const std::vector<TKey>& vkeys = GetKeys(type);
     size_t s = vkeys.size() / 3;
     Timer t;
-    typename TTree::TNode* root = 0;
+    typename TTree::NodeType* root = 0;
     size_t h = 0;
     for (size_t i = 0; i < s; ++i) {
-      AddAction<typename TTree::TNode, TKey>(root);
+      AddAction<typename TTree::NodeType, TKey>(root);
       VerifyParentLinksLazy(root);
       root = tree.insert_new(root, vkeys[2 * i], vkeys[2 * i]);
       root = tree.insert_new(root, vkeys[2 * i + 1], vkeys[2 * i + 1]);
@@ -287,7 +288,7 @@ class TesterBinarySearchTree {
       nhash::DCombineH(h, GetInfoValue(root));
     }
     for (size_t i = 0; i < s; ++i) {
-      AddAction<typename TTree::TNode, TKey>(root);
+      AddAction<typename TTree::NodeType, TKey>(root);
       VerifyParentLinksLazy(root);
       root = tree.insert_new(root, vkeys[2 * s + i], vkeys[2 * s + i]);
       root = tree.remove_and_release(root, vkeys[s + 2 * i]);
@@ -300,7 +301,7 @@ class TesterBinarySearchTree {
   }
 
   template <class TTree>
-  typename TTree::TNode* TestInsertDelete(TTree& tree, TBSTKeysType type) {
+  typename TTree::NodeType* TestInsertDelete(TTree& tree, TBSTKeysType type) {
     return TestInsertDeleteI(
         tree, type, MetaBool<TTree::support_insert && TTree::support_remove>());
   }
@@ -309,7 +310,7 @@ class TesterBinarySearchTree {
   void TestAll(const std::string& tree_name) {
     std::cout << "\tTesting " << tree_name << ":" << std::endl;
     current_tree = tree_name;
-    typename TTree::TNode* root = 0;
+    typename TTree::NodeType* root = 0;
     TTree tree(Size());
     for (unsigned type = 0; type < type_end; ++type) {
       TBSTKeysType ktype = TBSTKeysType(type);

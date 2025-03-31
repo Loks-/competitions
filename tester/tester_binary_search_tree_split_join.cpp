@@ -42,7 +42,7 @@ void TesterBinarySearchTreeSplitJoin::Rotate(TTree& tree, TNode*& root,
 template <class TTree>
 size_t TesterBinarySearchTreeSplitJoin::TestBase(
     const std::string& name) const {
-  using TNode = typename TTree::TNode;
+  using TNode = typename TTree::NodeType;
   Timer t;
   modular::proxy::Proxy<false, true> mp(max_key);
   int64_t shift = 0;

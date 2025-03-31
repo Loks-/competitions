@@ -55,7 +55,7 @@ class IntervalsBasedSet {
   using TTree = bst::Treap<true, true, Interval,
                            std::tuple<bst::subtree_data::Size, BSTSubtreeData>,
                            std::tuple<>, TValue, memory::NodesManager>;
-  using TNode = typename TTree::TNode;
+  using TNode = typename TTree::NodeType;
 
  protected:
   TTree my_tree;
