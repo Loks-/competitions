@@ -56,7 +56,7 @@ class MaxLinear {
     for (; pr;) {
       pr = bst::base::left(pr);
       assert(pr);
-      tree.Splay(pr);
+      bst::base::splay(pr);
       assert(l.a <= pr->key);
       if (l.a == pr->key) {
         if (l.b <= pr->data.l.b) {
@@ -81,7 +81,7 @@ class MaxLinear {
     for (; pl;) {
       pl = bst::base::right(pl);
       assert(pl);
-      tree.Splay(pl);
+      bst::base::splay(pl);
       assert(pl->key < l.a);
       double x = (double(l.b) - double(pl->data.l.b)) /
                  (double(pl->data.l.a) - double(l.a));

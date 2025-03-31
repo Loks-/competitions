@@ -2,6 +2,7 @@
 
 #include "common/base.h"
 #include "common/binary_search_tree/base/rotate.h"
+#include "common/binary_search_tree/base/splay.h"
 #include "common/binary_search_tree/deferred/reverse.h"
 #include "common/binary_search_tree/deferred/utils/propagate_to_node.h"
 #include "common/binary_search_tree/splay_tree.h"
@@ -61,13 +62,13 @@ class LinkCutTree {
   void Access(TNode* node) {
     assert(node);
     bst::deferred::propagate_to_node(node);
-    TSTree::Splay(node);
+    bst::base::splay(node);
     DisconnectR(node);
     for (TNode* v;
          (v = reinterpret_cast<TNode*>(
               node->subtree_data.template get<LCTSubtreeData>().GetPP()));) {
       bst::deferred::propagate_to_node(v);
-      TSTree::Splay(v);
+      bst::base::splay(v);
       DisconnectR(v);
       v->right = node;
       node->subtree_data.template get<LCTSubtreeData>().lct_pp = nullptr;
@@ -81,7 +82,7 @@ class LinkCutTree {
       node = node->left;
       node->apply_deferred();
     }
-    TSTree::Splay(node);
+    bst::base::splay(node);
     return node;
   }
 

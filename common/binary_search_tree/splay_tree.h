@@ -5,6 +5,7 @@
 #include "common/binary_search_tree/base/extended_tree.h"
 #include "common/binary_search_tree/base/node.h"
 #include "common/binary_search_tree/base/rotate.h"
+#include "common/binary_search_tree/base/splay.h"
 #include "common/binary_search_tree/base/subtree_data.h"
 #include "common/binary_search_tree/deferred/utils/propagate_to_node.h"
 #include "common/binary_search_tree/subtree_data/size.h"
@@ -43,24 +44,6 @@ class SplayTree
   explicit SplayTree(size_t max_nodes) : TTree(max_nodes) {}
   SplayTree() : SplayTree(0) {}
 
-  // Splay assumes that actions are already applied from root to node.
-  static void Splay(TNode* node) {
-    if (!node) return;
-    for (;;) {
-      TNode* parent = node->parent;
-      if (!parent) break;
-      TNode* gparent = parent->parent;
-      if (!gparent) {
-        base::rotate<false, false, TNode>(node, parent, gparent);
-        break;
-      }
-      bool zigzig = ((gparent->left == parent) == (parent->left == node));
-      base::rotate_up<false, false>(zigzig ? parent : node);
-      base::rotate_up<false, false>(node);
-    }
-    node->update_subtree_data();
-  }
-
   static TNode* join(TNode* l, TNode* r) {
     if (!l) return r;
     if (!r) return l;
@@ -70,7 +53,7 @@ class SplayTree
       p->apply_deferred();
       if (!p->right) break;
     }
-    Splay(p);
+    base::splay(p);
     p->set_right(r);
     p->update_subtree_data();
     return p;
@@ -90,7 +73,7 @@ class SplayTree
   static TNode* SplitL(TNode* p) {
     if (!p) return nullptr;
     deferred::propagate_to_node(p);
-    Splay(p);
+    base::splay(p);
     TNode* l = p->left;
     if (l) {
       l->parent = nullptr;
@@ -106,7 +89,7 @@ class SplayTree
   static TNode* SplitR(TNode* p) {
     if (!p) return nullptr;
     deferred::propagate_to_node(p);
-    Splay(p);
+    base::splay(p);
     TNode* r = p->right;
     if (r) {
       r->parent = nullptr;
@@ -130,7 +113,7 @@ class SplayTree
         break;
       }
     }
-    Splay(last_node);
+    base::splay(last_node);
     root = last_node;
     return node;
   }
@@ -149,7 +132,7 @@ class SplayTree
       }
     }
     root = last_less ? last_less : last_node;
-    Splay(root);
+    base::splay(root);
     return last_less;
   }
 
@@ -166,14 +149,14 @@ class SplayTree
   }
 
   static size_t index(TNode* node) {
-    Splay(node);
+    base::splay(node);
     return subtree_data::size(node->left);
   }
 
   static TNode* at(TNode*& root, size_t order_index) {
     static_assert(TSubtreeData::has_size, "info should contain size");
     auto node = TTree::at(root, order_index);
-    Splay(node);
+    base::splay(node);
     if (node) root = node;
     return node;
   }
@@ -240,7 +223,7 @@ class SplayTree
     } else {
       p->set_right(m);
     }
-    Splay(p);
+    base::splay(p);
     return p;
   }
 };
