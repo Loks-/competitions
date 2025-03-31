@@ -112,10 +112,10 @@ class RedBlackTree
         const bool rotate_required =
             ((gparent->left == parent) != (parent->left == node));
         if (rotate_required) {
-          base::RotateUp<TNode, false, false>(node);
+          base::RotateUp<false, false>(node);
           parent = node;
         }
-        base::RotateUp<TNode, true, false>(parent);
+        base::RotateUp<true, false>(parent);
         SetColor(gparent, false);
         SetColor(parent, true);
         return parent->parent ? root : parent;
@@ -160,7 +160,7 @@ class RedBlackTree
       sibling->apply_deferred();
       if (!IsBlack(sibling)) {
         assert(IsBlack(parent));
-        base::RotateUp<TNode, true, false>(sibling);
+        base::RotateUp<true, false>(sibling);
         SetColor(sibling, true);
         SetColor(parent, false);
         sibling = base::sibling(child, parent);
@@ -182,13 +182,13 @@ class RedBlackTree
       }
       if ((parent->left == child) && IsBlack(sibling->right)) {
         assert(IsRed(sibling->left));
-        base::RotateUp<TNode, false, true>(sibling->left);
+        base::RotateUp<false, true>(sibling->left);
         SetColor(sibling, false);
         sibling = sibling->parent;
         SetColor(sibling, true);
       } else if ((parent->right == child) && IsBlack(sibling->left)) {
         assert(IsRed(sibling->right));
-        base::RotateUp<TNode, false, true>(sibling->right);
+        base::RotateUp<false, true>(sibling->right);
         SetColor(sibling, false);
         sibling = sibling->parent;
         SetColor(sibling, true);
@@ -200,7 +200,7 @@ class RedBlackTree
       } else {
         SetColor(sibling->left, true);
       }
-      base::RotateUp<TNode, true, false>(sibling);
+      base::RotateUp<true, false>(sibling);
       return base::root(sibling);
     }
     assert(false);
@@ -248,7 +248,7 @@ class RedBlackTree
     r = l->right;
     if (IsBlack(l) && !IsBlack(r) && IsRed(r->right)) {
       SetColor(r->right, true);
-      base::Rotate<TNode, true, false>(r, l, l->parent);
+      base::Rotate<true, false, TNode>(r, l, l->parent);
       return r;
     } else {
       l->update_subtree_data();
@@ -263,7 +263,7 @@ class RedBlackTree
     l = r->left;
     if (IsBlack(r) && !IsBlack(l) && IsRed(l->left)) {
       SetColor(l->left, true);
-      base::Rotate<TNode, true, false>(l, r, r->parent);
+      base::Rotate<true, false, TNode>(l, r, r->parent);
       return l;
     } else {
       r->update_subtree_data();

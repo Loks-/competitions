@@ -85,7 +85,7 @@ class WAVLTree
 
   static TNode* FixBalanceInsertRotate1(TNode* child, TNode* parent) {
     DecRank(parent);
-    base::Rotate<TNode, true, false>(child, parent, nullptr);
+    base::Rotate<true, false, TNode>(child, parent, nullptr);
     return child;
   }
 
@@ -96,8 +96,8 @@ class WAVLTree
     DecRank(parent);
     DecRank(child);
     IncRank(gchild);
-    base::Rotate<TNode, false, true>(gchild, child, parent);
-    base::Rotate<TNode, true, false>(gchild, parent, nullptr);
+    base::Rotate<false, true, TNode>(gchild, child, parent);
+    base::Rotate<true, false, TNode>(gchild, parent, nullptr);
     return gchild;
   }
 
@@ -127,7 +127,7 @@ class WAVLTree
   static TNode* FixBalanceRemoveRotate1(TNode* child, TNode* parent) {
     DecRank(parent);
     IncRank(child);
-    base::Rotate<TNode, true, true>(child, parent, nullptr);
+    base::Rotate<true, true, TNode>(child, parent, nullptr);
     if (!parent->left && !parent->right) {
       SetRank(parent, 0);
     }
@@ -140,8 +140,8 @@ class WAVLTree
     SetRank(parent, Rank(parent) - 2);
     DecRank(child);
     SetRank(gchild, Rank(gchild) + 2);
-    base::Rotate<TNode, false, true>(gchild, child, parent);
-    base::Rotate<TNode, true, false>(gchild, parent, nullptr);
+    base::Rotate<false, true, TNode>(gchild, child, parent);
+    base::Rotate<true, false, TNode>(gchild, parent, nullptr);
     return gchild;
   }
 

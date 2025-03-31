@@ -71,7 +71,7 @@ class LinkCutTree {
       DisconnectR(v);
       v->right = node;
       node->subtree_data.template get<LCTSubtreeData>().lct_pp = nullptr;
-      bst::base::Rotate<TNode, true, false>(node, v, nullptr);
+      bst::base::Rotate<true, false, TNode>(node, v, nullptr);
     }
   }
 
