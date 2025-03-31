@@ -57,16 +57,16 @@ class AVLTree
     if (Balance(root) == 2) {
       root->left->apply_deferred();
       if (Balance(root->left) == -1)
-        base::Rotate<false, true, TNode>(root->left->right, root->left, root);
+        base::rotate<false, true, TNode>(root->left->right, root->left, root);
       TNode* child = root->left;
-      base::Rotate<true, false, TNode>(child, root, nullptr);
+      base::rotate<true, false, TNode>(child, root, nullptr);
       return child;
     } else if (Balance(root) == -2) {
       root->right->apply_deferred();
       if (Balance(root->right) == 1)
-        base::Rotate<false, true, TNode>(root->right->left, root->right, root);
+        base::rotate<false, true, TNode>(root->right->left, root->right, root);
       TNode* child = root->right;
-      base::Rotate<true, false, TNode>(child, root, nullptr);
+      base::rotate<true, false, TNode>(child, root, nullptr);
       return child;
     }
     return root;

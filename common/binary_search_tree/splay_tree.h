@@ -51,12 +51,12 @@ class SplayTree
       if (!parent) break;
       TNode* gparent = parent->parent;
       if (!gparent) {
-        base::Rotate<false, false, TNode>(node, parent, gparent);
+        base::rotate<false, false, TNode>(node, parent, gparent);
         break;
       }
       bool zigzig = ((gparent->left == parent) == (parent->left == node));
-      base::RotateUp<false, false>(zigzig ? parent : node);
-      base::RotateUp<false, false>(node);
+      base::rotate_up<false, false>(zigzig ? parent : node);
+      base::rotate_up<false, false>(node);
     }
     node->update_subtree_data();
   }
