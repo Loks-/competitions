@@ -26,7 +26,7 @@ namespace base {
  * @param parent The parent node of the rotation
  * @param grandparent The grandparent node (parent of parent)
  */
-template <bool update_child = true, bool apply_deferred = true, class TNode>
+template <bool update_child = true, bool apply_deferred = true, typename TNode>
 constexpr void rotate(TNode* child, TNode* parent, TNode* grandparent) {
   assert(child && parent);
   if constexpr (apply_deferred) child->apply_deferred();
@@ -69,7 +69,7 @@ constexpr void rotate(TNode* child, TNode* parent, TNode* grandparent) {
  * @param node The node to rotate up
  * @return true if the rotation was performed, false if the node has no parent
  */
-template <bool update_child = true, bool apply_deferred = true, class TNode>
+template <bool update_child = true, bool apply_deferred = true, typename TNode>
 constexpr bool rotate_up(TNode* node) {
   static_assert(TNode::has_parent, "has_parent should be true");
   if (!node || !node->parent) return false;
