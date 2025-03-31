@@ -3,10 +3,10 @@
 #include "common/binary_search_tree/avl_tree.h"
 #include "common/binary_search_tree/base_tree.h"
 #include "common/binary_search_tree/deferred/add_each.h"
-#include "common/binary_search_tree/perfect_tree.h"
 #include "common/binary_search_tree/red_black_tree.h"
 #include "common/binary_search_tree/scapegoat_tree.h"
 #include "common/binary_search_tree/splay_tree.h"
+#include "common/binary_search_tree/static_tree.h"
 #include "common/binary_search_tree/subtree_data/size.h"
 #include "common/binary_search_tree/subtree_data/sum.h"
 #include "common/binary_search_tree/treap.h"
@@ -114,11 +114,10 @@ bool TesterBinarySearchTree::TestAllTrees() {
       "avltree_upf");
   TestAll<bst::AVLTree<true, TKey, TAggregatorsTuple1, std::tuple<>, TKey>>(
       "avltree_upt");
-  TestAll<
-      bst::PerfectTree<false, TKey, TAggregatorsTuple1, std::tuple<>, TKey>>(
-      "perfect_upf");
-  TestAll<bst::PerfectTree<true, TKey, TAggregatorsTuple1, std::tuple<>, TKey>>(
-      "perfect_upt");
+  TestAll<bst::StaticTree<false, TKey, TAggregatorsTuple1, std::tuple<>, TKey>>(
+      "static_upf");
+  TestAll<bst::StaticTree<true, TKey, TAggregatorsTuple1, std::tuple<>, TKey>>(
+      "static_upt");
   TestAll<bst::RedBlackTree<TKey, TAggregatorsTuple1, std::tuple<>, TKey>>(
       "rbtree");
   TestAll<
