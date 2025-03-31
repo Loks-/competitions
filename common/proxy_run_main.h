@@ -112,18 +112,16 @@ inline int test_solution(const std::string& solution,
   std::stringstream solution_output, expected_output;
   auto cout_backup = std::cout.rdbuf(solution_output.rdbuf());
   const int solution_results = run_solution(solution, input_file_name);
-  if (solution_results) {
-    return solution_results;
-  }
+  if (solution_results) return solution_results;
   std::cout.rdbuf(cout_backup);
 
   // Remove extra spaces and newlines from the solution output
-  std::string sraw = solution_output.str(), sfixed;
+  const std::string sraw = solution_output.str();
+  std::string sfixed;
   sfixed.reserve(sraw.size());
   for (unsigned i = 0; i < sraw.size(); ++i) {
-    if ((sraw[i] == ' ') && ((sraw[i + 1] == ' ') || (sraw[i + 1] == '\n'))) {
+    if ((sraw[i] == ' ') && ((sraw[i + 1] == ' ') || (sraw[i + 1] == '\n')))
       continue;
-    }
     sfixed.push_back(sraw[i]);
   }
 
@@ -167,14 +165,11 @@ inline int test_all_solutions(const std::string& problem,
   for (auto it = solutions_map.lower_bound(problem); it != solutions_map.end();
        ++it) {
     if ((it->first != problem) &&
-        (it->first.substr(0, problem_prefix.size()) != problem_prefix)) {
+        (it->first.substr(0, problem_prefix.size()) != problem_prefix))
       break;
-    }
     const int solutions_results =
         test_solution(it->first, input_file_name, test_file_name);
-    if (solutions_results) {
-      return solutions_results;
-    }
+    if (solutions_results) return solutions_results;
     ++correct_solutions;
   }
   if (!correct_solutions) {

@@ -104,9 +104,8 @@ class NodesManager {
    * @param new_capacity The minimum number of nodes to reserve.
    */
   constexpr void reserve(size_t new_capacity) {
-    if (new_capacity > nodes_.size()) {
+    if (new_capacity > nodes_.size())
       nodes_.resize(std::max(new_capacity, 2 * nodes_.size()));
-    }
   }
 
   /**
@@ -118,9 +117,8 @@ class NodesManager {
    * @param additional_nodes The number of additional nodes to reserve.
    */
   constexpr void reserve_additional(size_t additional_nodes) {
-    if (available_capacity() < additional_nodes) {
+    if (available_capacity() < additional_nodes)
       reserve(used_nodes_ + additional_nodes);
-    }
   }
 
   /**

@@ -144,9 +144,8 @@ class BlocksManager {
    * @param new_blocks The number of additional blocks to reserve.
    */
   constexpr void reserve_additional_blocks(size_t new_blocks) {
-    if (available_blocks() < new_blocks) {
+    if (available_blocks() < new_blocks)
       reserve_blocks(used_blocks_ + new_blocks);
-    }
   }
 
   /**
@@ -158,9 +157,7 @@ class BlocksManager {
    * @param new_nodes The number of additional nodes to reserve.
    */
   constexpr void reserve_additional_nodes(size_t new_nodes) {
-    if (available_nodes() < new_nodes) {
-      reserve_nodes(used_nodes() + new_nodes);
-    }
+    if (available_nodes() < new_nodes) reserve_nodes(used_nodes() + new_nodes);
   }
 
   /**
@@ -177,9 +174,7 @@ class BlocksManager {
       released_blocks_.pop();
       ++used_blocks_;
       if constexpr (manage_nodes_lifecycle) {
-        for (size_t i = 0; i < block_size_; ++i) {
-          p[i].reuse();
-        }
+        for (size_t i = 0; i < block_size_; ++i) p[i].reuse();
       }
       return p;
     }
@@ -193,9 +188,8 @@ class BlocksManager {
     current_index2_ += block_size_;
     ++used_blocks_;
     if constexpr (manage_nodes_lifecycle) {
-      for (size_t i = 0; i < block_size_; ++i) {
+      for (size_t i = 0; i < block_size_; ++i)
         p[i].initialize((used_blocks_ - 1) * block_size_ + i);
-      }
     }
     return p;
   }
@@ -210,9 +204,7 @@ class BlocksManager {
    */
   constexpr void release_block(NodeType* p) {
     if constexpr (manage_nodes_lifecycle) {
-      for (size_t i = 0; i < block_size_; ++i) {
-        p[i].release();
-      }
+      for (size_t i = 0; i < block_size_; ++i) p[i].release();
     }
     released_blocks_.push(p);
     --used_blocks_;
@@ -287,15 +279,12 @@ class BlocksManager {
     if constexpr (manage_nodes_lifecycle) {
       // Handle all complete vectors
       for (size_t i = 0; i < current_index1_; ++i) {
-        for (size_t j = 0; j < nodes_[i].size(); ++j) {
-          nodes_[i][j].release();
-        }
+        for (size_t j = 0; j < nodes_[i].size(); ++j) nodes_[i][j].release();
       }
       // Handle the current vector up to current_index2_
       if (current_index1_ < nodes_.size()) {
-        for (size_t j = 0; j < current_index2_; ++j) {
+        for (size_t j = 0; j < current_index2_; ++j)
           nodes_[current_index1_][j].release();
-        }
       }
     }
     used_blocks_ = 0;

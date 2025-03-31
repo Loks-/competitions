@@ -359,8 +359,8 @@ class Treap
     if (!p1) return p2;
     if (!p2) return p1;
     if (height(p1) < height(p2)) std::swap(p1, p2);
-    NodeType *pt1 = nullptr, *pt2 = nullptr;
     p1->apply_deferred();
+    NodeType *pt1 = nullptr, *pt2 = nullptr;
     split(p2, p1->key, pt1, pt2);
     p1->set_left(merge(p1->left, pt1));
     p1->set_right(merge(p1->right, pt2));

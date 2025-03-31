@@ -28,15 +28,10 @@ inline void propagate_to_node(TNode* node) {
     thread_local std::stack<TNode*> path;
 
     // Build path from root to node
-    for (; node; node = node->parent) {
-      path.push(node);
-    }
+    for (; node; node = node->parent) path.push(node);
 
     // Apply computations from root to target node
-    while (!path.empty()) {
-      path.top()->apply_deferred();
-      path.pop();
-    }
+    for (; !path.empty(); path.pop()) path.top()->apply_deferred();
   }
 }
 

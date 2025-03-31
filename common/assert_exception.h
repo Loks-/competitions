@@ -16,9 +16,7 @@ class AssertException {};
  * @throws AssertException if the condition is false.
  */
 inline void assert_exception(bool condition) {
-  if (!condition) {
-    throw AssertException();
-  }
+  if (!condition) throw AssertException();
 }
 
 /**
@@ -49,7 +47,8 @@ template <typename... Args>
 inline void assert_exception(bool condition, std::format_string<Args...> format,
                              Args&&... args) {
   if (!condition) {
-    std::string message = std::format(format, std::forward<Args>(args)...);
+    const std::string message =
+        std::format(format, std::forward<Args>(args)...);
     std::cerr << std::format("Assertion failed: {}\n", message);
     throw AssertException();
   }

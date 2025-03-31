@@ -39,7 +39,7 @@ template <bool apply_deferred = true, typename TNode>
       node->apply_deferred();
     }
 
-    size_t ls = bst::subtree_data::size(node->left);
+    const size_t ls = bst::subtree_data::size(node->left);
     if (index < ls) {
       node = node->left;
     } else if (index == ls) {

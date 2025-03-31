@@ -21,9 +21,7 @@ class Timer {
    * @param auto_start If true, the timer starts immediately upon construction.
    */
   explicit Timer(bool auto_start = true) : running_(false) {
-    if (auto_start) {
-      start();
-    }
+    if (auto_start) start();
   }
 
   /**

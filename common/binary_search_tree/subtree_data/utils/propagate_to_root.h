@@ -25,9 +25,7 @@ constexpr void propagate_to_root(TNode* node) {
     static_assert(TNode::has_parent, "Node must have parent pointer enabled");
 
     // Update subtree data from node up to root
-    for (; node; node = node->parent) {
-      node->update_subtree_data();
-    }
+    for (; node; node = node->parent) node->update_subtree_data();
   }
 }
 
