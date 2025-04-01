@@ -20,14 +20,14 @@ class Timer {
    *
    * @param auto_start If true, the timer starts immediately upon construction.
    */
-  explicit Timer(bool auto_start = true) : running_(false) {
+  explicit Timer(bool auto_start = true) noexcept : running_(false) {
     if (auto_start) start();
   }
 
   /**
    * @brief Starts the timer.
    */
-  void start() {
+  void start() noexcept {
     start_time_ = Clock::now();
     running_ = true;
   }
@@ -35,7 +35,7 @@ class Timer {
   /**
    * @brief Stops the timer.
    */
-  void stop() {
+  void stop() noexcept {
     end_time_ = Clock::now();
     running_ = false;
   }
@@ -43,7 +43,7 @@ class Timer {
   /**
    * @brief Resets the timer to its initial state.
    */
-  void reset() {
+  void reset() noexcept {
     running_ = false;
     start_time_ = TimePoint{};
     end_time_ = TimePoint{};
