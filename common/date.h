@@ -21,14 +21,16 @@ class Date {
    *
    * @return The number of days in a week.
    */
-  [[nodiscard]] static consteval unsigned days_in_week() { return kDaysInWeek; }
+  [[nodiscard]] static consteval unsigned days_in_week() noexcept {
+    return kDaysInWeek;
+  }
 
   /**
    * @brief Get the number of months in a year.
    *
    * @return The number of months in a year.
    */
-  [[nodiscard]] static consteval unsigned months_in_year() {
+  [[nodiscard]] static consteval unsigned months_in_year() noexcept {
     return kMonthsInYear;
   }
 
@@ -37,7 +39,7 @@ class Date {
    *
    * @return The number of years in a cycle.
    */
-  [[nodiscard]] static consteval unsigned years_in_cycle() {
+  [[nodiscard]] static consteval unsigned years_in_cycle() noexcept {
     return kYearsInCycle;
   }
 
@@ -47,7 +49,7 @@ class Date {
    * @param month The month to check.
    * @return true if the month is valid, false otherwise.
    */
-  [[nodiscard]] static constexpr bool is_month_valid(unsigned month) {
+  [[nodiscard]] static constexpr bool is_month_valid(unsigned month) noexcept {
     return (0 < month) && (month <= kMonthsInYear);
   }
 
@@ -56,7 +58,7 @@ class Date {
    *
    * @param month The month to check.
    */
-  static constexpr void assert_month([[maybe_unused]] unsigned month) {
+  static constexpr void assert_month([[maybe_unused]] unsigned month) noexcept {
     assert(is_month_valid(month));
   }
 
@@ -66,7 +68,7 @@ class Date {
    * @param year The year to check.
    * @return true if the year is a leap year, false otherwise.
    */
-  [[nodiscard]] static constexpr bool is_leap_year(unsigned year) {
+  [[nodiscard]] static constexpr bool is_leap_year(unsigned year) noexcept {
     return (year % 4)     ? false
            : (year % 100) ? true
            : (year % 400) ? false
@@ -82,7 +84,7 @@ class Date {
    * otherwise.
    */
   [[nodiscard]] static constexpr bool has_leap_day(unsigned month,
-                                                   unsigned year) {
+                                                   unsigned year) noexcept {
     assert_month(month);
     return is_leap_year(year) && (month >= 3);
   }
@@ -93,7 +95,8 @@ class Date {
    * @param year The year to check.
    * @return The total number of leap years.
    */
-  [[nodiscard]] static constexpr unsigned total_leap_years(unsigned year) {
+  [[nodiscard]] static constexpr unsigned total_leap_years(
+      unsigned year) noexcept {
     return year / 4 - year / 100 + year / 400;
   }
 
@@ -145,7 +148,7 @@ class Date {
    * @param year The year to check.
    * @return The number of days in the year.
    */
-  [[nodiscard]] static constexpr unsigned days_in_year(unsigned year) {
+  [[nodiscard]] static constexpr unsigned days_in_year(unsigned year) noexcept {
     return kDaysInYear + (is_leap_year(year) ? 1 : 0);
   }
 
@@ -159,7 +162,7 @@ class Date {
    */
   [[nodiscard]] static constexpr bool is_date_valid(unsigned day,
                                                     unsigned month,
-                                                    unsigned year) {
+                                                    unsigned year) noexcept {
     return is_month_valid(month) && (0 < day) &&
            (day <= days_in_month(month, year)) && (0 < year);
   }
@@ -173,7 +176,7 @@ class Date {
    */
   static constexpr void assert_date([[maybe_unused]] unsigned day,
                                     [[maybe_unused]] unsigned month,
-                                    [[maybe_unused]] unsigned year) {
+                                    [[maybe_unused]] unsigned year) noexcept {
     assert(is_date_valid(day, month, year));
   }
 
@@ -207,7 +210,8 @@ class Date {
    * @param raw_day The raw day number.
    * @return The day of the week.
    */
-  [[nodiscard]] static constexpr unsigned day_of_week(unsigned raw_day) {
+  [[nodiscard]] static constexpr unsigned day_of_week(
+      unsigned raw_day) noexcept {
     return (raw_day + 1) % kDaysInWeek;
   }
 
@@ -229,7 +233,7 @@ class Date {
   /**
    * @brief Default constructor initializing date to 01/01/01.
    */
-  constexpr Date() : day_(1), month_(1), year_(1) {}
+  constexpr Date() noexcept : day_(1), month_(1), year_(1) {}
 
   /**
    * @brief Constructor initializing date to a given day, month, and year.
@@ -238,7 +242,7 @@ class Date {
    * @param month The month of the date.
    * @param year The year of the date.
    */
-  constexpr Date(unsigned day, unsigned month, unsigned year)
+  constexpr Date(unsigned day, unsigned month, unsigned year) noexcept
       : day_(day), month_(month), year_(year) {
     assert(is_date_valid());
   }
@@ -248,21 +252,21 @@ class Date {
    *
    * @return The day of the date.
    */
-  [[nodiscard]] constexpr unsigned day() const { return day_; }
+  [[nodiscard]] constexpr unsigned day() const noexcept { return day_; }
 
   /**
    * @brief Get the month of the date.
    *
    * @return The month of the date.
    */
-  [[nodiscard]] constexpr unsigned month() const { return month_; }
+  [[nodiscard]] constexpr unsigned month() const noexcept { return month_; }
 
   /**
    * @brief Get the year of the date.
    *
    * @return The year of the date.
    */
-  [[nodiscard]] constexpr unsigned year() const { return year_; }
+  [[nodiscard]] constexpr unsigned year() const noexcept { return year_; }
 
   /**
    * @brief Get the raw day number of the date.
@@ -278,7 +282,7 @@ class Date {
    *
    * @return true if the date is valid, false otherwise.
    */
-  [[nodiscard]] constexpr bool is_date_valid() const {
+  [[nodiscard]] constexpr bool is_date_valid() const noexcept {
     return is_date_valid(day_, month_, year_);
   }
 
@@ -296,7 +300,7 @@ class Date {
    *
    * @return The date of the first day next year.
    */
-  [[nodiscard]] constexpr Date next_year() const {
+  [[nodiscard]] constexpr Date next_year() const noexcept {
     return Date(1, 1, year_ + 1);
   }
 
@@ -305,7 +309,7 @@ class Date {
    *
    * @return The date of the first day next month.
    */
-  [[nodiscard]] constexpr Date next_month() const {
+  [[nodiscard]] constexpr Date next_month() const noexcept {
     return (month_ == kMonthsInYear) ? next_year() : Date(1, month_ + 1, year_);
   }
 
@@ -315,7 +319,7 @@ class Date {
    * @param other The date to compare with.
    * @return true if the dates are equal, false otherwise.
    */
-  [[nodiscard]] constexpr bool operator==(const Date& other) const {
+  [[nodiscard]] constexpr bool operator==(const Date& other) const noexcept {
     return (day_ == other.day_) && (month_ == other.month_) &&
            (year_ == other.year_);
   }
@@ -326,7 +330,7 @@ class Date {
    * @param other The date to compare with.
    * @return true if this date is less than the other date, false otherwise.
    */
-  [[nodiscard]] constexpr bool operator<(const Date& other) const {
+  [[nodiscard]] constexpr bool operator<(const Date& other) const noexcept {
     return (year_ != other.year_)     ? (year_ < other.year_)
            : (month_ != other.month_) ? (month_ < other.month_)
                                       : day_ < other.day_;
@@ -339,7 +343,7 @@ class Date {
    * @return true if this date is less than or equal to the other date, false
    * otherwise.
    */
-  [[nodiscard]] constexpr bool operator<=(const Date& other) const {
+  [[nodiscard]] constexpr bool operator<=(const Date& other) const noexcept {
     return (year_ != other.year_)     ? (year_ < other.year_)
            : (month_ != other.month_) ? (month_ < other.month_)
                                       : day_ <= other.day_;
