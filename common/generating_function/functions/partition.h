@@ -14,7 +14,7 @@ class Partition : public GeneratingFunction<TValue> {
   std::vector<TValue> va;
 
  public:
-  Partition() : va({1}) {}
+  Partition() : va({TValue(1)}) {}
 
   void Adjust(uint64_t n) override {
     for (uint64_t i = va.size(); i <= n; ++i) {
