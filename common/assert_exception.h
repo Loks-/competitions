@@ -15,7 +15,7 @@ class AssertException {};
  * @param condition The condition to check.
  * @throws AssertException if the condition is false.
  */
-inline void assert_exception(bool condition) {
+constexpr void assert_exception(bool condition) {
   if (!condition) throw AssertException();
 }
 
@@ -27,7 +27,7 @@ inline void assert_exception(bool condition) {
  * @param message The message to display if the assertion fails.
  * @throws AssertException if the condition is false.
  */
-inline void assert_exception(bool condition, std::string_view message) {
+constexpr void assert_exception(bool condition, std::string_view message) {
   if (!condition) {
     std::cerr << std::format("Assertion failed: {}\n", message);
     throw AssertException();
@@ -44,8 +44,9 @@ inline void assert_exception(bool condition, std::string_view message) {
  * @throws AssertException if the condition is false.
  */
 template <typename... Args>
-inline void assert_exception(bool condition, std::format_string<Args...> format,
-                             Args&&... args) {
+constexpr void assert_exception(bool condition,
+                                std::format_string<Args...> format,
+                                Args&&... args) {
   if (!condition) {
     const std::string message =
         std::format(format, std::forward<Args>(args)...);
