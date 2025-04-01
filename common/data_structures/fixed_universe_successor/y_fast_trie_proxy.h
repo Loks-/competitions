@@ -39,7 +39,7 @@ class YFastTrieProxy {
  protected:
   std::pair<size_t, size_t> Find2(size_t x) const {
     auto x2 = xtrie.Successor(x);
-    auto x1 = xtrie.PredecessorI(x1);
+    auto x1 = xtrie.PredecessorI(x);
     return {x1, x2};
   }
 

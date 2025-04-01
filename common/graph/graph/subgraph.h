@@ -8,9 +8,8 @@
 
 namespace graph {
 template <class TGraph>
-inline void SubgraphUpdateRootI(const TGraph& g, unsigned new_nvertices,
-                                const std::vector<unsigned>& old_to_new,
-                                TGraph& output) {}
+inline void SubgraphUpdateRootI(const TGraph&, unsigned,
+                                const std::vector<unsigned>&, TGraph&) {}
 
 inline void SubgraphUpdateRootI(const TreeGraph& g, unsigned new_nvertices,
                                 const std::vector<unsigned>& old_to_new,

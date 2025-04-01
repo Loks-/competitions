@@ -9,7 +9,7 @@ namespace trainer {
 class Trainer {
  public:
   template <class TDataPoint>
-  void AddPoint(const TDataPoint& p) {}
+  void AddPoint(const TDataPoint&) {}
 
   void Train() {}
   Model GetModel() { return {}; }

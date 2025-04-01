@@ -5,7 +5,7 @@ namespace kdtree {
 namespace base {
 template <class TPoint>
 constexpr bool Under(const TPoint& l, const TPoint& r) {
-  for (unsigned i = 0; i < l.Dim(); ++i) {
+  for (unsigned i = 0; i < TPoint::Dim(); ++i) {
     if (l[i] > r[i]) return false;
   }
   return true;
@@ -13,7 +13,7 @@ constexpr bool Under(const TPoint& l, const TPoint& r) {
 
 template <class TPoint>
 constexpr bool StrictUnder(const TPoint& l, const TPoint& r) {
-  for (unsigned i = 0; i < l.Dim(); ++i) {
+  for (unsigned i = 0; i < TPoint::Dim(); ++i) {
     if (l[i] >= r[i]) return false;
   }
   return true;

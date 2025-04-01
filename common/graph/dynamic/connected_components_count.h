@@ -9,7 +9,7 @@ namespace graph {
 namespace dynamic {
 // Time: O(V + E)
 template <class TData>
-constexpr unsigned ConnectedComponentsCount(const UndirectedGraph<TData>& g) {
+inline unsigned ConnectedComponentsCount(const UndirectedGraph<TData>& g) {
   const unsigned n = g.Size();
   unsigned r = 0;
   std::vector<unsigned> visited(n, 0);

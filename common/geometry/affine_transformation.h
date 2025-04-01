@@ -29,7 +29,7 @@ class AffineTransformation {
 
   template <class TPoint>
   constexpr TPoint Apply(const TPoint& p) const {
-    static_assert(p.Dim() == dim);
+    static_assert(TPoint::Dim() == dim);
     TPoint r;
     for (unsigned i = 0; i < dim; ++i) {
       r[i] = m(i, dim);

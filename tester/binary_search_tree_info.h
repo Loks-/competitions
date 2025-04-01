@@ -7,9 +7,9 @@
 template <class TSubtreeInfo>
 inline size_t GetInfoValueI(const TSubtreeInfo& info) {
   using TSum = bst::subtree_data::Sum<uint64_t>;
-  if constexpr (info.template has<TSum>()) {
+  if constexpr (TSubtreeInfo::template has<TSum>()) {
     return TSum::get(info);
-  } else if constexpr (info.template has<bst::subtree_data::Size>()) {
+  } else if constexpr (TSubtreeInfo::template has<bst::subtree_data::Size>()) {
     return bst::subtree_data::size(info);
   } else {
     return 0;

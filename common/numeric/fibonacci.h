@@ -35,7 +35,7 @@ class TFibonacci {
    *
    * @param n The number of elements to ensure in the Fibonacci sequence.
    */
-  constexpr void Adjust(unsigned n) const {
+  void Adjust(unsigned n) const {
     if (vf.size() <= n) {
       const std::lock_guard<std::mutex> lock(m);
       AdjustI(n);
@@ -52,7 +52,7 @@ class TFibonacci {
    *
    * @param value The value to ensure in the Fibonacci sequence.
    */
-  constexpr void AdjustToValue(const T& value) const {
+  void AdjustToValue(const T& value) const {
     if (vf.back() < value) {
       const std::lock_guard<std::mutex> lock(m);
       AdjustToValueI(value);
@@ -80,7 +80,7 @@ class TFibonacci {
    * @param n The index of the Fibonacci number to retrieve.
    * @return The Fibonacci number at the specified index.
    */
-  constexpr T Get(unsigned n) const {
+  T Get(unsigned n) const {
     Adjust(n);
     return vf[n];
   }
@@ -95,7 +95,7 @@ class TFibonacci {
    * @param n The index of the Fibonacci number to retrieve.
    * @return The Fibonacci number at the specified index.
    */
-  constexpr T operator()(unsigned n) const { return Get(n); }
+  T operator()(unsigned n) const { return Get(n); }
 
  public:
   /**

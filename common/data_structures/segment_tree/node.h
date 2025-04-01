@@ -18,7 +18,7 @@ class TNodeProxyParent<false, TSelf> : public memory::Node {
  public:
   constexpr void SetL(TSelf* node) { l = node; }
   constexpr void SetR(TSelf* node) { r = node; }
-  constexpr void SetP(TSelf* node) {}
+  constexpr void SetP(TSelf*) {}
   constexpr void ResetLinks() { l = r = nullptr; }
 };
 

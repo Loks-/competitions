@@ -77,7 +77,7 @@ class FFT {
 
   constexpr FFT() { Init(); }
 
-  constexpr void AdjustK(unsigned k) const {
+  void AdjustK(unsigned k) const {
     if (roots.size() <= k) {
       const std::lock_guard<std::mutex> lock(m);
       for (unsigned l = roots.size(); l <= k; ++l) InitK(l);

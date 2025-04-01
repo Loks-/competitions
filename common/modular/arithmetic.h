@@ -79,7 +79,7 @@ class Arithmetic {
     return Mult_32(value, value, mod);
   }
 
-  static constexpr TValue SqrSafe_32(TValue value, TValue rvalue, TValue mod) {
+  static constexpr TValue SqrSafe_32(TValue value, TValue mod) {
     return Sqr_32(value % mod, mod);
   }
 

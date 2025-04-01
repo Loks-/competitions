@@ -2,14 +2,36 @@
 
 #include "common/base.h"
 #include "common/linear_algebra/matrix.h"
+#include "common/linear_algebra/matrix_static_size.h"
+
+template <typename TMatrix>
+inline unsigned Rows(const TMatrix& A) {
+  return A.Rows();
+}
+
+template <typename TMatrix>
+inline unsigned Columns(const TMatrix& A) {
+  return A.Columns();
+}
+
+template <typename TValue, unsigned rows_, unsigned columns_>
+inline unsigned Rows(const la::MatrixStaticSize<TValue, rows_, columns_>&) {
+  return rows_;
+}
+
+template <typename TValue, unsigned rows_, unsigned columns_>
+inline unsigned Columns(const la::MatrixStaticSize<TValue, rows_, columns_>&) {
+  return columns_;
+}
 
 template <class TMatrix>
 inline void MatrixMultPointers(const TMatrix& A, const TMatrix& B,
                                TMatrix& output) {
   using TValue = typename TMatrix::TValue;
-  assert((B.Rows() == A.Columns()) && (output.Rows() == A.Rows()) &&
-         (output.Columns() == B.Columns()));
-  unsigned rows = A.Rows(), columns = A.Columns(), columns2 = output.Columns();
+  assert((Columns(B) == Rows(A)) && (Rows(output) == Rows(A)) &&
+         (Columns(output) == Columns(B)));
+  const unsigned rows = Rows(A), columns = Columns(A),
+                 columns2 = Columns(output);
   output.Clear();
   const TValue* pA = A.begin();
   for (unsigned i = 0; i < rows; ++i) {
@@ -26,12 +48,12 @@ inline void MatrixMultPointers(const TMatrix& A, const TMatrix& B,
 template <class TMatrix>
 inline void MatrixMultLoops(const TMatrix& A, const TMatrix& B,
                             TMatrix& output) {
-  assert((B.Rows() == A.Columns()) && (output.Rows() == A.Rows()) &&
-         (output.Columns() == B.Columns()));
+  assert((Rows(B) == Columns(A)) && (Rows(output) == Rows(A)) &&
+         (Columns(output) == Columns(B)));
   output.Clear();
-  for (unsigned i = 0; i < A.Rows(); ++i) {
-    for (unsigned j = 0; j < A.Columns(); ++j) {
-      for (unsigned k = 0; k < B.Columns(); ++k)
+  for (unsigned i = 0; i < Rows(A); ++i) {
+    for (unsigned j = 0; j < Columns(A); ++j) {
+      for (unsigned k = 0; k < Columns(B); ++k)
         output(i, k) += A(i, j) * B(j, k);
     }
   }
