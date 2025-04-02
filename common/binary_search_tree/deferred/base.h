@@ -75,7 +75,7 @@ class Base {
    *
    * @return true if there are pending computations to apply, false otherwise.
    */
-  constexpr bool apply_required() const { return false; }
+  constexpr bool apply_required() const noexcept { return false; }
 
   /**
    * @brief Applies all pending deferred computations.

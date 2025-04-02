@@ -58,7 +58,7 @@ class AddArithmeticSequence : public Base {
    *
    * @return true if there are sequence parameters to apply, false otherwise.
    */
-  constexpr bool apply_required() const {
+  constexpr bool apply_required() const noexcept {
     return (a != ValueType{}) || (d != ValueType{});
   }
 

@@ -49,7 +49,7 @@ class Reverse : public Base {
    * This function clears the reversed flag, indicating that there are
    * no pending deferred computations.
    */
-  constexpr void clear() { reverse_required = false; }
+  constexpr void clear() noexcept { reverse_required = false; }
 
   /**
    * @brief Checks if there are any deferred computations that need to be
@@ -62,7 +62,7 @@ class Reverse : public Base {
    *
    * @return true if there are pending computations to apply, false otherwise.
    */
-  constexpr bool apply_required() const { return reverse_required; }
+  constexpr bool apply_required() const noexcept { return reverse_required; }
 
   /**
    * @brief Marks the current subtree for reversal.
@@ -75,7 +75,7 @@ class Reverse : public Base {
    * @param node The root of the subtree to be reversed.
    */
   template <typename TNode>
-  constexpr void reverse_subtree(TNode*) {
+  constexpr void reverse_subtree(TNode*) noexcept {
     reverse_required = !reverse_required;
   }
 
@@ -91,7 +91,7 @@ class Reverse : public Base {
    * @param node The root of the subtree to apply reversals to.
    */
   template <typename TNode>
-  constexpr void apply(TNode* node) {
+  constexpr void apply(TNode* node) noexcept {
     assert(node);
     if (reverse_required) {
       std::swap(node->left, node->right);
@@ -113,7 +113,7 @@ class Reverse : public Base {
    * @param _ Ignored parameter, reversal is just an action trigger.
    */
   template <typename TNode>
-  static constexpr void add(TNode* node, MetaEmpty) {
+  static constexpr void add(TNode* node, MetaEmpty) noexcept {
     bst::deferred::reverse_subtree(node);
   }
 

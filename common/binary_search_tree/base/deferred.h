@@ -95,7 +95,7 @@ class Deferred {
    * otherwise.
    */
   template <typename T>
-  static constexpr bool has() {
+  static constexpr bool has() noexcept {
     return templates::HasType<T, Tuple>::value;
   }
 
@@ -106,7 +106,7 @@ class Deferred {
    * @return Reference to the requested deferred computation.
    */
   template <typename T>
-  constexpr T& get() {
+  constexpr T& get() noexcept {
     return std::get<T>(deferred);
   }
 
@@ -117,7 +117,7 @@ class Deferred {
    * @return Const reference to the requested deferred computation.
    */
   template <typename T>
-  constexpr const T& get() const {
+  constexpr const T& get() const noexcept {
     return std::get<T>(deferred);
   }
 
@@ -133,7 +133,7 @@ class Deferred {
    *
    * @return true if any computation needs to be applied, false otherwise.
    */
-  constexpr bool apply_required() const {
+  constexpr bool apply_required() const noexcept {
     return std::apply(
         [](const auto&... x) { return (x.apply_required() || ...); }, deferred);
   }

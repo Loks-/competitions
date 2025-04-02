@@ -67,7 +67,7 @@ class AddEach : public Base {
    *
    * @return true if there is a non-zero value to be added, false otherwise.
    */
-  constexpr bool apply_required() const {
+  constexpr bool apply_required() const noexcept {
     return deferred_value != ValueType{};
   }
 
