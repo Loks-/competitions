@@ -32,8 +32,9 @@ namespace bst {
  * - Support for subtree data aggregation
  *
  * @note Search and access functions (find, at, lower_bound, etc.) have a
- * different interface compared to other BST implementations because they modify
- * the tree structure by splaying the accessed node to the root. This means:
+ *       different interface compared to other BST implementations because they
+ * modify the tree structure by splaying the accessed node to the root. This
+ * means:
  *       - The root node of the tree may change after these operations
  *       - These functions take a reference to the root pointer to update it
  *       - The caller should not assume the root remains the same after these
@@ -92,6 +93,7 @@ class SplayTree
    */
   [[nodiscard]] explicit constexpr SplayTree(size_t max_nodes)
       : Base(max_nodes) {}
+
   /**
    * @brief Default constructor for SplayTree.
    *
@@ -111,89 +113,6 @@ class SplayTree
   [[nodiscard]] static constexpr NodeType* build_tree(
       const std::vector<NodeType*>& nodes) {
     return base::build_tree(nodes, 0, nodes.size());
-  }
-
-  /**
-   * @brief Joins two trees into a single tree.
-   *
-   * The join operation combines two trees by finding the rightmost node in the
-   * left tree, splaying it to the root, and attaching the right tree as its
-   * right child.
-   *
-   * @param l The root of the left tree
-   * @param r The root of the right tree
-   * @return The root of the resulting tree
-   */
-  [[nodiscard]] static constexpr NodeType* join(NodeType* l, NodeType* r) {
-    if (!l) return r;
-    if (!r) return l;
-    assert(!l->parent && !r->parent);
-    NodeType* p = base::right(l);
-    base::splay(p);
-    p->set_right(r);
-    p->update_subtree_data();
-    return p;
-  }
-
-  /**
-   * @brief Joins three trees into a single tree.
-   *
-   * The join3 operation combines three trees by using the middle node as the
-   * root and attaching the left and right trees as its children.
-   *
-   * @param l The root of the left tree
-   * @param m1 The middle node (must be a leaf)
-   * @param r The root of the right tree
-   * @return The root of the resulting tree (m1)
-   */
-  static constexpr NodeType* join3(NodeType* l, NodeType* m1, NodeType* r) {
-    assert(m1 && !m1->left && !m1->right);
-    m1->set_left(l);
-    m1->set_right(r);
-    m1->update_subtree_data();
-    return m1;
-  }
-
-  /**
-   * @brief Splits a tree into two trees at a given node.
-   *
-   * The split operation divides the tree into two parts: everything to the
-   * left of the given node and the node itself with everything to its right.
-   *
-   * @param p The node at which to split
-   * @return The root of the left tree
-   */
-  [[nodiscard]] static constexpr NodeType* split_left(NodeType* p) {
-    if (!p) return nullptr;
-    base::splay(p);
-    NodeType* l = p->left;
-    if (l) {
-      l->parent = nullptr;
-      p->left = nullptr;
-      p->update_subtree_data();
-    }
-    return l;
-  }
-
-  /**
-   * @brief Splits a tree into two trees at a given node.
-   *
-   * The split operation divides the tree into two parts: the node itself with
-   * everything to its left and everything to its right.
-   *
-   * @param p The node at which to split
-   * @return The root of the right tree
-   */
-  [[nodiscard]] static constexpr NodeType* split_right(NodeType* p) {
-    if (!p) return nullptr;
-    base::splay(p);
-    NodeType* r = p->right;
-    if (r) {
-      r->parent = nullptr;
-      p->right = nullptr;
-      p->update_subtree_data();
-    }
-    return r;
   }
 
   /**
@@ -290,45 +209,6 @@ class SplayTree
   }
 
   /**
-   * @brief Splits a tree at a given key.
-   *
-   * The split operation divides the tree into two parts based on the key value:
-   * - Left part contains all nodes with keys less than the given key
-   * - Right part contains all nodes with keys greater than or equal to the key
-   *
-   * @param root The root of the tree to split
-   * @param key The key to split at
-   * @param output_l Reference to store the left part
-   * @param output_r Reference to store the right part
-   */
-  static constexpr void split(NodeType* root, const Key& key,
-                              NodeType*& output_l, NodeType*& output_r) {
-    static_assert(use_key, "use_key should be true");
-    if (!root) {
-      output_l = output_r = nullptr;
-      return;
-    }
-    NodeType* p = lower_bound(root, key);
-    output_r = p;
-    output_l = (p ? split_left(p) : root);
-  }
-
-  /**
-   * @brief Gets the inorder index of a node.
-   *
-   * The index operation returns the position of a node in the inorder traversal
-   * of the tree.
-   *
-   * @param node The node to get the index of
-   * @return The inorder index of the node
-   */
-  [[nodiscard]] static constexpr size_t index(NodeType* node) {
-    assert(node);
-    base::splay(node);
-    return subtree_data::size(node->left);
-  }
-
-  /**
    * @brief Finds the node at the given index in the tree.
    *
    * The at operation finds the node at the given index and splays it to the
@@ -349,33 +229,18 @@ class SplayTree
   }
 
   /**
-   * @brief Splits a tree into two trees based on size.
+   * @brief Gets the inorder index of a node.
    *
-   * The split_at operation divides the tree into two parts based on the given
-   * size: the first lsize nodes in inorder traversal go to the left tree, and
-   * the remaining nodes go to the right tree.
+   * The index operation returns the position of a node in the inorder traversal
+   * of the tree.
    *
-   * @param root The root of the tree to split
-   * @param lsize The size of the left tree
-   * @param output_l The root of the left tree
-   * @param output_r The root of the right tree
+   * @param node The node to get the index of
+   * @return The inorder index of the node
    */
-  static constexpr void split_at(NodeType* root, size_t lsize,
-                                 NodeType*& output_l, NodeType*& output_r) {
-    static_assert(SubtreeDataType::has_size, "info should contain size");
-    if (!root) {
-      output_l = output_r = nullptr;
-    } else if (lsize == 0) {
-      output_l = nullptr;
-      output_r = root;
-    } else if (lsize >= subtree_data::size(root)) {
-      output_l = root;
-      output_r = nullptr;
-    } else {
-      NodeType* p = at(root, lsize);
-      output_l = split_left(p);
-      output_r = p;
-    }
+  [[nodiscard]] static constexpr size_t index(NodeType* node) {
+    assert(node);
+    base::splay(node);
+    return subtree_data::size(node->left);
   }
 
   /**
@@ -415,6 +280,17 @@ class SplayTree
     return node;
   }
 
+  /**
+   * @brief Inserts a node at a specific index in the tree.
+   *
+   * The insert_at operation adds a new node at the given position in the
+   * inorder traversal of the tree.
+   *
+   * @param root The root of the tree
+   * @param node The node to insert
+   * @param index The position to insert at
+   * @return The root of the resulting tree
+   */
   [[nodiscard]] static constexpr NodeType* insert_at(NodeType* root,
                                                      NodeType* node,
                                                      size_t index) {
@@ -449,6 +325,17 @@ class SplayTree
     return node;
   }
 
+  /**
+   * @brief Removes a node with the given key from the tree.
+   *
+   * The remove operation finds and removes a node with the specified key while
+   * maintaining the binary search tree property.
+   *
+   * @param root The root of the tree
+   * @param key The key of the node to remove
+   * @param removed_node Reference to store the removed node
+   * @return The root of the resulting tree
+   */
   [[nodiscard]] static constexpr NodeType* remove(NodeType* root,
                                                   const Key& key,
                                                   NodeType*& removed_node) {
@@ -457,6 +344,17 @@ class SplayTree
     return (removed_node ? remove_node_impl(removed_node) : root);
   }
 
+  /**
+   * @brief Removes a node at the given index from the tree.
+   *
+   * The remove_at operation removes a node at the specified position in the
+   * inorder traversal of the tree.
+   *
+   * @param root The root of the tree
+   * @param index The position of the node to remove
+   * @param removed_node Reference to store the removed node
+   * @return The root of the resulting tree
+   */
   [[nodiscard]] static constexpr NodeType* remove_at(NodeType* root,
                                                      size_t index,
                                                      NodeType*& removed_node) {
@@ -465,9 +363,155 @@ class SplayTree
     return (removed_node ? remove_node_impl(removed_node) : root);
   }
 
+  /**
+   * @brief Removes a specific node from the tree.
+   *
+   * The remove_node operation removes the given node while maintaining the
+   * binary search tree property.
+   *
+   * @param node The node to remove
+   * @return The root of the resulting tree
+   */
   [[nodiscard]] static constexpr NodeType* remove_node(NodeType* node) {
     assert(node);
     return remove_node_impl(node);
+  }
+
+  /**
+   * @brief Joins two trees into a single tree.
+   *
+   * The join operation combines two trees by finding the rightmost node in the
+   * left tree, splaying it to the root, and attaching the right tree as its
+   * right child.
+   *
+   * @param l The root of the left tree
+   * @param r The root of the right tree
+   * @return The root of the resulting tree
+   */
+  [[nodiscard]] static constexpr NodeType* join(NodeType* l, NodeType* r) {
+    if (!l) return r;
+    if (!r) return l;
+    assert(!l->parent && !r->parent);
+    NodeType* p = base::right(l);
+    base::splay(p);
+    p->set_right(r);
+    p->update_subtree_data();
+    return p;
+  }
+
+  /**
+   * @brief Joins three trees into a single tree.
+   *
+   * The join3 operation combines three trees by using the middle node as the
+   * root and attaching the left and right trees as its children.
+   *
+   * @param l The root of the left tree
+   * @param m1 The middle node (must be a leaf)
+   * @param r The root of the right tree
+   * @return The root of the resulting tree (m1)
+   */
+  static constexpr NodeType* join3(NodeType* l, NodeType* m1, NodeType* r) {
+    assert(m1 && !m1->left && !m1->right);
+    m1->set_left(l);
+    m1->set_right(r);
+    m1->update_subtree_data();
+    return m1;
+  }
+
+  /**
+   * @brief Splits a tree into two trees at a given node.
+   *
+   * The split operation divides the tree into two parts: everything to the
+   * left of the given node and the node itself with everything to its right.
+   *
+   * @param p The node at which to split
+   * @return The root of the left tree
+   */
+  [[nodiscard]] static constexpr NodeType* split_left(NodeType* p) {
+    if (!p) return nullptr;
+    base::splay(p);
+    NodeType* l = p->left;
+    if (l) {
+      l->parent = nullptr;
+      p->left = nullptr;
+      p->update_subtree_data();
+    }
+    return l;
+  }
+
+  /**
+   * @brief Splits a tree into two trees at a given node.
+   *
+   * The split operation divides the tree into two parts: the node itself with
+   * everything to its left and everything to its right.
+   *
+   * @param p The node at which to split
+   * @return The root of the right tree
+   */
+  [[nodiscard]] static constexpr NodeType* split_right(NodeType* p) {
+    if (!p) return nullptr;
+    base::splay(p);
+    NodeType* r = p->right;
+    if (r) {
+      r->parent = nullptr;
+      p->right = nullptr;
+      p->update_subtree_data();
+    }
+    return r;
+  }
+
+  /**
+   * @brief Splits a tree at a given key.
+   *
+   * The split operation divides the tree into two parts based on the key value:
+   * - Left part contains all nodes with keys less than the given key
+   * - Right part contains all nodes with keys greater than or equal to the key
+   *
+   * @param root The root of the tree to split
+   * @param key The key to split at
+   * @param output_l Reference to store the left part
+   * @param output_r Reference to store the right part
+   */
+  static constexpr void split(NodeType* root, const Key& key,
+                              NodeType*& output_l, NodeType*& output_r) {
+    static_assert(use_key, "use_key should be true");
+    if (!root) {
+      output_l = output_r = nullptr;
+      return;
+    }
+    NodeType* p = lower_bound(root, key);
+    output_r = p;
+    output_l = (p ? split_left(p) : root);
+  }
+
+  /**
+   * @brief Splits a tree at a given index.
+   *
+   * The split_at operation divides the tree into two parts based on the given
+   * size: the first lsize nodes in inorder traversal go to the left tree, and
+   * the remaining nodes go to the right tree.
+   *
+   * @param root The root of the tree to split
+   * @param lsize The size of the left tree
+   * @param output_l Reference to store the left part
+   * @param output_r Reference to store the right part
+   */
+  static constexpr void split_at(NodeType* root, size_t lsize,
+                                 NodeType*& output_l, NodeType*& output_r) {
+    static_assert(SubtreeDataType::has_size, "info should contain size");
+    if (!root) {
+      output_l = output_r = nullptr;
+    } else if (lsize == 0) {
+      output_l = nullptr;
+      output_r = root;
+    } else if (lsize >= subtree_data::size(root)) {
+      output_l = root;
+      output_r = nullptr;
+    } else {
+      NodeType* p = at(root, lsize);
+      output_l = split_left(p);
+      output_r = p;
+    }
   }
 
   /**
