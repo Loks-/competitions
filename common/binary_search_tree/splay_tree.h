@@ -94,7 +94,9 @@ class SplayTree
    */
   [[nodiscard]] static constexpr NodeType* build_tree(
       const std::vector<NodeType*>& nodes) {
-    return base::build_tree(nodes, 0, nodes.size());
+    NodeType* root = base::build_tree(nodes, 0, nodes.size());
+    if (root) root->set_parent(nullptr);
+    return root;
   }
 
   /**
