@@ -133,6 +133,164 @@ class Treap
   }
 
   /**
+   * @brief Inserts a node into the tree.
+   *
+   * The insertion maintains both the binary search tree property
+   * and the heap property with respect to heights. If the new node
+   * has a higher priority (height), it becomes the new root.
+   *
+   * @param root The root of the tree to insert into
+   * @param node The node to insert
+   * @return Pointer to the new root of the tree
+   */
+  [[nodiscard]] static constexpr NodeType* insert(NodeType* root,
+                                                  NodeType* node) {
+    static_assert(use_key, "use_key should be true");
+    if (!root) return node;
+    root->apply_deferred();
+    if (height(root) >= height(node)) {
+      if (root->key < node->key) {
+        root->set_right(insert(root->right, node));
+      } else {
+        root->set_left(insert(root->left, node));
+      }
+    } else {
+      split_impl(root, node->key, node->left, node->right);
+      if (node->left) node->left->set_parent(node);
+      if (node->right) node->right->set_parent(node);
+      root = node;
+    }
+    root->update_subtree_data();
+    return root;
+  }
+
+  /**
+   * @brief Inserts a node at the specified inorder index.
+   *
+   * This operation maintains both the binary search tree property
+   * and the heap property with respect to heights. It uses a similar
+   * approach to insert but based on inorder position rather than key.
+   *
+   * @param root The root of the tree
+   * @param node The node to insert
+   * @param index The zero-based index where to insert
+   * @return Pointer to the new root of the tree
+   */
+  [[nodiscard]] static constexpr NodeType* insert_at(NodeType* root,
+                                                     NodeType* node,
+                                                     size_t index) {
+    static_assert(Base::has_size);
+    assert(node);
+    if (!root) {
+      assert(index == 0);
+      return node;
+    }
+    assert(index <= subtree_data::size(root));
+
+    root->apply_deferred();
+    if (height(root) >= height(node)) {
+      const size_t left_size = subtree_data::size(root->left);
+      if (index <= left_size) {
+        root->set_left(insert_at(root->left, node, index));
+      } else {
+        root->set_right(insert_at(root->right, node, index - left_size - 1));
+      }
+    } else {
+      NodeType *l = nullptr, *r = nullptr;
+      split_at_impl(root, index, l, r);
+      node->set_left(l);
+      node->set_right(r);
+      root = node;
+    }
+    root->update_subtree_data();
+    return root;
+  }
+
+  /**
+   * @brief Removes a node with the given key from the tree.
+   *
+   * The removal maintains both the binary search tree property
+   * and the heap property with respect to heights. When a node
+   * is removed, its subtrees are joined together.
+   *
+   * @param root The root of the tree
+   * @param key The key of the node to remove
+   * @param removed_node Reference to store the removed node
+   * @return Pointer to the new root of the tree
+   */
+  [[nodiscard]] static constexpr NodeType* remove(NodeType* root,
+                                                  const Key& key,
+                                                  NodeType*& removed_node) {
+    static_assert(use_key, "use_key should be true");
+    if (!root) return root;
+    root->apply_deferred();
+    if (root->key < key) {
+      root->set_right(remove(root->right, key, removed_node));
+      root->update_subtree_data();
+    } else if (root->key > key) {
+      root->set_left(remove(root->left, key, removed_node));
+      root->update_subtree_data();
+    } else {
+      removed_node = root;
+      root = join(root->left, root->right);
+      if (root) root->set_parent(nullptr);
+      removed_node->reset_links_and_update_subtree_data();
+    }
+    return root;
+  }
+
+  /**
+   * @brief Removes a node at the given index from the tree.
+   *
+   * The remove_at operation removes a node at the specified position in the
+   * inorder traversal of the tree. It maintains both the binary search tree
+   * property and the heap property with respect to heights.
+   *
+   * @param root The root of the tree
+   * @param index The position of the node to remove
+   * @param removed_node Reference to store the removed node
+   * @return Pointer to the new root of the tree
+   */
+  [[nodiscard]] static constexpr NodeType* remove_at(NodeType* root,
+                                                     size_t index,
+                                                     NodeType*& removed_node) {
+    static_assert(Base::has_size, "has_size should be true");
+    if (!root) return root;
+    root->apply_deferred();
+    const size_t left_size = subtree_data::size(root->left);
+    if (index < left_size) {
+      root->set_left(remove_at(root->left, index, removed_node));
+      root->update_subtree_data();
+    } else if (index == left_size) {
+      removed_node = root;
+      root = join(root->left, root->right);
+      if (root) root->set_parent(nullptr);
+      removed_node->reset_links_and_update_subtree_data();
+    } else {
+      root->set_right(
+          remove_at(root->right, index - left_size - 1, removed_node));
+      root->update_subtree_data();
+    }
+    return root;
+  }
+
+  /**
+   * @brief Removes a specific node from the tree.
+   *
+   * This operation requires parent pointers to be enabled.
+   * It joins the left and right subtrees of the removed node
+   * and updates the parent's child pointer.
+   *
+   * @param node The node to remove
+   * @return Pointer to the new root of the tree
+   */
+  [[nodiscard]] static constexpr NodeType* remove_node(NodeType* node) {
+    static_assert(Base::has_parent, "use_parent should be true");
+    assert(node);
+    return remove_node_impl(node);
+  }
+
+  /**
    * @brief Joins two trees together.
    *
    * The join operation maintains both the binary search tree property
@@ -190,12 +348,12 @@ class Treap
   /**
    * @brief Splits a tree at a given inorder index.
    *
-   * The split_at operation divides the tree into two parts based on the size:
-   * - Left part contains the specified number of nodes in inorder traversal
-   * - Right part contains the remaining nodes
+   * The split_at operation divides the tree into two parts based on the given
+   * size: the first lsize nodes in inorder traversal go to the left tree, and
+   * the remaining nodes go to the right tree.
    *
    * @param root The root of the tree to split
-   * @param lsize The size of the left part
+   * @param lsize The size of the left tree
    * @param output_l Reference to store the left part
    * @param output_r Reference to store the right part
    */
@@ -216,129 +374,6 @@ class Treap
       if (output_l) output_l->set_parent(nullptr);
       if (output_r) output_r->set_parent(nullptr);
     }
-  }
-
-  /**
-   * @brief Inserts a node into the tree.
-   *
-   * The insertion maintains both the binary search tree property
-   * and the heap property with respect to heights. If the new node
-   * has a higher priority (height), it becomes the new root.
-   *
-   * @param root The root of the tree to insert into
-   * @param node The node to insert
-   * @return Pointer to the new root of the tree
-   */
-  [[nodiscard]] static constexpr NodeType* insert(NodeType* root,
-                                                  NodeType* node) {
-    static_assert(use_key, "use_key should be true");
-    if (!root) return node;
-    root->apply_deferred();
-    if (height(root) >= height(node)) {
-      if (root->key < node->key) {
-        root->set_right(insert(root->right, node));
-      } else {
-        root->set_left(insert(root->left, node));
-      }
-    } else {
-      split_impl(root, node->key, node->left, node->right);
-      if (node->left) node->left->set_parent(node);
-      if (node->right) node->right->set_parent(node);
-      root = node;
-    }
-    root->update_subtree_data();
-    return root;
-  }
-
-  /**
-   * @brief Inserts a node at the specified inorder index.
-   *
-   * This operation maintains both the binary search tree property
-   * and the heap property with respect to heights. It uses a similar
-   * approach to insert but based on inorder position rather than key.
-   *
-   * @param root The root of the tree
-   * @param node The node to insert
-   * @param index The zero-based index where to insert
-   * @return Pointer to the new root of the tree
-   */
-  [[nodiscard]] static constexpr NodeType* insert_at(NodeType* root,
-                                                     NodeType* node,
-                                                     size_t index) {
-    static_assert(Base::has_size);
-    assert(node);
-    if (!root) {
-      assert(index == 0);
-      return node;
-    }
-    assert(index <= bst::subtree_data::size(root));
-
-    root->apply_deferred();
-    if (height(root) >= height(node)) {
-      const size_t left_size = bst::subtree_data::size(root->left);
-      if (index <= left_size) {
-        root->set_left(insert_at(root->left, node, index));
-      } else {
-        root->set_right(insert_at(root->right, node, index - left_size - 1));
-      }
-    } else {
-      NodeType *l = nullptr, *r = nullptr;
-      split_at_impl(root, index, l, r);
-      node->set_left(l);
-      node->set_right(r);
-      root = node;
-    }
-    root->update_subtree_data();
-    return root;
-  }
-
-  /**
-   * @brief Removes a specific node from the tree.
-   *
-   * This operation requires parent pointers to be enabled.
-   * It joins the left and right subtrees of the removed node
-   * and updates the parent's child pointer.
-   *
-   * @param node The node to remove
-   * @return Pointer to the new root of the tree
-   */
-  [[nodiscard]] static constexpr NodeType* remove_node(NodeType* node) {
-    static_assert(Base::has_parent, "use_parent should be true");
-    assert(node);
-    return remove_node_impl(node);
-  }
-
-  /**
-   * @brief Removes a node with the given key from the tree.
-   *
-   * The removal maintains both the binary search tree property
-   * and the heap property with respect to heights. When a node
-   * is removed, its subtrees are joined together.
-   *
-   * @param root The root of the tree
-   * @param key The key of the node to remove
-   * @param removed_node Reference to store the removed node
-   * @return Pointer to the new root of the tree
-   */
-  [[nodiscard]] static constexpr NodeType* remove(NodeType* root,
-                                                  const Key& key,
-                                                  NodeType*& removed_node) {
-    static_assert(use_key, "use_key should be true");
-    if (!root) return root;
-    root->apply_deferred();
-    if (root->key < key) {
-      root->set_right(remove(root->right, key, removed_node));
-      root->update_subtree_data();
-    } else if (root->key > key) {
-      root->set_left(remove(root->left, key, removed_node));
-      root->update_subtree_data();
-    } else {
-      removed_node = root;
-      root = join(root->left, root->right);
-      if (root) root->set_parent(nullptr);
-      removed_node->reset_links_and_update_subtree_data();
-    }
-    return root;
   }
 
   /**
@@ -378,6 +413,32 @@ class Treap
    */
   [[nodiscard]] static constexpr unsigned height(const NodeType* node) {
     return subtree_data::TreapHeight::get(node);
+  }
+
+  /**
+   * @brief Removes a specific node from the tree.
+   *
+   * This implementation handles the removal of a node by joining
+   * its left and right subtrees and updating the parent's child
+   * pointer. It maintains the treap properties throughout the
+   * operation.
+   *
+   * @param node The node to remove
+   * @return Pointer to the new root of the tree
+   */
+  [[nodiscard]] static constexpr NodeType* remove_node_impl(NodeType* node) {
+    NodeType *p = node->parent, *m = join(node->left, node->right);
+    node->reset_links_and_update_subtree_data();
+    if (!p) {
+      if (m) m->set_parent(nullptr);
+      return m;
+    } else if (node == p->left) {
+      p->set_left(m);
+    } else {
+      p->set_right(m);
+    }
+    subtree_data::propagate_to_root(p);
+    return base::root(p);
   }
 
   /**
@@ -458,7 +519,7 @@ class Treap
                                       NodeType*& output_l,
                                       NodeType*& output_r) {
     p->apply_deferred();
-    const size_t hlsize = bst::subtree_data::size(p->left);
+    const size_t hlsize = subtree_data::size(p->left);
     if (lsize < hlsize) {
       output_r = p;
       split_at_impl(p->left, lsize, output_l, p->left);
@@ -477,32 +538,6 @@ class Treap
       if (p->right) p->right->set_parent(p);
     }
     p->update_subtree_data();
-  }
-
-  /**
-   * @brief Removes a specific node from the tree.
-   *
-   * This implementation handles the removal of a node by joining
-   * its left and right subtrees and updating the parent's child
-   * pointer. It maintains the treap properties throughout the
-   * operation.
-   *
-   * @param node The node to remove
-   * @return Pointer to the new root of the tree
-   */
-  [[nodiscard]] static constexpr NodeType* remove_node_impl(NodeType* node) {
-    NodeType *p = node->parent, *m = join(node->left, node->right);
-    node->reset_links_and_update_subtree_data();
-    if (!p) {
-      if (m) m->set_parent(nullptr);
-      return m;
-    } else if (node == p->left) {
-      p->set_left(m);
-    } else {
-      p->set_right(m);
-    }
-    subtree_data::propagate_to_root(p);
-    return base::root(p);
   }
 };
 
