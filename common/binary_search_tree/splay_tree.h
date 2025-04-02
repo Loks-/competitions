@@ -243,20 +243,19 @@ class SplayTree
   [[nodiscard]] static constexpr NodeType* floor(NodeType*& root,
                                                  const Key& key) {
     static_assert(use_key, "use_key should be true");
-    NodeType *last_less = nullptr, *last_node = root;
+    NodeType* node_floor = nullptr;
     for (NodeType* node = root; node;) {
+      root = node;
       node->apply_deferred();
-      if (node->key < key) {
-        last_less = node;
+      if (node->key <= key) {
+        node_floor = node;
         node = node->right;
       } else {
-        last_node = node;
         node = node->left;
       }
     }
-    root = last_less ? last_less : last_node;
     base::splay(root);
-    return last_less;
+    return node_floor;
   }
 
   /**
@@ -275,33 +274,32 @@ class SplayTree
   [[nodiscard]] static constexpr NodeType* lower_bound(NodeType*& root,
                                                        const Key& key) {
     static_assert(use_key, "use_key should be true");
-    NodeType *last_greater = nullptr, *last_node = root;
+    NodeType* node_ceil = nullptr;
     for (NodeType* node = root; node;) {
+      root = node;
       node->apply_deferred();
       if (node->key < key) {
-        last_node = node;
         node = node->right;
       } else {
-        last_greater = node;
+        node_ceil = node;
         node = node->left;
       }
     }
-    root = last_greater ? last_greater : last_node;
     base::splay(root);
-    return last_greater;
+    return node_ceil;
   }
 
   /**
-   * @brief Splits a tree into two trees based on a key.
+   * @brief Splits a tree at a given key.
    *
-   * The split operation divides the tree into two parts based on the given key:
-   * nodes with keys less than or equal to the key go to the left tree, and
-   * nodes with keys greater than the key go to the right tree.
+   * The split operation divides the tree into two parts based on the key value:
+   * - Left part contains all nodes with keys less than the given key
+   * - Right part contains all nodes with keys greater than or equal to the key
    *
    * @param root The root of the tree to split
-   * @param key The key at which to split
-   * @param output_l The root of the left tree
-   * @param output_r The root of the right tree
+   * @param key The key to split at
+   * @param output_l Reference to store the left part
+   * @param output_r Reference to store the right part
    */
   static constexpr void split(NodeType* root, const Key& key,
                               NodeType*& output_l, NodeType*& output_r) {
@@ -310,9 +308,9 @@ class SplayTree
       output_l = output_r = nullptr;
       return;
     }
-    NodeType* p = floor(root, key);
-    output_l = p;
-    output_r = (p ? split_right(p) : root);
+    NodeType* p = lower_bound(root, key);
+    output_r = p;
+    output_l = (p ? split_left(p) : root);
   }
 
   /**
@@ -325,6 +323,7 @@ class SplayTree
    * @return The inorder index of the node
    */
   [[nodiscard]] static constexpr size_t index(NodeType* node) {
+    assert(node);
     base::splay(node);
     return subtree_data::size(node->left);
   }
