@@ -131,7 +131,8 @@ class ExtendedTree : public BasicTree<NodesManager, Derived> {
    */
   [[nodiscard]] static NodeType* insert_at(NodeType* root, NodeType* node,
                                            size_t index) {
-    static_assert(support_insert_at);
+    static_assert(Derived::support_insert && Base::has_size,
+                  "Insert at should be supported");
     assert(node);
     if (!root) {
       assert(index == 0);

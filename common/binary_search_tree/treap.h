@@ -62,25 +62,6 @@ class Treap
                      Key, NodesManager>;
   using Base = base::BasicTree<NodesManager<NodeType>, Self>;
 
-  /**
-   * @brief Operation support flags.
-   *
-   * These flags determine which operations are supported by the treap:
-   * - support_insert: Whether insertion operations are supported
-   * - support_remove: Whether removal operations are supported
-   * - support_remove_by_node: Whether node-based removal is supported (requires
-   * parent links)
-   * - support_join: Whether two-way join operations are supported
-   * - support_join3: Whether three-way join operations are supported
-   * - support_split: Whether split operations are supported
-   */
-  static constexpr bool support_insert = true;
-  static constexpr bool support_remove = true;
-  static constexpr bool support_remove_by_node = Base::has_parent;
-  static constexpr bool support_join = true;
-  static constexpr bool support_join3 = true;
-  static constexpr bool support_split = true;
-
  public:
   /**
    * @brief Constructs a treap with the specified maximum number of nodes.

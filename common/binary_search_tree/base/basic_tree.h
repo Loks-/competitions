@@ -41,6 +41,23 @@ class BasicTree {
 
   static constexpr bool is_persistent = false;
 
+  /**
+   * @brief Operation support flags.
+   *
+   * These flags determine which operations are supported by the splay tree:
+   * - support_insert: Whether insertion operations are supported
+   * - support_remove: Whether removal operations are supported
+   * - support_remove_by_node: Whether node-based removal is supported
+   * - support_join: Whether two-way join operations are supported
+   * - support_split: Whether split operations are supported
+   */
+  static constexpr bool support_insert = true;
+  static constexpr bool support_remove = true;
+  static constexpr bool support_remove_by_node =
+      Derived::support_remove && has_parent;
+  static constexpr bool support_join = true;
+  static constexpr bool support_split = true;
+
  public:
   /**
    * @brief Constructs a tree with the specified maximum number of nodes.

@@ -59,11 +59,8 @@ class StaticTree
    */
   static constexpr bool support_insert = false;
   static constexpr bool support_remove = false;
-  static constexpr bool support_remove_by_node = false;
   static constexpr bool support_join = false;
-  static constexpr bool support_join3 = false;
   static constexpr bool support_split = false;
-  static constexpr bool support_insert_at = false;
 
   /**
    * @brief Constructs a static tree with the specified maximum number of nodes.
