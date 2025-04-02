@@ -393,9 +393,8 @@ class SplayTree
     if (!r) return l;
     assert(!l->parent && !r->parent);
     NodeType* p = base::right(l);
-    base::splay(p);
     p->set_right(r);
-    p->update_subtree_data();
+    base::splay(p);
     return p;
   }
 
