@@ -390,13 +390,62 @@ class SplayTree
    */
   [[nodiscard]] static constexpr NodeType* insert(NodeType* root,
                                                   NodeType* node) {
-    static_assert(use_key, "use_key should be true");
+    static_assert(Base::has_key, "has_key should be true");
     assert(node);
     if (!root) return node;
-    split(root, node->key, node->left, node->right);
-    if (node->left) node->left->parent = node;
-    if (node->right) node->right->parent = node;
-    node->update_subtree_data();
+    while (true) {
+      root->apply_deferred();
+      if (root->key < node->key) {
+        if (root->right) {
+          root = root->right;
+        } else {
+          root->set_right(node);
+          break;
+        }
+      } else {
+        if (root->left) {
+          root = root->left;
+        } else {
+          root->set_left(node);
+          break;
+        }
+      }
+    }
+    base::splay(node);
+    return node;
+  }
+
+  [[nodiscard]] static constexpr NodeType* insert_at(NodeType* root,
+                                                     NodeType* node,
+                                                     size_t index) {
+    static_assert(Base::has_size, "has_size should be true");
+    assert(node);
+    if (!root) {
+      assert(index == 0);
+      return node;
+    }
+    assert(index <= bst::subtree_data::size(root));
+    while (true) {
+      root->apply_deferred();
+      if (index <= subtree_data::size(root->left)) {
+        if (root->left) {
+          root = root->left;
+        } else {
+          root->set_left(node);
+          break;
+        }
+      } else {
+        index -= subtree_data::size(root->left) + 1;
+        if (root->right) {
+          root = root->right;
+        } else {
+          root->set_right(node);
+          break;
+        }
+      }
+    }
+    assert(index == 0);
+    base::splay(node);
     return node;
   }
 
