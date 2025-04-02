@@ -249,7 +249,9 @@ class BasicTree {
    *
    * @return The number of used nodes
    */
-  [[nodiscard]] constexpr size_t used() const { return nodes_manager_.used(); }
+  [[nodiscard]] constexpr size_t used() const noexcept {
+    return nodes_manager_.used();
+  }
 
   /**
    * @brief Gets a node at a specific index from the node manager.
