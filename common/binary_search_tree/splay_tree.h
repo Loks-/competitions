@@ -359,7 +359,7 @@ class SplayTree
                                                      size_t index,
                                                      NodeType*& removed_node) {
     static_assert(Base::has_size, "has_size should be true");
-    removed_node = at(root, index);
+    removed_node = base::at(root, index);
     return (removed_node ? remove_node_impl(removed_node) : root);
   }
 
