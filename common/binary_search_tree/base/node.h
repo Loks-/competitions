@@ -200,7 +200,7 @@ class Node : public memory::Node {
    *
    * @param node The new left child node
    */
-  constexpr void set_left(Self* node) {
+  constexpr void set_left(Self* node) noexcept {
     left = node;
     if constexpr (has_parent) {
       if (node) node->parent = this;
@@ -215,7 +215,7 @@ class Node : public memory::Node {
    *
    * @param node The new right child node
    */
-  constexpr void set_right(Self* node) {
+  constexpr void set_right(Self* node) noexcept {
     right = node;
     if constexpr (has_parent) {
       if (node) node->parent = this;
@@ -229,7 +229,7 @@ class Node : public memory::Node {
    *
    * @param node The new parent node
    */
-  constexpr void set_parent(Self* node) {
+  constexpr void set_parent(Self* node) noexcept {
     if constexpr (has_parent) {
       parent = node;
     }
@@ -241,7 +241,7 @@ class Node : public memory::Node {
    * This function clears all tree structure links, including parent
    * link if parent links are enabled.
    */
-  constexpr void reset_links() {
+  constexpr void reset_links() noexcept {
     left = right = nullptr;
     if constexpr (has_parent) {
       parent = nullptr;
