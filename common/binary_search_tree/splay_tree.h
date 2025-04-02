@@ -31,6 +31,14 @@ namespace bst {
  * - Support for deferred operations
  * - Support for subtree data aggregation
  *
+ * @note Search and access functions (find, at, lower_bound, etc.) have a
+ * different interface compared to other BST implementations because they modify
+ * the tree structure by splaying the accessed node to the root. This means:
+ *       - The root node of the tree may change after these operations
+ *       - These functions take a reference to the root pointer to update it
+ *       - The caller should not assume the root remains the same after these
+ * operations
+ *
  * @tparam use_key Whether the tree uses keys for ordering
  * @tparam Data The data type stored in each node
  * @tparam AggregatorsTuple Tuple of aggregator types for subtree data
@@ -119,7 +127,7 @@ class SplayTree
   [[nodiscard]] static constexpr NodeType* join(NodeType* l, NodeType* r) {
     if (!l) return r;
     if (!r) return l;
-    assert(!r->parent);
+    assert(!l->parent && !r->parent);
     NodeType* p = base::right(l);
     base::splay(p);
     p->set_right(r);
@@ -157,7 +165,6 @@ class SplayTree
    */
   [[nodiscard]] static constexpr NodeType* split_left(NodeType* p) {
     if (!p) return nullptr;
-    deferred::propagate_to_node(p);  // check if this is needed
     base::splay(p);
     NodeType* l = p->left;
     if (l) {
@@ -179,7 +186,6 @@ class SplayTree
    */
   [[nodiscard]] static constexpr NodeType* split_right(NodeType* p) {
     if (!p) return nullptr;
-    deferred::propagate_to_node(p);  // check if this is needed
     base::splay(p);
     NodeType* r = p->right;
     if (r) {
@@ -194,9 +200,11 @@ class SplayTree
    * @brief Finds a node with a given key in the tree.
    *
    * The find operation searches for a node with the given key and splays the
-   * last accessed node to the root.
+   * last accessed node to the root. This means the root of the tree will change
+   * after this operation.
    *
-   * @param root The root of the tree
+   * @param root The root of the tree (will be updated to point to the splayed
+   * node)
    * @param key The key to search for
    * @return The node with the given key, or nullptr if not found
    */
@@ -224,10 +232,11 @@ class SplayTree
    * key.
    *
    * The floor operation finds the largest node with a key less than or equal to
-   * the given key and splays it to the root.
-   * TODO: redo this function
+   * the given key and splays it to the root. This means the root of the tree
+   * will change after this operation.
    *
-   * @param root The root of the tree
+   * @param root The root of the tree (will be updated to point to the splayed
+   * node)
    * @param key The key to search for
    * @return The largest node with a key less than or equal to the given key
    */
@@ -248,6 +257,38 @@ class SplayTree
     root = last_less ? last_less : last_node;
     base::splay(root);
     return last_less;
+  }
+
+  /**
+   * @brief Finds the smallest node with a key greater than or equal to the
+   * given key.
+   *
+   * The lower_bound operation finds the smallest node with a key greater than
+   * or equal to the given key and splays it to the root. This means the root of
+   * the tree will change after this operation.
+   *
+   * @param root The root of the tree (will be updated to point to the splayed
+   * node)
+   * @param key The key to search for
+   * @return The smallest node with a key greater than or equal to the given key
+   */
+  [[nodiscard]] static constexpr NodeType* lower_bound(NodeType*& root,
+                                                       const Key& key) {
+    static_assert(use_key, "use_key should be true");
+    NodeType *last_greater = nullptr, *last_node = root;
+    for (NodeType* node = root; node;) {
+      node->apply_deferred();
+      if (node->key < key) {
+        last_node = node;
+        node = node->right;
+      } else {
+        last_greater = node;
+        node = node->left;
+      }
+    }
+    root = last_greater ? last_greater : last_node;
+    base::splay(root);
+    return last_greater;
   }
 
   /**
@@ -289,13 +330,14 @@ class SplayTree
   }
 
   /**
-   * @brief Gets the node at a given inorder index.
+   * @brief Finds the node at the given index in the tree.
    *
-   * The at operation finds the node at the given position in the inorder
-   * traversal of the tree and splays it to the root.
+   * The at operation finds the node at the given index and splays it to the
+   * root. This means the root of the tree will change after this operation.
    *
-   * @param root The root of the tree
-   * @param order_index The inorder index to search for
+   * @param root The root of the tree (will be updated to point to the splayed
+   * node)
+   * @param order_index The index to search for
    * @return The node at the given index
    */
   [[nodiscard]] static constexpr NodeType* at(NodeType*& root,
