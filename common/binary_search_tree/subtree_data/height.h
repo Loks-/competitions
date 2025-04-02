@@ -40,7 +40,7 @@ class Height : public Base {
    * @return The height of the subtree.
    */
   template <typename TNode>
-  static constexpr unsigned get(const TNode* node) {
+  static constexpr unsigned get(const TNode* node) noexcept {
     return node ? node->subtree_data.template get<Self>().height : 0;
   }
 
@@ -54,7 +54,7 @@ class Height : public Base {
    * @param node The root of the subtree to update height for.
    */
   template <typename TNode>
-  constexpr void update(const TNode* node) {
+  constexpr void update(const TNode* node) noexcept {
     assert(node);
     height = 1 + std::max(get(node->left), get(node->right));
   }
@@ -82,7 +82,7 @@ class Height : public Base {
  * @return The height of the subtree.
  */
 template <typename TNode>
-constexpr unsigned height(const TNode* node) {
+constexpr unsigned height(const TNode* node) noexcept {
   return Height::get(node);
 }
 

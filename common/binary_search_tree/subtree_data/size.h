@@ -43,7 +43,7 @@ class Size : public Base {
    */
   template <typename TAggregators>
   static constexpr unsigned get(
-      const bst::base::SubtreeData<TAggregators>& subtree_data) {
+      const bst::base::SubtreeData<TAggregators>& subtree_data) noexcept {
     return subtree_data.template get<Self>().size;
   }
 
@@ -58,7 +58,7 @@ class Size : public Base {
    * @return The size of the subtree.
    */
   template <typename TNode>
-  static constexpr unsigned get(const TNode* node) {
+  static constexpr unsigned get(const TNode* node) noexcept {
     return node ? get(node->subtree_data) : 0;
   }
 
@@ -71,7 +71,7 @@ class Size : public Base {
    * @param node The node to set size from.
    */
   template <typename TNode>
-  constexpr void set_node([[maybe_unused]] const TNode* node) {
+  constexpr void set_node([[maybe_unused]] const TNode* node) noexcept {
     assert(node);
     size = 1;
   }
@@ -85,7 +85,7 @@ class Size : public Base {
    * @param node The root of the subtree to copy size from.
    */
   template <typename TNode>
-  constexpr void set_subtree(const TNode* node) {
+  constexpr void set_subtree(const TNode* node) noexcept {
     assert(node);
     size = get(node);
   }
@@ -100,7 +100,7 @@ class Size : public Base {
    * @param node The node being added.
    */
   template <typename TNode>
-  constexpr void add_node([[maybe_unused]] const TNode* node) {
+  constexpr void add_node([[maybe_unused]] const TNode* node) noexcept {
     assert(node);
     size += 1;
   }
@@ -115,7 +115,7 @@ class Size : public Base {
    * @param node The root of the subtree being added.
    */
   template <typename TNode>
-  constexpr void add_subtree(const TNode* node) {
+  constexpr void add_subtree(const TNode* node) noexcept {
     assert(node);
     size += get(node);
   }
@@ -130,7 +130,7 @@ class Size : public Base {
    * @param node The node being inserted.
    */
   template <typename TNode>
-  constexpr void insert_node([[maybe_unused]] const TNode* node) {
+  constexpr void insert_node([[maybe_unused]] const TNode* node) noexcept {
     assert(node);
     size += 1;
   }
@@ -145,7 +145,7 @@ class Size : public Base {
    * @param node The root of the subtree being inserted.
    */
   template <typename TNode>
-  constexpr void insert_subtree(const TNode* node) {
+  constexpr void insert_subtree(const TNode* node) noexcept {
     assert(node);
     size += get(node);
   }
@@ -160,7 +160,7 @@ class Size : public Base {
    * @param node The node being removed.
    */
   template <typename TNode>
-  constexpr void remove_node([[maybe_unused]] const TNode* node) {
+  constexpr void remove_node([[maybe_unused]] const TNode* node) noexcept {
     assert(node);
     size -= 1;
   }
@@ -187,7 +187,7 @@ class Size : public Base {
  */
 template <typename TAggregators>
 constexpr unsigned size(
-    const bst::base::SubtreeData<TAggregators>& subtree_data) {
+    const bst::base::SubtreeData<TAggregators>& subtree_data) noexcept {
   return Size::get(subtree_data);
 }
 
@@ -202,7 +202,7 @@ constexpr unsigned size(
  * @return The size of the subtree.
  */
 template <typename TNode>
-constexpr unsigned size(const TNode* node) {
+constexpr unsigned size(const TNode* node) noexcept {
   return Size::get(node);
 }
 

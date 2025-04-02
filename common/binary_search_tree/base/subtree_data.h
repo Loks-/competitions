@@ -91,7 +91,7 @@ class SubtreeData {
    * @return true if type T is present in aggregators, false otherwise.
    */
   template <typename T>
-  static constexpr bool has() {
+  static constexpr bool has() noexcept {
     return templates::HasType<T, Tuple>::value;
   }
 
@@ -102,7 +102,7 @@ class SubtreeData {
    * @return Reference to the requested aggregator.
    */
   template <typename T>
-  constexpr T& get() {
+  constexpr T& get() noexcept {
     return std::get<T>(aggregators_);
   }
 
@@ -113,7 +113,7 @@ class SubtreeData {
    * @return Const reference to the requested aggregator.
    */
   template <typename T>
-  constexpr const T& get() const {
+  constexpr const T& get() const noexcept {
     return std::get<T>(aggregators_);
   }
 
@@ -135,7 +135,7 @@ class SubtreeData {
   /**
    * @brief Resets the balance tree data for all aggregators.
    */
-  constexpr void bti_reset() {
+  constexpr void bti_reset() noexcept {
     std::apply([](auto&... aggregators) { (aggregators.bti_reset(), ...); },
                aggregators_);
   }
@@ -147,7 +147,7 @@ class SubtreeData {
    * @param node Pointer to the source node to copy from.
    */
   template <typename TNode>
-  constexpr void bti_copy(const TNode* node) {
+  constexpr void bti_copy(const TNode* node) noexcept {
     assert(node);
     std::apply(
         [node](auto&... aggregators) { (aggregators.bti_copy(node), ...); },
@@ -161,7 +161,7 @@ class SubtreeData {
    * @param node Pointer to the node to swap with.
    */
   template <typename TNode>
-  constexpr void bti_swap(TNode* node) {
+  constexpr void bti_swap(TNode* node) noexcept {
     assert(node);
     std::apply(
         [node](auto&... aggregators) { (aggregators.bti_swap(node), ...); },
@@ -404,11 +404,6 @@ class SubtreeData {
   }
 
  protected:
-  /**
-   * @brief Tuple storing instances of all aggregators.
-   */
-  Tuple aggregators_;
-
   // One-aggregator operation helpers
   /**
    * @brief Helper to update subtree data for one aggregator.
@@ -609,6 +604,12 @@ class SubtreeData {
                                         const TNode* node) {
     aggregator.remove_node(node);
   }
+
+ protected:
+  /**
+   * @brief Tuple storing instances of all aggregators.
+   */
+  Tuple aggregators_;
 };
 
 }  // namespace base

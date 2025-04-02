@@ -47,8 +47,8 @@ class Min : public Base {
    * @return The minimum stored in the subtree data.
    */
   template <typename TAggregators>
-  static constexpr MinType get(
-      const bst::base::SubtreeData<TAggregators>& subtree_data) {
+  static constexpr const MinType& get(
+      const bst::base::SubtreeData<TAggregators>& subtree_data) noexcept {
     return subtree_data.template get<Self>().value;
   }
 
@@ -63,7 +63,7 @@ class Min : public Base {
    * @return The minimum value in the subtree.
    */
   template <typename TNode>
-  static constexpr MinType get(const TNode* node) {
+  static constexpr const MinType& get(const TNode* node) noexcept {
     assert(node);
     return get(node->subtree_data);
   }

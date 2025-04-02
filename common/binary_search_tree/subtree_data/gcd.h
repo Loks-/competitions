@@ -46,8 +46,8 @@ class GCD : public Base {
    * @return The GCD stored in the subtree data.
    */
   template <typename TAggregators>
-  static constexpr GCDType get(
-      const bst::base::SubtreeData<TAggregators>& subtree_data) {
+  static constexpr const GCDType& get(
+      const bst::base::SubtreeData<TAggregators>& subtree_data) noexcept {
     return subtree_data.template get<Self>().value;
   }
 

@@ -42,7 +42,7 @@ class IsEmpty : public Base {
    */
   template <typename TAggregators>
   static constexpr bool get(
-      const bst::base::SubtreeData<TAggregators>& subtree_data) {
+      const bst::base::SubtreeData<TAggregators>& subtree_data) noexcept {
     return subtree_data.template get<Self>().is_empty;
   }
 
@@ -55,7 +55,7 @@ class IsEmpty : public Base {
    * @param node The node to set empty state from.
    */
   template <typename TNode>
-  constexpr void set_node([[maybe_unused]] const TNode* node) {
+  constexpr void set_node([[maybe_unused]] const TNode* node) noexcept {
     assert(node);
     assert(is_empty);
     is_empty = false;
@@ -68,7 +68,7 @@ class IsEmpty : public Base {
    * @param node The root of the subtree to copy empty state from.
    */
   template <typename TNode>
-  constexpr void set_subtree([[maybe_unused]] const TNode* node) {
+  constexpr void set_subtree([[maybe_unused]] const TNode* node) noexcept {
     assert(node);
     assert(is_empty);
     is_empty = false;
@@ -81,7 +81,7 @@ class IsEmpty : public Base {
    * @param node The node being added.
    */
   template <typename TNode>
-  constexpr void add_node([[maybe_unused]] const TNode* node) {
+  constexpr void add_node([[maybe_unused]] const TNode* node) noexcept {
     assert(node);
     assert(!is_empty);
   }
@@ -93,7 +93,7 @@ class IsEmpty : public Base {
    * @param node The root of the subtree being added.
    */
   template <typename TNode>
-  constexpr void add_subtree([[maybe_unused]] const TNode* node) {
+  constexpr void add_subtree([[maybe_unused]] const TNode* node) noexcept {
     assert(node);
     assert(!is_empty);
   }
@@ -105,7 +105,7 @@ class IsEmpty : public Base {
    * @param node The node being inserted.
    */
   template <typename TNode>
-  constexpr void insert_node([[maybe_unused]] const TNode* node) {
+  constexpr void insert_node([[maybe_unused]] const TNode* node) noexcept {
     assert(node);
     assert(!is_empty);
   }
@@ -117,7 +117,7 @@ class IsEmpty : public Base {
    * @param node The root of the subtree being inserted.
    */
   template <typename TNode>
-  constexpr void insert_subtree([[maybe_unused]] const TNode* node) {
+  constexpr void insert_subtree([[maybe_unused]] const TNode* node) noexcept {
     assert(node);
     assert(!is_empty);
   }
@@ -129,7 +129,7 @@ class IsEmpty : public Base {
    * @param node The node being removed.
    */
   template <typename TNode>
-  constexpr void remove_node([[maybe_unused]] const TNode* node) {
+  constexpr void remove_node([[maybe_unused]] const TNode* node) noexcept {
     assert(node);
     assert(!is_empty);
   }

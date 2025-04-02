@@ -70,7 +70,7 @@ class RBTColor : public Base {
    * This function is called by the Red-Black tree implementation during
    * node initialization and rebalancing operations.
    */
-  constexpr void bti_reset() {
+  constexpr void bti_reset() noexcept {
     is_black = false;  // New nodes are red
   }
 
@@ -84,7 +84,7 @@ class RBTColor : public Base {
    * @param node The source node to copy color from.
    */
   template <typename TNode>
-  constexpr void bti_copy(const TNode* node) {
+  constexpr void bti_copy(const TNode* node) noexcept {
     assert(node);
     is_black = get(node);
   }
@@ -99,7 +99,7 @@ class RBTColor : public Base {
    * @param node The node to swap colors with.
    */
   template <typename TNode>
-  constexpr void bti_swap(TNode* node) {
+  constexpr void bti_swap(TNode* node) noexcept {
     assert(node);
     std::swap(is_black, node->subtree_data.template get<Self>().is_black);
   }

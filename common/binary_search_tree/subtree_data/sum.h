@@ -45,8 +45,8 @@ class Sum : public Base {
    * @return The sum stored in the subtree data.
    */
   template <typename TAggregators>
-  static constexpr SumType get(
-      const bst::base::SubtreeData<TAggregators>& subtree_data) {
+  static constexpr const SumType& get(
+      const bst::base::SubtreeData<TAggregators>& subtree_data) noexcept {
     return subtree_data.template get<Self>().value;
   }
 
@@ -77,7 +77,7 @@ class Sum : public Base {
    * @return A reference to the sum value stored in the node.
    */
   template <typename TNode>
-  static constexpr SumType& get_ref(TNode* node) {
+  static constexpr SumType& get_ref(TNode* node) noexcept {
     assert(node);
     return node->subtree_data.template get<Self>().value;
   }

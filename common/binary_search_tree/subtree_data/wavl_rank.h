@@ -43,7 +43,7 @@ class WAVLRank : public Base {
    * @return The rank of the node.
    */
   template <typename TNode>
-  static constexpr int get(const TNode* node) {
+  static constexpr int get(const TNode* node) noexcept {
     assert(node);
     return node->subtree_data.template get<Self>().rank;
   }
@@ -59,7 +59,7 @@ class WAVLRank : public Base {
    * @param new_rank The new rank value to set.
    */
   template <typename TNode>
-  static constexpr void set(TNode* node, int new_rank) {
+  static constexpr void set(TNode* node, int new_rank) noexcept {
     assert(node);
     node->subtree_data.template get<Self>().rank = new_rank;
   }
@@ -74,7 +74,7 @@ class WAVLRank : public Base {
    * @param node The node to increment rank for.
    */
   template <typename TNode>
-  static constexpr void inc(TNode* node) {
+  static constexpr void inc(TNode* node) noexcept {
     assert(node);
     ++node->subtree_data.template get<Self>().rank;
   }
@@ -89,7 +89,7 @@ class WAVLRank : public Base {
    * @param node The node to decrement rank for.
    */
   template <typename TNode>
-  static constexpr void dec(TNode* node) {
+  static constexpr void dec(TNode* node) noexcept {
     assert(node);
     --node->subtree_data.template get<Self>().rank;
   }
@@ -101,7 +101,7 @@ class WAVLRank : public Base {
    * This function is called by the WAVL tree implementation during
    * node initialization and rebalancing operations.
    */
-  constexpr void bti_reset() {
+  constexpr void bti_reset() noexcept {
     rank = 0;  // New nodes have rank 0
   }
 
@@ -115,7 +115,7 @@ class WAVLRank : public Base {
    * @param node The source node to copy rank from.
    */
   template <typename TNode>
-  constexpr void bti_copy(const TNode* node) {
+  constexpr void bti_copy(const TNode* node) noexcept {
     assert(node);
     rank = get(node);
   }
@@ -130,7 +130,7 @@ class WAVLRank : public Base {
    * @param node The node to swap ranks with.
    */
   template <typename TNode>
-  constexpr void bti_swap(TNode* node) {
+  constexpr void bti_swap(TNode* node) noexcept {
     assert(node);
     std::swap(rank, node->subtree_data.template get<Self>().rank);
   }

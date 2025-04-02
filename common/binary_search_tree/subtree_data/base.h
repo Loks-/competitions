@@ -114,7 +114,7 @@ class Base {
   /**
    * @brief Resets the balance tree data.
    */
-  constexpr void bti_reset() {}
+  constexpr void bti_reset() noexcept {}
 
   /**
    * @brief Copies balance tree data from another node.
@@ -122,7 +122,7 @@ class Base {
    * @param node The source node to copy from (unused in this implementation).
    */
   template <typename TNode>
-  constexpr void bti_copy(const TNode*) {}
+  constexpr void bti_copy(const TNode*) noexcept {}
 
   /**
    * @brief Swaps balance tree data with another node.
@@ -130,7 +130,7 @@ class Base {
    * @param node The node to swap with (unused in this implementation).
    */
   template <typename TNode>
-  constexpr void bti_swap(TNode*) {}
+  constexpr void bti_swap(TNode*) noexcept {}
 
   /**
    * @brief Updates the subtree data.

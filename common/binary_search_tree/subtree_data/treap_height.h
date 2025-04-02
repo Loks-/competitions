@@ -43,7 +43,7 @@ class TreapHeight : public Base {
    * @return The pseudo-random height of the node.
    */
   template <typename TNode>
-  static constexpr unsigned get(const TNode* node) {
+  static constexpr unsigned get(const TNode* node) noexcept {
     assert(node);
     return node->subtree_data.template get<Self>().treap_height;
   }
@@ -60,7 +60,7 @@ class TreapHeight : public Base {
    * @param height The new height value to set.
    */
   template <typename TNode>
-  static constexpr void set(TNode* node, unsigned height) {
+  static constexpr void set(TNode* node, unsigned height) noexcept {
     assert(node);
     node->subtree_data.template get<Self>().treap_height = height;
   }

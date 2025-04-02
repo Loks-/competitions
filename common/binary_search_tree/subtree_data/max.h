@@ -47,8 +47,8 @@ class Max : public Base {
    * @return The maximum stored in the subtree data.
    */
   template <typename TAggregators>
-  static constexpr MaxType get(
-      const bst::base::SubtreeData<TAggregators>& subtree_data) {
+  static constexpr const MaxType& get(
+      const bst::base::SubtreeData<TAggregators>& subtree_data) noexcept {
     return subtree_data.template get<Self>().value;
   }
 
@@ -63,7 +63,7 @@ class Max : public Base {
    * @return The maximum value in the subtree.
    */
   template <typename TNode>
-  static constexpr MaxType get(const TNode* node) {
+  static constexpr const MaxType& get(const TNode* node) noexcept {
     assert(node);
     return get(node->subtree_data);
   }
