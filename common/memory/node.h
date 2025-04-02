@@ -33,7 +33,7 @@ class Node {
    *
    * @param index A unique index assigned to this node by NodesManager
    */
-  constexpr void initialize(unsigned) {}
+  constexpr void initialize(unsigned) noexcept {}
 
   /**
    * @brief Prepares a node for return to the free pool.
@@ -45,7 +45,7 @@ class Node {
    * The default implementation does nothing, but derived classes can override
    * this to clean up their specific fields.
    */
-  constexpr void release() {}
+  constexpr void release() noexcept {}
 
   /**
    * @brief Prepares a node for reuse from the free pool.
@@ -58,7 +58,7 @@ class Node {
    * The default implementation does nothing, but derived classes can override
    * this to implement their specific reuse logic.
    */
-  constexpr void reuse() {}
+  constexpr void reuse() noexcept {}
 };
 
 }  // namespace memory

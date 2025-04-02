@@ -204,7 +204,9 @@ class ContiguousNodesManager {
    * @param index The index of the node in the contiguous block.
    * @return Pointer to the node at the specified index.
    */
-  [[nodiscard]] constexpr NodeType* at(size_t index) { return first_ + index; }
+  [[nodiscard]] constexpr NodeType* at(size_t index) noexcept {
+    return first_ + index;
+  }
 
   /**
    * @brief Returns a pointer to a node by its raw index (const version).
@@ -214,7 +216,7 @@ class ContiguousNodesManager {
    * @param index The index of the node in the contiguous block.
    * @return Const pointer to the node at the specified index.
    */
-  [[nodiscard]] constexpr const NodeType* at(size_t index) const {
+  [[nodiscard]] constexpr const NodeType* at(size_t index) const noexcept {
     return first_ + index;
   }
 
