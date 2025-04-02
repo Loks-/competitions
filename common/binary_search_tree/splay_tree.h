@@ -300,7 +300,7 @@ class SplayTree
       assert(index == 0);
       return node;
     }
-    assert(index <= bst::subtree_data::size(root));
+    assert(index <= subtree_data::size(root));
     while (true) {
       root->apply_deferred();
       if (index <= subtree_data::size(root->left)) {
