@@ -364,8 +364,20 @@ class Treap
    *
    * This implementation uses a stack-based approach to maintain the treap
    * properties while building the tree. It processes nodes in sequence and
-   * maintains the heap property with respect to heights.
+   * maintains the heap property with respect to heights. The template parameter
+   * update_leafs is not used as subtree data is always updated to maintain
+   * correct treap properties.
    *
+   * The algorithm works as follows:
+   * 1. Processes nodes in sequence, maintaining a stack of nodes
+   * 2. For each new node:
+   *    - If it has lower priority than the last node, becomes its right child
+   *    - If it has higher priority than the root, becomes the new root
+   *    - Otherwise, finds the right position in the stack to maintain heap
+   * property
+   * 3. Updates subtree data for all affected nodes
+   *
+   * @tparam update_leafs Unused parameter (kept for interface compatibility)
    * @param nodes Vector of node pointers to build the treap from
    * @return Pointer to the root of the built treap
    */
