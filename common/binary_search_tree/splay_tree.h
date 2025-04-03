@@ -39,14 +39,14 @@ namespace bst {
  *       - The caller should not assume the root remains the same after these
  * operations
  *
- * @tparam use_key Whether the tree uses keys for ordering
+ * @tparam has_key Whether the tree uses keys for ordering
  * @tparam Data The data type stored in each node
  * @tparam AggregatorsTuple Tuple of aggregator types for subtree data
  * @tparam DeferredTuple Tuple of deferred operation types
- * @tparam Key The key type used for ordering (if use_key is true)
+ * @tparam Key The key type used for ordering (if has_key is true)
  * @tparam NodesManager The node manager type for memory management
  */
-template <bool use_key, typename Data,
+template <bool has_key, typename Data,
           typename AggregatorsTuple = std::tuple<subtree_data::Size>,
           typename DeferredTuple = std::tuple<>, typename Key = int64_t,
           template <class> class NodesManager = memory::ContiguousNodesManager>
@@ -54,15 +54,15 @@ class SplayTree
     : public base::BasicTree<
           NodesManager<
               base::Node<Data, base::SubtreeData<AggregatorsTuple>,
-                         base::Deferred<DeferredTuple>, true, use_key, Key>>,
-          SplayTree<use_key, Data, AggregatorsTuple, DeferredTuple, Key,
+                         base::Deferred<DeferredTuple>, true, has_key, Key>>,
+          SplayTree<has_key, Data, AggregatorsTuple, DeferredTuple, Key,
                     NodesManager>> {
  public:
   using SubtreeDataType = base::SubtreeData<AggregatorsTuple>;
   using DeferredType = base::Deferred<DeferredTuple>;
   using NodeType =
-      base::Node<Data, SubtreeDataType, DeferredType, true, use_key, Key>;
-  using Self = SplayTree<use_key, Data, AggregatorsTuple, DeferredTuple, Key,
+      base::Node<Data, SubtreeDataType, DeferredType, true, has_key, Key>;
+  using Self = SplayTree<has_key, Data, AggregatorsTuple, DeferredTuple, Key,
                          NodesManager>;
   using Base = base::BasicTree<NodesManager<NodeType>, Self>;
 
@@ -96,7 +96,7 @@ class SplayTree
    */
   [[nodiscard]] static constexpr NodeType* find(NodeType*& root,
                                                 const Key& key) {
-    static_assert(use_key, "use_key should be true");
+    static_assert(has_key, "has_key should be true");
     NodeType* node = root;
     for (; node;) {
       root = node;
@@ -128,7 +128,7 @@ class SplayTree
    */
   [[nodiscard]] static constexpr NodeType* floor(NodeType*& root,
                                                  const Key& key) {
-    static_assert(use_key, "use_key should be true");
+    static_assert(has_key, "has_key should be true");
     NodeType* node_floor = nullptr;
     for (NodeType* node = root; node;) {
       root = node;
@@ -159,7 +159,7 @@ class SplayTree
    */
   [[nodiscard]] static constexpr NodeType* lower_bound(NodeType*& root,
                                                        const Key& key) {
-    static_assert(use_key, "use_key should be true");
+    static_assert(has_key, "has_key should be true");
     NodeType* node_ceil = nullptr;
     for (NodeType* node = root; node;) {
       root = node;
@@ -222,7 +222,7 @@ class SplayTree
    */
   [[nodiscard]] static constexpr NodeType* insert(NodeType* root,
                                                   NodeType* node) {
-    static_assert(Base::has_key, "has_key should be true");
+    static_assert(has_key, "has_key should be true");
     assert(node);
     if (!root) return node;
     while (true) {
@@ -306,7 +306,7 @@ class SplayTree
   [[nodiscard]] static constexpr NodeType* remove(NodeType* root,
                                                   const Key& key,
                                                   NodeType*& removed_node) {
-    static_assert(Base::has_key, "has_key should be true");
+    static_assert(has_key, "has_key should be true");
     removed_node = find(root, key);
     return (removed_node ? remove_node_impl(removed_node) : root);
   }
@@ -440,7 +440,7 @@ class SplayTree
    */
   static constexpr void split(NodeType* root, const Key& key,
                               NodeType*& output_l, NodeType*& output_r) {
-    static_assert(use_key, "use_key should be true");
+    static_assert(has_key, "has_key should be true");
     if (!root) {
       output_l = output_r = nullptr;
       return;
@@ -492,7 +492,7 @@ class SplayTree
    */
   [[nodiscard]] static constexpr NodeType* merge(NodeType* root1,
                                                  NodeType* root2) {
-    static_assert(use_key, "use_key should be true");
+    static_assert(has_key, "has_key should be true");
     static_assert(SubtreeDataType::has_size, "info should contain size");
     if (!root1) return root2;
     if (!root2) return root1;

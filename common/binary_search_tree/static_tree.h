@@ -26,28 +26,28 @@ namespace bst {
  * The tree is built using a balanced construction algorithm that ensures
  * optimal height and maintains the binary search tree property.
  *
- * @tparam use_parent Whether nodes maintain parent pointers
+ * @tparam has_parent Whether nodes maintain parent pointers
  * @tparam Data The data type stored in each node
  * @tparam AggregatorsTuple Tuple of aggregator types for subtree data
  * @tparam DeferredTuple Tuple of deferred operation types
  * @tparam Key The key type used for ordering
  */
-template <bool use_parent, class Data,
+template <bool has_parent, class Data,
           class AggregatorsTuple = std::tuple<subtree_data::Size>,
           class DeferredTuple = std::tuple<>, class Key = int64_t>
 class StaticTree
     : public base::BasicTree<
           memory::ContiguousNodesManager<
               base::Node<Data, base::SubtreeData<AggregatorsTuple>,
-                         base::Deferred<DeferredTuple>, use_parent, true, Key>>,
-          StaticTree<use_parent, Data, AggregatorsTuple, DeferredTuple, Key>> {
+                         base::Deferred<DeferredTuple>, has_parent, true, Key>>,
+          StaticTree<has_parent, Data, AggregatorsTuple, DeferredTuple, Key>> {
  public:
   using SubtreeDataType = base::SubtreeData<AggregatorsTuple>;
   using DeferredType = base::Deferred<DeferredTuple>;
   using NodeType =
-      base::Node<Data, SubtreeDataType, DeferredType, use_parent, true, Key>;
+      base::Node<Data, SubtreeDataType, DeferredType, has_parent, true, Key>;
   using Self =
-      StaticTree<use_parent, Data, AggregatorsTuple, DeferredTuple, Key>;
+      StaticTree<has_parent, Data, AggregatorsTuple, DeferredTuple, Key>;
   using Base = base::BasicTree<memory::ContiguousNodesManager<NodeType>, Self>;
 
   /**

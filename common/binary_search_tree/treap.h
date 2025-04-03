@@ -31,15 +31,15 @@ namespace bst {
  * - Efficient split and join operations
  * - Support for deferred operations
  *
- * @tparam use_key Whether the tree uses keys for ordering
- * @tparam use_parent Whether nodes maintain parent pointers
+ * @tparam has_key Whether the tree uses keys for ordering
+ * @tparam has_parent Whether nodes maintain parent pointers
  * @tparam Data The data type stored in each node
  * @tparam AggregatorsTuple Tuple of aggregator types for subtree data
  * @tparam DeferredTuple Tuple of deferred operation types
- * @tparam Key The key type used for ordering (if use_key is true)
+ * @tparam Key The key type used for ordering (if has_key is true)
  * @tparam NodesManager The node manager type for memory management
  */
-template <bool use_key, bool use_parent, typename Data,
+template <bool has_key, bool has_parent, typename Data,
           typename AggregatorsTuple = std::tuple<subtree_data::Size>,
           typename DeferredTuple = std::tuple<>, typename Key = int64_t,
           template <class> class NodesManager = memory::ContiguousNodesManager>
@@ -49,16 +49,16 @@ class Treap
               Data,
               base::SubtreeData<templates::PrependT<subtree_data::TreapHeight,
                                                     AggregatorsTuple>>,
-              base::Deferred<DeferredTuple>, use_parent, use_key, Key>>,
-          Treap<use_key, use_parent, Data, AggregatorsTuple, DeferredTuple, Key,
+              base::Deferred<DeferredTuple>, has_parent, has_key, Key>>,
+          Treap<has_key, has_parent, Data, AggregatorsTuple, DeferredTuple, Key,
                 NodesManager>> {
  public:
   using SubtreeDataType = base::SubtreeData<
       templates::PrependT<subtree_data::TreapHeight, AggregatorsTuple>>;
   using DeferredType = base::Deferred<DeferredTuple>;
   using NodeType =
-      base::Node<Data, SubtreeDataType, DeferredType, use_parent, use_key, Key>;
-  using Self = Treap<use_key, use_parent, Data, AggregatorsTuple, DeferredTuple,
+      base::Node<Data, SubtreeDataType, DeferredType, has_parent, has_key, Key>;
+  using Self = Treap<has_key, has_parent, Data, AggregatorsTuple, DeferredTuple,
                      Key, NodesManager>;
   using Base = base::BasicTree<NodesManager<NodeType>, Self>;
 
@@ -85,7 +85,7 @@ class Treap
    */
   [[nodiscard]] static constexpr NodeType* insert(NodeType* root,
                                                   NodeType* node) {
-    static_assert(use_key, "use_key should be true");
+    static_assert(has_key, "has_key should be true");
     if (!root) return node;
     root->apply_deferred();
     if (height(root) >= height(node)) {
@@ -161,7 +161,7 @@ class Treap
   [[nodiscard]] static constexpr NodeType* remove(NodeType* root,
                                                   const Key& key,
                                                   NodeType*& removed_node) {
-    static_assert(use_key, "use_key should be true");
+    static_assert(has_key, "has_key should be true");
     if (!root) return root;
     root->apply_deferred();
     if (root->key < key) {
@@ -225,7 +225,7 @@ class Treap
    * @return Pointer to the new root of the tree
    */
   [[nodiscard]] static constexpr NodeType* remove_node(NodeType* node) {
-    static_assert(Base::has_parent, "use_parent should be true");
+    static_assert(has_parent, "has_parent should be true");
     assert(node);
     return remove_node_impl(node);
   }
@@ -275,7 +275,7 @@ class Treap
    */
   static constexpr void split(NodeType* root, const Key& key,
                               NodeType*& output_l, NodeType*& output_r) {
-    static_assert(use_key, "use_key should be true");
+    static_assert(has_key, "has_key should be true");
     if (!root) {
       output_l = output_r = nullptr;
     } else {
