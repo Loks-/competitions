@@ -1,6 +1,6 @@
 #pragma once
 
-#include "common/binary_search_tree/base/basic_tree.h"
+#include "common/binary_search_tree/base/base_tree.h"
 #include "common/binary_search_tree/base/deferred.h"
 #include "common/binary_search_tree/base/node.h"
 #include "common/binary_search_tree/base/subtree_data.h"
@@ -36,7 +36,7 @@ template <bool has_parent, class Data,
           class AggregatorsTuple = std::tuple<subtree_data::Size>,
           class DeferredTuple = std::tuple<>, class Key = int64_t>
 class StaticTree
-    : public base::BasicTree<
+    : public base::BaseTree<
           memory::ContiguousNodesManager<
               base::Node<Data, base::SubtreeData<AggregatorsTuple>,
                          base::Deferred<DeferredTuple>, has_parent, true, Key>>,
@@ -48,7 +48,7 @@ class StaticTree
       base::Node<Data, SubtreeDataType, DeferredType, has_parent, true, Key>;
   using Self =
       StaticTree<has_parent, Data, AggregatorsTuple, DeferredTuple, Key>;
-  using Base = base::BasicTree<memory::ContiguousNodesManager<NodeType>, Self>;
+  using Base = base::BaseTree<memory::ContiguousNodesManager<NodeType>, Self>;
 
   /**
    * @brief Operation support flags.

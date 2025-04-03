@@ -1,7 +1,7 @@
 #pragma once
 
 #include "common/base.h"
-#include "common/binary_search_tree/base/basic_tree.h"
+#include "common/binary_search_tree/base/base_tree.h"
 #include "common/binary_search_tree/base/deferred.h"
 #include "common/binary_search_tree/base/node.h"
 #include "common/binary_search_tree/base/root.h"
@@ -44,7 +44,7 @@ template <bool has_key, bool has_parent, typename Data,
           typename DeferredTuple = std::tuple<>, typename Key = int64_t,
           template <class> class NodesManager = memory::ContiguousNodesManager>
 class Treap
-    : public base::BasicTree<
+    : public base::BaseTree<
           NodesManager<base::Node<
               Data,
               base::SubtreeData<templates::PrependT<subtree_data::TreapHeight,
@@ -60,7 +60,7 @@ class Treap
       base::Node<Data, SubtreeDataType, DeferredType, has_parent, has_key, Key>;
   using Self = Treap<has_key, has_parent, Data, AggregatorsTuple, DeferredTuple,
                      Key, NodesManager>;
-  using Base = base::BasicTree<NodesManager<NodeType>, Self>;
+  using Base = base::BaseTree<NodesManager<NodeType>, Self>;
 
   friend Base;
 

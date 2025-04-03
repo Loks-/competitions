@@ -8,12 +8,12 @@
 namespace bst {
 namespace base {
 /**
- * @brief Base class for basic binary search tree operations.
+ * @brief Base class for base binary search tree operations.
  *
  * This class provides core functionality for binary search trees:
  * - Type definitions and feature flags
  * - Node management (creation and release)
- * - Basic tree operations that require access to node manager
+ * - Base tree operations that require access to node manager
  * - Tree building and manipulation operations
  *
  * @tparam NodesManager The node manager type that handles node allocation and
@@ -21,7 +21,7 @@ namespace base {
  * @tparam Derived The derived class type (for CRTP)
  */
 template <typename NodesManager, typename Derived>
-class BasicTree {
+class BaseTree {
  public:
   /**
    * @brief Type aliases for better readability and type safety.
@@ -65,7 +65,7 @@ class BasicTree {
    *
    * @param max_nodes The maximum number of nodes to reserve
    */
-  [[nodiscard]] explicit constexpr BasicTree(size_t max_nodes)
+  [[nodiscard]] explicit constexpr BaseTree(size_t max_nodes)
       : nodes_manager_(max_nodes) {}
 
   /**
@@ -73,7 +73,7 @@ class BasicTree {
    *
    * Creates a tree with no initial capacity.
    */
-  [[nodiscard]] constexpr BasicTree() : BasicTree(0) {}
+  [[nodiscard]] constexpr BaseTree() : BaseTree(0) {}
 
   /**
    * @brief Returns a pointer to the derived class instance.

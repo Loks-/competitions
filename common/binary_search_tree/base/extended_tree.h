@@ -2,7 +2,7 @@
 
 #include "common/base.h"
 #include "common/binary_search_tree/base/at.h"
-#include "common/binary_search_tree/base/basic_tree.h"
+#include "common/binary_search_tree/base/base_tree.h"
 #include "common/binary_search_tree/base/find.h"
 
 #include <vector>
@@ -12,7 +12,7 @@ namespace base {
 /**
  * @brief Extended base class for binary search tree operations.
  *
- * This class extends BasicTree with additional functionality:
+ * This class extends BaseTree with additional functionality:
  * - Tree building operations
  * - Insert and remove operations
  * - Join and split operations
@@ -23,9 +23,9 @@ namespace base {
  * @tparam Derived The derived class type (for CRTP)
  */
 template <typename NodesManager, typename Derived>
-class ExtendedTree : public BasicTree<NodesManager, Derived> {
+class ExtendedTree : public BaseTree<NodesManager, Derived> {
  public:
-  using Base = BasicTree<NodesManager, Derived>;
+  using Base = BaseTree<NodesManager, Derived>;
   using typename Base::DataType;
   using typename Base::KeyType;
   using typename Base::NodeType;

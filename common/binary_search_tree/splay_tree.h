@@ -2,7 +2,7 @@
 
 #include "common/base.h"
 #include "common/binary_search_tree/base/at.h"
-#include "common/binary_search_tree/base/basic_tree.h"
+#include "common/binary_search_tree/base/base_tree.h"
 #include "common/binary_search_tree/base/deferred.h"
 #include "common/binary_search_tree/base/node.h"
 #include "common/binary_search_tree/base/right.h"
@@ -51,7 +51,7 @@ template <bool has_key, typename Data,
           typename DeferredTuple = std::tuple<>, typename Key = int64_t,
           template <class> class NodesManager = memory::ContiguousNodesManager>
 class SplayTree
-    : public base::BasicTree<
+    : public base::BaseTree<
           NodesManager<
               base::Node<Data, base::SubtreeData<AggregatorsTuple>,
                          base::Deferred<DeferredTuple>, true, has_key, Key>>,
@@ -64,7 +64,7 @@ class SplayTree
       base::Node<Data, SubtreeDataType, DeferredType, true, has_key, Key>;
   using Self = SplayTree<has_key, Data, AggregatorsTuple, DeferredTuple, Key,
                          NodesManager>;
-  using Base = base::BasicTree<NodesManager<NodeType>, Self>;
+  using Base = base::BaseTree<NodesManager<NodeType>, Self>;
 
  public:
   /**
