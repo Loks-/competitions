@@ -1,5 +1,6 @@
 #pragma once
 
+#include "common/base.h"
 #include "common/binary_search_tree/subtree_data/size.h"
 
 #include <utility>
@@ -34,6 +35,10 @@ template <typename TreeType, typename TNode>
   // Handle empty tree cases
   if (!root1) return root2;
   if (!root2) return root1;
+
+  // Verify that both nodes are actually roots of their trees
+  assert(root1->is_root());
+  assert(root2->is_root());
 
   // Optimize by choosing the larger tree as the root
   if constexpr (TNode::SubtreeDataType::has_size) {

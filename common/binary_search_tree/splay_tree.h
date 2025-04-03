@@ -496,6 +496,11 @@ class SplayTree
     static_assert(SubtreeDataType::has_size, "info should contain size");
     if (!root1) return root2;
     if (!root2) return root1;
+
+    // Verify that both nodes are actually roots of their trees
+    assert(root1->is_root());
+    assert(root2->is_root());
+
     if (subtree_data::size(root1) < subtree_data::size(root2))
       std::swap(root1, root2);
     NodeType* m = at(root1, subtree_data::size(root1) / 2);
