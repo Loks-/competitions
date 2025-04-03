@@ -46,6 +46,12 @@ class WAVLTree
  public:
   explicit WAVLTree(size_t max_nodes) : TBTree(max_nodes) {}
 
+  static TNode* build_tree(const std::vector<TNode*>& nodes) {
+    TNode* root = build_tree_impl(nodes, 0, nodes.size());
+    if (root) root->set_parent(nullptr);
+    return root;
+  }
+
  protected:
   static constexpr int Rank(TNode* node) {
     return node ? subtree_data::WAVLRank::get(node) : -1;

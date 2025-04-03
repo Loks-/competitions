@@ -3,6 +3,7 @@
 #include "common/base.h"
 #include "common/binary_search_tree/base/at.h"
 #include "common/binary_search_tree/base/basic_tree.h"
+#include "common/binary_search_tree/base/build_tree.h"
 #include "common/binary_search_tree/base/find.h"
 
 #include <vector>
@@ -102,9 +103,7 @@ class ExtendedTree : public BasicTree<NodesManager, Derived> {
    */
   [[nodiscard]] static NodeType* build_tree(
       const std::vector<NodeType*>& nodes) {
-    NodeType* root = Derived::build_tree_impl(nodes, 0, nodes.size());
-    if (root) root->set_parent(nullptr);
-    return root;
+    return bst::base::build_tree(nodes);
   }
 
   /**
@@ -234,26 +233,6 @@ class ExtendedTree : public BasicTree<NodesManager, Derived> {
                        NodeType*& output_r);
 
  protected:
-  /**
-   * @brief Implementation of build_tree that can be overridden by derived
-   * classes.
-   *
-   * @param nodes Vector of nodes to build the tree from
-   * @param first Starting index in the nodes vector
-   * @param last Ending index in the nodes vector
-   * @return Pointer to the root of the built tree
-   */
-  static NodeType* build_tree_impl(const std::vector<NodeType*>& nodes,
-                                   size_t first, size_t last) {
-    if (first >= last) return nullptr;
-    size_t m = (first + last) / 2;
-    NodeType* root = nodes[m];
-    root->set_left(build_tree_impl(nodes, first, m));
-    root->set_right(build_tree_impl(nodes, m + 1, last));
-    root->update_subtree_data();
-    return root;
-  }
-
   /**
    * @brief Implementation of insert that can be overridden by derived classes.
    *

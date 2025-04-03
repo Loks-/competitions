@@ -83,7 +83,7 @@ class StaticTree
    */
   [[nodiscard]] static constexpr NodeType* build_tree(
       const std::vector<NodeType*>& nodes) {
-    return base::build_tree(nodes, 0, nodes.size());
+    return base::build_tree(nodes);
   }
 };
 

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "common/base.h"
+#include "common/binary_search_tree/base/build_tree.h"
 #include "common/binary_search_tree/base/deferred.h"
 #include "common/binary_search_tree/base/extended_tree.h"
 #include "common/binary_search_tree/base/insert_by_key.h"
@@ -85,7 +86,7 @@ class RedBlackTree
     if (nodes.size() == 0) return nullptr;
     size_t h = 0;
     for (; nodes.size() >= (1ull << h);) ++h;
-    TNode* root = TTree::build_tree(nodes);
+    TNode* root = base::build_tree(nodes);
     BuildTreeIFixColorsR(root, h - 1);
     SetColor(root, true);
     return root;
