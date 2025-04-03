@@ -27,16 +27,12 @@ template <bool apply_deferred = true, typename TNode>
   if (!root) return nullptr;
 
   // Apply deferred computations if requested
-  if constexpr (apply_deferred) {
-    root->apply_deferred();
-  }
+  if constexpr (apply_deferred) root->apply_deferred();
 
   // Traverse rightmost path
   while (root->right) {
     root = root->right;
-    if constexpr (apply_deferred) {
-      root->apply_deferred();
-    }
+    if constexpr (apply_deferred) root->apply_deferred();
   }
 
   return root;

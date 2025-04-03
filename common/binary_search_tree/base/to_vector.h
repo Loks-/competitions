@@ -38,9 +38,7 @@ constexpr void collect_inorder(
   if (!node) return;
 
   // Apply deferred computations if requested
-  if constexpr (apply_deferred) {
-    node->apply_deferred();
-  }
+  if constexpr (apply_deferred) node->apply_deferred();
 
   collect_inorder<apply_deferred>(node->left, output, std::forward<F>(f));
   output.push_back(f(node));
@@ -77,9 +75,8 @@ template <bool apply_deferred = true, typename TNode,
 to_vector(TNode* root, F&& f = {}) {
   std::vector<typename std::invoke_result<F, const TNode*>::type> output;
 
-  if constexpr (TNode::SubtreeDataType::has_size) {
+  if constexpr (TNode::SubtreeDataType::has_size)
     output.reserve(bst::subtree_data::size(root));
-  }
 
   collect_inorder<apply_deferred>(root, output, std::forward<F>(f));
 

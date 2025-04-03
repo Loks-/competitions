@@ -31,9 +31,7 @@ template <bool apply_deferred = true, typename TNode>
   if (!node) return nullptr;
 
   // Apply deferred computations if requested
-  if constexpr (apply_deferred) {
-    node->apply_deferred();
-  }
+  if constexpr (apply_deferred) node->apply_deferred();
 
   // If node has right child, successor is the leftmost node in right subtree
   if (node->right) return left<apply_deferred>(node->right);

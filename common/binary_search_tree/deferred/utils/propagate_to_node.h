@@ -46,9 +46,7 @@ inline void propagate_to_node(TNode* node) {
  */
 template <typename TNode>
 inline void propagate_for_data_access(TNode* node) {
-  if constexpr (TNode::DeferredType::modify_data) {
-    propagate_to_node(node);
-  }
+  if constexpr (TNode::DeferredType::modify_data) propagate_to_node(node);
 }
 
 /**
@@ -62,9 +60,7 @@ inline void propagate_for_data_access(TNode* node) {
  */
 template <typename TNode>
 inline void propagate_for_key_access(TNode* node) {
-  if constexpr (TNode::DeferredType::modify_keys) {
-    propagate_to_node(node);
-  }
+  if constexpr (TNode::DeferredType::modify_keys) propagate_to_node(node);
 }
 
 /**
@@ -78,9 +74,8 @@ inline void propagate_for_key_access(TNode* node) {
  */
 template <typename TNode>
 inline void propagate_for_tree_structure_access(TNode* node) {
-  if constexpr (TNode::DeferredType::modify_tree_structure) {
+  if constexpr (TNode::DeferredType::modify_tree_structure)
     propagate_to_node(node);
-  }
 }
 
 /**
@@ -94,9 +89,8 @@ inline void propagate_for_tree_structure_access(TNode* node) {
  */
 template <typename TNode>
 inline void propagate_for_nodes_order_access(TNode* node) {
-  if constexpr (TNode::DeferredType::modify_nodes_order) {
+  if constexpr (TNode::DeferredType::modify_nodes_order)
     propagate_to_node(node);
-  }
 }
 
 }  // namespace deferred

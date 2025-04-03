@@ -21,11 +21,8 @@ namespace auto_ {
 template <typename Tree, bool apply_deferred = true, typename TNode>
 [[nodiscard]] constexpr TNode* find(TNode*& root,
                                     const typename TNode::KeyType& key) {
-  if constexpr (requires { Tree::find; }) {
-    return Tree::find(root, key);
-  } else {
-    return bst::base::find<apply_deferred>(root, key);
-  }
+  if constexpr (requires { Tree::find; }) return Tree::find(root, key);
+  return bst::base::find<apply_deferred>(root, key);
 }
 
 }  // namespace auto_

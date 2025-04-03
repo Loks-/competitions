@@ -35,9 +35,7 @@ template <bool apply_deferred = true, typename TNode>
   if (index >= bst::subtree_data::size(root)) return nullptr;
 
   for (TNode* node = root; node;) {
-    if constexpr (apply_deferred) {
-      node->apply_deferred();
-    }
+    if constexpr (apply_deferred) node->apply_deferred();
 
     const size_t ls = bst::subtree_data::size(node->left);
     if (index < ls) {

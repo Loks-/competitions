@@ -30,9 +30,7 @@ template <bool apply_deferred = true, typename TNode>
   static_assert(TNode::has_key, "has_key should be true");
 
   for (TNode* node = root; node;) {
-    if constexpr (apply_deferred) {
-      node->apply_deferred();
-    }
+    if constexpr (apply_deferred) node->apply_deferred();
 
     if (node->key < key) {
       node = node->right;

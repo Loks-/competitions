@@ -21,11 +21,8 @@ namespace auto_ {
  */
 template <typename Tree, bool apply_deferred = true, typename TNode>
 [[nodiscard]] constexpr TNode* at(TNode*& root, size_t index) {
-  if constexpr (requires { Tree::at; }) {
-    return Tree::at(root, index);
-  } else {
-    return bst::base::at<apply_deferred>(root, index);
-  }
+  if constexpr (requires { Tree::at; }) return Tree::at(root, index);
+  return bst::base::at<apply_deferred>(root, index);
 }
 
 }  // namespace auto_

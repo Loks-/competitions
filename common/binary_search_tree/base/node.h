@@ -115,9 +115,7 @@ class Node : public memory::Node {
    * Initializes the node with default-constructed data.
    */
   constexpr Node() : data() {
-    if constexpr (has_parent) {
-      parent = nullptr;
-    }
+    if constexpr (has_parent) parent = nullptr;
   }
 
   /**
@@ -128,9 +126,7 @@ class Node : public memory::Node {
    * @param data_ The initial data to store in the node
    */
   constexpr explicit Node(const DataType& data_) : data(data_) {
-    if constexpr (has_parent) {
-      parent = nullptr;
-    }
+    if constexpr (has_parent) parent = nullptr;
   }
 
   /**
@@ -258,9 +254,7 @@ class Node : public memory::Node {
    * @param node The new parent node
    */
   constexpr void set_parent(Self* node) noexcept {
-    if constexpr (has_parent) {
-      parent = node;
-    }
+    if constexpr (has_parent) parent = node;
   }
 
   /**
@@ -271,9 +265,7 @@ class Node : public memory::Node {
    */
   constexpr void reset_links() noexcept {
     left = right = nullptr;
-    if constexpr (has_parent) {
-      parent = nullptr;
-    }
+    if constexpr (has_parent) parent = nullptr;
   }
 };
 

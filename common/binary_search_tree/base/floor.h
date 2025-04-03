@@ -32,9 +32,7 @@ template <bool apply_deferred = true, typename TNode>
 
   TNode* last_less = nullptr;
   for (TNode* node = root; node;) {
-    if constexpr (apply_deferred) {
-      node->apply_deferred();
-    }
+    if constexpr (apply_deferred) node->apply_deferred();
 
     if (node->key < key) {
       last_less = node;

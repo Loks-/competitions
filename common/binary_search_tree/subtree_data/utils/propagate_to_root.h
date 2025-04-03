@@ -41,9 +41,7 @@ constexpr void propagate_to_root(TNode* node) {
  */
 template <typename TNode>
 constexpr void propagate_for_data_update(TNode* node) {
-  if constexpr (TNode::SubtreeDataType::use_data) {
-    propagate_to_root(node);
-  }
+  if constexpr (TNode::SubtreeDataType::use_data) propagate_to_root(node);
 }
 
 /**
@@ -58,9 +56,7 @@ constexpr void propagate_for_data_update(TNode* node) {
  */
 template <typename TNode>
 constexpr void propagate_for_key_update(TNode* node) {
-  if constexpr (TNode::SubtreeDataType::use_keys) {
-    propagate_to_root(node);
-  }
+  if constexpr (TNode::SubtreeDataType::use_keys) propagate_to_root(node);
 }
 
 /**
@@ -76,9 +72,8 @@ constexpr void propagate_for_key_update(TNode* node) {
  */
 template <typename TNode>
 constexpr void propagate_for_structure_update(TNode* node) {
-  if constexpr (TNode::SubtreeDataType::use_tree_structure) {
+  if constexpr (TNode::SubtreeDataType::use_tree_structure)
     propagate_to_root(node);
-  }
 }
 
 /**
@@ -94,9 +89,8 @@ constexpr void propagate_for_structure_update(TNode* node) {
  */
 template <typename TNode>
 constexpr void propagate_for_nodes_order_update(TNode* node) {
-  if constexpr (TNode::SubtreeDataType::use_nodes_order) {
+  if constexpr (TNode::SubtreeDataType::use_nodes_order)
     propagate_to_root(node);
-  }
 }
 }  // namespace subtree_data
 }  // namespace bst

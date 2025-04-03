@@ -118,9 +118,8 @@ class AddArithmeticSequence : public Base {
     assert(node);
     if (apply_required()) {
       // Apply any tree structure modifications first
-      if constexpr (TNode::DeferredType::template has<Reverse>()) {
+      if constexpr (TNode::DeferredType::template has<Reverse>())
         node->deferred.template get<Reverse>().apply(node);
-      }
 
       const auto left_size = ValueType(bst::subtree_data::size(node->left));
       add_arithmetic_sequence(node->left, a, d);

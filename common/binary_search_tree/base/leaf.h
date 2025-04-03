@@ -27,9 +27,7 @@ template <bool apply_deferred = true, typename TNode>
   if (!node) return false;
 
   // Apply deferred computations if requested
-  if constexpr (apply_deferred) {
-    node->apply_deferred();
-  }
+  if constexpr (apply_deferred) node->apply_deferred();
 
   return !node->left && !node->right;
 }

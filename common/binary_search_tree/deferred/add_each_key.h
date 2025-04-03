@@ -81,9 +81,8 @@ class AddEachKey : public Base {
   constexpr void add_value(TNode* node, const ValueType& value) {
     deferred_value += value;
     // Update SumKeys aggregator if present in node's SubtreeDataType
-    if constexpr (TNode::SubtreeDataType::template has<SDSumKeys>()) {
+    if constexpr (TNode::SubtreeDataType::template has<SDSumKeys>())
       SDSumKeys::get_ref(node) += value * bst::subtree_data::size(node);
-    }
   }
 
   /**

@@ -31,9 +31,7 @@ template <bool apply_deferred = true, typename TNode>
   // Traverse rightmost path until we find a leaf
   while (true) {
     // Apply deferred computations if requested
-    if constexpr (apply_deferred) {
-      root->apply_deferred();
-    }
+    if constexpr (apply_deferred) root->apply_deferred();
 
     if (root->right) {
       root = root->right;

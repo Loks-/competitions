@@ -92,17 +92,14 @@ class AddEach : public Base {
   constexpr void add_value(TNode* node, const ValueType& value) {
     deferred_value += value;
     // Update Sum aggregator if present in node's TInfo
-    if constexpr (TNode::SubtreeDataType::template has<SDSum>()) {
+    if constexpr (TNode::SubtreeDataType::template has<SDSum>())
       SDSum::get_ref(node) += value * bst::subtree_data::size(node);
-    }
     // Update Max aggregator if present
-    if constexpr (TNode::SubtreeDataType::template has<SDMax>()) {
+    if constexpr (TNode::SubtreeDataType::template has<SDMax>())
       SDMax::get_ref(node) += value;
-    }
     // Update Min aggregator if present
-    if constexpr (TNode::SubtreeDataType::template has<SDMin>()) {
+    if constexpr (TNode::SubtreeDataType::template has<SDMin>())
       SDMin::get_ref(node) += value;
-    }
   }
 
   /**
