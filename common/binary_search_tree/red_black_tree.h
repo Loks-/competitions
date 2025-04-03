@@ -1,7 +1,6 @@
 #pragma once
 
 #include "common/base.h"
-#include "common/binary_search_tree/base/build_tree.h"
 #include "common/binary_search_tree/base/deferred.h"
 #include "common/binary_search_tree/base/extended_tree.h"
 #include "common/binary_search_tree/base/insert_by_key.h"
@@ -45,6 +44,9 @@ class RedBlackTree
   using TSelf = RedBlackTree<TData, TAggregatorsTuple, TDeferredTuple, TKey,
                              TTNodesManager>;
   using TTree = base::ExtendedTree<TTNodesManager<TNode>, TSelf>;
+  using Base = typename TTree::Base;
+
+  friend Base;
   friend TTree;
 
   static constexpr bool support_join3 = true;
@@ -81,17 +83,18 @@ class RedBlackTree
     }
   }
 
- public:
-  static TNode* build_tree(const std::vector<TNode*>& nodes) {
+  template <bool update_leafs>
+  static TNode* build_tree_impl(const std::vector<TNode*>& nodes) {
     if (nodes.size() == 0) return nullptr;
     size_t h = 0;
     for (; nodes.size() >= (1ull << h);) ++h;
-    TNode* root = base::build_tree(nodes);
+    TNode* root = Base::template build_tree_impl<update_leafs>(nodes);
     BuildTreeIFixColorsR(root, h - 1);
     SetColor(root, true);
     return root;
   }
 
+ public:
   static TNode* insert(TNode* root, TNode* node) {
     assert(node);
     if (!root) {

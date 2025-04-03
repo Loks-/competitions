@@ -3,7 +3,6 @@
 #include "common/base.h"
 #include "common/binary_search_tree/base/at.h"
 #include "common/binary_search_tree/base/basic_tree.h"
-#include "common/binary_search_tree/base/build_tree.h"
 #include "common/binary_search_tree/base/deferred.h"
 #include "common/binary_search_tree/base/node.h"
 #include "common/binary_search_tree/base/right.h"
@@ -82,20 +81,6 @@ class SplayTree
    * This constructor creates a splay tree with no reserved nodes.
    */
   [[nodiscard]] constexpr SplayTree() : SplayTree(0) {}
-
-  /**
-   * @brief Builds a splay tree from a vector of nodes.
-   *
-   * This implementation uses a divide-and-conquer approach to build a balanced
-   * tree from the given nodes.
-   *
-   * @param nodes Vector of node pointers to build the tree from
-   * @return Pointer to the root of the built tree
-   */
-  [[nodiscard]] static constexpr NodeType* build_tree(
-      const std::vector<NodeType*>& nodes) {
-    return base::build_tree(nodes);
-  }
 
   /**
    * @brief Finds a node with a given key in the tree.

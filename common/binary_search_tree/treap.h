@@ -62,6 +62,8 @@ class Treap
                      Key, NodesManager>;
   using Base = base::BasicTree<NodesManager<NodeType>, Self>;
 
+  friend Base;
+
  public:
   /**
    * @brief Constructs a treap with the specified maximum number of nodes.
@@ -69,49 +71,6 @@ class Treap
    * @param max_nodes The maximum number of nodes to reserve
    */
   [[nodiscard]] explicit constexpr Treap(size_t max_nodes) : Base(max_nodes) {}
-
-  /**
-   * @brief Builds a treap from a vector of nodes.
-   *
-   * This implementation uses a stack-based approach to maintain the treap
-   * properties while building the tree. It processes nodes in sequence and
-   * maintains the heap property with respect to heights.
-   *
-   * @param nodes Vector of node pointers to build the treap from
-   * @return Pointer to the root of the built treap
-   */
-  static constexpr NodeType* build_tree(const std::vector<NodeType*>& nodes) {
-    if (nodes.empty()) return nullptr;
-    NodeType* proot = nodes[0];
-    assert(proot);
-    NodeType* plast = proot;
-    std::stack<NodeType*> s;
-    for (size_t j = 1; j < nodes.size(); ++j) {
-      NodeType* pj = nodes[j];
-      assert(pj);
-      if (height(pj) < height(plast)) {
-        plast->set_right(pj);
-        s.push(plast);
-      } else if (height(pj) >= height(proot)) {
-        for (plast->update_subtree_data(); !s.empty(); s.pop())
-          s.top()->update_subtree_data();
-        pj->set_left(proot);
-        proot = pj;
-      } else {
-        for (plast->update_subtree_data(); height(pj) >= height(s.top());
-             s.pop()) {
-          plast = s.top();
-          plast->update_subtree_data();
-        }
-        pj->set_left(plast);
-        s.top()->set_right(pj);
-      }
-      plast = pj;
-    }
-    for (plast->update_subtree_data(); !s.empty(); s.pop())
-      s.top()->update_subtree_data();
-    return proot;
-  }
 
   /**
    * @brief Inserts a node into the tree.
@@ -394,6 +353,55 @@ class Treap
    */
   [[nodiscard]] static constexpr unsigned height(const NodeType* node) {
     return subtree_data::TreapHeight::get(node);
+  }
+
+  template <bool update_leafs>
+  [[nodiscard]] static constexpr NodeType* build_tree_base_impl(
+      const std::vector<NodeType*>& nodes, size_t begin, size_t end) = delete;
+
+  /**
+   * @brief Builds a treap from a vector of nodes.
+   *
+   * This implementation uses a stack-based approach to maintain the treap
+   * properties while building the tree. It processes nodes in sequence and
+   * maintains the heap property with respect to heights.
+   *
+   * @param nodes Vector of node pointers to build the treap from
+   * @return Pointer to the root of the built treap
+   */
+  template <bool update_leafs>
+  [[nodiscard]] static constexpr NodeType* build_tree_impl(
+      const std::vector<NodeType*>& nodes) {
+    if (nodes.empty()) return nullptr;
+    NodeType* proot = nodes[0];
+    assert(proot);
+    NodeType* plast = proot;
+    std::stack<NodeType*> s;
+    for (size_t j = 1; j < nodes.size(); ++j) {
+      NodeType* pj = nodes[j];
+      assert(pj);
+      if (height(pj) < height(plast)) {
+        plast->set_right(pj);
+        s.push(plast);
+      } else if (height(pj) >= height(proot)) {
+        for (plast->update_subtree_data(); !s.empty(); s.pop())
+          s.top()->update_subtree_data();
+        pj->set_left(proot);
+        proot = pj;
+      } else {
+        for (plast->update_subtree_data(); height(pj) >= height(s.top());
+             s.pop()) {
+          plast = s.top();
+          plast->update_subtree_data();
+        }
+        pj->set_left(plast);
+        s.top()->set_right(pj);
+      }
+      plast = pj;
+    }
+    for (plast->update_subtree_data(); !s.empty(); s.pop())
+      s.top()->update_subtree_data();
+    return proot;
   }
 
   /**

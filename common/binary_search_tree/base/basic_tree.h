@@ -14,6 +14,7 @@ namespace base {
  * - Type definitions and feature flags
  * - Node management (creation and release)
  * - Basic tree operations that require access to node manager
+ * - Tree building and manipulation operations
  *
  * @tparam NodesManager The node manager type that handles node allocation and
  * management
@@ -44,7 +45,7 @@ class BasicTree {
   /**
    * @brief Operation support flags.
    *
-   * These flags determine which operations are supported by the splay tree:
+   * These flags determine which operations are supported by the tree:
    * - support_insert: Whether insertion operations are supported
    * - support_remove: Whether removal operations are supported
    * - support_remove_by_node: Whether node-based removal is supported
@@ -96,11 +97,7 @@ class BasicTree {
    * @return Pointer to the newly created node
    */
   constexpr NodeType* create_node(const DataType& data) {
-    auto p = nodes_manager_.create();
-    p->data = data;
-    p->subtree_data.bti_reset();
-    p->update_subtree_data();
-    return p;
+    return create_node_impl<false>(data);
   }
 
   /**
@@ -111,13 +108,20 @@ class BasicTree {
    * @return Pointer to the newly created node
    */
   constexpr NodeType* create_node(const DataType& data, const KeyType& key) {
-    static_assert(has_key, "has_key should be true");
-    auto p = nodes_manager_.create();
-    p->data = data;
-    p->key = key;
-    p->subtree_data.bti_reset();
-    p->update_subtree_data();
-    return p;
+    return create_node_impl<false>(data, key);
+  }
+
+  /**
+   * @brief Builds a tree from a vector of nodes.
+   *
+   * This function constructs a balanced binary search tree from a vector of
+   * nodes. The nodes should be sorted by key if the tree uses keys.
+   *
+   * @param nodes Vector of nodes to build the tree from
+   * @return Pointer to the root of the built tree
+   */
+  static constexpr NodeType* build_tree(const std::vector<NodeType*>& nodes) {
+    return Derived::template build_tree_impl<false>(nodes);
   }
 
   /**
@@ -130,8 +134,9 @@ class BasicTree {
     if (data.empty()) return nullptr;
     nodes_manager_.reserve_additional(data.size());
     std::vector<NodeType*> nodes(data.size());
-    for (size_t i = 0; i < data.size(); ++i) nodes[i] = create_node(data[i]);
-    return Derived::build_tree(nodes);
+    for (size_t i = 0; i < data.size(); ++i)
+      nodes[i] = create_node_impl<true>(data[i]);
+    return Derived::template build_tree_impl<true>(nodes);
   }
 
   /**
@@ -149,11 +154,11 @@ class BasicTree {
     nodes_manager_.reserve_additional(data.size());
     std::vector<NodeType*> nodes(data.size());
     for (size_t i = 0; i < data.size(); ++i)
-      nodes[i] = create_node(data[i], keys[i]);
+      nodes[i] = create_node_impl<true>(data[i], keys[i]);
     std::sort(
         nodes.begin(), nodes.end(),
         [](const NodeType* a, const NodeType* b) { return a->key < b->key; });
-    return Derived::build_tree(nodes);
+    return Derived::template build_tree_impl<true>(nodes);
   }
 
   /**
@@ -167,7 +172,7 @@ class BasicTree {
   [[nodiscard]] constexpr NodeType* insert_new(NodeType* root,
                                                const DataType& data,
                                                const KeyType& key) {
-    return Derived::insert(root, create_node(data, key));
+    return Derived::insert(root, create_node_impl<false>(data, key));
   }
 
   /**
@@ -181,7 +186,7 @@ class BasicTree {
   [[nodiscard]] constexpr NodeType* insert_new_at(NodeType* root,
                                                   const DataType& data,
                                                   size_t index) {
-    return Derived::insert_at(root, create_node(data), index);
+    return Derived::insert_at(root, create_node_impl<false>(data), index);
   }
 
   /**
@@ -304,6 +309,80 @@ class BasicTree {
     static_assert(NodesManagerType::support_index,
                   "nodes manager should support index");
     return nodes_manager_.index(node);
+  }
+
+ protected:
+  /**
+   * @brief Creates a new node with the given data.
+   *
+   * @tparam skip_update Whether to skip updating subtree data
+   * @param data The data to store in the new node
+   * @return Pointer to the newly created node
+   */
+  template <bool skip_update>
+  [[nodiscard]] constexpr NodeType* create_node_impl(const DataType& data) {
+    auto p = nodes_manager_.create();
+    p->data = data;
+    p->subtree_data.bti_reset();
+    if constexpr (!skip_update) p->update_subtree_data();
+    return p;
+  }
+
+  /**
+   * @brief Creates a new node with the given data and key.
+   *
+   * @tparam skip_update Whether to skip updating subtree data
+   * @param data The data to store in the new node
+   * @param key The key value for the node
+   * @return Pointer to the newly created node
+   */
+  template <bool skip_update>
+  [[nodiscard]] constexpr NodeType* create_node_impl(const DataType& data,
+                                                     const KeyType& key) {
+    static_assert(has_key, "has_key should be true");
+    auto p = nodes_manager_.create();
+    p->data = data;
+    p->key = key;
+    p->subtree_data.bti_reset();
+    if constexpr (!skip_update) p->update_subtree_data();
+    return p;
+  }
+
+  /**
+   * @brief Builds a balanced binary search tree from a range of nodes.
+   *
+   * @tparam update_leafs Whether to update subtree data for leaf nodes
+   * @param nodes Vector of nodes to build the tree from
+   * @param begin Start index of the range
+   * @param end End index of the range (exclusive)
+   * @return Pointer to the root of the built subtree
+   */
+  template <bool update_leafs>
+  [[nodiscard]] static constexpr NodeType* build_tree_base_impl(
+      const std::vector<NodeType*>& nodes, size_t begin, size_t end) {
+    if (begin >= end) return nullptr;
+    const size_t m = (begin + end) / 2;
+    NodeType* root = nodes[m];
+    root->set_left(build_tree_base_impl<update_leafs>(nodes, begin, m));
+    root->set_right(build_tree_base_impl<update_leafs>(nodes, m + 1, end));
+    if (update_leafs || (end - begin > 1)) root->update_subtree_data();
+    return root;
+  }
+
+  /**
+   * @brief Builds a balanced binary search tree from a vector of nodes.
+   *
+   * @tparam update_leafs Whether to update subtree data for leaf nodes
+   * @param nodes Vector of nodes to build the tree from
+   * @return Pointer to the root of the built tree
+   */
+  template <bool update_leafs>
+  [[nodiscard]] static constexpr NodeType* build_tree_impl(
+      const std::vector<NodeType*>& nodes) {
+    NodeType* root = Derived::template build_tree_base_impl<update_leafs>(
+        nodes, 0, nodes.size());
+    if (root) root->set_parent(nullptr);
+    return root;
   }
 
  protected:

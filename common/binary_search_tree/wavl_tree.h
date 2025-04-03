@@ -38,6 +38,9 @@ class WAVLTree
   using TBTree =
       base::BalancedTree<memory::ContiguousNodesManager<TNode>, TSelf>;
   using TTree = typename TBTree::Base;
+  using Base = typename TTree::Base;
+
+  friend Base;
   friend TBTree;
   friend TTree;
 
@@ -77,14 +80,15 @@ class WAVLTree
     subtree_data::WAVLRank::dec(node);
   }
 
-  static TNode* build_tree_impl(const std::vector<TNode*>& vnodes, size_t first,
-                                size_t last) {
-    if (first >= last) return nullptr;
-    size_t m = (first + last) / 2;
+  template <bool update_leafs>
+  static TNode* build_tree_base_impl(const std::vector<TNode*>& vnodes,
+                                     size_t begin, size_t end) {
+    if (begin >= end) return nullptr;
+    size_t m = (begin + end) / 2;
     TNode* root = vnodes[m];
-    root->set_left(build_tree_impl(vnodes, first, m));
-    root->set_right(build_tree_impl(vnodes, m + 1, last));
-    root->update_subtree_data();
+    root->set_left(build_tree_base_impl<update_leafs>(vnodes, begin, m));
+    root->set_right(build_tree_base_impl<update_leafs>(vnodes, m + 1, end));
+    if (update_leafs || (end - begin > 1)) root->update_subtree_data();
     UpdateRank(root);
     return root;
   }

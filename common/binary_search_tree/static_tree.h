@@ -1,7 +1,6 @@
 #pragma once
 
 #include "common/binary_search_tree/base/basic_tree.h"
-#include "common/binary_search_tree/base/build_tree.h"
 #include "common/binary_search_tree/base/deferred.h"
 #include "common/binary_search_tree/base/node.h"
 #include "common/binary_search_tree/base/subtree_data.h"
@@ -69,22 +68,6 @@ class StaticTree
    */
   [[nodiscard]] explicit constexpr StaticTree(size_t max_nodes)
       : Base(max_nodes) {}
-
-  /**
-   * @brief Builds a balanced binary search tree from a vector of nodes.
-   *
-   * This operation creates a perfectly balanced tree by selecting the middle
-   * element as the root and recursively building the left and right subtrees.
-   * The resulting tree maintains the binary search tree property and has
-   * optimal height.
-   *
-   * @param nodes Vector of node pointers in sorted order
-   * @return Pointer to the root of the built tree
-   */
-  [[nodiscard]] static constexpr NodeType* build_tree(
-      const std::vector<NodeType*>& nodes) {
-    return base::build_tree(nodes);
-  }
 };
 
 }  // namespace bst

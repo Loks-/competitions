@@ -3,7 +3,6 @@
 #include "common/base.h"
 #include "common/binary_search_tree/base/at.h"
 #include "common/binary_search_tree/base/basic_tree.h"
-#include "common/binary_search_tree/base/build_tree.h"
 #include "common/binary_search_tree/base/find.h"
 
 #include <vector>
@@ -93,17 +92,6 @@ class ExtendedTree : public BasicTree<NodesManager, Derived> {
    */
   [[nodiscard]] static constexpr NodeType* at(NodeType* root, size_t index) {
     return bst::base::at(root, index);
-  }
-
-  /**
-   * @brief Builds a balanced tree from a vector of nodes.
-   *
-   * @param nodes Vector of node pointers to build the tree from
-   * @return Pointer to the root of the newly built tree
-   */
-  [[nodiscard]] static NodeType* build_tree(
-      const std::vector<NodeType*>& nodes) {
-    return bst::base::build_tree(nodes);
   }
 
   /**

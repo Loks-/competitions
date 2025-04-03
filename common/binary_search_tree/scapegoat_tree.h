@@ -1,7 +1,6 @@
 #pragma once
 
 #include "common/binary_search_tree/base/balanced_tree.h"
-#include "common/binary_search_tree/base/build_tree.h"
 #include "common/binary_search_tree/base/deferred.h"
 #include "common/binary_search_tree/base/node.h"
 #include "common/binary_search_tree/base/subtree_data.h"
@@ -59,7 +58,7 @@ class ScapegoatTree
     assert(node);
     std::vector<TNode*> nodes;
     TraverseInorder(node, nodes);
-    return base::build_tree<true, TNode>(nodes);
+    return TTree::template build_tree_impl<true>(nodes);
   }
 
   static TNode* fix_balance(TNode* node) {
