@@ -193,6 +193,33 @@ class Node : public memory::Node {
   }
 
   /**
+   * @brief Checks if the node is a root node.
+   *
+   * A node is considered a root if:
+   * - Parent links are not used (has_parent is false), or
+   * - Parent links are used and the parent pointer is nullptr
+   *
+   * @return true if the node is a root, false otherwise
+   */
+  [[nodiscard]] constexpr bool is_root() const noexcept {
+    return !has_parent || (parent == nullptr);
+  }
+
+  /**
+   * @brief Checks if the node is completely isolated from the tree.
+   *
+   * A node is considered isolated if:
+   * - Left child pointer is nullptr
+   * - Right child pointer is nullptr
+   * - Parent pointer is nullptr (if parent links are used)
+   *
+   * @return true if the node has no connections to other nodes, false otherwise
+   */
+  [[nodiscard]] constexpr bool is_isolated() const noexcept {
+    return (left == nullptr) && (right == nullptr) && is_root();
+  }
+
+  /**
    * @brief Sets the left child node.
    *
    * This function updates the left child link and maintains the
