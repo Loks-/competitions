@@ -82,13 +82,6 @@ class BaseTree {
       : nodes_manager_(max_nodes) {}
 
   /**
-   * @brief Default constructor.
-   *
-   * Creates a tree with no initial capacity.
-   */
-  [[nodiscard]] constexpr BaseTree() : BaseTree(0) {}
-
-  /**
    * @brief Returns a pointer to the derived class instance.
    *
    * This helper is used to access derived class methods through CRTP.
