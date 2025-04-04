@@ -29,9 +29,9 @@ namespace bst {
  * @tparam DeferredTuple Tuple of deferred operation types
  * @tparam Key The key type used for ordering
  */
-template <bool has_parent, class Data,
-          class AggregatorsTuple = std::tuple<subtree_data::Size>,
-          class DeferredTuple = std::tuple<>, class Key = int64_t>
+template <bool has_parent, typename Data,
+          typename AggregatorsTuple = std::tuple<subtree_data::Size>,
+          typename DeferredTuple = std::tuple<>, typename Key = int64_t>
 class UnbalancedTree
     : public base::SelfBalancingTree<
           memory::ContiguousNodesManager<
