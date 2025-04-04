@@ -68,6 +68,14 @@ class StaticTree
    */
   [[nodiscard]] explicit constexpr StaticTree(size_t max_nodes)
       : Base(max_nodes) {}
+
+  static constexpr NodeType* insert(NodeType* root, NodeType* node) = delete;
+  static constexpr NodeType* insert_at(NodeType* root, NodeType* node,
+                                       size_t index) = delete;
+  constexpr NodeType* insert_new(NodeType* root, const Data& data,
+                                 const Key& key) = delete;
+  constexpr NodeType* insert_new_at(NodeType* root, const Data& data,
+                                    size_t index) = delete;
 };
 
 }  // namespace bst
