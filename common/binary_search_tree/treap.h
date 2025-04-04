@@ -73,90 +73,6 @@ class Treap
   [[nodiscard]] explicit constexpr Treap(size_t max_nodes) : Base(max_nodes) {}
 
   /**
-   * @brief Removes a node with the given key from the tree.
-   *
-   * The removal maintains both the binary search tree property
-   * and the heap property with respect to heights. When a node
-   * is removed, its subtrees are joined together.
-   *
-   * @param root The root of the tree
-   * @param key The key of the node to remove
-   * @param removed_node Reference to store the removed node
-   * @return Pointer to the new root of the tree
-   */
-  [[nodiscard]] static constexpr NodeType* remove(NodeType* root,
-                                                  const Key& key,
-                                                  NodeType*& removed_node) {
-    static_assert(has_key, "has_key should be true");
-    if (!root) return root;
-    root->apply_deferred();
-    if (root->key < key) {
-      root->set_right(remove(root->right, key, removed_node));
-      root->update_subtree_data();
-    } else if (root->key > key) {
-      root->set_left(remove(root->left, key, removed_node));
-      root->update_subtree_data();
-    } else {
-      removed_node = root;
-      root = join(root->left, root->right);
-      if (root) root->set_parent(nullptr);
-      removed_node->reset_links_and_update_subtree_data();
-    }
-    return root;
-  }
-
-  /**
-   * @brief Removes a node at the given index from the tree.
-   *
-   * The remove_at operation removes a node at the specified position in the
-   * inorder traversal of the tree. It maintains both the binary search tree
-   * property and the heap property with respect to heights.
-   *
-   * @param root The root of the tree
-   * @param index The position of the node to remove
-   * @param removed_node Reference to store the removed node
-   * @return Pointer to the new root of the tree
-   */
-  [[nodiscard]] static constexpr NodeType* remove_at(NodeType* root,
-                                                     size_t index,
-                                                     NodeType*& removed_node) {
-    static_assert(Base::has_size, "has_size should be true");
-    if (!root) return root;
-    root->apply_deferred();
-    const size_t left_size = subtree_data::size(root->left);
-    if (index < left_size) {
-      root->set_left(remove_at(root->left, index, removed_node));
-      root->update_subtree_data();
-    } else if (index == left_size) {
-      removed_node = root;
-      root = join(root->left, root->right);
-      if (root) root->set_parent(nullptr);
-      removed_node->reset_links_and_update_subtree_data();
-    } else {
-      root->set_right(
-          remove_at(root->right, index - left_size - 1, removed_node));
-      root->update_subtree_data();
-    }
-    return root;
-  }
-
-  /**
-   * @brief Removes a specific node from the tree.
-   *
-   * This operation requires parent pointers to be enabled.
-   * It joins the left and right subtrees of the removed node
-   * and updates the parent's child pointer.
-   *
-   * @param node The node to remove
-   * @return Pointer to the new root of the tree
-   */
-  [[nodiscard]] static constexpr NodeType* remove_node(NodeType* node) {
-    static_assert(has_parent, "has_parent should be true");
-    assert(node);
-    return remove_node_impl(node);
-  }
-
-  /**
    * @brief Joins two trees together.
    *
    * The join operation maintains both the binary search tree property
@@ -444,19 +360,115 @@ class Treap
   }
 
   /**
-   * @brief Removes a specific node from the tree.
+   * @brief Implementation of node removal from the tree by key.
    *
-   * This implementation handles the removal of a node by joining
-   * its left and right subtrees and updating the parent's child
-   * pointer. It maintains the treap properties throughout the
-   * operation.
+   * This function implements the removal of a node with the specified key from
+   * the treap while maintaining both the binary search tree property and the
+   * heap property with respect to heights. The base class handles all
+   * requirements checking.
    *
+   * The removal process:
+   * 1. The node is removed from its position in the tree
+   * 2. Its left and right subtrees are joined together
+   * 3. The heap property is maintained throughout the operation
+   *
+   * @tparam reset_links Whether to reset links of the removed node. This is
+   *         useful when the node will be reused, but can be skipped if the
+   *         node is going to be released.
+   * @param root The root of the tree
+   * @param key The key of the node to remove
+   * @param removed_node Reference to store the removed node
+   * @return Pointer to the new root of the tree
+   */
+  template <bool reset_links>
+  [[nodiscard]] static constexpr NodeType* remove_impl(
+      NodeType* root, const Key& key, NodeType*& removed_node) {
+    if (!root) return root;
+    root->apply_deferred();
+    if (root->key < key) {
+      root->set_right(remove_impl<reset_links>(root->right, key, removed_node));
+      root->update_subtree_data();
+    } else if (root->key > key) {
+      root->set_left(remove_impl<reset_links>(root->left, key, removed_node));
+      root->update_subtree_data();
+    } else {
+      removed_node = root;
+      root = join(root->left, root->right);
+      if (root) root->set_parent(nullptr);
+      if constexpr (reset_links)
+        removed_node->reset_links_and_update_subtree_data();
+    }
+    return root;
+  }
+
+  /**
+   * @brief Implementation of node removal from the tree by index.
+   *
+   * This function implements the removal of a node at the specified position
+   * in the inorder traversal of the treap while maintaining both the binary
+   * search tree property and the heap property with respect to heights. The
+   * base class handles all requirements checking.
+   *
+   * The removal process:
+   * 1. The node is removed from its position in the tree
+   * 2. Its left and right subtrees are joined together
+   * 3. The heap property is maintained throughout the operation
+   *
+   * @tparam reset_links Whether to reset links of the removed node. This is
+   *         useful when the node will be reused, but can be skipped if the
+   *         node is going to be released.
+   * @param root The root of the tree
+   * @param index The position of the node to remove
+   * @param removed_node Reference to store the removed node
+   * @return Pointer to the new root of the tree
+   */
+  template <bool reset_links>
+  [[nodiscard]] static constexpr NodeType* remove_at_impl(
+      NodeType* root, size_t index, NodeType*& removed_node) {
+    if (!root) return root;
+    root->apply_deferred();
+    const size_t left_size = subtree_data::size(root->left);
+    if (index < left_size) {
+      root->set_left(
+          remove_at_impl<reset_links>(root->left, index, removed_node));
+      root->update_subtree_data();
+    } else if (index == left_size) {
+      removed_node = root;
+      root = join(root->left, root->right);
+      if (root) root->set_parent(nullptr);
+      if constexpr (reset_links)
+        removed_node->reset_links_and_update_subtree_data();
+    } else {
+      root->set_right(remove_at_impl<reset_links>(
+          root->right, index - left_size - 1, removed_node));
+      root->update_subtree_data();
+    }
+    return root;
+  }
+
+  /**
+   * @brief Implementation of specific node removal from the tree.
+   *
+   * This function implements the removal of a specific node from the treap
+   * while maintaining both the binary search tree property and the heap
+   * property with respect to heights. The base class handles all requirements
+   * checking.
+   *
+   * The removal process:
+   * 1. The node is removed from its position in the tree
+   * 2. Its left and right subtrees are joined together
+   * 3. The heap property is maintained throughout the operation
+   *
+   * @tparam reset_links Whether to reset links of the removed node. This is
+   *         useful when the node will be reused, but can be skipped if the
+   *         node is going to be released.
    * @param node The node to remove
    * @return Pointer to the new root of the tree
    */
+  template <bool reset_links>
   [[nodiscard]] static constexpr NodeType* remove_node_impl(NodeType* node) {
     NodeType *p = node->parent, *m = join(node->left, node->right);
-    node->reset_links_and_update_subtree_data();
+    if constexpr (reset_links) node->reset_links_and_update_subtree_data();
     if (!p) {
       if (m) m->set_parent(nullptr);
       return m;

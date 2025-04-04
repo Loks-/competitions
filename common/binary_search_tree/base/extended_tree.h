@@ -95,49 +95,6 @@ class ExtendedTree : public BaseTree<NodesManager, Derived> {
   }
 
   /**
-   * @brief Removes a node with the given key from the tree.
-   *
-   * @param root The root of the tree
-   * @param key The key of the node to remove
-   * @param removed_node Reference to store the removed node
-   * @return Pointer to the new root of the tree
-   */
-  [[nodiscard]] static NodeType* remove(NodeType* root, const KeyType& key,
-                                        NodeType*& removed_node) {
-    static_assert(Derived::support_remove, "Remove should be supported");
-    static_assert(Base::has_key, "has_key should be true");
-    return Derived::remove_impl(root, key, removed_node);
-  }
-
-  /**
-   * @brief Removes the node at the specified inorder index.
-   *
-   * @param root The root of the tree
-   * @param index The zero-based index of the node to remove
-   * @param removed_node Reference to store the removed node
-   * @return Pointer to the new root of the tree
-   */
-  [[nodiscard]] static NodeType* remove_at(NodeType* root, size_t index,
-                                           NodeType*& removed_node) {
-    static_assert(Derived::support_remove, "Remove should be supported");
-    return Derived::remove_at_impl(root, index, removed_node);
-  }
-
-  /**
-   * @brief Removes a specific node from the tree.
-   *
-   * @param node The node to remove
-   * @return Pointer to the new root of the tree
-   */
-  [[nodiscard]] static NodeType* remove_node(NodeType* node) {
-    static_assert(Derived::support_remove_by_node,
-                  "Remove by node should be supported");
-    static_assert(Base::has_parent, "use_parent should be true");
-    assert(node);
-    return Derived::remove_node_impl(node);
-  }
-
-  /**
    * @brief Joins two trees together.
    *
    * @param l The left tree
@@ -191,10 +148,13 @@ class ExtendedTree : public BaseTree<NodesManager, Derived> {
    * @param removed_node Reference to store the removed node
    * @return Pointer to the new root of the tree
    */
+  template <bool reset_links>
   static NodeType* remove_impl(NodeType* root, const KeyType& key,
                                NodeType*& removed_node) {
     removed_node = Derived::find(root, key);
-    return (removed_node ? Derived::remove_node_impl(removed_node) : root);
+    return (removed_node
+                ? Derived::template remove_node_impl<reset_links>(removed_node)
+                : root);
   }
 
   /**
@@ -206,20 +166,14 @@ class ExtendedTree : public BaseTree<NodesManager, Derived> {
    * @param removed_node Reference to store the removed node
    * @return Pointer to the new root of the tree
    */
+  template <bool reset_links>
   static NodeType* remove_at_impl(NodeType* root, size_t index,
                                   NodeType*& removed_node) {
     removed_node = Derived::at(root, index);
-    return (removed_node ? Derived::remove_node_impl(removed_node) : root);
+    return (removed_node
+                ? Derived::template remove_node_impl<reset_links>(removed_node)
+                : root);
   }
-
-  /**
-   * @brief Implementation of remove_node that can be overridden by derived
-   * classes.
-   *
-   * @param node The node to remove
-   * @return Pointer to the new root of the tree
-   */
-  static NodeType* remove_node_impl(NodeType* node);
 
   /**
    * @brief Implementation of join that can be overridden by derived classes.

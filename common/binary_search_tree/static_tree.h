@@ -76,6 +76,16 @@ class StaticTree
                                  const Key& key) = delete;
   constexpr NodeType* insert_new_at(NodeType* root, const Data& data,
                                     size_t index) = delete;
+  static constexpr NodeType* remove(NodeType* root, const Key& key,
+                                    NodeType*& removed_node) = delete;
+  static constexpr NodeType* remove_at(NodeType* root, size_t index,
+                                       NodeType*& removed_node) = delete;
+  static constexpr NodeType* remove_node(NodeType* node) = delete;
+  constexpr NodeType* remove_and_release(NodeType* root,
+                                         const Key& key) = delete;
+  constexpr NodeType* remove_and_release_at(NodeType* root,
+                                            size_t index) = delete;
+  constexpr NodeType* remove_and_release_node(NodeType* node) = delete;
 };
 
 }  // namespace bst

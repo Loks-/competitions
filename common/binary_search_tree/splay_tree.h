@@ -213,58 +213,6 @@ class SplayTree
   }
 
   /**
-   * @brief Removes a node with the given key from the tree.
-   *
-   * The remove operation finds and removes a node with the specified key while
-   * maintaining the binary search tree property.
-   *
-   * @param root The root of the tree
-   * @param key The key of the node to remove
-   * @param removed_node Reference to store the removed node
-   * @return The root of the resulting tree
-   */
-  [[nodiscard]] static constexpr NodeType* remove(NodeType* root,
-                                                  const Key& key,
-                                                  NodeType*& removed_node) {
-    static_assert(has_key, "has_key should be true");
-    removed_node = find(root, key);
-    return (removed_node ? remove_node_impl(removed_node) : root);
-  }
-
-  /**
-   * @brief Removes a node at the given index from the tree.
-   *
-   * The remove_at operation removes a node at the specified position in the
-   * inorder traversal of the tree.
-   *
-   * @param root The root of the tree
-   * @param index The position of the node to remove
-   * @param removed_node Reference to store the removed node
-   * @return The root of the resulting tree
-   */
-  [[nodiscard]] static constexpr NodeType* remove_at(NodeType* root,
-                                                     size_t index,
-                                                     NodeType*& removed_node) {
-    static_assert(Base::has_size, "has_size should be true");
-    removed_node = base::at(root, index);
-    return (removed_node ? remove_node_impl(removed_node) : root);
-  }
-
-  /**
-   * @brief Removes a specific node from the tree.
-   *
-   * The remove_node operation removes the given node while maintaining the
-   * binary search tree property.
-   *
-   * @param node The node to remove
-   * @return The root of the resulting tree
-   */
-  [[nodiscard]] static constexpr NodeType* remove_node(NodeType* node) {
-    assert(node);
-    return remove_node_impl(node);
-  }
-
-  /**
    * @brief Joins two trees into a single tree.
    *
    * The join operation combines two trees by finding the rightmost node in the
@@ -543,21 +491,89 @@ class SplayTree
   }
 
   /**
-   * @brief Removes a node from the tree.
+   * @brief Implementation of node removal from the tree by key.
    *
-   * The remove_node_impl operation removes a node from the tree by joining its
-   * left and right subtrees and updating the parent's child pointer.
+   * This function implements the removal of a node with the specified key from
+   * the splay tree while maintaining the binary search tree property. The base
+   * class handles all requirements checking. After removal, the parent of the
+   * removed node is splayed to maintain the splay tree property.
    *
-   * @param node The node to remove
-   * @return The root of the resulting tree
+   * The removal process:
+   * 1. The node is removed from its position in the tree
+   * 2. Its left and right subtrees are joined together
+   * 3. The parent node is splayed to maintain the splay tree property
+   *
+   * @tparam reset_links Whether to reset links of the removed node. This is
+   *         useful when the node will be reused, but can be skipped if the
+   *         node is going to be released.
+   * @param root The root of the tree
+   * @param key The key of the node to remove
+   * @param removed_node Reference to store the removed node
+   * @return Pointer to the new root of the tree
    */
+  template <bool reset_links>
+  [[nodiscard]] static constexpr NodeType* remove_impl(
+      NodeType* root, const Key& key, NodeType*& removed_node) {
+    removed_node = find(root, key);
+    return (removed_node ? remove_node_impl<reset_links>(removed_node) : root);
+  }
+
+  /**
+   * @brief Implementation of node removal from the tree by index.
+   *
+   * This function implements the removal of a node at the specified position
+   * in the inorder traversal of the splay tree while maintaining the binary
+   * search tree property. The base class handles all requirements checking.
+   * After removal, the parent of the removed node is splayed to maintain the
+   * splay tree property.
+   *
+   * The removal process:
+   * 1. The node is removed from its position in the tree
+   * 2. Its left and right subtrees are joined together
+   * 3. The parent node is splayed to maintain the splay tree property
+   *
+   * @tparam reset_links Whether to reset links of the removed node. This is
+   *         useful when the node will be reused, but can be skipped if the
+   *         node is going to be released.
+   * @param root The root of the tree
+   * @param index The position of the node to remove
+   * @param removed_node Reference to store the removed node
+   * @return Pointer to the new root of the tree
+   */
+  template <bool reset_links>
+  [[nodiscard]] static constexpr NodeType* remove_at_impl(
+      NodeType* root, size_t index, NodeType*& removed_node) {
+    removed_node = base::at(root, index);
+    return (removed_node ? remove_node_impl<reset_links>(removed_node) : root);
+  }
+
+  /**
+   * @brief Implementation of specific node removal from the tree.
+   *
+   * This function implements the removal of a specific node from the splay
+   * tree while maintaining the binary search tree property. The base class
+   * handles all requirements checking. After removal, the parent of the
+   * removed node is splayed to maintain the splay tree property.
+   *
+   * The removal process:
+   * 1. The node is removed from its position in the tree
+   * 2. Its left and right subtrees are joined together
+   * 3. The parent node is splayed to maintain the splay tree property
+   *
+   * @tparam reset_links Whether to reset links of the removed node. This is
+   *         useful when the node will be reused, but can be skipped if the
+   *         node is going to be released.
+   * @param node The node to remove
+   * @return Pointer to the new root of the tree
+   */
+  template <bool reset_links>
   [[nodiscard]] static constexpr NodeType* remove_node_impl(NodeType* node) {
     NodeType* l = node->left;
     if (l) l->set_parent(nullptr);
     NodeType* r = node->right;
     if (r) r->set_parent(nullptr);
     NodeType* p = node->parent;
-    node->reset_links_and_update_subtree_data();
+    if constexpr (reset_links) node->reset_links_and_update_subtree_data();
     NodeType* m = join(l, r);
     if (!p) return m;
     if (node == p->left) {

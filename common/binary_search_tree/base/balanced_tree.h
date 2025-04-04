@@ -96,6 +96,7 @@ class BalancedTree : public ExtendedTree<NodesManager, Derived> {
   /**
    * @brief Implementation of node removal with balance maintenance.
    */
+  template <bool reset_links>
   static NodeType* remove_node_impl(NodeType* node) {
     NodeType *new_root, *fcn = nullptr;
     new_root = bst::base::RemoveByNode<NodeType, false>(node, fcn);

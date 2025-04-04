@@ -135,6 +135,7 @@ class RedBlackTree
   }
 
  protected:
+  template <bool reset_links>
   static TNode* remove_node_impl(TNode* node) {
     base::RemovePushDown<TNode, false>(node);
     const bool black = IsBlack(node);
@@ -149,7 +150,7 @@ class RedBlackTree
         parent->right = child;
     }
     if (child) child->parent = parent;
-    node->reset_links_and_update_subtree_data();
+    if constexpr (reset_links) node->reset_links_and_update_subtree_data();
     subtree_data::propagate_to_root(parent);
 
     // Fix colors
@@ -219,7 +220,7 @@ class RedBlackTree
     for (node->apply_deferred(); node->right; node->apply_deferred())
       node = node->right;
     removed_node = node;
-    return remove_node_impl(removed_node);
+    return remove_node_impl<true>(removed_node);
   }
 
   static TNode* join(TNode* l, TNode* r) {

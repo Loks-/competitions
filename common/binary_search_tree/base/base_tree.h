@@ -244,6 +244,63 @@ class BaseTree {
   }
 
   /**
+   * @brief Removes a node with the given key from the tree.
+   *
+   * This function verifies that the tree supports key-based operations and
+   * delegates the removal to the derived class implementation. The derived
+   * class is responsible for maintaining the tree properties during removal.
+   *
+   * @param root The root of the tree
+   * @param key The key of the node to remove
+   * @param removed_node Reference to store the removed node
+   * @return Pointer to the new root of the tree
+   */
+  [[nodiscard]] static constexpr NodeType* remove(NodeType* root,
+                                                  const KeyType& key,
+                                                  NodeType*& removed_node) {
+    static_assert(has_key, "has_key should be true");
+    return Derived::template remove_impl<true>(root, key, removed_node);
+  }
+
+  /**
+   * @brief Removes a node at the given index from the tree.
+   *
+   * This function verifies that the tree supports size-based operations and
+   * that the index is valid. It delegates the removal to the derived class
+   * implementation. The derived class is responsible for maintaining the tree
+   * properties during removal.
+   *
+   * @param root The root of the tree
+   * @param index The position of the node to remove
+   * @param removed_node Reference to store the removed node
+   * @return Pointer to the new root of the tree
+   */
+  [[nodiscard]] static constexpr NodeType* remove_at(NodeType* root,
+                                                     size_t index,
+                                                     NodeType*& removed_node) {
+    static_assert(has_size, "has_size should be true");
+    assert(index < bst::subtree_data::size(root));
+    return Derived::template remove_at_impl<true>(root, index, removed_node);
+  }
+
+  /**
+   * @brief Removes a specific node from the tree.
+   *
+   * This function verifies that the tree supports parent pointers and that
+   * the node exists. It delegates the removal to the derived class
+   * implementation. The derived class is responsible for maintaining the tree
+   * properties during removal.
+   *
+   * @param node The node to remove
+   * @return Pointer to the new root of the tree
+   */
+  [[nodiscard]] static constexpr NodeType* remove_node(NodeType* node) {
+    static_assert(has_parent, "has_parent should be true");
+    assert(node);
+    return Derived::template remove_node_impl<true>(node);
+  }
+
+  /**
    * @brief Releases a node back to the node manager.
    *
    * @param node The node to release
@@ -267,18 +324,6 @@ class BaseTree {
   }
 
   /**
-   * @brief Removes a node and releases it back to the node manager.
-   *
-   * @param node The node to remove and release
-   * @return Pointer to the new root of the tree
-   */
-  [[nodiscard]] constexpr NodeType* remove_and_release_node(NodeType* node) {
-    NodeType* new_root = Derived::remove_node(node);
-    release(node);
-    return new_root;
-  }
-
-  /**
    * @brief Removes a node with the given key and releases it.
    *
    * @param root The root of the tree
@@ -287,8 +332,10 @@ class BaseTree {
    */
   [[nodiscard]] constexpr NodeType* remove_and_release(NodeType* root,
                                                        const KeyType& key) {
+    static_assert(has_key, "has_key should be true");
     NodeType* removed_node = nullptr;
-    NodeType* new_root = Derived::remove(root, key, removed_node);
+    NodeType* new_root =
+        Derived::template remove_impl<false>(root, key, removed_node);
     if (removed_node) release(removed_node);
     return new_root;
   }
@@ -302,9 +349,26 @@ class BaseTree {
    */
   [[nodiscard]] constexpr NodeType* remove_and_release_at(NodeType* root,
                                                           size_t index) {
+    static_assert(has_size, "has_size should be true");
+    assert(index < bst::subtree_data::size(root));
     NodeType* removed_node = nullptr;
-    NodeType* new_root = Derived::remove_at(root, index, removed_node);
+    NodeType* new_root =
+        Derived::template remove_at_impl<false>(root, index, removed_node);
     if (removed_node) release(removed_node);
+    return new_root;
+  }
+
+  /**
+   * @brief Removes a node and releases it back to the node manager.
+   *
+   * @param node The node to remove and release
+   * @return Pointer to the new root of the tree
+   */
+  [[nodiscard]] constexpr NodeType* remove_and_release_node(NodeType* node) {
+    static_assert(has_parent, "has_parent should be true");
+    assert(node);
+    NodeType* new_root = Derived::template remove_node_impl<false>(node);
+    release(node);
     return new_root;
   }
 
