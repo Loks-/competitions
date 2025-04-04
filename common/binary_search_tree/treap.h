@@ -135,8 +135,12 @@ class Treap
    * the node with higher priority as the root and recursively
    * merges the remaining parts.
    *
-   * @param p1 The first treap
-   * @param p2 The second treap
+   * Note: The function supports merging subtrees, not just complete trees.
+   * Both `p1` and `p2` can be roots of subtrees, and the implementation
+   * doesn't rely on parent links (`p1->parent` or `p2->parent`).
+   *
+   * @param p1 The first treap or subtree
+   * @param p2 The second treap or subtree
    * @return Pointer to the root of the merged treap
    */
   [[nodiscard]] static constexpr NodeType* merge(NodeType* p1, NodeType* p2) {
