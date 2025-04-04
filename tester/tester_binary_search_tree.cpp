@@ -1,7 +1,6 @@
 #include "tester/tester_binary_search_tree.h"
 
 #include "common/binary_search_tree/avl_tree.h"
-#include "common/binary_search_tree/base_tree.h"
 #include "common/binary_search_tree/deferred/add_each.h"
 #include "common/binary_search_tree/red_black_tree.h"
 #include "common/binary_search_tree/scapegoat_tree.h"
@@ -10,6 +9,7 @@
 #include "common/binary_search_tree/subtree_data/size.h"
 #include "common/binary_search_tree/subtree_data/sum.h"
 #include "common/binary_search_tree/treap.h"
+#include "common/binary_search_tree/unbalanced_tree.h"
 #include "common/binary_search_tree/wavl_tree.h"
 #include "common/timer.h"
 
@@ -105,10 +105,10 @@ bool TesterBinarySearchTree::TestAllTrees() {
   std::cout << "Testing base trees:" << std::endl;
   current_job = "base";
   if (mode == hash_test) {
-    TestAll<bst::BaseTree<false, TKey, TAggregatorsTuple1, std::tuple<>, TKey>>(
-        "base_upf");
-    TestAll<bst::BaseTree<true, TKey, TAggregatorsTuple1, std::tuple<>, TKey>>(
-        "base_upt");
+    TestAll<bst::UnbalancedTree<false, TKey, TAggregatorsTuple1, std::tuple<>,
+                                TKey>>("unbalanced_upf");
+    TestAll<bst::UnbalancedTree<true, TKey, TAggregatorsTuple1, std::tuple<>,
+                                TKey>>("unbalanced_upt");
   }
   TestAll<bst::AVLTree<false, TKey, TAggregatorsTuple1, std::tuple<>, TKey>>(
       "avltree_upf");
@@ -141,12 +141,10 @@ bool TesterBinarySearchTree::TestAllTrees() {
   std::cout << "Testing full trees:" << std::endl;
   current_job = "full";
   if (mode == hash_test) {
-    TestAll<
-        bst::BaseTree<false, TKey, TAggregatorsTuple2, TDeferredTuple2, TKey>>(
-        "base_upf");
-    TestAll<
-        bst::BaseTree<true, TKey, TAggregatorsTuple2, TDeferredTuple2, TKey>>(
-        "base_upt");
+    TestAll<bst::UnbalancedTree<false, TKey, TAggregatorsTuple2,
+                                TDeferredTuple2, TKey>>("unbalanced_upf");
+    TestAll<bst::UnbalancedTree<true, TKey, TAggregatorsTuple2, TDeferredTuple2,
+                                TKey>>("unbalanced_upt");
   }
   TestAll<bst::AVLTree<false, TKey, TAggregatorsTuple2, TDeferredTuple2, TKey>>(
       "avltree_upf");

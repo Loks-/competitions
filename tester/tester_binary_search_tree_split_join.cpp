@@ -3,12 +3,12 @@
 #include "common/assert_exception.h"
 #include "common/binary_search_tree/auto/find.h"
 #include "common/binary_search_tree/avl_tree.h"
-#include "common/binary_search_tree/base_tree.h"
 #include "common/binary_search_tree/deferred/add_each_key.h"
 #include "common/binary_search_tree/red_black_tree.h"
 #include "common/binary_search_tree/scapegoat_tree.h"
 #include "common/binary_search_tree/splay_tree.h"
 #include "common/binary_search_tree/treap.h"
+#include "common/binary_search_tree/unbalanced_tree.h"
 #include "common/binary_search_tree/wavl_tree.h"
 #include "common/hash/combine.h"
 #include "common/modular/proxy/proxy.h"
@@ -69,9 +69,8 @@ size_t TesterBinarySearchTreeSplitJoin::TestBase(
 bool TesterBinarySearchTreeSplitJoin::TestAll(bool small_test) const {
   std::unordered_set<size_t> hs;
   if (small_test) {
-    hs.insert(
-        TestBase<bst::BaseTree<true, MetaEmpty, TAggregators, TDeferred, TKey>>(
-            "Base  UPT"));
+    hs.insert(TestBase<bst::UnbalancedTree<true, MetaEmpty, TAggregators,
+                                           TDeferred, TKey>>("Unbalanced UPT"));
     hs.insert(TestBase<bst::ScapegoatTree<true, MetaEmpty, TAggregators,
                                           TDeferred, TKey>>("Scape UPT"));
   }

@@ -346,7 +346,6 @@ class SelfBalancingTree : public BaseTree<NodesManager, Derived> {
    * @return Pointer to the new root of the joined tree
    */
   [[nodiscard]] static constexpr NodeType* join_impl(NodeType* l, NodeType* r) {
-    static_assert(Derived::support_join3, "Join should be supported");
     if (!l) return r;
     if (!r) return l;
     NodeType* node = nullptr;
