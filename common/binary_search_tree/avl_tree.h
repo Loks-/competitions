@@ -82,7 +82,7 @@ class AVLTree
       l->update_subtree_data();
       return l;
     } else {
-      return Extended::join3_impl(l, m1, r);
+      return Extended::join3_base_impl(l, m1, r);
     }
   }
 
@@ -93,7 +93,7 @@ class AVLTree
       r->update_subtree_data();
       return r;
     } else {
-      return Extended::join3_impl(l, m1, r);
+      return Extended::join3_base_impl(l, m1, r);
     }
   }
 
@@ -103,7 +103,7 @@ class AVLTree
     const auto hl = Height(l), hr = Height(r), hd = hl - hr;
     return (hd > 1)    ? Join3L(l, m1, r, hr)
            : (hd < -1) ? Join3R(l, m1, r, hl)
-                       : Extended::join3_impl(l, m1, r);
+                       : Extended::join3_base_impl(l, m1, r);
   }
 };
 }  // namespace bst

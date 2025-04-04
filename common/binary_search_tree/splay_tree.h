@@ -213,46 +213,6 @@ class SplayTree
   }
 
   /**
-   * @brief Joins two trees into a single tree.
-   *
-   * The join operation combines two trees by finding the rightmost node in the
-   * left tree, splaying it to the root, and attaching the right tree as its
-   * right child.
-   *
-   * @param l The root of the left tree
-   * @param r The root of the right tree
-   * @return The root of the resulting tree
-   */
-  [[nodiscard]] static constexpr NodeType* join(NodeType* l, NodeType* r) {
-    if (!l) return r;
-    if (!r) return l;
-    assert(!l->parent && !r->parent);
-    NodeType* p = base::right(l);
-    p->set_right(r);
-    base::splay(p);
-    return p;
-  }
-
-  /**
-   * @brief Joins three trees into a single tree.
-   *
-   * The join3 operation combines three trees by using the middle node as the
-   * root and attaching the left and right trees as its children.
-   *
-   * @param l The root of the left tree
-   * @param m1 The middle node (must be a leaf)
-   * @param r The root of the right tree
-   * @return The root of the resulting tree (m1)
-   */
-  static constexpr NodeType* join3(NodeType* l, NodeType* m1, NodeType* r) {
-    assert(m1 && !m1->left && !m1->right);
-    m1->set_left(l);
-    m1->set_right(r);
-    m1->update_subtree_data();
-    return m1;
-  }
-
-  /**
    * @brief Splits a tree into two trees at a given node.
    *
    * The split operation divides the tree into two parts: everything to the
@@ -574,7 +534,7 @@ class SplayTree
     if (r) r->set_parent(nullptr);
     NodeType* p = node->parent;
     if constexpr (reset_links) node->reset_links_and_update_subtree_data();
-    NodeType* m = join(l, r);
+    NodeType* m = Base::join(l, r);
     if (!p) return m;
     if (node == p->left) {
       p->set_left(m);
@@ -583,6 +543,45 @@ class SplayTree
     }
     base::splay(p);
     return p;
+  }
+
+  /**
+   * @brief Implementation of joining two trees together.
+   *
+   * This function implements the join operation for splay trees. It finds the
+   * rightmost node of the left tree, attaches the right tree as its right
+   * child, and then splays the node to maintain the splay tree property.
+   * The splay operation automatically updates the subtree data.
+   *
+   * @param l The root of the left tree
+   * @param r The root of the right tree
+   * @return Pointer to the root of the joined tree
+   */
+  [[nodiscard]] static constexpr NodeType* join_impl(NodeType* l, NodeType* r) {
+    NodeType* p = base::right(l);
+    p->set_right(r);
+    base::splay(p);
+    return p;
+  }
+
+  /**
+   * @brief Implementation of joining three trees together.
+   *
+   * This function implements the join operation for splay trees with a middle
+   * tree. It uses the middle node as the root and attaches the left and right
+   * trees as its children. The subtree data is updated to reflect the changes.
+   *
+   * @param l The root of the left tree
+   * @param m1 The middle node (must be a leaf)
+   * @param r The root of the right tree
+   * @return Pointer to the root of the joined tree (m1)
+   */
+  static constexpr NodeType* join3_impl(NodeType* l, NodeType* m1,
+                                        NodeType* r) {
+    m1->set_left(l);
+    m1->set_right(r);
+    m1->update_subtree_data();
+    return m1;
   }
 };
 

@@ -73,37 +73,6 @@ class Treap
   [[nodiscard]] explicit constexpr Treap(size_t max_nodes) : Base(max_nodes) {}
 
   /**
-   * @brief Joins two trees together.
-   *
-   * The join operation maintains both the binary search tree property
-   * and the heap property with respect to heights.
-   *
-   * @param l The left tree
-   * @param r The right tree
-   * @return Pointer to the new root of the joined tree
-   */
-  [[nodiscard]] static constexpr NodeType* join(NodeType* l, NodeType* r) {
-    return !l ? r : !r ? l : join_impl(l, r);
-  }
-
-  /**
-   * @brief Joins three trees together with a middle node.
-   *
-   * Note: This implementation is not optimal but is rarely used in practice.
-   * It performs two join operations sequentially, which could be optimized
-   * if this operation becomes a performance bottleneck.
-   *
-   * @param l The left tree
-   * @param m1 The middle node
-   * @param r The right tree
-   * @return Pointer to the new root of the joined tree
-   */
-  [[nodiscard]] static constexpr NodeType* join3(NodeType* l, NodeType* m1,
-                                                 NodeType* r) {
-    return join(l, join(m1, r));
-  }
-
-  /**
    * @brief Splits a tree at a given key.
    *
    * The split operation divides the tree into two parts based on the key value:
@@ -393,7 +362,7 @@ class Treap
       root->update_subtree_data();
     } else {
       removed_node = root;
-      root = join(root->left, root->right);
+      root = join_impl(root->left, root->right);
       if (root) root->set_parent(nullptr);
       if constexpr (reset_links)
         removed_node->reset_links_and_update_subtree_data();
@@ -434,7 +403,7 @@ class Treap
       root->update_subtree_data();
     } else if (index == left_size) {
       removed_node = root;
-      root = join(root->left, root->right);
+      root = join_impl(root->left, root->right);
       if (root) root->set_parent(nullptr);
       if constexpr (reset_links)
         removed_node->reset_links_and_update_subtree_data();
@@ -467,7 +436,7 @@ class Treap
    */
   template <bool reset_links>
   [[nodiscard]] static constexpr NodeType* remove_node_impl(NodeType* node) {
-    NodeType *p = node->parent, *m = join(node->left, node->right);
+    NodeType *p = node->parent, *m = join_impl(node->left, node->right);
     if constexpr (reset_links) node->reset_links_and_update_subtree_data();
     if (!p) {
       if (m) m->set_parent(nullptr);
@@ -482,7 +451,52 @@ class Treap
   }
 
   /**
-   * @brief Internal implementation of join operation.
+   * @brief Implementation of joining two trees together.
+   *
+   * This function implements the join operation for treaps. It uses a recursive
+   * approach to maintain both the binary search tree property and the heap
+   * property with respect to heights. The node with higher priority (height)
+   * becomes the root of the joined tree, and its subtrees are recursively
+   * joined with the remaining parts.
+   *
+   * Note: The function supports joining subtrees, not just complete trees.
+   * Both `l` and `r` can be roots of subtrees, and the implementation
+   * doesn't rely on parent links (`l->parent` or `r->parent`).
+   *
+   * @param l The root of the left tree or subtree
+   * @param r The root of the right tree or subtree
+   * @return Pointer to the root of the joined tree
+   */
+  [[nodiscard]] static constexpr NodeType* join_impl(NodeType* l, NodeType* r) {
+    return !l ? r : !r ? l : join_impl_recursive(l, r);
+  }
+
+  /**
+   * @brief Implementation of joining three trees together.
+   *
+   * This function implements the join operation for treaps with a middle tree.
+   * It first joins the middle tree with the right tree, then joins the result
+   * with the left tree. This approach maintains both the binary search tree
+   * property and the heap property with respect to heights.
+   *
+   * Note: This implementation is not optimal as it performs two join operations
+   * sequentially. However, this function is rarely used in practice, and the
+   * current implementation is sufficient for most use cases. If this operation
+   * becomes a performance bottleneck, it could be optimized to perform a single
+   * join operation.
+   *
+   * @param l The root of the left tree
+   * @param m1 The root of the middle tree
+   * @param r The root of the right tree
+   * @return Pointer to the root of the joined tree
+   */
+  [[nodiscard]] static constexpr NodeType* join3_impl(NodeType* l, NodeType* m1,
+                                                      NodeType* r) {
+    return join_impl(l, join_impl(m1, r));
+  }
+
+  /**
+   * @brief Internal recursive implementation of join operation.
    *
    * This implementation maintains both the binary search tree property
    * and the heap property by using the node with higher priority
@@ -492,15 +506,16 @@ class Treap
    * @param r The right tree
    * @return Pointer to the new root of the joined tree
    */
-  [[nodiscard]] static constexpr NodeType* join_impl(NodeType* l, NodeType* r) {
+  [[nodiscard]] static constexpr NodeType* join_impl_recursive(NodeType* l,
+                                                               NodeType* r) {
     if (height(l) > height(r)) {
       l->apply_deferred();
-      l->set_right(l->right ? join_impl(l->right, r) : r);
+      l->set_right(l->right ? join_impl_recursive(l->right, r) : r);
       l->update_subtree_data();
       return l;
     } else {
       r->apply_deferred();
-      r->set_left(r->left ? join_impl(l, r->left) : l);
+      r->set_left(r->left ? join_impl_recursive(l, r->left) : l);
       r->update_subtree_data();
       return r;
     }

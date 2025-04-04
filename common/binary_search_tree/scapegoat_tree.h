@@ -81,7 +81,7 @@ class ScapegoatTree
       l->update_subtree_data();
       return fix_balance(l);
     } else {
-      return Extended::join3_impl(l, m1, r);
+      return Extended::join3_base_impl(l, m1, r);
     }
   }
 
@@ -92,7 +92,7 @@ class ScapegoatTree
       r->update_subtree_data();
       return fix_balance(r);
     } else {
-      return Extended::join3_impl(l, m1, r);
+      return Extended::join3_base_impl(l, m1, r);
     }
   }
 

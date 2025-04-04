@@ -76,7 +76,7 @@ class BaseTree
    * @return Root of the resulting tree
    */
   static NodeType* join3(NodeType* l, NodeType* m1, NodeType* r) {
-    return Base::join3_impl(l, m1, r);
+    return Base::join3_base_impl(l, m1, r);
   }
 };
 }  // namespace bst

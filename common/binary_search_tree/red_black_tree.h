@@ -242,7 +242,7 @@ class RedBlackTree
   }
 
   static TNode* join3_impl(TNode* l, TNode* m1, TNode* r) {
-    TTree::join3_impl(l, m1, r);
+    TTree::join3_base_impl(l, m1, r);
     SetColor(m1, false);
     return m1;
   }

@@ -95,27 +95,6 @@ class ExtendedTree : public BaseTree<NodesManager, Derived> {
   }
 
   /**
-   * @brief Joins two trees together.
-   *
-   * @param l The left tree
-   * @param r The right tree
-   * @return Pointer to the new root of the joined tree
-   */
-  [[nodiscard]] static NodeType* join(NodeType* l, NodeType* r) {
-    return Derived::join_impl(l, r);
-  }
-
-  /**
-   * @brief Joins three trees together with a middle node.
-   *
-   * @param l The left tree
-   * @param m1 The middle node
-   * @param r The right tree
-   * @return Pointer to the new root of the joined tree
-   */
-  [[nodiscard]] static NodeType* join3(NodeType* l, NodeType* m1, NodeType* r);
-
-  /**
    * @brief Splits a tree at a given key.
    *
    * @param root The root of the tree to split
@@ -208,7 +187,7 @@ class ExtendedTree : public BaseTree<NodesManager, Derived> {
    * @return Pointer to the new root of the joined tree (always m1 in this
    * implementation)
    */
-  static NodeType* join3_impl(NodeType* l, NodeType* m1, NodeType* r) {
+  static NodeType* join3_base_impl(NodeType* l, NodeType* m1, NodeType* r) {
     m1->set_left(l);
     m1->set_right(r);
     m1->update_subtree_data();

@@ -86,6 +86,9 @@ class StaticTree
   constexpr NodeType* remove_and_release_at(NodeType* root,
                                             size_t index) = delete;
   constexpr NodeType* remove_and_release_node(NodeType* node) = delete;
+  static constexpr NodeType* join(NodeType* l, NodeType* r) = delete;
+  static constexpr NodeType* join3(NodeType* l, NodeType* m1,
+                                   NodeType* r) = delete;
 };
 
 }  // namespace bst

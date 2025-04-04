@@ -373,6 +373,45 @@ class BaseTree {
   }
 
   /**
+   * @brief Joins two trees together.
+   *
+   * This function verifies that both trees are valid (their roots are actual
+   * roots) and delegates the join operation to the derived class
+   * implementation. The derived class is responsible for maintaining the tree
+   * properties during the join operation.
+   *
+   * @param l The root of the left tree
+   * @param r The root of the right tree
+   * @return Pointer to the root of the joined tree
+   */
+  [[nodiscard]] static constexpr NodeType* join(NodeType* l, NodeType* r) {
+    if (!l) return r;
+    if (!r) return l;
+    assert(l->is_root() && r->is_root());
+    return Derived::join_impl(l, r);
+  }
+
+  /**
+   * @brief Joins three trees together.
+   *
+   * This function verifies that the left and right trees are valid (their roots
+   * are actual roots) and that the middle tree is isolated. It delegates the
+   * join operation to the derived class implementation. The derived class is
+   * responsible for maintaining the tree properties during the join operation.
+   *
+   * @param l The root of the left tree
+   * @param m1 The root of the middle tree (must be isolated node)
+   * @param r The root of the right tree
+   * @return Pointer to the root of the joined tree
+   */
+  static constexpr NodeType* join3(NodeType* l, NodeType* m1, NodeType* r) {
+    assert((!l || l->is_root()) && (!r || r->is_root()));
+    assert(m1 && m1->is_isolated());
+    return Derived::join3_impl(l, m1, r);
+  }
+
+ public:
+  /**
    * @brief Clears all nodes from the node manager.
    */
   constexpr void clear() { nodes_manager_.clear(); }

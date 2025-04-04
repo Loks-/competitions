@@ -213,8 +213,8 @@ class Node : public memory::Node {
    * @return true if the node is a root, false otherwise
    */
   [[nodiscard]] constexpr bool is_root() const noexcept {
-    if constexpr (!has_parent) return true;
-    return parent == nullptr;
+    if constexpr (has_parent) return parent == nullptr;
+    return true;
   }
 
   /**

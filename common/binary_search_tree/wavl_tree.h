@@ -196,7 +196,7 @@ class WAVLTree
   }
 
   static TNode* join3_impl(TNode* l, TNode* m1, TNode* r) {
-    Extended::join3_impl(l, m1, r);
+    Extended::join3_base_impl(l, m1, r);
     UpdateRank(m1);
     return m1;
   }
