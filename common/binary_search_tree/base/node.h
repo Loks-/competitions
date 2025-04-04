@@ -138,6 +138,21 @@ class Node : public memory::Node {
   constexpr void clear_deferred() { deferred.clear(); }
 
   /**
+   * @brief Checks if there are any pending deferred computations that need to
+   * be applied.
+   *
+   * This function queries the deferred computation state to determine if there
+   * are any pending operations that need to be applied to the node's data.
+   * It can be used to optimize operations by avoiding unnecessary
+   * apply_deferred calls when there are no pending computations.
+   *
+   * @return true if there are pending deferred computations, false otherwise
+   */
+  [[nodiscard]] constexpr bool apply_required() const noexcept {
+    return deferred.apply_required();
+  }
+
+  /**
    * @brief Applies all pending deferred computations.
    *
    * This function should be called before accessing the node's data
