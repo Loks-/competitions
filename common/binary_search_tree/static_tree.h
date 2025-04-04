@@ -89,6 +89,12 @@ class StaticTree
   static constexpr NodeType* join(NodeType* l, NodeType* r) = delete;
   static constexpr NodeType* join3(NodeType* l, NodeType* m1,
                                    NodeType* r) = delete;
+  static constexpr void split(NodeType* root, const Key& key,
+                              NodeType*& output_l,
+                              NodeType*& output_r) = delete;
+  static constexpr void split_at(NodeType* root, size_t lsize,
+                                 NodeType*& output_l,
+                                 NodeType*& output_r) = delete;
 };
 
 }  // namespace bst

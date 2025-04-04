@@ -410,6 +410,77 @@ class BaseTree {
     return Derived::join3_impl(l, m1, r);
   }
 
+  /**
+   * @brief Splits a tree at a given key.
+   *
+   * This function verifies that the tree supports key-based operations and
+   * that the root is valid (either nullptr or a root of its tree). It handles
+   * all corner cases:
+   * - If root is nullptr, both output parts are set to nullptr
+   * - If root is not nullptr, delegates to the derived class implementation
+   *
+   * The derived class implementation is responsible for:
+   * - Maintaining the binary search tree property
+   * - Updating parent links and subtree data
+   * - Ensuring that output_l contains all nodes with keys < key
+   * - Ensuring that output_r contains all nodes with keys >= key
+   *
+   * @param root The root of the tree to split
+   * @param key The key to split at
+   * @param output_l Reference to store the left part
+   * @param output_r Reference to store the right part
+   */
+  static constexpr void split(NodeType* root, const KeyType& key,
+                              NodeType*& output_l, NodeType*& output_r) {
+    static_assert(has_key, "has_key should be true");
+    assert(!root || root->is_root());
+    if (!root) {
+      output_l = output_r = nullptr;
+    } else {
+      Derived::split_impl(root, key, output_l, output_r);
+    }
+  }
+
+  /**
+   * @brief Splits a tree at a given inorder index.
+   *
+   * This function verifies that the tree supports size-based operations and
+   * that the root is valid (either nullptr or a root of its tree). It handles
+   * all corner cases:
+   * - If root is nullptr, both output parts are set to nullptr
+   * - If lsize is 0, output_l is nullptr and output_r is root
+   * - If lsize >= tree size, output_l is root and output_r is nullptr
+   * - Otherwise, delegates to the derived class implementation
+   *
+   * The derived class implementation is responsible for:
+   * - Maintaining the binary search tree property
+   * - Updating parent links and subtree data
+   * - Ensuring that output_l contains exactly lsize nodes
+   * - Ensuring that output_r contains the remaining nodes
+   *
+   * @param root The root of the tree to split
+   * @param lsize The size of the left part
+   * @param output_l Reference to store the left part
+   * @param output_r Reference to store the right part
+   */
+  static constexpr void split_at(NodeType* root, size_t lsize,
+                                 NodeType*& output_l, NodeType*& output_r) {
+    static_assert(has_size, "has_size should be true");
+    assert(!root || root->is_root());
+    assert(lsize <= bst::subtree_data::size(root));
+    if (!root) {
+      output_l = output_r = nullptr;
+    } else if (lsize == 0) {
+      output_l = nullptr;
+      output_r = root;
+    } else if (lsize >= bst::subtree_data::size(root)) {
+      output_l = root;
+      output_r = nullptr;
+    } else {
+      Derived::split_at_impl(root, lsize, output_l, output_r);
+    }
+  }
+
  public:
   /**
    * @brief Clears all nodes from the node manager.

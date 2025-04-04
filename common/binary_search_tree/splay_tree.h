@@ -213,102 +213,6 @@ class SplayTree
   }
 
   /**
-   * @brief Splits a tree into two trees at a given node.
-   *
-   * The split operation divides the tree into two parts: everything to the
-   * left of the given node and the node itself with everything to its right.
-   *
-   * @param p The node at which to split
-   * @return The root of the left tree
-   */
-  [[nodiscard]] static constexpr NodeType* split_left(NodeType* p) {
-    if (!p) return nullptr;
-    base::splay(p);
-    NodeType* l = p->left;
-    if (l) {
-      l->parent = nullptr;
-      p->left = nullptr;
-      p->update_subtree_data();
-    }
-    return l;
-  }
-
-  /**
-   * @brief Splits a tree into two trees at a given node.
-   *
-   * The split operation divides the tree into two parts: the node itself with
-   * everything to its left and everything to its right.
-   *
-   * @param p The node at which to split
-   * @return The root of the right tree
-   */
-  [[nodiscard]] static constexpr NodeType* split_right(NodeType* p) {
-    if (!p) return nullptr;
-    base::splay(p);
-    NodeType* r = p->right;
-    if (r) {
-      r->parent = nullptr;
-      p->right = nullptr;
-      p->update_subtree_data();
-    }
-    return r;
-  }
-
-  /**
-   * @brief Splits a tree at a given key.
-   *
-   * The split operation divides the tree into two parts based on the key value:
-   * - Left part contains all nodes with keys less than the given key
-   * - Right part contains all nodes with keys greater than or equal to the key
-   *
-   * @param root The root of the tree to split
-   * @param key The key to split at
-   * @param output_l Reference to store the left part
-   * @param output_r Reference to store the right part
-   */
-  static constexpr void split(NodeType* root, const Key& key,
-                              NodeType*& output_l, NodeType*& output_r) {
-    static_assert(has_key, "has_key should be true");
-    if (!root) {
-      output_l = output_r = nullptr;
-      return;
-    }
-    NodeType* p = lower_bound(root, key);
-    output_r = p;
-    output_l = (p ? split_left(p) : root);
-  }
-
-  /**
-   * @brief Splits a tree at a given index.
-   *
-   * The split_at operation divides the tree into two parts based on the given
-   * size: the first lsize nodes in inorder traversal go to the left tree, and
-   * the remaining nodes go to the right tree.
-   *
-   * @param root The root of the tree to split
-   * @param lsize The size of the left tree
-   * @param output_l Reference to store the left part
-   * @param output_r Reference to store the right part
-   */
-  static constexpr void split_at(NodeType* root, size_t lsize,
-                                 NodeType*& output_l, NodeType*& output_r) {
-    static_assert(SubtreeDataType::has_size, "info should contain size");
-    if (!root) {
-      output_l = output_r = nullptr;
-    } else if (lsize == 0) {
-      output_l = nullptr;
-      output_r = root;
-    } else if (lsize >= subtree_data::size(root)) {
-      output_l = root;
-      output_r = nullptr;
-    } else {
-      NodeType* p = at(root, lsize);
-      output_l = split_left(p);
-      output_r = p;
-    }
-  }
-
-  /**
    * @brief Merges two trees into a single tree.
    *
    * The merge operation combines two trees by recursively splitting the smaller
@@ -333,7 +237,7 @@ class SplayTree
       std::swap(root1, root2);
     NodeType* m = at(root1, subtree_data::size(root1) / 2);
     NodeType *r2l = nullptr, *r2r = nullptr;
-    split(root2, m->key, r2l, r2r);
+    split_impl(root2, m->key, r2l, r2r);
     if (m->left) m->left->parent = nullptr;
     if (m->right) m->right->parent = nullptr;
     m->set_left(merge(m->left, r2l));
@@ -582,6 +486,70 @@ class SplayTree
     m1->set_right(r);
     m1->update_subtree_data();
     return m1;
+  }
+
+  /**
+   * @brief Implementation of splitting a tree at a given key.
+   *
+   * This function implements the split operation for splay trees. It first
+   * finds the node with the smallest key greater than or equal to the given
+   * key using lower_bound, which splays the node to the root. Then it splits
+   * the tree at this node, ensuring that parent links are always correct
+   * since splay operations require valid parent links.
+   *
+   * @param root The root of the tree to split
+   * @param key The key to split at
+   * @param output_l Reference to store the left part (keys < key)
+   * @param output_r Reference to store the right part (keys >= key)
+   */
+  static constexpr void split_impl(NodeType* root, const Key& key,
+                                   NodeType*& output_l, NodeType*& output_r) {
+    NodeType* p = lower_bound(root, key);
+    output_r = p;
+    output_l = (p ? split_left(p) : root);
+  }
+
+  /**
+   * @brief Implementation of splitting a tree at a given inorder index.
+   *
+   * This function implements the split operation for splay trees by index.
+   * It first finds the node at the given index using at, which splays the
+   * node to the root. Then it splits the tree at this node, ensuring that
+   * parent links are always correct since splay operations require valid
+   * parent links.
+   *
+   * @param root The root of the tree to split
+   * @param lsize The size of the left part
+   * @param output_l Reference to store the left part
+   * @param output_r Reference to store the right part
+   */
+  static constexpr void split_at_impl(NodeType* root, size_t lsize,
+                                      NodeType*& output_l,
+                                      NodeType*& output_r) {
+    NodeType* p = at(root, lsize);
+    output_l = split_left(p);
+    output_r = p;
+  }
+
+  /**
+   * @brief Splits a tree into two trees at a given node.
+   *
+   * The split operation divides the tree into two parts: everything to the
+   * left of the given node and the node itself with everything to its right.
+   *
+   * @param p The node at which to split
+   * @return The root of the left tree
+   */
+  [[nodiscard]] static constexpr NodeType* split_left(NodeType* p) {
+    if (!p) return nullptr;
+    base::splay(p);
+    NodeType* l = p->left;
+    if (l) {
+      l->parent = nullptr;
+      p->left = nullptr;
+      p->update_subtree_data();
+    }
+    return l;
   }
 };
 

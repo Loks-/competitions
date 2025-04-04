@@ -73,61 +73,6 @@ class Treap
   [[nodiscard]] explicit constexpr Treap(size_t max_nodes) : Base(max_nodes) {}
 
   /**
-   * @brief Splits a tree at a given key.
-   *
-   * The split operation divides the tree into two parts based on the key value:
-   * - Left part contains all nodes with keys less than the given key
-   * - Right part contains all nodes with keys greater than or equal to the key
-   *
-   * @param root The root of the tree to split
-   * @param key The key to split at
-   * @param output_l Reference to store the left part
-   * @param output_r Reference to store the right part
-   */
-  static constexpr void split(NodeType* root, const Key& key,
-                              NodeType*& output_l, NodeType*& output_r) {
-    static_assert(has_key, "has_key should be true");
-    if (!root) {
-      output_l = output_r = nullptr;
-    } else {
-      split_impl(root, key, output_l, output_r);
-      if (output_l) output_l->set_parent(nullptr);
-      if (output_r) output_r->set_parent(nullptr);
-    }
-  }
-
-  /**
-   * @brief Splits a tree at a given inorder index.
-   *
-   * The split_at operation divides the tree into two parts based on the given
-   * size: the first lsize nodes in inorder traversal go to the left tree, and
-   * the remaining nodes go to the right tree.
-   *
-   * @param root The root of the tree to split
-   * @param lsize The size of the left tree
-   * @param output_l Reference to store the left part
-   * @param output_r Reference to store the right part
-   */
-  static constexpr void split_at(NodeType* root, size_t lsize,
-                                 NodeType*& output_l, NodeType*& output_r) {
-    static_assert(SubtreeDataType::has_size,
-                  "subtree data should contain size");
-    if (!root) {
-      output_l = output_r = nullptr;
-    } else if (lsize == 0) {
-      output_l = nullptr;
-      output_r = root;
-    } else if (lsize >= subtree_data::size(root)) {
-      output_l = root;
-      output_r = nullptr;
-    } else {
-      split_at_impl(root, lsize, output_l, output_r);
-      if (output_l) output_l->set_parent(nullptr);
-      if (output_r) output_r->set_parent(nullptr);
-    }
-  }
-
-  /**
    * @brief Merges two treaps into one.
    *
    * The merge operation combines two treaps while maintaining both
@@ -150,7 +95,7 @@ class Treap
     if (height(p1) < height(p2)) std::swap(p1, p2);
     p1->apply_deferred();
     NodeType *pt1 = nullptr, *pt2 = nullptr;
-    split(p2, p1->key, pt1, pt2);
+    split_impl_internal(p2, p1->key, pt1, pt2);
     p1->set_left(merge(p1->left, pt1));
     p1->set_right(merge(p1->right, pt2));
     p1->update_subtree_data();
@@ -269,7 +214,7 @@ class Treap
         root->set_left(insert_impl<update_required>(root->left, node));
       }
     } else {
-      split_impl(root, node->key, node->left, node->right);
+      split_impl_internal(root, node->key, node->left, node->right);
       if (node->left) node->left->set_parent(node);
       if (node->right) node->right->set_parent(node);
       root = node;
@@ -323,7 +268,7 @@ class Treap
                                                         index - left_size - 1));
       }
     } else {
-      split_at_impl(root, index, node->left, node->right);
+      split_at_impl_internal(root, index, node->left, node->right);
       if (node->left) node->left->set_parent(node);
       if (node->right) node->right->set_parent(node);
       root = node;
@@ -526,23 +471,66 @@ class Treap
   }
 
   /**
+   * @brief Implementation of splitting a tree at a given key.
+   *
+   * This function implements the split operation for treaps. It recursively
+   * splits the tree into two parts based on the key value while maintaining
+   * both the binary search tree property and the heap property with respect
+   * to heights.
+   *
+   * @param root The root of the tree to split
+   * @param key The key to split at
+   * @param output_l Reference to store the left part (keys < key)
+   * @param output_r Reference to store the right part (keys >= key)
+   */
+  static constexpr void split_impl(NodeType* root, const Key& key,
+                                   NodeType*& output_l, NodeType*& output_r) {
+    split_impl_internal(root, key, output_l, output_r);
+    if (output_l) output_l->set_parent(nullptr);
+    if (output_r) output_r->set_parent(nullptr);
+  }
+
+  /**
+   * @brief Implementation of splitting a tree at a given inorder index.
+   *
+   * This function implements the split operation for treaps by index. It
+   * recursively splits the tree into two parts based on the given size while
+   * maintaining both the binary search tree property and the heap property
+   * with respect to heights.
+   *
+   * @param root The root of the tree to split
+   * @param lsize The size of the left part
+   * @param output_l Reference to store the left part
+   * @param output_r Reference to store the right part
+   */
+  static constexpr void split_at_impl(NodeType* root, size_t lsize,
+                                      NodeType*& output_l,
+                                      NodeType*& output_r) {
+    split_at_impl_internal(root, lsize, output_l, output_r);
+    if (output_l) output_l->set_parent(nullptr);
+    if (output_r) output_r->set_parent(nullptr);
+  }
+
+  /**
    * @brief Internal implementation of split operation by key.
    *
    * This implementation recursively splits the tree while maintaining
-   * the binary search tree property and updating parent pointers.
+   * both the binary search tree property and the heap property with
+   * respect to heights.
    *
    * @param p The root node to split
    * @param key The key to split at
    * @param output_l Reference to store the left part
    * @param output_r Reference to store the right part
    */
-  static constexpr void split_impl(NodeType* p, const Key& key,
-                                   NodeType*& output_l, NodeType*& output_r) {
+  static constexpr void split_impl_internal(NodeType* p, const Key& key,
+                                            NodeType*& output_l,
+                                            NodeType*& output_r) {
     p->apply_deferred();
     if (p->key < key) {
       if (p->right) {
         output_l = p;
-        split_impl(p->right, key, p->right, output_r);
+        split_impl_internal(p->right, key, p->right, output_r);
         p->update_subtree_data();
         if (p->right) p->right->set_parent(p);
       } else {
@@ -552,7 +540,7 @@ class Treap
     } else {
       if (p->left) {
         output_r = p;
-        split_impl(p->left, key, output_l, p->left);
+        split_impl_internal(p->left, key, output_l, p->left);
         p->update_subtree_data();
         if (p->left) p->left->set_parent(p);
       } else {
@@ -565,23 +553,23 @@ class Treap
   /**
    * @brief Internal implementation of split operation by size.
    *
-   * This implementation splits the tree at a given inorder index
-   * while maintaining the binary search tree property and updating
-   * parent pointers.
+   * This implementation splits the tree at a given inorder index while
+   * maintaining both the binary search tree property and the heap property
+   * with respect to heights.
    *
    * @param p The root node to split
    * @param lsize The size of the left part
    * @param output_l Reference to store the left part
    * @param output_r Reference to store the right part
    */
-  static constexpr void split_at_impl(NodeType* p, size_t lsize,
-                                      NodeType*& output_l,
-                                      NodeType*& output_r) {
+  static constexpr void split_at_impl_internal(NodeType* p, size_t lsize,
+                                               NodeType*& output_l,
+                                               NodeType*& output_r) {
     p->apply_deferred();
     const size_t hlsize = subtree_data::size(p->left);
     if (lsize < hlsize) {
       output_r = p;
-      split_at_impl(p->left, lsize, output_l, p->left);
+      split_at_impl_internal(p->left, lsize, output_l, p->left);
       if (p->left) p->left->set_parent(p);
     } else if (lsize == hlsize) {
       output_l = p->left;
@@ -593,7 +581,7 @@ class Treap
       p->right = nullptr;
     } else {
       output_l = p;
-      split_at_impl(p->right, lsize - hlsize - 1, p->right, output_r);
+      split_at_impl_internal(p->right, lsize - hlsize - 1, p->right, output_r);
       if (p->right) p->right->set_parent(p);
     }
     p->update_subtree_data();

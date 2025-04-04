@@ -94,30 +94,6 @@ class ExtendedTree : public BaseTree<NodesManager, Derived> {
     return bst::base::at(root, index);
   }
 
-  /**
-   * @brief Splits a tree at a given key.
-   *
-   * @param root The root of the tree to split
-   * @param key The key to split at
-   * @param output_l Reference to store the left part of the split
-   * @param output_r Reference to store the right part of the split
-   */
-  static void split(NodeType* root, const KeyType& key, NodeType*& output_l,
-                    NodeType*& output_r) {
-    Derived::split_impl(root, key, output_l, output_r);
-  }
-
-  /**
-   * @brief Splits a tree at a given inorder index.
-   *
-   * @param root The root of the tree to split
-   * @param lsize The size of the left part
-   * @param output_l Reference to store the left part of the split
-   * @param output_r Reference to store the right part of the split
-   */
-  static void split_at(NodeType* root, size_t lsize, NodeType*& output_l,
-                       NodeType*& output_r);
-
  protected:
   /**
    * @brief Implementation of remove that can be overridden by derived classes.
