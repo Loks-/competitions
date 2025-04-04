@@ -46,9 +46,11 @@ class BaseTree
                  base::Deferred<TDeferredTuple>, use_parent, true, TKey>;
   using TNode = NodeType;  // temporary
   using NodesManagerType = memory::ContiguousNodesManager<NodeType>;
-  using Base = base::SelfBalancingTree<NodesManagerType, Self>;
+  using SBTree = base::SelfBalancingTree<NodesManagerType, Self>;
+  using Base = typename SBTree::Base;
 
   friend Base;
+  friend SBTree;
 
   static constexpr bool support_join3 = true;
 
@@ -58,7 +60,7 @@ class BaseTree
    *
    * @param max_nodes The maximum number of nodes to reserve
    */
-  explicit BaseTree(size_t max_nodes) : Base(max_nodes) {}
+  explicit BaseTree(size_t max_nodes) : SBTree(max_nodes) {}
 
  protected:
   /**
@@ -76,7 +78,7 @@ class BaseTree
    * @return Root of the resulting tree
    */
   static NodeType* join3_impl(NodeType* l, NodeType* m1, NodeType* r) {
-    return Base::join3_base_impl(l, m1, r);
+    return SBTree::join3_base_impl(l, m1, r);
   }
 };
 }  // namespace bst
