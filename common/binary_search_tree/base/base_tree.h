@@ -9,16 +9,28 @@
 namespace bst {
 namespace base {
 /**
- * @brief Base class for base binary search tree operations.
+ * @brief Base class for binary search tree implementations.
  *
- * This class provides core functionality for binary search trees:
- * - Type definitions and feature flags
- * - Node management (creation and release)
- * - Base tree operations that require access to node manager
+ * This class provides core functionality and interface for binary search trees:
+ * - Type definitions and feature flags for different BST implementations
+ * - Node management (creation, release, and memory management)
+ * - Base tree operations with comprehensive corner cases handling
  * - Tree building and manipulation operations
  *
+ * The class handles all common corner cases and requirements checking:
+ * - Verifies tree properties (root validity, key/size support)
+ * - Handles null cases for all operations
+ * - Manages node isolation and deferred computations
+ * - Provides safe node creation and release
+ *
+ * Derived classes are responsible for:
+ * - Implementing specific tree properties (e.g., splay, treap)
+ * - Maintaining tree invariants during operations
+ * - Updating parent links and subtree data
+ * - Handling node connections and disconnections
+ *
  * @tparam NodesManager The node manager type that handles node allocation and
- * management
+ *         management
  * @tparam Derived The derived class type (for CRTP)
  */
 template <typename NodesManager, typename Derived>
