@@ -1,10 +1,10 @@
 #pragma once
 
 #include "common/base.h"
-#include "common/binary_search_tree/base/balanced_tree.h"
 #include "common/binary_search_tree/base/deferred.h"
 #include "common/binary_search_tree/base/node.h"
 #include "common/binary_search_tree/base/rotate.h"
+#include "common/binary_search_tree/base/self_balancing_tree.h"
 #include "common/binary_search_tree/base/sibling.h"
 #include "common/binary_search_tree/base/subtree_data.h"
 #include "common/binary_search_tree/subtree_data/size.h"
@@ -19,7 +19,7 @@ template <bool use_parent, class TData,
           class TAggregatorsTuple = std::tuple<subtree_data::Size>,
           class TDeferredTuple = std::tuple<>, class TKey = int64_t>
 class WAVLTree
-    : public base::BalancedTree<
+    : public base::SelfBalancingTree<
           memory::ContiguousNodesManager<base::Node<
               TData,
               base::SubtreeData<templates::PrependT<subtree_data::WAVLRank,
@@ -35,19 +35,17 @@ class WAVLTree
       base::Node<TData, TSubtreeData, TDeferred, use_parent, true, TKey>;
   using TSelf =
       WAVLTree<use_parent, TData, TAggregatorsTuple, TDeferredTuple, TKey>;
-  using TBTree =
-      base::BalancedTree<memory::ContiguousNodesManager<TNode>, TSelf>;
-  using Extended = typename TBTree::Extended;
-  using Base = typename TBTree::Base;
+  using SBTree =
+      base::SelfBalancingTree<memory::ContiguousNodesManager<TNode>, TSelf>;
+  using Base = typename SBTree::Base;
 
   friend Base;
-  friend Extended;
-  friend TBTree;
+  friend SBTree;
 
   static constexpr bool support_join3 = true;
 
  public:
-  explicit WAVLTree(size_t max_nodes) : TBTree(max_nodes) {}
+  explicit WAVLTree(size_t max_nodes) : SBTree(max_nodes) {}
 
   static TNode* build_tree(const std::vector<TNode*>& nodes) {
     TNode* root = build_tree_impl(nodes, 0, nodes.size());
@@ -195,8 +193,8 @@ class WAVLTree
     }
   }
 
-  static TNode* join3_impl(TNode* l, TNode* m1, TNode* r) {
-    Extended::join3_base_impl(l, m1, r);
+  static TNode* join3_base_impl(TNode* l, TNode* m1, TNode* r) {
+    SBTree::join3_base_impl(l, m1, r);
     UpdateRank(m1);
     return m1;
   }
@@ -226,12 +224,12 @@ class WAVLTree
   }
 
  public:
-  static TNode* join3(TNode* l, TNode* m1, TNode* r) {
+  static TNode* join3_impl(TNode* l, TNode* m1, TNode* r) {
     assert(m1 && !m1->left && !m1->right);
     const auto hl = Rank(l), hr = Rank(r), hd = hl - hr;
     return (hd > 1)    ? Join3L(l, m1, r, hr)
            : (hd < -1) ? Join3R(l, m1, r, hl)
-                       : join3_impl(l, m1, r);
+                       : join3_base_impl(l, m1, r);
   }
 };
 }  // namespace bst
