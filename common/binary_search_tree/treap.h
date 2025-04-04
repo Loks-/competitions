@@ -73,80 +73,6 @@ class Treap
   [[nodiscard]] explicit constexpr Treap(size_t max_nodes) : Base(max_nodes) {}
 
   /**
-   * @brief Inserts a node into the tree.
-   *
-   * The insertion maintains both the binary search tree property
-   * and the heap property with respect to heights. If the new node
-   * has a higher priority (height), it becomes the new root.
-   *
-   * @param root The root of the tree to insert into
-   * @param node The node to insert
-   * @return Pointer to the new root of the tree
-   */
-  [[nodiscard]] static constexpr NodeType* insert(NodeType* root,
-                                                  NodeType* node) {
-    static_assert(has_key, "has_key should be true");
-    if (!root) return node;
-    root->apply_deferred();
-    if (height(root) >= height(node)) {
-      if (root->key < node->key) {
-        root->set_right(insert(root->right, node));
-      } else {
-        root->set_left(insert(root->left, node));
-      }
-    } else {
-      split_impl(root, node->key, node->left, node->right);
-      if (node->left) node->left->set_parent(node);
-      if (node->right) node->right->set_parent(node);
-      root = node;
-    }
-    root->update_subtree_data();
-    return root;
-  }
-
-  /**
-   * @brief Inserts a node at the specified inorder index.
-   *
-   * This operation maintains both the binary search tree property
-   * and the heap property with respect to heights. It uses a similar
-   * approach to insert but based on inorder position rather than key.
-   *
-   * @param root The root of the tree
-   * @param node The node to insert
-   * @param index The zero-based index where to insert
-   * @return Pointer to the new root of the tree
-   */
-  [[nodiscard]] static constexpr NodeType* insert_at(NodeType* root,
-                                                     NodeType* node,
-                                                     size_t index) {
-    static_assert(Base::has_size);
-    assert(node);
-    if (!root) {
-      assert(index == 0);
-      return node;
-    }
-    assert(index <= subtree_data::size(root));
-
-    root->apply_deferred();
-    if (height(root) >= height(node)) {
-      const size_t left_size = subtree_data::size(root->left);
-      if (index <= left_size) {
-        root->set_left(insert_at(root->left, node, index));
-      } else {
-        root->set_right(insert_at(root->right, node, index - left_size - 1));
-      }
-    } else {
-      NodeType *l = nullptr, *r = nullptr;
-      split_at_impl(root, index, l, r);
-      node->set_left(l);
-      node->set_right(r);
-      root = node;
-    }
-    root->update_subtree_data();
-    return root;
-  }
-
-  /**
    * @brief Removes a node with the given key from the tree.
    *
    * The removal maintains both the binary search tree property
@@ -415,6 +341,98 @@ class Treap
     for (plast->update_subtree_data(); !s.empty(); s.pop())
       s.top()->update_subtree_data();
     return proot;
+  }
+
+  /**
+   * @brief Implementation of node insertion into the tree.
+   *
+   * This function implements the insertion of a node into the treap while
+   * maintaining both the binary search tree property and the heap property
+   * with respect to heights. The base class handles all requirements checking.
+   *
+   * The insertion process:
+   * 1. If the new node has higher priority (height) than the root, it becomes
+   *    the new root
+   * 2. Otherwise, it is inserted into the appropriate subtree based on its key
+   * 3. The heap property is maintained by rotating the node up if needed
+   *
+   * @param root The root of the tree
+   * @param node The node to insert
+   * @return Pointer to the new root of the tree
+   */
+  template <bool update_required>
+  [[nodiscard]] static constexpr NodeType* insert_impl(NodeType* root,
+                                                       NodeType* node) {
+    if (!root) {
+      if constexpr (update_required) node->update_subtree_data();
+      return node;
+    }
+
+    root->apply_deferred();
+    if (height(root) >= height(node)) {
+      if (root->key < node->key) {
+        root->set_right(insert_impl<update_required>(root->right, node));
+      } else {
+        root->set_left(insert_impl<update_required>(root->left, node));
+      }
+    } else {
+      split_impl(root, node->key, node->left, node->right);
+      if (node->left) node->left->set_parent(node);
+      if (node->right) node->right->set_parent(node);
+      root = node;
+    }
+    root->update_subtree_data();
+    return root;
+  }
+
+  /**
+   * @brief Implementation of node insertion at a specific index.
+   *
+   * This function implements the insertion of a node at the given position in
+   * the inorder traversal of the treap while maintaining both the binary search
+   * tree property and the heap property with respect to heights. The base class
+   * handles all requirements checking.
+   *
+   * The insertion process:
+   * 1. If the new node has higher priority (height) than the root, it becomes
+   *    the new root
+   * 2. Otherwise, it is inserted into the appropriate subtree based on its
+   * index
+   * 3. The heap property is maintained by rotating the node up if needed
+   *
+   * @param root The root of the tree
+   * @param node The node to insert
+   * @param index The zero-based index where to insert
+   * @return Pointer to the new root of the tree
+   */
+  template <bool update_required>
+  [[nodiscard]] static constexpr NodeType* insert_at_impl(NodeType* root,
+                                                          NodeType* node,
+                                                          size_t index) {
+    if (!root) {
+      if constexpr (update_required) node->update_subtree_data();
+      return node;
+    }
+    assert(index <= subtree_data::size(root));
+
+    root->apply_deferred();
+    if (height(root) >= height(node)) {
+      const size_t left_size = subtree_data::size(root->left);
+      if (index <= left_size) {
+        root->set_left(
+            insert_at_impl<update_required>(root->left, node, index));
+      } else {
+        root->set_right(insert_at_impl<update_required>(root->right, node,
+                                                        index - left_size - 1));
+      }
+    } else {
+      split_at_impl(root, index, node->left, node->right);
+      if (node->left) node->left->set_parent(node);
+      if (node->right) node->right->set_parent(node);
+      root = node;
+    }
+    root->update_subtree_data();
+    return root;
   }
 
   /**

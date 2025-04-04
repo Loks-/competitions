@@ -36,7 +36,11 @@ class ScapegoatTree
       ScapegoatTree<use_parent, TData, TAggregatorsTuple, TDeferredTuple, TKey>;
   using TBTree =
       base::BalancedTree<memory::ContiguousNodesManager<TNode>, TSelf>;
-  using TTree = typename TBTree::Base;
+  using Extended = typename TBTree::Extended;
+  using Base = typename TBTree::Base;
+
+  friend Base;
+  friend Extended;
   friend TBTree;
 
   // Split/Join is supported but it's slow.
@@ -58,7 +62,7 @@ class ScapegoatTree
     assert(node);
     std::vector<TNode*> nodes;
     TraverseInorder(node, nodes);
-    return TTree::template build_tree_impl<true>(nodes);
+    return Base::template build_tree_impl<true>(nodes);
   }
 
   static TNode* fix_balance(TNode* node) {
@@ -77,7 +81,7 @@ class ScapegoatTree
       l->update_subtree_data();
       return fix_balance(l);
     } else {
-      return TTree::join3_impl(l, m1, r);
+      return Extended::join3_impl(l, m1, r);
     }
   }
 
@@ -88,7 +92,7 @@ class ScapegoatTree
       r->update_subtree_data();
       return fix_balance(r);
     } else {
-      return TTree::join3_impl(l, m1, r);
+      return Extended::join3_impl(l, m1, r);
     }
   }
 

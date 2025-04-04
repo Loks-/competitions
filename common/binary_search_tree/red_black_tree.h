@@ -94,9 +94,10 @@ class RedBlackTree
     return root;
   }
 
- public:
-  static TNode* insert(TNode* root, TNode* node) {
+  template <bool update_required>
+  static TNode* insert_impl(TNode* root, TNode* node) {
     assert(node);
+    if constexpr (update_required) node->update_subtree_data();
     if (!root) {
       SetColor(node, true);
       return node;

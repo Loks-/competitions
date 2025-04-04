@@ -35,9 +35,12 @@ class AVLTree
       AVLTree<use_parent, TData, TAggregatorsTuple, TDeferredTuple, TKey>;
   using TBTree =
       base::BalancedTree<memory::ContiguousNodesManager<TNode>, TSelf>;
-  using TTree = typename TBTree::Base;
+  using Extended = typename TBTree::Extended;
+  using Base = typename TBTree::Base;
+
+  friend Base;
+  friend Extended;
   friend TBTree;
-  friend TTree;
 
   static constexpr bool support_join3 = true;
 
@@ -79,7 +82,7 @@ class AVLTree
       l->update_subtree_data();
       return l;
     } else {
-      return TTree::join3_impl(l, m1, r);
+      return Extended::join3_impl(l, m1, r);
     }
   }
 
@@ -90,7 +93,7 @@ class AVLTree
       r->update_subtree_data();
       return r;
     } else {
-      return TTree::join3_impl(l, m1, r);
+      return Extended::join3_impl(l, m1, r);
     }
   }
 
@@ -100,7 +103,7 @@ class AVLTree
     const auto hl = Height(l), hr = Height(r), hd = hl - hr;
     return (hd > 1)    ? Join3L(l, m1, r, hr)
            : (hd < -1) ? Join3R(l, m1, r, hl)
-                       : TTree::join3_impl(l, m1, r);
+                       : Extended::join3_impl(l, m1, r);
   }
 };
 }  // namespace bst

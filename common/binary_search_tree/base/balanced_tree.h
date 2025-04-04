@@ -22,10 +22,13 @@ namespace base {
 template <class NodesManager, class Derived>
 class BalancedTree : public ExtendedTree<NodesManager, Derived> {
  public:
-  using Base = ExtendedTree<NodesManager, Derived>;
+  using Extended = ExtendedTree<NodesManager, Derived>;
+  using Base = typename Extended::Base;
   using NodeType = typename Base::NodeType;
   using KeyType = typename Base::KeyType;
+
   friend Base;
+  friend Extended;
 
   static constexpr bool support_join3 = Derived::support_join3;
 
@@ -35,7 +38,7 @@ class BalancedTree : public ExtendedTree<NodesManager, Derived> {
    *
    * @param max_nodes The maximum number of nodes to reserve
    */
-  explicit BalancedTree(size_t max_nodes) : Base(max_nodes) {}
+  explicit BalancedTree(size_t max_nodes) : Extended(max_nodes) {}
 
  protected:
   /**
@@ -74,13 +77,17 @@ class BalancedTree : public ExtendedTree<NodesManager, Derived> {
   /**
    * @brief Implementation of insert operation with balance maintenance.
    */
+  template <bool update_required>
   static NodeType* insert_impl(NodeType* root, NodeType* node) {
-    if (!root) return node;
+    if (!root) {
+      if constexpr (update_required) node->update_subtree_data();
+      return node;
+    }
     root->apply_deferred();
     if (root->key < node->key) {
-      root->set_right(insert_impl(root->right, node));
+      root->set_right(insert_impl<update_required>(root->right, node));
     } else {
-      root->set_left(insert_impl(root->left, node));
+      root->set_left(insert_impl<update_required>(root->left, node));
     }
     root->update_subtree_data();
     return Derived::fix_balance_insert(root);

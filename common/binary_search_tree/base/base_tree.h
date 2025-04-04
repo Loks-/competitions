@@ -1,6 +1,7 @@
 #pragma once
 
 #include "common/base.h"
+#include "common/binary_search_tree/subtree_data/size.h"
 
 #include <algorithm>
 #include <vector>
@@ -162,7 +163,52 @@ class BaseTree {
   }
 
   /**
+   * @brief Inserts a node into the tree.
+   *
+   * This function inserts a node into the tree while maintaining the binary
+   * search tree property. The node must be isolated (no connections to other
+   * nodes) and have no pending deferred computations.
+   *
+   * @param root The root of the tree
+   * @param node The node to insert (must be isolated and have no pending
+   * deferred computations)
+   * @return Pointer to the new root of the tree
+   */
+  [[nodiscard]] static constexpr NodeType* insert(NodeType* root,
+                                                  NodeType* node) {
+    static_assert(has_key, "has_key should be true");
+    assert(node && node->is_isolated() && !node->apply_required());
+    return Derived::template insert_impl<false>(root, node);
+  }
+
+  /**
+   * @brief Inserts a node at the specified inorder index.
+   *
+   * This function inserts a node at the given position in the inorder traversal
+   * of the tree. The node must be isolated (no connections to other nodes) and
+   * have no pending deferred computations.
+   *
+   * @param root The root of the tree
+   * @param node The node to insert (must be isolated and have no pending
+   * deferred computations)
+   * @param index The zero-based index where to insert
+   * @return Pointer to the new root of the tree
+   */
+  [[nodiscard]] static constexpr NodeType* insert_at(NodeType* root,
+                                                     NodeType* node,
+                                                     size_t index) {
+    static_assert(has_size, "subtree data should contain size");
+    assert(node && node->is_isolated() && !node->apply_required());
+    assert(index <= bst::subtree_data::size(root));
+    return Derived::template insert_at_impl<false>(root, node, index);
+  }
+
+  /**
    * @brief Creates and inserts a new node with the given data and key.
+   *
+   * This function creates a new node with the specified data and key, and
+   * inserts it into the tree while maintaining the binary search tree property.
+   * The node is created with deferred update enabled.
    *
    * @param root The root of the tree
    * @param data The data for the new node
@@ -172,11 +218,16 @@ class BaseTree {
   [[nodiscard]] constexpr NodeType* insert_new(NodeType* root,
                                                const DataType& data,
                                                const KeyType& key) {
-    return Derived::insert(root, create_node_impl<false>(data, key));
+    return Derived::template insert_impl<true>(
+        root, create_node_impl<true>(data, key));
   }
 
   /**
    * @brief Creates and inserts a new node at the specified inorder index.
+   *
+   * This function creates a new node with the specified data and inserts it at
+   * the given position in the inorder traversal of the tree. The node is
+   * created with deferred update enabled.
    *
    * @param root The root of the tree
    * @param data The data for the new node
@@ -186,7 +237,10 @@ class BaseTree {
   [[nodiscard]] constexpr NodeType* insert_new_at(NodeType* root,
                                                   const DataType& data,
                                                   size_t index) {
-    return Derived::insert_at(root, create_node_impl<false>(data), index);
+    static_assert(has_size, "subtree data should contain size");
+    assert(index <= bst::subtree_data::size(root));
+    return Derived::template insert_at_impl<true>(
+        root, create_node_impl<true>(data), index);
   }
 
   /**

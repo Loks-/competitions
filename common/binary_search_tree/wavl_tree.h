@@ -37,12 +37,12 @@ class WAVLTree
       WAVLTree<use_parent, TData, TAggregatorsTuple, TDeferredTuple, TKey>;
   using TBTree =
       base::BalancedTree<memory::ContiguousNodesManager<TNode>, TSelf>;
-  using TTree = typename TBTree::Base;
-  using Base = typename TTree::Base;
+  using Extended = typename TBTree::Extended;
+  using Base = typename TBTree::Base;
 
   friend Base;
+  friend Extended;
   friend TBTree;
-  friend TTree;
 
   static constexpr bool support_join3 = true;
 
@@ -196,7 +196,7 @@ class WAVLTree
   }
 
   static TNode* join3_impl(TNode* l, TNode* m1, TNode* r) {
-    TTree::join3_impl(l, m1, r);
+    Extended::join3_impl(l, m1, r);
     UpdateRank(m1);
     return m1;
   }

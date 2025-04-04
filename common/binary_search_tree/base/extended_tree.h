@@ -95,44 +95,6 @@ class ExtendedTree : public BaseTree<NodesManager, Derived> {
   }
 
   /**
-   * @brief Inserts a node into the tree.
-   *
-   * @param root The root of the tree to insert into
-   * @param node The node to insert
-   * @return Pointer to the new root of the tree
-   */
-  [[nodiscard]] static NodeType* insert(NodeType* root, NodeType* node) {
-    static_assert(Derived::support_insert, "Insert should be supported");
-    static_assert(Base::has_key, "has_key should be true");
-    assert(node);
-    return root ? Derived::insert_impl(root, node) : node;
-  }
-
-  /**
-   * @brief Inserts a node at the specified inorder index.
-   *
-   * @param root The root of the tree
-   * @param node The node to insert
-   * @param index The zero-based index where to insert
-   * @return Pointer to the new root of the tree
-   */
-  [[nodiscard]] static NodeType* insert_at(NodeType* root, NodeType* node,
-                                           size_t index) {
-    static_assert(Derived::support_insert && Base::has_size,
-                  "Insert at should be supported");
-    assert(node);
-    if (!root) {
-      assert(index == 0);
-      return node;
-    } else {
-      assert(index <= bst::subtree_data::size(root));
-      NodeType *l = nullptr, *r = nullptr;
-      Derived::split_at(root, index, l, r);
-      return Derived::join3(l, node, r);
-    }
-  }
-
-  /**
    * @brief Removes a node with the given key from the tree.
    *
    * @param root The root of the tree
@@ -221,15 +183,6 @@ class ExtendedTree : public BaseTree<NodesManager, Derived> {
                        NodeType*& output_r);
 
  protected:
-  /**
-   * @brief Implementation of insert that can be overridden by derived classes.
-   *
-   * @param root The root of the tree
-   * @param node The node to insert
-   * @return Pointer to the new root of the tree
-   */
-  static NodeType* insert_impl(NodeType* root, NodeType* node);
-
   /**
    * @brief Implementation of remove that can be overridden by derived classes.
    *

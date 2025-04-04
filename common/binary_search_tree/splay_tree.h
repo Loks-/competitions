@@ -66,6 +66,8 @@ class SplayTree
                          NodesManager>;
   using Base = base::BaseTree<NodesManager<NodeType>, Self>;
 
+  friend Base;
+
  public:
   /**
    * @brief Constructs a splay tree with the specified maximum number of nodes.
@@ -208,88 +210,6 @@ class SplayTree
     assert(node);
     base::splay(node);
     return subtree_data::size(node->left);
-  }
-
-  /**
-   * @brief Inserts a node into the tree.
-   *
-   * The insert operation adds a new node to the tree while maintaining the
-   * binary search tree property.
-   *
-   * @param root The root of the tree
-   * @param node The node to insert
-   * @return The root of the resulting tree
-   */
-  [[nodiscard]] static constexpr NodeType* insert(NodeType* root,
-                                                  NodeType* node) {
-    static_assert(has_key, "has_key should be true");
-    assert(node);
-    if (!root) return node;
-    while (true) {
-      root->apply_deferred();
-      if (root->key < node->key) {
-        if (root->right) {
-          root = root->right;
-        } else {
-          root->set_right(node);
-          break;
-        }
-      } else {
-        if (root->left) {
-          root = root->left;
-        } else {
-          root->set_left(node);
-          break;
-        }
-      }
-    }
-    base::splay(node);
-    return node;
-  }
-
-  /**
-   * @brief Inserts a node at a specific index in the tree.
-   *
-   * The insert_at operation adds a new node at the given position in the
-   * inorder traversal of the tree.
-   *
-   * @param root The root of the tree
-   * @param node The node to insert
-   * @param index The position to insert at
-   * @return The root of the resulting tree
-   */
-  [[nodiscard]] static constexpr NodeType* insert_at(NodeType* root,
-                                                     NodeType* node,
-                                                     size_t index) {
-    static_assert(Base::has_size, "has_size should be true");
-    assert(node);
-    if (!root) {
-      assert(index == 0);
-      return node;
-    }
-    assert(index <= subtree_data::size(root));
-    while (true) {
-      root->apply_deferred();
-      if (index <= subtree_data::size(root->left)) {
-        if (root->left) {
-          root = root->left;
-        } else {
-          root->set_left(node);
-          break;
-        }
-      } else {
-        index -= subtree_data::size(root->left) + 1;
-        if (root->right) {
-          root = root->right;
-        } else {
-          root->set_right(node);
-          break;
-        }
-      }
-    }
-    assert(index == 0);
-    base::splay(node);
-    return node;
   }
 
   /**
@@ -515,6 +435,105 @@ class SplayTree
   }
 
  protected:
+  /**
+   * @brief Implementation of node insertion into the tree.
+   *
+   * This function implements the insertion of a node into the splay tree while
+   * maintaining the binary search tree property. The base class handles all
+   * requirements checking. After insertion, the inserted node is splayed to the
+   * root to maintain the splay tree property.
+   *
+   * The insertion process:
+   * 1. The node is inserted into the appropriate position based on its key
+   * 2. The node is splayed to the root to maintain the splay tree property
+   * 3. The tree structure is updated to reflect the changes
+   *
+   * @param root The root of the tree
+   * @param node The node to insert
+   * @return Pointer to the new root of the tree (the inserted node)
+   */
+  template <bool update_required>
+  [[nodiscard]] static constexpr NodeType* insert_impl(NodeType* root,
+                                                       NodeType* node) {
+    if (!root) {
+      if constexpr (update_required) node->update_subtree_data();
+      return node;
+    }
+
+    while (true) {
+      root->apply_deferred();
+      if (root->key < node->key) {
+        if (root->right) {
+          root = root->right;
+        } else {
+          root->set_right(node);
+          break;
+        }
+      } else {
+        if (root->left) {
+          root = root->left;
+        } else {
+          root->set_left(node);
+          break;
+        }
+      }
+    }
+    base::splay(node);
+    return node;
+  }
+
+  /**
+   * @brief Implementation of node insertion at a specific index.
+   *
+   * This function implements the insertion of a node at the given position in
+   * the inorder traversal of the splay tree while maintaining the binary search
+   * tree property. The base class handles all requirements checking. After
+   * insertion, the inserted node is splayed to the root to maintain the splay
+   * tree property.
+   *
+   * The insertion process:
+   * 1. The node is inserted at the specified index position
+   * 2. The node is splayed to the root to maintain the splay tree property
+   * 3. The tree structure is updated to reflect the changes
+   *
+   * @param root The root of the tree
+   * @param node The node to insert
+   * @param index The zero-based index where to insert
+   * @return Pointer to the new root of the tree (the inserted node)
+   */
+  template <bool update_required>
+  [[nodiscard]] static constexpr NodeType* insert_at_impl(NodeType* root,
+                                                          NodeType* node,
+                                                          size_t index) {
+    if (!root) {
+      if constexpr (update_required) node->update_subtree_data();
+      return node;
+    }
+
+    while (true) {
+      root->apply_deferred();
+      if (index <= subtree_data::size(root->left)) {
+        if (root->left) {
+          root = root->left;
+        } else {
+          root->set_left(node);
+          break;
+        }
+      } else {
+        index -= subtree_data::size(root->left) + 1;
+        if (root->right) {
+          root = root->right;
+        } else {
+          root->set_right(node);
+          break;
+        }
+      }
+    }
+    assert(index == 0);
+    base::splay(node);
+    return node;
+  }
+
   /**
    * @brief Removes a node from the tree.
    *
