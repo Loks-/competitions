@@ -26,6 +26,11 @@ namespace bst {
  * The tree is built using a balanced construction algorithm that ensures
  * optimal height and maintains the binary search tree property.
  *
+ * All modification operations (insert, remove, join, split) are explicitly
+ * deleted to prevent accidental changes to the tree structure. This ensures
+ * that the tree remains static and its properties are preserved throughout
+ * the program's execution.
+ *
  * @tparam has_parent Whether nodes maintain parent pointers
  * @tparam Data The data type stored in each node
  * @tparam AggregatorsTuple Tuple of aggregator types for subtree data
@@ -69,6 +74,8 @@ class StaticTree
   [[nodiscard]] explicit constexpr StaticTree(size_t max_nodes)
       : Base(max_nodes) {}
 
+  // All modification operations are explicitly deleted to maintain static
+  // structure
   static constexpr NodeType* insert(NodeType* root, NodeType* node) = delete;
   static constexpr NodeType* insert_at(NodeType* root, NodeType* node,
                                        size_t index) = delete;
