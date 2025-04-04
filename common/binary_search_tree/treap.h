@@ -356,6 +356,10 @@ class Treap
    * 2. Otherwise, it is inserted into the appropriate subtree based on its key
    * 3. The heap property is maintained by rotating the node up if needed
    *
+   * @tparam update_required Whether to update subtree data for the inserted
+   * node. This parameter is only active when the new node is added as a leaf.
+   *        If the new node becomes a root or internal node, subtree data is
+   *        always updated.
    * @param root The root of the tree
    * @param node The node to insert
    * @return Pointer to the new root of the tree
@@ -400,6 +404,10 @@ class Treap
    * index
    * 3. The heap property is maintained by rotating the node up if needed
    *
+   * @tparam update_required Whether to update subtree data for the inserted
+   * node. This parameter is only active when the new node is added as a leaf.
+   *        If the new node becomes a root or internal node, subtree data is
+   *        always updated.
    * @param root The root of the tree
    * @param node The node to insert
    * @param index The zero-based index where to insert

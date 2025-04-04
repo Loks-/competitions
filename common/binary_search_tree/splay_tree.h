@@ -448,6 +448,10 @@ class SplayTree
    * 2. The node is splayed to the root to maintain the splay tree property
    * 3. The tree structure is updated to reflect the changes
    *
+   * @tparam update_required Whether to update subtree data for the inserted
+   * node. This parameter is only active when the new node is added as a leaf.
+   *        If the new node becomes a root or internal node, subtree data is
+   *        always updated.
    * @param root The root of the tree
    * @param node The node to insert
    * @return Pointer to the new root of the tree (the inserted node)
@@ -496,6 +500,10 @@ class SplayTree
    * 2. The node is splayed to the root to maintain the splay tree property
    * 3. The tree structure is updated to reflect the changes
    *
+   * @tparam update_required Whether to update subtree data for the inserted
+   * node. This parameter is only active when the new node is added as a leaf.
+   *        If the new node becomes a root or internal node, subtree data is
+   *        always updated.
    * @param root The root of the tree
    * @param node The node to insert
    * @param index The zero-based index where to insert
