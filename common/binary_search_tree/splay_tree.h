@@ -408,6 +408,7 @@ class SplayTree
   [[nodiscard]] static constexpr NodeType* remove_at_impl(
       NodeType* root, size_t index, NodeType*& removed_node) {
     removed_node = base::at(root, index);
+    assert(removed_node);
     return (removed_node ? remove_node_impl<reset_links>(removed_node) : root);
   }
 

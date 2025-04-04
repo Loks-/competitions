@@ -343,7 +343,7 @@ class Treap
   template <bool reset_links>
   [[nodiscard]] static constexpr NodeType* remove_at_impl(
       NodeType* root, size_t index, NodeType*& removed_node) {
-    if (!root) return root;
+    assert(root);
     root->apply_deferred();
     const size_t left_size = subtree_data::size(root->left);
     if (index < left_size) {
