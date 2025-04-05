@@ -14,14 +14,18 @@ namespace bst {
  *
  * This tree implements a self-balancing binary search tree where the size
  * of any subtree is at most alpha times the size of its parent. This ensures
- * that the tree maintains O(log n) height for all operations.
+ * that the tree maintains O(log n) height for all operations in amortized time.
  *
  * Key features:
  * - Automatic size-based balancing after insertions and removals
- * - Guaranteed O(log n) time complexity for all operations
- * - Efficient join and split operations with balance maintenance
+ * - Amortized O(log n) time complexity for operations
  * - Support for parent pointers, custom data, aggregators, and deferred
  * operations
+ *
+ * Note: While most operations have amortized O(log n) complexity, some
+ * operations can be slow (similar to Splay trees). The tree achieves its
+ * amortized bounds by occasionally rebuilding entire subtrees to restore
+ * balance.
  *
  * The tree uses size information stored in each node to maintain balance
  * through rebuilding. It automatically adds size tracking to the subtree data
@@ -63,8 +67,11 @@ class ScapegoatTree
   friend Base;
   friend SBTree;
 
-  // Split/Join is supported but it's slow.
-  static constexpr bool support_join3 = true;
+  // Note: While these operations are supported in the interface (and used
+  // internally for regular functions), they are not meant to be used at scale
+  // because their amortized time complexity is O(N) in the worst case.
+  static constexpr bool support_join = false;
+  static constexpr bool support_split = false;
 
  public:
   /**
