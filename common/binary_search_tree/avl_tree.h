@@ -147,8 +147,7 @@ class AVLTree
       l->apply_deferred();
       l->set_right(join3_left_impl(l->right, m1, r, hr));
       l->update_subtree_data();
-      l = fix_balance(l);
-      return l;
+      return fix_balance(l);
     } else {
       return SBTree::join3_base_impl(l, m1, r);
     }
@@ -173,8 +172,7 @@ class AVLTree
       r->apply_deferred();
       r->set_left(join3_right_impl(l, m1, r->left, hl));
       r->update_subtree_data();
-      r = fix_balance(r);
-      return r;
+      return fix_balance(r);
     } else {
       return SBTree::join3_base_impl(l, m1, r);
     }
