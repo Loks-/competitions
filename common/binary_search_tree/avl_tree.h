@@ -106,7 +106,7 @@ class AVLTree
    * @param root The root of the subtree to balance
    * @return The new root of the balanced subtree
    */
-  [[nodiscard]] static NodeType* fix_balance(NodeType* root) {
+  [[nodiscard]] static constexpr NodeType* fix_balance(NodeType* root) {
     const int b = balance(root);
     assert((b >= -2) && (b <= 2));
     if (b == 2) {
@@ -142,8 +142,10 @@ class AVLTree
    * @param hr The height of the right tree
    * @return The root of the joined tree
    */
-  [[nodiscard]] static NodeType* join3_left_impl(NodeType* l, NodeType* m1,
-                                                 NodeType* r, int hr) {
+  [[nodiscard]] static constexpr NodeType* join3_left_impl(NodeType* l,
+                                                           NodeType* m1,
+                                                           NodeType* r,
+                                                           int hr) {
     if (height(l) > hr + 1) {
       l->apply_deferred();
       l->set_right(join3_left_impl(l->right, m1, r, hr));
@@ -167,8 +169,10 @@ class AVLTree
    * @param hl The height of the left tree
    * @return The root of the joined tree
    */
-  [[nodiscard]] static NodeType* join3_right_impl(NodeType* l, NodeType* m1,
-                                                  NodeType* r, int hl) {
+  [[nodiscard]] static constexpr NodeType* join3_right_impl(NodeType* l,
+                                                            NodeType* m1,
+                                                            NodeType* r,
+                                                            int hl) {
     if (height(r) > hl + 1) {
       r->apply_deferred();
       r->set_left(join3_right_impl(l, m1, r->left, hl));
@@ -179,7 +183,6 @@ class AVLTree
     }
   }
 
- public:
   /**
    * @brief Implementation of three-way join operation for AVL trees.
    *
@@ -192,8 +195,8 @@ class AVLTree
    * @param r The root of the right tree
    * @return The root of the joined tree
    */
-  [[nodiscard]] static NodeType* join3_impl(NodeType* l, NodeType* m1,
-                                            NodeType* r) {
+  [[nodiscard]] static constexpr NodeType* join3_impl(NodeType* l, NodeType* m1,
+                                                      NodeType* r) {
     const auto hl = height(l), hr = height(r), hd = hl - hr;
     return (hd > 1)    ? join3_left_impl(l, m1, r, hr)
            : (hd < -1) ? join3_right_impl(l, m1, r, hl)
