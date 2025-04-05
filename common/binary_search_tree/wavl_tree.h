@@ -15,220 +15,401 @@
 #include <tuple>
 
 namespace bst {
-template <bool use_parent, class TData,
-          class TAggregatorsTuple = std::tuple<subtree_data::Size>,
-          class TDeferredTuple = std::tuple<>, class TKey = int64_t>
+/**
+ * @brief WAVL tree implementation with weak AVL balancing.
+ *
+ * This tree implements a self-balancing binary search tree where the rank
+ * difference between a parent and its child is at least 1 and at most 2.
+ * This ensures that the tree maintains O(log n) height for all operations.
+ *
+ * Key features:
+ * - Automatic rank-based balancing after insertions and removals
+ * - Guaranteed O(log n) time complexity for all operations
+ * - Efficient join and split operations with balance maintenance
+ * - Support for parent pointers, custom data, aggregators, and deferred
+ * operations
+ *
+ * The tree uses rank information stored in each node to maintain balance
+ * through rotations. It automatically adds rank tracking to the subtree data
+ * if not already present.
+ *
+ * @tparam has_parent Whether nodes maintain parent pointers
+ * @tparam Data The data type stored in each node
+ * @tparam AggregatorsTuple Tuple of aggregator types for subtree data
+ * @tparam DeferredTuple Tuple of deferred operation types
+ * @tparam Key The key type used for ordering
+ */
+template <bool has_parent, typename Data,
+          typename AggregatorsTuple = std::tuple<subtree_data::Size>,
+          typename DeferredTuple = std::tuple<>, typename Key = int64_t>
 class WAVLTree
     : public base::SelfBalancingTree<
-          memory::ContiguousNodesManager<base::Node<
-              TData,
-              base::SubtreeData<templates::PrependT<subtree_data::WAVLRank,
-                                                    TAggregatorsTuple>>,
-              base::Deferred<TDeferredTuple>, use_parent, true, TKey>>,
-          WAVLTree<use_parent, TData, TAggregatorsTuple, TDeferredTuple,
-                   TKey>> {
+          memory::ContiguousNodesManager<
+              base::Node<Data,
+                         base::SubtreeData<templates::PrependT<
+                             subtree_data::WAVLRank, AggregatorsTuple>>,
+                         base::Deferred<DeferredTuple>, has_parent, true, Key>>,
+          WAVLTree<has_parent, Data, AggregatorsTuple, DeferredTuple, Key>> {
  public:
-  using TSubtreeData = base::SubtreeData<
-      templates::PrependT<subtree_data::WAVLRank, TAggregatorsTuple>>;
-  using TDeferred = base::Deferred<TDeferredTuple>;
-  using TNode =
-      base::Node<TData, TSubtreeData, TDeferred, use_parent, true, TKey>;
-  using TSelf =
-      WAVLTree<use_parent, TData, TAggregatorsTuple, TDeferredTuple, TKey>;
+  using SubtreeDataType = base::SubtreeData<
+      templates::PrependT<subtree_data::WAVLRank, AggregatorsTuple>>;
+  using DeferredType = base::Deferred<DeferredTuple>;
+  using NodeType =
+      base::Node<Data, SubtreeDataType, DeferredType, has_parent, true, Key>;
+  using Self = WAVLTree<has_parent, Data, AggregatorsTuple, DeferredTuple, Key>;
   using SBTree =
-      base::SelfBalancingTree<memory::ContiguousNodesManager<TNode>, TSelf>;
+      base::SelfBalancingTree<memory::ContiguousNodesManager<NodeType>, Self>;
   using Base = typename SBTree::Base;
 
   friend Base;
   friend SBTree;
 
-  static constexpr bool support_join3 = true;
-
  public:
-  explicit WAVLTree(size_t max_nodes) : SBTree(max_nodes) {}
-
-  static TNode* build_tree(const std::vector<TNode*>& nodes) {
-    TNode* root = build_tree_impl(nodes, 0, nodes.size());
-    if (root) root->set_parent(nullptr);
-    return root;
-  }
+  /**
+   * @brief Constructs a WAVL tree with the specified maximum number of nodes.
+   *
+   * @param max_nodes The maximum number of nodes to reserve
+   */
+  [[nodiscard]] explicit constexpr WAVLTree(size_t max_nodes)
+      : SBTree(max_nodes) {}
 
  protected:
-  static constexpr int Rank(TNode* node) {
+  /**
+   * @brief Returns the rank of a node.
+   *
+   * @param node The node to get the rank of
+   * @return The rank of the node, or -1 if the node is nullptr
+   */
+  [[nodiscard]] static constexpr int rank(const NodeType* node) noexcept {
     return node ? subtree_data::WAVLRank::get(node) : -1;
   }
 
-  static constexpr int RankDiff(TNode* p, TNode* c) {
-    return p ? Rank(p) - Rank(c) : 1;
+  /**
+   * @brief Calculates the rank difference between parent and child.
+   *
+   * The rank difference is the difference between the ranks of the
+   * parent and child nodes. In a WAVL tree, this difference must be
+   * at least 1 and at most 2.
+   *
+   * @param parent The parent node
+   * @param child The child node
+   * @return The rank difference (parent rank - child rank)
+   */
+  [[nodiscard]] static constexpr int rank_diff(const NodeType* parent,
+                                               const NodeType* child) noexcept {
+    return parent ? rank(parent) - rank(child) : 1;
   }
 
-  static constexpr void SetRank(TNode* node, int rank) {
+  /**
+   * @brief Sets the rank of a node.
+   *
+   * @param node The node to set the rank for
+   * @param rank The new rank value
+   */
+  static constexpr void set_rank(NodeType* node, int rank) noexcept {
     subtree_data::WAVLRank::set(node, rank);
   }
 
-  static constexpr void UpdateRank(TNode* p) {
-    SetRank(p, std::max(Rank(p->left), Rank(p->right)) + 1);
+  /**
+   * @brief Updates the rank of a node based on its children.
+   *
+   * The new rank is set to one more than the maximum rank of its children.
+   *
+   * @param node The node to update
+   */
+  static constexpr void update_rank(NodeType* node) noexcept {
+    set_rank(node, std::max(rank(node->left), rank(node->right)) + 1);
   }
 
-  static constexpr void IncRank(TNode* node) {
+  /**
+   * @brief Updates the rank of a node and all its descendants.
+   *
+   * This function recursively updates the ranks of all nodes in the subtree
+   * rooted at the given node. It ensures that the rank of each node is
+   * one more than the maximum rank of its children.
+   *
+   * @param root The root of the subtree to update
+   */
+  static constexpr void update_rank_subtree(NodeType* root) {
+    if (!root) return;
+    update_rank_subtree(root->left);
+    update_rank_subtree(root->right);
+    update_rank(root);
+  }
+
+  /**
+   * @brief Increments the rank of a node.
+   *
+   * @param node The node to increment the rank of
+   */
+  static constexpr void inc_rank(NodeType* node) noexcept {
     subtree_data::WAVLRank::inc(node);
   }
 
-  static constexpr void DecRank(TNode* node) {
+  /**
+   * @brief Decrements the rank of a node.
+   *
+   * @param node The node to decrement the rank of
+   */
+  static constexpr void dec_rank(NodeType* node) noexcept {
     subtree_data::WAVLRank::dec(node);
   }
 
+  /**
+   * @brief Builds a balanced WAVL tree from a sorted array of nodes.
+   *
+   * This function constructs a balanced WAVL tree from a sorted array of nodes.
+   * It uses the middle element as the root and recursively builds the left and
+   * right subtrees. After building the tree, it updates the ranks of all nodes
+   * to maintain the WAVL balance property.
+   *
+   * @tparam update_leafs Whether to update subtree data for leaf nodes
+   * @param vnodes The sorted array of nodes to build the tree from
+   * @return The root of the constructed tree
+   */
   template <bool update_leafs>
-  static TNode* build_tree_base_impl(const std::vector<TNode*>& vnodes,
-                                     size_t begin, size_t end) {
-    if (begin >= end) return nullptr;
-    size_t m = (begin + end) / 2;
-    TNode* root = vnodes[m];
-    root->set_left(build_tree_base_impl<update_leafs>(vnodes, begin, m));
-    root->set_right(build_tree_base_impl<update_leafs>(vnodes, m + 1, end));
-    if (update_leafs || (end - begin > 1)) root->update_subtree_data();
-    UpdateRank(root);
+  [[nodiscard]] static constexpr NodeType* build_tree_impl(
+      const std::vector<NodeType*>& vnodes) {
+    NodeType* root = SBTree::template build_tree_impl<update_leafs>(vnodes);
+    update_rank_subtree(root);
     return root;
   }
 
-  static TNode* FixBalanceInsertRotate1(TNode* child, TNode* parent) {
-    DecRank(parent);
-    base::rotate<true, false, TNode>(child, parent, nullptr);
+  /**
+   * @brief Fixes balance after insertion using single rotation.
+   *
+   * @param child The child node to rotate up
+   * @param parent The parent node to rotate down
+   * @return The new root of the subtree
+   */
+  [[nodiscard]] static constexpr NodeType* fix_balance_insert_rotate1(
+      NodeType* child, NodeType* parent) {
+    dec_rank(parent);
+    base::rotate<true, false, NodeType>(child, parent, nullptr);
     return child;
   }
 
-  static TNode* FixBalanceInsertRotate2(TNode* gchild, TNode* child,
-                                        TNode* parent) {
-    assert(RankDiff(child, gchild) == 1);
-    assert(RankDiff(child, base::sibling(gchild, child)) == 2);
-    DecRank(parent);
-    DecRank(child);
-    IncRank(gchild);
-    base::rotate<false, true, TNode>(gchild, child, parent);
-    base::rotate<true, false, TNode>(gchild, parent, nullptr);
-    return gchild;
+  /**
+   * @brief Fixes balance after insertion using double rotation.
+   *
+   * @param grandchild The grandchild node to rotate up
+   * @param child The child node
+   * @param parent The parent node
+   * @return The new root of the subtree
+   */
+  [[nodiscard]] static constexpr NodeType* fix_balance_insert_rotate2(
+      NodeType* grandchild, NodeType* child, NodeType* parent) {
+    assert(rank_diff(child, grandchild) == 1);
+    assert(rank_diff(child, base::sibling(grandchild, child)) == 2);
+    dec_rank(parent);
+    dec_rank(child);
+    inc_rank(grandchild);
+    base::rotate<false, true, NodeType>(grandchild, child, parent);
+    base::rotate<true, false, NodeType>(grandchild, parent, nullptr);
+    return grandchild;
   }
 
-  static TNode* fix_balance_insert(TNode* root) {
-    if (RankDiff(root, root->right) == 0) {
+  /**
+   * @brief Fixes balance after insertion.
+   *
+   * This function performs the necessary rotations to restore the
+   * WAVL balance property after an insertion.
+   *
+   * @param root The root of the subtree to balance
+   * @return The new root of the balanced subtree
+   */
+  [[nodiscard]] static constexpr NodeType* fix_balance_insert(NodeType* root) {
+    if (rank_diff(root, root->right) == 0) {
       root->right->apply_deferred();
-      if (RankDiff(root, root->left) == 1) {
-        IncRank(root);
-      } else if (RankDiff(root->right, root->right->right) == 1) {
-        assert(RankDiff(root->right, root->right->left) == 2);
-        return FixBalanceInsertRotate1(root->right, root);
+      if (rank_diff(root, root->left) == 1) {
+        inc_rank(root);
+      } else if (rank_diff(root->right, root->right->right) == 1) {
+        assert(rank_diff(root->right, root->right->left) == 2);
+        return fix_balance_insert_rotate1(root->right, root);
       } else {
-        return FixBalanceInsertRotate2(root->right->left, root->right, root);
+        return fix_balance_insert_rotate2(root->right->left, root->right, root);
       }
-    } else if (RankDiff(root, root->left) == 0) {
+    } else if (rank_diff(root, root->left) == 0) {
       root->left->apply_deferred();
-      if (RankDiff(root, root->right) == 1) {
-        IncRank(root);
-      } else if (RankDiff(root->left, root->left->left) == 1) {
-        assert(RankDiff(root->left, root->left->right) == 2);
-        return FixBalanceInsertRotate1(root->left, root);
+      if (rank_diff(root, root->right) == 1) {
+        inc_rank(root);
+      } else if (rank_diff(root->left, root->left->left) == 1) {
+        assert(rank_diff(root->left, root->left->right) == 2);
+        return fix_balance_insert_rotate1(root->left, root);
       } else {
-        return FixBalanceInsertRotate2(root->left->right, root->left, root);
+        return fix_balance_insert_rotate2(root->left->right, root->left, root);
       }
     }
     return root;
   }
 
-  static TNode* FixBalanceRemoveRotate1(TNode* child, TNode* parent) {
-    DecRank(parent);
-    IncRank(child);
-    base::rotate<true, true, TNode>(child, parent, nullptr);
+  /**
+   * @brief Fixes balance after removal using single rotation.
+   *
+   * @param child The child node to rotate up
+   * @param parent The parent node to rotate down
+   * @return The new root of the subtree
+   */
+  [[nodiscard]] static constexpr NodeType* fix_balance_remove_rotate1(
+      NodeType* child, NodeType* parent) {
+    dec_rank(parent);
+    inc_rank(child);
+    base::rotate<true, true, NodeType>(child, parent, nullptr);
     if (!parent->left && !parent->right) {
-      SetRank(parent, 0);
+      set_rank(parent, 0);
     }
     return child;
   }
 
-  static TNode* FixBalanceRemoveRotate2(TNode* gchild, TNode* child,
-                                        TNode* parent) {
-    assert(gchild);
-    SetRank(parent, Rank(parent) - 2);
-    DecRank(child);
-    SetRank(gchild, Rank(gchild) + 2);
-    base::rotate<false, true, TNode>(gchild, child, parent);
-    base::rotate<true, false, TNode>(gchild, parent, nullptr);
-    return gchild;
+  /**
+   * @brief Fixes balance after removal using double rotation.
+   *
+   * @param grandchild The grandchild node to rotate up
+   * @param child The child node
+   * @param parent The parent node
+   * @return The new root of the subtree
+   */
+  [[nodiscard]] static constexpr NodeType* fix_balance_remove_rotate2(
+      NodeType* grandchild, NodeType* child, NodeType* parent) {
+    assert(grandchild);
+    set_rank(parent, rank(parent) - 2);
+    dec_rank(child);
+    set_rank(grandchild, rank(grandchild) + 2);
+    base::rotate<false, true, NodeType>(grandchild, child, parent);
+    base::rotate<true, false, NodeType>(grandchild, parent, nullptr);
+    return grandchild;
   }
 
-  static TNode* fix_balance_remove(TNode* root) {
+  /**
+   * @brief Fixes balance after removal.
+   *
+   * This function performs the necessary rotations to restore the
+   * WAVL balance property after a removal.
+   *
+   * @param root The root of the subtree to balance
+   * @return The new root of the balanced subtree
+   */
+  [[nodiscard]] static constexpr NodeType* fix_balance_remove(NodeType* root) {
     if (!root->left && !root->right) {
-      SetRank(root, 0);
+      set_rank(root, 0);
       return root;
     }
-    TNode* child = (RankDiff(root, root->left) > 2)    ? root->left
-                   : (RankDiff(root, root->right) > 2) ? root->right
-                                                       : root;
+    NodeType* child = (rank_diff(root, root->left) > 2)    ? root->left
+                      : (rank_diff(root, root->right) > 2) ? root->right
+                                                           : root;
     if (child == root) return root;
-    assert(RankDiff(root, child) == 3);
-    TNode* sibling = base::sibling(child, root);
-    if (RankDiff(root, sibling) == 2) {
-      DecRank(root);
+    assert(rank_diff(root, child) == 3);
+    NodeType* sibling = base::sibling(child, root);
+    if (rank_diff(root, sibling) == 2) {
+      dec_rank(root);
       return root;
     }
-    assert((RankDiff(root, sibling) == 1));
-    if ((RankDiff(sibling, sibling->left) == 2) &&
-        (RankDiff(sibling, sibling->right) == 2)) {
-      DecRank(sibling);
-      DecRank(root);
+    assert((rank_diff(root, sibling) == 1));
+    if ((rank_diff(sibling, sibling->left) == 2) &&
+        (rank_diff(sibling, sibling->right) == 2)) {
+      dec_rank(sibling);
+      dec_rank(root);
       return root;
     } else if (child == root->left) {
-      if (RankDiff(sibling, sibling->right) == 1) {
-        return FixBalanceRemoveRotate1(sibling, root);
+      if (rank_diff(sibling, sibling->right) == 1) {
+        return fix_balance_remove_rotate1(sibling, root);
       } else {
         sibling->apply_deferred();
-        return FixBalanceRemoveRotate2(sibling->left, sibling, root);
+        return fix_balance_remove_rotate2(sibling->left, sibling, root);
       }
     } else {
-      if (RankDiff(sibling, sibling->left) == 1) {
-        return FixBalanceRemoveRotate1(sibling, root);
+      if (rank_diff(sibling, sibling->left) == 1) {
+        return fix_balance_remove_rotate1(sibling, root);
       } else {
         sibling->apply_deferred();
-        return FixBalanceRemoveRotate2(sibling->right, sibling, root);
+        return fix_balance_remove_rotate2(sibling->right, sibling, root);
       }
     }
   }
 
-  static TNode* join3_base_impl(TNode* l, TNode* m1, TNode* r) {
+  /**
+   * @brief Base implementation of three-way join.
+   *
+   * @param l The root of the left tree
+   * @param m1 The middle node
+   * @param r The root of the right tree
+   * @return The root of the joined tree
+   */
+  [[nodiscard]] static constexpr NodeType* join3_base_impl(NodeType* l,
+                                                           NodeType* m1,
+                                                           NodeType* r) {
     SBTree::join3_base_impl(l, m1, r);
-    UpdateRank(m1);
+    update_rank(m1);
     return m1;
   }
 
-  static TNode* Join3L(TNode* l, TNode* m1, TNode* r, int hr) {
-    if (Rank(l) > hr + 1) {
-      l->apply_deferred();
-      l->set_right(Join3L(l->right, m1, r, hr));
-      l->update_subtree_data();
-      assert(Rank(l) >= Rank(l->right));
-      return fix_balance_insert(l);
-    } else {
-      return join3_impl(l, m1, r);
-    }
+  /**
+   * @brief Joins three trees with left subtree potentially taller.
+   *
+   * This function is used when the left subtree is significantly taller
+   * than the right subtree. It ensures that the resulting tree maintains
+   * the WAVL balance property.
+   *
+   * @param l The root of the left tree
+   * @param m1 The middle node
+   * @param r The root of the right tree
+   * @param hr The rank of the right tree
+   * @return The root of the joined tree
+   */
+  [[nodiscard]] static constexpr NodeType* join3_left_impl(NodeType* l,
+                                                           NodeType* m1,
+                                                           NodeType* r,
+                                                           int hr) {
+    if (rank(l) <= hr + 1) return join3_base_impl(l, m1, r);
+    l->apply_deferred();
+    l->set_right(join3_left_impl(l->right, m1, r, hr));
+    l->update_subtree_data();
+    assert(rank(l) >= rank(l->right));
+    return fix_balance_insert(l);
   }
 
-  static TNode* Join3R(TNode* l, TNode* m1, TNode* r, int hl) {
-    if (Rank(r) > hl + 1) {
-      r->apply_deferred();
-      r->set_left(Join3R(l, m1, r->left, hl));
-      r->update_subtree_data();
-      assert(Rank(r) >= Rank(r->left));
-      return fix_balance_insert(r);
-    } else {
-      return join3_impl(l, m1, r);
-    }
+  /**
+   * @brief Joins three trees with right subtree potentially taller.
+   *
+   * This function is used when the right subtree is significantly taller
+   * than the left subtree. It ensures that the resulting tree maintains
+   * the WAVL balance property.
+   *
+   * @param l The root of the left tree
+   * @param m1 The middle node
+   * @param r The root of the right tree
+   * @param hl The rank of the left tree
+   * @return The root of the joined tree
+   */
+  [[nodiscard]] static constexpr NodeType* join3_right_impl(NodeType* l,
+                                                            NodeType* m1,
+                                                            NodeType* r,
+                                                            int hl) {
+    if (rank(r) <= hl + 1) return join3_base_impl(l, m1, r);
+    r->apply_deferred();
+    r->set_left(join3_right_impl(l, m1, r->left, hl));
+    r->update_subtree_data();
+    assert(rank(r) >= rank(r->left));
+    return fix_balance_insert(r);
   }
 
- public:
-  static TNode* join3_impl(TNode* l, TNode* m1, TNode* r) {
-    assert(m1 && !m1->left && !m1->right);
-    const auto hl = Rank(l), hr = Rank(r), hd = hl - hr;
-    return (hd > 1)    ? Join3L(l, m1, r, hr)
-           : (hd < -1) ? Join3R(l, m1, r, hl)
+  /**
+   * @brief Implementation of three-way join operation for WAVL trees.
+   *
+   * This function joins three trees while maintaining the WAVL balance
+   * property. It chooses between different joining strategies based on
+   * the relative ranks of the subtrees.
+   *
+   * @param l The root of the left tree
+   * @param m1 The middle node
+   * @param r The root of the right tree
+   * @return The root of the joined tree
+   */
+  [[nodiscard]] static constexpr NodeType* join3_impl(NodeType* l, NodeType* m1,
+                                                      NodeType* r) {
+    const auto hl = rank(l), hr = rank(r), hd = hl - hr;
+    return (hd > 1)    ? join3_left_impl(l, m1, r, hr)
+           : (hd < -1) ? join3_right_impl(l, m1, r, hl)
                        : join3_base_impl(l, m1, r);
   }
 };
