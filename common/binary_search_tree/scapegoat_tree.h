@@ -132,7 +132,7 @@ class ScapegoatTree
                                                            NodeType* m1,
                                                            NodeType* r,
                                                            size_t rsize) {
-    if (subtree_data::size(l) <= 2 * rsize)
+    if (subtree_data::size(l) < size_t(alpha / (1 - alpha) * (rsize + 1)))
       return SBTree::join3_base_impl(l, m1, r);
     l->apply_deferred();
     l->set_right(join3_left_impl(l->right, m1, r, rsize));
@@ -157,7 +157,7 @@ class ScapegoatTree
                                                             NodeType* m1,
                                                             NodeType* r,
                                                             size_t lsize) {
-    if (subtree_data::size(r) <= 2 * lsize)
+    if (subtree_data::size(r) < size_t(alpha / (1 - alpha) * (lsize + 1)))
       return SBTree::join3_base_impl(l, m1, r);
     r->apply_deferred();
     r->set_left(join3_right_impl(l, m1, r->left, lsize));
