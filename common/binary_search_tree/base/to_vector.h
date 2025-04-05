@@ -33,8 +33,7 @@ namespace base {
 template <bool apply_deferred = true, typename TNode, typename F>
 constexpr void collect_inorder(
     TNode* node,
-    std::vector<typename std::invoke_result<F, const TNode*>::type>& output,
-    F&& f) {
+    std::vector<typename std::invoke_result<F, TNode*>::type>& output, F&& f) {
   if (!node) return;
 
   // Apply deferred computations if requested
@@ -69,11 +68,11 @@ constexpr void collect_inorder(
  * order.
  */
 template <bool apply_deferred = true, typename TNode,
-          typename F = decltype([](const TNode* n) { return n->data; })>
+          typename F = decltype([](TNode* n) { return n->data; })>
 [[nodiscard]] constexpr std::vector<
-    typename std::invoke_result<F, const TNode*>::type>
+    typename std::invoke_result<F, TNode*>::type>
 to_vector(TNode* root, F&& f = {}) {
-  std::vector<typename std::invoke_result<F, const TNode*>::type> output;
+  std::vector<typename std::invoke_result<F, TNode*>::type> output;
 
   if constexpr (TNode::SubtreeDataType::has_size)
     output.reserve(bst::subtree_data::size(root));
