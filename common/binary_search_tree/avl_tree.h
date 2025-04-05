@@ -62,6 +62,7 @@ class AVLTree
   friend Base;
   friend SBTree;
 
+ public:
   /**
    * @brief Constructs an AVL tree with the specified maximum number of nodes.
    *
