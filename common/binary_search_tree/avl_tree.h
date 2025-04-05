@@ -146,14 +146,11 @@ class AVLTree
                                                            NodeType* m1,
                                                            NodeType* r,
                                                            int hr) {
-    if (height(l) > hr + 1) {
-      l->apply_deferred();
-      l->set_right(join3_left_impl(l->right, m1, r, hr));
-      l->update_subtree_data();
-      return fix_balance(l);
-    } else {
-      return SBTree::join3_base_impl(l, m1, r);
-    }
+    if (height(l) <= hr + 1) return SBTree::join3_base_impl(l, m1, r);
+    l->apply_deferred();
+    l->set_right(join3_left_impl(l->right, m1, r, hr));
+    l->update_subtree_data();
+    return fix_balance(l);
   }
 
   /**
@@ -173,14 +170,11 @@ class AVLTree
                                                             NodeType* m1,
                                                             NodeType* r,
                                                             int hl) {
-    if (height(r) > hl + 1) {
-      r->apply_deferred();
-      r->set_left(join3_right_impl(l, m1, r->left, hl));
-      r->update_subtree_data();
-      return fix_balance(r);
-    } else {
-      return SBTree::join3_base_impl(l, m1, r);
-    }
+    if (height(r) <= hl + 1) return SBTree::join3_base_impl(l, m1, r);
+    r->apply_deferred();
+    r->set_left(join3_right_impl(l, m1, r->left, hl));
+    r->update_subtree_data();
+    return fix_balance(r);
   }
 
   /**
