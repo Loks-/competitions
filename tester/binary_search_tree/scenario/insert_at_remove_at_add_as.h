@@ -51,6 +51,7 @@ class InsertAtRemoveAtAddAS : public Base<InsertAtRemoveAtAddAS<data_type>> {
         TImplementation<Data, Key, AggregatorsTuple, DeferredTuple>;
     using Tree = typename Implementation::TreeType;
 
+    size /= 5;  // Adjust size because of expensive updates
     implementation_id = Implementation::id();
     const auto& data = get_data_int64(data_type, size);
     Tree tree(size);
