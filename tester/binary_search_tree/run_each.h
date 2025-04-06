@@ -27,8 +27,9 @@ using StatsMap = std::unordered_map<std::string, ImplementationStats>;
 }  // namespace
 
 // Helper to run a single scenario with a single implementation
-template <typename Scenario, template <typename, typename, typename,
-                                       typename> class Implementation>
+template <
+    bool extra_checks, typename Scenario,
+    template <typename, typename, typename, typename> class Implementation>
 void run_single(size_t size, ResultMap& scenario_results,
                 StatsMap& implementation_stats) {
   using IType = Implementation<typename Scenario::Data, typename Scenario::Key,
@@ -36,8 +37,14 @@ void run_single(size_t size, ResultMap& scenario_results,
                                typename Scenario::DeferredTuple>;
   using Tree = typename IType::TreeType;
 
-  if constexpr (Tree::has_key == Scenario::has_key) {
-    auto result = Scenario::template run<true, Implementation>(size);
+  if constexpr ((Scenario::requires_key == Tree::has_key) &&
+                (!Scenario::requires_insert || Tree::support_insert) &&
+                (!Scenario::requires_remove || Tree::support_remove) &&
+                (!Scenario::requires_remove_node ||
+                 Tree::support_remove_by_node) &&
+                (!Scenario::requires_split || Tree::support_split) &&
+                (!Scenario::requires_join || Tree::support_join)) {
+    auto result = Scenario::template run<extra_checks, Implementation>(size);
 
     if (result.success) {
       scenario_results[result.scenario_id].push_back(result);
@@ -50,21 +57,23 @@ void run_single(size_t size, ResultMap& scenario_results,
 
 // Helper to run all scenarios for a single implementation
 template <
+    bool extra_checks,
     template <typename, typename, typename, typename> class Implementation,
     typename ScenariosTuple>
 void run_implementation(size_t size, ResultMap& scenario_results,
                         StatsMap& implementation_stats) {
   std::apply(
       [&](auto... scenarios) {
-        (run_single<decltype(scenarios), Implementation>(size, scenario_results,
-                                                         implementation_stats),
+        (run_single<extra_checks, decltype(scenarios), Implementation>(
+             size, scenario_results, implementation_stats),
          ...);
       },
       ScenariosTuple{});
 }
 
-template <typename ScenariosTuple, template <typename, typename, typename,
-                                             typename> class... Implementations>
+template <
+    bool extra_checks, typename ScenariosTuple,
+    template <typename, typename, typename, typename> class... Implementations>
 bool run_each(size_t size) {
   using namespace std::chrono;
   using namespace std::chrono_literals;
@@ -74,8 +83,8 @@ bool run_each(size_t size) {
   StatsMap implementation_stats;
 
   // Run each implementation with all scenarios
-  (run_implementation<Implementations, ScenariosTuple>(size, scenario_results,
-                                                       implementation_stats),
+  (run_implementation<extra_checks, Implementations, ScenariosTuple>(
+       size, scenario_results, implementation_stats),
    ...);
 
   // Verify hashes for each scenario

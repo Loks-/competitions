@@ -27,8 +27,6 @@ namespace scenario {
 template <DataType data_type>
 class BuildSearch : public Base<BuildSearch<data_type>> {
  public:
-  static constexpr bool has_key = true;
-
   using Data = MetaEmpty;
   using Key = int64_t;
   using AggregatorsTuple = std::tuple<::bst::subtree_data::Size>;

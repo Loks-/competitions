@@ -18,7 +18,7 @@ bool test(TestType test_type) {
                      scenario::BuildSearch<DataType::kShuffledDuplicates>>;
 
       return run_each<
-          Scenarios, impl::HKT_HPF_AVL, impl::HKT_HPT_AVL,
+          true, Scenarios, impl::HKT_HPF_AVL, impl::HKT_HPT_AVL,
           impl::HKT_HPF_Scapegoat, impl::HKT_HPT_Scapegoat, impl::HKF_HPT_Splay,
           impl::HKT_HPT_Splay, impl::HKT_HPF_Static, impl::HKT_HPT_Static,
           impl::HKF_HPF_Treap, impl::HKF_HPT_Treap, impl::HKT_HPF_Treap,
@@ -35,7 +35,7 @@ bool test(TestType test_type) {
                      scenario::BuildSearch<DataType::kShuffledDuplicates>>;
 
       return run_each<
-          Scenarios, impl::HKT_HPF_AVL, impl::HKT_HPT_AVL,
+          false, Scenarios, impl::HKT_HPF_AVL, impl::HKT_HPT_AVL,
           impl::HKT_HPF_Scapegoat, impl::HKT_HPT_Scapegoat, impl::HKF_HPT_Splay,
           impl::HKT_HPT_Splay, impl::HKT_HPF_Static, impl::HKT_HPT_Static,
           impl::HKF_HPF_Treap, impl::HKF_HPT_Treap, impl::HKT_HPF_Treap,

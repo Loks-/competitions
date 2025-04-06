@@ -13,6 +13,13 @@ namespace scenario {
 template <typename Derived>
 class Base {
  public:
+  static constexpr bool requires_key = true;
+  static constexpr bool requires_insert = false;
+  static constexpr bool requires_remove = false;
+  static constexpr bool requires_remove_node = false;
+  static constexpr bool requires_join = false;
+  static constexpr bool requires_split = false;
+
   template <bool extra_checks, template <typename, typename, typename,
                                          typename> class Implementation>
   static Result run(size_t size) {
