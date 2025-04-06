@@ -46,11 +46,15 @@ void run_single(size_t size, ResultMap& scenario_results,
                 (!Scenario::requires_join || Tree::support_join)) {
     auto result = Scenario::template run<extra_checks, Implementation>(size);
 
+    scenario_results[result.scenario_id].push_back(result);
     if (result.success) {
-      scenario_results[result.scenario_id].push_back(result);
       implementation_stats[result.implementation_id].successful_runs++;
       implementation_stats[result.implementation_id].total_time_ns +=
           result.duration;
+    } else {
+      std::cout << "Error in scenario: " << result.scenario_id
+                << " implementation: " << result.implementation_id
+                << " error: " << result.error_message << std::endl;
     }
   }
 }
@@ -88,9 +92,14 @@ bool run_each(size_t size) {
    ...);
 
   // Verify hashes for each scenario
+  bool all_success = true;
   bool all_hashes_match = true;
   for (const auto& [scenario_id, results] : scenario_results) {
     if (results.empty()) continue;
+
+    for (const auto& result : results) {
+      if (!result.success) all_success = false;
+    }
 
     const auto& first_hash = results[0].control_hash;
     bool scenario_hashes_match = true;
@@ -141,7 +150,7 @@ bool run_each(size_t size) {
               << "\n";
   }
 
-  return all_hashes_match;
+  return all_success && all_hashes_match;
 }
 
 }  // namespace bst
