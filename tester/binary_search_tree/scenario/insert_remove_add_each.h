@@ -27,6 +27,9 @@ namespace scenario {
 template <DataType data_type>
 class InsertRemoveAddEach : public Base<InsertRemoveAddEach<data_type>> {
  public:
+  static_assert(data_type != DataType::kShuffledDuplicates,
+                "Duplicated keys are not supported");
+
   static constexpr bool requires_insert = true;
   static constexpr bool requires_remove = true;
 
