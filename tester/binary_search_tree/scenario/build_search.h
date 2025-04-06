@@ -33,7 +33,7 @@ class BuildSearch : public Base<BuildSearch<data_type>> {
   using DeferredTuple = std::tuple<>;
 
   static constexpr std::string id() {
-    return std::string("build_and_find @ ") + get_name(data_type);
+    return std::string("build_search @ ") + get_name(data_type);
   }
 
   template <bool extra_checks, template <typename, typename, typename,
@@ -50,9 +50,9 @@ class BuildSearch : public Base<BuildSearch<data_type>> {
 
     Timer timer;
     timer.start();
-    auto root = tree.build(std::vector<Data>(size), keys);
-
     size_t hash = 0;
+
+    auto root = tree.build(std::vector<Data>(size), keys);
     if constexpr (extra_checks) {
       assert_exception(root, "Root is null");
       assert_exception(::bst::subtree_data::size(root) == size,
