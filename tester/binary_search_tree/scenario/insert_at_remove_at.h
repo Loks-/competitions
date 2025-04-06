@@ -9,7 +9,6 @@
 #include "common/assert_exception.h"
 #include "common/base.h"
 #include "common/binary_search_tree/auto/at.h"
-#include "common/binary_search_tree/auto/find.h"
 #include "common/binary_search_tree/subtree_data/size.h"
 #include "common/template.h"
 #include "common/timer.h"
