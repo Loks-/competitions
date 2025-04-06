@@ -63,7 +63,8 @@ class InsertRemoveAddEach : public Base<InsertRemoveAddEach<data_type>> {
     for (unsigned i = 0, j = 0; j < size;) {
       if ((i < size) && (i - j < size / 2)) {
         // insert
-        root = tree.insert_new(root, Data(), keys[i++]);
+        root = tree.insert_new(root, keys[i], keys[i]);
+        ++i;
         if constexpr (extra_checks) {
           assert_exception(root, "Root is null");
           assert_exception(::bst::subtree_data::size(root) == i - j,
