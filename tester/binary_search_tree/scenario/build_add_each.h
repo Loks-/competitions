@@ -53,7 +53,7 @@ class BuildAddEach : public Base<BuildAddEach<data_type>> {
     timer.start();
     size_t hash = 0;
 
-    auto root = tree.build(std::vector<Data>(size), keys);
+    auto root = tree.build(keys, keys);
     if constexpr (extra_checks) {
       assert_exception(root, "Root is null");
       assert_exception(::bst::subtree_data::size(root) == size,
