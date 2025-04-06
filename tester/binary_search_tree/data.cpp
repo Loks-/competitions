@@ -1,5 +1,7 @@
 #include "tester/binary_search_tree/data.h"
 
+#include "tester/hash_combine.h"
+
 #include "common/base.h"
 #include "common/vector/shuffle.h"
 
@@ -17,6 +19,7 @@ std::unordered_map<unsigned, std::vector<int64_t>> increasing_data;
 std::unordered_map<unsigned, std::vector<int64_t>> reverse_data;
 std::unordered_map<unsigned, std::vector<int64_t>> shuffled_data;
 std::unordered_map<unsigned, std::vector<int64_t>> shuffled_dups_data;
+std::unordered_map<unsigned, std::vector<int64_t>> random_data;
 }  // namespace
 
 [[nodiscard]] const std::vector<int64_t>& get_data_int64(DataType type,
@@ -68,9 +71,22 @@ std::unordered_map<unsigned, std::vector<int64_t>> shuffled_dups_data;
       assert(data.size() == size);
       return data;
     }
+    case DataType::kRandom: {
+      auto& data = random_data[size];
+      if (data.empty()) {
+        data.resize(size);
+        size_t seed = size;
+        for (size_t i = 0; i < size; ++i) {
+          data[i] = hash_combine(seed, i);
+        }
+      }
+      assert(data.size() == size);
+      return data;
+    }
+    default:
+      assert(false);  // Unreachable
   }
-  assert(false);  // Unreachable
-  return empty_data_int64;
+  return empty_data_int64;  // Unreachable
 }
 
 [[nodiscard]] int64_t get_sorted_value_int64(DataType type, size_t index) {
@@ -81,9 +97,10 @@ std::unordered_map<unsigned, std::vector<int64_t>> shuffled_dups_data;
       return 2 * index;
     case DataType::kShuffledDuplicates:
       return 2 * (index / 4);
+    default:
+      assert(false);
+      return 0;
   }
-  assert(false);  // Unreachable
-  return 0;
 }
 
 [[nodiscard]] std::string get_name(DataType type) {
@@ -96,9 +113,11 @@ std::unordered_map<unsigned, std::vector<int64_t>> shuffled_dups_data;
       return "shuffled";
     case DataType::kShuffledDuplicates:
       return "shuffled_dups";
+    case DataType::kRandom:
+      return "random";
+    default:
+      return "unknown";
   }
-  assert(false);  // Unreachable
-  return "unknown";
 }
 
 }  // namespace bst

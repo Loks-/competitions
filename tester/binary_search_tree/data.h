@@ -6,7 +6,13 @@
 namespace tester {
 namespace bst {
 
-enum class DataType { kIncreasing, kReverse, kShuffled, kShuffledDuplicates };
+enum class DataType {
+  kIncreasing,
+  kReverse,
+  kShuffled,
+  kShuffledDuplicates,
+  kRandom
+};
 
 // Data access functions
 [[nodiscard]] const std::vector<int64_t>& get_data_int64(DataType type,
