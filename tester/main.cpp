@@ -20,6 +20,9 @@ int main(int nargs, char **pargs) {
       assert_exception(TestBinarySearchTree(false));
     } else if (tester_mode == "bst_base") {
       assert_exception(tester::bst::test(tester::bst::TestType::kBase));
+    } else if (tester_mode == "bst_expensive_data") {
+      assert_exception(
+          tester::bst::test(tester::bst::TestType::kExpensiveData));
     } else if (tester_mode == "bst_small") {
       assert_exception(tester::bst::test(tester::bst::TestType::kSmall));
     } else if (tester_mode == "bst_split_join") {

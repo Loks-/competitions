@@ -76,6 +76,20 @@ bool test(TestType test_type) {
                       impl::HKT_HPF_WAVL, impl::HKT_HPT_WAVL>(100000);
     }
 
+    case TestType::kExpensiveData: {
+      using Scenarios =
+          std::tuple<scenario::InsertRemoveAddAS<DataType::kIncreasing>,
+                     scenario::InsertRemoveAddAS<DataType::kReverse>,
+                     scenario::InsertRemoveAddAS<DataType::kShuffled>>;
+
+      return run_each<false, Scenarios, impl::HKT_HPF_AVL, impl::HKT_HPT_AVL,
+                      impl::HKT_HPF_Scapegoat, impl::HKT_HPT_Scapegoat,
+                      impl::HKF_HPT_Splay, impl::HKT_HPT_Splay,
+                      impl::HKF_HPF_Treap, impl::HKF_HPT_Treap,
+                      impl::HKT_HPF_Treap, impl::HKT_HPT_Treap,
+                      impl::HKT_HPF_WAVL, impl::HKT_HPT_WAVL>(20000);
+    }
+
     default:
       return false;
   }
