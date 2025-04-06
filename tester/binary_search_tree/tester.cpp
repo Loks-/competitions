@@ -8,6 +8,7 @@
 #include "tester/binary_search_tree/scenario/insert_remove.h"
 #include "tester/binary_search_tree/scenario/insert_remove_add_each.h"
 #include "tester/binary_search_tree/scenario/insert_remove_node.h"
+#include "tester/binary_search_tree/scenario/insert_remove_node_add_each.h"
 
 namespace tester {
 namespace bst {
@@ -15,23 +16,27 @@ namespace bst {
 bool test(TestType test_type) {
   switch (test_type) {
     case TestType::kSmall: {
-      using Scenarios =
-          std::tuple<scenario::BuildSearch<DataType::kIncreasing>,
-                     scenario::BuildSearch<DataType::kReverse>,
-                     scenario::BuildSearch<DataType::kShuffled>,
-                     scenario::BuildSearch<DataType::kShuffledDuplicates>,
-                     scenario::InsertRemove<DataType::kIncreasing>,
-                     scenario::InsertRemove<DataType::kReverse>,
-                     scenario::InsertRemove<DataType::kShuffled>,
-                     scenario::InsertRemove<DataType::kShuffledDuplicates>,
-                     scenario::InsertRemoveNode<DataType::kIncreasing>,
-                     scenario::InsertRemoveNode<DataType::kReverse>,
-                     scenario::InsertRemoveNode<DataType::kShuffled>,
-                     scenario::InsertRemoveNode<DataType::kShuffledDuplicates>,
-                     scenario::InsertAtRemoveAt<DataType::kRandom>,
-                     scenario::InsertRemoveAddEach<DataType::kIncreasing>,
-                     scenario::InsertRemoveAddEach<DataType::kReverse>,
-                     scenario::InsertRemoveAddEach<DataType::kShuffled>>;
+      using Scenarios = std::tuple<
+          scenario::BuildSearch<DataType::kIncreasing>,
+          scenario::BuildSearch<DataType::kReverse>,
+          scenario::BuildSearch<DataType::kShuffled>,
+          scenario::BuildSearch<DataType::kShuffledDuplicates>,
+          scenario::InsertRemove<DataType::kIncreasing>,
+          scenario::InsertRemove<DataType::kReverse>,
+          scenario::InsertRemove<DataType::kShuffled>,
+          scenario::InsertRemove<DataType::kShuffledDuplicates>,
+          scenario::InsertRemoveNode<DataType::kIncreasing>,
+          scenario::InsertRemoveNode<DataType::kReverse>,
+          scenario::InsertRemoveNode<DataType::kShuffled>,
+          scenario::InsertRemoveNode<DataType::kShuffledDuplicates>,
+          scenario::InsertAtRemoveAt<DataType::kRandom>,
+          scenario::InsertRemoveAddEach<DataType::kIncreasing>,
+          scenario::InsertRemoveAddEach<DataType::kReverse>,
+          scenario::InsertRemoveAddEach<DataType::kShuffled>,
+          scenario::InsertRemoveNodeAddEach<DataType::kIncreasing>,
+          scenario::InsertRemoveNodeAddEach<DataType::kReverse>,
+          scenario::InsertRemoveNodeAddEach<DataType::kShuffled>,
+          scenario::InsertRemoveNodeAddEach<DataType::kShuffledDuplicates>>;
 
       return run_each<
           true, Scenarios, impl::HKT_HPF_AVL, impl::HKT_HPT_AVL,
