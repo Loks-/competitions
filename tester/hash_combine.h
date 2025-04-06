@@ -4,9 +4,10 @@
 
 namespace tester {
 
-constexpr void hash_combine(size_t& seed, size_t value) {
+constexpr size_t hash_combine(size_t& seed, size_t value) {
   nhash::CombineHI(seed, value,
                    nhash::TMetaCombine<nhash::EPolicyCombine::XOR>{});
+  return seed;
 }
 
 }  // namespace tester

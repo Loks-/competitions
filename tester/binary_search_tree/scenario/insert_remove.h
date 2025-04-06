@@ -4,7 +4,7 @@
 #include "tester/binary_search_tree/scenario/base.h"
 #include "tester/binary_search_tree/scenario/result.h"
 #include "tester/binary_search_tree/utils/verify_parent_links.h"
-#include "tester/hash.h"
+#include "tester/hash_combine.h"
 
 #include "common/assert_exception.h"
 #include "common/base.h"
