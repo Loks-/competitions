@@ -1,3 +1,4 @@
+#include "tester/binary_search_tree/tester.h"
 #include "tester/testers.h"
 
 #include "common/assert_exception.h"
@@ -17,6 +18,8 @@ int main(int nargs, char **pargs) {
   try {
     if (tester_mode == "binary_search_tree")
       assert_exception(TestBinarySearchTree(false));
+    else if (tester_mode == "bst")
+      assert_exception(tester::bst::test(tester::bst::TestType::kSmall));
     else if (tester_mode == "bst_split_join")
       assert_exception(TestBinarySearchTreeSplitJoin(false));
     else if (tester_mode == "convergent")
