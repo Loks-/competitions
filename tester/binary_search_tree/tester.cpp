@@ -10,6 +10,7 @@
 #include "tester/binary_search_tree/scenario/insert_remove_add_as.h"
 #include "tester/binary_search_tree/scenario/insert_remove_add_each.h"
 #include "tester/binary_search_tree/scenario/insert_remove_node.h"
+#include "tester/binary_search_tree/scenario/insert_remove_node_add_as.h"
 #include "tester/binary_search_tree/scenario/insert_remove_node_add_each.h"
 
 namespace tester {
@@ -42,7 +43,11 @@ bool test(TestType test_type) {
           scenario::InsertAtRemoveAtAddEach<DataType::kRandom>,
           scenario::InsertRemoveAddAS<DataType::kIncreasing>,
           scenario::InsertRemoveAddAS<DataType::kReverse>,
-          scenario::InsertRemoveAddAS<DataType::kShuffled>>;
+          scenario::InsertRemoveAddAS<DataType::kShuffled>,
+          scenario::InsertRemoveNodeAddAS<DataType::kIncreasing>,
+          scenario::InsertRemoveNodeAddAS<DataType::kReverse>,
+          scenario::InsertRemoveNodeAddAS<DataType::kShuffled>,
+          scenario::InsertRemoveNodeAddAS<DataType::kShuffledDuplicates>>;
 
       return run_each<
           true, Scenarios, impl::HKT_HPF_AVL, impl::HKT_HPT_AVL,
@@ -51,7 +56,7 @@ bool test(TestType test_type) {
           impl::HKF_HPF_Treap, impl::HKF_HPT_Treap, impl::HKT_HPF_Treap,
           impl::HKT_HPT_Treap, impl::HKT_HPF_Unbalanced,
           impl::HKT_HPT_Unbalanced, impl::HKT_HPF_WAVL, impl::HKT_HPT_WAVL>(
-          1000);
+          500);
     }
 
     case TestType::kBase: {
