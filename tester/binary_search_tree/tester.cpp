@@ -4,6 +4,7 @@
 #include "tester/binary_search_tree/implementation.h"
 #include "tester/binary_search_tree/run_each.h"
 #include "tester/binary_search_tree/scenario/build.h"
+#include "tester/binary_search_tree/scenario/build_add_each.h"
 #include "tester/binary_search_tree/scenario/insert_at_remove_at.h"
 #include "tester/binary_search_tree/scenario/insert_at_remove_at_add_as.h"
 #include "tester/binary_search_tree/scenario/insert_at_remove_at_add_each.h"
@@ -34,6 +35,8 @@ bool test(TestType test_type) {
           scenario::InsertRemoveNode<DataType::kShuffled>,
           scenario::InsertRemoveNode<DataType::kShuffledDuplicates>,
           scenario::InsertAtRemoveAt<DataType::kRandom>,
+          scenario::BuildAddEach<DataType::kShuffled>,
+          scenario::BuildAddEach<DataType::kShuffledDuplicates>,
           scenario::InsertRemoveAddEach<DataType::kIncreasing>,
           scenario::InsertRemoveAddEach<DataType::kReverse>,
           scenario::InsertRemoveAddEach<DataType::kShuffled>,
@@ -71,6 +74,8 @@ bool test(TestType test_type) {
                      scenario::InsertRemove<DataType::kReverse>,
                      scenario::InsertRemove<DataType::kShuffled>,
                      scenario::InsertRemove<DataType::kShuffledDuplicates>,
+                     scenario::BuildAddEach<DataType::kShuffled>,
+                     scenario::BuildAddEach<DataType::kShuffledDuplicates>,
                      scenario::InsertRemoveAddEach<DataType::kIncreasing>,
                      scenario::InsertRemoveAddEach<DataType::kReverse>,
                      scenario::InsertRemoveAddEach<DataType::kShuffled>>;
