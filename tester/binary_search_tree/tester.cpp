@@ -4,6 +4,7 @@
 #include "tester/binary_search_tree/implementation.h"
 #include "tester/binary_search_tree/run_each.h"
 #include "tester/binary_search_tree/scenario/build_search.h"
+#include "tester/binary_search_tree/scenario/insert_at_remove_at.h"
 #include "tester/binary_search_tree/scenario/insert_remove.h"
 #include "tester/binary_search_tree/scenario/insert_remove_node.h"
 
@@ -25,7 +26,8 @@ bool test(TestType test_type) {
                      scenario::InsertRemoveNode<DataType::kIncreasing>,
                      scenario::InsertRemoveNode<DataType::kReverse>,
                      scenario::InsertRemoveNode<DataType::kShuffled>,
-                     scenario::InsertRemoveNode<DataType::kShuffledDuplicates>>;
+                     scenario::InsertRemoveNode<DataType::kShuffledDuplicates>,
+                     scenario::InsertAtRemoveAt<DataType::kRandom>>;
 
       return run_each<
           true, Scenarios, impl::HKT_HPF_AVL, impl::HKT_HPT_AVL,
