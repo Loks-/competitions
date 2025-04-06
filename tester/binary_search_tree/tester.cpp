@@ -3,7 +3,7 @@
 #include "tester/binary_search_tree/data.h"
 #include "tester/binary_search_tree/implementation.h"
 #include "tester/binary_search_tree/run_each.h"
-#include "tester/binary_search_tree/scenario/build_search.h"
+#include "tester/binary_search_tree/scenario/build.h"
 #include "tester/binary_search_tree/scenario/insert_at_remove_at.h"
 #include "tester/binary_search_tree/scenario/insert_at_remove_at_add_as.h"
 #include "tester/binary_search_tree/scenario/insert_at_remove_at_add_each.h"
@@ -21,10 +21,10 @@ bool test(TestType test_type) {
   switch (test_type) {
     case TestType::kSmall: {
       using Scenarios = std::tuple<
-          scenario::BuildSearch<DataType::kIncreasing>,
-          scenario::BuildSearch<DataType::kReverse>,
-          scenario::BuildSearch<DataType::kShuffled>,
-          scenario::BuildSearch<DataType::kShuffledDuplicates>,
+          scenario::Build<DataType::kIncreasing>,
+          scenario::Build<DataType::kReverse>,
+          scenario::Build<DataType::kShuffled>,
+          scenario::Build<DataType::kShuffledDuplicates>,
           scenario::InsertRemove<DataType::kIncreasing>,
           scenario::InsertRemove<DataType::kReverse>,
           scenario::InsertRemove<DataType::kShuffled>,
@@ -63,10 +63,10 @@ bool test(TestType test_type) {
 
     case TestType::kBase: {
       using Scenarios =
-          std::tuple<scenario::BuildSearch<DataType::kIncreasing>,
-                     scenario::BuildSearch<DataType::kReverse>,
-                     scenario::BuildSearch<DataType::kShuffled>,
-                     scenario::BuildSearch<DataType::kShuffledDuplicates>,
+          std::tuple<scenario::Build<DataType::kIncreasing>,
+                     scenario::Build<DataType::kReverse>,
+                     scenario::Build<DataType::kShuffled>,
+                     scenario::Build<DataType::kShuffledDuplicates>,
                      scenario::InsertRemove<DataType::kIncreasing>,
                      scenario::InsertRemove<DataType::kReverse>,
                      scenario::InsertRemove<DataType::kShuffled>,

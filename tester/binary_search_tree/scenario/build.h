@@ -23,7 +23,7 @@ namespace bst {
 namespace scenario {
 
 template <DataType data_type>
-class BuildSearch : public Base<BuildSearch<data_type>> {
+class Build : public Base<Build<data_type>> {
  public:
   using Data = MetaEmpty;
   using Key = int64_t;
@@ -31,7 +31,7 @@ class BuildSearch : public Base<BuildSearch<data_type>> {
   using DeferredTuple = std::tuple<>;
 
   static constexpr std::string id() {
-    return std::string("build_search @ ") + get_name(data_type);
+    return std::string("build @ ") + get_name(data_type);
   }
 
   template <bool extra_checks, template <typename, typename, typename,
