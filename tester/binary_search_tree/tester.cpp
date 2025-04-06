@@ -4,6 +4,7 @@
 #include "tester/binary_search_tree/implementation.h"
 #include "tester/binary_search_tree/run_each.h"
 #include "tester/binary_search_tree/scenario/build.h"
+#include "tester/binary_search_tree/scenario/build_add_as.h"
 #include "tester/binary_search_tree/scenario/build_add_each.h"
 #include "tester/binary_search_tree/scenario/insert_at_remove_at.h"
 #include "tester/binary_search_tree/scenario/insert_at_remove_at_add_as.h"
@@ -45,6 +46,8 @@ bool test(TestType test_type) {
           scenario::InsertRemoveNodeAddEach<DataType::kShuffled>,
           scenario::InsertRemoveNodeAddEach<DataType::kShuffledDuplicates>,
           scenario::InsertAtRemoveAtAddEach<DataType::kRandom>,
+          scenario::BuildAddAS<DataType::kShuffled>,
+          scenario::BuildAddAS<DataType::kShuffledDuplicates>,
           scenario::InsertRemoveAddAS<DataType::kIncreasing>,
           scenario::InsertRemoveAddAS<DataType::kReverse>,
           scenario::InsertRemoveAddAS<DataType::kShuffled>,
@@ -90,7 +93,9 @@ bool test(TestType test_type) {
 
     case TestType::kExpensiveData: {
       using Scenarios =
-          std::tuple<scenario::InsertRemoveAddAS<DataType::kIncreasing>,
+          std::tuple<scenario::BuildAddAS<DataType::kShuffled>,
+                     scenario::BuildAddAS<DataType::kShuffledDuplicates>,
+                     scenario::InsertRemoveAddAS<DataType::kIncreasing>,
                      scenario::InsertRemoveAddAS<DataType::kReverse>,
                      scenario::InsertRemoveAddAS<DataType::kShuffled>>;
 
