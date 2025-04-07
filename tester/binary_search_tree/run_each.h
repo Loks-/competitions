@@ -141,9 +141,9 @@ bool run_each(size_t size) {
 
   // Print sorted results
   for (const auto& [id, stats] : sorted_stats) {
-    std::cout << std::setw(20) << std::left << id << ", " << std::setw(15)
-              << stats.successful_runs << ", " << std::setw(10) << std::fixed
-              << std::setprecision(2)
+    std::cout << std::setw(20) << std::left << id << " , " << std::setw(5)
+              << std::right << stats.successful_runs << " , " << std::setw(5)
+              << std::right << std::fixed << std::setprecision(2)
               << std::chrono::duration_cast<std::chrono::milliseconds>(
                      stats.total_time_ns)
                      .count()
