@@ -8,9 +8,19 @@ utilities reside in `tester/`.  The project is built with CMake and provides a
 set of tests that should pass before commits are finalized.
 
 ## Building and Testing
-Compile and run the test suite using the Release configuration:
+Checking if the project builds is quicker in Debug mode. Build both Debug and
+Release configurations before running the tests. Only after both builds succeed
+should the test suite be executed in Release mode.
 
 ```bash
+# Debug build (faster for verifying compilation)
+mkdir -p debug
+cd debug
+cmake -DCMAKE_BUILD_TYPE=Debug ..
+make
+cd ..
+
+# Release build and tests
 mkdir -p release
 cd release
 cmake -DCMAKE_BUILD_TYPE=Release ..
