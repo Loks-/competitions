@@ -106,7 +106,7 @@ int main(int nargs, char **pargs) {
     } else {
       assert_exception(false, "Unknown tester mode");
     }
-  } catch (AssertException) {
+  } catch (const AssertException &) {
     std::cout << "Test failed." << std::endl;
     return -1;
   }
