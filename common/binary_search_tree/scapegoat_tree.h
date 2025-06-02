@@ -31,24 +31,25 @@ namespace bst {
  * through rebuilding. It automatically adds size tracking to the subtree data
  * if not already present.
  *
+ * @tparam has_key Whether the tree uses keys for ordering
  * @tparam has_parent Whether nodes maintain parent pointers
  * @tparam Data The data type stored in each node
  * @tparam AggregatorsTuple Tuple of aggregator types for subtree data
  * @tparam DeferredTuple Tuple of deferred operation types
- * @tparam Key The key type used for ordering
+ * @tparam Key The key type used for ordering (if has_key is true)
  */
-template <bool has_parent, typename Data,
+template <bool has_key, bool has_parent, typename Data,
           typename AggregatorsTuple = std::tuple<subtree_data::Size>,
           typename DeferredTuple = std::tuple<>, typename Key = int64_t>
 class ScapegoatTree
     : public base::SelfBalancingTree<
-          memory::ContiguousNodesManager<
-              base::Node<Data,
-                         base::SubtreeData<templates::PrependIfMissingT<
-                             subtree_data::Size, AggregatorsTuple>>,
-                         base::Deferred<DeferredTuple>, has_parent, true, Key>>,
-          ScapegoatTree<has_parent, Data, AggregatorsTuple, DeferredTuple,
-                        Key>> {
+          memory::ContiguousNodesManager<base::Node<
+              Data,
+              base::SubtreeData<templates::PrependIfMissingT<subtree_data::Size,
+                                                             AggregatorsTuple>>,
+              base::Deferred<DeferredTuple>, has_parent, has_key, Key>>,
+          ScapegoatTree<has_key, has_parent, Data, AggregatorsTuple,
+                        DeferredTuple, Key>> {
  public:
   // Height is less or equal to 2 * height(fully balanced tree).
   static constexpr double alpha = 0.7;
@@ -57,9 +58,9 @@ class ScapegoatTree
       templates::PrependIfMissingT<subtree_data::Size, AggregatorsTuple>>;
   using DeferredType = base::Deferred<DeferredTuple>;
   using NodeType =
-      base::Node<Data, SubtreeDataType, DeferredType, has_parent, true, Key>;
-  using Self =
-      ScapegoatTree<has_parent, Data, AggregatorsTuple, DeferredTuple, Key>;
+      base::Node<Data, SubtreeDataType, DeferredType, has_parent, has_key, Key>;
+  using Self = ScapegoatTree<has_key, has_parent, Data, AggregatorsTuple,
+                             DeferredTuple, Key>;
   using SBTree =
       base::SelfBalancingTree<memory::ContiguousNodesManager<NodeType>, Self>;
   using Base = typename SBTree::Base;

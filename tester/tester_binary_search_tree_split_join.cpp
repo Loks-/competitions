@@ -69,14 +69,14 @@ size_t TesterBinarySearchTreeSplitJoin::TestBase(
 bool TesterBinarySearchTreeSplitJoin::TestAll(bool small_test) const {
   std::unordered_set<size_t> hs;
   if (small_test) {
-    hs.insert(TestBase<bst::UnbalancedTree<true, MetaEmpty, TAggregators,
+    hs.insert(TestBase<bst::UnbalancedTree<true, true, MetaEmpty, TAggregators,
                                            TDeferred, TKey>>("Unbalanced UPT"));
-    hs.insert(TestBase<bst::ScapegoatTree<true, MetaEmpty, TAggregators,
+    hs.insert(TestBase<bst::ScapegoatTree<true, true, MetaEmpty, TAggregators,
                                           TDeferred, TKey>>("Scape UPT"));
   }
-  hs.insert(
-      TestBase<bst::AVLTree<true, MetaEmpty, TAggregators, TDeferred, TKey>>(
-          "AVL   UPT"));
+  hs.insert(TestBase<
+            bst::AVLTree<true, true, MetaEmpty, TAggregators, TDeferred, TKey>>(
+      "AVL   UPT"));
   hs.insert(
       TestBase<bst::RedBlackTree<MetaEmpty, TAggregators, TDeferred, TKey>>(
           "RBTree   "));
@@ -89,9 +89,8 @@ bool TesterBinarySearchTreeSplitJoin::TestAll(bool small_test) const {
   hs.insert(TestBase<
             bst::Treap<true, true, MetaEmpty, TAggregators, TDeferred, TKey>>(
       "Treap UPT"));
-  hs.insert(
-      TestBase<bst::WAVLTree<true, MetaEmpty, TAggregators, TDeferred, TKey>>(
-          "WAVL  UPT"));
+  hs.insert(TestBase<bst::WAVLTree<true, true, MetaEmpty, TAggregators,
+                                   TDeferred, TKey>>("WAVL  UPT"));
   return hs.size() <= 1;
 }
 

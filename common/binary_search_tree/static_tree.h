@@ -31,28 +31,30 @@ namespace bst {
  * that the tree remains static and its properties are preserved throughout
  * the program's execution.
  *
+ * @tparam has_key Whether the tree uses keys for ordering
  * @tparam has_parent Whether nodes maintain parent pointers
  * @tparam Data The data type stored in each node
  * @tparam AggregatorsTuple Tuple of aggregator types for subtree data
  * @tparam DeferredTuple Tuple of deferred operation types
- * @tparam Key The key type used for ordering
+ * @tparam Key The key type used for ordering (if has_key is true)
  */
-template <bool has_parent, class Data,
+template <bool has_key, bool has_parent, class Data,
           class AggregatorsTuple = std::tuple<subtree_data::Size>,
           class DeferredTuple = std::tuple<>, class Key = int64_t>
 class StaticTree
     : public base::BaseTree<
-          memory::ContiguousNodesManager<
-              base::Node<Data, base::SubtreeData<AggregatorsTuple>,
-                         base::Deferred<DeferredTuple>, has_parent, true, Key>>,
-          StaticTree<has_parent, Data, AggregatorsTuple, DeferredTuple, Key>> {
+          memory::ContiguousNodesManager<base::Node<
+              Data, base::SubtreeData<AggregatorsTuple>,
+              base::Deferred<DeferredTuple>, has_parent, has_key, Key>>,
+          StaticTree<has_key, has_parent, Data, AggregatorsTuple, DeferredTuple,
+                     Key>> {
  public:
   using SubtreeDataType = base::SubtreeData<AggregatorsTuple>;
   using DeferredType = base::Deferred<DeferredTuple>;
   using NodeType =
-      base::Node<Data, SubtreeDataType, DeferredType, has_parent, true, Key>;
-  using Self =
-      StaticTree<has_parent, Data, AggregatorsTuple, DeferredTuple, Key>;
+      base::Node<Data, SubtreeDataType, DeferredType, has_parent, has_key, Key>;
+  using Self = StaticTree<has_key, has_parent, Data, AggregatorsTuple,
+                          DeferredTuple, Key>;
   using Base = base::BaseTree<memory::ContiguousNodesManager<NodeType>, Self>;
 
   /**

@@ -105,27 +105,27 @@ bool TesterBinarySearchTree::TestAllTrees() {
   std::cout << "Testing base trees:" << std::endl;
   current_job = "base";
   if (mode == hash_test) {
-    TestAll<bst::UnbalancedTree<false, TKey, TAggregatorsTuple1, std::tuple<>,
-                                TKey>>("unbalanced_upf");
-    TestAll<bst::UnbalancedTree<true, TKey, TAggregatorsTuple1, std::tuple<>,
-                                TKey>>("unbalanced_upt");
+    TestAll<bst::UnbalancedTree<true, false, TKey, TAggregatorsTuple1,
+                                std::tuple<>, TKey>>("unbalanced_upf");
+    TestAll<bst::UnbalancedTree<true, true, TKey, TAggregatorsTuple1,
+                                std::tuple<>, TKey>>("unbalanced_upt");
   }
-  TestAll<bst::AVLTree<false, TKey, TAggregatorsTuple1, std::tuple<>, TKey>>(
+  TestAll<
+      bst::AVLTree<true, false, TKey, TAggregatorsTuple1, std::tuple<>, TKey>>(
       "avltree_upf");
-  TestAll<bst::AVLTree<true, TKey, TAggregatorsTuple1, std::tuple<>, TKey>>(
+  TestAll<
+      bst::AVLTree<true, true, TKey, TAggregatorsTuple1, std::tuple<>, TKey>>(
       "avltree_upt");
-  TestAll<bst::StaticTree<false, TKey, TAggregatorsTuple1, std::tuple<>, TKey>>(
-      "static_upf");
-  TestAll<bst::StaticTree<true, TKey, TAggregatorsTuple1, std::tuple<>, TKey>>(
-      "static_upt");
+  TestAll<bst::StaticTree<true, false, TKey, TAggregatorsTuple1, std::tuple<>,
+                          TKey>>("static_upf");
+  TestAll<bst::StaticTree<true, true, TKey, TAggregatorsTuple1, std::tuple<>,
+                          TKey>>("static_upt");
   TestAll<bst::RedBlackTree<TKey, TAggregatorsTuple1, std::tuple<>, TKey>>(
       "rbtree");
-  TestAll<
-      bst::ScapegoatTree<false, TKey, TAggregatorsTuple1, std::tuple<>, TKey>>(
-      "scape_upf");
-  TestAll<
-      bst::ScapegoatTree<true, TKey, TAggregatorsTuple1, std::tuple<>, TKey>>(
-      "scape_upt");
+  TestAll<bst::ScapegoatTree<true, false, TKey, TAggregatorsTuple1,
+                             std::tuple<>, TKey>>("scape_upf");
+  TestAll<bst::ScapegoatTree<true, true, TKey, TAggregatorsTuple1, std::tuple<>,
+                             TKey>>("scape_upt");
   TestAll<bst::SplayTree<true, TKey, TAggregatorsTuple1, std::tuple<>, TKey>>(
       "splay_upt");
   TestAll<
@@ -133,29 +133,31 @@ bool TesterBinarySearchTree::TestAllTrees() {
       "treap_upf");
   TestAll<bst::Treap<true, true, TKey, TAggregatorsTuple1, std::tuple<>, TKey>>(
       "treap_upt");
-  TestAll<bst::WAVLTree<false, TKey, TAggregatorsTuple1, std::tuple<>, TKey>>(
+  TestAll<
+      bst::WAVLTree<true, false, TKey, TAggregatorsTuple1, std::tuple<>, TKey>>(
       "wavltree_upf");
-  TestAll<bst::WAVLTree<true, TKey, TAggregatorsTuple1, std::tuple<>, TKey>>(
+  TestAll<
+      bst::WAVLTree<true, true, TKey, TAggregatorsTuple1, std::tuple<>, TKey>>(
       "wavltree_upt");
 
   std::cout << "Testing full trees:" << std::endl;
   current_job = "full";
   if (mode == hash_test) {
-    TestAll<bst::UnbalancedTree<false, TKey, TAggregatorsTuple2,
+    TestAll<bst::UnbalancedTree<true, false, TKey, TAggregatorsTuple2,
                                 TDeferredTuple2, TKey>>("unbalanced_upf");
-    TestAll<bst::UnbalancedTree<true, TKey, TAggregatorsTuple2, TDeferredTuple2,
-                                TKey>>("unbalanced_upt");
+    TestAll<bst::UnbalancedTree<true, true, TKey, TAggregatorsTuple2,
+                                TDeferredTuple2, TKey>>("unbalanced_upt");
   }
-  TestAll<bst::AVLTree<false, TKey, TAggregatorsTuple2, TDeferredTuple2, TKey>>(
-      "avltree_upf");
-  TestAll<bst::AVLTree<true, TKey, TAggregatorsTuple2, TDeferredTuple2, TKey>>(
-      "avltree_upt");
+  TestAll<bst::AVLTree<true, false, TKey, TAggregatorsTuple2, TDeferredTuple2,
+                       TKey>>("avltree_upf");
+  TestAll<bst::AVLTree<true, true, TKey, TAggregatorsTuple2, TDeferredTuple2,
+                       TKey>>("avltree_upt");
   TestAll<bst::RedBlackTree<TKey, TAggregatorsTuple2, TDeferredTuple2, TKey>>(
       "rbtree");
-  TestAll<bst::ScapegoatTree<false, TKey, TAggregatorsTuple2, TDeferredTuple2,
-                             TKey>>("scape_upf");
-  TestAll<bst::ScapegoatTree<true, TKey, TAggregatorsTuple2, TDeferredTuple2,
-                             TKey>>("scape_upt");
+  TestAll<bst::ScapegoatTree<true, false, TKey, TAggregatorsTuple2,
+                             TDeferredTuple2, TKey>>("scape_upf");
+  TestAll<bst::ScapegoatTree<true, true, TKey, TAggregatorsTuple2,
+                             TDeferredTuple2, TKey>>("scape_upt");
   TestAll<
       bst::SplayTree<true, TKey, TAggregatorsTuple2, TDeferredTuple2, TKey>>(
       "splay_upt");
@@ -165,11 +167,10 @@ bool TesterBinarySearchTree::TestAllTrees() {
   TestAll<
       bst::Treap<true, true, TKey, TAggregatorsTuple2, TDeferredTuple2, TKey>>(
       "treap_upt");
-  TestAll<
-      bst::WAVLTree<false, TKey, TAggregatorsTuple2, TDeferredTuple2, TKey>>(
-      "wavltree_upf");
-  TestAll<bst::WAVLTree<true, TKey, TAggregatorsTuple2, TDeferredTuple2, TKey>>(
-      "wavltree_upt");
+  TestAll<bst::WAVLTree<true, false, TKey, TAggregatorsTuple2, TDeferredTuple2,
+                        TKey>>("wavltree_upf");
+  TestAll<bst::WAVLTree<true, true, TKey, TAggregatorsTuple2, TDeferredTuple2,
+                        TKey>>("wavltree_upt");
 
   bool output = TestHash();
   if ((mode == time_test) && output) {
