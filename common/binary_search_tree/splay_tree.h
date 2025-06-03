@@ -9,7 +9,6 @@
 #include "common/binary_search_tree/base/rotate.h"
 #include "common/binary_search_tree/base/splay.h"
 #include "common/binary_search_tree/base/subtree_data.h"
-#include "common/binary_search_tree/deferred/utils/propagate_to_node.h"
 #include "common/binary_search_tree/subtree_data/size.h"
 #include "common/memory/contiguous_nodes_manager.h"
 
