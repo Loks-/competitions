@@ -308,6 +308,7 @@ class WAVLTree
       return root;
     }
     assert((rank_diff(root, sibling) == 1));
+    sibling->apply_deferred();
     if ((rank_diff(sibling, sibling->left) == 2) &&
         (rank_diff(sibling, sibling->right) == 2)) {
       dec_rank(sibling);
@@ -317,14 +318,12 @@ class WAVLTree
       if (rank_diff(sibling, sibling->right) == 1) {
         return fix_balance_remove_rotate1(sibling, root);
       } else {
-        sibling->apply_deferred();
         return fix_balance_remove_rotate2(sibling->left, sibling, root);
       }
     } else {
       if (rank_diff(sibling, sibling->left) == 1) {
         return fix_balance_remove_rotate1(sibling, root);
       } else {
-        sibling->apply_deferred();
         return fix_balance_remove_rotate2(sibling->right, sibling, root);
       }
     }
