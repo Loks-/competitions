@@ -25,6 +25,24 @@ class Base : public Tree {
 // AVL Tree implementations
 template <typename Data, typename Key, typename AggregatorsTuple,
           typename DeferredTuple>
+class HKF_HPF_AVL
+    : public Base<::bst::AVLTree<false, false, Data, AggregatorsTuple,
+                                 DeferredTuple, Key>> {
+ public:
+  static constexpr std::string_view id() { return "hpf_avl"; }
+};
+
+template <typename Data, typename Key, typename AggregatorsTuple,
+          typename DeferredTuple>
+class HKF_HPT_AVL
+    : public Base<::bst::AVLTree<false, true, Data, AggregatorsTuple,
+                                 DeferredTuple, Key>> {
+ public:
+  static constexpr std::string_view id() { return "hpt_avl"; }
+};
+
+template <typename Data, typename Key, typename AggregatorsTuple,
+          typename DeferredTuple>
 class HKT_HPF_AVL
     : public Base<::bst::AVLTree<true, false, Data, AggregatorsTuple,
                                  DeferredTuple, Key>> {
@@ -42,6 +60,24 @@ class HKT_HPT_AVL
 };
 
 // Scapegoat Tree implementation
+template <typename Data, typename Key, typename AggregatorsTuple,
+          typename DeferredTuple>
+class HKF_HPF_Scapegoat
+    : public Base<::bst::ScapegoatTree<false, false, Data, AggregatorsTuple,
+                                       DeferredTuple, Key>> {
+ public:
+  static constexpr std::string_view id() { return "hpf_scapegoat"; }
+};
+
+template <typename Data, typename Key, typename AggregatorsTuple,
+          typename DeferredTuple>
+class HKF_HPT_Scapegoat
+    : public Base<::bst::ScapegoatTree<false, true, Data, AggregatorsTuple,
+                                       DeferredTuple, Key>> {
+ public:
+  static constexpr std::string_view id() { return "hpt_scapegoat"; }
+};
+
 template <typename Data, typename Key, typename AggregatorsTuple,
           typename DeferredTuple>
 class HKT_HPF_Scapegoat
@@ -80,6 +116,24 @@ class HKT_HPT_Splay
 };
 
 // Static Tree implementation
+template <typename Data, typename Key, typename AggregatorsTuple,
+          typename DeferredTuple>
+class HKF_HPF_Static
+    : public Base<::bst::StaticTree<false, false, Data, AggregatorsTuple,
+                                    DeferredTuple, Key>> {
+ public:
+  static constexpr std::string_view id() { return "hpf_static"; }
+};
+
+template <typename Data, typename Key, typename AggregatorsTuple,
+          typename DeferredTuple>
+class HKF_HPT_Static
+    : public Base<::bst::StaticTree<false, true, Data, AggregatorsTuple,
+                                    DeferredTuple, Key>> {
+ public:
+  static constexpr std::string_view id() { return "hpt_static"; }
+};
+
 template <typename Data, typename Key, typename AggregatorsTuple,
           typename DeferredTuple>
 class HKT_HPF_Static
@@ -138,6 +192,24 @@ class HKT_HPT_Treap
 // Unbalanced Tree implementation
 template <typename Data, typename Key, typename AggregatorsTuple,
           typename DeferredTuple>
+class HKF_HPF_Unbalanced
+    : public Base<::bst::UnbalancedTree<false, false, Data, AggregatorsTuple,
+                                        DeferredTuple, Key>> {
+ public:
+  static constexpr std::string_view id() { return "hpf_unbalanced"; }
+};
+
+template <typename Data, typename Key, typename AggregatorsTuple,
+          typename DeferredTuple>
+class HKF_HPT_Unbalanced
+    : public Base<::bst::UnbalancedTree<false, true, Data, AggregatorsTuple,
+                                        DeferredTuple, Key>> {
+ public:
+  static constexpr std::string_view id() { return "hpt_unbalanced"; }
+};
+
+template <typename Data, typename Key, typename AggregatorsTuple,
+          typename DeferredTuple>
 class HKT_HPF_Unbalanced
     : public Base<::bst::UnbalancedTree<true, false, Data, AggregatorsTuple,
                                         DeferredTuple, Key>> {
@@ -155,6 +227,24 @@ class HKT_HPT_Unbalanced
 };
 
 // WAVL Tree implementation
+template <typename Data, typename Key, typename AggregatorsTuple,
+          typename DeferredTuple>
+class HKF_HPF_WAVL
+    : public Base<::bst::WAVLTree<false, false, Data, AggregatorsTuple,
+                                  DeferredTuple, Key>> {
+ public:
+  static constexpr std::string_view id() { return "hpf_wavl"; }
+};
+
+template <typename Data, typename Key, typename AggregatorsTuple,
+          typename DeferredTuple>
+class HKF_HPT_WAVL
+    : public Base<::bst::WAVLTree<false, true, Data, AggregatorsTuple,
+                                  DeferredTuple, Key>> {
+ public:
+  static constexpr std::string_view id() { return "hpt_wavl"; }
+};
+
 template <typename Data, typename Key, typename AggregatorsTuple,
           typename DeferredTuple>
 class HKT_HPF_WAVL
