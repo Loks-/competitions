@@ -26,23 +26,23 @@ template <class TData, class TAggregatorsTuple = std::tuple<subtree_data::Size>,
           class TDeferredTuple = std::tuple<>, class TKey = int64_t,
           template <class> class TTNodesManager =
               memory::ContiguousNodesManager>
-class RedBlackTree
+class RedBlackTreeOld
     : public base::ExtendedTree<
           TTNodesManager<
               base::Node<TData,
                          base::SubtreeData<templates::PrependT<
                              subtree_data::RBTColor, TAggregatorsTuple>>,
                          base::Deferred<TDeferredTuple>, true, true, TKey>>,
-          RedBlackTree<TData, TAggregatorsTuple, TDeferredTuple, TKey,
-                       TTNodesManager>> {
+          RedBlackTreeOld<TData, TAggregatorsTuple, TDeferredTuple, TKey,
+                          TTNodesManager>> {
  public:
   using TSubtreeData = base::SubtreeData<
       templates::PrependT<subtree_data::RBTColor, TAggregatorsTuple>>;
   using TDeferred = base::Deferred<TDeferredTuple>;
   using TNode = base::Node<TData, TSubtreeData, base::Deferred<TDeferredTuple>,
                            true, true, TKey>;
-  using TSelf = RedBlackTree<TData, TAggregatorsTuple, TDeferredTuple, TKey,
-                             TTNodesManager>;
+  using TSelf = RedBlackTreeOld<TData, TAggregatorsTuple, TDeferredTuple, TKey,
+                                TTNodesManager>;
   using TTree = base::ExtendedTree<TTNodesManager<TNode>, TSelf>;
   using Base = typename TTree::Base;
 
@@ -67,7 +67,7 @@ class RedBlackTree
   }
 
  public:
-  explicit RedBlackTree(size_t max_nodes) : TTree(max_nodes) {}
+  explicit RedBlackTreeOld(size_t max_nodes) : TTree(max_nodes) {}
 
  protected:
   static void BuildTreeIFixColorsR(TNode* root, size_t height) {

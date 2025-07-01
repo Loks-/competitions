@@ -4,7 +4,7 @@
 #include "common/binary_search_tree/base/left.h"
 #include "common/binary_search_tree/base/lower_bound.h"
 #include "common/binary_search_tree/base/right.h"
-#include "common/binary_search_tree/red_black_tree.h"
+#include "common/binary_search_tree/red_black_tree_old.h"
 #include "common/data_structures/fixed_universe_successor/empty.h"
 #include "common/memory/nodes_manager.h"
 
@@ -22,8 +22,8 @@ namespace fus {
 // Predecessor -- O(log S)
 class BinarySearchTree {
  protected:
-  using TTree = bst::RedBlackTree<MetaEmpty, std::tuple<>, std::tuple<>, size_t,
-                                  memory::NodesManager>;
+  using TTree = bst::RedBlackTreeOld<MetaEmpty, std::tuple<>, std::tuple<>,
+                                     size_t, memory::NodesManager>;
   using TNode = TTree::TNode;
 
  protected:
