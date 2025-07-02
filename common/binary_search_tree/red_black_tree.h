@@ -244,7 +244,7 @@ class RedBlackTree
   }
 
  protected:
-  static int BHeight(NodeType* root) {
+  [[nodiscard]] static constexpr int black_height(NodeType* root) {
     int h = 0;
     for (; root; root = root->left) {
       root->apply_deferred();
@@ -253,16 +253,21 @@ class RedBlackTree
     return h;
   }
 
-  static NodeType* join3_base_impl(NodeType* l, NodeType* m1, NodeType* r) {
+  [[nodiscard]] static constexpr NodeType* join3_base_impl(NodeType* l,
+                                                           NodeType* m1,
+                                                           NodeType* r) {
     SBTree::join3_base_impl(l, m1, r);
     SetColor(m1, false);
     return m1;
   }
 
-  static NodeType* Join3L(NodeType* l, NodeType* m1, NodeType* r, int hd) {
+  [[nodiscard]] static constexpr NodeType* join3_left_impl(NodeType* l,
+                                                           NodeType* m1,
+                                                           NodeType* r,
+                                                           int hd) {
     if (IsBlack(l) && (hd == 0)) return join3_base_impl(l, m1, r);
     l->apply_deferred();
-    l->set_right(Join3L(l->right, m1, r, hd - (IsBlack(l) ? 1 : 0)));
+    l->set_right(join3_left_impl(l->right, m1, r, hd - (IsBlack(l) ? 1 : 0)));
     r = l->right;
     if (IsBlack(l) && !IsBlack(r) && IsRed(r->right)) {
       SetColor(r->right, true);
@@ -274,10 +279,13 @@ class RedBlackTree
     }
   }
 
-  static NodeType* Join3R(NodeType* l, NodeType* m1, NodeType* r, int hd) {
+  [[nodiscard]] static constexpr NodeType* join3_right_impl(NodeType* l,
+                                                            NodeType* m1,
+                                                            NodeType* r,
+                                                            int hd) {
     if (IsBlack(r) && (hd == 0)) return join3_base_impl(l, m1, r);
     r->apply_deferred();
-    r->set_left(Join3R(l, m1, r->left, hd - (IsBlack(r) ? 1 : 0)));
+    r->set_left(join3_right_impl(l, m1, r->left, hd - (IsBlack(r) ? 1 : 0)));
     l = r->left;
     if (IsBlack(r) && !IsBlack(l) && IsRed(l->left)) {
       SetColor(l->left, true);
@@ -290,11 +298,11 @@ class RedBlackTree
   }
 
  public:
-  static NodeType* join3_impl(NodeType* l, NodeType* m1, NodeType* r) {
-    assert(m1 && !m1->left && !m1->right);
-    const auto hl = BHeight(l), hr = BHeight(r), hd = hl - hr;
-    auto root = (hd > 0)   ? Join3L(l, m1, r, hd)
-                : (hd < 0) ? Join3R(l, m1, r, -hd)
+  [[nodiscard]] static constexpr NodeType* join3_impl(NodeType* l, NodeType* m1,
+                                                      NodeType* r) {
+    const auto hl = black_height(l), hr = black_height(r), hd = hl - hr;
+    auto root = (hd > 0)   ? join3_left_impl(l, m1, r, hd)
+                : (hd < 0) ? join3_right_impl(l, m1, r, -hd)
                            : join3_base_impl(l, m1, r);
     SetColor(root, true);
     return root;
