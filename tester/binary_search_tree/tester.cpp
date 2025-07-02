@@ -59,7 +59,8 @@ bool test(TestType test_type) {
 
       return run_each<
           true, Scenarios, impl::HKF_HPF_AVL, impl::HKF_HPT_AVL,
-          impl::HKT_HPF_AVL, impl::HKT_HPT_AVL, impl::HKF_HPF_Scapegoat,
+          impl::HKT_HPF_AVL, impl::HKT_HPT_AVL, impl::HKF_HPT_RedBlack,
+          impl::HKT_HPT_RedBlack, impl::HKF_HPF_Scapegoat,
           impl::HKF_HPT_Scapegoat, impl::HKT_HPF_Scapegoat,
           impl::HKT_HPT_Scapegoat, impl::HKF_HPT_Splay, impl::HKT_HPT_Splay,
           impl::HKF_HPF_Static, impl::HKF_HPT_Static, impl::HKT_HPF_Static,
@@ -67,7 +68,7 @@ bool test(TestType test_type) {
           impl::HKT_HPF_Treap, impl::HKT_HPT_Treap, impl::HKF_HPF_Unbalanced,
           impl::HKF_HPT_Unbalanced, impl::HKT_HPF_Unbalanced,
           impl::HKT_HPT_Unbalanced, impl::HKF_HPF_WAVL, impl::HKF_HPT_WAVL,
-          impl::HKT_HPF_WAVL, impl::HKT_HPT_WAVL>(1000);
+          impl::HKT_HPT_WAVL>(1000);
     }
 
     case TestType::kBase: {
@@ -88,12 +89,13 @@ bool test(TestType test_type) {
 
       return run_each<
           false, Scenarios, impl::HKF_HPF_AVL, impl::HKF_HPT_AVL,
-          impl::HKT_HPF_AVL, impl::HKT_HPT_AVL, impl::HKF_HPF_Scapegoat,
+          impl::HKT_HPF_AVL, impl::HKT_HPT_AVL, impl::HKF_HPT_RedBlack,
+          impl::HKT_HPT_RedBlack, impl::HKF_HPF_Scapegoat,
           impl::HKF_HPT_Scapegoat, impl::HKT_HPF_Scapegoat,
           impl::HKT_HPT_Scapegoat, impl::HKF_HPT_Splay, impl::HKT_HPT_Splay,
           impl::HKF_HPF_Treap, impl::HKF_HPT_Treap, impl::HKT_HPF_Treap,
           impl::HKT_HPT_Treap, impl::HKF_HPF_WAVL, impl::HKF_HPT_WAVL,
-          impl::HKT_HPF_WAVL, impl::HKT_HPT_WAVL>(100000);
+          impl::HKT_HPT_WAVL>(100000);
     }
 
     case TestType::kExpensiveData: {
@@ -106,12 +108,13 @@ bool test(TestType test_type) {
 
       return run_each<
           false, Scenarios, impl::HKF_HPF_AVL, impl::HKF_HPT_AVL,
-          impl::HKT_HPF_AVL, impl::HKT_HPT_AVL, impl::HKF_HPF_Scapegoat,
+          impl::HKT_HPF_AVL, impl::HKT_HPT_AVL, impl::HKF_HPT_RedBlack,
+          impl::HKT_HPT_RedBlack, impl::HKF_HPF_Scapegoat,
           impl::HKF_HPT_Scapegoat, impl::HKT_HPF_Scapegoat,
           impl::HKT_HPT_Scapegoat, impl::HKF_HPT_Splay, impl::HKT_HPT_Splay,
           impl::HKF_HPF_Treap, impl::HKF_HPT_Treap, impl::HKT_HPF_Treap,
           impl::HKT_HPT_Treap, impl::HKF_HPF_WAVL, impl::HKF_HPT_WAVL,
-          impl::HKT_HPF_WAVL, impl::HKT_HPT_WAVL>(100000);
+          impl::HKT_HPT_WAVL>(100000);
     }
 
     default:

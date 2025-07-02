@@ -1,6 +1,7 @@
 #pragma once
 
 #include "common/binary_search_tree/avl_tree.h"
+#include "common/binary_search_tree/red_black_tree.h"
 #include "common/binary_search_tree/scapegoat_tree.h"
 #include "common/binary_search_tree/splay_tree.h"
 #include "common/binary_search_tree/static_tree.h"
@@ -57,6 +58,25 @@ class HKT_HPT_AVL
                                  DeferredTuple, Key>> {
  public:
   static constexpr std::string_view id() { return "hpt_avl"; }
+};
+
+// RedBlack Tree implementation (only has_parent = true version)
+template <typename Data, typename Key, typename AggregatorsTuple,
+          typename DeferredTuple>
+class HKF_HPT_RedBlack
+    : public Base<::bst::RedBlackTree<false, true, Data, AggregatorsTuple,
+                                      DeferredTuple, Key>> {
+ public:
+  static constexpr std::string_view id() { return "hpt_redblack"; }
+};
+
+template <typename Data, typename Key, typename AggregatorsTuple,
+          typename DeferredTuple>
+class HKT_HPT_RedBlack
+    : public Base<::bst::RedBlackTree<true, true, Data, AggregatorsTuple,
+                                      DeferredTuple, Key>> {
+ public:
+  static constexpr std::string_view id() { return "hpt_redblack"; }
 };
 
 // Scapegoat Tree implementation

@@ -10,6 +10,7 @@
 #include "common/binary_search_tree/base/remove_right.h"
 #include "common/binary_search_tree/base/root.h"
 #include "common/binary_search_tree/base/rotate.h"
+#include "common/binary_search_tree/base/self_balancing_tree.h"
 #include "common/binary_search_tree/base/sibling.h"
 #include "common/binary_search_tree/base/subtree_data.h"
 #include "common/binary_search_tree/subtree_data/rbt_color.h"
@@ -96,16 +97,7 @@ class RedBlackTree
     return root;
   }
 
-  template <bool update_required>
-  static NodeType* insert_impl(NodeType* root, NodeType* node) {
-    assert(node);
-    if constexpr (update_required) node->update_subtree_data();
-    if (!root) {
-      set_color(node, true);
-      return node;
-    }
-    base::InsertByKey<NodeType>(root, node);
-    set_color(node, false);
+  static NodeType* insert_impl_base(NodeType* root, NodeType* node) {
     for (;;) {
       NodeType* parent = node->parent;
       if (!parent) {
@@ -134,6 +126,57 @@ class RedBlackTree
     }
     assert(false);
     return nullptr;
+  }
+
+  template <bool update_required>
+  static NodeType* insert_impl(NodeType* root, NodeType* node) {
+    assert(node);
+    if constexpr (update_required) node->update_subtree_data();
+    if (!root) {
+      set_black(node);
+      return node;
+    }
+    base::InsertByKey<NodeType>(root, node);
+    set_red(node);
+    return insert_impl_base(root, node);
+  }
+
+  template <bool update_required>
+  static NodeType* insert_at_impl(NodeType* root, NodeType* node,
+                                  size_t index) {
+    assert(node);
+    if constexpr (update_required) node->update_subtree_data();
+    if (!root) {
+      assert(index == 0);
+      set_black(node);
+      return node;
+    }
+    const auto old_root = root;
+    root->apply_deferred();
+    for (;;) {
+      const size_t lsize = bst::subtree_data::size(root->left);
+      if (index <= lsize) {
+        if (!root->left) {
+          assert(index == 0);
+          root->set_left(node);
+          break;
+        }
+        root = root->left;
+      } else {
+        if (!root->right) {
+          assert(index == lsize + 1);
+          root->set_right(node);
+          break;
+        }
+        root = root->right;
+        index -= lsize + 1;
+      }
+      root->apply_deferred();
+    }
+    assert(root);
+    set_red(node);
+    subtree_data::propagate_to_root(root);
+    return insert_impl_base(old_root, node);
   }
 
  protected:
