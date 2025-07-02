@@ -4,6 +4,7 @@
 #include "common/binary_search_tree/auto/find.h"
 #include "common/binary_search_tree/avl_tree.h"
 #include "common/binary_search_tree/deferred/add_each_key.h"
+#include "common/binary_search_tree/red_black_tree.h"
 #include "common/binary_search_tree/red_black_tree_old.h"
 #include "common/binary_search_tree/scapegoat_tree.h"
 #include "common/binary_search_tree/splay_tree.h"
@@ -78,8 +79,11 @@ bool TesterBinarySearchTreeSplitJoin::TestAll(bool small_test) const {
             bst::AVLTree<true, true, MetaEmpty, TAggregators, TDeferred, TKey>>(
       "AVL   UPT"));
   hs.insert(
-      TestBase<bst::RedBlackTreeOld<MetaEmpty, TAggregators, TDeferred, TKey>>(
+      TestBase<bst::RedBlackTree<MetaEmpty, TAggregators, TDeferred, TKey>>(
           "RBTree   "));
+  hs.insert(
+      TestBase<bst::RedBlackTreeOld<MetaEmpty, TAggregators, TDeferred, TKey>>(
+          "RBTreeOld"));
   hs.insert(
       TestBase<bst::SplayTree<true, MetaEmpty, TAggregators, TDeferred, TKey>>(
           "Splay    "));

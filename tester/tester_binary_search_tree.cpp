@@ -2,6 +2,7 @@
 
 #include "common/binary_search_tree/avl_tree.h"
 #include "common/binary_search_tree/deferred/add_each.h"
+#include "common/binary_search_tree/red_black_tree.h"
 #include "common/binary_search_tree/red_black_tree_old.h"
 #include "common/binary_search_tree/scapegoat_tree.h"
 #include "common/binary_search_tree/splay_tree.h"
@@ -120,8 +121,10 @@ bool TesterBinarySearchTree::TestAllTrees() {
                           TKey>>("static_upf");
   TestAll<bst::StaticTree<true, true, TKey, TAggregatorsTuple1, std::tuple<>,
                           TKey>>("static_upt");
-  TestAll<bst::RedBlackTreeOld<TKey, TAggregatorsTuple1, std::tuple<>, TKey>>(
+  TestAll<bst::RedBlackTree<TKey, TAggregatorsTuple1, std::tuple<>, TKey>>(
       "rbtree");
+  TestAll<bst::RedBlackTreeOld<TKey, TAggregatorsTuple1, std::tuple<>, TKey>>(
+      "rbtree_old");
   TestAll<bst::ScapegoatTree<true, false, TKey, TAggregatorsTuple1,
                              std::tuple<>, TKey>>("scape_upf");
   TestAll<bst::ScapegoatTree<true, true, TKey, TAggregatorsTuple1, std::tuple<>,
@@ -152,9 +155,11 @@ bool TesterBinarySearchTree::TestAllTrees() {
                        TKey>>("avltree_upf");
   TestAll<bst::AVLTree<true, true, TKey, TAggregatorsTuple2, TDeferredTuple2,
                        TKey>>("avltree_upt");
+  TestAll<bst::RedBlackTree<TKey, TAggregatorsTuple2, TDeferredTuple2, TKey>>(
+      "rbtree");
   TestAll<
       bst::RedBlackTreeOld<TKey, TAggregatorsTuple2, TDeferredTuple2, TKey>>(
-      "rbtree");
+      "rbtree_old");
   TestAll<bst::ScapegoatTree<true, false, TKey, TAggregatorsTuple2,
                              TDeferredTuple2, TKey>>("scape_upf");
   TestAll<bst::ScapegoatTree<true, true, TKey, TAggregatorsTuple2,
