@@ -51,18 +51,22 @@ class RedBlackTree
   friend SBTree;
 
  protected:
-  static constexpr bool IsBlack(const NodeType* node) {
+  [[nodiscard]] static constexpr bool is_black(const NodeType* node) {
     return !node || subtree_data::RBTColor::get(node);
   }
 
-  static constexpr bool IsRed(const NodeType* node) {
-    return node && !subtree_data::RBTColor::get(node);
+  [[nodiscard]] static constexpr bool is_red(const NodeType* node) {
+    return !is_black(node);
   }
 
-  static constexpr void SetColor(NodeType* node, bool is_black) {
+  static constexpr void set_color(NodeType* node, bool black) {
     assert(node);
-    subtree_data::RBTColor::set(node, is_black);
+    subtree_data::RBTColor::set(node, black);
   }
+
+  static constexpr void set_black(NodeType* node) { set_color(node, true); }
+
+  static constexpr void set_red(NodeType* node) { set_color(node, false); }
 
  public:
   explicit RedBlackTree(size_t max_nodes) : SBTree(max_nodes) {}
@@ -72,11 +76,11 @@ class RedBlackTree
     assert(root || !height);
     if (!root) return;
     if (height) {
-      SetColor(root, true);
+      set_color(root, true);
       BuildTreeIFixColorsR(root->left, height - 1);
       BuildTreeIFixColorsR(root->right, height - 1);
     } else {
-      SetColor(root, false);
+      set_color(root, false);
       assert(!root->left && !root->right);
     }
   }
@@ -88,7 +92,7 @@ class RedBlackTree
     for (; nodes.size() >= (1ull << h);) ++h;
     NodeType* root = Base::template build_tree_impl<update_leafs>(nodes);
     BuildTreeIFixColorsR(root, h - 1);
-    SetColor(root, true);
+    set_color(root, true);
     return root;
   }
 
@@ -97,21 +101,21 @@ class RedBlackTree
     assert(node);
     if constexpr (update_required) node->update_subtree_data();
     if (!root) {
-      SetColor(node, true);
+      set_color(node, true);
       return node;
     }
     base::InsertByKey<NodeType>(root, node);
-    SetColor(node, false);
+    set_color(node, false);
     for (;;) {
       NodeType* parent = node->parent;
       if (!parent) {
-        SetColor(node, true);
+        set_color(node, true);
         return node;
       }
-      if (IsBlack(parent)) return root;
+      if (is_black(parent)) return root;
       NodeType* gparent = parent->parent;
       NodeType* uncle = base::sibling(parent, gparent);
-      if (IsBlack(uncle)) {
+      if (is_black(uncle)) {
         const bool rotate_required =
             ((gparent->left == parent) != (parent->left == node));
         if (rotate_required) {
@@ -119,13 +123,13 @@ class RedBlackTree
           parent = node;
         }
         base::rotate_up<true, false>(parent);
-        SetColor(gparent, false);
-        SetColor(parent, true);
+        set_color(gparent, false);
+        set_color(parent, true);
         return parent->parent ? root : parent;
       }
-      SetColor(parent, true);
-      SetColor(uncle, true);
-      SetColor(gparent, false);
+      set_color(parent, true);
+      set_color(uncle, true);
+      set_color(gparent, false);
       node = gparent;
     }
     assert(false);
@@ -150,7 +154,7 @@ class RedBlackTree
   template <bool reset_links>
   static NodeType* remove_node_impl(NodeType* node) {
     base::RemovePushDown<NodeType, false>(node);
-    const bool black = IsBlack(node);
+    const bool black = is_black(node);
 
     // Drop node from tree
     NodeType* child = node->left ? node->left : node->right;
@@ -168,55 +172,55 @@ class RedBlackTree
     // Fix colors
     if (!black) return (parent ? base::root(parent) : child);
     for (;;) {
-      if (IsRed(child)) {
-        SetColor(child, true);
+      if (is_red(child)) {
+        set_color(child, true);
         return base::root(child);
       }
       if (!parent) return child;
       NodeType* sibling = base::sibling(child, parent);
       assert(sibling);
       sibling->apply_deferred();
-      if (!IsBlack(sibling)) {
-        assert(IsBlack(parent));
+      if (!is_black(sibling)) {
+        assert(is_black(parent));
         base::rotate_up<true, false>(sibling);
-        SetColor(sibling, true);
-        SetColor(parent, false);
+        set_color(sibling, true);
+        set_color(parent, false);
         sibling = base::sibling(child, parent);
         sibling->apply_deferred();
       }
-      assert(sibling && IsBlack(sibling));
-      if (IsBlack(parent) && IsBlack(sibling->left) &&
-          IsBlack(sibling->right)) {
-        SetColor(sibling, false);
+      assert(sibling && is_black(sibling));
+      if (is_black(parent) && is_black(sibling->left) &&
+          is_black(sibling->right)) {
+        set_color(sibling, false);
         child = parent;
         parent = child->parent;
         continue;
       }
-      if (!IsBlack(parent) && IsBlack(sibling->left) &&
-          IsBlack(sibling->right)) {
-        SetColor(sibling, false);
-        SetColor(parent, true);
+      if (!is_black(parent) && is_black(sibling->left) &&
+          is_black(sibling->right)) {
+        set_color(sibling, false);
+        set_color(parent, true);
         return base::root(parent);
       }
-      if ((parent->left == child) && IsBlack(sibling->right)) {
-        assert(IsRed(sibling->left));
+      if ((parent->left == child) && is_black(sibling->right)) {
+        assert(is_red(sibling->left));
         base::rotate_up<false, true>(sibling->left);
-        SetColor(sibling, false);
+        set_color(sibling, false);
         sibling = sibling->parent;
-        SetColor(sibling, true);
-      } else if ((parent->right == child) && IsBlack(sibling->left)) {
-        assert(IsRed(sibling->right));
+        set_color(sibling, true);
+      } else if ((parent->right == child) && is_black(sibling->left)) {
+        assert(is_red(sibling->right));
         base::rotate_up<false, true>(sibling->right);
-        SetColor(sibling, false);
+        set_color(sibling, false);
         sibling = sibling->parent;
-        SetColor(sibling, true);
+        set_color(sibling, true);
       }
-      SetColor(sibling, IsBlack(parent));
-      SetColor(parent, true);
+      set_color(sibling, is_black(parent));
+      set_color(parent, true);
       if (parent->left == child) {
-        SetColor(sibling->right, true);
+        set_color(sibling->right, true);
       } else {
-        SetColor(sibling->left, true);
+        set_color(sibling->left, true);
       }
       base::rotate_up<true, false>(sibling);
       return base::root(sibling);
@@ -248,7 +252,7 @@ class RedBlackTree
     int h = 0;
     for (; root; root = root->left) {
       root->apply_deferred();
-      if (IsBlack(root)) ++h;
+      if (is_black(root)) ++h;
     }
     return h;
   }
@@ -257,7 +261,7 @@ class RedBlackTree
                                                            NodeType* m1,
                                                            NodeType* r) {
     SBTree::join3_base_impl(l, m1, r);
-    SetColor(m1, false);
+    set_red(m1);
     return m1;
   }
 
@@ -265,12 +269,12 @@ class RedBlackTree
                                                            NodeType* m1,
                                                            NodeType* r,
                                                            int hd) {
-    if (IsBlack(l) && (hd == 0)) return join3_base_impl(l, m1, r);
+    if (is_black(l) && (hd == 0)) return join3_base_impl(l, m1, r);
     l->apply_deferred();
-    l->set_right(join3_left_impl(l->right, m1, r, hd - (IsBlack(l) ? 1 : 0)));
+    l->set_right(join3_left_impl(l->right, m1, r, hd - (is_black(l) ? 1 : 0)));
     r = l->right;
-    if (IsBlack(l) && !IsBlack(r) && IsRed(r->right)) {
-      SetColor(r->right, true);
+    if (is_black(l) && !is_black(r) && is_red(r->right)) {
+      set_black(r->right);
       base::rotate<true, false, NodeType>(r, l, l->parent);
       return r;
     } else {
@@ -283,12 +287,12 @@ class RedBlackTree
                                                             NodeType* m1,
                                                             NodeType* r,
                                                             int hd) {
-    if (IsBlack(r) && (hd == 0)) return join3_base_impl(l, m1, r);
+    if (is_black(r) && (hd == 0)) return join3_base_impl(l, m1, r);
     r->apply_deferred();
-    r->set_left(join3_right_impl(l, m1, r->left, hd - (IsBlack(r) ? 1 : 0)));
+    r->set_left(join3_right_impl(l, m1, r->left, hd - (is_black(r) ? 1 : 0)));
     l = r->left;
-    if (IsBlack(r) && !IsBlack(l) && IsRed(l->left)) {
-      SetColor(l->left, true);
+    if (is_black(r) && !is_black(l) && is_red(l->left)) {
+      set_black(l->left);
       base::rotate<true, false, NodeType>(l, r, r->parent);
       return l;
     } else {
@@ -304,7 +308,7 @@ class RedBlackTree
     auto root = (hd > 0)   ? join3_left_impl(l, m1, r, hd)
                 : (hd < 0) ? join3_right_impl(l, m1, r, -hd)
                            : join3_base_impl(l, m1, r);
-    SetColor(root, true);
+    set_black(root);
     return root;
   }
 };
