@@ -308,17 +308,16 @@ class RedBlackTree
     return m1;
   }
 
-  [[nodiscard]] static constexpr NodeType* join3_left_impl(NodeType* l,
-                                                           NodeType* m1,
-                                                           NodeType* r,
-                                                           int hd) {
+  [[nodiscard]] static constexpr NodeType* join3_left_impl(
+      NodeType* l, NodeType* m1, NodeType* r, NodeType* lp, int hd) {
     if (is_black(l) && (hd == 0)) return join3_base_impl(l, m1, r);
     l->apply_deferred();
-    l->set_right(join3_left_impl(l->right, m1, r, hd - (is_black(l) ? 1 : 0)));
+    l->set_right(
+        join3_left_impl(l->right, m1, r, l, hd - (is_black(l) ? 1 : 0)));
     r = l->right;
     if (is_black(l) && is_red(r) && is_red(r->right)) {
       set_black(r->right);
-      base::rotate<true, false, NodeType>(r, l, l->parent);
+      base::rotate<true, false, NodeType>(r, l, lp);
       return r;
     } else {
       l->update_subtree_data();
@@ -326,17 +325,16 @@ class RedBlackTree
     }
   }
 
-  [[nodiscard]] static constexpr NodeType* join3_right_impl(NodeType* l,
-                                                            NodeType* m1,
-                                                            NodeType* r,
-                                                            int hd) {
+  [[nodiscard]] static constexpr NodeType* join3_right_impl(
+      NodeType* l, NodeType* m1, NodeType* r, NodeType* rp, int hd) {
     if (is_black(r) && (hd == 0)) return join3_base_impl(l, m1, r);
     r->apply_deferred();
-    r->set_left(join3_right_impl(l, m1, r->left, hd - (is_black(r) ? 1 : 0)));
+    r->set_left(
+        join3_right_impl(l, m1, r->left, r, hd - (is_black(r) ? 1 : 0)));
     l = r->left;
     if (is_black(r) && is_red(l) && is_red(l->left)) {
       set_black(l->left);
-      base::rotate<true, false, NodeType>(l, r, r->parent);
+      base::rotate<true, false, NodeType>(l, r, rp);
       return l;
     } else {
       r->update_subtree_data();
@@ -348,8 +346,8 @@ class RedBlackTree
   [[nodiscard]] static constexpr NodeType* join3_impl(NodeType* l, NodeType* m1,
                                                       NodeType* r) {
     const auto hl = black_height(l), hr = black_height(r), hd = hl - hr;
-    auto root = (hd > 0)   ? join3_left_impl(l, m1, r, hd)
-                : (hd < 0) ? join3_right_impl(l, m1, r, -hd)
+    auto root = (hd > 0)   ? join3_left_impl(l, m1, r, nullptr, hd)
+                : (hd < 0) ? join3_right_impl(l, m1, r, nullptr, -hd)
                            : join3_base_impl(l, m1, r);
     set_black(root);
     return root;
