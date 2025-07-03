@@ -5,7 +5,6 @@
 #include "common/binary_search_tree/base/base_tree.h"
 #include "common/binary_search_tree/base/deferred.h"
 #include "common/binary_search_tree/base/find.h"
-#include "common/binary_search_tree/base/insert_by_key.h"
 #include "common/binary_search_tree/base/node.h"
 #include "common/binary_search_tree/base/remove_push_down.h"
 #include "common/binary_search_tree/base/remove_right.h"
@@ -15,6 +14,7 @@
 #include "common/binary_search_tree/base/subtree_data.h"
 #include "common/binary_search_tree/subtree_data/rbt_color.h"
 #include "common/binary_search_tree/subtree_data/size.h"
+#include "common/binary_search_tree/subtree_data/utils/propagate_and_find_root.h"
 #include "common/binary_search_tree/subtree_data/utils/propagate_to_root.h"
 #include "common/memory/contiguous_nodes_manager.h"
 #include "common/templates/tuple.h"
@@ -112,63 +112,82 @@ class RedBlackTree
     return root;
   }
 
-  static NodeType* insert_impl_base(NodeType* root, NodeType* node) {
-    for (;;) {
-      NodeType* parent = node->parent;
-      if (!parent) {
-        set_color(node, true);
-        return node;
-      }
-      if (is_black(parent)) return root;
-      NodeType* gparent = parent->parent;
-      NodeType* uncle = base::sibling(parent, gparent);
+  [[nodiscard]] static constexpr NodeType* insert_impl_internal_hpt(
+      NodeType* node, bool update_required) {
+    static_assert(has_parent, "has_parent should be true");
+    while (NodeType* parent = node->parent) {
+      if (is_black(parent))
+        return subtree_data::propagate_and_find_root(update_required ? node
+                                                                     : parent);
+      NodeType* grandparent = parent->parent;
+      NodeType* uncle = base::sibling(parent, grandparent);
       if (is_black(uncle)) {
         const bool rotate_required =
-            ((gparent->left == parent) != (parent->left == node));
+            ((grandparent->left == parent) != (parent->left == node));
         if (rotate_required) {
-          base::rotate_up<false, false>(node);
+          base::rotate<false, false>(node, parent, grandparent);
           parent = node;
+        } else if (update_required) {
+          node->update_subtree_data();
         }
-        base::rotate_up<true, false>(parent);
-        set_color(gparent, false);
+        base::rotate<true, false>(parent, grandparent, grandparent->parent);
+        set_color(grandparent, false);
         set_color(parent, true);
-        return parent->parent ? root : parent;
+        return parent->parent
+                   ? subtree_data::propagate_and_find_root(parent->parent)
+                   : parent;
       }
+      if (update_required) node->update_subtree_data();
       set_color(parent, true);
       set_color(uncle, true);
-      set_color(gparent, false);
-      node = gparent;
+      set_color(grandparent, false);
+      parent->update_subtree_data();
+      update_required = true;
+      node = grandparent;
     }
-    assert(false);
-    return nullptr;
+    set_color(node, true);
+    if (update_required) node->update_subtree_data();
+    return node;
   }
 
   template <bool update_required>
   static NodeType* insert_impl(NodeType* root, NodeType* node) {
-    assert(node);
-    if constexpr (update_required) node->update_subtree_data();
     if (!root) {
       set_black(node);
+      if constexpr (update_required) node->update_subtree_data();
       return node;
     }
-    base::InsertByKey<NodeType>(root, node);
+    while (true) {
+      root->apply_deferred();
+      if (root->key < node->key) {
+        if (!root->right) {
+          root->set_right(node);
+          break;
+        }
+        root = root->right;
+      } else {
+        if (!root->left) {
+          root->set_left(node);
+          break;
+        }
+        root = root->left;
+      }
+    }
     set_red(node);
-    return insert_impl_base(root, node);
+    return insert_impl_internal_hpt(node, update_required);
   }
 
   template <bool update_required>
   static NodeType* insert_at_impl(NodeType* root, NodeType* node,
                                   size_t index) {
-    assert(node);
-    if constexpr (update_required) node->update_subtree_data();
     if (!root) {
       assert(index == 0);
       set_black(node);
+      if constexpr (update_required) node->update_subtree_data();
       return node;
     }
-    const auto old_root = root;
-    root->apply_deferred();
-    for (;;) {
+    while (true) {
+      root->apply_deferred();
       const size_t lsize = bst::subtree_data::size(root->left);
       if (index <= lsize) {
         if (!root->left) {
@@ -186,12 +205,9 @@ class RedBlackTree
         root = root->right;
         index -= lsize + 1;
       }
-      root->apply_deferred();
     }
-    assert(root);
     set_red(node);
-    subtree_data::propagate_to_root(root);
-    return insert_impl_base(old_root, node);
+    return insert_impl_internal_hpt(node, update_required);
   }
 
  protected:
