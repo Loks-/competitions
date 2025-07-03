@@ -19,7 +19,9 @@
 #include "common/memory/contiguous_nodes_manager.h"
 #include "common/templates/tuple.h"
 
+#include <algorithm>
 #include <tuple>
+#include <utility>
 #include <vector>
 
 namespace bst {
@@ -300,10 +302,10 @@ class RedBlackTree
   [[nodiscard]] static constexpr NodeType* join3_left_impl(NodeType* l,
                                                            NodeType* m1,
                                                            NodeType* r,
-                                                           int hd) {
-    if (is_black(l) && (hd == 0)) return join3_base_impl(l, m1, r);
+                                                           int bhd) {
+    if (is_black(l) && (bhd == 0)) return join3_base_impl(l, m1, r);
     l->apply_deferred();
-    l->set_right(join3_left_impl(l->right, m1, r, hd - (is_black(l) ? 1 : 0)));
+    l->set_right(join3_left_impl(l->right, m1, r, bhd - (is_black(l) ? 1 : 0)));
     r = l->right;
     if (is_black(l) && is_red(r) && is_red(r->right)) {
       // Rotate left
@@ -322,10 +324,10 @@ class RedBlackTree
   [[nodiscard]] static constexpr NodeType* join3_right_impl(NodeType* l,
                                                             NodeType* m1,
                                                             NodeType* r,
-                                                            int hd) {
-    if (is_black(r) && (hd == 0)) return join3_base_impl(l, m1, r);
+                                                            int bhd) {
+    if (is_black(r) && (bhd == 0)) return join3_base_impl(l, m1, r);
     r->apply_deferred();
-    r->set_left(join3_right_impl(l, m1, r->left, hd - (is_black(r) ? 1 : 0)));
+    r->set_left(join3_right_impl(l, m1, r->left, bhd - (is_black(r) ? 1 : 0)));
     l = r->left;
     if (is_black(r) && is_red(l) && is_red(l->left)) {
       // Rotate right
@@ -341,16 +343,128 @@ class RedBlackTree
     }
   }
 
- public:
+  [[nodiscard]] static constexpr NodeType* join3_impl_bhd(NodeType* l,
+                                                          NodeType* m1,
+                                                          NodeType* r,
+                                                          int bhd) {
+    return (bhd > 0)   ? join3_left_impl(l, m1, r, bhd)
+           : (bhd < 0) ? join3_right_impl(l, m1, r, -bhd)
+                       : join3_base_impl(l, m1, r);
+  }
+
   [[nodiscard]] static constexpr NodeType* join3_impl(NodeType* l, NodeType* m1,
                                                       NodeType* r) {
-    const auto hl = black_height(l), hr = black_height(r), hd = hl - hr;
-    auto root = (hd > 0)   ? join3_left_impl(l, m1, r, hd)
-                : (hd < 0) ? join3_right_impl(l, m1, r, -hd)
-                           : join3_base_impl(l, m1, r);
+    auto root = join3_impl_bhd(l, m1, r, black_height(l) - black_height(r));
     set_black(root);
     root->set_parent(nullptr);
     return root;
+  }
+
+  [[nodiscard]] static constexpr std::pair<NodeType*, int> join3_impl_internal(
+      NodeType* l, NodeType* m1, NodeType* r, int bhl, int bhr) {
+    auto root = join3_impl_bhd(l, m1, r, bhl - bhr);
+    auto bh = std::max(bhl, bhr);
+    if (is_red(root)) {
+      set_black(root);
+      ++bh;
+    }
+    return {root, bh};
+  }
+
+  /**
+   * @brief Implementation of split operation by key.
+   *
+   * This function splits the tree at a given key while maintaining balance:
+   * - Recursively splits the tree based on key comparison
+   * - Maintains parent links and subtree data
+   * - Ensures both parts remain balanced
+   *
+   * @param root The root of the tree to split
+   * @param key The key to split at
+   * @param output_l Reference to store the left part (keys < key)
+   * @param output_r Reference to store the right part (keys >= key)
+   */
+  static constexpr void split_impl(NodeType* root, const Key& key,
+                                   NodeType*& output_l, NodeType*& output_r) {
+    output_l = nullptr;
+    output_r = nullptr;
+    int bhl = 0, bhr = 0;
+    split_impl_internal(root, black_height(root), key, output_l, bhl, output_r,
+                        bhr);
+    if (output_l) output_l->set_parent(nullptr);
+    if (output_r) output_r->set_parent(nullptr);
+  }
+
+  /**
+   * @brief Implementation of split operation by index.
+   *
+   * This function splits the tree at a given inorder index while maintaining
+   * balance:
+   * - Recursively splits the tree based on subtree sizes
+   * - Maintains parent links and subtree data
+   * - Ensures both parts remain balanced
+   *
+   * @param root The root of the tree to split
+   * @param lsize The size of the left part
+   * @param output_l Reference to store the left part
+   * @param output_r Reference to store the right part
+   */
+  static constexpr void split_at_impl(NodeType* root, size_t lsize,
+                                      NodeType*& output_l,
+                                      NodeType*& output_r) {
+    int bhl = 0, bhr = 0;
+    split_at_impl_internal(root, black_height(root), lsize, output_l, bhl,
+                           output_r, bhr);
+    if (output_l) output_l->set_parent(nullptr);
+    if (output_r) output_r->set_parent(nullptr);
+  }
+
+  static constexpr void split_impl_internal(NodeType* root, int bh,
+                                            const Key& key, NodeType*& output_l,
+                                            int& bhl, NodeType*& output_r,
+                                            int& bhr) {
+    root->apply_deferred();
+    NodeType *l = root->left, *r = root->right, *m = nullptr;
+    root->set_left(nullptr);
+    root->set_right(nullptr);
+    if (is_black(root)) --bh;
+    int bhm = 0;
+    if (root->key < key) {
+      if (r) split_impl_internal(r, bh, key, m, bhm, output_r, bhr);
+      std::tie(output_l, bhl) = join3_impl_internal(l, root, m, bh, bhm);
+    } else {
+      if (l) split_impl_internal(l, bh, key, output_l, bhl, m, bhm);
+      std::tie(output_r, bhr) = join3_impl_internal(m, root, r, bhm, bh);
+    }
+  }
+
+  static constexpr void split_at_impl_internal(NodeType* root, int bh,
+                                               size_t lsize,
+                                               NodeType*& output_l, int& bhl,
+                                               NodeType*& output_r, int& bhr) {
+    root->apply_deferred();
+    NodeType *l = root->left, *r = root->right, *m = nullptr;
+    root->set_left(nullptr);
+    root->set_right(nullptr);
+    if (is_black(root)) --bh;
+    int bhm = 0;
+    const size_t left_size = bst::subtree_data::size(l);
+    if (lsize < left_size) {
+      split_at_impl_internal(l, bh, lsize, output_l, bhl, m, bhm);
+      std::tie(output_r, bhr) = join3_impl_internal(m, root, r, bhm, bh);
+    } else if (lsize == left_size) {
+      output_l = l;
+      bhl = bh;
+      std::tie(output_r, bhr) = join3_impl_internal(nullptr, root, r, 0, bh);
+    } else if (lsize == left_size + 1) {
+      std::tie(output_l, bhl) = join3_impl_internal(l, root, nullptr, bh, 0);
+      output_r = r;
+      bhr = bh;
+    } else {
+      split_at_impl_internal(r, bh, lsize - left_size - 1, m, bhm, output_r,
+                             bhr);
+      std::tie(output_l, bhl) = join3_impl_internal(l, root, m, bhl, bhm);
+    }
   }
 };
 }  // namespace bst
