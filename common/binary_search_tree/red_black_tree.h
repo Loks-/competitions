@@ -2,6 +2,7 @@
 
 #include "common/base.h"
 #include "common/binary_search_tree/base/at.h"
+#include "common/binary_search_tree/base/base_tree.h"
 #include "common/binary_search_tree/base/deferred.h"
 #include "common/binary_search_tree/base/find.h"
 #include "common/binary_search_tree/base/insert_by_key.h"
@@ -10,7 +11,6 @@
 #include "common/binary_search_tree/base/remove_right.h"
 #include "common/binary_search_tree/base/root.h"
 #include "common/binary_search_tree/base/rotate.h"
-#include "common/binary_search_tree/base/self_balancing_tree.h"
 #include "common/binary_search_tree/base/sibling.h"
 #include "common/binary_search_tree/base/subtree_data.h"
 #include "common/binary_search_tree/subtree_data/rbt_color.h"
@@ -30,7 +30,7 @@ template <bool has_key, bool has_parent, typename Data,
           typename AggregatorsTuple = std::tuple<subtree_data::Size>,
           typename DeferredTuple = std::tuple<>, typename Key = int64_t>
 class RedBlackTree
-    : public base::SelfBalancingTree<
+    : public base::BaseTree<
           memory::ContiguousNodesManager<base::Node<
               Data,
               base::SubtreeData<templates::PrependT<subtree_data::RBTColor,
@@ -46,12 +46,18 @@ class RedBlackTree
       base::Node<Data, SubtreeDataType, DeferredType, has_parent, has_key, Key>;
   using Self = RedBlackTree<has_key, has_parent, Data, AggregatorsTuple,
                             DeferredTuple, Key>;
-  using SBTree =
-      base::SelfBalancingTree<memory::ContiguousNodesManager<NodeType>, Self>;
-  using Base = typename SBTree::Base;
+  using Base = base::BaseTree<memory::ContiguousNodesManager<NodeType>, Self>;
 
   friend Base;
-  friend SBTree;
+
+ public:
+  explicit RedBlackTree(size_t max_nodes) : Base(max_nodes) {}
+
+  [[nodiscard]] static constexpr NodeType* remove_right(
+      NodeType* root, NodeType*& removed_node) {
+    assert(root);
+    return remove_right_impl<true>(root, removed_node);
+  }
 
  protected:
   [[nodiscard]] static constexpr bool is_black(const NodeType* node) {
@@ -60,6 +66,15 @@ class RedBlackTree
 
   [[nodiscard]] static constexpr bool is_red(const NodeType* node) {
     return !is_black(node);
+  }
+
+  [[nodiscard]] static constexpr int black_height(NodeType* root) {
+    int h = 0;
+    for (; root; root = root->left) {
+      root->apply_deferred();
+      if (is_black(root)) ++h;
+    }
+    return h;
   }
 
   static constexpr void set_color(NodeType* node, bool black) {
@@ -71,10 +86,6 @@ class RedBlackTree
 
   static constexpr void set_red(NodeType* node) { set_color(node, false); }
 
- public:
-  explicit RedBlackTree(size_t max_nodes) : SBTree(max_nodes) {}
-
- protected:
   static constexpr void build_tree_impl_fix_colors(NodeType* root,
                                                    size_t height) {
     assert(root || !height);
@@ -284,19 +295,47 @@ class RedBlackTree
     return remove_node_impl<reset_links>(removed_node);
   }
 
-  [[nodiscard]] static constexpr int black_height(NodeType* root) {
-    int h = 0;
-    for (; root; root = root->left) {
-      root->apply_deferred();
-      if (is_black(root)) ++h;
-    }
-    return h;
+  /**
+   * @brief Implementation of two-way join operation.
+   *
+   * This function joins two trees while maintaining balance:
+   * - Removes the rightmost node from the left tree
+   * - Uses that node to join the trees in a balanced way
+   * Code is similar to SelfBalancingTree::join_impl
+   *
+   * @param l The root of the left tree
+   * @param r The root of the right tree
+   * @return Pointer to the new root of the joined tree
+   */
+  [[nodiscard]] static constexpr NodeType* join_impl(NodeType* l, NodeType* r) {
+    if (!l) return r;
+    if (!r) return l;
+    NodeType* node = nullptr;
+    l = remove_right_impl<true>(l, node);
+    assert(node);
+    return join3_impl(l, node, r);
   }
 
+  /**
+   * @brief Base implementation of three-way join operation.
+   *
+   * This function joins three trees in a balanced way:
+   * - The middle node becomes the root
+   * - Left and right trees become its children
+   * - Updates parent links and subtree data
+   * - Sets the middle node to red
+   *
+   * @param l The root of the left tree
+   * @param m1 The middle node
+   * @param r The root of the right tree
+   * @return Pointer to the new root of the joined tree (m1)
+   */
   [[nodiscard]] static constexpr NodeType* join3_base_impl(NodeType* l,
                                                            NodeType* m1,
                                                            NodeType* r) {
-    SBTree::join3_base_impl(l, m1, r);
+    m1->set_left(l);
+    m1->set_right(r);
+    m1->update_subtree_data();
     set_red(m1);
     return m1;
   }
@@ -397,6 +436,25 @@ class RedBlackTree
     if (output_r) output_r->set_parent(nullptr);
   }
 
+  static constexpr void split_impl_internal(NodeType* root, int bh,
+                                            const Key& key, NodeType*& output_l,
+                                            int& bhl, NodeType*& output_r,
+                                            int& bhr) {
+    root->apply_deferred();
+    NodeType *l = root->left, *r = root->right, *m = nullptr;
+    root->set_left(nullptr);
+    root->set_right(nullptr);
+    if (is_black(root)) --bh;
+    int bhm = 0;
+    if (root->key < key) {
+      if (r) split_impl_internal(r, bh, key, m, bhm, output_r, bhr);
+      std::tie(output_l, bhl) = join3_impl_internal(l, root, m, bh, bhm);
+    } else {
+      if (l) split_impl_internal(l, bh, key, output_l, bhl, m, bhm);
+      std::tie(output_r, bhr) = join3_impl_internal(m, root, r, bhm, bh);
+    }
+  }
+
   /**
    * @brief Implementation of split operation by index.
    *
@@ -419,25 +477,6 @@ class RedBlackTree
                            output_r, bhr);
     if (output_l) output_l->set_parent(nullptr);
     if (output_r) output_r->set_parent(nullptr);
-  }
-
-  static constexpr void split_impl_internal(NodeType* root, int bh,
-                                            const Key& key, NodeType*& output_l,
-                                            int& bhl, NodeType*& output_r,
-                                            int& bhr) {
-    root->apply_deferred();
-    NodeType *l = root->left, *r = root->right, *m = nullptr;
-    root->set_left(nullptr);
-    root->set_right(nullptr);
-    if (is_black(root)) --bh;
-    int bhm = 0;
-    if (root->key < key) {
-      if (r) split_impl_internal(r, bh, key, m, bhm, output_r, bhr);
-      std::tie(output_l, bhl) = join3_impl_internal(l, root, m, bh, bhm);
-    } else {
-      if (l) split_impl_internal(l, bh, key, output_l, bhl, m, bhm);
-      std::tie(output_r, bhr) = join3_impl_internal(m, root, r, bhm, bh);
-    }
   }
 
   static constexpr void split_at_impl_internal(NodeType* root, int bh,
