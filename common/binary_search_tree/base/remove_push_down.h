@@ -14,7 +14,7 @@ inline void RemovePushDown(TNode* node) {
   for (swap_node->apply_deferred(); swap_node->right;
        swap_node->apply_deferred())
     swap_node = swap_node->right;
-  SwapAuto(node, node->parent, swap_node, swap_node->parent);
+  swap_nodes(node, node->parent, swap_node, swap_node->parent);
 }
 }  // namespace base
 }  // namespace bst
