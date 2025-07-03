@@ -75,13 +75,14 @@ class RedBlackTree
   explicit RedBlackTree(size_t max_nodes) : SBTree(max_nodes) {}
 
  protected:
-  static void BuildTreeIFixColorsR(NodeType* root, size_t height) {
+  static constexpr void build_tree_impl_fix_colors(NodeType* root,
+                                                   size_t height) {
     assert(root || !height);
     if (!root) return;
     if (height) {
       set_color(root, true);
-      BuildTreeIFixColorsR(root->left, height - 1);
-      BuildTreeIFixColorsR(root->right, height - 1);
+      build_tree_impl_fix_colors(root->left, height - 1);
+      build_tree_impl_fix_colors(root->right, height - 1);
     } else {
       set_color(root, false);
       assert(!root->left && !root->right);
@@ -89,12 +90,13 @@ class RedBlackTree
   }
 
   template <bool update_leafs>
-  static NodeType* build_tree_impl(const std::vector<NodeType*>& nodes) {
+  [[nodiscard]] static constexpr NodeType* build_tree_impl(
+      const std::vector<NodeType*>& nodes) {
     if (nodes.size() == 0) return nullptr;
     size_t h = 0;
     for (; nodes.size() >= (1ull << h);) ++h;
     NodeType* root = Base::template build_tree_impl<update_leafs>(nodes);
-    BuildTreeIFixColorsR(root, h - 1);
+    build_tree_impl_fix_colors(root, h - 1);
     set_color(root, true);
     return root;
   }
