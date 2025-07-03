@@ -6,7 +6,7 @@
 #include "common/binary_search_tree/base/deferred.h"
 #include "common/binary_search_tree/base/find.h"
 #include "common/binary_search_tree/base/node.h"
-#include "common/binary_search_tree/base/remove_push_down.h"
+#include "common/binary_search_tree/base/push_down.h"
 #include "common/binary_search_tree/base/remove_right.h"
 #include "common/binary_search_tree/base/root.h"
 #include "common/binary_search_tree/base/rotate.h"
@@ -297,7 +297,7 @@ class RedBlackTree
 
   template <bool reset_links>
   static NodeType* remove_node_impl(NodeType* node) {
-    base::RemovePushDown<NodeType, false>(node);
+    base::push_down(node);
     const bool black = is_black(node);
 
     // Drop node from tree
