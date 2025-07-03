@@ -272,25 +272,14 @@ class RedBlackTree
     return nullptr;
   }
 
- public:
-  static NodeType* RemoveRight(NodeType* root, NodeType*& removed_node) {
-    assert(root);
-    auto node = root;
-    for (node->apply_deferred(); node->right; node->apply_deferred())
-      node = node->right;
-    removed_node = node;
-    return remove_node_impl<true>(removed_node);
+  template <bool reset_links>
+  static NodeType* remove_right_impl(NodeType* root, NodeType*& removed_node) {
+    for (root->apply_deferred(); root->right; root->apply_deferred())
+      root = root->right;
+    removed_node = root;
+    return remove_node_impl<reset_links>(removed_node);
   }
 
-  static NodeType* join(NodeType* l, NodeType* r) {
-    if (!l) return r;
-    if (!r) return l;
-    NodeType* node = nullptr;
-    l = RemoveRight(l, node);
-    return join3_impl(l, node, r);
-  }
-
- protected:
   [[nodiscard]] static constexpr int black_height(NodeType* root) {
     int h = 0;
     for (; root; root = root->left) {
