@@ -1,10 +1,11 @@
 #pragma once
 
+#include "common/binary_search_tree/base/find.h"
 #include "common/binary_search_tree/base/floor.h"
 #include "common/binary_search_tree/base/left.h"
 #include "common/binary_search_tree/base/lower_bound.h"
 #include "common/binary_search_tree/base/right.h"
-#include "common/binary_search_tree/red_black_tree_old.h"
+#include "common/binary_search_tree/treap.h"
 #include "common/data_structures/fixed_universe_successor/empty.h"
 #include "common/memory/nodes_manager.h"
 
@@ -22,9 +23,9 @@ namespace fus {
 // Predecessor -- O(log S)
 class BinarySearchTree {
  protected:
-  using TTree = bst::RedBlackTreeOld<MetaEmpty, std::tuple<>, std::tuple<>,
-                                     size_t, memory::NodesManager>;
-  using TNode = TTree::TNode;
+  using TTree = bst::Treap<true, true, MetaEmpty, std::tuple<>, std::tuple<>,
+                           size_t, memory::NodesManager>;
+  using TNode = TTree::NodeType;
 
  protected:
   TTree tree;
@@ -51,12 +52,9 @@ class BinarySearchTree {
     root = tree.insert_new(root, MetaEmpty(), x);
   }
 
-  bool HasKey(size_t x) const { return tree.find(root, x); }
+  bool HasKey(size_t x) const { return bst::base::find(root, x) != nullptr; }
 
-  void Delete(size_t x) {
-    auto node = tree.find(root, x);
-    if (node) root = tree.remove_and_release_node(node);
-  }
+  void Delete(size_t x) { root = tree.remove_and_release(root, x); }
 
   size_t Size() const { return tree.used(); }
 
