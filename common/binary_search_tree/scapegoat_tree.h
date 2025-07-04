@@ -37,19 +37,21 @@ namespace bst {
  * @tparam AggregatorsTuple Tuple of aggregator types for subtree data
  * @tparam DeferredTuple Tuple of deferred operation types
  * @tparam Key The key type used for ordering (if has_key is true)
+ * @tparam NodesManager The node manager type for memory management
  */
 template <bool has_key, bool has_parent, typename Data,
           typename AggregatorsTuple = std::tuple<subtree_data::Size>,
-          typename DeferredTuple = std::tuple<>, typename Key = int64_t>
+          typename DeferredTuple = std::tuple<>, typename Key = int64_t,
+          template <class> class NodesManager = memory::ContiguousNodesManager>
 class ScapegoatTree
     : public base::SelfBalancingTree<
-          memory::ContiguousNodesManager<base::Node<
+          NodesManager<base::Node<
               Data,
               base::SubtreeData<templates::PrependIfMissingT<subtree_data::Size,
                                                              AggregatorsTuple>>,
               base::Deferred<DeferredTuple>, has_parent, has_key, Key>>,
           ScapegoatTree<has_key, has_parent, Data, AggregatorsTuple,
-                        DeferredTuple, Key>> {
+                        DeferredTuple, Key, NodesManager>> {
  public:
   // Height is less or equal to 2 * height(fully balanced tree).
   static constexpr double alpha = 0.7;
@@ -60,9 +62,8 @@ class ScapegoatTree
   using NodeType =
       base::Node<Data, SubtreeDataType, DeferredType, has_parent, has_key, Key>;
   using Self = ScapegoatTree<has_key, has_parent, Data, AggregatorsTuple,
-                             DeferredTuple, Key>;
-  using SBTree =
-      base::SelfBalancingTree<memory::ContiguousNodesManager<NodeType>, Self>;
+                             DeferredTuple, Key, NodesManager>;
+  using SBTree = base::SelfBalancingTree<NodesManager<NodeType>, Self>;
   using Base = typename SBTree::Base;
 
   friend Base;

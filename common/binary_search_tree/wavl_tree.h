@@ -39,29 +39,30 @@ namespace bst {
  * @tparam AggregatorsTuple Tuple of aggregator types for subtree data
  * @tparam DeferredTuple Tuple of deferred operation types
  * @tparam Key The key type used for ordering (if has_key is true)
+ * @tparam NodesManager The node manager type for memory management
  */
 template <bool has_key, bool has_parent, typename Data,
           typename AggregatorsTuple = std::tuple<subtree_data::Size>,
-          typename DeferredTuple = std::tuple<>, typename Key = int64_t>
+          typename DeferredTuple = std::tuple<>, typename Key = int64_t,
+          template <class> class NodesManager = memory::ContiguousNodesManager>
 class WAVLTree
     : public base::SelfBalancingTree<
-          memory::ContiguousNodesManager<base::Node<
+          NodesManager<base::Node<
               Data,
               base::SubtreeData<templates::PrependT<subtree_data::WAVLRank,
                                                     AggregatorsTuple>>,
               base::Deferred<DeferredTuple>, has_parent, has_key, Key>>,
           WAVLTree<has_key, has_parent, Data, AggregatorsTuple, DeferredTuple,
-                   Key>> {
+                   Key, NodesManager>> {
  public:
   using SubtreeDataType = base::SubtreeData<
       templates::PrependT<subtree_data::WAVLRank, AggregatorsTuple>>;
   using DeferredType = base::Deferred<DeferredTuple>;
   using NodeType =
       base::Node<Data, SubtreeDataType, DeferredType, has_parent, has_key, Key>;
-  using Self =
-      WAVLTree<has_key, has_parent, Data, AggregatorsTuple, DeferredTuple, Key>;
-  using SBTree =
-      base::SelfBalancingTree<memory::ContiguousNodesManager<NodeType>, Self>;
+  using Self = WAVLTree<has_key, has_parent, Data, AggregatorsTuple,
+                        DeferredTuple, Key, NodesManager>;
+  using SBTree = base::SelfBalancingTree<NodesManager<NodeType>, Self>;
   using Base = typename SBTree::Base;
 
   friend Base;
