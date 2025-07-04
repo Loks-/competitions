@@ -33,6 +33,7 @@ namespace base {
  */
 template <class TNode>
 constexpr void push_down(TNode* node) {
+  static_assert(TNode::has_parent, "has_parent should be true");
   assert(node);
 
   // Only perform push-down if the node has both children

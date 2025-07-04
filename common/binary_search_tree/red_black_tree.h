@@ -2,20 +2,20 @@
 
 #include "common/base.h"
 #include "common/binary_search_tree/base/at.h"
+#include "common/binary_search_tree/base/at_with_path.h"
 #include "common/binary_search_tree/base/base_tree.h"
 #include "common/binary_search_tree/base/deferred.h"
 #include "common/binary_search_tree/base/find.h"
+#include "common/binary_search_tree/base/find_with_path.h"
 #include "common/binary_search_tree/base/node.h"
 #include "common/binary_search_tree/base/push_down.h"
-#include "common/binary_search_tree/base/remove_right.h"
-#include "common/binary_search_tree/base/root.h"
+#include "common/binary_search_tree/base/push_down_with_path.h"
 #include "common/binary_search_tree/base/rotate.h"
 #include "common/binary_search_tree/base/sibling.h"
 #include "common/binary_search_tree/base/subtree_data.h"
 #include "common/binary_search_tree/subtree_data/rbt_color.h"
 #include "common/binary_search_tree/subtree_data/size.h"
 #include "common/binary_search_tree/subtree_data/utils/propagate_and_find_root.h"
-#include "common/binary_search_tree/subtree_data/utils/propagate_to_root.h"
 #include "common/binary_search_tree/subtree_data/utils/propagate_to_root_with_path.h"
 #include "common/memory/contiguous_nodes_manager.h"
 #include "common/templates/tuple.h"
@@ -286,6 +286,100 @@ class RedBlackTree
   }
 
   template <bool reset_links>
+  [[nodiscard]] static constexpr NodeType* remove_node_impl_internal_hpf(
+      std::vector<NodeType*>& path_to_node) {
+    base::push_down_with_path(path_to_node);
+    std::reverse(path_to_node.begin(), path_to_node.end());
+    unsigned index = 1;  // point to parent
+    NodeType* node = path_to_node[0];
+    const bool is_node_red = is_red(node);
+
+    // Drop node from tree
+    NodeType* child = node->left ? node->left : node->right;
+    NodeType* parent =
+        (index < path_to_node.size()) ? path_to_node[index] : nullptr;
+    if (parent) ((parent->left == node) ? parent->left : parent->right) = child;
+    if (child) child->set_parent(parent);
+    if constexpr (reset_links) node->reset_links_and_update_subtree_data();
+
+    // Fix colors
+    if (is_node_red) {
+      subtree_data::propagate_to_root_with_path(path_to_node, index);
+      return parent ? path_to_node.back() : child;
+    }
+    while (true) {
+      if (is_red(child)) {
+        set_black(child);
+        subtree_data::propagate_to_root_with_path(path_to_node, index);
+        return (parent ? path_to_node.back() : child);
+      }
+      if (!parent) return child;
+      NodeType* sibling = base::sibling(child, parent);
+      assert(sibling);
+      sibling->apply_deferred();
+      if (is_red(sibling)) {
+        assert(is_black(parent));
+        base::rotate<false, false>(sibling, parent,
+                                   (index + 1 < path_to_node.size())
+                                       ? path_to_node[index + 1]
+                                       : nullptr);
+        path_to_node[index] = sibling;
+        path_to_node[--index] = parent;
+        set_black(sibling);
+        set_red(parent);
+        sibling = base::sibling(child, parent);
+        assert(sibling);
+        sibling->apply_deferred();
+      }
+      assert(is_black(sibling));
+      if (is_black(parent) && is_black(sibling->left) &&
+          is_black(sibling->right)) {
+        set_red(sibling);
+        child = parent;
+        child->update_subtree_data();
+        ++index;
+        parent = (index < path_to_node.size()) ? path_to_node[index] : nullptr;
+        continue;
+      }
+      if (is_red(parent) && is_black(sibling->left) &&
+          is_black(sibling->right)) {
+        set_red(sibling);
+        set_black(parent);
+        subtree_data::propagate_to_root_with_path(path_to_node, index);
+        return path_to_node.back();
+      }
+      if ((parent->left == child) && is_black(sibling->right)) {
+        NodeType* left_child = sibling->left;
+        assert(is_red(left_child));
+        base::rotate<false, true>(left_child, sibling, parent);
+        set_red(sibling);
+        sibling = left_child;
+        set_black(sibling);
+      } else if ((parent->right == child) && is_black(sibling->left)) {
+        NodeType* right_child = sibling->right;
+        assert(is_red(right_child));
+        base::rotate<false, true>(right_child, sibling, parent);
+        set_red(sibling);
+        sibling = right_child;
+        set_black(sibling);
+      }
+      if (is_red(parent)) {
+        set_red(sibling);
+        set_black(parent);
+      }
+      set_black((parent->left == child) ? sibling->right : sibling->left);
+      base::rotate<true, false>(sibling, parent,
+                                (index + 1 < path_to_node.size())
+                                    ? path_to_node[index + 1]
+                                    : nullptr);
+      subtree_data::propagate_to_root_with_path(path_to_node, index + 1);
+      return (index + 1 < path_to_node.size()) ? path_to_node.back() : sibling;
+    }
+    assert(false);
+    return nullptr;
+  }
+
+  template <bool reset_links>
   [[nodiscard]] static constexpr NodeType* remove_node_impl_internal_hpt(
       NodeType* node) {
     static_assert(has_parent, "has_parent should be true");
@@ -364,19 +458,37 @@ class RedBlackTree
   template <bool reset_links>
   [[nodiscard]] static constexpr NodeType* remove_impl(
       NodeType* root, const Key& key, NodeType*& removed_node) {
-    removed_node = base::find(root, key);
-    return (removed_node
-                ? remove_node_impl_internal_hpt<reset_links>(removed_node)
-                : root);
+    if constexpr (has_parent) {
+      removed_node = base::find(root, key);
+      return (removed_node
+                  ? remove_node_impl_internal_hpt<reset_links>(removed_node)
+                  : root);
+    } else {
+      // TODO: compare against thread_local version
+      std::vector<NodeType*> path_to_node;
+      removed_node = base::find_with_path(root, key, path_to_node);
+      return (removed_node
+                  ? remove_node_impl_internal_hpf<reset_links>(path_to_node)
+                  : root);
+    }
   }
 
   template <bool reset_links>
   [[nodiscard]] static constexpr NodeType* remove_at_impl(
       NodeType* root, size_t index, NodeType*& removed_node) {
-    removed_node = base::at(root, index);
-    return (removed_node
-                ? remove_node_impl_internal_hpt<reset_links>(removed_node)
-                : root);
+    if constexpr (has_parent) {
+      removed_node = base::at(root, index);
+      return (removed_node
+                  ? remove_node_impl_internal_hpt<reset_links>(removed_node)
+                  : root);
+    } else {
+      // TODO: compare against thread_local version
+      std::vector<NodeType*> path_to_node;
+      removed_node = base::at_with_path(root, index, path_to_node);
+      return (removed_node
+                  ? remove_node_impl_internal_hpf<reset_links>(path_to_node)
+                  : root);
+    }
   }
 
   template <bool reset_links>
@@ -387,10 +499,22 @@ class RedBlackTree
   template <bool reset_links>
   [[nodiscard]] static constexpr NodeType* remove_right_impl(
       NodeType* root, NodeType*& removed_node) {
-    for (root->apply_deferred(); root->right; root->apply_deferred())
-      root = root->right;
-    removed_node = root;
-    return remove_node_impl_internal_hpt<reset_links>(removed_node);
+    if constexpr (has_parent) {
+      for (root->apply_deferred(); root->right; root->apply_deferred())
+        root = root->right;
+      removed_node = root;
+      return remove_node_impl_internal_hpt<reset_links>(removed_node);
+    } else {
+      // TODO: compare against thread_local version
+      std::vector<NodeType*> path_to_node;
+      for (root->apply_deferred(); root->right; root->apply_deferred()) {
+        path_to_node.push_back(root);
+        root = root->right;
+      }
+      path_to_node.push_back(root);
+      removed_node = root;
+      return remove_node_impl_internal_hpf<reset_links>(path_to_node);
+    }
   }
 
   /**
