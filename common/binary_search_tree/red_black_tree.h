@@ -213,7 +213,7 @@ class RedBlackTree
       if constexpr (update_required) node->update_subtree_data();
       return node;
     }
-    std::vector<NodeType*> nodes;
+    std::vector<NodeType*> nodes;  // TODO: compare against thread_local version
     while (true) {
       root->apply_deferred();
       if constexpr (!has_parent) nodes.push_back(root);
@@ -252,7 +252,7 @@ class RedBlackTree
       if constexpr (update_required) node->update_subtree_data();
       return node;
     }
-    std::vector<NodeType*> nodes;
+    std::vector<NodeType*> nodes;  // TODO: compare against thread_local version
     while (true) {
       root->apply_deferred();
       if constexpr (!has_parent) nodes.push_back(root);
