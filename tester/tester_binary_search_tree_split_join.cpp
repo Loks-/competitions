@@ -78,6 +78,8 @@ bool TesterBinarySearchTreeSplitJoin::TestAll(bool small_test) const {
   hs.insert(TestBase<
             bst::AVLTree<true, true, MetaEmpty, TAggregators, TDeferred, TKey>>(
       "AVL   UPT"));
+  hs.insert(TestBase<bst::RedBlackTree<true, false, MetaEmpty, TAggregators,
+                                       TDeferred, TKey>>("RBTreeUPF"));
   hs.insert(TestBase<bst::RedBlackTree<true, true, MetaEmpty, TAggregators,
                                        TDeferred, TKey>>("RBTreeUPT"));
   hs.insert(

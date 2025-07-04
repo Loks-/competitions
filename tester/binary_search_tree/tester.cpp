@@ -59,7 +59,8 @@ bool test(TestType test_type) {
 
       return run_each<
           true, Scenarios, impl::HKF_HPF_AVL, impl::HKF_HPT_AVL,
-          impl::HKT_HPF_AVL, impl::HKT_HPT_AVL, impl::HKF_HPT_RedBlack,
+          impl::HKT_HPF_AVL, impl::HKT_HPT_AVL, impl::HKF_HPF_RedBlack,
+          impl::HKT_HPF_RedBlack, impl::HKF_HPT_RedBlack,
           impl::HKT_HPT_RedBlack, impl::HKF_HPF_Scapegoat,
           impl::HKF_HPT_Scapegoat, impl::HKT_HPF_Scapegoat,
           impl::HKT_HPT_Scapegoat, impl::HKF_HPT_Splay, impl::HKT_HPT_Splay,
@@ -89,7 +90,8 @@ bool test(TestType test_type) {
 
       return run_each<
           false, Scenarios, impl::HKF_HPF_AVL, impl::HKF_HPT_AVL,
-          impl::HKT_HPF_AVL, impl::HKT_HPT_AVL, impl::HKF_HPT_RedBlack,
+          impl::HKT_HPF_AVL, impl::HKT_HPT_AVL, impl::HKF_HPF_RedBlack,
+          impl::HKT_HPF_RedBlack, impl::HKF_HPT_RedBlack,
           impl::HKT_HPT_RedBlack, impl::HKF_HPF_Scapegoat,
           impl::HKF_HPT_Scapegoat, impl::HKT_HPF_Scapegoat,
           impl::HKT_HPT_Scapegoat, impl::HKF_HPT_Splay, impl::HKT_HPT_Splay,
@@ -108,7 +110,8 @@ bool test(TestType test_type) {
 
       return run_each<
           false, Scenarios, impl::HKF_HPF_AVL, impl::HKF_HPT_AVL,
-          impl::HKT_HPF_AVL, impl::HKT_HPT_AVL, impl::HKF_HPT_RedBlack,
+          impl::HKT_HPF_AVL, impl::HKT_HPT_AVL, impl::HKF_HPF_RedBlack,
+          impl::HKT_HPF_RedBlack, impl::HKF_HPT_RedBlack,
           impl::HKT_HPT_RedBlack, impl::HKF_HPF_Scapegoat,
           impl::HKF_HPT_Scapegoat, impl::HKT_HPF_Scapegoat,
           impl::HKT_HPT_Scapegoat, impl::HKF_HPT_Splay, impl::HKT_HPT_Splay,

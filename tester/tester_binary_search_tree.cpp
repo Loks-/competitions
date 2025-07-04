@@ -121,6 +121,8 @@ bool TesterBinarySearchTree::TestAllTrees() {
                           TKey>>("static_upf");
   TestAll<bst::StaticTree<true, true, TKey, TAggregatorsTuple1, std::tuple<>,
                           TKey>>("static_upt");
+  TestAll<bst::RedBlackTree<true, false, TKey, TAggregatorsTuple1, std::tuple<>,
+                            TKey>>("rbtree_upf");
   TestAll<bst::RedBlackTree<true, true, TKey, TAggregatorsTuple1, std::tuple<>,
                             TKey>>("rbtree_upt");
   TestAll<bst::RedBlackTreeOld<TKey, TAggregatorsTuple1, std::tuple<>, TKey>>(
@@ -155,6 +157,8 @@ bool TesterBinarySearchTree::TestAllTrees() {
                        TKey>>("avltree_upf");
   TestAll<bst::AVLTree<true, true, TKey, TAggregatorsTuple2, TDeferredTuple2,
                        TKey>>("avltree_upt");
+  TestAll<bst::RedBlackTree<true, false, TKey, TAggregatorsTuple2,
+                            TDeferredTuple2, TKey>>("rbtree_upf");
   TestAll<bst::RedBlackTree<true, true, TKey, TAggregatorsTuple2,
                             TDeferredTuple2, TKey>>("rbtree_upt");
   TestAll<

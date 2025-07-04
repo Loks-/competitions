@@ -60,7 +60,24 @@ class HKT_HPT_AVL
   static constexpr std::string_view id() { return "hpt_avl"; }
 };
 
-// RedBlack Tree implementation (only has_parent = true version)
+template <typename Data, typename Key, typename AggregatorsTuple,
+          typename DeferredTuple>
+class HKF_HPF_RedBlack
+    : public Base<::bst::RedBlackTree<false, false, Data, AggregatorsTuple,
+                                      DeferredTuple, Key>> {
+ public:
+  static constexpr std::string_view id() { return "hpf_redblack"; }
+};
+
+template <typename Data, typename Key, typename AggregatorsTuple,
+          typename DeferredTuple>
+class HKT_HPF_RedBlack
+    : public Base<::bst::RedBlackTree<true, false, Data, AggregatorsTuple,
+                                      DeferredTuple, Key>> {
+ public:
+  static constexpr std::string_view id() { return "hpf_redblack"; }
+};
+
 template <typename Data, typename Key, typename AggregatorsTuple,
           typename DeferredTuple>
 class HKF_HPT_RedBlack
