@@ -291,23 +291,17 @@ class RedBlackTree
     static_assert(has_parent, "has_parent should be true");
 
     base::push_down(node);
-    const bool black = is_black(node);
+    const bool is_node_red = is_red(node);
 
     // Drop node from tree
     NodeType* child = node->left ? node->left : node->right;
     NodeType* parent = node->parent;
-    if (parent) {
-      if (parent->left == node) {
-        parent->left = child;
-      } else {
-        parent->right = child;
-      }
-    }
+    if (parent) ((parent->left == node) ? parent->left : parent->right) = child;
     if (child) child->set_parent(parent);
     if constexpr (reset_links) node->reset_links_and_update_subtree_data();
 
     // Fix colors
-    if (!black)
+    if (is_node_red)
       return (parent ? subtree_data::propagate_and_find_root(parent) : child);
     while (true) {
       if (is_red(child)) {
@@ -359,11 +353,7 @@ class RedBlackTree
         set_red(sibling);
         set_black(parent);
       }
-      if (parent->left == child) {
-        set_black(sibling->right);
-      } else {
-        set_black(sibling->left);
-      }
+      set_black((parent->left == child) ? sibling->right : sibling->left);
       base::rotate<false, false>(sibling, parent, parent->parent);
       return subtree_data::propagate_and_find_root(sibling);
     }
