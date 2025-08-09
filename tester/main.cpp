@@ -8,8 +8,10 @@
 
 int main(int nargs, char **pargs) {
   std::string tester_mode;
+  std::string implementation_filter;
   if (nargs >= 2) {
     tester_mode = pargs[1];
+    if (nargs >= 3) implementation_filter = pargs[2];
   } else {
     std::cout << "Input tester mode to run:" << std::endl;
     std::cin >> tester_mode;
@@ -19,12 +21,14 @@ int main(int nargs, char **pargs) {
     if (tester_mode == "binary_search_tree") {
       assert_exception(TestBinarySearchTree(false));
     } else if (tester_mode == "bst_base") {
-      assert_exception(tester::bst::test(tester::bst::TestType::kBase));
+      assert_exception(tester::bst::test(tester::bst::TestType::kBase,
+                                         implementation_filter));
     } else if (tester_mode == "bst_expensive_data") {
-      assert_exception(
-          tester::bst::test(tester::bst::TestType::kExpensiveData));
+      assert_exception(tester::bst::test(tester::bst::TestType::kExpensiveData,
+                                         implementation_filter));
     } else if (tester_mode == "bst_small") {
-      assert_exception(tester::bst::test(tester::bst::TestType::kSmall));
+      assert_exception(tester::bst::test(tester::bst::TestType::kSmall,
+                                         implementation_filter));
     } else if (tester_mode == "bst_split_join") {
       assert_exception(TestBinarySearchTreeSplitJoin(false));
     } else if (tester_mode == "convergent") {
