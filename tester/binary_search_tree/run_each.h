@@ -7,6 +7,7 @@
 #include <iomanip>
 #include <iostream>
 #include <string>
+#include <string_view>
 #include <tuple>
 #include <unordered_map>
 #include <vector>
@@ -31,11 +32,18 @@ template <
     bool extra_checks, typename Scenario,
     template <typename, typename, typename, typename> class Implementation>
 void run_single(size_t size, ResultMap& scenario_results,
-                StatsMap& implementation_stats) {
+                StatsMap& implementation_stats,
+                std::string_view implementation_filter) {
   using IType = Implementation<typename Scenario::Data, typename Scenario::Key,
                                typename Scenario::AggregatorsTuple,
                                typename Scenario::DeferredTuple>;
   using Tree = typename IType::TreeType;
+
+  const auto implementation_id = IType::id();
+  if (!implementation_filter.empty() &&
+      implementation_filter != implementation_id) {
+    return;
+  }
 
   if constexpr ((Scenario::requires_key == Tree::has_key) &&
                 (!Scenario::requires_insert || Tree::support_insert) &&
@@ -65,11 +73,13 @@ template <
     template <typename, typename, typename, typename> class Implementation,
     typename ScenariosTuple>
 void run_implementation(size_t size, ResultMap& scenario_results,
-                        StatsMap& implementation_stats) {
+                        StatsMap& implementation_stats,
+                        std::string_view implementation_filter) {
   std::apply(
       [&](auto... scenarios) {
         (run_single<extra_checks, decltype(scenarios), Implementation>(
-             size, scenario_results, implementation_stats),
+             size, scenario_results, implementation_stats,
+             implementation_filter),
          ...);
       },
       ScenariosTuple{});
@@ -78,7 +88,7 @@ void run_implementation(size_t size, ResultMap& scenario_results,
 template <
     bool extra_checks, typename ScenariosTuple,
     template <typename, typename, typename, typename> class... Implementations>
-bool run_each(size_t size) {
+bool run_each(size_t size, std::string_view implementation_filter = {}) {
   using namespace std::chrono;
   using namespace std::chrono_literals;
 
@@ -88,7 +98,7 @@ bool run_each(size_t size) {
 
   // Run each implementation with all scenarios
   (run_implementation<extra_checks, Implementations, ScenariosTuple>(
-       size, scenario_results, implementation_stats),
+       size, scenario_results, implementation_stats, implementation_filter),
    ...);
 
   // Verify hashes for each scenario

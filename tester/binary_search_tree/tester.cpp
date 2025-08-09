@@ -19,7 +19,7 @@
 namespace tester {
 namespace bst {
 
-bool test(TestType test_type) {
+bool test(TestType test_type, std::string_view implementation_filter) {
   switch (test_type) {
     case TestType::kSmall: {
       using Scenarios = std::tuple<
@@ -69,7 +69,7 @@ bool test(TestType test_type) {
           impl::HKT_HPF_Treap, impl::HKT_HPT_Treap, impl::HKF_HPF_Unbalanced,
           impl::HKF_HPT_Unbalanced, impl::HKT_HPF_Unbalanced,
           impl::HKT_HPT_Unbalanced, impl::HKF_HPF_WAVL, impl::HKF_HPT_WAVL,
-          impl::HKT_HPF_WAVL, impl::HKT_HPT_WAVL>(1000);
+          impl::HKT_HPF_WAVL, impl::HKT_HPT_WAVL>(1000, implementation_filter);
     }
 
     case TestType::kBase: {
@@ -97,7 +97,8 @@ bool test(TestType test_type) {
           impl::HKT_HPT_Scapegoat, impl::HKF_HPT_Splay, impl::HKT_HPT_Splay,
           impl::HKF_HPF_Treap, impl::HKF_HPT_Treap, impl::HKT_HPF_Treap,
           impl::HKT_HPT_Treap, impl::HKF_HPF_WAVL, impl::HKF_HPT_WAVL,
-          impl::HKT_HPF_WAVL, impl::HKT_HPT_WAVL>(100000);
+          impl::HKT_HPF_WAVL, impl::HKT_HPT_WAVL>(100000,
+                                                  implementation_filter);
     }
 
     case TestType::kExpensiveData: {
@@ -117,7 +118,8 @@ bool test(TestType test_type) {
           impl::HKT_HPT_Scapegoat, impl::HKF_HPT_Splay, impl::HKT_HPT_Splay,
           impl::HKF_HPF_Treap, impl::HKF_HPT_Treap, impl::HKT_HPF_Treap,
           impl::HKT_HPT_Treap, impl::HKF_HPF_WAVL, impl::HKF_HPT_WAVL,
-          impl::HKT_HPF_WAVL, impl::HKT_HPT_WAVL>(100000);
+          impl::HKT_HPF_WAVL, impl::HKT_HPT_WAVL>(100000,
+                                                  implementation_filter);
     }
 
     default:
