@@ -1118,7 +1118,7 @@ class RedBlackTree
     } else {
       split_at_impl_internal(r, bh, lsize - left_size - 1, m, bhm, output_r,
                              bhr);
-      std::tie(output_l, bhl) = join3_impl_internal(l, root, m, bhl, bhm);
+      std::tie(output_l, bhl) = join3_impl_internal(l, root, m, bh, bhm);
     }
   }
 };

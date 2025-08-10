@@ -15,6 +15,8 @@
 #include "tester/binary_search_tree/scenario/insert_remove_node.h"
 #include "tester/binary_search_tree/scenario/insert_remove_node_add_as.h"
 #include "tester/binary_search_tree/scenario/insert_remove_node_add_each.h"
+#include "tester/binary_search_tree/scenario/split_join_add_as.h"
+#include "tester/binary_search_tree/scenario/split_join_add_each.h"
 
 namespace tester {
 namespace bst {
@@ -55,7 +57,9 @@ bool test(TestType test_type) {
           scenario::InsertRemoveNodeAddAS<DataType::kReverse>,
           scenario::InsertRemoveNodeAddAS<DataType::kShuffled>,
           scenario::InsertRemoveNodeAddAS<DataType::kShuffledDuplicates>,
-          scenario::InsertAtRemoveAtAddAS<DataType::kRandom>>;
+          scenario::InsertAtRemoveAtAddAS<DataType::kRandom>,
+          scenario::SplitJoinAddEach<DataType::kRandom>,
+          scenario::SplitJoinAddAS<DataType::kRandom>>;
 
       return run_each<
           true, Scenarios, impl::HKF_HPF_AVL, impl::HKF_HPT_AVL,
@@ -86,7 +90,8 @@ bool test(TestType test_type) {
                      scenario::BuildAddEach<DataType::kShuffledDuplicates>,
                      scenario::InsertRemoveAddEach<DataType::kIncreasing>,
                      scenario::InsertRemoveAddEach<DataType::kReverse>,
-                     scenario::InsertRemoveAddEach<DataType::kShuffled>>;
+                     scenario::InsertRemoveAddEach<DataType::kShuffled>,
+                     scenario::SplitJoinAddEach<DataType::kRandom>>;
 
       return run_each<
           false, Scenarios, impl::HKF_HPF_AVL, impl::HKF_HPT_AVL,
@@ -106,7 +111,8 @@ bool test(TestType test_type) {
                      scenario::BuildAddAS<DataType::kShuffledDuplicates>,
                      scenario::InsertRemoveAddAS<DataType::kIncreasing>,
                      scenario::InsertRemoveAddAS<DataType::kReverse>,
-                     scenario::InsertRemoveAddAS<DataType::kShuffled>>;
+                     scenario::InsertRemoveAddAS<DataType::kShuffled>,
+                     scenario::SplitJoinAddAS<DataType::kRandom>>;
 
       return run_each<
           false, Scenarios, impl::HKF_HPF_AVL, impl::HKF_HPT_AVL,
