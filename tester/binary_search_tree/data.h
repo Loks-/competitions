@@ -11,7 +11,8 @@ enum class DataType {
   kReverse,
   kShuffled,
   kShuffledDuplicates,
-  kRandom
+  kRandom,
+  kRandomDuplicates
 };
 
 // Data access functions

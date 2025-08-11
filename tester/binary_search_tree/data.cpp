@@ -20,6 +20,7 @@ std::unordered_map<unsigned, std::vector<int64_t>> reverse_data;
 std::unordered_map<unsigned, std::vector<int64_t>> shuffled_data;
 std::unordered_map<unsigned, std::vector<int64_t>> shuffled_dups_data;
 std::unordered_map<unsigned, std::vector<int64_t>> random_data;
+std::unordered_map<unsigned, std::vector<int64_t>> random_dups_data;
 }  // namespace
 
 [[nodiscard]] const std::vector<int64_t>& get_data_int64(DataType type,
@@ -83,6 +84,21 @@ std::unordered_map<unsigned, std::vector<int64_t>> random_data;
       assert(data.size() == size);
       return data;
     }
+    case DataType::kRandomDuplicates: {
+      // Each random value will be twice in the vector
+      size += (size % 2);
+      auto& data = random_dups_data[size];
+      if (data.empty()) {
+        data.resize(size);
+        size_t seed = size;
+        for (size_t i = 0; i < size; i += 2) {
+          data[2 * i] = data[2 * i + 1] = hash_combine(seed, i);
+        }
+        nvector::Shuffle(data);
+      }
+      assert(data.size() == size);
+      return data;
+    }
     default:
       assert(false);  // Unreachable
   }
@@ -115,6 +131,8 @@ std::unordered_map<unsigned, std::vector<int64_t>> random_data;
       return "shuffled_dups";
     case DataType::kRandom:
       return "random";
+    case DataType::kRandomDuplicates:
+      return "random_dups";
     default:
       return "unknown";
   }
