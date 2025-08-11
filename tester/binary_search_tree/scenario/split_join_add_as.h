@@ -9,6 +9,7 @@
 #include "common/assert_exception.h"
 #include "common/base.h"
 #include "common/binary_search_tree/deferred/add_arithmetic_sequence.h"
+#include "common/binary_search_tree/deferred/reverse.h"
 #include "common/binary_search_tree/subtree_data/size.h"
 #include "common/binary_search_tree/subtree_data/sum.h"
 #include "common/modular.h"
@@ -35,8 +36,8 @@ class SplitJoinAddAS : public Base<SplitJoinAddAS<data_type>> {
   using Key = int64_t;
   using Aggregator = ::bst::subtree_data::Sum<Data>;
   using AggregatorsTuple = std::tuple<::bst::subtree_data::Size, Aggregator>;
-  using DeferredTuple =
-      std::tuple<::bst::deferred::AddArithmeticSequence<Data>>;
+  using DeferredTuple = std::tuple<::bst::deferred::AddArithmeticSequence<Data>,
+                                   ::bst::deferred::Reverse>;
 
   static constexpr std::string id() {
     return std::string("split_join_add_as @ ") + get_name(data_type);
@@ -74,7 +75,8 @@ class SplitJoinAddAS : public Base<SplitJoinAddAS<data_type>> {
       const size_t lsize = static_cast<size_t>(lsize_raw % (size + 1));
       typename Tree::NodeType *l = nullptr, *r = nullptr;
       Tree::split_at(root, lsize, l, r);
-      ::bst::deferred::add_arithmetic_sequence(l, Data(0), Data(1));
+      ::bst::deferred::add_arithmetic_sequence(l, Data(1), Data(lsize_raw));
+      ::bst::deferred::reverse_subtree(r);
       root = Tree::join(r, l);
       if constexpr (extra_checks) {
         assert_exception(::bst::subtree_data::size(root) == size,
