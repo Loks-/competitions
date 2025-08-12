@@ -92,7 +92,7 @@ std::unordered_map<unsigned, std::vector<int64_t>> random_dups_data;
         data.resize(size);
         size_t seed = size;
         for (size_t i = 0; i < size; i += 2) {
-          data[2 * i] = data[2 * i + 1] = hash_combine(seed, i);
+          data[i] = data[i + 1] = hash_combine(seed, i);
         }
         nvector::Shuffle(data);
       }
