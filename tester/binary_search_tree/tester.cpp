@@ -79,22 +79,20 @@ bool test(TestType test_type, std::string_view implementation_filter) {
     }
 
     case TestType::kBase: {
-      using Scenarios = std::tuple<
-          scenario::Build<DataType::kIncreasing>,
-          scenario::Build<DataType::kReverse>,
-          scenario::Build<DataType::kShuffled>,
-          scenario::Build<DataType::kShuffledDuplicates>,
-          scenario::InsertRemove<DataType::kIncreasing>,
-          scenario::InsertRemove<DataType::kReverse>,
-          scenario::InsertRemove<DataType::kShuffled>,
-          scenario::InsertRemove<DataType::kShuffledDuplicates>,
-          scenario::BuildAddEach<DataType::kShuffled>,
-          scenario::BuildAddEach<DataType::kShuffledDuplicates>,
-          scenario::InsertRemoveAddEach<DataType::kIncreasing>,
-          scenario::InsertRemoveAddEach<DataType::kReverse>,
-          scenario::InsertRemoveAddEach<DataType::kShuffled>,
-          scenario::SplitJoinInsertRemove<DataType::kRandomDuplicates>,
-          scenario::SplitJoinAddEach<DataType::kRandom>>;
+      using Scenarios =
+          std::tuple<scenario::Build<DataType::kIncreasing>,
+                     scenario::Build<DataType::kReverse>,
+                     scenario::Build<DataType::kShuffled>,
+                     scenario::Build<DataType::kShuffledDuplicates>,
+                     scenario::InsertRemove<DataType::kIncreasing>,
+                     scenario::InsertRemove<DataType::kReverse>,
+                     scenario::InsertRemove<DataType::kShuffled>,
+                     scenario::InsertRemove<DataType::kShuffledDuplicates>,
+                     scenario::BuildAddEach<DataType::kShuffled>,
+                     scenario::BuildAddEach<DataType::kShuffledDuplicates>,
+                     scenario::InsertRemoveAddEach<DataType::kIncreasing>,
+                     scenario::InsertRemoveAddEach<DataType::kReverse>,
+                     scenario::InsertRemoveAddEach<DataType::kShuffled>>;
 
       return run_each<
           false, Scenarios, impl::HKF_HPF_AVL, impl::HKF_HPT_AVL,
@@ -103,6 +101,22 @@ bool test(TestType test_type, std::string_view implementation_filter) {
           impl::HKT_HPT_RedBlack, impl::HKF_HPF_Scapegoat,
           impl::HKF_HPT_Scapegoat, impl::HKT_HPF_Scapegoat,
           impl::HKT_HPT_Scapegoat, impl::HKF_HPT_Splay, impl::HKT_HPT_Splay,
+          impl::HKF_HPF_Treap, impl::HKF_HPT_Treap, impl::HKT_HPF_Treap,
+          impl::HKT_HPT_Treap, impl::HKF_HPF_WAVL, impl::HKF_HPT_WAVL,
+          impl::HKT_HPF_WAVL, impl::HKT_HPT_WAVL>(100000,
+                                                  implementation_filter);
+    }
+
+    case TestType::kSplitJoin: {
+      using Scenarios = std::tuple<
+          scenario::SplitJoinAddEach<DataType::kRandom>,
+          scenario::SplitJoinInsertRemove<DataType::kRandomDuplicates>>;
+
+      return run_each<
+          false, Scenarios, impl::HKF_HPF_AVL, impl::HKF_HPT_AVL,
+          impl::HKT_HPF_AVL, impl::HKT_HPT_AVL, impl::HKF_HPF_RedBlack,
+          impl::HKT_HPF_RedBlack, impl::HKF_HPT_RedBlack,
+          impl::HKT_HPT_RedBlack, impl::HKF_HPT_Splay, impl::HKT_HPT_Splay,
           impl::HKF_HPF_Treap, impl::HKF_HPT_Treap, impl::HKT_HPF_Treap,
           impl::HKT_HPT_Treap, impl::HKF_HPF_WAVL, impl::HKF_HPT_WAVL,
           impl::HKT_HPF_WAVL, impl::HKT_HPT_WAVL>(100000,

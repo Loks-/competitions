@@ -30,7 +30,8 @@ int main(int nargs, char **pargs) {
       assert_exception(tester::bst::test(tester::bst::TestType::kSmall,
                                          implementation_filter));
     } else if (tester_mode == "bst_split_join") {
-      assert_exception(TestBinarySearchTreeSplitJoin(false));
+      assert_exception(tester::bst::test(tester::bst::TestType::kSplitJoin,
+                                         implementation_filter));
     } else if (tester_mode == "convergent") {
       assert_exception(TestContinuedFractionConvergent());
     } else if (tester_mode == "find_primes_for_modular_fft") {
@@ -73,8 +74,6 @@ int main(int nargs, char **pargs) {
       assert_exception(TestRangeMinimumQuery(false));
     } else if (tester_mode == "time_binary_search_tree") {
       assert_exception(TestBinarySearchTree(true));
-    } else if (tester_mode == "time_bst_split_join") {
-      assert_exception(TestBinarySearchTreeSplitJoin(true));
     } else if (tester_mode == "time_disjoint_set") {
       assert_exception(TestDisjointSet());
     } else if (tester_mode == "time_fixed_universe_successor") {

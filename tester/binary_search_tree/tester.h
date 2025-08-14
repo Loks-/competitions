@@ -5,9 +5,9 @@
 namespace tester {
 namespace bst {
 
-enum class TestType { kSmall, kBase, kExpensiveData, kSegment, kJoinSplit };
+enum class TestType { kSmall, kBase, kExpensiveData, kSplitJoin };
 
-bool test(TestType test_type, std::string_view implementation_filter = {});
+bool test(TestType test_type, std::string_view implementation_filter);
 
 }  // namespace bst
 }  // namespace tester
