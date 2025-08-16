@@ -78,7 +78,7 @@ bool TesterFixedUniverseSuccessor::TestAll(bool small_test) const {
     hs.insert(TestBase<SqrtDecomposition>("SqrtD  "));
     hs.insert(TestBase<ImplicitBinaryTree>("IBT    "));
   }
-  hs.insert(TestBase<BinarySearchTree>("BST    "));
+  hs.insert(TestBase<ds::fus::BinarySearchTree>("BST    "));
   hs.insert(TestBase<BTrie<FLSetB6>>("BTrie 6"));
   hs.insert(TestBase<BTrie<FLSetB8>>("BTrie 8"));
   hs.insert(TestBase<BTree<FLSetB6>>("BTree 6"));

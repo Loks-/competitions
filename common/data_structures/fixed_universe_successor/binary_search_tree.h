@@ -1,13 +1,16 @@
 #pragma once
 
+#include "common/binary_search_tree.h"
 #include "common/binary_search_tree/base/find.h"
 #include "common/binary_search_tree/base/floor.h"
 #include "common/binary_search_tree/base/left.h"
 #include "common/binary_search_tree/base/lower_bound.h"
 #include "common/binary_search_tree/base/right.h"
-#include "common/binary_search_tree/treap.h"
 #include "common/data_structures/fixed_universe_successor/empty.h"
 #include "common/memory/nodes_manager.h"
+#include "common/template.h"
+
+#include <tuple>
 
 namespace ds {
 namespace fus {
@@ -23,8 +26,8 @@ namespace fus {
 // Predecessor -- O(log S)
 class BinarySearchTree {
  protected:
-  using TTree = bst::Treap<true, true, MetaEmpty, std::tuple<>, std::tuple<>,
-                           size_t, memory::NodesManager>;
+  using TTree = ::BinarySearchTree<true, true, MetaEmpty, std::tuple<>,
+                                   std::tuple<>, size_t, memory::NodesManager>;
   using TNode = TTree::NodeType;
 
  protected:
