@@ -366,13 +366,7 @@ class RedBlackTree
    *
    * This function inserts a node into the tree while maintaining the Red-Black
    * tree properties. It handles both cases where parent links are available
-   * and where they are not, choosing the appropriate internal implementation.
-   *
-   * The insertion process:
-   * 1. Finds the correct position for the new node
-   * 2. Sets the new node to red initially
-   * 3. Calls the appropriate internal balancing function
-   * 4. Ensures the root is always black
+   * and where they are not.
    *
    * @tparam update_required Whether to update subtree data for the new node
    * @param root The root of the tree
@@ -380,18 +374,18 @@ class RedBlackTree
    * @return Pointer to the new root of the tree
    */
   template <bool update_required>
-  [[nodiscard]] static NodeType* insert_impl(NodeType* root, NodeType* node) {
+  [[nodiscard]] static constexpr NodeType* insert_impl(NodeType* root,
+                                                       NodeType* node)
+    requires(has_parent)
+  {
     if (!root) {
       set_black(node);
       if constexpr (update_required) node->update_subtree_data();
       return node;
     }
-    // TODO: compare against thread_local version
-    thread_local std::vector<NodeType*> nodes;
-    nodes.clear();
+
     while (true) {
       root->apply_deferred();
-      if constexpr (!has_parent) nodes.push_back(root);
       if (root->key < node->key) {
         if (!root->right) {
           root->set_right(node);
@@ -407,14 +401,42 @@ class RedBlackTree
       }
     }
     set_red(node);
+    return insert_impl_internal_hpt(node, update_required);
+  }
 
-    if constexpr (has_parent) {
-      return insert_impl_internal_hpt(node, update_required);
-    } else {
-      nodes.push_back(node);
-      std::reverse(nodes.begin(), nodes.end());
-      return insert_impl_internal_hpf(nodes, update_required);
+  template <bool update_required>
+  [[nodiscard]] static NodeType* insert_impl(NodeType* root, NodeType* node)
+    requires(!has_parent)
+  {
+    if (!root) {
+      set_black(node);
+      if constexpr (update_required) node->update_subtree_data();
+      return node;
     }
+
+    thread_local std::vector<NodeType*> nodes;
+    nodes.clear();
+    while (true) {
+      root->apply_deferred();
+      nodes.push_back(root);
+      if (root->key < node->key) {
+        if (!root->right) {
+          root->set_right(node);
+          break;
+        }
+        root = root->right;
+      } else {
+        if (!root->left) {
+          root->set_left(node);
+          break;
+        }
+        root = root->left;
+      }
+    }
+    set_red(node);
+    nodes.push_back(node);
+    std::reverse(nodes.begin(), nodes.end());
+    return insert_impl_internal_hpf(nodes, update_required);
   }
 
   /**
@@ -438,20 +460,20 @@ class RedBlackTree
    * @return Pointer to the new root of the tree
    */
   template <bool update_required>
-  [[nodiscard]] static NodeType* insert_at_impl(NodeType* root, NodeType* node,
-                                                size_t index) {
+  [[nodiscard]] static constexpr NodeType* insert_at_impl(NodeType* root,
+                                                          NodeType* node,
+                                                          size_t index)
+    requires(has_parent)
+  {
     if (!root) {
       assert(index == 0);
       set_black(node);
       if constexpr (update_required) node->update_subtree_data();
       return node;
     }
-    // TODO: compare against thread_local version
-    thread_local std::vector<NodeType*> nodes;
-    nodes.clear();
+
     while (true) {
       root->apply_deferred();
-      if constexpr (!has_parent) nodes.push_back(root);
       const size_t lsize = bst::subtree_data::size(root->left);
       if (index <= lsize) {
         if (!root->left) {
@@ -471,14 +493,48 @@ class RedBlackTree
       }
     }
     set_red(node);
+    return insert_impl_internal_hpt(node, update_required);
+  }
 
-    if constexpr (has_parent) {
-      return insert_impl_internal_hpt(node, update_required);
-    } else {
-      nodes.push_back(node);
-      std::reverse(nodes.begin(), nodes.end());
-      return insert_impl_internal_hpf(nodes, update_required);
+  template <bool update_required>
+  [[nodiscard]] static NodeType* insert_at_impl(NodeType* root, NodeType* node,
+                                                size_t index)
+    requires(!has_parent)
+  {
+    if (!root) {
+      assert(index == 0);
+      set_black(node);
+      if constexpr (update_required) node->update_subtree_data();
+      return node;
     }
+
+    thread_local std::vector<NodeType*> nodes;
+    nodes.clear();
+    while (true) {
+      root->apply_deferred();
+      nodes.push_back(root);
+      const size_t lsize = bst::subtree_data::size(root->left);
+      if (index <= lsize) {
+        if (!root->left) {
+          assert(index == 0);
+          root->set_left(node);
+          break;
+        }
+        root = root->left;
+      } else {
+        if (!root->right) {
+          assert(index == lsize + 1);
+          root->set_right(node);
+          break;
+        }
+        root = root->right;
+        index -= lsize + 1;
+      }
+    }
+    set_red(node);
+    nodes.push_back(node);
+    std::reverse(nodes.begin(), nodes.end());
+    return insert_impl_internal_hpf(nodes, update_required);
   }
 
   /**
@@ -696,7 +752,7 @@ class RedBlackTree
   }
 
   /**
-   * @brief Removes a node with the specified key from the Red-Black tree.
+   * @brief Removes a node with the given key from the Red-Black tree.
    *
    * This function finds and removes a node with the given key while
    * maintaining the Red-Black tree properties. It handles both cases
@@ -709,22 +765,28 @@ class RedBlackTree
    * @return Pointer to the new root of the tree
    */
   template <bool reset_links>
+  [[nodiscard]] static constexpr NodeType* remove_impl(NodeType* root,
+                                                       const Key& key,
+                                                       NodeType*& removed_node)
+    requires(has_parent)
+  {
+    removed_node = base::find(root, key);
+    return (removed_node
+                ? remove_node_impl_internal_hpt<reset_links>(removed_node)
+                : root);
+  }
+
+  template <bool reset_links>
   [[nodiscard]] static NodeType* remove_impl(NodeType* root, const Key& key,
-                                             NodeType*& removed_node) {
-    if constexpr (has_parent) {
-      removed_node = base::find(root, key);
-      return (removed_node
-                  ? remove_node_impl_internal_hpt<reset_links>(removed_node)
-                  : root);
-    } else {
-      // TODO: compare against thread_local version
-      thread_local std::vector<NodeType*> path_to_node;
-      path_to_node.clear();
-      removed_node = base::find_with_path(root, key, path_to_node);
-      return (removed_node
-                  ? remove_node_impl_internal_hpf<reset_links>(path_to_node)
-                  : root);
-    }
+                                             NodeType*& removed_node)
+    requires(!has_parent)
+  {
+    thread_local std::vector<NodeType*> path_to_node;
+    path_to_node.clear();
+    removed_node = base::find_with_path(root, key, path_to_node);
+    return (removed_node
+                ? remove_node_impl_internal_hpf<reset_links>(path_to_node)
+                : root);
   }
 
   /**
@@ -741,22 +803,27 @@ class RedBlackTree
    * @return Pointer to the new root of the tree
    */
   template <bool reset_links>
+  [[nodiscard]] static constexpr NodeType* remove_at_impl(
+      NodeType* root, size_t index, NodeType*& removed_node)
+    requires(has_parent)
+  {
+    removed_node = base::at(root, index);
+    return (removed_node
+                ? remove_node_impl_internal_hpt<reset_links>(removed_node)
+                : root);
+  }
+
+  template <bool reset_links>
   [[nodiscard]] static NodeType* remove_at_impl(NodeType* root, size_t index,
-                                                NodeType*& removed_node) {
-    if constexpr (has_parent) {
-      removed_node = base::at(root, index);
-      return (removed_node
-                  ? remove_node_impl_internal_hpt<reset_links>(removed_node)
-                  : root);
-    } else {
-      // TODO: compare against thread_local version
-      thread_local std::vector<NodeType*> path_to_node;
-      path_to_node.clear();
-      removed_node = base::at_with_path(root, index, path_to_node);
-      return (removed_node
-                  ? remove_node_impl_internal_hpf<reset_links>(path_to_node)
-                  : root);
-    }
+                                                NodeType*& removed_node)
+    requires(!has_parent)
+  {
+    thread_local std::vector<NodeType*> path_to_node;
+    path_to_node.clear();
+    removed_node = base::at_with_path(root, index, path_to_node);
+    return (removed_node
+                ? remove_node_impl_internal_hpf<reset_links>(path_to_node)
+                : root);
   }
 
   /**
@@ -788,25 +855,30 @@ class RedBlackTree
    * @return Pointer to the new root of the tree
    */
   template <bool reset_links>
+  [[nodiscard]] static constexpr NodeType* remove_right_impl(
+      NodeType* root, NodeType*& removed_node)
+    requires(has_parent)
+  {
+    for (root->apply_deferred(); root->right; root->apply_deferred())
+      root = root->right;
+    removed_node = root;
+    return remove_node_impl_internal_hpt<reset_links>(removed_node);
+  }
+
+  template <bool reset_links>
   [[nodiscard]] static NodeType* remove_right_impl(NodeType* root,
-                                                   NodeType*& removed_node) {
-    if constexpr (has_parent) {
-      for (root->apply_deferred(); root->right; root->apply_deferred())
-        root = root->right;
-      removed_node = root;
-      return remove_node_impl_internal_hpt<reset_links>(removed_node);
-    } else {
-      // TODO: compare against thread_local version
-      thread_local std::vector<NodeType*> path_to_node;
-      path_to_node.clear();
-      for (root->apply_deferred(); root->right; root->apply_deferred()) {
-        path_to_node.push_back(root);
-        root = root->right;
-      }
+                                                   NodeType*& removed_node)
+    requires(!has_parent)
+  {
+    thread_local std::vector<NodeType*> path_to_node;
+    path_to_node.clear();
+    for (root->apply_deferred(); root->right; root->apply_deferred()) {
       path_to_node.push_back(root);
-      removed_node = root;
-      return remove_node_impl_internal_hpf<reset_links>(path_to_node);
+      root = root->right;
     }
+    path_to_node.push_back(root);
+    removed_node = root;
+    return remove_node_impl_internal_hpf<reset_links>(path_to_node);
   }
 
   /**
