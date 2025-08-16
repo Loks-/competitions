@@ -18,9 +18,7 @@ int main(int nargs, char **pargs) {
   }
 
   try {
-    if (tester_mode == "binary_search_tree") {
-      assert_exception(TestBinarySearchTree(false));
-    } else if (tester_mode == "bst_base") {
+    if (tester_mode == "bst_base") {
       assert_exception(tester::bst::test(tester::bst::TestType::kBase,
                                          implementation_filter));
     } else if (tester_mode == "bst_expensive_data") {
@@ -72,8 +70,6 @@ int main(int nargs, char **pargs) {
       assert_exception(TestPrimesGeneration(false));
     } else if (tester_mode == "range_minimum_query") {
       assert_exception(TestRangeMinimumQuery(false));
-    } else if (tester_mode == "time_binary_search_tree") {
-      assert_exception(TestBinarySearchTree(true));
     } else if (tester_mode == "time_disjoint_set") {
       assert_exception(TestDisjointSet());
     } else if (tester_mode == "time_fixed_universe_successor") {
