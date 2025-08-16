@@ -50,8 +50,7 @@ template <typename TreeType, typename TNode>
   root1->apply_deferred();
 
   // Store and detach subtrees of the new root
-  NodeType *r1l = root1->left, *r1r = root1->right, *r2l = nullptr,
-           *r2r = nullptr;
+  TNode *r1l = root1->left, *r1r = root1->right, *r2l = nullptr, *r2r = nullptr;
   if (r1l) r1l->set_parent(nullptr);
   if (r1r) r1r->set_parent(nullptr);
   root1->set_left(nullptr);
