@@ -380,14 +380,15 @@ class RedBlackTree
    * @return Pointer to the new root of the tree
    */
   template <bool update_required>
-  [[nodiscard]] static constexpr NodeType* insert_impl(NodeType* root,
-                                                       NodeType* node) {
+  [[nodiscard]] static NodeType* insert_impl(NodeType* root, NodeType* node) {
     if (!root) {
       set_black(node);
       if constexpr (update_required) node->update_subtree_data();
       return node;
     }
-    std::vector<NodeType*> nodes;  // TODO: compare against thread_local version
+    // TODO: compare against thread_local version
+    thread_local std::vector<NodeType*> nodes;
+    nodes.clear();
     while (true) {
       root->apply_deferred();
       if constexpr (!has_parent) nodes.push_back(root);
@@ -437,16 +438,17 @@ class RedBlackTree
    * @return Pointer to the new root of the tree
    */
   template <bool update_required>
-  [[nodiscard]] static constexpr NodeType* insert_at_impl(NodeType* root,
-                                                          NodeType* node,
-                                                          size_t index) {
+  [[nodiscard]] static NodeType* insert_at_impl(NodeType* root, NodeType* node,
+                                                size_t index) {
     if (!root) {
       assert(index == 0);
       set_black(node);
       if constexpr (update_required) node->update_subtree_data();
       return node;
     }
-    std::vector<NodeType*> nodes;  // TODO: compare against thread_local version
+    // TODO: compare against thread_local version
+    thread_local std::vector<NodeType*> nodes;
+    nodes.clear();
     while (true) {
       root->apply_deferred();
       if constexpr (!has_parent) nodes.push_back(root);
@@ -707,8 +709,8 @@ class RedBlackTree
    * @return Pointer to the new root of the tree
    */
   template <bool reset_links>
-  [[nodiscard]] static constexpr NodeType* remove_impl(
-      NodeType* root, const Key& key, NodeType*& removed_node) {
+  [[nodiscard]] static NodeType* remove_impl(NodeType* root, const Key& key,
+                                             NodeType*& removed_node) {
     if constexpr (has_parent) {
       removed_node = base::find(root, key);
       return (removed_node
@@ -716,7 +718,8 @@ class RedBlackTree
                   : root);
     } else {
       // TODO: compare against thread_local version
-      std::vector<NodeType*> path_to_node;
+      thread_local std::vector<NodeType*> path_to_node;
+      path_to_node.clear();
       removed_node = base::find_with_path(root, key, path_to_node);
       return (removed_node
                   ? remove_node_impl_internal_hpf<reset_links>(path_to_node)
@@ -738,8 +741,8 @@ class RedBlackTree
    * @return Pointer to the new root of the tree
    */
   template <bool reset_links>
-  [[nodiscard]] static constexpr NodeType* remove_at_impl(
-      NodeType* root, size_t index, NodeType*& removed_node) {
+  [[nodiscard]] static NodeType* remove_at_impl(NodeType* root, size_t index,
+                                                NodeType*& removed_node) {
     if constexpr (has_parent) {
       removed_node = base::at(root, index);
       return (removed_node
@@ -747,7 +750,8 @@ class RedBlackTree
                   : root);
     } else {
       // TODO: compare against thread_local version
-      std::vector<NodeType*> path_to_node;
+      thread_local std::vector<NodeType*> path_to_node;
+      path_to_node.clear();
       removed_node = base::at_with_path(root, index, path_to_node);
       return (removed_node
                   ? remove_node_impl_internal_hpf<reset_links>(path_to_node)
@@ -784,8 +788,8 @@ class RedBlackTree
    * @return Pointer to the new root of the tree
    */
   template <bool reset_links>
-  [[nodiscard]] static constexpr NodeType* remove_right_impl(
-      NodeType* root, NodeType*& removed_node) {
+  [[nodiscard]] static NodeType* remove_right_impl(NodeType* root,
+                                                   NodeType*& removed_node) {
     if constexpr (has_parent) {
       for (root->apply_deferred(); root->right; root->apply_deferred())
         root = root->right;
@@ -793,7 +797,8 @@ class RedBlackTree
       return remove_node_impl_internal_hpt<reset_links>(removed_node);
     } else {
       // TODO: compare against thread_local version
-      std::vector<NodeType*> path_to_node;
+      thread_local std::vector<NodeType*> path_to_node;
+      path_to_node.clear();
       for (root->apply_deferred(); root->right; root->apply_deferred()) {
         path_to_node.push_back(root);
         root = root->right;
