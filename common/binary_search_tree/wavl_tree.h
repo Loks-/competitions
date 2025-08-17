@@ -7,8 +7,8 @@
 #include "common/binary_search_tree/base/self_balancing_tree.h"
 #include "common/binary_search_tree/base/sibling.h"
 #include "common/binary_search_tree/base/subtree_data.h"
+#include "common/binary_search_tree/subtree_data/balance/wavl_rank.h"
 #include "common/binary_search_tree/subtree_data/size.h"
-#include "common/binary_search_tree/subtree_data/wavl_rank.h"
 #include "common/memory/contiguous_nodes_manager.h"
 #include "common/templates/tuple.h"
 

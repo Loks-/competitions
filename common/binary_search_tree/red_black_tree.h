@@ -13,7 +13,7 @@
 #include "common/binary_search_tree/base/rotate.h"
 #include "common/binary_search_tree/base/sibling.h"
 #include "common/binary_search_tree/base/subtree_data.h"
-#include "common/binary_search_tree/subtree_data/rbt_color.h"
+#include "common/binary_search_tree/subtree_data/balance/rbt_color.h"
 #include "common/binary_search_tree/subtree_data/size.h"
 #include "common/binary_search_tree/subtree_data/utils/propagate_and_find_root.h"
 #include "common/binary_search_tree/subtree_data/utils/propagate_to_root_with_path.h"

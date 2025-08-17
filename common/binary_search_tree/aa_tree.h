@@ -5,7 +5,7 @@
 #include "common/binary_search_tree/base/node.h"
 #include "common/binary_search_tree/base/self_balancing_tree.h"
 #include "common/binary_search_tree/base/subtree_data.h"
-#include "common/binary_search_tree/subtree_data/aa_level.h"
+#include "common/binary_search_tree/subtree_data/balance/aa_level.h"
 #include "common/memory/contiguous_nodes_manager.h"
 #include "common/templates/tuple.h"
 

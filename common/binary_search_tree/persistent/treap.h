@@ -5,8 +5,8 @@
 #include "common/binary_search_tree/base/root.h"
 #include "common/binary_search_tree/base/subtree_data.h"
 #include "common/binary_search_tree/persistent/tree.h"
+#include "common/binary_search_tree/subtree_data/balance/treap_height.h"
 #include "common/binary_search_tree/subtree_data/size.h"
-#include "common/binary_search_tree/subtree_data/treap_height.h"
 #include "common/binary_search_tree/subtree_data/utils/propagate_to_root.h"
 #include "common/memory/nodes_manager.h"
 
