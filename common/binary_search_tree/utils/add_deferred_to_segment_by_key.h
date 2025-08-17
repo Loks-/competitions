@@ -1,7 +1,5 @@
 #pragma once
 
-#include "common/base.h"
-
 namespace bst {
 namespace utils {
 
