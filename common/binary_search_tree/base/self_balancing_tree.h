@@ -224,8 +224,23 @@ class SelfBalancingTree : public BaseTree<NodesManager, Derived> {
       NodeType *left = root->left, *right = root->right;
       if (left) left->set_parent(nullptr);
       if (right) right->set_parent(nullptr);
-      if constexpr (reset_links) root->reset_links_and_update_subtree_data();
-      return Derived::join_impl(left, right);
+      if (!left) {
+        root = right;
+      } else if (!right) {
+        root = left;
+      } else {
+        left = Derived::template remove_right_impl<false>(left, root);
+        assert(root);
+        root->set_left(left);
+        root->set_right(right);
+        root->subtree_data.bti_copy(removed_node);
+        root->set_parent(nullptr);
+        root->update_subtree_data();
+        root = Derived::fix_balance_remove(root);
+      }
+      if constexpr (reset_links)
+        removed_node->reset_links_and_update_subtree_data();
+      return root;
     }
   }
 
@@ -260,8 +275,23 @@ class SelfBalancingTree : public BaseTree<NodesManager, Derived> {
       NodeType *left = root->left, *right = root->right;
       if (left) left->set_parent(nullptr);
       if (right) right->set_parent(nullptr);
-      if constexpr (reset_links) root->reset_links_and_update_subtree_data();
-      return Derived::join_impl(left, right);
+      if (!left) {
+        root = right;
+      } else if (!right) {
+        root = left;
+      } else {
+        left = Derived::template remove_right_impl<false>(left, root);
+        assert(root);
+        root->set_left(left);
+        root->set_right(right);
+        root->subtree_data.bti_copy(removed_node);
+        root->set_parent(nullptr);
+        root->update_subtree_data();
+        root = Derived::fix_balance_remove(root);
+      }
+      if constexpr (reset_links)
+        removed_node->reset_links_and_update_subtree_data();
+      return root;
     } else {
       root->set_right(remove_at_impl<reset_links>(
           root->right, index - left_size - 1, removed_node));
@@ -288,8 +318,21 @@ class SelfBalancingTree : public BaseTree<NodesManager, Derived> {
     NodeType *left = node->left, *right = node->right, *parent = node->parent;
     if (left) left->set_parent(nullptr);
     if (right) right->set_parent(nullptr);
+    NodeType *root, *pc = node;
+    if (!left) {
+      root = right;
+    } else if (!right) {
+      root = left;
+    } else {
+      left = Derived::template remove_right_impl<false>(left, root);
+      assert(root);
+      root->set_left(left);
+      root->set_right(right);
+      root->subtree_data.bti_copy(node);
+      root->update_subtree_data();
+      root = Derived::fix_balance_remove(root);
+    }
     if constexpr (reset_links) node->reset_links_and_update_subtree_data();
-    NodeType *root = Derived::join_impl(left, right), *pc = node;
     while (parent) {
       if (parent->left == pc) {
         parent->set_left(root);
