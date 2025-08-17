@@ -65,12 +65,12 @@ class AATree
     return node ? subtree_data::AALevel::get(node) : 0;
   }
 
-  static constexpr void inc_level(NodeType* node) noexcept {
-    subtree_data::AALevel::inc(node);
+  static constexpr void set_level(NodeType* node, unsigned new_level) noexcept {
+    subtree_data::AALevel::set(node, new_level);
   }
 
-  static constexpr void dec_level(NodeType* node) noexcept {
-    subtree_data::AALevel::dec(node);
+  static constexpr void inc_level(NodeType* node) noexcept {
+    subtree_data::AALevel::inc(node);
   }
 
   [[nodiscard]] static constexpr NodeType* aa_skew(NodeType* node) noexcept {
@@ -108,9 +108,9 @@ class AATree
     const auto new_level = std::min(level(node->left), level(node->right)) + 1;
     if (level(node) > new_level) {
       assert(new_level == level(node) - 1);
-      dec_level(node);
+      set_level(node, new_level);
       if (level(node->right) > new_level) {
-        dec_level(node->right);
+        set_level(node->right, new_level);
       }
     }
   }

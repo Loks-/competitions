@@ -80,21 +80,6 @@ class AALevel : public Base {
   }
 
   /**
-   * @brief Decrements the level of a node by 1.
-   *
-   * Helper function to efficiently decrease a node's level.
-   * Assumes the node exists.
-   *
-   * @tparam TNode The BST node type.
-   * @param node The node to decrement level for.
-   */
-  template <typename TNode>
-  static constexpr void dec(TNode* node) noexcept {
-    assert(node);
-    --node->subtree_data.template get<Self>().level;
-  }
-
-  /**
    * @brief Resets the node level to 1.
    *
    * In AA trees, new nodes are initialized with level 1.
