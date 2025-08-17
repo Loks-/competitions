@@ -19,6 +19,7 @@ class Base {
   static constexpr bool requires_remove_node = false;
   static constexpr bool requires_join = false;
   static constexpr bool requires_split = false;
+  static constexpr bool requires_reverse_subtree = false;
 
   template <bool extra_checks, template <typename, typename, typename,
                                          typename> class Implementation>

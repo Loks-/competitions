@@ -64,6 +64,7 @@ class BaseTree {
    * - support_remove_by_node: Whether node-based removal is supported
    * - support_join: Whether two-way join operations are supported
    * - support_split: Whether split operations are supported
+   * - support_reverse_subtree: Whether subtree reversal is supported
    */
   static constexpr bool support_insert = true;
   static constexpr bool support_remove = true;
@@ -71,6 +72,7 @@ class BaseTree {
       Derived::support_remove && has_parent;
   static constexpr bool support_join = true;
   static constexpr bool support_split = true;
+  static constexpr bool support_reverse_subtree = true;
 
  public:
   /**

@@ -31,6 +31,7 @@ class InsertAtRemoveAtAddAS : public Base<InsertAtRemoveAtAddAS<data_type>> {
   static constexpr bool requires_key = false;
   static constexpr bool requires_insert = true;
   static constexpr bool requires_remove = true;
+  static constexpr bool requires_reverse_subtree = true;
 
   using Data = ModularDefault;
   using Key = int64_t;

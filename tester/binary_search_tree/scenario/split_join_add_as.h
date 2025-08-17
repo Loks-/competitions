@@ -31,6 +31,7 @@ class SplitJoinAddAS : public Base<SplitJoinAddAS<data_type>> {
   static constexpr bool requires_key = false;
   static constexpr bool requires_split = true;
   static constexpr bool requires_join = true;
+  static constexpr bool requires_reverse_subtree = true;
 
   using Data = ModularDefault;
   using Key = int64_t;

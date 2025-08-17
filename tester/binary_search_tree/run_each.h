@@ -51,7 +51,9 @@ void run_single(size_t size, ResultMap& scenario_results,
                 (!Scenario::requires_remove_node ||
                  Tree::support_remove_by_node) &&
                 (!Scenario::requires_split || Tree::support_split) &&
-                (!Scenario::requires_join || Tree::support_join)) {
+                (!Scenario::requires_join || Tree::support_join) &&
+                (!Scenario::requires_reverse_subtree ||
+                 Tree::support_reverse_subtree)) {
     auto result = Scenario::template run<extra_checks, Implementation>(size);
 
     scenario_results[result.scenario_id].push_back(result);

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "common/binary_search_tree/aa_tree.h"
 #include "common/binary_search_tree/avl_tree.h"
 #include "common/binary_search_tree/red_black_tree.h"
 #include "common/binary_search_tree/scapegoat_tree.h"
@@ -21,6 +22,42 @@ class Base : public Tree {
  public:
   using TreeType = Tree;
   static constexpr std::string_view id() { return TreeType::id(); }
+};
+
+// AA Tree implementation
+template <typename Data, typename Key, typename AggregatorsTuple,
+          typename DeferredTuple>
+class HKF_HPF_AA
+    : public Base<::bst::AATree<false, false, Data, AggregatorsTuple,
+                                DeferredTuple, Key>> {
+ public:
+  static constexpr std::string_view id() { return "hpf_aa"; }
+};
+
+template <typename Data, typename Key, typename AggregatorsTuple,
+          typename DeferredTuple>
+class HKF_HPT_AA
+    : public Base<::bst::AATree<false, true, Data, AggregatorsTuple,
+                                DeferredTuple, Key>> {
+ public:
+  static constexpr std::string_view id() { return "hpt_aa"; }
+};
+
+template <typename Data, typename Key, typename AggregatorsTuple,
+          typename DeferredTuple>
+class HKT_HPF_AA
+    : public Base<::bst::AATree<true, false, Data, AggregatorsTuple,
+                                DeferredTuple, Key>> {
+ public:
+  static constexpr std::string_view id() { return "hpf_aa"; }
+};
+
+template <typename Data, typename Key, typename AggregatorsTuple,
+          typename DeferredTuple>
+class HKT_HPT_AA : public Base<::bst::AATree<true, true, Data, AggregatorsTuple,
+                                             DeferredTuple, Key>> {
+ public:
+  static constexpr std::string_view id() { return "hpt_aa"; }
 };
 
 // AVL Tree implementations
