@@ -82,6 +82,7 @@ class AATree
       node->set_left(child->right);
       child->set_right(node);
       node->update_subtree_data();
+      child->set_parent(nullptr);
       child->update_subtree_data();
       return child;
     }
@@ -97,6 +98,7 @@ class AATree
       node->set_right(child->left);
       child->set_left(node);
       node->update_subtree_data();
+      child->set_parent(nullptr);
       child->update_subtree_data();
       inc_level(child);
       return child;
@@ -104,45 +106,37 @@ class AATree
     return node;
   }
 
-  static constexpr void aa_dec_level(NodeType* node) noexcept {
-    const auto new_level = std::min(level(node->left), level(node->right)) + 1;
-    if (level(node) > new_level) {
-      assert(new_level == level(node) - 1);
-      set_level(node, new_level);
-      if (level(node->right) > new_level) {
-        set_level(node->right, new_level);
-      }
-    }
-  }
-
   [[nodiscard]] static constexpr NodeType* fix_balance_insert(NodeType* root) {
     root = aa_skew(root);
     root = aa_split(root);
-    root->set_parent(nullptr);
     return root;
   }
 
   [[nodiscard]] static constexpr NodeType* fix_balance_remove(NodeType* root) {
     if (!root) return nullptr;
-    aa_dec_level(root);
-    root = aa_skew(root);
-    if (root->right) {
-      root->right->apply_deferred();
-      root->set_right(aa_skew(root->right));
-      NodeType* child = root->right;
-      if (child->right) {
-        child->right->apply_deferred();
-        child->set_right(aa_skew(child->right));
-        child->update_subtree_data();
+    const auto new_level = std::min(level(root->left), level(root->right)) + 1;
+    if (level(root) > new_level) {
+      assert(new_level == level(root) - 1);
+      set_level(root, new_level);
+      if (level(root->right) > new_level) set_level(root->right, new_level);
+      root = aa_skew(root);
+      if (root->right) {
+        root->right->apply_deferred();
+        root->set_right(aa_skew(root->right));
+        NodeType* child = root->right;
+        if (child->right) {
+          child->right->apply_deferred();
+          child->set_right(aa_skew(child->right));
+          child->update_subtree_data();  // Only if something changed.
+        }
       }
+      root = aa_split(root);
+      if (root->right) {
+        root->right->apply_deferred();
+        root->set_right(aa_split(root->right));
+      }
+      root->update_subtree_data();
     }
-    root = aa_split(root);
-    if (root->right) {
-      root->right->apply_deferred();
-      root->set_right(aa_split(root->right));
-    }
-    root->update_subtree_data();
-    root->set_parent(nullptr);
     return root;
   }
 
