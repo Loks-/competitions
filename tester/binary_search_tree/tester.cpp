@@ -130,14 +130,15 @@ bool test(TestType test_type, std::string_view implementation_filter) {
           scenario::SplitJoinInsertRemove<DataType::kRandomDuplicates>>;
 
       return run_each<
-          false, Scenarios, impl::HKF_HPF_AVL, impl::HKF_HPT_AVL,
-          impl::HKT_HPF_AVL, impl::HKT_HPT_AVL, impl::HKF_HPF_RedBlack,
-          impl::HKT_HPF_RedBlack, impl::HKF_HPT_RedBlack,
-          impl::HKT_HPT_RedBlack, impl::HKF_HPT_Splay, impl::HKT_HPT_Splay,
-          impl::HKF_HPF_Treap, impl::HKF_HPT_Treap, impl::HKT_HPF_Treap,
-          impl::HKT_HPT_Treap, impl::HKF_HPF_WAVL, impl::HKF_HPT_WAVL,
-          impl::HKT_HPF_WAVL, impl::HKT_HPT_WAVL>(100000,
-                                                  implementation_filter);
+          false, Scenarios, impl::HKF_HPF_AA, impl::HKF_HPT_AA,
+          impl::HKT_HPF_AA, impl::HKT_HPT_AA, impl::HKF_HPF_AVL,
+          impl::HKF_HPT_AVL, impl::HKT_HPF_AVL, impl::HKT_HPT_AVL,
+          impl::HKF_HPF_RedBlack, impl::HKT_HPF_RedBlack,
+          impl::HKF_HPT_RedBlack, impl::HKT_HPT_RedBlack, impl::HKF_HPT_Splay,
+          impl::HKT_HPT_Splay, impl::HKF_HPF_Treap, impl::HKF_HPT_Treap,
+          impl::HKT_HPF_Treap, impl::HKT_HPT_Treap, impl::HKF_HPF_WAVL,
+          impl::HKF_HPT_WAVL, impl::HKT_HPF_WAVL, impl::HKT_HPT_WAVL>(
+          100000, implementation_filter);
     }
 
     case TestType::kExpensiveData: {

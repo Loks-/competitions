@@ -40,8 +40,6 @@ class AATree
   friend Base;
   friend SBTree;
 
-  static constexpr bool support_join = false;
-  static constexpr bool support_split = false;
   static constexpr bool support_reverse_subtree = false;
 
  public:
