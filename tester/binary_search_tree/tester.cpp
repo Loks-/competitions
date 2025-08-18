@@ -6,6 +6,9 @@
 #include "tester/binary_search_tree/scenario/build.h"
 #include "tester/binary_search_tree/scenario/build_add_as.h"
 #include "tester/binary_search_tree/scenario/build_add_each.h"
+#include "tester/binary_search_tree/scenario/build_insert_at_remove_at.h"
+#include "tester/binary_search_tree/scenario/build_insert_remove.h"
+#include "tester/binary_search_tree/scenario/build_insert_remove_node.h"
 #include "tester/binary_search_tree/scenario/insert_at_remove_at.h"
 #include "tester/binary_search_tree/scenario/insert_at_remove_at_add_as.h"
 #include "tester/binary_search_tree/scenario/insert_at_remove_at_add_each.h"
@@ -39,6 +42,12 @@ bool test(TestType test_type, std::string_view implementation_filter) {
           scenario::InsertRemoveNode<DataType::kShuffled>,
           scenario::InsertRemoveNode<DataType::kShuffledDuplicates>,
           scenario::InsertAtRemoveAt<DataType::kRandom>,
+          scenario::BuildInsertRemove<DataType::kIncreasing>,
+          scenario::BuildInsertRemove<DataType::kReverse>,
+          scenario::BuildInsertRemove<DataType::kShuffled>,
+          scenario::BuildInsertRemove<DataType::kShuffledDuplicates>,
+          scenario::BuildInsertAtRemoveAt<DataType::kRandom>,
+          scenario::BuildInsertRemoveNode<DataType::kIncreasing>,
           scenario::BuildAddEach<DataType::kShuffled>,
           scenario::BuildAddEach<DataType::kShuffledDuplicates>,
           scenario::InsertRemoveAddEach<DataType::kIncreasing>,
@@ -89,6 +98,12 @@ bool test(TestType test_type, std::string_view implementation_filter) {
                      scenario::InsertRemove<DataType::kReverse>,
                      scenario::InsertRemove<DataType::kShuffled>,
                      scenario::InsertRemove<DataType::kShuffledDuplicates>,
+                     scenario::InsertAtRemoveAt<DataType::kRandom>,
+                     scenario::BuildInsertRemove<DataType::kIncreasing>,
+                     scenario::BuildInsertRemove<DataType::kReverse>,
+                     scenario::BuildInsertRemove<DataType::kShuffled>,
+                     scenario::BuildInsertRemove<DataType::kShuffledDuplicates>,
+                     scenario::BuildInsertAtRemoveAt<DataType::kRandom>,
                      scenario::BuildAddEach<DataType::kShuffled>,
                      scenario::BuildAddEach<DataType::kShuffledDuplicates>,
                      scenario::InsertRemoveAddEach<DataType::kIncreasing>,

@@ -10,7 +10,6 @@
 #include "common/templates/tuple.h"
 
 #include <algorithm>
-#include <iostream>
 #include <tuple>
 
 namespace bst {
@@ -110,6 +109,22 @@ class AATree
     return (child && (level(child->right) == level(node)))
                ? rotate_left<update_child>(node, child)
                : node;
+  }
+
+  template <bool update_leafs>
+  [[nodiscard]] static constexpr NodeType* build_tree_base_impl(
+      const std::vector<NodeType*>& nodes, size_t begin, size_t end) {
+    if (begin >= end) return nullptr;
+    const size_t m = (begin + end - 1) / 2;
+    NodeType* root = nodes[m];
+    root->set_left(build_tree_base_impl<update_leafs>(nodes, begin, m));
+    root->set_right(build_tree_base_impl<update_leafs>(nodes, m + 1, end));
+    [[maybe_unused]] const auto left_level = level(root->left),
+                                right_level = level(root->right);
+    assert((left_level <= right_level) && (right_level <= left_level + 1));
+    set_level(root, left_level + 1);
+    if (update_leafs || (end - begin > 1)) root->update_subtree_data();
+    return root;
   }
 
   [[nodiscard]] static constexpr NodeType* fix_balance_insert(NodeType* root) {
