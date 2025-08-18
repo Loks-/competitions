@@ -13,6 +13,37 @@
 #include <tuple>
 
 namespace bst {
+
+/**
+ * @brief AA tree implementation with level-based balancing.
+ *
+ * An AA tree (Arne Andersson tree) is a self-balancing binary search tree
+ * that maintains balance using a level system. Each node has a level, and
+ * the tree maintains the following properties:
+ * - Left children have level strictly less than their parent
+ * - Right children have level less than or equal to their parent
+ * - Right grandchildren have level strictly less than their grandparent
+ * - All leaf nodes are at level 1
+ *
+ * Key features:
+ * - Automatic level balancing after insertions and removals
+ * - Guaranteed O(log n) time complexity for all operations
+ * - Efficient join and split operations with balance maintenance
+ * - Support for parent pointers, custom data, aggregators, and deferred
+ * operations
+ *
+ * The tree uses level information stored in each node to maintain balance
+ * through skew and split operations. It automatically adds level tracking
+ * to the subtree data if not already present.
+ *
+ * @tparam has_key Whether the tree uses keys for ordering
+ * @tparam has_parent Whether nodes maintain parent pointers
+ * @tparam Data The data type stored in each node
+ * @tparam AggregatorsTuple Tuple of aggregator types for subtree data
+ * @tparam DeferredTuple Tuple of deferred operation types
+ * @tparam Key The key type used for ordering (if has_key is true)
+ * @tparam NodesManager The node manager type for memory management
+ */
 template <bool has_key, bool has_parent, typename Data,
           typename AggregatorsTuple = std::tuple<subtree_data::Size>,
           typename DeferredTuple = std::tuple<>, typename Key = int64_t,
@@ -55,6 +86,10 @@ class AATree
   /**
    * @brief Returns the level of a node.
    *
+   * The level is a fundamental property of AA trees that determines
+   * the balance structure. Leaf nodes have level 1, and internal nodes
+   * have levels that satisfy the AA tree balance properties.
+   *
    * @param node The node to get the level of
    * @return The level of the node, or 0 if the node is nullptr
    */
@@ -62,14 +97,41 @@ class AATree
     return node ? subtree_data::AALevel::get(node) : 0;
   }
 
+  /**
+   * @brief Sets the level of a node.
+   *
+   * @param node The node to set the level of
+   * @param new_level The new level value
+   */
   static constexpr void set_level(NodeType* node, unsigned new_level) noexcept {
     subtree_data::AALevel::set(node, new_level);
   }
 
+  /**
+   * @brief Increments the level of a node.
+   *
+   * This is commonly used during balancing operations when a node
+   * needs to be promoted to a higher level.
+   *
+   * @param node The node to increment the level of
+   */
   static constexpr void inc_level(NodeType* node) noexcept {
     subtree_data::AALevel::inc(node);
   }
 
+  /**
+   * @brief Performs a right rotation around the parent-child pair.
+   *
+   * A right rotation moves the left child up to become the new parent,
+   * while the original parent becomes the right child of the new parent.
+   * This operation is used in the skew operation to maintain AA tree
+   * balance properties.
+   *
+   * @tparam update_child Whether to update the child's subtree data
+   * @param parent The original parent node
+   * @param child The left child node to rotate up
+   * @return The new root of the rotated subtree
+   */
   template <bool update_child>
   static constexpr NodeType* rotate_right(NodeType* parent, NodeType* child) {
     child->apply_deferred();
@@ -80,6 +142,19 @@ class AATree
     return child;
   }
 
+  /**
+   * @brief Performs a left rotation around the parent-child pair.
+   *
+   * A left rotation moves the right child up to become the new parent,
+   * while the original parent becomes the left child of the new parent.
+   * This operation is used in the split operation and also increments
+   * the level of the promoted child.
+   *
+   * @tparam update_child Whether to update the child's subtree data
+   * @param parent The original parent node
+   * @param child The right child node to rotate up
+   * @return The new root of the rotated subtree
+   */
   template <bool update_child>
   static constexpr NodeType* rotate_left(NodeType* parent, NodeType* child) {
     child->apply_deferred();
@@ -91,6 +166,17 @@ class AATree
     return child;
   }
 
+  /**
+   * @brief Performs an AA tree skew operation.
+   *
+   * The skew operation ensures that left children have levels strictly
+   * less than their parent. If a left child has the same level as its
+   * parent, a right rotation is performed to fix this violation.
+   *
+   * @tparam update_child Whether to update child nodes during rotation
+   * @param node The node to perform skew on
+   * @return The new root of the subtree after skewing
+   */
   template <bool update_child>
   [[nodiscard]] static constexpr NodeType* aa_skew(NodeType* node) noexcept {
     NodeType* child = node->left;
@@ -100,6 +186,18 @@ class AATree
                : node;
   }
 
+  /**
+   * @brief Performs an AA tree split operation.
+   *
+   * The split operation ensures that right grandchildren have levels
+   * strictly less than their grandparent. If a right grandchild has
+   * the same level as its grandparent, a left rotation is performed
+   * to fix this violation.
+   *
+   * @tparam update_child Whether to update child nodes during rotation
+   * @param node The node to perform split on
+   * @return The new root of the subtree after splitting
+   */
   template <bool update_child>
   [[nodiscard]] static constexpr NodeType* aa_split(NodeType* node) noexcept {
     NodeType* child = node->right;
@@ -109,6 +207,20 @@ class AATree
                : node;
   }
 
+  /**
+   * @brief Builds a balanced AA tree from a sorted array of nodes.
+   *
+   * This function constructs a perfectly balanced AA tree by recursively
+   * selecting the middle element as the root and building left and right
+   * subtrees. The level of each node is set based on the levels of its
+   * children to maintain AA tree balance properties.
+   *
+   * @tparam update_leafs Whether to update leaf node subtree data
+   * @param nodes Vector of node pointers in sorted order
+   * @param begin Starting index in the nodes array
+   * @param end Ending index in the nodes array (exclusive)
+   * @return Root of the constructed subtree
+   */
   template <bool update_leafs>
   [[nodiscard]] static constexpr NodeType* build_tree_base_impl(
       const std::vector<NodeType*>& nodes, size_t begin, size_t end) {
@@ -125,6 +237,18 @@ class AATree
     return root;
   }
 
+  /**
+   * @brief Fixes balance after insertion operations.
+   *
+   * This function restores AA tree balance properties after a node
+   * has been inserted. It handles cases where:
+   * - Both children have the same level as the parent (promote parent)
+   * - Left child has same level as parent (right rotation)
+   * - Right grandchild has same level as grandparent (left rotation)
+   *
+   * @param root The root of the subtree to rebalance
+   * @return The new root of the rebalanced subtree
+   */
   [[nodiscard]] static constexpr NodeType* fix_balance_insert(NodeType* root) {
     NodeType *left = root->left, *right = root->right;
     const auto root_level = level(root);
@@ -143,6 +267,22 @@ class AATree
     return root;
   }
 
+  /**
+   * @brief Fixes balance after removal operations.
+   *
+   * This function restores AA tree balance properties after a node
+   * has been removed. It performs a series of skew and split operations
+   * to ensure that all AA tree balance properties are maintained.
+   *
+   * The function:
+   * - Adjusts the level of the current node if necessary
+   * - Applies skew operations to fix left child level violations
+   * - Applies split operations to fix right grandchild level violations
+   * - Recursively fixes balance in the right subtree
+   *
+   * @param root The root of the subtree to rebalance
+   * @return The new root of the rebalanced subtree, or nullptr if empty
+   */
   [[nodiscard]] static constexpr NodeType* fix_balance_remove(NodeType* root) {
     if (!root) return nullptr;
     const auto new_level = std::min(level(root->left), level(root->right)) + 1;
@@ -178,6 +318,10 @@ class AATree
   /**
    * @brief Base implementation of three-way join.
    *
+   * This function joins three trees when the left and right subtrees
+   * have equal levels. The middle node becomes the new root with a
+   * level one higher than the subtrees.
+   *
    * @param l The root of the left tree
    * @param m1 The middle node
    * @param r The root of the right tree
@@ -197,7 +341,8 @@ class AATree
    *
    * This function is used when the left subtree is significantly taller
    * than the right subtree. It ensures that the resulting tree maintains
-   * the WAVL balance property.
+   * the AA tree balance properties by recursively joining in the right
+   * subtree of the left tree.
    *
    * @param l The root of the left tree
    * @param m1 The middle node
@@ -222,7 +367,8 @@ class AATree
    *
    * This function is used when the right subtree is significantly taller
    * than the left subtree. It ensures that the resulting tree maintains
-   * the WAVL balance property.
+   * the AA tree balance properties by recursively joining in the left
+   * subtree of the right tree.
    *
    * @param l The root of the left tree
    * @param m1 The middle node
@@ -243,11 +389,16 @@ class AATree
   }
 
   /**
-   * @brief Implementation of three-way join operation for WAVL trees.
+   * @brief Implementation of three-way join operation for AA trees.
    *
-   * This function joins three trees while maintaining the WAVL balance
-   * property. It chooses between different joining strategies based on
-   * the relative ranks of the subtrees.
+   * This function joins three trees while maintaining the AA tree balance
+   * properties. It chooses between different joining strategies based on
+   * the relative levels of the left and right subtrees.
+   *
+   * The function handles three cases:
+   * - Left subtree taller: uses join3_left_impl
+   * - Right subtree taller: uses join3_right_impl
+   * - Equal heights: uses join3_base_impl
    *
    * @param l The root of the left tree
    * @param m1 The middle node
