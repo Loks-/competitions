@@ -13,12 +13,14 @@
 #include <tuple>
 
 namespace bst {
+
 /**
  * @brief Weight-Balanced Tree implementation with automatic weight balancing.
  *
  * This tree implements a self-balancing binary search tree where the weights
- * of the two child subtrees of any node differ by at most one. This ensures
- * that the tree maintains O(log n) weight for all operations.
+ * of the two child subtrees of any node are kept in balance. The weight of
+ * a subtree is the number of nodes it contains, and the tree maintains the
+ * property that no subtree is significantly larger than its sibling.
  *
  * Key features:
  * - Automatic weight balancing after insertions and removals
@@ -27,9 +29,10 @@ namespace bst {
  * - Support for parent pointers, custom data, aggregators, and deferred
  * operations
  *
- * The tree uses height information stored in each node to maintain balance
- * through rotations. It automatically adds height tracking to the subtree data
- * if not already present.
+ * The tree uses subtree size information stored in each node to maintain
+ * balance through rotations. It automatically adds size tracking to the subtree
+ * data if not already present. The balancing criterion ensures that the weight
+ * of any subtree is at most a constant factor times the weight of its sibling.
  *
  * @tparam has_key Whether the tree uses keys for ordering
  * @tparam has_parent Whether nodes maintain parent pointers
@@ -66,12 +69,10 @@ class WeightBalancedTree
   friend Base;
   friend SBTree;
 
-  static constexpr bool support_join = false;
-  static constexpr bool support_split = false;
-
  public:
   /**
-   * @brief Constructs an AVL tree with the specified maximum number of nodes.
+   * @brief Constructs a Weight-Balanced Tree with the specified maximum number
+   * of nodes.
    *
    * @param max_nodes The maximum number of nodes to reserve
    */
@@ -82,6 +83,10 @@ class WeightBalancedTree
   /**
    * @brief Returns the weight of a node.
    *
+   * The weight of a node is defined as the number of nodes in its subtree
+   * plus 1 (the node itself). This is used to determine balance and guide
+   * rebalancing operations.
+   *
    * @param node The node to get the weight of
    * @return The weight of the node, or 0 if the node is nullptr
    */
@@ -91,11 +96,16 @@ class WeightBalancedTree
   }
 
   /**
-   * @brief Fixes the balance of a node using  rotations.
+   * @brief Fixes the balance of a node using rotations.
    *
-   * This function performs the necessary rotations to restore the
-   *  balance property. It handles both single and double rotations
-   * depending on the balance factors of the node and its children.
+   * This function performs the necessary rotations to restore the weight
+   * balance property. It handles both single and double rotations depending
+   * on the weight ratios of the node and its children.
+   *
+   * The balancing criterion ensures that for any node, the weight of its
+   * left and right subtrees are kept in proportion. If one subtree becomes
+   * too heavy (more than half the total weight), rotations are performed
+   * to redistribute the weight more evenly.
    *
    * @param root The root of the subtree to balance
    * @return The new root of the balanced subtree
@@ -105,7 +115,6 @@ class WeightBalancedTree
     const uint64_t w = weight(root), sqr_weight = w * w,
                    left_weight = weight(root->left),
                    right_weight = weight(root->right);
-
     if (2 * right_weight * right_weight > sqr_weight) {
       auto child = root->right;
       child->apply_deferred();
@@ -140,62 +149,80 @@ class WeightBalancedTree
     return root;
   }
 
-#if 0
-
   /**
-   * @brief Joins three trees with left subtree potentially taller.
+   * @brief Joins three trees with left subtree potentially heavier.
    *
-   * This function is used when the left subtree is significantly taller
+   * This function is used when the left subtree is significantly heavier
    * than the right subtree. It ensures that the resulting tree maintains
-   * the AVL balance property.
+   * the weight balance property by recursively joining in the right subtree
+   * of the left tree.
+   *
+   * The function checks if the weight ratio between left and right subtrees
+   * is acceptable (within the balancing bounds). If not, it recursively
+   * joins in the right subtree of the left tree and then rebalances.
    *
    * @param l The root of the left tree
    * @param m1 The middle node
    * @param r The root of the right tree
-   * @param hr The height of the right tree
+   * @param wr The weight of the right tree
    * @return The root of the joined tree
    */
   [[nodiscard]] static constexpr NodeType* join3_left_impl(NodeType* l,
                                                            NodeType* m1,
                                                            NodeType* r,
-                                                           int hr) {
-    if (height(l) <= hr + 1) return SBTree::join3_base_impl(l, m1, r);
+                                                           uint64_t wr) {
+    const uint64_t wl = weight(l);
+    if (2 * wl * wl <= (wl + wr) * (wl + wr))
+      return SBTree::join3_base_impl(l, m1, r);
     l->apply_deferred();
-    l->set_right(join3_left_impl(l->right, m1, r, hr));
+    l->set_right(join3_left_impl(l->right, m1, r, wr));
     l->update_subtree_data();
     return fix_balance(l);
   }
 
   /**
-   * @brief Joins three trees with right subtree potentially taller.
+   * @brief Joins three trees with right subtree potentially heavier.
    *
-   * This function is used when the right subtree is significantly taller
+   * This function is used when the right subtree is significantly heavier
    * than the left subtree. It ensures that the resulting tree maintains
-   * the AVL balance property.
+   * the weight balance property by recursively joining in the left subtree
+   * of the right tree.
+   *
+   * The function checks if the weight ratio between left and right subtrees
+   * is acceptable (within the balancing bounds). If not, it recursively
+   * joins in the left subtree of the right tree and then rebalances.
    *
    * @param l The root of the left tree
    * @param m1 The middle node
    * @param r The root of the right tree
-   * @param hl The height of the left tree
+   * @param wl The weight of the left tree
    * @return The root of the joined tree
    */
   [[nodiscard]] static constexpr NodeType* join3_right_impl(NodeType* l,
                                                             NodeType* m1,
                                                             NodeType* r,
-                                                            int hl) {
-    if (height(r) <= hl + 1) return SBTree::join3_base_impl(l, m1, r);
+                                                            uint64_t wl) {
+    const uint64_t wr = weight(r);
+    if (2 * wr * wr <= (wl + wr) * (wl + wr))
+      return SBTree::join3_base_impl(l, m1, r);
     r->apply_deferred();
-    r->set_left(join3_right_impl(l, m1, r->left, hl));
+    r->set_left(join3_right_impl(l, m1, r->left, wl));
     r->update_subtree_data();
     return fix_balance(r);
   }
 
   /**
-   * @brief Implementation of three-way join operation for AVL trees.
+   * @brief Implementation of three-way join operation for Weight-Balanced
+   * Trees.
    *
-   * This function joins three trees while maintaining the AVL balance
+   * This function joins three trees while maintaining the weight balance
    * property. It chooses between different joining strategies based on
-   * the relative heights of the subtrees.
+   * the relative weights of the left and right subtrees.
+   *
+   * The function handles three cases:
+   * - Left subtree heavier: uses join3_left_impl
+   * - Right subtree heavier: uses join3_right_impl
+   * - Equal weights: uses the base implementation
    *
    * @param l The root of the left tree
    * @param m1 The middle node
@@ -204,12 +231,10 @@ class WeightBalancedTree
    */
   [[nodiscard]] static constexpr NodeType* join3_impl(NodeType* l, NodeType* m1,
                                                       NodeType* r) {
-    const auto hl = height(l), hr = height(r), hd = hl - hr;
-    return (hd > 1)    ? join3_left_impl(l, m1, r, hr)
-           : (hd < -1) ? join3_right_impl(l, m1, r, hl)
-                       : SBTree::join3_base_impl(l, m1, r);
+    const auto wl = weight(l), wr = weight(r);
+    return (wl > wr) ? join3_left_impl(l, m1, r, wr)
+                     : join3_right_impl(l, m1, r, wl);
   }
-
-#endif
 };
+
 }  // namespace bst
