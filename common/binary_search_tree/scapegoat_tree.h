@@ -69,9 +69,9 @@ class ScapegoatTree
   friend Base;
   friend SBTree;
 
-  // Note: While these operations are supported in the interface (and used
-  // internally for regular functions), they are not meant to be used at scale
-  // because their amortized time complexity is O(N) in the worst case.
+  // Note: While these operations are supported in the interface, they are not
+  // meant to be used at scale because their amortized time complexity is O(N)
+  // in the worst case.
   static constexpr bool support_join = false;
   static constexpr bool support_split = false;
 
