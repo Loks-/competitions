@@ -9,6 +9,7 @@
 #include "common/binary_search_tree/treap.h"
 #include "common/binary_search_tree/unbalanced_tree.h"
 #include "common/binary_search_tree/wavl_tree.h"
+#include "common/binary_search_tree/weight_balanced_tree.h"
 
 #include <string_view>
 #include <tuple>
@@ -335,6 +336,45 @@ class HKT_HPT_WAVL
                                   DeferredTuple, Key>> {
  public:
   static constexpr std::string_view id() { return "hpt_wavl"; }
+};
+
+// Weight-Balanced Tree implementation
+template <typename Data, typename Key, typename AggregatorsTuple,
+          typename DeferredTuple>
+class HKF_HPF_WBT
+    : public Base<::bst::WeightBalancedTree<false, false, Data,
+                                            AggregatorsTuple, DeferredTuple,
+                                            Key>> {
+ public:
+  static constexpr std::string_view id() { return "hpf_wbt"; }
+};
+
+template <typename Data, typename Key, typename AggregatorsTuple,
+          typename DeferredTuple>
+class HKF_HPT_WBT
+    : public Base<::bst::WeightBalancedTree<false, true, Data,
+                                            AggregatorsTuple, DeferredTuple,
+                                            Key>> {
+ public:
+  static constexpr std::string_view id() { return "hpt_wbt"; }
+};
+
+template <typename Data, typename Key, typename AggregatorsTuple,
+          typename DeferredTuple>
+class HKT_HPF_WBT
+    : public Base<::bst::WeightBalancedTree<true, false, Data, AggregatorsTuple,
+                                            DeferredTuple, Key>> {
+ public:
+  static constexpr std::string_view id() { return "hpf_wbt"; }
+};
+
+template <typename Data, typename Key, typename AggregatorsTuple,
+          typename DeferredTuple>
+class HKT_HPT_WBT
+    : public Base<::bst::WeightBalancedTree<true, true, Data, AggregatorsTuple,
+                                            DeferredTuple, Key>> {
+ public:
+  static constexpr std::string_view id() { return "hpt_wbt"; }
 };
 
 }  // namespace impl
