@@ -3,7 +3,7 @@
 #include "common/base.h"
 #include "common/binary_search_tree/persistent/treap.h"
 #include "common/binary_search_tree/subtree_data/max.h"
-#include "common/binary_search_tree/subtree_data/segment/get_by_key.h"
+#include "common/binary_search_tree/subtree_data/utils/get_by_key.h"
 #include "common/graph/tree.h"
 #include "common/graph/tree/lca.h"
 #include "common/graph/tree_ei.h"
@@ -47,10 +47,8 @@ inline std::vector<typename TEdgeCostFunction::TEdgeCost> TPM_PBST_FBT(
     } else {
       unsigned a = lca.GetLCA(p.first, p.second), da = lca.deep[a] + 1;
       output.push_back(std::max(
-          TMax::get(
-              bst::subtree_data::segment::get_by_key(roots[p.first], da, d)),
-          TMax::get(
-              bst::subtree_data::segment::get_by_key(roots[p.second], da, d))));
+          TMax::get(bst::subtree_data::get_by_key(roots[p.first], da, d)),
+          TMax::get(bst::subtree_data::get_by_key(roots[p.second], da, d))));
     }
   }
   return output;

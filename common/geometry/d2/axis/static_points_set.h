@@ -2,8 +2,8 @@
 
 #include "common/base.h"
 #include "common/binary_search_tree/persistent/treap.h"
-#include "common/binary_search_tree/subtree_data/segment/get_by_key.h"
 #include "common/binary_search_tree/subtree_data/size.h"
+#include "common/binary_search_tree/subtree_data/utils/get_by_key.h"
 #include "common/geometry/d2/compare/point_xy.h"
 #include "common/geometry/d2/point.h"
 #include "common/template.h"
@@ -62,7 +62,7 @@ class StaticPointsSet {
 
   unsigned CountQ(const TPoint& p) const {
     return bst::subtree_data::size(
-        bst::subtree_data::segment::get_by_key(LowerBound(p.x), p.y));
+        bst::subtree_data::get_by_key(LowerBound(p.x), p.y));
   }
 };
 }  // namespace axis

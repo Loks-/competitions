@@ -3,7 +3,7 @@
 #include "common/base.h"
 #include "common/binary_search_tree/persistent/treap.h"
 #include "common/binary_search_tree/subtree_data/max.h"
-#include "common/binary_search_tree/subtree_data/segment/get_by_key.h"
+#include "common/binary_search_tree/subtree_data/utils/get_by_key.h"
 #include "common/graph/tree.h"
 #include "common/graph/tree/lca.h"
 
@@ -47,10 +47,10 @@ inline std::vector<TValue> TPM_PBST(
     } else {
       unsigned a = lca.GetLCA(p.first, p.second);
       output.push_back(
-          std::max(TMax::get(bst::subtree_data::segment::get_by_key(
+          std::max(TMax::get(bst::subtree_data::get_by_key(
                        roots[p.first], lca.deep[a] + (ignore_lca ? 1 : 0),
                        lca.deep[p.first] + 1)),
-                   TMax::get(bst::subtree_data::segment::get_by_key(
+                   TMax::get(bst::subtree_data::get_by_key(
                        roots[p.second], lca.deep[a] + (ignore_lca ? 1 : 0),
                        lca.deep[p.second] + 1))));
     }
