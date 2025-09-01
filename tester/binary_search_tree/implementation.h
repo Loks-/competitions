@@ -10,6 +10,7 @@
 #include "common/binary_search_tree/unbalanced_tree.h"
 #include "common/binary_search_tree/wavl_tree.h"
 #include "common/binary_search_tree/weight_balanced_tree.h"
+#include "common/binary_search_tree/weight_balanced_tree2.h"
 
 #include <string_view>
 #include <tuple>
@@ -375,6 +376,47 @@ class HKT_HPT_WBT
                                             DeferredTuple, Key>> {
  public:
   static constexpr std::string_view id() { return "hpt_wbt"; }
+};
+
+// Variant Weight-Balanced Tree (WBT2) implementation
+template <typename Data, typename Key, typename AggregatorsTuple,
+          typename DeferredTuple>
+class HKF_HPF_WBT2
+    : public Base<::bst::WeightBalancedTree2<false, false, Data,
+                                             AggregatorsTuple, DeferredTuple,
+                                             Key>> {
+ public:
+  static constexpr std::string_view id() { return "hpf_wbt2"; }
+};
+
+template <typename Data, typename Key, typename AggregatorsTuple,
+          typename DeferredTuple>
+class HKF_HPT_WBT2
+    : public Base<::bst::WeightBalancedTree2<false, true, Data,
+                                             AggregatorsTuple, DeferredTuple,
+                                             Key>> {
+ public:
+  static constexpr std::string_view id() { return "hpt_wbt2"; }
+};
+
+template <typename Data, typename Key, typename AggregatorsTuple,
+          typename DeferredTuple>
+class HKT_HPF_WBT2
+    : public Base<::bst::WeightBalancedTree2<true, false, Data,
+                                             AggregatorsTuple, DeferredTuple,
+                                             Key>> {
+ public:
+  static constexpr std::string_view id() { return "hpf_wbt2"; }
+};
+
+template <typename Data, typename Key, typename AggregatorsTuple,
+          typename DeferredTuple>
+class HKT_HPT_WBT2
+    : public Base<::bst::WeightBalancedTree2<true, true, Data,
+                                             AggregatorsTuple, DeferredTuple,
+                                             Key>> {
+ public:
+  static constexpr std::string_view id() { return "hpt_wbt2"; }
 };
 
 }  // namespace impl
