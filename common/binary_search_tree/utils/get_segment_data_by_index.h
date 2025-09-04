@@ -27,23 +27,24 @@ namespace utils {
  *
  * @tparam TTree The BST tree type that provides split_at and join operations.
  * @tparam TNode The BST node type.
- * @param root The root of the tree to extract segment data from.
+ * @param root The root of the tree to extract segment data from (passed by
+ * reference).
  * @param begin The begin index (inclusive) for the range.
  * @param end The end index (exclusive) for the range.
- * @param output Reference to store the extracted subtree data.
- * @return Pointer to the root of the restored tree.
+ * @return The extracted subtree data for nodes in index range [begin, end).
  * @pre begin <= end
  * @pre The tree's subtree data must contain the required aggregators.
  */
 template <class TTree, class TNode>
-[[nodiscard]] constexpr TNode* get_segment_data_by_index(
-    TNode* root, size_t begin, size_t end,
-    typename TTree::SubtreeDataType& output) {
+[[nodiscard]] constexpr typename TTree::SubtreeDataType
+get_segment_data_by_index(TNode*& root, size_t begin, size_t end) {
   TNode *l, *m, *r;
   TTree::split_at(root, end, m, r);
   TTree::split_at(m, begin, l, m);
+  typename TTree::SubtreeDataType output;
   if (m) output = m->subtree_data;
-  return TTree::join(TTree::join(l, m), r);
+  root = TTree::join(TTree::join(l, m), r);
+  return output;
 }
 
 }  // namespace utils
