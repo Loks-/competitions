@@ -6,6 +6,43 @@ namespace bst {
 namespace utils {
 
 /**
+ * @brief Gets segment data for the first end nodes in inorder traversal using
+ * tree splitting.
+ *
+ * This function extracts subtree data for the first end nodes in inorder
+ * traversal by temporarily splitting the tree, extracting the data from the
+ * left segment, and then rejoining the tree. This approach is useful when you
+ * need the aggregated subtree data for nodes from the beginning of the tree.
+ *
+ * The function works by:
+ * 1. Splitting the tree at the end index to separate nodes [0, end) from [end,
+ * n)
+ * 2. Extracting the subtree data from the left segment
+ * 3. Rejoining the parts to restore the original tree structure
+ *
+ * Note: This function modifies the tree structure temporarily but restores it
+ * before returning. The tree remains balanced after the operation.
+ *
+ * @tparam TTree The BST tree type that provides split_at and join operations.
+ * @tparam TNode The BST node type.
+ * @param root The root of the tree to extract segment data from (passed by
+ * reference).
+ * @param end The end index (exclusive) for the range.
+ * @return The extracted subtree data for the first end nodes.
+ * @pre The tree's subtree data must contain the required aggregators.
+ */
+template <class TTree, class TNode>
+[[nodiscard]] constexpr typename TTree::SubtreeDataType
+get_segment_data_by_index(TNode*& root, size_t end) {
+  TNode *l, *r;
+  TTree::split_at(root, end, l, r);
+  typename TTree::SubtreeDataType output;
+  if (l) output = l->subtree_data;
+  root = TTree::join(l, r);
+  return output;
+}
+
+/**
  * @brief Gets segment data for nodes in an index-based range [begin, end) using
  * tree splitting.
  *
